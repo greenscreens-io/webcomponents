@@ -1,5 +1,5 @@
 /*
- * © Green Screens Ltd., 2016. - 2022.
+ * Copyright (C) 2015, 2022 Green Screens Ltd.
  */
 
 /**
@@ -24,15 +24,15 @@ export default class GSTooltip extends GSElement {
 
     static {
         customElements.define('gs-tooltip', GSTooltip);
-        GSDOMObserver.registerFilter(GSTooltip.#onMonitorFilter,  GSTooltip.#onMonitorResult);
+        GSDOMObserver.registerFilter(GSTooltip.#onMonitorFilter, GSTooltip.#onMonitorResult);
     }
-    
+
     /**
      * Filter function for monitor observer
      * @param {HTMLElement} el 
      * @returns {boolean} 
      */
-     static #onMonitorFilter(el) {
+    static #onMonitorFilter(el) {
         if (!(el instanceof HTMLElement)) return false;
         if (el.tagName && el.tagName.startsWith('GS-')) return false;
         return GSTooltip.#isTooltip(el) && !GSTooltip.#hasTooltip(el);
@@ -44,10 +44,10 @@ export default class GSTooltip extends GSElement {
      */
     static #onMonitorResult(el) {
         el.id = el.id || GSID.id;
-        const tooltip = document.createElement('gs-tooltip'); 
+        const tooltip = document.createElement('gs-tooltip');
         tooltip.ref = `#${el.id}`;
-        requestAnimationFrame(()=>{
-            setTimeout(()=>{
+        requestAnimationFrame(() => {
+            setTimeout(() => {
                 el.parentElement.insertAdjacentElement('beforeend', tooltip);
             }, 100);
         });
@@ -55,7 +55,7 @@ export default class GSTooltip extends GSElement {
 
     constructor() {
         super();
-	}
+    }
 
     onReady() {
         const me = this;
@@ -69,7 +69,7 @@ export default class GSTooltip extends GSElement {
         GSListeners.attachEvent(me, me.target, 'mouseover', me.show.bind(me));
         GSListeners.attachEvent(me, me.target, 'mouseout', me.hide.bind(me));
     }
-    
+
     #render() {
         const me = this;
         const arrowEl = me.querySelector('div.tooltip-arrow');
@@ -89,7 +89,7 @@ export default class GSTooltip extends GSElement {
 
     get target() {
         const me = this;
-        if(me.ref) {
+        if (me.ref) {
             let owner = me.owner;
             owner = GSUtil.isGSElement(me.owner) ? owner.self : owner;
             return owner.querySelector(me.ref);
@@ -111,7 +111,7 @@ export default class GSTooltip extends GSElement {
         return GSUtil.getAttribute(me, 'title') || GSUtil.getAttribute(me.target, 'title');
     }
 
-    set title(val='') {
+    set title(val = '') {
         const me = this;
         return GSUtil.setAttribute(me, 'title', val);
     }
@@ -121,18 +121,18 @@ export default class GSTooltip extends GSElement {
         return GSUtil.getAttribute(me, 'placement') || GSUtil.getAttribute(me.target, 'data-bs-placement', 'top');
     }
 
-    set placement(val='') {
+    set placement(val = '') {
         return GSUtil.setAttribute(this, 'placement', val);
     }
 
     get isFlat() {
         return true;
     }
-    
+
     get position() {
         return 'self';
     }
-    
+
     /**
      * Show tooltip
      */
@@ -140,7 +140,7 @@ export default class GSTooltip extends GSElement {
         const me = this;
         const el = GSUtil.parse(me.#html);
         me.insertAdjacentElement('afterbegin', el);
-        requestAnimationFrame(()=>{
+        requestAnimationFrame(() => {
             me.#render();
             GSUtil.toggleClass(this.firstElementChild, true, 'show');
         });
@@ -151,7 +151,7 @@ export default class GSTooltip extends GSElement {
      */
     hide() {
         const me = this;
-        setTimeout(()=>{
+        setTimeout(() => {
             me.innerHTML = '';
         }, 250);
         return GSUtil.toggleClass(this.firstElementChild, false, 'show');
@@ -173,7 +173,7 @@ export default class GSTooltip extends GSElement {
     static #hasTooltip(el) {
         return el && (el.firstElementChild instanceof GSTooltip || el.nextElementSibling instanceof GSTooltip);
     }
-    
+
     /**
      * Check if standard element is tooltip defined
      * @param {HTMLElement} el 

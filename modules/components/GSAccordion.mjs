@@ -1,5 +1,5 @@
 /*
- * © Green Screens Ltd., 2016. - 2022.
+ * Copyright (C) 2015, 2022 Green Screens Ltd.
  */
 
 /**
@@ -22,36 +22,36 @@ import GSUtil from "../base/GSUtil.mjs";
 export default class GSAccordion extends GSElement {
 
   static {
-    customElements.define('gs-accordion', GSAccordion);    
+    customElements.define('gs-accordion', GSAccordion);
   }
 
   static get observedAttributes() {
     const attrs = ['css', 'css-item', 'css-header', 'css-body', 'data'];
-    return  GSUtil.mergeArrays(attrs, super.observedAttributes );
+    return GSUtil.mergeArrays(attrs, super.observedAttributes);
   }
 
   attributeCallback(name = '', oldValue = '', newValue = '') {
 
     const me = this;
-    
+
     if (name === 'data') return me.load(newValue);
 
 
     let css = null;
-    
-    switch(name){
-      case 'css' : 
+
+    switch (name) {
+      case 'css':
         css = '.accordion';
-      break;      
-      case 'css-item' : 
+        break;
+      case 'css-item':
         css = '.accordion-item';
-      break;
-      case 'css-header' : 
+        break;
+      case 'css-header':
         css = '.accordion-button';
-      break;
-      case 'css-body' : 
+        break;
+      case 'css-body':
         css = '.accordion-collapse';
-      break;            
+        break;
     }
 
     if (css) {
@@ -81,14 +81,14 @@ export default class GSAccordion extends GSElement {
     return GSUtil.getAttribute(this, 'css', '');
   }
 
-  set css( val = '') {
+  set css(val = '') {
     GSUtil.setAttribute(this, 'css', val);
   }
 
   get cssHead() {
     return GSUtil.getAttribute(this, 'css-head');
   }
-  
+
   set cssHead(val = '') {
     return GSUtil.setAttribute(this, 'css-head', val);
   }
@@ -123,7 +123,7 @@ export default class GSAccordion extends GSElement {
     </div>
     `
   }
-  
+
   #getTitle(el) {
     return GSUtil.getAttribute(el, 'title');
   }
@@ -150,7 +150,7 @@ export default class GSAccordion extends GSElement {
     const me = this;
     me.innerHTML = GSItem.generateItem(data);
     GSComponents.remove(me);
-		GSListeners.deattachListeners(me);
+    GSListeners.deattachListeners(me);
     me.connectedCallback();
   }
 

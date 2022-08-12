@@ -1,5 +1,5 @@
 /*
- * © Green Screens Ltd., 2016. - 2022.
+ * Copyright (C) 2015, 2022 Green Screens Ltd.
  */
 
 /**
@@ -25,31 +25,31 @@ export default class GSProgress extends GSElement {
 
     static get observedAttributes() {
         const attrs = ['min', 'max', 'now'];
-        return  GSUtil.mergeArrays(attrs, super.observedAttributes );
-      }
+        return GSUtil.mergeArrays(attrs, super.observedAttributes);
+    }
 
     constructor() {
         super();
-	}
+    }
 
-    attributeCallback(name = '', oldValue = '', newValue = '') {        
+    attributeCallback(name = '', oldValue = '', newValue = '') {
         const me = this;
         const bar = me.#bar;
         if (!bar) return;
         GSUtil.setAttribute(bar, `aria-value${name}`, newValue);
         bar.style.width = `${me.percentage}%`;
-        if(me.label) bar.innerHTML =  me.#fromLabel();
+        if (me.label) bar.innerHTML = me.#fromLabel();
     }
-    
+
     #fromLabel() {
         const me = this;
-        const opt = {now: me.value, min: me.min, max: me.max, percentage: me.percentage};
+        const opt = { now: me.value, min: me.min, max: me.max, percentage: me.percentage };
         return GSUtil.fromTemplateLiteral(me.label, opt);
     }
 
     async getTemplate(val = '') {
         const me = this;
-        const label = me.label ? GSUtil.fromTemplateLiteral(me.label, {now: me.value, min: me.min, max: me.max, percentage: me.percentage}) : '';
+        const label = me.label ? GSUtil.fromTemplateLiteral(me.label, { now: me.value, min: me.min, max: me.max, percentage: me.percentage }) : '';
         return `
         <div class="progress">
             <div class="progress-bar ${me.css}" role="progressbar" style="width: ${me.percentage}%" aria-valuenow="${me.value}" aria-valuemin="${me.min}" aria-valuemax="${me.max}">${label}</div>
@@ -73,12 +73,12 @@ export default class GSProgress extends GSElement {
         const me = this;
         return Math.trunc((me.value / me.max) * 100);
     }
-        
+
     get value() {
         return GSUtil.getAttributeAsNum(this, 'now', 0);
     }
 
-    set value(val='') {
+    set value(val = '') {
         if (!GSUtil.isNumber(val)) return false;
         const me = this;
         let v = GSUtil.asNum(val) || me.value;
@@ -91,7 +91,7 @@ export default class GSProgress extends GSElement {
         return GSUtil.getAttributeAsNum(this, 'min', 0);
     }
 
-    set min(val='') {        
+    set min(val = '') {
         return GSUtil.isNumber(val) ? GSUtil.setAttribute(this, 'min', val) : false;
     }
 
@@ -99,7 +99,7 @@ export default class GSProgress extends GSElement {
         return GSUtil.getAttributeAsNum(this, 'max', 100);
     }
 
-    set max(val='') {
+    set max(val = '') {
         return GSUtil.isNumber(val) ? GSUtil.setAttribute(this, 'max', val) : false;
     }
 
@@ -107,7 +107,7 @@ export default class GSProgress extends GSElement {
         return GSUtil.getAttribute(this, 'css', '');
     }
 
-    set css(val='') {
+    set css(val = '') {
         return GSUtil.setAttribute(this, 'css', val);
     }
 
@@ -115,17 +115,17 @@ export default class GSProgress extends GSElement {
         return GSUtil.getAttribute(this, 'label', '');
     }
 
-    set label(val='') {
+    set label(val = '') {
         return GSUtil.setAttribute(this, 'label', val);
     }
 
-    increase(val=1) {
+    increase(val = 1) {
         const me = this;
         me.value = me.value + val;
         return true;
     }
 
-    decrease(val=1) {
+    decrease(val = 1) {
         const me = this;
         me.value = me.value - val;
         return true;

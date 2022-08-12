@@ -1,5 +1,5 @@
 /*
- * © Green Screens Ltd., 2016. - 2022.
+ * Copyright (C) 2015, 2022 Green Screens Ltd.
  */
 
 /**
@@ -25,25 +25,25 @@ export default class GSTableSort extends HTMLTableRowElement {
         customElements.define('gs-tablesort', GSTableSort, { extends: 'tr' });
     }
 
-	connectedCallback() {
-		const me = this;
+    connectedCallback() {
+        const me = this;
         if (!me.id) me.setAttribute('id', GSID.id);
         GSListeners.attachEvent(me, me, 'click', e => me.#onClick(e));
         GSComponents.store(me);
-	}
+    }
 
-	disconnectedCallback() {
+    disconnectedCallback() {
         const me = this;
         GSComponents.remove(me);
         GSListeners.deattachListeners(me);
-	}
+    }
 
     #onClick(e) {
         const me = this;
-        const el = e.path[0];    
-        if(el.tagName !== 'TH') return;
+        const el = e.path[0];
+        if (el.tagName !== 'TH') return;
         if (!el.classList.contains('sorting')) return;
-        requestAnimationFrame(() => me.#onColumnSort(el, e.shiftKey) );
+        requestAnimationFrame(() => me.#onColumnSort(el, e.shiftKey));
     }
 
     #onColumnSort(el, append = false) {
@@ -58,14 +58,14 @@ export default class GSTableSort extends HTMLTableRowElement {
             GSUtil.toggleClass(el, false, 'sorting_desc sorting_asc table-active');
         } else {
             me.#sc = 1;
-            GSUtil.findAll('thead th', me, true).forEach(el =>  {
+            GSUtil.findAll('thead th', me, true).forEach(el => {
                 GSUtil.setAttribute(el, 'idx', null);
                 GSUtil.setAttribute(el, 'order', null);
                 GSUtil.toggleClass(el, false, 'sorting_desc sorting_asc table-active');
             });
         }
-        
-        el.classList.add( ord > 0 ? 'sorting_asc' : 'sorting_desc');
+
+        el.classList.add(ord > 0 ? 'sorting_asc' : 'sorting_desc');
         GSUtil.setAttribute(el, 'idx', me.#sc);
         GSUtil.setAttribute(el, 'order', ord);
         GSUtil.toggleClass(el, true, 'table-active');
@@ -76,12 +76,12 @@ export default class GSTableSort extends HTMLTableRowElement {
             const ord = GSUtil.getAttributeAsNum(el, 'order', 1);
             const idx = GSUtil.getAttributeAsNum(el, 'idx', 1);
             const name = GSUtil.getAttribute(el, 'name', el.innerText);
-            const cfg = {ord: ord, col : el.cellIndex, name : name, idx : idx};
+            const cfg = { ord: ord, col: el.cellIndex, name: name, idx: idx };
             sort.push(cfg);
         });
-        sort = GSUtil.sortData([{name:'idx', ord : 1}], sort);
+        sort = GSUtil.sortData([{ name: 'idx', ord: 1 }], sort);
 
         GSUtil.sendEvent(me, 'sort', sort, true);
-    }    
+    }
 
 }

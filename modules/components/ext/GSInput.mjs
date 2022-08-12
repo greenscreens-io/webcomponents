@@ -1,5 +1,5 @@
 /*
- * © Green Screens Ltd., 2016. - 2022.
+ * Copyright (C) 2015, 2022 Green Screens Ltd.
  */
 
 /**
@@ -27,7 +27,7 @@ export default class GSInput extends HTMLInputElement {
         9: '[0-9]', '#': '[0-9]',
         x: '[a-zA-Z]', X: '[a-zA-Z]',
         _: '[0-9]'
-    };    
+    };
 
     #masks = [];
 
@@ -37,11 +37,11 @@ export default class GSInput extends HTMLInputElement {
 
     constructor() {
         super();
-	}
+    }
 
-	static get observedAttributes() {
-		return ['mask'] ;
-	}
+    static get observedAttributes() {
+        return ['mask'];
+    }
 
     connectedCallback() {
         const me = this;
@@ -60,10 +60,10 @@ export default class GSInput extends HTMLInputElement {
         GSListeners.deattachListeners(me);
     }
 
-	attributeChangedCallback(name, oldValue, newValue) {
-		//console.log(`name:${name}, oldValue:${oldValue}, newValue:${newValue}`);
+    attributeChangedCallback(name, oldValue, newValue) {
+        //console.log(`name:${name}, oldValue:${oldValue}, newValue:${newValue}`);
         if (name === 'mask') this.#toPattern();
-	}
+    }
 
     get owner() {
         const own = GSComponents.getOwner(this);
@@ -85,7 +85,7 @@ export default class GSInput extends HTMLInputElement {
     get mask() {
         return GSUtil.getAttribute(this, 'mask', '');
     }
-    
+
     get strict() {
         return GSUtil.getAttribute(this, 'strict', '');
     }
@@ -102,7 +102,7 @@ export default class GSInput extends HTMLInputElement {
             if (GSInput.#special.indexOf(v) > -1) {
                 me.#masks.push(v);
                 masks.push(`\${v}`);
-                return ;
+                return;
             }
 
             const m = GSInput.#maskType[v];
@@ -125,7 +125,7 @@ export default class GSInput extends HTMLInputElement {
             if (!list) return;
             GSListeners.attachEvent(me, me, 'change', me.#onDataChange.bind(me));
             GSListeners.attachEvent(me, me.filter, 'change', me.#onMonitor.bind(me));
-        });        
+        });
     }
 
     #togleEl(el, key = '', value = '') {
@@ -169,8 +169,8 @@ export default class GSInput extends HTMLInputElement {
 
             const filter = `[data-${key}]:not([data-${key}=""]`;
             const els = Array.from(GSUtil.findAll(filter, own));
-            els.filter( el => el.tagName !== 'OPTION')
-            .filter(el => GSUtil.getAttribute(el, 'list', null) == null).forEach(el => me.#togleEl(el, key, val))
+            els.filter(el => el.tagName !== 'OPTION')
+                .filter(el => GSUtil.getAttribute(el, 'list', null) == null).forEach(el => me.#togleEl(el, key, val))
         });
     }
 
@@ -191,7 +191,7 @@ export default class GSInput extends HTMLInputElement {
     #onBlur(e) {
         const me = this;
         me.reportValidity();
-        if (!me.isInList()) GSUtil.sendEvent(me, 'strict', {ok : false, source : e});
+        if (!me.isInList()) GSUtil.sendEvent(me, 'strict', { ok: false, source: e });
     }
 
     #onInput(e) {
@@ -200,7 +200,7 @@ export default class GSInput extends HTMLInputElement {
         if (me.mask) return me.#onMaskInput(e);
         if (me.type === 'text') return me.#onTextInput(e);
     }
-    
+
     #onNumberInput(e) {
         const me = this;
         if (me.value.length > me.maxLength) {
@@ -220,7 +220,7 @@ export default class GSInput extends HTMLInputElement {
     #onMaskInput(e) {
         const me = this;
         const chars = me.value.split('').slice(0, me.#masks.length);
-        
+
         chars.forEach((v, i) => {
             const vld = me.#masks[i];
             if (typeof vld === 'string') return chars[i] = vld;
@@ -232,7 +232,7 @@ export default class GSInput extends HTMLInputElement {
             chars[i] = '';
         });
         me.value = chars.join('');
-        
+
     }
 
 }

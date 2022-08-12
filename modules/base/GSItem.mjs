@@ -1,5 +1,5 @@
 /*
- * © Green Screens Ltd., 2016. - 2022.
+ * Copyright (C) 2015, 2022 Green Screens Ltd.
  */
 
 /**
@@ -13,37 +13,37 @@ import GSUtil from "./GSUtil.mjs";
  * Static class for handling generic configurable tag GS-ITEM
  */
 export default class GSItem {
-    
+
 	static #dismiss = 'data-bs-dismiss';
 
-    static #target = 'data-bs-target';
+	static #target = 'data-bs-target';
 
-    static #toggle = 'data-bs-toggle';
+	static #toggle = 'data-bs-toggle';
 
-    static #action = 'data-action';
+	static #action = 'data-action';
 
-    /**
-    * Retrieve gs-item template or internal content
-    * NOTE: If tempalte set, item content is overriden
-    * @param {HTMLElement} el 
-    * @returns {string}
-    */
-    static async getTemplate(el) {
-        const tpl = GSUtil.getAttribute(el, 'template');
-        const cnt = tpl ? await GSUtil.load(tpl) : '';
-        if (cnt) return cnt;
-        return Array.from(el.childNodes)
-            .filter(el => el.tagName != 'GS-ITEM')
-            .map(it => it instanceof Text ? it.nodeValue : it.outerHTML)
-            .join('');
-    }
+	/**
+	* Retrieve gs-item template or internal content
+	* NOTE: If tempalte set, item content is overriden
+	* @param {HTMLElement} el 
+	* @returns {string}
+	*/
+	static async getTemplate(el) {
+		const tpl = GSUtil.getAttribute(el, 'template');
+		const cnt = tpl ? await GSUtil.load(tpl) : '';
+		if (cnt) return cnt;
+		return Array.from(el.childNodes)
+			.filter(el => el.tagName != 'GS-ITEM')
+			.map(it => it instanceof Text ? it.nodeValue : it.outerHTML)
+			.join('');
+	}
 
 	/**
 	 * Get first level of generic gs-item elemtn, used for configuring gs-* components
 	 * @param {HTMLElement} root 
 	 * @returns {Array<HTMLElement>} 
 	 */
-     static genericItems(root) {
+	static genericItems(root) {
 		if (!GSUtil.isHTMLElement(root)) return [];
 		return Array.from(root.childNodes).filter(el => el.tagName == 'GS-ITEM')
 	}
@@ -84,37 +84,37 @@ export default class GSItem {
 	static getDismissAttr(el) {
 		const v = GSItem.getDismiss(el);
 		return v ? `${GSItem.#dismiss}="${v}"` : '';
-    }
+	}
 
-    static getTargetAttr(el) {
-        const v = GSItem.getTarget(el);
+	static getTargetAttr(el) {
+		const v = GSItem.getTarget(el);
 		return v ? `${GSItem.#target}="${v}"` : '';
-    }
+	}
 
-    static getToggleAttr(el) {
-        const v = GSItem.getToggle(el);
+	static getToggleAttr(el) {
+		const v = GSItem.getToggle(el);
 		return v ? `${GSItem.#toggle}="${v}"` : '';
-    }
+	}
 
-    static getActionAttr(el) {
+	static getActionAttr(el) {
 		const v = GSItem.getAction(el);
-        return v ? `${GSItem.#action}="${v}"` : '';
-    }	
+		return v ? `${GSItem.#action}="${v}"` : '';
+	}
 
-    static getAction(el) {
-        return GSUtil.getAttribute(el, 'action'); 
-    }
+	static getAction(el) {
+		return GSUtil.getAttribute(el, 'action');
+	}
 
-    static getDismiss(el) {
-        return GSUtil.getAttribute(el, 'dismiss'); 
-    }
+	static getDismiss(el) {
+		return GSUtil.getAttribute(el, 'dismiss');
+	}
 
 	static getTarget(el) {
-        return GSUtil.getAttribute(el, 'target'); 
-    }
+		return GSUtil.getAttribute(el, 'target');
+	}
 
 	static getToggle(el) {
-        return GSUtil.getAttribute(el, 'toggle'); 
-    }
+		return GSUtil.getAttribute(el, 'toggle');
+	}
 
 }

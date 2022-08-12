@@ -1,5 +1,5 @@
 /*
- * © Green Screens Ltd., 2022.
+ * Copyright (C) 2015, 2022  Green Screens Ltd.
  */
 import './head/index.mjs';
 import './base/index.mjs';

@@ -1,3 +1,6 @@
+/*
+ * Copyright (C) 2015, 2022  Green Screens Ltd.
+ */
 import "./GSBase.mjs";
 import "./GSLinkExt.mjs";
 import "./GSStyleExt.mjs";

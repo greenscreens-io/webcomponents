@@ -1,5 +1,5 @@
 /*
- * © Green Screens Ltd., 2016. - 2022.
+ * Copyright (C) 2015, 2022 Green Screens Ltd.
  */
 
 /**
@@ -84,13 +84,13 @@ export default class GSSplitter extends GSElement {
      * Element selection for resizing
      * @returns {string} start|end|top|bottom
      */
-     get resize() {
+    get resize() {
         return GSUtil.getAttribute(this, 'resize', 'start');
     }
 
     set resize(val = '') {
         return GSUtil.setAttribute(this, 'resize', val);
-    }    
+    }
 
     /**
      * Return preceding element
@@ -100,10 +100,10 @@ export default class GSSplitter extends GSElement {
         return this.previousElementSibling;
     }
 
-     /**
-     * Return following element
-     * @returns {HTMLElement}
-     */
+    /**
+    * Return following element
+    * @returns {HTMLElement}
+    */
     get end() {
         return this.nextElementSibling;
     }
@@ -117,15 +117,15 @@ export default class GSSplitter extends GSElement {
         let el = me.#isPreceeding ? me.start : me.end;
         el = el || me.parentElement;
         el = GSUtil.isGSElement(el) ? el.self : el;
-        if(el instanceof ShadowRoot) {
+        if (el instanceof ShadowRoot) {
             el = Array.from(el.children).filter(o => window.getComputedStyle(o).display !== 'none').pop();
-        } 
+        }
         return el;
     }
 
     connectedCallback() {
         const me = this;
-        me.#autostore = me.id ? true: false;
+        me.#autostore = me.id ? true : false;
         super.connectedCallback();
     }
 
@@ -175,15 +175,15 @@ export default class GSSplitter extends GSElement {
      * Other events attaches as needed (on click)
      */
     #listen() {
-        const me = this;        
+        const me = this;
         const el = me.#splitter;
         me.attachEvent(el, 'mousedown', me.#onMouseDown.bind(me), true);
     }
 
-     /**
-     * Starts secondary listeners for mouse move for resizing and mouseup for stopping
-     * @param {MouseEvent} e 
-     */
+    /**
+    * Starts secondary listeners for mouse move for resizing and mouseup for stopping
+    * @param {MouseEvent} e 
+    */
     #onMouseDown(e) {
         const me = this;
         GSUtil.preventEvent(e);
@@ -224,13 +224,13 @@ export default class GSSplitter extends GSElement {
             } else {
                 me.#updateY(pos);
             }
-        });        
+        });
     }
 
     /**
      * Calculate width based on mouse position
      * @param {number} pos 
-     */    
+     */
     #updateX(pos) {
         const me = this;
         const target = me.target;
@@ -238,14 +238,14 @@ export default class GSSplitter extends GSElement {
         let dx = (pos - me.#cursor) * dir;
         dx = dx + target.clientWidth;
         dx = dx < 0 ? 0 : dx;
-        target.style.width=dx+"px";
+        target.style.width = dx + "px";
         me.#cursor = pos;
     }
 
     /**
      * Calculate height based on mouse position
      * @param {number} pos 
-     */        
+     */
     #updateY(pos) {
         const me = this;
         const target = me.target;
@@ -253,7 +253,7 @@ export default class GSSplitter extends GSElement {
         let dx = (pos - me.#cursor) * dir;
         dx = dx + target.clientHeight;
         dx = dx < 0 ? 0 : dx;
-        target.style.height=dx+"px";
+        target.style.height = dx + "px";
         me.#cursor = pos;
     }
 }

@@ -1,5 +1,5 @@
 /*
- * © Green Screens Ltd., 2021.
+ * Copyright (C) 2015, 2022 Green Screens Ltd.
  */
 
 /**
@@ -28,7 +28,7 @@ export default class GSCacheStyles {
 		const me = this;
 		if (style instanceof CSSStyleSheet) {
 			me.#store.set(id, style);
-		 }
+		}
 
 		if (typeof style === 'string') {
 			const sheet = new CSSStyleSheet();
@@ -53,7 +53,7 @@ export default class GSCacheStyles {
 	 * Retrieve stylesheet by unique ID
 	 * @param {string} id 
 	 * @returns {boolean}
-	 */	
+	 */
 	static get(id) {
 		return this.#store.get(id);
 	}
@@ -63,7 +63,7 @@ export default class GSCacheStyles {
 	 * @param {string} id Unique stylesheed id
 	 * @param {CSSStyleSheet} style 
 	 * @returns {boolean}
-	 */	
+	 */
 	static getOrSet(id, style) {
 		if (style && style.cssRules.length === 0) return;
 		const me = GSCacheStyles;
@@ -90,8 +90,8 @@ export default class GSCacheStyles {
 			const sheet = new CSSStyleSheet();
 			sheet.replaceSync(css);
 			GSCacheStyles.getOrSet(hash, sheet);
-			if (global) document.adoptedStyleSheets = GSCacheStyles.styles;			
-		} catch(e) {
+			if (global) document.adoptedStyleSheets = GSCacheStyles.styles;
+		} catch (e) {
 			console.log(e);
 		}
 	}
@@ -101,5 +101,5 @@ export default class GSCacheStyles {
 		window.GSCacheStyles = GSCacheStyles;
 		const style = '.gs-hide{display:none;}.gs-hide-orientation,.gs-render{display:none !important;}gs-item{display:none !important;}';
 		GSCacheStyles.injectStyle(style, true);
-	}	
+	}
 }

@@ -1,5 +1,5 @@
 /*
- * © Green Screens Ltd., 2016. - 2022.
+ * Copyright (C) 2015, 2022 Green Screens Ltd.
  */
 
 /**
@@ -16,21 +16,21 @@ import GSComponents from "../../base/GSComponents.mjs";
  * @class
  * @extends {GSElement}
  */
- export default class GSPagination extends GSElement {
+export default class GSPagination extends GSElement {
 
     static CSS_ITEM = 'me-1';
 
     static {
         customElements.define('gs-pager', GSPagination);
     }
-    
+
     constructor() {
         super();
     }
 
     async getTemplate(val = '') {
         const me = this;
-        
+
         const store = me.store;
         const firstlast = me.firstlast;
         const nextprev = me.nextprev;
@@ -43,7 +43,7 @@ import GSComponents from "../../base/GSComponents.mjs";
         if (nextprev) html.push(me.#getHtml(me.previous, 'previous'));
 
         let i = 1;
-        while (i<=pages) {
+        while (i <= pages) {
             html.push(me.#getHtml(i, '', i == store.page));
             i++;
         }
@@ -55,14 +55,14 @@ import GSComponents from "../../base/GSComponents.mjs";
         return html.join('');
     }
 
-    #getHtml(title = '', name='', active=false) {
+    #getHtml(title = '', name = '', active = false) {
         return `<li class="page-item ${GSPagination.CSS_ITEM} ${active ? 'active' : ''}"><a class="page-link" name="${name}" href="#" >${title}</a></li>`;
     }
 
     #onStore(e) {
         const me = this;
         requestAnimationFrame(() => {
-            let page = Math.floor((me.store.page-1)/me.pages) * me.pages + 1;
+            let page = Math.floor((me.store.page - 1) / me.pages) * me.pages + 1;
             me.findAll('a[name=""]').forEach(el => {
                 el.parentElement.classList.remove('active', 'disabled', 'd-none');
                 if (page == me.store.page) el.parentElement.classList.add('active');
@@ -83,9 +83,9 @@ import GSComponents from "../../base/GSComponents.mjs";
             case 'next':
                 return me.store.nextPage();
             case 'previous':
-                return me.store.prevPage();                
+                return me.store.prevPage();
         }
-        
+
         me.store.page = val || me.store.page;
     }
 

@@ -1,5 +1,5 @@
 /*
- * © Green Screens Ltd., 2016. - 2022.
+ * Copyright (C) 2015, 2022 Green Screens Ltd.
  */
 
 /**
@@ -23,7 +23,7 @@ export default class GSAttachment {
     }
 
     static from(files) {
-        return Array.from(files).filter( f => f instanceof File).map( f => new GSAttachment(f));
+        return Array.from(files).filter(f => f instanceof File).map(f => new GSAttachment(f));
     }
 
     get fullPath() {
@@ -59,7 +59,7 @@ export default class GSAttachment {
             entry.file(resolve, reject);
         });
     }
-    
+
     static #getEntries(entry) {
         return new Promise(function (resolve, reject) {
             const result = [];
@@ -77,7 +77,7 @@ export default class GSAttachment {
             read();
         });
     }
-    
+
     static async #traverse(path, entries) {
         const results = [];
         for (const entry of GSAttachment.#visible(entries)) {
@@ -92,12 +92,12 @@ export default class GSAttachment {
         }
         return results;
     }
-    
+
     static #isDirectory(transfer) {
         return Array.from(transfer.items).some((item) => {
-                const entry = item.webkitGetAsEntry && item.webkitGetAsEntry();
-                return entry && entry.isDirectory;
-            });
+            const entry = item.webkitGetAsEntry && item.webkitGetAsEntry();
+            return entry && entry.isDirectory;
+        });
     }
 
     static #roots(transfer) {
@@ -105,5 +105,5 @@ export default class GSAttachment {
             .map((item) => item.webkitGetAsEntry())
             .filter(entry => entry != null);
     }
-    
+
 }

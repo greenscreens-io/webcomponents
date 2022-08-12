@@ -1,5 +1,5 @@
 /*
- * © Green Screens Ltd., 2016. - 2022.
+ * Copyright (C) 2015, 2022 Green Screens Ltd.
  */
 
 /**
@@ -13,31 +13,31 @@
  */
 export default class GSID {
 
- 	static #id = 0;
+	static #id = 0;
 
 	/**
 	 * Reset ID counter to 0
 	 */
- 	static reset() {
- 		this.#id  = 0;
- 	}
+	static reset() {
+		this.#id = 0;
+	}
 
 	/**
 	 * Get next unique generated ID
 	 * @param {*} prefx Value to prepend to ID counter
 	 * @returns {string} A generated ID
 	 */
- 	static next(prefx = 'GSId-') {
- 		return `${prefx}${this.#id++}`;
- 	}
+	static next(prefx = 'GSId-') {
+		return `${prefx}${this.#id++}`;
+	}
 
 	/**
 	 * Auto cenerate next ID
 	 * @returns {string} A generated ID
 	 */
- 	static get id() {
- 		return this.next();
- 	}
+	static get id() {
+		return this.next();
+	}
 
 	/**
 	 * Calcualte hashcode from string (Java compatible)
@@ -57,6 +57,5 @@ export default class GSID {
 	static {
 		Object.freeze(GSID);
 	}
-	
- }
- 
+
+}

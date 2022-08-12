@@ -1,5 +1,5 @@
 /*
- * © Green Screens Ltd., 2022.
+ * Copyright (C) 2015, 2022 Green Screens Ltd.
  */
 
 /**
@@ -72,25 +72,25 @@ export default class GSDOMObserver extends MutationObserver {
      * @param {*} mutations 
      */
     static #onObserve(mutations) {
-        if(!GSDOMObserver.#hasFilters) return;
+        if (!GSDOMObserver.#hasFilters) return;
         mutations.forEach((mutation) => {
-            if(GSDOMObserver.#hasFiltersAdd) mutation.addedNodes.forEach(el => GSDOMObserver.#walk(el, GSDOMObserver.#filtersAdd));
-            if(GSDOMObserver.#hasFiltersDel) mutation.removedNodes.forEach(el => GSDOMObserver.#walk(el, GSDOMObserver.#filtersDel));
+            if (GSDOMObserver.#hasFiltersAdd) mutation.addedNodes.forEach(el => GSDOMObserver.#walk(el, GSDOMObserver.#filtersAdd));
+            if (GSDOMObserver.#hasFiltersDel) mutation.removedNodes.forEach(el => GSDOMObserver.#walk(el, GSDOMObserver.#filtersDel));
         });
     }
 
-	/**
-	 * Walk node tree
-	 * @param {HTMLElement} rootEL node root
-	 * @param {Map} filters
-	 * @returns {boolean} 
-	 */
-     static #walk(rootEL, filters) {
-        if(filters.size === 0) return false;
-		GSDOMObserver.#parse(rootEL, filters);
-		rootEL.childNodes.forEach(el => GSDOMObserver.#walk(el, filters));
+    /**
+     * Walk node tree
+     * @param {HTMLElement} rootEL node root
+     * @param {Map} filters
+     * @returns {boolean} 
+     */
+    static #walk(rootEL, filters) {
+        if (filters.size === 0) return false;
+        GSDOMObserver.#parse(rootEL, filters);
+        rootEL.childNodes.forEach(el => GSDOMObserver.#walk(el, filters));
         return true;
-	}
+    }
 
     /**
      * Call filter and callback function if node accepted
@@ -101,8 +101,8 @@ export default class GSDOMObserver extends MutationObserver {
     static #parse(el, filters) {
         filters.forEach((v, k) => {
             try {
-                if(k(el)) v(el);
-            } catch(e) {
+                if (k(el)) v(el);
+            } catch (e) {
                 console.log(e);
             }
         });
@@ -127,7 +127,7 @@ export default class GSDOMObserver extends MutationObserver {
      * @param {function} fn 
      * @returns {boolean} true if parameter is function type
      */
-     static #isFunction(fn) {
+    static #isFunction(fn) {
         return typeof fn === 'function';
     }
 
@@ -139,7 +139,7 @@ export default class GSDOMObserver extends MutationObserver {
      */
     static #isFunctions(filter, callback) {
         return GSDOMObserver.#isFunction(filter) && GSDOMObserver.#isFunction(callback);
-    }    
+    }
 
     /**
      * Register element filter
@@ -148,7 +148,7 @@ export default class GSDOMObserver extends MutationObserver {
      * @param {boolean} forRemove - call on node remove or add
      * @returns {boolean} Returns true if filter registered
      */
-    static registerFilter(filter, callback, forRemove = false) {        
+    static registerFilter(filter, callback, forRemove = false) {
         const sts = GSDOMObserver.#isFunctions(filter, callback) ? GSDOMObserver.#getFilter(forRemove).set(filter, callback) : false;
 
         // initially loaded does not trigger 
@@ -170,13 +170,13 @@ export default class GSDOMObserver extends MutationObserver {
     /**
      * Static constructor with default body monitoring
      */
-     static {
+    static {
         Object.freeze(GSDOMObserver);
         window.GSDOMObserver = GSDOMObserver;
         const observer = GSDOMObserver.create(document.head.parentElement);
         window.addEventListener('unload', () => { observer.disconnect() });
     }
-  
+
 }
 
 

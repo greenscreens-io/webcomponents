@@ -1,5 +1,5 @@
 /*
- * © Green Screens Ltd., 2016. - 2022.
+ * Copyright (C) 2015, 2022 Green Screens Ltd.
  */
 
 /**
@@ -16,7 +16,7 @@ import GSUtil from "../../base/GSUtil.mjs";
  * @class
  * @extends {HTMLElement}
  */
- export default class GSColumn extends HTMLElement {
+export default class GSColumn extends HTMLElement {
 
     static {
         customElements.define('gs-column', GSColumn);
@@ -41,17 +41,17 @@ import GSUtil from "../../base/GSUtil.mjs";
         const clssort = me.sortable ? 'sorting' : '';
         const style = me.width ? `style="width:${me.width};"` : '';
         return `<th scope="col" name="${me.name}" class="${clssort}" ${style}>${me.title || me.name}</th>`;
-    }    
+    }
 
     renderFilter() {
         const me = this;
         if (!me.filter) return '<th></th>';
         let html = '';
         switch (me.list) {
-            case 'fixed' : 
+            case 'fixed':
                 html = me.#renderFixed();
                 break;
-            case 'flexi' : 
+            case 'flexi':
                 html = me.#renderFlexi();
                 break;
             default:
@@ -87,7 +87,7 @@ import GSUtil from "../../base/GSUtil.mjs";
             const def = GSUtil.getAttributeAsBool(el, 'default', false);
             const value = GSUtil.getAttribute(el, 'value', '');
             const title = GSUtil.getAttribute(el, 'title', value);
-            let  html = '';
+            let html = '';
             if (isCombo) {
                 html = `<option value="${value}" ${def ? 'selected' : ''}>${title}</option>`;
             } else {
@@ -160,7 +160,7 @@ import GSUtil from "../../base/GSUtil.mjs";
     toJSON() {
         const me = this;
         //const idx = [...me.parentElement.children].indexOf(me);
-        return {name: me.name, title:me.title, width:me.width, sortable: me.sortable, idx: me.index};
+        return { name: me.name, title: me.title, width: me.width, sortable: me.sortable, idx: me.index };
     }
 }
 

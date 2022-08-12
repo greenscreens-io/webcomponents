@@ -1,5 +1,5 @@
 /*
- * © Green Screens Ltd., 2016. - 2022.
+ * Copyright (C) 2015, 2022 Green Screens Ltd.
  */
 
 /**
@@ -28,15 +28,15 @@ export default class GSPopover extends GSElement {
 
     static {
         customElements.define('gs-popover', GSPopover);
-        GSDOMObserver.registerFilter(GSPopover.#onMonitorFilter,  GSPopover.#onMonitorResult);
+        GSDOMObserver.registerFilter(GSPopover.#onMonitorFilter, GSPopover.#onMonitorResult);
     }
-    
+
     /**
      * Filter function for monitor observer
      * @param {HTMLElement} el 
      * @returns {void}
      */
-     static #onMonitorFilter(el) {
+    static #onMonitorFilter(el) {
         if (!(el instanceof HTMLElement)) return false;
         if (el.tagName && el.tagName.startsWith('GS-')) return false;
         return GSPopover.#isPopover(el) && !GSPopover.#hasPopover(el);
@@ -48,10 +48,10 @@ export default class GSPopover extends GSElement {
      */
     static #onMonitorResult(el) {
         el.id = el.id || GSID.id;
-        const popover = document.createElement('gs-popover'); 
+        const popover = document.createElement('gs-popover');
         popover.ref = `#${el.id}`;
-        requestAnimationFrame(()=>{
-            setTimeout(()=>{
+        requestAnimationFrame(() => {
+            setTimeout(() => {
                 el.parentElement.insertAdjacentElement('beforeend', popover);
             }, 100);
         });
@@ -59,7 +59,7 @@ export default class GSPopover extends GSElement {
 
     constructor() {
         super();
-	}
+    }
 
     onReady() {
         const me = this;
@@ -70,15 +70,15 @@ export default class GSPopover extends GSElement {
     // https://javascript.info/mousemove-mouseover-mouseout-mouseenter-mouseleave
     #attachEvents() {
         const me = this;
-        if ( me.isHoverTrigger) {
+        if (me.isHoverTrigger) {
             GSListeners.attachEvent(me, me.target, 'mouseover', me.show.bind(me));
             GSListeners.attachEvent(me, me.target, 'mouseout', me.hide.bind(me));
         }
-        if ( me.isFocusTrigger) {
+        if (me.isFocusTrigger) {
             GSListeners.attachEvent(me, document.body, 'click', me.#focus.bind(me));
         }
     }
-    
+
     #render() {
         const me = this;
         const source = me.firstElementChild;
@@ -98,14 +98,14 @@ export default class GSPopover extends GSElement {
         </div>            
         `;
     }
-    
+
     get position() {
         return 'self';
     }
 
     get target() {
         const me = this;
-        if(me.ref) {
+        if (me.ref) {
             let owner = me.owner;
             owner = GSUtil.isGSElement(me.owner) ? owner.self : owner;
             return owner.querySelector(me.ref);
@@ -127,7 +127,7 @@ export default class GSPopover extends GSElement {
         return GSUtil.getAttribute(me, 'title') || GSUtil.getAttribute(me.target, 'title');
     }
 
-    set title(val='') {
+    set title(val = '') {
         const me = this;
         return GSUtil.setAttribute(me, 'title', val);
     }
@@ -137,7 +137,7 @@ export default class GSPopover extends GSElement {
         return GSUtil.getAttribute(me, 'placement') || GSUtil.getAttribute(me.target, 'data-bs-placement', 'top');
     }
 
-    set placement(val='') {
+    set placement(val = '') {
         return GSUtil.setAttribute(this, 'placement', val);
     }
 
@@ -146,7 +146,7 @@ export default class GSPopover extends GSElement {
         return GSUtil.getAttribute(me, 'content') || GSUtil.getAttribute(me.target, 'data-bs-content', '');
     }
 
-    set content(val='') {
+    set content(val = '') {
         return GSUtil.setAttribute(this, 'content', val);
     }
 
@@ -155,7 +155,7 @@ export default class GSPopover extends GSElement {
         return GSUtil.getAttribute(me, 'trigger') || GSUtil.getAttribute(me.target, 'data-bs-trigger', 'hover focus');
     }
 
-    set trigger(val='') {
+    set trigger(val = '') {
         return GSUtil.setAttribute(this, 'trigger', val);
     }
 
@@ -174,7 +174,7 @@ export default class GSPopover extends GSElement {
     get isFlat() {
         return true;
     }
-    
+
     get position() {
         return 'self';
     }
@@ -190,7 +190,7 @@ export default class GSPopover extends GSElement {
         const me = this;
         const el = GSUtil.parse(me.#html);
         me.insertAdjacentElement('afterbegin', el);
-        requestAnimationFrame(()=>{
+        requestAnimationFrame(() => {
             me.#render();
             GSUtil.toggleClass(this.firstElementChild, true, 'show');
         });
@@ -203,7 +203,7 @@ export default class GSPopover extends GSElement {
     hide() {
         const me = this;
         if (me.#unfocus) return false;
-        setTimeout(()=>{
+        setTimeout(() => {
             me.innerHTML = '';
         }, 250);
         return GSUtil.toggleClass(this.firstElementChild, false, 'show');
@@ -226,9 +226,9 @@ export default class GSPopover extends GSElement {
         }
         const openable = !me.isHoverTrigger;
         if (e.target == me.target) {
-            if(me.visible) {
-                me.#unfocus = true;                
-            }  else if (openable) {
+            if (me.visible) {
+                me.#unfocus = true;
+            } else if (openable) {
                 me.show();
             }
         } else if (openable && me.visible) me.hide();
@@ -242,7 +242,7 @@ export default class GSPopover extends GSElement {
     static #hasPopover(el) {
         return el && (el.firstElementChild instanceof GSPopover || el.nextElementSibling instanceof GSPopover);
     }
-    
+
     /**
      * Check if standard element is tooltip defined
      * @param {HTMLElement} el 

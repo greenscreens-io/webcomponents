@@ -1,5 +1,5 @@
 /*
- * © Green Screens Ltd., 2016. - 2022.
+ * Copyright (C) 2015, 2022 Green Screens Ltd.
  */
 
 /**
@@ -19,7 +19,7 @@ import GSComponents from "../../base/GSComponents.mjs";
  */
 export default class GSData extends HTMLElement {
 
-    static #MODES = ['rest','query','quark'];
+    static #MODES = ['rest', 'query', 'quark'];
     #online = false;
     #src = '';
     #data = [];
@@ -36,48 +36,48 @@ export default class GSData extends HTMLElement {
     static {
         customElements.define('gs-data', GSData);
     }
-    
+
     static get observedAttributes() {
         return ['id', 'src', 'limit', 'skip', 'remote', 'filter', 'sort'];
     }
-    
+
     constructor() {
         super();
     }
-    
+
     attributeChangedCallback(name = '', oldValue = '', newValue = '') {
         const me = this;
 
         if (name === 'id') {
-			GSComponents.remove(oldValue);
-			GSComponents.store(me);
+            GSComponents.remove(oldValue);
+            GSComponents.store(me);
             return;
-		}
-        
+        }
+
         if (GSComponents.hasSetter(me, name)) {
             me[name] = newValue;
         }
-        
+
     }
 
-	/*
-	 * Called when element injected to parent DOM node
-	 */
-	connectedCallback() {
-		const me = this;
+    /*
+     * Called when element injected to parent DOM node
+     */
+    connectedCallback() {
+        const me = this;
         me.#online = true;
-		if (!me.id) me.setAttribute('id', GSID.id);
-		GSComponents.store(me);
-	}
+        if (!me.id) me.setAttribute('id', GSID.id);
+        GSComponents.store(me);
+    }
 
-	/*
-	 * Called when element removed from parent DOM node
-	 */
-	disconnectedCallback() {
+    /*
+     * Called when element removed from parent DOM node
+     */
+    disconnectedCallback() {
         const me = this;
         me.#online = false;
-		GSComponents.remove(me);
-	}
+        GSComponents.remove(me);
+    }
 
     /**
      * Wait for event to happen
@@ -161,10 +161,10 @@ export default class GSData extends HTMLElement {
         const me = this;
         let def = '';
         switch (me.mode) {
-            case 'query' : 
+            case 'query':
                 def = '?limit=${limit}&skip=${skip}&sort=${sort}&filter=${filter}';
                 break;
-            case 'rest' : 
+            case 'rest':
                 def = '/${limit}/${skip}?sort=${sort}&filter=${filter}';
                 break;
         }
@@ -229,7 +229,7 @@ export default class GSData extends HTMLElement {
         me.#remote = GSUtil.asBool(val);
         me.reload();
     }
-    
+
     /**
      * Filter data in format 
      * [{name: idx[num] || name[string], value: ''  , op:'eq'}]
@@ -277,11 +277,11 @@ export default class GSData extends HTMLElement {
     /**
      * Current page
      */
-     get page() {
+    get page() {
         return this.#page;
     }
 
-    set page(val = 1) {        
+    set page(val = 1) {
         if (!GSUtil.isNumber(val)) throw new Error('Numeric value required!');
         const me = this;
         me.#page = GSUtil.asNum(val < 1 ? 1 : val);
@@ -289,14 +289,14 @@ export default class GSData extends HTMLElement {
         const skip = me.#limit * (val - 1);
         me.getData(skip, me.#limit, me.#filter, me.#sort);
     }
-    
+
     /**
      * Total pages
      */
-     get pages() {
+    get pages() {
         const me = this;
         if (me.total === 0) return 1;
-        return  me.limit === 0 ? 1: Math.ceil(me.total / me.#limit);
+        return me.limit === 0 ? 1 : Math.ceil(me.total / me.#limit);
     }
 
     nextPage() {
@@ -305,17 +305,17 @@ export default class GSData extends HTMLElement {
         me.page = me.page + 1;
         return me.#page;
     }
-    
+
     prevPage() {
         const me = this;
         if (me.page === 1) return;
         me.page = me.page - 1;
         return me.#page;
     }
-    
+
     lastPage() {
         const me = this;
-        me.page = me.#limit === 0 ? 1: me.pages;
+        me.page = me.#limit === 0 ? 1 : me.pages;
         return me.#page;
     }
 
@@ -349,10 +349,10 @@ export default class GSData extends HTMLElement {
     }
 
     setData(data = [], append = false) {
-        
+
         const me = this;
         const isRaw = Array.isArray(data);
-        
+
         let records = data;
         if (isRaw) {
             me.#total = records.length;
@@ -364,7 +364,7 @@ export default class GSData extends HTMLElement {
         }
 
         me.#data = append ? me.#data.concat(records) : records;
-        if (me.#total < me.#data.length) me.#total = me.#data.length;        
+        if (me.#total < me.#data.length) me.#total = me.#data.length;
         me.#notify(append ? 'append' : 'refresh', me.#data);
     }
 
@@ -378,7 +378,7 @@ export default class GSData extends HTMLElement {
             const url = me.#toURL(me.src, skip, limit, filter, sort);
             await me.load(url);
             data = me.data;
-        } 
+        }
 
         if (!me.remote) {
             data = GSUtil.filterData(filter, me.#data);
@@ -390,7 +390,7 @@ export default class GSData extends HTMLElement {
         me.#notify('data', data);
         return data;
     }
-    
+
     reload() {
         const me = this;
         if (!me.#online) return;
@@ -401,7 +401,7 @@ export default class GSData extends HTMLElement {
         const me = this;
         sort = sort ? JSON.stringify(sort) : '';
         filter = filter ? JSON.stringify(filter) : '';
-        const opt = {limit : limit, skip : skip, sort : encodeURIComponent(sort), filter : encodeURIComponent(filter)};
+        const opt = { limit: limit, skip: skip, sort: encodeURIComponent(sort), filter: encodeURIComponent(filter) };
         return src + GSUtil.fromLiteral(me.action, opt);
     }
 
@@ -422,20 +422,20 @@ export default class GSData extends HTMLElement {
         }
         return filter;
     }
-    
+
     #formatSort(val = '') {
         let sort = undefined;
         if (typeof val === 'string') {
-            sort = [{col:val}];
+            sort = [{ col: val }];
         } else if (Array.isArray(val)) {
             sort = val;
         } else if (GSUtil.isNumber(val)) {
             const idx = Math.abs(val);
             sort = new Array(idx);
-            sort[idx-1] = { ord : val};
+            sort[idx - 1] = { ord: val };
         }
         return sort;
-    }    
+    }
 
 }
 

@@ -1,5 +1,5 @@
 /*
- * © Green Screens Ltd., 2016. - 2022.
+ * Copyright (C) 2015, 2022 Green Screens Ltd.
  */
 
 /**
@@ -92,14 +92,14 @@ export default class GSTBody extends HTMLTableSectionElement {
         });
 
         me.innerHTML = rows.join('');
-        GSUtil.findAll('tr', me, true).forEach(el => {if (el.innerText.trim().length === 0) el.remove(); });
+        GSUtil.findAll('tr', me, true).forEach(el => { if (el.innerText.trim().length === 0) el.remove(); });
     }
 
     #arrayToHTML(headers, rec, idx, offset) {
         const me = this;
         const cols = [];
         headers.forEach(hdr => {
-            const c = hdr.name === "#" ?  (idx + 1 + offset).toString() : rec[hdr.idx];
+            const c = hdr.name === "#" ? (idx + 1 + offset).toString() : rec[hdr.idx];
             cols.push(`<td class="${me.cssCell}">${c || '&nbsp;'}</td>`);
 
         });
@@ -110,7 +110,7 @@ export default class GSTBody extends HTMLTableSectionElement {
     #objToHTML(headers, rec, offset) {
         const me = this;
         const cols = [];
-        headers.forEach((hdr , i) => {
+        headers.forEach((hdr, i) => {
             const html = me.#genRow(hdr, rec, i + 1 + offset);
             cols.push(html);
         });
@@ -131,11 +131,11 @@ export default class GSTBody extends HTMLTableSectionElement {
         const me = this;
         const el = e.target;
         const isAppend = e.shiftKey & me.multiselect;
-        
-        if (!el.tagName ==='TD') return;
+
+        if (!el.tagName === 'TD') return;
         if (!me.select) return;
-        
-        requestAnimationFrame(()=> {
+
+        requestAnimationFrame(() => {
             me.#onRowSelect(el.closest('tr'), isAppend);
         });
 

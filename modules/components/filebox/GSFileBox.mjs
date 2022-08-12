@@ -1,5 +1,5 @@
 /*
- * © Green Screens Ltd., 2016. - 2022.
+ * Copyright (C) 2015, 2022 Green Screens Ltd.
  */
 
 /**
@@ -130,14 +130,14 @@ export default class GSFileBox extends GSElement {
         me.setAttribute('hover', '');
         e.preventDefault();
     }
-    
+
     #onDragleave(e) {
         const me = this;
         if (e.dataTransfer) e.dataTransfer.dropEffect = 'none';
         me.removeAttribute('hover');
         GSUtil.preventEvent(e);
     }
-    
+
     #onDrop(e) {
         const me = this;
         me.removeAttribute('hover');
@@ -146,7 +146,7 @@ export default class GSFileBox extends GSElement {
         me.#attach(transfer);
         GSUtil.preventEvent(e);
     }
-    
+
     #onPaste(e) {
         const me = this;
         if (!e.clipboardData) return;
@@ -157,7 +157,7 @@ export default class GSFileBox extends GSElement {
         me.#attach(files);
         e.preventDefault();
     }
-    
+
     #onChange(e) {
         const me = this;
         const input = me.fileEl;
@@ -166,7 +166,7 @@ export default class GSFileBox extends GSElement {
         me.#attach(files);
         input.value = '';
     }
-    
+
     #hasFile(transfer) {
         return Array.from(transfer.types).indexOf('Files') >= 0;
     }
@@ -198,11 +198,11 @@ export default class GSFileBox extends GSElement {
             ? await GSAttachment.traverse(transferred, me.directory)
             : GSAttachment.from(transferred);
 
-        const accepted = GSUtil.sendEvent(me, 'accept', {attachments}, true, false, true);
-        if (accepted && attachments.length) {            
+        const accepted = GSUtil.sendEvent(me, 'accept', { attachments }, true, false, true);
+        if (accepted && attachments.length) {
             me.#accept(attachments);
-            GSUtil.sendEvent(me, 'accepted', {attachments}, true);
-        } 
+            GSUtil.sendEvent(me, 'accepted', { attachments }, true);
+        }
     }
 
     static {

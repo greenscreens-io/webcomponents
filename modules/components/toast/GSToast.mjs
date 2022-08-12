@@ -1,5 +1,5 @@
 /*
- * © Green Screens Ltd., 2016. - 2022.
+ * Copyright (C) 2015, 2022 Green Screens Ltd.
  */
 
 /**
@@ -24,7 +24,7 @@ export default class GSToast extends GSElement {
 
   static get observedAttributes() {
     const attrs = ['placement', 'css'];
-    return  GSUtil.mergeArrays(attrs, super.observedAttributes );
+    return GSUtil.mergeArrays(attrs, super.observedAttributes);
   }
 
   attributeCallback(name = '', oldValue = '', newValue = '') {
@@ -51,7 +51,7 @@ export default class GSToast extends GSElement {
       </div>    
     `
   }
-  
+
   onReady() {
     const me = this;
     const btns = me.findAll('button');
@@ -60,7 +60,7 @@ export default class GSToast extends GSElement {
     if (me.visible) me.open();
   }
 
-  show(title = '', message = '', css='', visible = true, closable = false, timeout = 2) {
+  show(title = '', message = '', css = '', visible = true, closable = false, timeout = 2) {
     const me = this;
     me.css = css || me.css;
     me.title = title;
@@ -94,20 +94,20 @@ export default class GSToast extends GSElement {
     await GSUtil.timeout(GSUtil.SPEED);
     return this.remove();
   }
-  
+
   get #toast() {
     return this.findEl('.toast');
   }
 
- /**
-  * Prevent shadow dom
-  */
+  /**
+   * Prevent shadow dom
+   */
   get isFlat() {
-      return true;
+    return true;
   }
-  
+
   get position() {
-      return 'self';
+    return 'self';
   }
 
   get title() {

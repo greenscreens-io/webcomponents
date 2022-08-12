@@ -1,5 +1,5 @@
 /*
- * © Green Screens Ltd., 2021.
+ * Copyright (C) 2015, 2022  Green Screens Ltd.
  */
 
 /**
@@ -89,7 +89,7 @@ export default class GSCacheTemplate {
 		try {
 			const el = tpl ? document.querySelector(tpl) : null;
 			return GSUtil.isTemplateElement(el) ? el : false;
-		} catch(e) {
+		} catch (e) {
 			GSLog.error(this, e);
 		}
 		return false;
@@ -134,7 +134,7 @@ export default class GSCacheTemplate {
 			if (template) return template;
 			template = await GSUtil.load(o);
 			return me.initTemplate(cached, name, template);
-		} catch(e) {
+		} catch (e) {
 			GSLog.error(me, e);
 		}
 		return false;
@@ -153,7 +153,7 @@ export default class GSCacheTemplate {
 			if (template) return template;
 			template = GSUtil.isFunctionAsync(fn) ? await fn() : fn();
 			return me.initTemplate(cached, name, template);
-		} catch(e) {
+		} catch (e) {
 			GSLog.error(me, e);
 		}
 		return fn;
@@ -166,16 +166,16 @@ export default class GSCacheTemplate {
 
 		if (!name) return false;
 		if (!tpl) return false;
-		
+
 		const me = GSCacheTemplate;
 
 		// try to load override template (by GSElement tag name)
 		let template = false;
-		
+
 		if (tpl.indexOf('#') !== 0) {
 			template = me.loadHTMLTemplate(cached, name, tpl);
 		}
-				
+
 		if (!template) {
 			template = me.loadTargetTemplate(tpl);
 		}

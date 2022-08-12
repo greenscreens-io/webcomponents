@@ -35,7 +35,7 @@ export default class GSScript extends GSBase {
 	}
 
 	static {
-		customElements.define('gs-script', GSScript);		
+		customElements.define('gs-script', GSScript);
 		Object.freeze(GSScript);
 	}
 

@@ -1,5 +1,5 @@
 /*
- * © Green Screens Ltd., 2016. - 2022.
+ * Copyright (C) 2015, 2022 Green Screens Ltd.
  */
 
 /**
@@ -7,11 +7,11 @@
  * @module base/GSLog
  */
 
- /** 
-  * Internal logging mechanism
-  * @Class
-  */
-export default class GSLog  {
+/** 
+ * Internal logging mechanism
+ * @Class
+ */
+export default class GSLog {
 
 	/**
 	 * static flag is loging enabled or disabled
@@ -31,7 +31,7 @@ export default class GSLog  {
 	 * Log warn message
 	 * @param {HTMLElement} el 
 	 * @param {string} msg 
-	 */	
+	 */
 	static warn(el, msg) {
 		this.#print(el, msg, true, 'warn');
 	}
@@ -40,7 +40,7 @@ export default class GSLog  {
 	 * Log error message
 	 * @param {HTMLElement} el 
 	 * @param {string} msg 
-	 */	
+	 */
 	static error(el, msg) {
 		this.#print(el, msg, true, 'error');
 	}
@@ -51,7 +51,7 @@ export default class GSLog  {
 	 * @param {HTMLElement} el Element to log (optional)
 	 * @param {string} msg Message to log
 	 * @param {boolean} forced - when logging disable globaly, use this to forse logging
-	 */	
+	 */
 	static log(el, msg, forced) {
 		this.#print(el, msg, forced);
 	}
@@ -66,6 +66,6 @@ export default class GSLog  {
 
 	static {
 		Object.seal(GSLog);
-	}	
+	}
 }
 

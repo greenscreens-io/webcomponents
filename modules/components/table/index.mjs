@@ -1,3 +1,6 @@
+/*
+ * Copyright (C) 2015, 2022 Green Screens Ltd.
+ */
 import "./GSData.mjs"
 import "./GSColumn.mjs"
 import "./GSHeader.mjs"

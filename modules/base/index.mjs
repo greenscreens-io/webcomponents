@@ -1,3 +1,7 @@
+/*
+ * Copyright (C) 2015, 2022 Green Screens Ltd.
+ */
+
 export { default as GSLog } from "./GSLog.mjs";
 export { default as GSID } from "./GSID.mjs";
 export { default as GSDOMObserver } from "./GSDOMObserver.mjs";

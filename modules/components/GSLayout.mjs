@@ -1,5 +1,5 @@
 /*
- * © Green Screens Ltd., 2016. - 2022.
+ * Copyright (C) 2015, 2022 Green Screens Ltd.
  */
 
 /**
@@ -46,21 +46,21 @@ export default class GSLayout extends GSElement {
         if (me.owner instanceof GSLayout) return true;
 
         const el = me.closest('gs-layout');
-        if(el && el != me) return true;
-        
+        if (el && el != me) return true;
+
         const style = window.getComputedStyle(me.parentElement);
         return style.display === 'flex' && style.flexGrow !== '0';
     }
 
     get position() {
-		return 'unwrap'
-	}
+        return 'unwrap'
+    }
 
     /**
      * Generate html injection source for an gs-item
      * @param {HTMLElement} el 
      * @returns {string}
-     */    
+     */
     async #html(el) {
         const me = this;
         const res = me.#resizable(el);
@@ -105,11 +105,11 @@ export default class GSLayout extends GSElement {
         return ['style="', smax, smin, '"'].join('');
     }
 
-     /**
-     * Generate list of css classes for an gs-item
-     * @param {HTMLElement} el 
-     * @returns {string}
-     */
+    /**
+    * Generate list of css classes for an gs-item
+    * @param {HTMLElement} el 
+    * @returns {string}
+    */
     #class(el, fixed = false) {
         const me = this;
         const res = me.#resizable(el);
@@ -121,7 +121,7 @@ export default class GSLayout extends GSElement {
         hpos = hpos ? `justify-content-${hpos}` : '';
         vpos = vpos ? `align-items-${vpos}` : '';
 
-        const cls = ['d-flex', hpos, vpos];        
+        const cls = ['d-flex', hpos, vpos];
         if (res == false && fixed == false) cls.push('flex-fill');
 
         cls.push(css);

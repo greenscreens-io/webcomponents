@@ -1,5 +1,5 @@
 /*
- * © Green Screens Ltd., 2016. - 2022.
+ * Copyright (C) 2015, 2022 Green Screens Ltd.
  */
 
 /**
@@ -25,16 +25,16 @@ export default class GSDataList extends HTMLDataListElement {
 
     constructor() {
         super();
-	}
+    }
 
-	static get observedAttributes() {
-		return ['data'] ;
-	}
+    static get observedAttributes() {
+        return ['data'];
+    }
 
-	attributeChangedCallback(name, oldValue, newValue) {
-		//console.log(`name:${name}, oldValue:${oldValue}, newValue:${newValue}`);
+    attributeChangedCallback(name, oldValue, newValue) {
+        //console.log(`name:${name}, oldValue:${oldValue}, newValue:${newValue}`);
         if (name === 'data') this.load(newValue);
-	}
+    }
 
     connectedCallback() {
         const me = this;
@@ -51,7 +51,7 @@ export default class GSDataList extends HTMLDataListElement {
         return GSUtil.unwrap(own);
     }
 
-    async load(url = '') {        
+    async load(url = '') {
         if (!url) return;
         const data = await GSUtil.loadSafe(url, 'GET', true);
         this.apply(data);
@@ -60,9 +60,9 @@ export default class GSDataList extends HTMLDataListElement {
     apply(data) {
 
         if (!Array.isArray(data)) return false;
-        
+
         const me = this;
-        
+
         requestAnimationFrame(() => {
 
             const list = [];

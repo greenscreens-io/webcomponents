@@ -1,5 +1,5 @@
 /*
- * © Green Screens Ltd., 2016. - 2022.
+ * Copyright (C) 2015, 2022 Green Screens Ltd.
  */
 
 /**
@@ -117,8 +117,8 @@ export default class GSNav extends GSElement {
         const me = this;
         me.innerHTML = GSItem.generateItem(data);
         GSComponents.remove(me);
-		GSListeners.deattachListeners(me);
+        GSListeners.deattachListeners(me);
         me.connectedCallback();
     }
-    
+
 }

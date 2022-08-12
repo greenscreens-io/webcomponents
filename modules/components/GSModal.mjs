@@ -1,5 +1,5 @@
 /*
- * © Green Screens Ltd., 2016. - 2022.
+ * Copyright (C) 2015, 2022 Green Screens Ltd.
  */
 
 /**
@@ -15,7 +15,7 @@ import GSUtil from "../base/GSUtil.mjs";
  * @class
  * @extends {GSElement}
  */
- export default class GSModal extends GSElement {
+export default class GSModal extends GSElement {
 
   static {
     customElements.define('gs-modal', GSModal);
@@ -23,7 +23,7 @@ import GSUtil from "../base/GSUtil.mjs";
 
   static get observedAttributes() {
     const attrs = ['cancelable', 'closable', 'title', 'visible'];
-    return  GSUtil.mergeArrays(attrs, super.observedAttributes );
+    return GSUtil.mergeArrays(attrs, super.observedAttributes);
   }
 
   attributeCallback(name = '', oldValue = '', newValue = '') {
@@ -39,10 +39,10 @@ import GSUtil from "../base/GSUtil.mjs";
         me.#hideEL('.modal-backdrop');
         me.normal();
       }
-      GSUtil.sendEvent(me, 'action', {type:'modal', ok: me.visible });
+      GSUtil.sendEvent(me, 'action', { type: 'modal', ok: me.visible });
     }
   }
-  
+
   onReady() {
     const me = this;
     const btns = me.findAll('.modal-footer .btn');
@@ -56,7 +56,7 @@ import GSUtil from "../base/GSUtil.mjs";
     try {
       const isOk = e.target.className.indexOf('ok') > 0;
       const obj = GSUtil.toObject(me.body);
-      GSUtil.sendEvent(me, 'action', { type:'modal', ok: isOk, data: obj });
+      GSUtil.sendEvent(me, 'action', { type: 'modal', ok: isOk, data: obj });
     } finally {
       me.close();
       GSUtil.preventEvent(e);
@@ -67,10 +67,10 @@ import GSUtil from "../base/GSUtil.mjs";
     const me = this;
     const dlg = me.findEl('.modal-dialog');
     if (!dlg) return;
-    requestAnimationFrame(()=> {
+    requestAnimationFrame(() => {
       dlg.classList.remove('modal-xl', 'modal-lg');
       if (size) dlg.classList.add(size);
-    });  
+    });
   }
 
   large() {
@@ -108,11 +108,11 @@ import GSUtil from "../base/GSUtil.mjs";
   open() {
     this.visible = true;
   }
-  
+
   close() {
     this.visible = false;
   }
-  
+
   toggle() {
     const me = this;
     me.visible = !me.visible;
@@ -132,7 +132,7 @@ import GSUtil from "../base/GSUtil.mjs";
     el.classList.add('show', 'd-block');
   }
 
-  #hideEL(name) {    
+  #hideEL(name) {
     const el = this.findEl(name);
     if (!el) return;
     el.classList.add('d-none');
@@ -169,7 +169,7 @@ import GSUtil from "../base/GSUtil.mjs";
   }
 
   set visible(val = false) {
-    GSUtil.setAttribute(this, 'visible', val == true);    
+    GSUtil.setAttribute(this, 'visible', val == true);
   }
 
   get closable() {

@@ -1,5 +1,5 @@
 /*
- * © Green Screens Ltd., 2016. - 2022.
+ * Copyright (C) 2015, 2022 Green Screens Ltd.
  */
 
 /**
@@ -21,7 +21,7 @@ import GSItem from "../base/GSItem.mjs";
  */
 export default class GSList extends GSElement {
 
-    
+
     static {
         customElements.define('gs-list', GSList);
     }
@@ -70,7 +70,7 @@ export default class GSList extends GSElement {
         const dissmis = GSItem.getDismissAttr(el);
         const target = GSItem.getTargetAttr(el);
         const toggle = GSItem.getToggleAttr(el);
-        
+
         const active = me.#getActive(el) ? 'active' : '';
         const select = me.selectable ? 'is="gs-navlink"' : 'ignore';
 

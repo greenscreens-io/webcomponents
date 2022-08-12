@@ -1,5 +1,5 @@
 /*
- * © Green Screens Ltd., 2021.
+ * Copyright (C) 2015, 2022 Green Screens Ltd.
  */
 
 /**

@@ -28,14 +28,14 @@ export default class GSStyleExt extends HTMLStyleElement {
 	}
 
 	connectedCallback() {
-    }
+	}
 
-    disconnectedCallback() {
-        const me = this;
+	disconnectedCallback() {
+		const me = this;
 		const sheet = GSCacheStyles.remove(me.order);
 		GSBase.sendSuspendedEvent(document, 'gs-style', sheet);
-    }
-	
+	}
+
 	#onLoad() {
 		const me = this;
 		const sheet = me.sheet;
@@ -63,10 +63,10 @@ export default class GSStyleExt extends HTMLStyleElement {
 	set order(val = '') {
 		return this.setAttribute('order', val);
 	}
-	
+
 	static {
 		Object.freeze(GSStyleExt);
-		customElements.define('gs-styleext', GSStyleExt, { extends: 'style' });		
+		customElements.define('gs-styleext', GSStyleExt, { extends: 'style' });
 	}
 
 }

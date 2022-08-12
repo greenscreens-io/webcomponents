@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015, 2021  Green Screens Ltd.
+ * Copyright (C) 2015, 2022 Green Screens Ltd.
  */
 
 /**
@@ -15,7 +15,7 @@ import GSBase from "./GSBase.mjs";
  * @class
  * @extends head/GSBase
  */
- export default class GSLink extends GSBase {
+export default class GSLink extends GSBase {
 
 	/**
 	 * Called every time node is added to parent node
@@ -48,7 +48,7 @@ import GSBase from "./GSBase.mjs";
 		}
 		return rel;
 	}
-	
+
 	get shadow() {
 		return this.getAttribute('shadow') === 'true';
 	}

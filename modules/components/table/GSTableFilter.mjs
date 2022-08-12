@@ -1,5 +1,5 @@
 /*
- * © Green Screens Ltd., 2016. - 2022.
+ * Copyright (C) 2015, 2022 Green Screens Ltd.
  */
 
 /**
@@ -25,36 +25,36 @@ export default class GSTableFilter extends HTMLTableRowElement {
         customElements.define('gs-tablefilter', GSTableFilter, { extends: 'tr' });
     }
 
-	/*
-	 * Called when element injected to parent DOM node
-	 */
-	connectedCallback() {
-		const me = this;
+    /*
+     * Called when element injected to parent DOM node
+     */
+    connectedCallback() {
+        const me = this;
         if (!me.id) me.setAttribute('id', GSID.id);
         me.#auto = GSUtil.findEl('input[auto="true"],select[auto="true"]') != null;
         me.#attachChangeListener();
         me.#attachDataListener();
         GSComponents.store(me);
-	}
+    }
 
-	/*
-	 * Called when element removed from parent DOM node
-	 */
-	disconnectedCallback() {
+    /*
+     * Called when element removed from parent DOM node
+     */
+    disconnectedCallback() {
         const me = this;
         GSComponents.remove(me);
         GSListeners.deattachListeners(me);
-	}
+    }
 
     get root() {
         return GSUtil.getRoot(this);
     }
 
     #attachChangeListener() {
-		const me = this;
+        const me = this;
         GSUtil.findAll('input, select', me, true).forEach(el => {
             GSListeners.attachEvent(me, el, 'change', e => me.#onChange(e.target));
-        });        
+        });
     }
 
     #attachDataListener() {
@@ -68,7 +68,7 @@ export default class GSTableFilter extends HTMLTableRowElement {
         const filter = [];
         GSUtil.findAll('input, select', me, true).forEach(el => {
             const value = me.#getValue(el);
-            if (value) filter.push({name : el.name, value: value});
+            if (value) filter.push({ name: el.name, value: value });
         });
         GSUtil.sendEvent(me, 'filter', filter, true);
     }

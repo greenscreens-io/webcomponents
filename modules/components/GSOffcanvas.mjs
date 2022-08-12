@@ -1,5 +1,5 @@
 /*
- * © Green Screens Ltd., 2016. - 2022.
+ * Copyright (C) 2015, 2022 Green Screens Ltd.
  */
 
 /**
@@ -72,10 +72,10 @@ export default class GSOffcanvas extends GSElement {
   }
 
   #updateAnim() {
-    
+
     const me = this;
     if (!me.autoclose) return;
-    
+
     const open = me.visible;
     const pos = me.isHorizontal ? 'width' : 'height';
     const val = open ? me.max : me.min;

@@ -1,5 +1,5 @@
 /*
- * © Green Screens Ltd., 2021.
+ * Copyright (C) 2015, 2022  Green Screens Ltd.
  */
 
 /**
@@ -8,7 +8,7 @@
  */
 
 import GSCacheTemplate from "./GSCacheTemplate.mjs";
-import GSCacheStyles  from "../head/GSCacheStyles.mjs";
+import GSCacheStyles from "../head/GSCacheStyles.mjs";
 import GSDOMObserver from "../base/GSDOMObserver.mjs";
 import GSUtil from "../base/GSUtil.mjs";
 import GSLog from "../base/GSLog.mjs";
@@ -69,7 +69,7 @@ class GSTemplate extends HTMLElement {
 	 *  - tablet - only on tablet devices
 	 *  - desktop - only on desktop devices
 	 */
-	 get environment() {
+	get environment() {
 		return GSUtil.getAttribute(this, 'environment', '');
 	}
 
@@ -99,7 +99,7 @@ class GSTemplate extends HTMLElement {
 	set browser(val) {
 		GSUtil.setAttribute(this, 'browser', val);
 	}
-	
+
 	/**
 	 * Called when element attribute changed
 	 */
@@ -115,7 +115,7 @@ class GSTemplate extends HTMLElement {
 		const me = this;
 		if (!(me.isValidEnvironment && me.isValidBrowser && me.isValidOS)) {
 			return me.remove();
-		}		
+		}
 		me.#connected = true;
 		GSComponents.store(me);
 		me.loadTemplate();
@@ -123,7 +123,7 @@ class GSTemplate extends HTMLElement {
 
 	/**
 	 * Called when element removed from the DOM tree
-	 */	
+	 */
 	disconnectedCallback() {
 		const me = this;
 		me.#connected = false;
@@ -173,7 +173,7 @@ class GSTemplate extends HTMLElement {
 	get shadow() {
 		const me = this;
 		if (!me.shadowRoot && me.#connected) {
-			me.attachShadow({mode: 'open'});
+			me.attachShadow({ mode: 'open' });
 			me.#observer = GSDOMObserver.create(me.shadowRoot);
 		}
 		return me.shadowRoot;
@@ -191,7 +191,7 @@ class GSTemplate extends HTMLElement {
 			return false;
 		}
 		if (me.parentElement instanceof HTMLHeadElement) {
-			GSUtil.sendSuspendedEvent(document, 'gs-template', {id: me.id, href: me.href});
+			GSUtil.sendSuspendedEvent(document, 'gs-template', { id: me.id, href: me.href });
 			return tpl;
 		}
 
@@ -207,7 +207,7 @@ class GSTemplate extends HTMLElement {
 				me.shadow.innerHTML = tpl.innerHTML;
 			}
 			// GSUtil.walk(me.self, el => GSDOMObserver.parse(el));
-			GSUtil.sendSuspendedEvent(me, 'ready', {id: me.id, href: me.href});
+			GSUtil.sendSuspendedEvent(me, 'ready', { id: me.id, href: me.href });
 		});
 		return tpl;
 	}
@@ -232,10 +232,10 @@ class GSTemplate extends HTMLElement {
 		const me = this;
 		return new Promise((r, e) => {
 			if (!name) return e('Event undefined!');
-			me.once(name, (e) => r(e.detail), {once: true});
+			me.once(name, (e) => r(e.detail), { once: true });
 		});
 	}
-	
+
 	/**
 	 * Listen once for triggered event
 	 * @param {string} name Event name to moitor

@@ -1,5 +1,5 @@
 /*
- * © Green Screens Ltd., 2022.
+ * Copyright (C) 2015, 2022  Green Screens Ltd.
  */
 
 /**
@@ -14,7 +14,7 @@
 export default class GSTheme {
 
     static #STORAGE = 'gs-theme-mode';
-    
+
     /**
      * Changes the theme to 'dark mode' and save settings to local stroage.
      * Basically, replaces/toggles every CSS class that has '-light' class with '-dark'

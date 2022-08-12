@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015, 2022  Green Screens Ltd.
+ * Copyright (C) 2015, 2022 Green Screens Ltd.
  */
 
 /**
@@ -142,7 +142,7 @@ export default class GSBase extends HTMLElement {
 	 * @param {*} oldValue 
 	 * @param {*} newValue 
 	 */
-	 attributeChangedCallback(name, oldValue, newValue) {
+	attributeChangedCallback(name, oldValue, newValue) {
 		const me = this;
 		requestAnimationFrame(() => {
 			me.attributeCallback(name, oldValue, newValue);
@@ -335,7 +335,7 @@ export default class GSBase extends HTMLElement {
 	/**
 	 * Determine if laoded resource will be rendered inside html head
 	 * @returns {boolean}
-	 */	
+	 */
 	get isHead() {
 		return this.getAttribute('head') != 'false';
 	}
@@ -352,7 +352,7 @@ export default class GSBase extends HTMLElement {
 	 * Retrieve https or https schema. 
 	 * Used t ofilter under which schems loader element is applied
 	 * @returns {string}
-	 */	
+	 */
 	get schema() {
 		return this.getAttribute('schema') || '';
 	}

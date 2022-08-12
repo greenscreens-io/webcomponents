@@ -1,5 +1,5 @@
 /*
- * © Green Screens Ltd., 2016. - 2022.
+ * Copyright (C) 2015, 2022 Green Screens Ltd.
  */
 
 /**
@@ -70,9 +70,9 @@ export default class GSDropdown extends GSElement {
     const t = parseInt(style.top, 10);
     const h = parseInt(style.height, 10);
     const wh = parseInt(window.innerHeight, 10);
-    
-    if (l + w > ww) el.style.left = `${l - ((l+w) - ww)}px`;
-    if (t + h > wh) el.style.top = `${t - ((t+h) - wh)}px`;          
+
+    if (l + w > ww) el.style.left = `${l - ((l + w) - ww)}px`;
+    if (t + h > wh) el.style.top = `${t - ((t + h) - wh)}px`;
   }
 
   #updateSub(sub) {
@@ -84,21 +84,21 @@ export default class GSDropdown extends GSElement {
 
     const menustyle = window.getComputedStyle(menu);
     const substyle = window.getComputedStyle(sub);
-    
+
     const ml = parseInt(menustyle.left, 10);
     const mw = parseInt(menustyle.width, 10);
     const mt = parseInt(menustyle.top, 10);
     const mh = parseInt(menustyle.height, 10);
-    
+
     const sl = parseInt(substyle.left, 10);
     const sw = parseInt(substyle.width, 10);
-    
+
     const st = parseInt(substyle.top, 10);
     const sh = parseInt(substyle.height, 10);
-    
+
     if (sl + sw + ml + mw > ww) sub.style.left = `-${sw}px`;
     // if (st + sh + mt + mh > wh) sub.style.top = `${wh - ((st+sh) - wh)}px`;
-    
+
   }
 
   async getTemplate(val = '') {
@@ -247,7 +247,7 @@ export default class GSDropdown extends GSElement {
     const me = this;
     e.preventDefault();
     me.close();
-    const opt = { type: 'dropdown', source: e};
+    const opt = { type: 'dropdown', source: e };
     GSUtil.sendEvent(me, 'action', opt, true); // notify self
   }
 
@@ -355,7 +355,7 @@ export default class GSDropdown extends GSElement {
     const me = this;
     me.innerHTML = GSItem.generateItem(data);
     GSComponents.remove(me);
-		GSListeners.deattachListeners(me);
+    GSListeners.deattachListeners(me);
     me.connectedCallback();
   }
 

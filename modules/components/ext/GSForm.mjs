@@ -1,5 +1,5 @@
 /*
- * © Green Screens Ltd., 2016. - 2022.
+ * Copyright (C) 2015, 2022 Green Screens Ltd.
  */
 
 /**
@@ -23,30 +23,30 @@ export default class GSForm extends HTMLFormElement {
 
     static {
         customElements.define('gs-form', GSForm, { extends: 'form' });
-        GSDOMObserver.registerFilter(GSForm.#onMonitorFilter,  GSForm.#onMonitorResult);
-        GSDOMObserver.registerFilter(GSForm.#onMonitorFilter,  GSForm.#onMonitorRemove, true);
+        GSDOMObserver.registerFilter(GSForm.#onMonitorFilter, GSForm.#onMonitorResult);
+        GSDOMObserver.registerFilter(GSForm.#onMonitorFilter, GSForm.#onMonitorRemove, true);
     }
 
     static #onMonitorFilter(el) {
-        return  el instanceof HTMLFormElement && (el instanceof GSForm) === false;
+        return el instanceof HTMLFormElement && (el instanceof GSForm) === false;
     }
 
     static #onMonitorResult(el) {
         GSForm.#attachEvents(el);
         GSForm.#updateModal(el);
     }
-    
+
     static #onMonitorRemove(el) {
         GSListeners.deattachListeners(el);
     }
 
     constructor() {
         super();
-	}
+    }
 
-	static get observedAttributes() {
-		return ['mask'] ;
-	}
+    static get observedAttributes() {
+        return ['mask'];
+    }
 
     connectedCallback() {
         const me = this;
@@ -80,12 +80,12 @@ export default class GSForm extends HTMLFormElement {
      * Trigger form submit, close gs-modal if it is parent
      * @param {*} e 
      */
-     static #onSubmit(e, own) {
+    static #onSubmit(e, own) {
         const me = own || this;
         GSUtil.preventEvent(e);
         const isValid = me.checkValidity();
         const obj = GSUtil.toObject(me);
-        GSUtil.sendEvent(me, 'action', { type:'submit', ok: isValid, data: obj, source : e });
+        GSUtil.sendEvent(me, 'action', { type: 'submit', ok: isValid, data: obj, source: e });
         if (!isValid) return me.reportValidity();
         GSForm.#onCancel(e, me);
     }
@@ -99,7 +99,7 @@ export default class GSForm extends HTMLFormElement {
     get buttonOK() {
         return GSForm.#buttonOK(this);
     }
-    
+
     get buttonCancel() {
         return GSForm.#buttonCancel(this);
     }
@@ -115,7 +115,7 @@ export default class GSForm extends HTMLFormElement {
     static #buttonOK(own) {
         return GSUtil.findEl('button[type="submit"],.modal-ok', own);
     }
-    
+
     static #buttonCancel(own) {
         const el = GSForm.#find(own, 'cancel');
         return el ? el : GSUtil.findEl('button:not([type="submit"]),.modal-cancel', own);

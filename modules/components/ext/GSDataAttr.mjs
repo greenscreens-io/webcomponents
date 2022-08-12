@@ -1,5 +1,5 @@
 /*
- * © Green Screens Ltd., 2016. - 2022.
+ * Copyright (C) 2015, 2022 Green Screens Ltd.
  */
 
 /**
@@ -58,7 +58,7 @@ export default class GSDataAttr {
     /**
      * Callback to element removal observer
      * @param {HTMLElement} el 
-     */    
+     */
     static #onMonitorRemove(el) {
         GSListeners.deattachListeners(el);
     }
@@ -67,7 +67,7 @@ export default class GSDataAttr {
      * Function to find data-bs- attributes walking up the treee
      * @param {HTMLElement} el 
      * @returns {HTMLElement}
-     */    
+     */
     static #toClicker(el) {
         if (!el) return;
         if (el.hasAttribute(GSDataAttr.#toggleCSS)) return el;
@@ -78,7 +78,7 @@ export default class GSDataAttr {
     /**
      * Callback to element clic kevennt
      * @param {Event} e
-     */        
+     */
     static #onClick(e) {
         const el = GSDataAttr.#toClicker(e.target);
         const dismiss = GSDataAttr.getDismiss(el);
@@ -101,7 +101,7 @@ export default class GSDataAttr {
             case "alert":
                 break;
             case "button":
-                if (!target) return {list:[el], comps:[]};
+                if (!target) return { list: [el], comps: [] };
                 break;
             case "collapse":
                 break;
@@ -129,18 +129,18 @@ export default class GSDataAttr {
             el = el.closest(css);
             if (el) {
                 const comps = gs.filter(c => c.self.firstElementChild === el);
-                return {list: comps.length === 0 ? [el] : [], comps:comps};
+                return { list: comps.length === 0 ? [el] : [], comps: comps };
             }
         }
 
 
         const allComps = GSComponents.queryAll(css);
         const allRoot = Array.from(document.querySelectorAll(css));
-        
+
         // all not descendants of component
-        const all = allComps.concat(allRoot).filter(el => gs.indexOf(el) < 0) .filter(el => gs.filter(c => c.self.firstElementChild === el).length === 0);
-                
-        return {list:Array.from(new Set(all)), comps:gs};
+        const all = allComps.concat(allRoot).filter(el => gs.indexOf(el) < 0).filter(el => gs.filter(c => c.self.firstElementChild === el).length === 0);
+
+        return { list: Array.from(new Set(all)), comps: gs };
     }
 
     static #getByType(list, type) {
@@ -154,7 +154,7 @@ export default class GSDataAttr {
     static #getVisible(list, hidden) {
         return list.filter(el => hidden.indexOf(el) == -1);
     }
-    
+
     static #isType(el, type) {
         return type.split(' ').filter(v => v.trim()).map(v => v === 'button' ? 'btn' : v).filter(t => el.classList.contains(t)).length > 0;
     }
@@ -214,11 +214,11 @@ export default class GSDataAttr {
      * @param {*} type type of target
      */
     static #onToggle(el, target, type) {
-        
+
         if (!GSDataAttr.#isToggle(type)) return;
-        
+
         const obj = GSDataAttr.#findTarget(el, target, type);
-        
+
         obj.comps.filter(el => GSUtil.isFunction(el.toggle)).forEach(el => el.toggle());
 
         GSDataAttr.#onToggleBefore(el, target, type, obj);
@@ -239,23 +239,23 @@ export default class GSDataAttr {
             case "button":
                 break;
             case "collapse":
-                if(isBefore) {
-                obj.list.filter(el => el.classList.contains('accordion-collapse')).forEach(el => {
-                    Array.from(el.closest('.accordion').querySelectorAll('.accordion-collapse'))
-                        .filter(itm => itm != el && GSUtil.getAttribute(itm, 'data-bs-parent'))
-                        .forEach(itm => GSUtil.toggleClass(itm, false, 'show'));
-                });
+                if (isBefore) {
+                    obj.list.filter(el => el.classList.contains('accordion-collapse')).forEach(el => {
+                        Array.from(el.closest('.accordion').querySelectorAll('.accordion-collapse'))
+                            .filter(itm => itm != el && GSUtil.getAttribute(itm, 'data-bs-parent'))
+                            .forEach(itm => GSUtil.toggleClass(itm, false, 'show'));
+                    });
                 } else {
                     GSUtil.toggleClass(el, null, 'collapsed');
                 }
                 break;
             case "dropdown":
                 if (isBefore) {
-                    obj.list = obj.list.map(o => o.querySelector('.dropdown-menu')).filter(o => o!= null);
+                    obj.list = obj.list.map(o => o.querySelector('.dropdown-menu')).filter(o => o != null);
                 } else {
                     obj.list.forEach(o => o.classList.toggle('show'));
-                    obj.list.filter(o=> o.classList.contains('show')).forEach(o => GSDataAttr.#hideExt(o));
-                } 
+                    obj.list.filter(o => o.classList.contains('show')).forEach(o => GSDataAttr.#hideExt(o));
+                }
                 break;
             case "modal":
                 break;
@@ -283,15 +283,15 @@ export default class GSDataAttr {
      * @param {*} type type of target
      */
     static #onDismiss(el, target, type) {
-        
+
         if (!GSDataAttr.#isDismiss(type)) return;
-        
+
         const obj = GSDataAttr.#findTarget(el, target, type);
-        
+
         obj.comps.filter(el => GSUtil.isFunction(el.close)).forEach(el => el.close());
         obj.comps.filter(el => GSUtil.isFunction(el.dismiss)).forEach(el => el.dismiss());
-        
-        
+
+
         switch (type) {
             case "alert":
                 GSDataAttr.#remove(obj, type);
@@ -328,7 +328,7 @@ export default class GSDataAttr {
      * @returns {string}
      */
     static getTarget(el) {
-        const tgt =  GSUtil.getAttribute(el, GSDataAttr.#targetCSS) || GSUtil.getAttribute(el, 'href');
+        const tgt = GSUtil.getAttribute(el, GSDataAttr.#targetCSS) || GSUtil.getAttribute(el, 'href');
         return tgt === '#' ? '' : tgt;
     }
 
@@ -336,7 +336,7 @@ export default class GSDataAttr {
      * Return dismiss css for element
      * @param {HTMLElement} el 
      * @returns {string}
-     */    
+     */
     static getDismiss(el) {
         const val = GSDataAttr.#getDismiss(el);
         return GSDataAttr.#isDismiss(val) ? val : '';
@@ -346,7 +346,7 @@ export default class GSDataAttr {
      * Return toggle css value for element
      * @param {HTMLElement} el 
      * @returns {string}
-     */    
+     */
     static getToggle(el) {
         const val = GSDataAttr.#getToggle(el);
         return GSDataAttr.#isToggle(val) ? val : '';
@@ -356,7 +356,7 @@ export default class GSDataAttr {
      * Return if element is dismissable
      * @param {HTMLElement} el 
      * @returns {boolean}
-     */    
+     */
     static isDismiss(el) {
         return GSDataAttr.#isDismiss(GSDataAttr.#getDismiss(el));
     }
@@ -365,7 +365,7 @@ export default class GSDataAttr {
      * Return if element is toggable
      * @param {HTMLElement} el 
      * @returns {boolean}
-     */        
+     */
     static isToggle(el) {
         return GSDataAttr.#isToggle(GSDataAttr.#getToggle(el));
     }

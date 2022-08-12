@@ -1,5 +1,5 @@
 /*
- * © Green Screens Ltd., 2016. - 2022.
+ * Copyright (C) 2015, 2022 Green Screens Ltd.
  */
 
 /**
@@ -26,20 +26,20 @@ export default class GSButton extends GSElement {
     static {
         customElements.define('gs-button', GSButton);
     }
-    
+
     static get observedAttributes() {
         const attrs = ['css', 'dismiss', 'target', 'toggle', 'title', 'active', 'disable'];
-        return  GSUtil.mergeArrays(attrs, super.observedAttributes);
+        return GSUtil.mergeArrays(attrs, super.observedAttributes);
     }
 
     constructor() {
         super();
-	}  
+    }
 
     #onClick(e) {
         const me = this;
         if (me.disable) return false;
-        GSUtil.sendEvent(me, 'action', {type:'button', source: e}, true);
+        GSUtil.sendEvent(me, 'action', { type: 'button', source: e }, true);
         if (me.active) {
             me.#state = !me.#state;
             GSUtil.toggleClass(me.firstElementChild, me.#state, 'active');
@@ -73,7 +73,7 @@ export default class GSButton extends GSElement {
         }
 
         if (name == 'active') return GSUtil.toggleClass(el, me.#state, 'active');
-        if (name == 'disable') return GSUtil.setAttribute(this.firstElementChild, 'disabled', GSUtil.asBool(newValue) ? newValue : null);        
+        if (name == 'disable') return GSUtil.setAttribute(this.firstElementChild, 'disabled', GSUtil.asBool(newValue) ? newValue : null);
     }
 
     get template() {
@@ -91,7 +91,7 @@ export default class GSButton extends GSElement {
 
     get css() {
         const active = this.#state ? 'active' : '';
-        return GSUtil.getAttribute(this, 'css') + ` ${active}`; 
+        return GSUtil.getAttribute(this, 'css') + ` ${active}`;
     }
 
     set css(val = '') {
@@ -99,7 +99,7 @@ export default class GSButton extends GSElement {
     }
 
     get action() {
-        return GSUtil.getAttribute(this, 'action'); 
+        return GSUtil.getAttribute(this, 'action');
     }
 
     set action(val = '') {
@@ -107,7 +107,7 @@ export default class GSButton extends GSElement {
     }
 
     get dismiss() {
-        return GSUtil.getAttribute(this, 'dismiss'); 
+        return GSUtil.getAttribute(this, 'dismiss');
     }
 
     set dismiss(val = '') {
@@ -115,7 +115,7 @@ export default class GSButton extends GSElement {
     }
 
     get icon() {
-        return GSUtil.getAttribute(this, 'icon'); 
+        return GSUtil.getAttribute(this, 'icon');
     }
 
     set icon(val = '') {
@@ -123,7 +123,7 @@ export default class GSButton extends GSElement {
     }
 
     get target() {
-        return GSUtil.getAttribute(this, 'target'); 
+        return GSUtil.getAttribute(this, 'target');
     }
 
     set target(val = '') {
@@ -131,7 +131,7 @@ export default class GSButton extends GSElement {
     }
 
     get toggle() {
-        return GSUtil.getAttribute(this, 'toggle'); 
+        return GSUtil.getAttribute(this, 'toggle');
     }
 
     set toggle(val = '') {
@@ -139,18 +139,18 @@ export default class GSButton extends GSElement {
     }
 
     get comment() {
-        return GSUtil.getAttribute(this, 'comment'); 
+        return GSUtil.getAttribute(this, 'comment');
     }
 
-    set comment(val='') {
+    set comment(val = '') {
         return GSUtil.setAttribute(this, 'comment', val);
     }
 
     get title() {
-        return GSUtil.getAttribute(this, 'title'); 
+        return GSUtil.getAttribute(this, 'title');
     }
 
-    set title(val='') {
+    set title(val = '') {
         return GSUtil.setAttribute(this, 'title', val);
     }
 
@@ -179,10 +179,10 @@ export default class GSButton extends GSElement {
     /**
      * Prevent shadow dom
      */
-     get isFlat() {
+    get isFlat() {
         return true;
     }
-    
+
     get position() {
         return 'self';
     }

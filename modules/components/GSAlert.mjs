@@ -1,5 +1,5 @@
 /*
- * © Green Screens Ltd., 2016. - 2022.
+ * Copyright (C) 2015, 2022 Green Screens Ltd.
  */
 
 /**
@@ -25,19 +25,19 @@ export default class GSAlert extends GSElement {
     static {
         customElements.define('gs-alert', GSAlert);
     }
-    
+
     static get observedAttributes() {
         const attrs = ['css', 'title', 'active'];
-        return  GSUtil.mergeArrays(attrs, super.observedAttributes);
+        return GSUtil.mergeArrays(attrs, super.observedAttributes);
     }
 
     constructor() {
         super();
-	}  
+    }
 
     #onClick(e) {
         const me = this;
-        GSUtil.sendEvent(me, 'action', {type:'alert', source: e}, true);
+        GSUtil.sendEvent(me, 'action', { type: 'alert', source: e }, true);
         me.dismiss();
     }
 
@@ -52,7 +52,7 @@ export default class GSAlert extends GSElement {
         const me = this;
         const el = me.firstElementChild;
 
-        if (name == 'title')  el.innerHTML = me.title;
+        if (name == 'title') el.innerHTML = me.title;
 
         if (name == 'css') {
             GSUtil.toggleClass(el, false, oldValue);
@@ -63,7 +63,7 @@ export default class GSAlert extends GSElement {
     }
 
     get template() {
-        const me = this;        
+        const me = this;
         return `
         <div class="alert ${me.css}" role="class">
             <slot>${me.title}</slot>
@@ -73,7 +73,7 @@ export default class GSAlert extends GSElement {
 
     get css() {
         const tmp = this.dismissible ? 'alert-dismissible fade show' : '';
-        return GSUtil.getAttribute(this, 'css') + ` ${tmp}`; 
+        return GSUtil.getAttribute(this, 'css') + ` ${tmp}`;
     }
 
     set css(val = '') {
@@ -81,18 +81,18 @@ export default class GSAlert extends GSElement {
     }
 
     get activeCSS() {
-        return GSUtil.getAttribute(this, 'css-active', 'd-none'); 
+        return GSUtil.getAttribute(this, 'css-active', 'd-none');
     }
 
     set activeCSS(val = '') {
-        return GSUtil.getAttribute(this, 'css-active', val); 
+        return GSUtil.getAttribute(this, 'css-active', val);
     }
 
     get title() {
-        return GSUtil.getAttribute(this, 'title'); 
+        return GSUtil.getAttribute(this, 'title');
     }
 
-    set title(val='') {
+    set title(val = '') {
         return GSUtil.setAttribute(this, 'title', val);
     }
 
@@ -121,10 +121,10 @@ export default class GSAlert extends GSElement {
     /**
      * Prevent shadow dom
      */
-     get isFlat() {
+    get isFlat() {
         return GSUtil.getAttributeAsBool(this, 'flat', true);
     }
-    
+
     get position() {
         return 'self';
     }

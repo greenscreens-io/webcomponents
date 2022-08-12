@@ -1,5 +1,5 @@
 /*
- * © Green Screens Ltd., 2016. - 2022.
+ * Copyright (C) 2015, 2022 Green Screens Ltd.
  */
 
 /**
@@ -16,12 +16,12 @@ import GSComponents from "../../base/GSComponents.mjs";
  * @class
  * @extends {HTMLElement}
  */
- export default class GSHeader extends HTMLElement {
+export default class GSHeader extends HTMLElement {
 
     static {
         customElements.define('gs-header', GSHeader);
     }
-    
+
     /*
     connectedCallback() {
         const me = this;
@@ -47,12 +47,12 @@ import GSComponents from "../../base/GSComponents.mjs";
 
         if (filters.length > 0) {
             html.push('<tr is="gs-tablefilter">');
-            columns.forEach(el => html.push(el.renderFilter()) );
+            columns.forEach(el => html.push(el.renderFilter()));
             html.push('</tr>');
         }
 
         html.push('<tr is="gs-tablesort">');
-        columns.forEach(el => html.push(el.render()) );
+        columns.forEach(el => html.push(el.render()));
         html.push('</tr>');
 
         html.push('</thead>');
@@ -68,7 +68,7 @@ import GSComponents from "../../base/GSComponents.mjs";
         });
         return heads;
     }
-    
+
     get table() {
         return GSComponents.getOwner(this, 'GS-TABLE')
     }

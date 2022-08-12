@@ -1,5 +1,5 @@
 /*
- * © Green Screens Ltd., 2016. - 2022.
+ * Copyright (C) 2015, 2022 Green Screens Ltd.
  */
 
 /**
@@ -44,18 +44,18 @@ export default class GSTable extends GSElement {
 
     static get observedAttributes() {
         const attrs = ['src', 'select', 'multiselect', 'css', 'css-header', 'css-row', 'css-cell', 'css-select'];
-        return  GSUtil.mergeArrays(attrs, GSElement.observedAttributes );
+        return GSUtil.mergeArrays(attrs, GSElement.observedAttributes);
     }
-    
+
     constructor() {
         super();
     }
-    
+
     async getTemplate(val = '') {
         //return super.getTemplate(val || '//table.tpl');
         return super.getTemplate(val);
     }
-    
+
     attributeChangeCallback(name = '', oldValue = '', newValue = '') {
         const me = this;
 
@@ -117,11 +117,11 @@ export default class GSTable extends GSElement {
     get selected() {
         return this.#selected;
     }
-    
+
     /**
      * If multi row select is enabled
      */
-     get multiselect() {
+    get multiselect() {
         return this.#multiselect;
     }
 
@@ -133,7 +133,7 @@ export default class GSTable extends GSElement {
     /**
      * If row select is enabled
      */
-     get select() {
+    get select() {
         return this.#select;
     }
 
@@ -141,36 +141,36 @@ export default class GSTable extends GSElement {
         const me = this;
         me.#select = GSUtil.asBool(val);
     }
-    
-    get css() {return this.#tableCSS;}
-    get cssSelect() {return this.#selectCSS;}
-    get cssHeader() {return this.#headerCSS;} 
-    get cssRow() {return this.#rowCSS;}
-    get cssCell() {return this.#cellCSS;}
-    
-    set css(val = '') { 
+
+    get css() { return this.#tableCSS; }
+    get cssSelect() { return this.#selectCSS; }
+    get cssHeader() { return this.#headerCSS; }
+    get cssRow() { return this.#rowCSS; }
+    get cssCell() { return this.#cellCSS; }
+
+    set css(val = '') {
         this.#tableCSS = val;
         this.#setCSS('table', val);
     }
 
-    set cssSelect(val = '') { 
+    set cssSelect(val = '') {
         this.#selectCSS = val;
     }
 
-    set cssHeader(val = '') { 
+    set cssHeader(val = '') {
         this.#headerCSS = val;
         this.#setCSS('table thead', val);
-    } 
+    }
 
-    set cssRow(val = '') { 
+    set cssRow(val = '') {
         this.#rowCSS = val;
         this.#setCSS('table tbody tr', val);
     }
 
-    set cssCell(val = '') { 
+    set cssCell(val = '') {
         this.#cellCSS = val;
         this.#setCSS('table tbody td', val);
-    }    
+    }
 
     #setCSS(qry, val) {
         this.findAll(qry, true).forEach(el => {
@@ -194,7 +194,7 @@ export default class GSTable extends GSElement {
             me.#renderTable();
             return requestAnimationFrame(() => me.#processData(data));
         }
-        
+
         requestAnimationFrame(() => me.#renderPage());
 
     }
@@ -219,11 +219,11 @@ export default class GSTable extends GSElement {
         if (Array.isArray(rec)) {
             defs.push('<gs-column name="#"></gs-column>');
             rec.forEach((v, i) => {
-                const html = `<gs-column name="Col_${i+1}" index=${i}></gs-column>`;
+                const html = `<gs-column name="Col_${i + 1}" index=${i}></gs-column>`;
                 defs.push(html);
             });
         } else {
-            Object.keys(rec).forEach( v => {
+            Object.keys(rec).forEach(v => {
                 const html = `<gs-column name="${v}"></gs-column>`;
                 defs.push(html);
             });
@@ -249,15 +249,15 @@ export default class GSTable extends GSElement {
         const html = me.querySelector('gs-header').render();
         me.shadow.innerHTML = `<table class="${me.css}">${html}<tbody is="gs-tbody"></tbody></table><slot name="extra"></slot>`;
     }
-    
+
     #onContextMenu(data) {
         const me = this;
-        const opt = {action : data.data.action, data : me.#selected};
+        const opt = { action: data.data.action, data: me.#selected };
         GSUtil.sendEvent(me, 'action', opt);
     }
 
     #onRowSelect(data = []) {
-        const me = this;        
+        const me = this;
         me.#selected = [];
         data.forEach(i => {
             const rec = me.#data[i];
@@ -272,5 +272,5 @@ export default class GSTable extends GSElement {
 
     #onColumnFilter(data) {
         this.store.filter = data || [];
-    }    
+    }
 }

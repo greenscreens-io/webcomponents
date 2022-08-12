@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015, 2022  Green Screens Ltd.
+ * Copyright (C) 2015, 2022 Green Screens Ltd.
  */
 
 /**
@@ -29,12 +29,12 @@ import GSCacheStyles from "./GSCacheStyles.mjs";
 export default class GSCSS extends GSBase {
 
 	static get observedAttributes() {
-        return  ['disabled'].concat(super.observedAttributes);
-    }
+		return ['disabled'].concat(super.observedAttributes);
+	}
 
 	attributeCallback(name, oldValue, newValue) {
 		const me = this;
-		if(name !== 'disabled') return;
+		if (name !== 'disabled') return;
 		return me.isDisabled ? me.dispose() : me.render();
 	}
 
@@ -79,7 +79,7 @@ export default class GSCSS extends GSBase {
 	/**
 	 * If set to true, stylsheet is added to document
 	 * @returns {boolean} Defeault to true
-	 */	
+	 */
 	get isGlobal() {
 		return this.getAttribute('global') == 'true';
 	}
@@ -87,7 +87,7 @@ export default class GSCSS extends GSBase {
 	/**
 	 * Sortable value, order in stylecache list
 	 * @returns {boolean}
-	 */		
+	 */
 	get order() {
 		return this.getAttribute('order');
 	}
@@ -99,7 +99,7 @@ export default class GSCSS extends GSBase {
 	/**
 	 * If set to true, theme switcher will ignore this style (considered mandatory)
 	 * @returns {boolean} Default to false
-	 */	
+	 */
 	get notheme() {
 		return this.getAttribute('notheme') === 'true';
 	}
@@ -107,7 +107,7 @@ export default class GSCSS extends GSBase {
 	/**
 	 * Disable this style 
 	 * @returns {boolean}
-	 */		
+	 */
 	get disabled() {
 		return this.getAttribute('disabled');
 	}
@@ -119,7 +119,7 @@ export default class GSCSS extends GSBase {
 	/**
 	 * Check if style is disabled
 	 * @returns {boolean}
-	 */		
+	 */
 	get isDisabled() {
 		return this.disabled === 'true';
 	}
@@ -138,14 +138,14 @@ export default class GSCSS extends GSBase {
 	 */
 	static get activeTheme() {
 		const sp = new URLSearchParams(location.hash.slice(1));
-		return sp.get('theme') || 'default';		
+		return sp.get('theme') || 'default';
 	}
 
 	static #onTheme(e) {
-		const theme = GSCSS.activeTheme;		
+		const theme = GSCSS.activeTheme;
 		Array.from(document.querySelectorAll('gs-css'))
-		.filter(el => el.notheme == false)
-		.forEach(el => el.disabled = el.theme !== theme);
+			.filter(el => el.notheme == false)
+			.forEach(el => el.disabled = el.theme !== theme);
 	}
 
 	static {

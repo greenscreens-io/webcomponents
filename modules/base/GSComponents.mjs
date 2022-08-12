@@ -1,6 +1,7 @@
 /*
- * © Green Screens Ltd., 2022.
+ * Copyright (C) 2015, 2022 Green Screens Ltd.
  */
+
 import GSUtil from "./GSUtil.mjs";
 import GSCacheStyles from "../head/GSCacheStyles.mjs";
 
@@ -22,7 +23,7 @@ export default class GSComponents {
 
     /**
      * Store html elements extended with is=gs-* attribute
-     */    
+     */
     static #extra = new Map();
 
     /**
@@ -71,7 +72,7 @@ export default class GSComponents {
         if (!el) el = this.#extra.get(id);
         return el;
     }
-    
+
     /**
      * Find all elements matched by CSS selector in all shadow doms
      * @param {string} value A CSS query selector
@@ -93,7 +94,7 @@ export default class GSComponents {
     static #waitForInternal(name = '', r) {
         const fn = (e) => {
             const el = e.detail;
-            const isComp = name.startsWith('gs-') && el.tagName === name.toUpperCase();            
+            const isComp = name.startsWith('gs-') && el.tagName === name.toUpperCase();
             if (isComp || el.id === name) {
                 GSUtil.unlisten(document, null, 'gs-component', fn);
                 return r(el);
@@ -108,11 +109,11 @@ export default class GSComponents {
      * @returns {GSElement}
      */
     static waitFor(name = '') {
-		return new Promise((r, e) => {
+        return new Promise((r, e) => {
             const el = GSComponents.find(name);
             if (el) return r(el);
-			GSComponents.#waitForInternal(name, r);
-		});
+            GSComponents.#waitForInternal(name, r);
+        });
     }
 
     /**
@@ -127,11 +128,11 @@ export default class GSComponents {
         let result = null;
         if (name) {
             result = GSComponents.findAllElements(name);
-            result = result.concat(GSComponents.findAllExtra(name));            
+            result = result.concat(GSComponents.findAllExtra(name));
         } else {
             result = Array.from(me.#cache.values()).concat(Array.from(me.#extra.values()));
         }
-        
+
         if (!flat) result = result.filter(el => el.shadowRoot);
         if (!shadow) result = result.filter(el => !el.shadowRoot);
 
@@ -148,7 +149,7 @@ export default class GSComponents {
     static find(name = '', flat = true, shadow = true) {
         return GSComponents.findAll(name, flat, shadow).shift();
     }
-    
+
     static #filterAllString(list, name) {
         const str = name.toUpperCase();
         return Array.from(list.values()).filter(v => v.tagName === str || GSUtil.getAttribute(v, 'is', '').toUpperCase() === str);
@@ -265,7 +266,7 @@ export default class GSComponents {
     }
 
     static #listener = false;
-    static #onStyles()  {
+    static #onStyles() {
         requestAnimationFrame(() => {
             GSComponents.findAll().filter(el => el.shadowRoot).forEach(el => el.shadowRoot.adoptedStyleSheets = GSCacheStyles.styles);
         });
