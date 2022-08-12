@@ -72,6 +72,7 @@ export default class GSNav extends GSElement {
 
     #btn(el) {
         const me = this;
+        const dataAttrs = GSUtil.dataAttrsToString(el);
         const cssnav = me.#getCssNav(el);
         const cssactive = me.#getCssActiveTab(el);
         const title = me.#getTitle(el);
@@ -80,7 +81,12 @@ export default class GSNav extends GSElement {
         //const contentTpl = me.rtl ? `${title} ${iconTpl}` : `${iconTpl} ${title}`;
         const contentTpl = `${iconTpl} ${title}`;
 
-        return `<a type="button" role="nav" is="gs-navlink" class="nav-link ${cssnav} ${cssactive}"  id="${GSID.id}-nav">${contentTpl}</a>`;
+        return `<a type="button" role="nav" is="gs-navlink" class="nav-link ${cssnav} ${cssactive}" id="${GSID.id}-nav"                
+                ${GSItem.getDismissAttr(el)} ${GSItem.getTargetAttr(el)} 
+                ${GSItem.getToggleAttr(el)} ${GSItem.getActionAttr(el)} 
+                ${GSItem.getInjectAttr(el)} ${GSItem.getSelectableAttr(el)}
+                ${dataAttrs}>${contentTpl}</a>`;
+        
     }
 
     #getCssNavWrap(el) {

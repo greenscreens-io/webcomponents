@@ -71,6 +71,8 @@ export default class GSNavLink extends HTMLAnchorElement {
 
     static #onClick(e, own) {
         const me = own || this;
+        const accept = GSUtil.getAttributeAsBool(me, 'data-selectable', true);
+        if (!accept)  return GSNavLink.#trigger(e, me);
         const nav = GSNavLink.#nav(me);
         const list = GSNavLink.#list(me);
         const panel = GSNavLink.#panel(me);
@@ -81,10 +83,15 @@ export default class GSNavLink extends HTMLAnchorElement {
             if (panel) panel.querySelectorAll('.tab-pane').forEach(el => GSUtil.toggleClass(el, false, 'active show'));
             GSUtil.toggleClass(me, true, 'active');
             GSUtil.toggleClass(panelItem, true, 'active show');
-            own = GSComponents.getOwner(me);
-            GSUtil.sendEvent(own, 'action', { type: 'active', source: e }, true);
+            GSNavLink.#trigger(e, me);
         });
 
+    }
+
+    static #trigger(e, el) {
+        const attrs = GSUtil.getDataAttrs(el);
+        const own = GSComponents.getOwner(el);
+        GSUtil.sendEvent(own, 'action', { type: 'active', data: attrs, source: e }, true);
     }
 
     static #list(own) {

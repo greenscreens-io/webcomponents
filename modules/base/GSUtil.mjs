@@ -967,8 +967,37 @@ export default class GSUtil {
 	static getDataAttrs(el) {
 		const o = {}
 		if (!GSUtil.isHTMLElement(el)) return o;
-		Array.from(el.attributes).filter(v => v.name.startsWith('data-')).forEach(v => o[v.name.split('-')[1]] = v.value);
+		Array.from(el.attributes)
+			.filter(v => v.name.startsWith('data-'))
+			.forEach(v => o[v.name.split('-')[1]] = v.value);
 		return o;
+	}
+
+	/**
+	 * Copy data attributes from one element to another
+	 * @param {HTMLElement} source 
+	 * @param {HTMLElement} target 
+	 * @returns {boolean}
+	 */
+	static setDataAttrs(source, target) {
+		if (!GSUtil.isHTMLElement(source)) return false;
+		if (!GSUtil.isHTMLElement(target)) return false;
+		Array.from(source.attributes)
+			.filter(v => v.name.startsWith('data-'))
+			.forEach(v => GSUtil.setAttribute(target, v.name, v.value));
+		return true;
+	}
+	    
+	/**
+	 * Convert list of data attributes into a string list
+	 * @param {HTMLElement} el 
+	  @returns {string}
+	 */
+	static dataAttrsToString(el) {
+		return Array.from(el.attributes)
+					.filter(v => v.name.startsWith('data-'))
+					.map(v => `${v.name}="${v.value}"`)
+					.join(' ');
 	}
 
 	/**
@@ -1210,6 +1239,15 @@ export default class GSUtil {
 		const ts = GSUtil.textNodesUnder(root || document).filter(t => t.wholeText.trim().length === 0);
 		ts.filter(el => el.nextSibling instanceof Text).forEach(el => el.remove());
 		ts.forEach(t => t.nodeValue = t.wholeText.replaceAll(/\u0020{4}/g, '\t').replaceAll(/(\n*\t*)*(?=\n\t*)/g, ''));
+	}
+
+	/**
+	 * Rmoves duplicates from list
+	 * @param {Array} data 
+	 * @returns {Array}
+	 */
+	static uniqe(data) {
+		return Array.from(new Set(data));
 	}
 
 	/**

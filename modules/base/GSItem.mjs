@@ -12,7 +12,7 @@ import GSUtil from "./GSUtil.mjs";
 /**
  * Static class for handling generic configurable tag GS-ITEM
  */
-export default class GSItem {
+export default class GSItem extends HTMLElement {
 
 	static #dismiss = 'data-bs-dismiss';
 
@@ -21,6 +21,18 @@ export default class GSItem {
 	static #toggle = 'data-bs-toggle';
 
 	static #action = 'data-action';
+
+	static #inject = 'data-inject';
+
+	static #selectable = 'data-selectable';
+
+	static {
+		customElements.define('gs-item', GSItem);
+	}
+
+	constructor() {
+		super();
+	}
 
 	/**
 	* Retrieve gs-item template or internal content
@@ -58,8 +70,8 @@ export default class GSItem {
 	 */
 	static generateItem(val = '') {
 		if (!GSUtil.isJsonType(val)) return '';
-		if (!Array.isArray(val)) return GSUtil.#generateItem(val);
-		return GSUtil.#generateItems(val);
+		if (!Array.isArray(val)) return GSItem.#generateItem(val);
+		return GSItem.#generateItems(val);
 	}
 
 	static #numOrString(val) {
@@ -67,17 +79,17 @@ export default class GSItem {
 	}
 
 	static #generateItems(o) {
-		return o.map(e => GSUtil.#generateItem(e)).join('\n');
+		return o.map(e => GSItem.#generateItem(e)).join('\n');
 	}
 
 	static #generateItem(o) {
-		const args = GSUtil.#generateArgs(o);
-		const childs = Array.isArray(o.items) ? GSUtil.genrateItem(o.items) : '';
+		const args = GSItem.#generateArgs(o);
+		const childs = Array.isArray(o.items) ? GSItem.generateItem(o.items) : '';
 		return `<gs-item ${args}>${childs}</gs-item>`;
 	}
 
 	static #generateArgs(o) {
-		return Object.entries(o).filter(kv => GSUtil.#numOrString(kv[1]))
+		return Object.entries(o).filter(kv => GSItem.#numOrString(kv[1]))
 			.map(kv => `${kv[0]}="${kv[1]}"`).join(' ');
 	}
 
@@ -101,6 +113,16 @@ export default class GSItem {
 		return v ? `${GSItem.#action}="${v}"` : '';
 	}
 
+	static getInjectAttr(el) {
+		const v = GSItem.getInject(el);
+		return v ? `${GSItem.#inject}="${v}"` : '';
+	}
+
+	static getSelectableAttr(el) {
+		const v = GSItem.getSelectable(el);
+		return v ? '' : `${GSItem.#selectable}="${v}"`;
+	}
+
 	static getAction(el) {
 		return GSUtil.getAttribute(el, 'action');
 	}
@@ -117,4 +139,64 @@ export default class GSItem {
 		return GSUtil.getAttribute(el, 'toggle');
 	}
 
+	static getInject(el) {
+		return GSUtil.getAttribute(el, 'inject');
+	}
+
+	static getSelectable(el) {
+		return GSUtil.getAttributeAsBool(el, 'selectable', true);
+	}
+
+	static getName(el) {
+		return GSUtil.getAttribute(el, 'name');
+	}
+
+
+	get dismissAttr() {
+		return GSItem.getDismissAttr(this);
+	}
+
+	get targetAttr() {
+		return GSItem.getTargetAttr(this);
+	}
+
+	get toggleAttr() {
+		return GSItem.getToggleAttr(this);
+	}
+
+	get actionAttr() {
+		return GSItem.getActionAttr(this);
+	}
+
+	get injectAttr() {
+		return GSItem.getInjectAttr(this);
+	}
+
+	get action() {
+		return GSItem.getAction(this);
+	}
+
+	get dismiss() {
+		return GSItem.getDismiss(this);
+	}
+
+	get target() {
+		return GSItem.getTarget(this);
+	}
+
+	get toggle() {
+		return GSItem.getToggle(this);
+	}
+
+	get inject() {
+		return GSItem.getInject(this);
+	}
+
+	get selectable() {
+		return GSItem.getSelectable(this);
+	}
+
+	get name() {
+		return GSItem.getName(this);
+	}
 }

@@ -9,6 +9,7 @@
 
 import GSID from "../../base/GSID.mjs";
 import GSUtil from "../../base/GSUtil.mjs";
+import GSComponents from "../../base/GSComponents.mjs";
 import GSDOMObserver from '../../base/GSDOMObserver.mjs';
 import GSListeners from "../../base/GSListeners.mjs";
 
@@ -25,6 +26,7 @@ export default class GSDataAttr {
     static #dismissCSS = 'data-bs-dismiss';
     static #toggleCSS = 'data-bs-toggle';
     static #targetCSS = 'data-bs-target';
+    static #injectCSS = 'data-inject';
 
     static #toggleValues = "offcanvas|collapse|dropdown|button|tab|pill|popover|tooltip|modal";
     static #dismissValues = "offcanvas|modal|alert";
@@ -43,7 +45,9 @@ export default class GSDataAttr {
         if (GSUtil.isGSElement(el)) return false;
         if (!GSUtil.isHTMLElement(el)) return false;
         if (GSDataAttr.#isCollapsible(el)) el.classList.add('collapsible');
-        return el.hasAttribute(GSDataAttr.#dismissCSS) || el.hasAttribute(GSDataAttr.#toggleCSS);
+        return el.hasAttribute(GSDataAttr.#dismissCSS) 
+            || el.hasAttribute(GSDataAttr.#toggleCSS)
+            || el.hasAttribute(GSDataAttr.#injectCSS);
     }
 
     /**
@@ -72,6 +76,7 @@ export default class GSDataAttr {
         if (!el) return;
         if (el.hasAttribute(GSDataAttr.#toggleCSS)) return el;
         if (el.hasAttribute(GSDataAttr.#dismissCSS)) return el;
+        if (el.hasAttribute(GSDataAttr.#injectCSS)) return el;
         return GSDataAttr.#toClicker(el.parentElement);
     }
 
@@ -81,11 +86,13 @@ export default class GSDataAttr {
      */
     static #onClick(e) {
         const el = GSDataAttr.#toClicker(e.target);
+        const inject = GSDataAttr.getInject(el);
         const dismiss = GSDataAttr.getDismiss(el);
         const toggle = GSDataAttr.#getToggle(el);
         const target = GSDataAttr.getTarget(el);
         GSDataAttr.#onToggle(el, target, toggle);
         GSDataAttr.#onDismiss(el, target, dismiss);
+        GSDataAttr.#onInject(el, target, inject);
     }
 
     /**
@@ -207,6 +214,22 @@ export default class GSDataAttr {
         obj.list.forEach(el => GSDataAttr.#removeEl(el));
     }
 
+     /**
+     * Automatic tempalte injection at given target
+     * @param {*} el caller 
+     * @param {*} target css selector
+     * @param {*} type type of target
+     */
+    static #onInject(el, target, inject) {
+        
+        if (!GSDataAttr.#isInject(inject)) return;
+
+        const list = GSComponents.queryAll(target);
+
+        list.forEach(el => el.innerHTML = `<gs-template href="//${inject}.html"></gs-template>`);
+
+    }
+
     /**
      * Show or hide target based on type
      * @param {*} el caller 
@@ -314,12 +337,20 @@ export default class GSDataAttr {
         return val && GSDataAttr.#toggleValues.indexOf(val) > -1;
     }
 
+    static #isInject(val) {
+        return val && val.length > 0;
+    }
+
     static #getDismiss(el) {
         return GSUtil.getAttribute(el, GSDataAttr.#dismissCSS);
     }
 
     static #getToggle(el) {
         return GSUtil.getAttribute(el, GSDataAttr.#toggleCSS);
+    }
+
+    static #getInject(el) {
+        return GSUtil.getAttribute(el, GSDataAttr.#injectCSS);
     }
 
     /**
@@ -352,6 +383,11 @@ export default class GSDataAttr {
         return GSDataAttr.#isToggle(val) ? val : '';
     }
 
+    static getInject(el) {
+        const val = GSDataAttr.#getInject(el);
+        return GSDataAttr.#isInject(val) ? val : '';
+    }
+
     /**
      * Return if element is dismissable
      * @param {HTMLElement} el 
@@ -370,4 +406,13 @@ export default class GSDataAttr {
         return GSDataAttr.#isToggle(GSDataAttr.#getToggle(el));
     }
 
+    /**
+     * Return if element is injectable
+     * @param {HTMLElement} el 
+     * @returns {boolean}
+     */
+    static isInject(el) {
+        return GSDataAttr.#isInject(GSDataAttr.#getInject(el));
+    }
+    
 }

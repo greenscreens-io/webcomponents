@@ -10,6 +10,7 @@
 import GSUtil from "../base/GSUtil.mjs";
 import GSItem from "../base/GSItem.mjs";
 import GSElement from "../base/GSElement.mjs";
+import GSID from "../base/GSID.mjs";
 
 /**
  * Renderer for panel layout 
@@ -66,13 +67,14 @@ export default class GSLayout extends GSElement {
         const res = me.#resizable(el);
 
         const id = GSUtil.getAttribute(el, 'id');
+        const name = GSUtil.getAttribute(el, 'name');
         const tpl = await GSItem.getTemplate(el);
 
         const style = me.#style(el);
         const fixed = style.length > 10 ? true : false;
         const cls = me.#class(el, fixed);
 
-        const child = `<div class="${cls}" ${style}>${tpl}</div>`;
+        const child = `<div class="${cls}" id="${name || GSID.next()}" ${style}>${tpl}</div>`;
 
         if (res) {
             const pos = me.#splitter(el);

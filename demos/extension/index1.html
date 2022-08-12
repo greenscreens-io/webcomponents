@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>test</title>
+    <script type="text/javascript">
+        self.GS_TEMPLATE_URL = '/demos/extension/templates';
+    </script>
+    <script type="module" src="/modules/index.mjs"></script>
+    <script type="module" src="/modules/components/ext/GSDataAttr.mjs"></script>
+    <script type="module" src="/modules/components/ext/GSNavLink.mjs"></script>
+    <script type="module" src="/modules/components/GSSplitter.mjs"></script>
+    <script type="module" src="/modules/components/GSLayout.mjs"></script>
+    <script type="module" src="/modules/components/GSNav.mjs"></script>
+    <script type="module" src="./scripts/main.mjs"></script>
+
+    <gs-css global="true" url="/assets/css/custom_5.2.0.css" rel="stylesheet"></gs-css>
+    <gs-css global="true" url="/assets/icons/bootstrap-icons.css" rel="stylesheet" notheme="true"></gs-css>
+</head>
+
+<body>
+
+    <gs-layout type="vertical" css="">
+
+        <gs-item v-pos="center" h-pos="center" min="5" css="p-2 border-bottom shadow-sm text-bg-light">
+            <div class=" ">
+                <img src="/assets/img/logo.png" height="32">
+            </div>
+        </gs-item>
+
+        <gs-item>
+            <gs-layout type="horizontal">
+
+                <!-- instead of using template, we injected elements directly (see index.html) -->
+                <gs-item css="p-3" min="260" max="260">
+
+                    <gs-nav clasS="flex-fill px-3" css-nav="nav-pills fw-bold" bar="false">
+                        <!-- template action to inject -->
+                        <gs-item title="Settings" icon="bi bi-gear me-2 fs-5" active="true" css-nav-wrap="" css-nav="nav-pill" inject="settings" target="#content"></gs-item>
+                        <!-- template action to inject -->
+                        <gs-item title="Colors" icon="bi bi-eye-fill me-2 fs-5" inject="colors" target="#content"></gs-item>
+                        <!-- template action to inject -->
+                        <gs-item title="Sessions" icon="bi bi-display me-2 fs-5" inject="sessions" target="#content"></gs-item>
+                        
+                        <!-- event action to call -->
+                        <gs-item title="Import Data" icon="bi bi-upload me-2 fs-5" css-nav-wrap="mt-3" data-action="import"></gs-item>
+                        <!-- event action to call -->
+                        <gs-item title="Export Data" icon="bi bi-download me-2 fs-5" data-action="export"></gs-item>
+                        
+                        <!-- template action to inject -->
+                        <gs-item title="About" icon="bi bi-info-circle-fill me-2 fs-5" css-nav-wrap="mt-3" inject="about" target="#content"></gs-item>
+                    </gs-nav>
+
+                </gs-item>
+
+                <!-- target where to inject templates -->
+                <gs-item css="p-3" name="content" v-pos="top" h-pos="center">
+                    <!-- default page the same as sidebar selected item -->
+                    <gs-template href="//settings.html"></gs-template>                    
+                </gs-item>
+
+            </gs-layout>
+        </gs-item>
+
+        <gs-item css="p-3" name="footer" v-pos="bottom" h-pos="center" max="60">
+            <small>© Green Scereens Ltd. 2015. - 2022.</small>
+        </gs-item>
+
+    </gs-layout>
+
+</body>
+</html>

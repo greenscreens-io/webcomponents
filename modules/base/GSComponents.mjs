@@ -79,7 +79,12 @@ export default class GSComponents {
      * @returns {Array<HTMLElement>}
      */
     static queryAll(value = '') {
-        return GSComponents.findAll().filter(el => GSUtil.isFunction(el.findAll)).map(el => Array.from(el.findAll(value))).filter(o => o.length > 0).flat();
+        const data = GSComponents.findAll()
+                            .filter(el => GSUtil.isFunction(el.findAll))
+                            .map(el => Array.from(el.findAll(value)))
+                            .filter(o => o.length > 0)
+                            .flat();
+        return GSUtil.uniqe(data);
     }
 
     /**

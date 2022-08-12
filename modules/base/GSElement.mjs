@@ -270,9 +270,6 @@ export default class GSElement extends HTMLElement {
 	 * @returns {string}
 	 */
 	async getTemplate(def = '') {
-		const me = this;
-		const pe = me.parentElement;
-		if (pe && pe.tagName == 'GS-ITEM') return null;
 		return GSUtil.getTemplate(def);
 	}
 
@@ -311,25 +308,47 @@ export default class GSElement extends HTMLElement {
 	 * @param {Function} func A callback function on event trigger
 	 */
 	once(name, func) {
-		return this.attachEvent(this, name, func, true);
+		return this.listen(name, func, true);
+	}
+
+	/**
+	 * Alternative function for event listen
+	 * @param {string} name  A name of the event
+	 * @param {Function} func A callback function on event trigger
+	 * @returns {boolean}
+	 */
+	on(name, func, once = false) {
+		return this.listen(name, func, once);
+	}
+
+	/**
+	 * Alternative function for event unlisten
+	 * @param {string} name  A name of the event
+	 * @param {Function} func A callback function on event trigger
+	 * @returns {boolean}
+	 */
+	off(name, func) {
+		return this.unlisten(name, func);
 	}
 
 	/**
 	 * Attach event to this element
 	 * @param {string} name  A name of the event
 	 * @param {Function} func A callback function on event trigger
+	 * * @returns {boolean}
 	 */
-	listen(name, func) {
-		return this.attachEvent(this, name, func);
+	listen(name, func, once = false) {
+		return this.attachEvent(this, name, func, once);
 	}
 
 	/**
 	 * Remove event from this element
 	 * @param {string} name  A name of the event
 	 * @param {Function} func A callback function on event trigger
+	 * @returns {boolean}
 	 */
 	unlisten(name, func) {
-		this.removeEvent(this, name, func);
+		return this.removeEvent(this, name, func);
 	}
 
 	/**
@@ -363,6 +382,8 @@ export default class GSElement extends HTMLElement {
 	 */
 	connectedCallback() {
 		const me = this;
+		const pe = me.parentElement;
+		if (pe && pe.tagName == 'GS-ITEM') return;
 		if (!(me.isValidEnvironment && me.isValidBrowser && me.isValidOS)) {
 			return me.remove();
 		}
