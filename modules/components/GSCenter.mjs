@@ -39,14 +39,6 @@ export default class GSCenter extends GSElement {
       return `<div class="position-absolute top-50 start-50 translate-middle ${this.css}"><slot></slot></div>`
    }
 
-   get _isFlat() {
-      return true;
-   }
-
-   get _position() {
-      return 'self';
-   }
-
    get css() {
       return GSUtil.getAttribute(this, 'css', '');
    }
