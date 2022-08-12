@@ -84,8 +84,8 @@ export default class GSNav extends GSElement {
         return `<a type="button" role="nav" is="gs-navlink" class="nav-link ${cssnav} ${cssactive}" id="${GSID.id}-nav"                
                 ${GSItem.getDismissAttr(el)} ${GSItem.getTargetAttr(el)} 
                 ${GSItem.getToggleAttr(el)} ${GSItem.getActionAttr(el)} 
-                ${GSItem.getInjectAttr(el)} ${GSItem.getSelectableAttr(el)}
-                ${dataAttrs}>${contentTpl}</a>`;
+                ${GSItem.getInjectAttr(el)} ${GSItem.getCSSAttr(el)}
+                ${GSItem.getSelectableAttr(el)} ${dataAttrs}>${contentTpl}</a>`;
         
     }
 

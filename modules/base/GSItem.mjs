@@ -24,6 +24,8 @@ export default class GSItem extends HTMLElement {
 
 	static #inject = 'data-inject';
 
+	static #css = 'data-css';
+
 	static #selectable = 'data-selectable';
 
 	static {
@@ -118,6 +120,11 @@ export default class GSItem extends HTMLElement {
 		return v ? `${GSItem.#inject}="${v}"` : '';
 	}
 
+	static getCSSAttr(el) {
+		const v = GSItem.getCSS(el);
+		return v ? `${GSItem.#css}="${v}"` : '';
+	}
+
 	static getSelectableAttr(el) {
 		const v = GSItem.getSelectable(el);
 		return v ? '' : `${GSItem.#selectable}="${v}"`;
@@ -148,9 +155,12 @@ export default class GSItem extends HTMLElement {
 	}
 
 	static getName(el) {
-		return GSUtil.getAttribute(el, 'name');
+		return GSUtil.getAttribute(el, 'name', '');
 	}
 
+	static getCSS(el) {
+		return GSUtil.getAttribute(el, 'css', '');
+	}
 
 	get dismissAttr() {
 		return GSItem.getDismissAttr(this);
@@ -198,5 +208,9 @@ export default class GSItem extends HTMLElement {
 
 	get name() {
 		return GSItem.getName(this);
+	}
+
+	get css() {
+		return GSItem.getCSS(this);
 	}
 }
