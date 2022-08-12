@@ -1,24 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <title>test</title>
     <script type="text/javascript">
         self.GS_TEMPLATE_URL='/demos/layout/templates';
-    </script>        
+    </script>    
     <script type="module" src="/modules/index.mjs"></script>
     <script type="module" src="/modules/components/GSSplitter.mjs"></script>
     <script type="module" src="/modules/components/GSLayout.mjs"></script>
     <gs-css active="true" global="true" url="/assets/css/custom_5.2.0.css" rel="stylesheet"></gs-css>
 </head>
 
-<body >
+<body>
 
-<!-- header main footer -->
-<gs-layout type="vertical">
-    <gs-item css="text-bg-light" resizable="true" id="header" template="head">header</gs-item>
-    <gs-item css="text-bg-primary" id="main">centerd data</gs-item>
-    <gs-item css="text-bg-dark" resizable="true" id="footer" template="foot">footer</gs-item>
-</gs-layout>
+    <!-- left-sidebar main right-sidebar -->
+    <gs-layout type="horizontal">
+        <gs-item css="text-bg-secondary" id="left-sidebar" resizable="true" min="60" max="280" tempalte="sidebar">sidebar</gs-item>
+        <gs-item css="text-bg-primary"  id="content" v-pos="top" h-pos="center" template="content">content</gs-item>
+        <gs-item css="text-bg-secondary" id="right-sidebar" resizable="true" min="60" max="280" tempalte="sidebar">sidebar</gs-item>
+    </gs-layout>
 
 </body>
+
 </html>
