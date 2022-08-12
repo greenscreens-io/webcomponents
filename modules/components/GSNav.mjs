@@ -86,7 +86,7 @@ export default class GSNav extends GSElement {
                 ${GSItem.getToggleAttr(el)} ${GSItem.getActionAttr(el)} 
                 ${GSItem.getInjectAttr(el)} ${GSItem.getCSSAttr(el)}
                 ${GSItem.getSelectableAttr(el)} ${dataAttrs}>${contentTpl}</a>`;
-        
+
     }
 
     #getCssNavWrap(el) {

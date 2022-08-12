@@ -72,7 +72,7 @@ export default class GSNavLink extends HTMLAnchorElement {
     static #onClick(e, own) {
         const me = own || this;
         const accept = GSUtil.getAttributeAsBool(me, 'data-selectable', true);
-        if (!accept)  return GSNavLink.#trigger(e, me);
+        if (!accept) return GSNavLink.#trigger(e, me);
         const nav = GSNavLink.#nav(me);
         const list = GSNavLink.#list(me);
         const panel = GSNavLink.#panel(me);
