@@ -228,7 +228,7 @@
          const list = GSComponents.queryAll(target);
          const css = GSUtil.getAttribute(source, GSDataAttr.#dataCSS, '');
  
-         list.forEach(el => el.innerHTML = `<gs-template href="//${inject}.html" class="${css}"></gs-template>`);
+         list.forEach(el => el.innerHTML = `<gs-template href="${inject}" class="${css}"></gs-template>`);
  
      }
  
