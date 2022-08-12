@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>test</title>
+    <script type="text/javascript">
+        self.GS_TEMPLATE_URL = '/demos/tab';
+    </script>
+    <script type="module" src="/modules/index.mjs"></script>
+    <script type="module" src="/modules/components/ext/GSNavLink.mjs"></script>
+    <script type="module" src="/modules/components/GSNav.mjs"></script>
+    
+
+    <gs-css active="true" global="true" url="/assets/css/custom.css" rel="stylesheet"></gs-css>
+    <gs-css active="true" global="true" url="/assets/css/custom_5.2.0.css" rel="stylesheet" theme="gs"></gs-css>  
+    <gs-css global="true" url="/assets/icons/bootstrap-icons.css" rel="stylesheet" notheme="true"></gs-css>  
+
+    <template id="test">
+        Test
+    </template>
+</head>
+<body>
+
+  <div class="d-flex justify-content-center bg-light border shadow-sm p-2">
+    <div class="flex-column"><img src="/assets/img/logo.png" height="32"></div>
+  </div>
+
+    <div class="m-4 p-1 bg-light text-bg-light border shadow-sm">
+        <gs-nav css-nav="nav-pills" >
+            <gs-item title="Home" active="true" css-nav-wrap="" css-nav=""></gs-item>
+            <gs-item title="Test1" ></gs-item>
+            <gs-item title="Test2" icon="bi-alarm ms-1"></gs-item>
+        </gs-nav>
+    </div>
+
+    <div class="m-4 p-1 bg-light text-bg-light border shadow-sm">
+        <gs-nav css-nav="nav-pills bg-dark text-bg-dark" bar="false">
+            <gs-item title="Home" active="true" css-nav-wrap="" css-nav=""></gs-item>
+            <gs-item title="Test1" ></gs-item>
+            <gs-item title="Test2" ></gs-item>
+        </gs-nav>
+    </div>
+
+    <div class="m-4 p-1 bg-light text-bg-light border shadow-sm">
+        <gs-nav css-nav="nav-pills" bar="false">
+            <gs-item title="Home" active="true" css-nav-wrap="" css-nav="nav-pill"></gs-item>
+            <gs-item title="Test1" ></gs-item>
+            <gs-item title="Test2" ></gs-item>
+        </gs-nav>
+    </div>  
+    
+        <!-- automatic attachment to plain bootstrap -->
+        <div class="m-4 p-1 bg-light text-bg-light border shadow-sm">
+
+            <ul class="nav nav-tabs_ nav-pills mb-3" id="myTab" role="tablist">
+                <!-- gs-tabitem-nav-->
+                <li class="nav-item p-1" role="presentation">
+                  <a class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">Home</a>
+                </li>
+                <li class="nav-item p-1" role="presentation">
+                  <a class="nav-link" id="test-tab" data-bs-toggle="tab" data-bs-target="#test" type="button" role="tab" aria-controls="test" >Test</a>
+                </li>    
+              </ul>
+            
+              <div class="tab-content" id="myTabContent">
+                <!-- gs-tabitem-pane-->
+                <div class="tab-pane fade active show" id="home" role="tabpanel" aria-labelledby="home-tab">
+                  TEST 1      
+                </div>
+                <div class="tab-pane fade" id="test" role="tabpanel" aria-labelledby="test-tab">
+                  TEST 2      
+                </div>    
+              </div>        
+    
+        </div> 
+        
+</body>
+
+</html>

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<title>test</title>
+
+<script type="module" src="/modules/index.mjs"></script>
+<script type="module" src="/modules/components/ext/GSDataAttr.mjs"></script>
+<script type="module" src="/modules/components/GSDropdown.mjs"></script>
+
+<gs-css active="true" global="true" url="/assets/css/custom.css" rel="stylesheet"></gs-css>
+<gs-css active="true" global="true" url="/assets/css/custom_5.2.0.css" rel="stylesheet" theme="gs"></gs-css>
+
+<body clasS="vh-100 p-0 m-0">
+
+    <div class="d-flex justify-content-center bg-light border shadow-sm p-2">
+        <div class="flex-column"><img src="/assets/img/logo.png" height="32"></div>
+    </div>
+
+    <div class="border p-3 m-4 bg-light shadow-sm d-flex">
+
+        <!-- Full dropdown rendering -->
+        <gs-dropdown title="Dropdown 1" css="btn-primary me-1">
+            <gs-item header="Menu group"></gs-item>
+            <gs-item name="Open" action="open"></gs-item>
+            <gs-item></gs-item>
+            <gs-item name="Submenu 1">
+                <gs-item name="Submenu 1" action="sub_1_1"></gs-item>
+                <gs-item name="Submenu 2" action="sub_1_2"></gs-item>
+            </gs-item>
+            <gs-item name="Submenu 2">
+                <gs-item name="Submenu 2.1" action="sub_2_1"></gs-item>
+                <gs-item name="Submenu 2.2" action="sub_2_2"></gs-item>
+                <gs-item name="Submenu 2.3">
+                    <gs-item name="Submenu 2.3.1" action="sub_2_3_1"></gs-item>
+                    <gs-item name="Submenu 2.3.2" action="sub_2_3_2"></gs-item>
+                </gs-item>
+            </gs-item>
+        </gs-dropdown>
+
+        <!-- Only dropdown menu, no button to activate -->
+        <div class="dropdown me-1">
+            <button class="btn dropdown-toggle btn-secondary" type="button" data-bs-toggle="dropdown">
+                Dropdown 2
+            </button>
+            <gs-dropdown dark="true">
+                <gs-item header="Menu group"></gs-item>
+                <gs-item name="Open" action="open"></gs-item>
+                <gs-item></gs-item>
+                <gs-item name="Submenu 1">
+                    <gs-item name="Submenu 1" action="sub_1_1"></gs-item>
+                    <gs-item name="Submenu 2" action="sub_1_2"></gs-item>
+                </gs-item>
+                <gs-item name="Submenu 2">
+                    <gs-item name="Submenu 2.1" action="sub_2_1"></gs-item>
+                    <gs-item name="Submenu 2.2" action="sub_2_2"></gs-item>
+                    <gs-item name="Submenu 2.3">
+                        <gs-item name="Submenu 2.3.1" action="sub_2_3_1"></gs-item>
+                        <gs-item name="Submenu 2.3.2" action="sub_2_3_2"></gs-item>
+                    </gs-item>
+                </gs-item>
+            </gs-dropdown>
+        </div>
+
+        <!-- Bootstrap version, GS interceptor -->
+        <div class="dropdown me-1">
+            <a class="btn btn-secondary dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                Dropdown link
+            </a>
+            <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="#">Action</a></li>
+                <li><a class="dropdown-item" href="#">Another action</a></li>
+                <li><a class="dropdown-item" href="#">Something else here</a></li>
+            </ul>
+        </div>
+    </div>
+
+
+    <script defer="true" type="module">
+        const tbl = GSComponents.find('gs-dropdown');
+        tbl.listen('action', (e) => console.log(e.detail));
+    </script>
+</body>
+
+</html>

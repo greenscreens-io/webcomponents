@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+    <title>test</title>
+    <script type="text/javascript">
+        self.GS_TEMPLATE_URL='/demos/modal';
+    </script>
+    <script type="module" src="/modules/index.mjs"></script>
+    <script type="module" src="/modules/components/ext/GSForm.mjs"></script>
+    <script type="module" src="/modules/components/ext/GSDataAttr.mjs"></script>
+    <script type="module" src="/modules/components/GSButton.mjs"></script>
+    <script type="module" src="/modules/components/GSModal.mjs"></script>
+    
+    <gs-css active="true" global="true" url="/assets/css/custom.css" rel="stylesheet"></gs-css>
+    <gs-css active="true" global="true" url="/assets/css/custom_5.2.0.css" rel="stylesheet" theme="gs"></gs-css>  
+
+    <template id="modal">
+            <div class="modal d-none fade">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header border-0">
+                            <div class="modal-title">
+                                <slot name="title"></slot>
+                            </div>
+                        </div>
+                        <div class="modal-body">
+                            <slot name="body"></slot>
+                        </div>
+                        <div class="modal-footer border-0">
+                            <button class="btn btn-secondary modal-cancel">Cancel</button>
+                            <button class="btn btn-primary modal-ok">Ok</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-backdrop d-none fade "></div>
+	</template>
+
+<body>
+    
+    <div class="d-flex justify-content-center bg-light border shadpw-sm p-2">
+        <div class="flex-column"><img src="/assets/img/logo.png" height="32"></div>
+    </div>
+
+    <div class="m-4 p-1 bg-light border shadow-sm">
+        <a class="btn btn-primary " data-bs-toggle="modal" href="#dialog1" >Toggle with A Tag</a>
+        <gs-button css="btn-primary" title="Toggle with GS-BUTTON" toggle="modal" target="#dialog1" icon="bi-alarm me-1"></gs-button>
+    </div> 
+
+    <!--
+        <gs-modal visible="false" template="#modal" id="panel1" align="center">
+            <h4 slot="title">Modal panel</h4>
+            <gs-template slot="body" href="//dialog.tpl"></gs-template>
+        </gs-modal>
+        
+        <gs-modal template="#modal" id="panel2" closable="false" cancelable="true">
+            <h2 slot="title">Modal panel 2</h2>
+            <p slot="body" class="d-flex">Hello world 2!!!</p>
+        </gs-modal>
+    -->
+
+    <gs-modal template="#modal" id="dialog1" visible="true">
+        <h4 slot="title">Login</h4>
+        <gs-template slot="body" flat="true" href="//dialog.tpl"></gs-template>
+    </gs-modal>
+
+</body>
+</html>

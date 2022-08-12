@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>test</title>
+    <script type="text/javascript">
+        self.GS_TEMPLATE_URL = '/demos/tab';
+    </script>
+    <script type="module" src="/modules/index.mjs"></script>
+    <script type="module" src="/modules/components/ext/GSNavLink.mjs"></script>
+    <script type="module" src="/modules/components/GSList.mjs"></script>
+    
+
+    <gs-css active="true" global="true" url="/assets/css/custom.css" rel="stylesheet"></gs-css>
+    <gs-css active="true" global="true" url="/assets/css/custom_5.2.0.css" rel="stylesheet" theme="gs"></gs-css>  
+    <gs-css global="true" url="/assets/icons/bootstrap-icons.css" rel="stylesheet" notheme="true"></gs-css>  
+
+    <template id="test">
+        Test
+    </template>
+</head>
+<body>
+
+  <div class="d-flex justify-content-center bg-light border shadow-sm p-2">
+    <div class="flex-column"><img src="/assets/img/logo.png" height="32"></div>
+  </div>
+
+    <!-- selectable -->
+    <div class="m-4 p-1 bg-light text-bg-light border shadow-sm">
+        <gs-list css="" >
+            <gs-item title="Home" active="true"></gs-item>
+            <gs-item title="Test1"></gs-item>
+            <gs-item title="Test2">
+              <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1">List group item heading</h5>
+                <small class="text-muted">3 days ago</small>
+              </div>
+              <p class="mb-1">Some placeholder content in a paragraph.</p>
+              <small class="text-muted">And some muted small print.</small>              
+            </gs-item>
+        </gs-list>
+    </div>
+
+    <!-- non selectable -->
+    <div class="m-4 p-1 bg-light text-bg-light border shadow-sm">
+      <gs-list css="" selectable="false">
+          <gs-item title="Home"></gs-item>
+          <gs-item title="Test1"></gs-item>
+          <gs-item title="Test2">
+            <div class="d-flex w-100 justify-content-between">
+              <h5 class="mb-1">List group item heading</h5>
+              <small class="text-muted">3 days ago</small>
+            </div>
+            <p class="mb-1">Some placeholder content in a paragraph.</p>
+            <small class="text-muted">And some muted small print.</small>              
+          </gs-item>
+      </gs-list>
+    </div>
+  
+        <!-- automatic attachment to plain bootstrap -->
+        <div class="m-4 p-1 bg-light text-bg-light border shadow-sm">
+          <div class="list-group">
+            <a href="#" class="list-group-item list-group-item-action active" aria-current="true">
+              <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1">List group item heading</h5>
+                <small>3 days ago</small>
+              </div>
+              <p class="mb-1">Some placeholder content in a paragraph.</p>
+              <small>And some small print.</small>
+            </a>
+            <a href="#" class="list-group-item list-group-item-action">
+              <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1">List group item heading</h5>
+                <small class="text-muted">3 days ago</small>
+              </div>
+              <p class="mb-1">Some placeholder content in a paragraph.</p>
+              <small class="text-muted">And some muted small print.</small>
+            </a>
+            <a href="#" class="list-group-item list-group-item-action">
+              <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1">List group item heading</h5>
+                <small class="text-muted">3 days ago</small>
+              </div>
+              <p class="mb-1">Some placeholder content in a paragraph.</p>
+              <small class="text-muted">And some muted small print.</small>
+            </a>
+          </div>      
+    
+        </div> 
+        
+</body>
+
+</html>

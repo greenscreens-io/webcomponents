@@ -1,0 +1,64 @@
+.form-control_ {
+	color: #627680;
+	font-weight: 600;
+	height: unset;
+	box-shadow: none;
+	background-color: #f9f9fb;
+	transition: border .5s;
+	border-radius: 1px;
+	border: 0;
+	padding: 0.8em;
+}
+
+.form-control:focus {
+	outline-color: #03a9f43b;
+	background-color: #f9f9fb !important;
+	outline-style: solid;
+	outline-width: thin;
+	color: #f16000 !important;
+}
+
+.btn {
+	color: #fff;
+	background-color: #f16000;
+	border-color: #f69757;
+}
+
+.btn:focus, .btn:hover {
+	color: #fff;
+	background-color: #f16000;
+	border-color: #f69758;
+	box-shadow: 0 0 0 0.25rem #ffcc80;
+}
+
+.btn:hover {
+	color: #fff;
+}
+
+.form-control:focus {
+	color: #212529;
+	background-color: #fff;
+	border-color: #fbcfb3;
+	box-shadow: 0 0 0 0.25rem #fbcfb382;
+}
+.noselect {
+	user-select: none;
+}
+.selectable {
+	user-select: all;
+}
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(359deg);
+  }
+}
+
+.anime:hover {
+	-webkit-animation: spin 2s infinite linear;
+    -moz-animation: spin 2s infinite linear;
+    -o-animation: spin 2s infinite linear;
+    animation: spin 2s infinite linear;
+}

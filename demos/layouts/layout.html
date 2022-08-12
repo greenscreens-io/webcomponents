@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>test</title>
+    <script type="text/javascript">
+        self.GS_TEMPLATE_URL = '/demos/layout/templates';
+    </script>
+    <script type="module" src="/modules/index.mjs"></script>
+    <script type="module" src="/modules/components/GSSplitter.mjs"></script>
+
+    <gs-css active="true" global="true" url="/assets/css/custom_5.2.0.css" rel="stylesheet"></gs-css>
+</head>
+
+<body class="text-bg-dark vh-100 p-0 m-0 overflow-hidden">
+    <div clasS="">
+        <header class="text-bg-light">header</header>
+        <aside class="text-bg-secondary">sidebar</aside>
+        <gs-splitter split="vertical" resize="start"></gs-splitter>
+        <main class="text-bg-primary">main</main>
+        <footer class="text-bg-dark">footer</footer>
+    </div>
+</body>
+
+</html>

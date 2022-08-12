@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>test</title>
+    <script type="text/javascript">
+        self.GS_TEMPLATE_URL='/demos/layout/templates';
+    </script>        
+    <script type="module" src="/modules/index.mjs"></script>
+    <script type="module" src="/modules/components/GSSplitter.mjs"></script>
+    <script type="module" src="/modules/components/GSLayout.mjs"></script>
+    <gs-css global="true" url="/assets/css/custom_5.2.0.css" rel="stylesheet"></gs-css>
+    <gs-css global="true" url="/assets/icons/bootstrap-icons.css" rel="stylesheet" notheme="true"></gs-css>  
+</head>
+
+<body >
+
+<gs-layout type="vertical" css="" >
+    
+    <gs-item template="head" v-pos="center" h-pos="center" min="5" css="p-3 border-bottm shadow-sm text-bg-light">
+        <div class=" ">
+            <img src="/assets/img/logo.png" height="32">
+        </div>
+    </gs-item>
+
+    <gs-item>
+        <gs-layout type="horizontal">
+            <gs-item css="p-3 border-end shadow-sm text-bg-dark" min="260" max="260" template="">left-sidebar</gs-item>
+            <gs-item css="p-3" id="content" v-pos="top" h-pos="center">centerd data</gs-item>
+        </gs-layout>    
+    </gs-item>
+
+</gs-layout>
+
+
+<div class="fixed-bottom d-flex justify-content-center align-items-center mt-1 p-2 text-muted">
+    <small>© Green Scereens Ltd. 2015. - 2022.</small>
+</div>
+
+</body>
+</html>

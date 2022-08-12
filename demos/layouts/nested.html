@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>test</title>
+    <script type="text/javascript">
+        self.GS_TEMPLATE_URL='/demos/layout/templates';
+    </script>        
+    <script type="module" src="/modules/index.mjs"></script>
+    <script type="module" src="/modules/components/GSSplitter.mjs"></script>
+    <script type="module" src="/modules/components/GSLayout.mjs"></script>
+    <gs-css global="true" url="/assets/css/custom_5.2.0.css" rel="stylesheet"></gs-css>
+</head>
+
+<body >
+
+<!-- header main footer -->
+<gs-layout type="vertical">
+    <!-- header - tries to load template, if not found, show text-->
+    <gs-item css="text-bg-light" resizable="true" id="hdr1" template="head" v-pos="center" h-pos="center" min="5">header</gs-item>
+    <!-- main - central panel containing another elements as tempalte or child components  -->
+    <gs-item css="text-bg-info">
+
+        <!-- left-sidebar main right-sidebar -->
+        <gs-layout type="horizontal">
+            <!-- left sidebar panel -->
+            <gs-item css="text-bg-secondary" id="sb1" resizable="true" min="60" max="280" template="">left-sidebar</gs-item>
+            <!-- central panel -->
+            <gs-item css="text-bg-primary" id="content" v-pos="top" h-pos="center">centerd data</gs-item>
+            <!-- right sidebar panel -->
+            <gs-item css="text-bg-secondary" id="sb2" resizable="true" min="60" max="280" template="" v-pos="top" h-pos="end">right-sidebar</gs-item>
+        </gs-layout>
+        
+    </gs-item>
+    <!-- footer - tries to load template, if not found, show text-->
+    <gs-item css="text-bg-dark" resizable="true" id="ftr1" template="foot" v-pos="center" h-pos="center" min="5">footer</gs-item>
+</gs-layout>
+
+</body>
+
+</html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Tooltip Test</title>
+
+    <script type="module" src="/modules/index.mjs"></script>
+    <script type="module" src="/modules/components/ext/GSNavLink.mjs"></script>
+    <script type="module" src="/modules/components/GSTooltip.mjs"></script>
+
+
+    <gs-css active="true" global="true" url="/assets/css/custom.css" rel="stylesheet"></gs-css>
+    <gs-css active="true" global="true" url="/assets/css/custom_5.2.0.css" rel="stylesheet" theme="gs"></gs-css>  
+
+
+</head>
+<body>
+    <div class="d-flex justify-content-center bg-light border shadow-sm p-2">
+        <div class="flex-column"><img src="/assets/img/logo.png" height="32"></div>
+    </div>
+
+    <!-- auto-generated gs-tooltip based on data-bs-toggle="tooltip" and title attribute -->
+    <div class="m-4 p-1 bg-light border shadow-sm">
+        <label id="l1" class="form-label" data-bs-toggle="tooltip" data-bs-placement="top" title="Top">Top</label>
+        <label id="l2" class="form-label" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Bottom">Bottom</label>
+        <label id="l3" class="form-label" data-bs-toggle="tooltip" data-bs-placement="start" title="Left">Left</label>
+        <label id="l4" class="form-label" data-bs-toggle="tooltip" data-bs-placement="end" title="Right">Right</label>
+    </div> 
+    
+    <!-- attach to ref targeted element -->
+    <div class="m-4 p-1 bg-light border shadow-sm">        
+        <label id="l5" class="form-label">Bottom</label>
+    </div> 
+    <gs-tooltip placement="bottom" title="Bottom" ref="#l5"></gs-tooltip>
+    
+    <!-- attach to parent element sibling -->
+    <div class="m-4 p-1 bg-light border shadow-sm">        
+        <label id="l6" class="form-label">
+            Left
+            <gs-tooltip placement="start" title="Left"></gs-tooltip>
+        </label>
+    </div> 
+
+    <!-- attach to previous element sibling -->
+    <div class="m-4 p-1 bg-light border shadow-sm">        
+        <label id="l7" class="form-label">Right</label>
+        <gs-tooltip placement="end" title="Right"></gs-tooltip>
+    </div> 
+
+</body>
+
+</html>

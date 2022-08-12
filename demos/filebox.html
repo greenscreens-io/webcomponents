@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Tooltip Test</title>
+
+    <script type="module" src="/modules/index.mjs"></script>
+    <script type="module" src="/modules/components/filebox/GSFileBox.mjs"></script>
+
+    <gs-css active="true" global="true" url="/assets/css/custom.css" rel="stylesheet"></gs-css>
+
+    <style>
+        gs-filebox {
+            --gs-fieldbox-border: dotted;
+            --gs-fieldbox-color: dimgray;
+        }      
+        gs-filebox#other {
+            --gs-fieldbox-color: green;
+        }
+        gs-filebox#other::part(border) {
+            background-color: white;
+        }
+        gs-filebox#other::part(list) {
+            color: greenyellow;
+        } 
+        /*
+        gs-filebox#other::part(input) {
+            background-color: lightskyblue;
+        }
+        */        
+      </style>
+</head>
+<body>
+
+    <div class="d-flex justify-content-center bg-light border shadow-sm p-2">
+        <div class="flex-column"><img src="/assets/img/logo.png" height="32"></div>
+    </div>
+
+    <div class="container mt-4">
+        <gs-filebox multiple="true" elid="file"></gs-filebox>
+    </div> 
+
+    <div class="container mt-4">
+        <gs-filebox id="other" flat="true" multiple="true" directory="true" elid="test"></gs-filebox>
+    </div> 
+</body>
+
+</html>

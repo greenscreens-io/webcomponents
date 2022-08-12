@@ -1,0 +1,21 @@
+<html>
+<head>
+
+	<script type="module" src="/modules/head/index.mjs"></script>
+	<script type="module" src="/modules/components/ext/GSDataList.mjs"></script>
+	<gs-css active="true" global="true" url="/assets/css/custom.css" rel="stylesheet"></gs-css>
+</head>
+
+<body >
+
+	<div class="d-flex justify-content-center bg-light border shadow-sm p-2">
+        <div class="flex-column"><img src="/assets/img/logo.png" height="32"></div>
+    </div>
+
+	<div class="container text-bg-light mt-4">
+		<input type="text" list="types" name="type" class="form-control" autocomplete="on" autocorrect="off" autocapitalize="off" spellcheck="false">
+		<datalist id="types" is="gs-datalist" data="datalist.json"></datalist>
+	</div>
+
+</body>
+</html>

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+    <title>test</title>
+    <script type="text/javascript">
+        self.GS_TEMPLATE_URL='/demos/toast';
+    </script>
+    <script type="module" src="/modules/index.mjs"></script>
+    <script type="module" src="/modules/components/toast/index.mjs"></script>
+    
+    <gs-css active="true" global="true" url="/assets/css/custom.css" rel="stylesheet"></gs-css>
+    <gs-css active="true" global="true" url="/assets/css/custom_5.2.0.css" rel="stylesheet" theme="gs"></gs-css>  
+
+<body>
+
+    <div class="d-flex justify-content-center bg-light border shadow-sm p-2">
+        <div class="flex-column"><img src="/assets/img/logo.png" height="32"></div>
+    </div>
+
+    <form>
+        <div class="m-4 w-25">
+          <label for="selectToastPlacement">Toast placement</label>
+          <select class="form-select mt-2" id="selectToastPlacement">
+            <option value="" selected>Select a position...</option>
+            <option value="position-fixed top-0 start-0">Top left</option>
+            <option value="position-fixed top-0 start-50 translate-middle-x">Top center</option>
+            <option value="position-fixed top-0 end-0">Top right</option>
+            <option value="position-fixed top-50 start-0 translate-middle-y">Middle left</option>
+            <option value="position-fixed top-50 start-50 translate-middle">Middle center</option>
+            <option value="position-fixed top-50 end-0 translate-middle-y">Middle right</option>
+            <option value="position-fixed bottom-0 start-0">Bottom left</option>
+            <option value="position-fixed bottom-0 start-50 translate-middle-x">Bottom center</option>
+            <option value="position-fixed bottom-0 end-0">Bottom right</option>
+          </select>
+        </div>
+    </form>
+
+
+    <gs-notification>
+        <gs-toast slot="content" css="bg-dark text-bg-dark" message="Dynamic toast" closable="false" timeout="0" visible="true" id="toast"></gs-toast>
+        <gs-toast slot="content" css="" message="Welcome to the portal" closable="false" timeout="2" visible="true"></gs-toast>
+        <gs-toast slot="content" css="" message="Please login with email" closable="true" timeout="40" visible="true"></gs-toast>
+    </gs-notification>
+
+    <script>
+        const el = document.getElementById('toast');
+        let css = el.css;
+        document.querySelector('select').addEventListener('change', (e) =>{
+            if (!css) css = el.css;
+            el.css = css + ' ' + e.target.value;
+        });        
+    </script>
+</body>
+</html>

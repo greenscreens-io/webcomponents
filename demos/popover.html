@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Tooltip Test</title>
+
+    <script type="module" src="/modules/index.mjs"></script>
+    <script type="module" src="/modules/components/ext/GSNavLink.mjs"></script>
+    <script type="module" src="/modules/components/GSPopover.mjs"></script>
+
+    <gs-css active="true" global="true" url="/assets/css/custom.css" rel="stylesheet"></gs-css>
+    <gs-css active="true" global="true" url="/assets/css/custom_5.2.0.css" rel="stylesheet" theme="gs"></gs-css>  
+
+
+</head>
+<body class="vh-100 overflow-hidden">
+  
+  <div class="d-flex justify-content-center bg-light border shadow-sm p-2">
+    <div class="flex-column"><img src="/assets/img/logo.png" height="32"></div>
+  </div>
+
+    <!-- auto-generated gs-popover based on data-bs-toggle="popover" and title attribute -->
+    <div class="m-4 p-1 bg-light border shadow-sm">
+        <button type="button" class="btn btn-secondary" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top" data-bs-content="Top popover">
+            Popover on top
+          </button>
+          <button type="button" class="btn btn-secondary" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="bottom" data-bs-content="Bottom popover">
+            Popover on bottom
+          </button>
+          <button type="button" class="btn btn-secondary" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="start" data-bs-content="Left popover">
+            Popover on left
+          </button>
+          <button type="button" class="btn btn-secondary" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="end" data-bs-content="Right popover">
+            Popover on right
+          </button>
+    </div> 
+
+    <!-- attach to ref targeted element -->
+    <div class="m-4 p-1 bg-light border shadow-sm">        
+        <label id="l5" class="form-label">Bottom</label>
+    </div> 
+    <gs-popover placement="bottom" content="Bottom" ref="#l5"></gs-popover>
+    
+    <!-- attach to parent element sibling -->
+    <div class="m-4 p-1 bg-light border shadow-sm">        
+        <label id="l6" class="form-label">
+            Left 
+            <gs-popover placement="start" title="Left" trigger="focus"></gs-popover>
+        </label>
+        <small> (click to activate, click outside to deactivate</small>
+    </div> 
+
+    <!-- attach to previous element sibling -->
+    <div class="m-4 p-1 bg-light border shadow-sm">        
+        <label id="l7" class="form-label">Right</label>
+        <gs-popover placement="end" title="Right" content="Content" trigger="hover"></gs-popover>
+    </div>     
+
+</body>
+
+</html>

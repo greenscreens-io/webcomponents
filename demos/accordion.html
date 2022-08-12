@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Accordion Test</title>
+
+    <script type="module" src="/modules/index.mjs"></script>
+    <script type="module" src="/modules/components/ext/GSDataAttr.mjs"></script>
+    <script type="module" src="/modules/components/GSAccordion.mjs"></script>
+
+    <gs-css global="true" url="/assets/css/font-awesome.free.min.css" rel="stylesheet"></gs-css>
+    <gs-css global="true" url="/assets/css/custom.css" rel="stylesheet"></gs-css>
+    <gs-css active="true" global="true" url="/assets/css/custom.css" rel="stylesheet"></gs-css>
+    <gs-css active="true" global="true" url="/assets/css/custom_5.2.0.css" rel="stylesheet" theme="gs"></gs-css>  
+
+</head>
+<body>
+
+  <div class="d-flex justify-content-center bg-light border shadow-sm p-2">
+    <div class="flex-column"><img src="/assets/img/logo.png" height="32"></div>
+  </div>
+
+    <!-- auto-generated gs-accordion -->
+    <div class="m-4 p-1 bg-light border shadow-sm">
+        <gs-accordion css-item="m-1 shadow-sm border" css-header="" css-body="">
+            <gs-item title="Accordion Item #1" message="GS tag accordion item #1" autoclose="false" visible="true"></gs-item>
+            <gs-item title="Accordion Item #2" message="GS tag accordion item #2"></gs-item>
+            <gs-item title="Accordion Item #3" message="GS tag accordion item #3"></gs-item>
+        </gs-accordion>
+    </div> 
+
+    <!--
+      Load from ref id
+      <gs-accordionitem title="#title1" message="#body1"></gs-accordionitem>
+              
+      Load from remote template
+      <gs-accordionitem title="//title1.tpl" message="//body1.tpl"></gs-accordionitem>
+    -->
+
+    <!-- bootstrap accordion -->
+    <div class="m-4 p-1 bg-light border shadow-sm">
+        <div class="accordion" id="bsaccordion">
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="headingOne">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne">
+                  Accordion Item #1
+                </button>
+              </h2>
+              <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="bsaccordion">
+                <div class="accordion-body">
+                  <strong>This is the first item's accordion body.</strong> It is shown by default.
+                </div>
+              </div>
+            </div>
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="headingTwo">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo">
+                  Accordion Item #2
+                </button>
+              </h2>
+              <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="bsaccordion">
+                <div class="accordion-body">
+                  <strong>This is the second item's accordion body.</strong> It is hidden by default.
+                </div>
+              </div>
+            </div>
+          </div>
+    </div> 
+   
+
+</body>
+</html>

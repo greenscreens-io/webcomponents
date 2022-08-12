@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+    <title>test</title>
+
+    <script type="module" src="/modules/index.mjs"></script>
+    <script type="module" src="/modules/components/table/index.mjs"></script>
+    
+    <gs-css global="true" url="/assets/css/font-awesome.free.min.css" rel="stylesheet"></gs-css>
+	<gs-css global="true" url="/assets/css/custom.css" rel="stylesheet"></gs-css>
+	<gs-css global="true" url="style.css" rel="stylesheet"></gs-css>
+
+<body>
+
+    <div class="border p-0 m-2 shadow-sm table-responsive text-nowrap">
+        <gs-table limit=10>
+            <gs-data src="data1.json" id="employees"></gs-data>
+        </gs-table>
+    </div>
+
+    <div class="border p-0 m-2 shadow-sm table-responsive text-nowrap">
+        <gs-table index=false page=1 limit=10 data="employees"
+            css="table table-light table-hover table-striped user-select-none m-0" 
+            css-select="table-active table-dark _text-light fw-bold"
+            css-header="user-select-none table-light">
+            <gs-header>
+                <gs-column name="Name" width="250px"></gs-column>
+                <gs-column name="Position" width="350px"></gs-column>
+                <gs-column name="Office" width="200px"></gs-column>
+                <gs-column name="Age" width="75px"></gs-column>
+                <gs-column name="Salary" format="$%s" width="120px"></gs-column>
+                <gs-column name="Start date" title="Start Date" format="dd.mm.yyyy" width="130px"></gs-column>
+                <gs-column></gs-column>
+            </gs-header>
+            <gs-data src="data2.json" id="employees">
+                <gs-column name="Age" type="number"></gs-column>
+                <gs-column name="Salary" type="number" format="$\d"></gs-column>
+                <gs-column name="Start date" type="date" format="yyyy/mm/dd"></gs-column>
+            </gs-data>
+        </gs-table>
+    </div>
+
+</body>
+</html>

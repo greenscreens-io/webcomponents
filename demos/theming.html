@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Theming Test</title>
+
+    <script type="module" src="/modules/index.mjs"></script>
+
+    <!-- 
+        When auto=true gs-css monitors for #theme changes to activate / deactivate loaded css
+     -->
+    <gs-css auto="true" global="true" url="/assets/css/custom.css" rel="stylesheet"></gs-css>
+    <gs-css auto="true" global="true" url="/assets/css/bootstrap_5.2.0.css" rel="stylesheet" disabled="true" theme="bs"></gs-css>
+
+    <!-- 
+        modify bootstrap only with variables
+    -->
+    <gs-css auto="true" global="true" url="/assets/css/theme.css" rel="stylesheet" disabled="true" theme="bs"></gs-css>
+
+</head>
+<body>
+    
+  <div class="d-flex justify-content-center bg-light border shadow-sm p-2">
+    <div class="flex-column"><img src="/assets/img/logo.png" height="32"></div>
+  </div>
+
+    <!-- buttons does not change here on theme change as button custom variables are the same as colors for custom theme -->
+    <div class="m-4 p-1 bg-light border shadow-sm">        
+        <a id="b2" class="btn btn-primary text-white" href="#theme=bs">Bootstrap Theme</a>
+        <a id="b1" class="btn btn-primary text-white" href="#theme=default">Custom Theme</a>
+    </div> 
+
+    <div class="m-4 p-1 bg-light border shadow-sm">
+        <button id="b1" class="btn">Show/Hide</button>
+        <button id="b2" class="btn"><i class="bi bi-alarm me-1"></i>Close</button>
+    </div> 
+
+        <div class="m-4 p-1 bg-light text-bg-light border shadow-sm">
+
+            <ul class="nav nav-tabs_ nav-pills mb-3" id="myTab" role="tablist">
+                <!-- gs-tabitem-nav-->
+                <li class="nav-item p-1" role="presentation">
+                  <a class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">Home</a>
+                </li>
+                <li class="nav-item p-1" role="presentation">
+                  <a class="nav-link" id="test-tab" data-bs-toggle="tab" data-bs-target="#test" type="button" role="tab" aria-controls="test" >Test</a>
+                </li>    
+              </ul>
+            
+              <div class="tab-content" id="myTabContent">
+                <!-- gs-tabitem-pane-->
+                <div class="tab-pane fade active show" id="home" role="tabpanel" aria-labelledby="home-tab">
+                  TEST 1      
+                </div>
+                <div class="tab-pane fade" id="test" role="tabpanel" aria-labelledby="test-tab">
+                  TEST 2      
+                </div>    
+              </div>        
+    
+        </div> 
+
+</body>
+
+</html>

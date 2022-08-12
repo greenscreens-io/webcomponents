@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Tooltip Test</title>
+
+    <script type="module" src="/modules/index.mjs"></script>
+    <script type="module" src="/modules/components/ext/GSDataAttr.mjs"></script>
+    <script type="module" src="/modules/components/GSAlert.mjs"></script>
+
+    <gs-css active="true" global="true" url="/assets/css/custom.css" rel="stylesheet"></gs-css>
+    <gs-css active="true" global="true" url="/assets/css/custom_5.2.0.css" rel="stylesheet" theme="gs"></gs-css>  
+
+</head>
+<body>
+
+    <div class="d-flex justify-content-center bg-light border shadow-sm p-2">
+        <div class="flex-column"><img src="/assets/img/logo.png" height="32"></div>
+      </div>
+      
+    <div class="container mt-4">
+        <gs-alert css="alert-primary" css-active="fade" title="GS primary alert!" dismissable="false"></gs-alert>
+        <gs-alert css="alert-secondary border shadow-sm mt-2" title="GS secondary alert!" dismissible="true"></gs-alert>
+        <gs-alert css="alert-light border shadow-sm mt-2" flat="false" dismissible="true">
+            <slot>This is slot light injection</slot>
+        </gs-alert>        
+        <gs-alert css="alert-dark border shadow-sm mt-2" flat="false" title="This is slot dark injection!"></gs-alert>
+    </div> 
+
+    <hr>
+    
+    <div class="container">
+        <div class="alert alert-primary" role="alert" id="a1">
+            A simple primary alert!
+        </div>
+    
+        <div class="alert alert-secondary" role="alert" id="a2">
+            A simple secondary alert!
+        </div>
+    
+        <div class="alert alert-dark alert-dismissible fade show" role="alert" id="a3">
+            A simple dark alert!
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    </div>
+
+</body>
+
+</html>

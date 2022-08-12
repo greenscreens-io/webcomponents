@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>test</title>
+    <script type="module" src="/modules/index.mjs"></script>
+    <script type="module" src="/modules/components/GSSplitter.mjs"></script>
+    <gs-css active="true" global="true" url="/assets/css/custom_5.2.0.css" rel="stylesheet"></gs-css>
+</head>
+
+<body >
+<div class="d-flex flex-column vh-100">
+    <div class="text-bg-light">header</div>
+    <gs-splitter split="horizontal" id="shdr"></gs-splitter>
+    <div class="flex-grow-1 d-flex">
+        <div class="text-bg-secondary" style="max-width: 280px;min-width: 60px;">sidebar</div>
+        <gs-splitter split="vertical" id="ssb"></gs-splitter>
+        <div class="text-bg-primary flex-grow-1 d-flex justify-content-center align-items-start">main</div>
+        <gs-splitter split="vertical" resize="end" id="smain"></gs-splitter>
+        <div class="text-bg-secondary" style="max-width: 280px;min-width: 60px;">sidebar</div>
+    </div>
+    <gs-splitter split="horizontal" resize="end" id="sftr"></gs-splitter>
+    <div class="text-bg-dark">footer</div>
+</div>
+
+</body>
+
+</html>

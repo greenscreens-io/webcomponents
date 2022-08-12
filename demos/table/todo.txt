@@ -1,0 +1,34 @@
+TODO - doc for every comopnent
+
+gs-column 
+  list = fixed (combo) flexi (datalist) 
+  auto = (datalist self populate) if no childs, else fixed list
+  operator = in (default), eq, gt, ge, lt, le, ne, 
+  case = false (default) case sensitive
+  set input type 
+
+
+
+        <gs-table index=false page=1 limit=10 data="employees"
+            css="table table-hover table-striped user-select-none m-0" 
+            css-select="bg-dark text-light fw-bold"
+            css-header="user-select-none table-light">
+            <gs-header>
+                <gs-column name="Name" width="250px"></gs-column>
+                <gs-column name="Position" width="350px"></gs-column>
+                <gs-column name="Office" width="200px"></gs-column>
+                <gs-column name="Age" width="75px"></gs-column>
+                <gs-column name="Salary" format="$%s" width="120px"></gs-column>
+                <gs-column name="Start date" title="Start Date" format="dd.mm.yyyy" width="130px"></gs-column>
+                <gs-column></gs-column>
+            </gs-header>
+            <gs-data src="data2.json" id="employees">
+                <gs-column name="Age" type="number"></gs-column>
+                <gs-column name="Salary" type="number" format="$\d"></gs-column>
+                <gs-column name="Start date" type="date" format="yyyy/mm/dd"></gs-column>
+            </gs-data>
+        </gs-table>
+
+    // auto with external table reference (shared)
+        <gs-table data="employees" index=false></gs-table>
+        <gs-data src="data1.json" id="employees"></gs-data>

@@ -1,0 +1,11 @@
+{
+    "private": true,
+    "scripts": {
+        "build": "babel modules -d lib",
+        ".doc": "jsdoc -c ./doc/.defs/jsdoc.json",
+        "doc1": "jsdoc -c ./doc/.defs/jsdoc1.json",
+        "doc2": "jsdoc -c ./doc/.defs/jsdoc2.json",
+        "doc3": "jsdoc -c ./doc/.defs/jsdoc3.json",
+        "doc" : "npm run doc1 && npm run doc2 && npm run doc3"
+    }
+}
