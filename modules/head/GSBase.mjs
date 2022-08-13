@@ -12,7 +12,7 @@
  * @class
  * @abstract
  */
-export default class GSBase extends HTMLElement {
+ export default class GSBase extends HTMLElement {
 
 	static #id = 0
 
@@ -321,7 +321,7 @@ export default class GSBase extends HTMLElement {
 	 * @returns {boolean}
 	 */
 	get async() {
-		return this.getAttribute('async') == 'true';
+		return this.#getAttributeBool('async');
 	}
 
 	/**
@@ -329,15 +329,15 @@ export default class GSBase extends HTMLElement {
 	 * @returns {boolean}
 	 */
 	get defer() {
-		return this.getAttribute('defer') == 'true';
+		return this.#getAttributeBool('defer');
 	}
 
 	/**
-	 * Determine if laoded resource will be rendered inside html head
+	 * Determine if loaded resource will be rendered inside html head
 	 * @returns {boolean}
 	 */
 	get isHead() {
-		return this.getAttribute('head') != 'false';
+		return this.#getAttributeBool('head');
 	}
 
 	/**
@@ -345,16 +345,34 @@ export default class GSBase extends HTMLElement {
 	 * @returns {boolean}
 	 */
 	get isAuto() {
-		return this.getAttribute('auto') == 'true';
+		return this.#getAttributeBool('auto');
 	}
 
 	/**
 	 * Retrieve https or https schema. 
-	 * Used t ofilter under which schems loader element is applied
+	 * Used to filter under which schems loader element is applied
 	 * @returns {string}
 	 */
 	get schema() {
 		return this.getAttribute('schema') || '';
+	}
+
+	/**
+	 * Resource nonce value for content check
+	 * @returns {string}
+	 */
+	get nonce() {
+		return this.getAttribute('nonce') || '';
+	}
+
+	/**
+	 * Check if attribute is true or just available
+	 * @param {string} name Attribute name
+	 * @returns {boolean}
+	 */
+	#getAttributeBool(name = '') {
+		const val = this.getAttribute(name) || 'true';
+		return val === 'true';
 	}
 
 	static {
