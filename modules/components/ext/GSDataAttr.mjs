@@ -216,7 +216,7 @@ export default class GSDataAttr {
     }
 
     /**
-    * Automatic tempalte injection at given target
+    * Automatic template injection at given target
     * @param {*} source caller 
     * @param {*} target css selector
     * @param {*} type type of target
