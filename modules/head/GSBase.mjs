@@ -12,7 +12,7 @@
  * @class
  * @abstract
  */
- export default class GSBase extends HTMLElement {
+export default class GSBase extends HTMLElement {
 
 	static #id = 0
 
@@ -321,7 +321,7 @@
 	 * @returns {boolean}
 	 */
 	get async() {
-		return this.#getAttributeBool('async');
+		return this.getAttributeBool('async');
 	}
 
 	/**
@@ -329,7 +329,7 @@
 	 * @returns {boolean}
 	 */
 	get defer() {
-		return this.#getAttributeBool('defer');
+		return this.getAttributeBool('defer');
 	}
 
 	/**
@@ -337,7 +337,7 @@
 	 * @returns {boolean}
 	 */
 	get isHead() {
-		return this.#getAttributeBool('head');
+		return this.getAttributeBool('head');
 	}
 
 	/**
@@ -345,12 +345,12 @@
 	 * @returns {boolean}
 	 */
 	get isAuto() {
-		return this.#getAttributeBool('auto');
+		return this.getAttributeBool('auto');
 	}
 
 	/**
 	 * Retrieve https or https schema. 
-	 * Used to filter under which schems loader element is applied
+	 * Used to filter under which schema loader element is applied
 	 * @returns {string}
 	 */
 	get schema() {
@@ -370,7 +370,7 @@
 	 * @param {string} name Attribute name
 	 * @returns {boolean}
 	 */
-	#getAttributeBool(name = '') {
+	getAttributeBool(name = '') {
 		const val = this.getAttribute(name) || 'true';
 		return val === 'true';
 	}

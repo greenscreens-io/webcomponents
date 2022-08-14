@@ -10,8 +10,8 @@
     <script type="module" src="/modules/components/ext/GSNavLink.mjs"></script>
     <script type="module" src="/modules/components/GSTab.mjs"></script>
 
-    <gs-css active="true" global="true" url="/assets/css/custom_5.2.0.css" rel="stylesheet"></gs-css>  
-    <gs-css global="true" url="/assets/icons/bootstrap-icons.css" rel="stylesheet" notheme="true"></gs-css>  
+    <gs-css  url="/assets/css/custom_5.2.0.css" ></gs-css>  
+    <gs-css url="/assets/icons/bootstrap-icons.css"  notheme="true"></gs-css>  
 
     <template id="test">
         Test
@@ -24,7 +24,7 @@
     </div>
 
     <gs-tab css="m-4 p-1 bg-light border shadow-sm" css-nav="nav-tabs nav-pills" css-pane="">
-        <gs-item title="Home" active="true" template="//content.tpl" css-nav-wrap="" css-nav="nav-pill" css-pane=""></gs-item>
+        <gs-item title="Home"  template="//content.tpl" css-nav-wrap="" css-nav="nav-pill" css-pane=""></gs-item>
         <gs-item title="Test1" flat="true" template="//content2.tpl" icon="bi-alarm ms-1"></gs-item>
         <gs-item title="Test2" template="#test"></gs-item>
         <gs-item title="Blog" css-nav-wrap="" css-nav="" css-pane="">
@@ -39,7 +39,7 @@
     
 
     <gs-tab css="m-4 p-3 bg-light border shadow-sm" css-nav="nav-tabs nav-pills" css-pane="" placement="start">
-        <gs-item active="true" title="About" css-nav="" css-pane="">
+        <gs-item  title="About" css-nav="" css-pane="">
             <p>About - This is internal text to be shown in tab panel</p>
         </gs-item>
         <gs-item title="Contact" css-nav="" css-pane="">
@@ -48,7 +48,7 @@
     </gs-tab>
 
     <gs-tab css="m-4 p-3 bg-light border shadow-sm" css-nav="nav-tabs nav-pills" css-pane="" placement="end">
-        <gs-item active="true" title="About" css-nav="" css-pane="">
+        <gs-item  title="About" css-nav="" css-pane="">
             <p>About - This is internal text to be shown in tab panel</p>
         </gs-item>
         <gs-item title="Contact" css-nav="" css-pane="">
@@ -57,7 +57,7 @@
     </gs-tab>
 
     <gs-tab css="m-4 p-3 bg-light border shadow-sm" css-nav="nav-pills" css-pane="" placement="bottom">
-        <gs-item active="true" title="About" css-nav-wrap="" css-nav="" css-pane="">
+        <gs-item  title="About" css-nav-wrap="" css-nav="" css-pane="">
             <p>About - This is internal text to be shown in tab panel</p>
         </gs-item>
         <gs-item title="Contact" css-nav-wrap="" css-nav="" css-pane="">

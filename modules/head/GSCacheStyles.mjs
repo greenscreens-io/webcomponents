@@ -83,14 +83,14 @@ export default class GSCacheStyles {
 	/*
 	* Inject special CSS used by framework
 	*/
-	static injectStyle(css = '', global = false, hash = 0) {
+	static injectStyle(css = '', hash = 0) {
 		if (!css) return;
 		try {
 			hash = hash || GSBase.hashCode(css);
 			const sheet = new CSSStyleSheet();
 			sheet.replaceSync(css);
 			GSCacheStyles.getOrSet(hash, sheet);
-			if (global) document.adoptedStyleSheets = GSCacheStyles.styles;
+			document.adoptedStyleSheets = GSCacheStyles.styles;
 		} catch (e) {
 			console.log(e);
 		}
@@ -100,6 +100,6 @@ export default class GSCacheStyles {
 		Object.freeze(GSCacheStyles);
 		window.GSCacheStyles = GSCacheStyles;
 		const style = '.gs-hide{display:none;}.gs-hide-orientation,.gs-render{display:none !important;}gs-item{display:none !important;}';
-		GSCacheStyles.injectStyle(style, true);
+		GSCacheStyles.injectStyle(style);
 	}
 }

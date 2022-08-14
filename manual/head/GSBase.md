@@ -8,16 +8,16 @@ GSBase Class is not registered as WebComponent itself. Injecting it into a page 
  
 ### Attributes used
  
-|Name            |Description                                                          |
-|----------------|---------------------------------------------------------------------|
+|Name            |Description                                                                  |
+|----------------|-----------------------------------------------------------------------------|
 | auto           | If automatic, the element is not self removed after the resource is loaded. |
-| async          | Retrieve if resource loading is asynchronous.                       |
-| defer          | Retrieve if resource loading is deferred                            |
-| env            | Environment filter (assets,browser,mobile,desktop)                  |
-| head           | Determine if loaded resource will be rendered inside html head      |
-| nonce          | Resource nonce value for content check.                             |
-| schema         | Used to filter under which schema loader element is applied         |
-| target         | Check browser target by value (windows, linux, apple)               |
-| type           | Retrieve mime resource type                                         |
-| url            | Retrieve resource url                                               |
+| async          | Retrieve if resource loading is asynchronous.                               |
+| defer          | Retrieve if resource loading is deferred                                    |
+| env            | Environment filter (assets,browser,mobile,desktop)                          |
+| head           | Determine if loaded resource will be rendered inside html head              |
+| nonce          | Resource nonce value for content check.                                     |
+| schema         | Used to filter under which schema loader element is applied (hrrp,https)    |
+| target         | Check browser target by value (windows, linux, apple)                       |
+| type           | Retrieve mime resource type                                                 |
+| url            | Retrieve resource url                                                       |
  

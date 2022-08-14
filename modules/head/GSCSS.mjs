@@ -57,7 +57,7 @@ export default class GSCSS extends GSBase {
 			const res = await fetch(me.url);
 			if (!res.ok) return;
 			const css = await res.text();
-			GSCacheStyles.injectStyle(css, me.isGlobal, me.order);
+			GSCacheStyles.injectStyle(css, me.order);
 			const sheet = GSCacheStyles.get(me.order);
 			if (sheet) GSBase.sendSuspendedEvent(document, 'gs-style', sheet);
 		} catch (e) {
@@ -73,15 +73,7 @@ export default class GSCSS extends GSBase {
 		const sheet = GSCacheStyles.get(me.order);
 		GSCacheStyles.remove(me.order);
 		GSBase.sendSuspendedEvent(document, 'gs-style', sheet);
-		if (me.isGlobal) document.adoptedStyleSheets = GSCacheStyles.styles;
-	}
-
-	/**
-	 * If set to true, stylsheet is added to document
-	 * @returns {boolean} Defeault to true
-	 */
-	get isGlobal() {
-		return this.getAttribute('global') == 'true';
+		document.adoptedStyleSheets = GSCacheStyles.styles;
 	}
 
 	/**

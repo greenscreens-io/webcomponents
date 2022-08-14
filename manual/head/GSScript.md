@@ -4,9 +4,11 @@ GSScript WebComponent is a replacement for a ```<script>``` tag, allowing condit
 
 **NOTE:** For more information about conditional attributes, please refer to [GSBase](./GSBase.md) page.
 
-Only required attribute is **url**.
+The only required attribute is **url**.
+
+The only way to control how the browser will load the script is to use a custom tag instead of extending HTMLScriptElement.
 
 Example usage:
 ```
-<gs-script async="true" defer="true" url="" nonce=""></gs-script>
+<gs-script async="true" defer="true" url="" nonce="" os="windows" environment="desktop"></gs-script>
 ```

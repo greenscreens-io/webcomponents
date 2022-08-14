@@ -7,8 +7,8 @@
     <script type="module" src="/modules/components/ext/GSDataAttr.mjs"></script>
     <script type="module" src="/modules/components/GSButton.mjs"></script>
 
-    <gs-css active="true" global="true" url="/assets/css/custom_5.2.0.css" rel="stylesheet"></gs-css>      
-    <gs-css global="true" url="/assets/icons/bootstrap-icons.css" rel="stylesheet" notheme="true"></gs-css>  
+    <gs-css  url="/assets/css/custom_5.2.0.css" ></gs-css>      
+    <gs-css  url="/assets/icons/bootstrap-icons.css"  notheme="true"></gs-css>  
 
 </head>
 <body>
@@ -23,7 +23,7 @@
         <gs-button css="btn-primary m-1" title="Toggle Both (GS-BUTTON)" toggle="button" target="#b1,#b2" icon="bi-alarm me-1" comment="Uses GS-BUTTON attribute to show/hide BUTTON 1"></gs-button>
         <gs-button css="btn-secondary m-1" title="Close (BUTTON 2)" dismiss="alert" target="#b2" icon="bi-alarm ms-1" rtl="true" comment="Uses GS-BUTTON attribute to dismiss BUTTON 2"></gs-button>
         <gs-button css="btn-primary m-1" title="Close Both"  dismiss="alert" toggle="button" target="#b1,#b2" comment="Uses GS-BUTTON attribute to show/hide both buttons"></gs-button>
-        <gs-button css="btn-primary m-1" title="Toggler" active="true" comment="Toggle self state with 'active' class"></gs-button>
+        <gs-button css="btn-primary m-1" title="Toggler" comment="Toggle self state with 'active' class"></gs-button>
         <gs-button css="btn-primary m-1 " title="Disabled" disable="true" comment="Test disabled button to not to react on events"></gs-button>
     </div> 
     

@@ -1,8 +1,8 @@
 # GSStyleExt WebComponent
  
-GSStyleExt WebComponent is an extension of ```<style>``` HTML tag. Purpose is to register CSS style for sharing across all GS WebComponents.
+GSStyleExt WebComponent is an extension of ```<style>``` HTML tag. Purpose is to register CSS style for sharing across all GS WebComponents Shadow DOM.
  
-GSLinkExt WebComponent does not support style disabling / theming and conditional laoding.
+GSStyleExt WebComponent does not support style disabling / theming and conditional loading.
 
 Use it when CSS resource is mandatory.
 
