@@ -6,15 +6,17 @@
     <script type="module" src="/modules/index.mjs"></script>
     <script type="module" src="/modules/components/filebox/GSFileBox.mjs"></script>
 
-    <gs-css  url="/assets/css/custom_5.2.0.css" ></gs-css>  
+    <gs-css url="/assets/css/custom_5.2.0.css"></gs-css>  
+    <gs-css url="/assets/css/bootstrap_5.2.0.css" theme="bs"></gs-css>  
 
     <style>
         gs-filebox {
             --gs-fieldbox-border: dotted;
-            --gs-fieldbox-color: dimgray;
+            --gs-fieldbox-border-color: dimgray;
         }      
         gs-filebox#other {
-            --gs-fieldbox-color: green;
+            --gs-fieldbox-border-color: green;
+            --gs-fieldbox-color: red;
         }
         gs-filebox#other::part(border) {
             background-color: white;
@@ -36,11 +38,11 @@
     </div>
 
     <div class="container mt-4">
-        <gs-filebox multiple="true" elid="file"></gs-filebox>
+        <gs-filebox multiple="true" elid="file" name="files" css="" css-input="" css-label="mb-2 text-secondary" css-list="text-info"></gs-filebox>
     </div> 
 
     <div class="container mt-4">
-        <gs-filebox id="other" flat="true" multiple="true" directory="true" elid="test"></gs-filebox>
+        <gs-filebox id="other" flat="true" multiple="true" directory="true" elid="test" name="dir"></gs-filebox>
     </div> 
 </body>
 

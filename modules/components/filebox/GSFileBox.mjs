@@ -8,7 +8,6 @@
  */
 
 import GSElement from "../../base/GSElement.mjs";
-import GSID from "../../base/GSID.mjs";
 import GSUtil from "../../base/GSUtil.mjs";
 import GSAttachment from "./GSAttachment.mjs";
 
@@ -21,7 +20,7 @@ import GSAttachment from "./GSAttachment.mjs";
  */
 export default class GSFileBox extends GSElement {
 
-    static TITLE = ' Drop files here or ';
+    static TITLE = 'Drop files here or click to select';
     static CSS = 'border-2 p-4 d-block text-center dash';
 
     #dragging = null;
@@ -38,13 +37,21 @@ export default class GSFileBox extends GSElement {
         return `<style>
             .dash {
                 border-style: var(--gs-fieldbox-border, dashed) !important;
-                border-color: var(--gs-fieldbox-color, lightgrey);
+                border-color: var(--gs-fieldbox-border-color, lightgrey);
+            }
+            input[type=file] {
+                color : var(--gs-fieldbox-color, transparent);
             } 
+            input[type=file]::file-selector-button {
+
+            }             
+            input[type=file]::file-selector-button:hover {
+            }            
         </style>
         <div part="border" class="${me.css}">
-        ${me.title}
-        <input part="input" type="file" id="${me.fileID}" ${me.multiple ? "mutiple" : ""} ${me.directory ? "webkitdirectory" : ""} ">
-        <pre part="list"></pre>
+        <label part="label" class="${me.cssLabel}" for="${me.name}">${me.title}</label>
+        <input part="input" class="${me.cssInput}" type="file" id="${me.name}" name="${me.name}" ${me.multiple ? "multiple" : ""} ${me.directory ? "directory webkitdirectory" : ""} >
+        <pre part="list" class="${me.cssList}"></pre>
         </div>
         `
     }
@@ -69,6 +76,9 @@ export default class GSFileBox extends GSElement {
         return this.findEl('input');
     }
 
+    /**
+     * CSS for filebox frame
+     */
     get css() {
         return GSUtil.getAttribute(this, 'css', GSFileBox.CSS);
     }
@@ -77,20 +87,70 @@ export default class GSFileBox extends GSElement {
         return GSUtil.setAttribute(this, 'css');
     }
 
+    /**
+    * CSS for text list of selected files
+    */
+    get cssList() {
+        return GSUtil.getAttribute(this, 'css-list', '');
+    }
+
+    set cssList(val = '') {
+        return GSUtil.setAttribute(this, 'css-list');
+    }
+
+    /**
+     * CSS for filebox info message
+     */
+    get cssLabel() {
+        return GSUtil.getAttribute(this, 'css-label', '');
+    }
+
+    set cssLabel(val = '') {
+        return GSUtil.setAttribute(this, 'css-label');
+    }
+
+    /**
+     * CSS for filebox input element
+     */
+    get cssInput() {
+        return GSUtil.getAttribute(this, 'css-input', 'd-none');
+    }
+
+    set cssInput(val = '') {
+        return GSUtil.setAttribute(this, 'css-input');
+    }
+
+    /**
+     * Set to true to enable multiple file or directory selection
+     */
     get multiple() {
         return GSUtil.getAttributeAsBool(this, 'multiple', true);
     }
 
     set multiple(val = '') {
-        return GSUtil.setAttributeAsBool(this, 'multiple', val == 'true');
+        return GSUtil.setAttributeAsBool(this, 'mulltiple', val == 'true');
     }
 
+    /**
+     * Filebox info message 
+     */
     get title() {
         return GSUtil.getAttribute(this, 'title', GSFileBox.TITLE);
     }
 
     set title(val = '') {
         return GSUtil.setAttribute(this, 'title', GSFileBox.TITLE);
+    }
+
+    /**
+     * Input field name and id
+     */
+    get name() {
+        return GSUtil.getAttribute(this, 'name', '');
+    }
+
+    set name(val = '') {
+        return GSUtil.setAttribute(this, 'name', '');
     }
 
     /**
@@ -102,14 +162,6 @@ export default class GSFileBox extends GSElement {
 
     set filter(val = '') {
         return GSUtil.setAttribute(this, 'filter');
-    }
-
-    get fileID() {
-        return GSUtil.getAttribute(this, 'elid', GSID.id);
-    }
-
-    set fileID(val = '') {
-        return GSUtil.setAttribute(this, 'elid');
     }
 
     get directory() {

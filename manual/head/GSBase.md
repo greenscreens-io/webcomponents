@@ -1,4 +1,4 @@
-# GSBse Class
+# GSBase Class
  
 GSBase Class is mostly developed for conditional CSS resource activation, themming support and cached shared CSS across Shadow DOM based WebComponents.
  
