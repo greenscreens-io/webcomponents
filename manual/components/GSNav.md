@@ -26,7 +26,7 @@ GSNav WebComponent renders Bootstrap Nav which can be used to toggle or dismiss 
 | title              | Item text                                                    |
 | action             | Event action to trigger on item click                        |
 | href               | URL location to open on click                                |
-| target             | CSS selector to element wich will be affected by click event |
+| target             | CSS selector to element which will be affected by click event |
 | toggle             | *Type of target, defines different behavior                  |
 | dismiss            | *Type of target, defines different behavior                  |
  
@@ -34,6 +34,9 @@ GSNav WebComponent renders Bootstrap Nav which can be used to toggle or dismiss 
  
 ## Example
 ---
+ 
+**NOTE :**
+For more details, check [nav.html](../../demos/nav.html)
  
 ```html
 <gs-nav css-nav="nav-pills" bar="true">

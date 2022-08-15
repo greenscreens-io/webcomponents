@@ -41,12 +41,15 @@ Values for **h-pos** and **v-pos** are: **start**, **end**, **top**, **bottom**,
  
 Example shows nested layouts to create dashboards or SPA App layouts.
  
+**NOTE :**
+For more details, check [Layouts Demo](../../demos/layouts/)
+ 
 ```html
 <!-- header main footer -->
 <gs-layout type="vertical" css="">
     <!-- header - tries to load template, if not found, show text-->
     <gs-item css="text-bg-light" resizable="true" id="hdr1" template="head" v-pos="center" h-pos="center" min="5">header</gs-item>
-    <!-- main - central panel containing another elements as tempalte or child components  -->
+    <!-- main - central panel containing another elements as template or child components  -->
     <gs-item css="text-bg-info">
  
         <!-- left-sidebar main right-sidebar -->
@@ -54,7 +57,7 @@ Example shows nested layouts to create dashboards or SPA App layouts.
             <!-- left sidebar panel -->
             <gs-item css="text-bg-secondary" id="sb1" resizable="true" min="60" max="280" template="">left-sidebar</gs-item>
             <!-- central panel -->
-            <gs-item css="text-bg-primary" id="content" v-pos="top" h-pos="center">centerd data</gs-item>
+            <gs-item css="text-bg-primary" id="content" v-pos="top" h-pos="center">centered data</gs-item>
             <!-- right sidebar panel -->
             <gs-item css="text-bg-secondary" id="sb2" resizable="true" min="60" max="280" template="" v-pos="top" h-pos="end">right-sidebar</gs-item>
         </gs-layout>
@@ -64,4 +67,3 @@ Example shows nested layouts to create dashboards or SPA App layouts.
     <gs-item css="text-bg-dark" resizable="true" id="ftr1" template="foot" v-pos="center" h-pos="center" min="5">footer</gs-item>
 </gs-layout>
 ```
- 

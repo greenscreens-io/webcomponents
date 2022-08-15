@@ -9,16 +9,16 @@ GSButton WebComponent extends [GSElement](../base/GSElement.md) and all its attr
 ## Attributes
 ---
  
-| Name               | Description                                                  |
-|--------------------|--------------------------------------------------------------|
-| css                | CSS classes for button                                       |
-| comment            | Info message on mouse hover                                  |
-| disable            | Render button disabled, ignore click events                  |
+| Name               | Description                                                   |
+|--------------------|---------------------------------------------------------------|
+| css                | CSS classes for button                                        |
+| comment            | Info message on mouse hover                                   |
+| disable            | Render button disabled, ignore click events                   |
 | icon               | Button icon, can be combined with title                       |
-| title              | Button text                                                  |
+| title              | Button text                                                   |
 | target             | CSS selector to element which will be affected by click event |
-| toggle             | *Type of target, defines different behavior                  |
-| dismiss            | *Type of target, defines different behavior                  |
+| toggle             | *Type of target, defines different behavior                   |
+| dismiss            | *Type of target, defines different behavior                   |
  
 <br>
  
@@ -32,6 +32,9 @@ Please refer to the [GSDataAttr](./ext/GSDataAttr.md) for attributes values requ
  
 ## Example
 ---
+
+**NOTE :** 
+For more details, check [button.html](../../demos/button.html)
  
 ```html
 <!-- Example with icon -->

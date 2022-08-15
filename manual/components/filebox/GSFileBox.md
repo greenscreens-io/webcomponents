@@ -33,6 +33,9 @@ Component triggers event 'accepted' when file is matched **filter** attribute.
 
 Basic element definition withing a page.
 
+**NOTE :** 
+For more details, check [filebox.html](../../../demos/filebox.html)
+
 ```html
 <gs-filebox name="file"></gs-filebox>
 <gs-filebox name="file" multiple="true"></gs-filebox>

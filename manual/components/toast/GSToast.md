@@ -24,7 +24,9 @@ Component creates a Bootstrap toast box..
 ## Example
 ---
  
- 
+**NOTE :** 
+For more details, check [toast.html](../../../demos/toast.html)
+
 ```html
 <gs-toast slot="content" css="text-bg-dark" message="Welcome" closable="false" timeout="0" visible="true"></gs-toast>
 ```

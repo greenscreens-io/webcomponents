@@ -21,6 +21,9 @@ GSAlert WebComponent extends [GSElement](../base/GSElement.md) and all its attri
 ## Example
 ---
 
+**NOTE :** 
+For more details, check [alert.html](../../demos/alert.html)
+
 ```html
 <!-- simple alert with text message -->
 <gs-alert css="btn-primary" css-active="fade" message="focus hover" dismissable="true"></gs-alert>

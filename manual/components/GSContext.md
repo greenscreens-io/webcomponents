@@ -9,6 +9,9 @@ Menu items can be loaded from an external **template** or can be added as compon
 ## Example
 ---
  
+**NOTE :** 
+For more details, check [contextmenu.html](../../demos/contextmenu.html)
+
 ```html
     <gs-context target="body" css="" template="">
         <gs-item name="Open" action="open"></gs-item>

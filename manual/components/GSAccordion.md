@@ -33,6 +33,9 @@ GSAccordion WebComponent extends [GSElement](../base/GSElement.md) and all its a
 ## Example
 ---
 
+**NOTE :** 
+For more details, check [accordion.html](../../demos/accordion.html)
+
 ```html
 <template id="content">
     ... some html code ...

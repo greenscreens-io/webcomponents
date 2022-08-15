@@ -19,6 +19,9 @@ Menu items can be loaded from an external **template** or can be added as compon
  
 ## Example
 ---
+
+**NOTE :** 
+For more details, check [dropdown.html](../../demos/dropdown.html)
  
 ```html
 <gs-dropdown title="Dropdown 1" css="btn-primary me-1" dark="false" template="">

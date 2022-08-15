@@ -22,7 +22,7 @@ GSList WebComponent renders a Bootstrap List which can be used to toggle or dism
 | css                | CSS classes for item                                         |
 | action             | Event action to trigger on item click                        |
 | href               | URL location to open on click                                |
-| target             | CSS selector to element wich will be affected by click event |
+| target             | CSS selector to element which will be affected by click event |
 | toggle             | *Type of target, defines different behavior                  |
 | dismiss            | *Type of target, defines different behavior                  |
  
@@ -31,6 +31,9 @@ GSList WebComponent renders a Bootstrap List which can be used to toggle or dism
  
 ## Example
 ---
+ 
+**NOTE :**
+For more details, check [list.html](../../demos/list.html)
  
 ```html
 <gs-list css="" selectable="false">

@@ -39,7 +39,7 @@ export default class GSSplitter extends GSElement {
         return `
             <style>
                 .splitter {
-                    ${size}: ${me.width}px;
+                    ${size}: ${me.size}px;
                     ${full}: 100%;
                     border-width: 1px;
                     cursor: ${cursor};
@@ -69,15 +69,15 @@ export default class GSSplitter extends GSElement {
     }
 
     /**
-     * Width of a splitter in px
+     * Width or height of a splitter in px
      * @returns {number}
      */
-    get width() {
-        return GSUtil.getAttributeAsNum(this, 'width', 8);
+    get size() {
+        return GSUtil.getAttributeAsNum(this, 'size', 8);
     }
 
-    set width(val = '') {
-        return GSUtil.setAttributeAsNum(this, 'width', val);
+    set size(val = '') {
+        return GSUtil.setAttributeAsNum(this, 'size', val);
     }
 
     /**

@@ -21,6 +21,9 @@ GSModal WebComponent is a renderer for Bootstrap Modal with support for external
 ## Example
 ---
  
+**NOTE :**
+For more details, check [Modal Demo](../../demos/modal/)
+ 
 ```html
 <!-- open modal with a button -->
 <gs-button css="btn-primary" title="Toggle" toggle="modal" target="#dialog1"></gs-button>
@@ -38,7 +41,7 @@ GSModal WebComponent is a renderer for Bootstrap Modal with support for external
 ## Example
 ---
  
-Demos below shows how to work with Modal in programatic way.
+Demos below shows how to work with Modal in programmatic way.
  
 ```JavaScript
 const modal = GSComponent.get('#dialog1');
@@ -56,4 +59,3 @@ await modal.waitEvent('action');
 const modal = GSComponent.get('#dialog1');
 await modal.prompt('My Title', 'My content');
 ```
- 
