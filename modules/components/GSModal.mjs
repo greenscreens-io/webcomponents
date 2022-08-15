@@ -73,18 +73,35 @@ export default class GSModal extends GSElement {
     });
   }
 
+  /**
+   * Change size of modal window to "large"
+   */
   large() {
     this.#setSize('modal-lg');
   }
 
+  /**
+   * Change size of modal window to "extra large"
+   */  
   extra() {
     this.#setSize('modal-xl');
   }
 
+  /**
+   * Change size of modal window to "default"
+   */  
   normal() {
     this.#setSize();
   }
 
+  /**
+   * Generic modal popup function
+   * @param {string} title Modal title
+   * @param {string} message Modal message 
+   * @param {boolean} closable Can user close it (close button)
+   * @param {boolean} cancelable Is cancel button available
+   * @returns {Promise}
+   */
   info(title = '', message = '', closable = false, cancelable = false) {
     const me = this;
     me.title = title;
@@ -105,19 +122,32 @@ export default class GSModal extends GSElement {
     return me.info(title, message, true, true);
   }
 
+  /**
+   * Show modal panel
+   */
   open() {
     this.visible = true;
   }
 
+  /**
+   * Hide modal panel
+   */
   close() {
     this.visible = false;
   }
 
+  /**
+   * Toggle modal panel
+   */
   toggle() {
     const me = this;
     me.visible = !me.visible;
   }
 
+  /**
+   * Return active button
+   * @returns {HTMLButtonElement|GSButton}
+   */
   focusable() {
     const me = this;
     if (me.cancelable) return me.buttonCancel;

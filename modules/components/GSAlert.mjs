@@ -13,7 +13,7 @@ import GSElement from "../base/GSElement.mjs";
 /**
  * https://getbootstrap.com/docs/5.1/components/buttons/
  * Process Bootstrap alert definition
- * <gs-alert css="btn-primary" css-active="fade" title="focus hover" dismissable="true"></gs-alert>
+ * <gs-alert css="btn-primary" css-active="fade" message="focus hover" dismissable="true"></gs-alert>
  * @class
  * @extends {GSElement}
  */
@@ -27,7 +27,7 @@ export default class GSAlert extends GSElement {
     }
 
     static get observedAttributes() {
-        const attrs = ['css', 'title', 'active'];
+        const attrs = ['css', 'message', 'active'];
         return GSUtil.mergeArrays(attrs, super.observedAttributes);
     }
 
@@ -52,7 +52,7 @@ export default class GSAlert extends GSElement {
         const me = this;
         const el = me.firstElementChild;
 
-        if (name == 'title') el.innerHTML = me.title;
+        if (name == 'message') el.innerHTML = me.message;
 
         if (name == 'css') {
             GSUtil.toggleClass(el, false, oldValue);
@@ -66,7 +66,7 @@ export default class GSAlert extends GSElement {
         const me = this;
         return `
         <div class="alert ${me.css}" role="class">
-            <slot>${me.title}</slot>
+            <slot>${me.message}</slot>
             ${me.dismissible ? me.#dismissCSS : ''}
         </class>`;
     }
@@ -88,12 +88,12 @@ export default class GSAlert extends GSElement {
         return GSUtil.getAttribute(this, 'css-active', val);
     }
 
-    get title() {
-        return GSUtil.getAttribute(this, 'title');
+    get message() {
+        return GSUtil.getAttribute(this, 'message');
     }
 
-    set title(val = '') {
-        return GSUtil.setAttribute(this, 'title', val);
+    set message(val = '') {
+        return GSUtil.setAttribute(this, 'message', val);
     }
 
     get dismissible() {

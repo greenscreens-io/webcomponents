@@ -26,9 +26,9 @@
     <!-- selectable -->
     <div class="m-4 p-1 bg-light text-bg-light border shadow-sm">
         <gs-list css="" >
-            <gs-item title="Home" ></gs-item>
-            <gs-item title="Test1"></gs-item>
-            <gs-item title="Test2">
+            <gs-item title="Home" action="home"></gs-item>
+            <gs-item title="Test1" action="test1"></gs-item>
+            <gs-item title="Test2" action="test2">
               <div class="d-flex w-100 justify-content-between">
                 <h5 class="mb-1">List group item heading</h5>
                 <small class="text-muted">3 days ago</small>
@@ -86,6 +86,10 @@
     
         </div> 
         
+        <script defer="true" type="module">
+          const tbl = GSComponents.find('gs-list');
+          tbl.listen('action', (e) => console.log(e.detail));
+      </script>        
 </body>
 
 </html>

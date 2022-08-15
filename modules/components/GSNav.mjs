@@ -58,7 +58,7 @@ export default class GSNav extends GSElement {
     }
 
     get #cssnav() {
-        return GSUtil.getAttribute(this, 'css-nav');
+        return this.#getCssNav(this);
     }
 
     get #isBar() {
