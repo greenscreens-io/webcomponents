@@ -251,10 +251,12 @@ export default class GSPopup extends GSElement {
     #onPopup(e) {
         if (e instanceof Event) e.preventDefault();
         const me = this;
-        me.#caller = e.target;
+        me.#caller = e.path.filter(e => (!(e instanceof HTMLSlotElement)))[0]
+        //me.#caller = e.currentTarget.self.firstElementChild;
         // TODO - calculate target position start/end/top/bottom
         if (me.placement) {
-            GSUtil.position(me.placement, me, me.#caller, false);
+            GSUtil.position(me.placement, me.#panel, me.#caller, false);
+            me.visible = true;
             return;
         }
         let x = e.clientX, y = e.clientY;
