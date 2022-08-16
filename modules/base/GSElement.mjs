@@ -62,7 +62,7 @@ export default class GSElement extends HTMLElement {
 
 	/**
 	 * Return if this component uses shadow DOM or flat - directly injected into a page
-	 * If set to true, use position attribute t odetermine where to inject
+	 * If set to true, use anchor attribute to determine where to inject
 	 * @returns {boolean} 
 	 */
 	get isFlat() {
@@ -197,12 +197,12 @@ export default class GSElement extends HTMLElement {
 
 	/**
 	 * Where to position flat element
-	 * HTML insertAfjacent value or *(gs-block) or self(within)
+	 * HTML insertAdjacent value or *(gs-block) or self(within)
 	 * Format position | position@target
-	 * @returns {string}  Vlues parent|self|unwrap|[html insetion position]
+	 * @returns {string}  Vlues parent|self|unwrap|[html insertion position]
 	 */
-	get position() {
-		return GSUtil.getAttribute(this, 'position', 'afterend');
+	get anchor() {
+		return GSUtil.getAttribute(this, 'anchor', 'afterend');
 	}
 
 	/**
@@ -226,7 +226,7 @@ export default class GSElement extends HTMLElement {
 	get self() {
 		const me = this;
 		if (!me.isFlat) return me.shadow;
-		return me.position.indexOf("unwrap") === 0 ? me.#content.parentElement : me.#content;
+		return me.anchor.indexOf("unwrap") === 0 ? me.#content.parentElement : me.#content;
 	}
 
 	/**
@@ -479,7 +479,7 @@ export default class GSElement extends HTMLElement {
 				const ip = GSComponents.query(inject.target);
 				if (ip) {
 					tpl = me.#body(src, false);
-					me.#content = ip.insertAdjacentElement(inject.position, tpl);
+					me.#content = ip.insertAdjacentElement(inject.anchor, tpl);
 				} else {
 					GSLog.warn(me, 'Injection point not available for flat component!');
 					GSLog.warn(me, `Element: ${me.tagName}, Id:${me.id}, tgt:${inject.target}`);
@@ -487,18 +487,18 @@ export default class GSElement extends HTMLElement {
 				return;
 			}
 
-			if (inject.position === 'parent') {
+			if (inject.anchor === 'parent') {
 				tpl = me.#body(src, false);
 				me.#content = me.parentElement.insertAdjacentElement('beforeend', tpl);
-			} else if (inject.position === 'self') {
+			} else if (inject.anchor === 'self') {
 				me.innerHTML = src;
 				me.#content = me;
-			} else if (inject.position === 'unwrap') {
+			} else if (inject.anchor === 'unwrap') {
 				tpl = me.#body(src, true);
 				me.#content = me.insertAdjacentElement('afterend', tpl);
 			} else {
 				tpl = me.#body(src, false);
-				me.#content = me.insertAdjacentElement(me.position, tpl);
+				me.#content = me.insertAdjacentElement(me.anchor, tpl);
 			}
 
 		});
@@ -520,11 +520,11 @@ export default class GSElement extends HTMLElement {
 
 	#injection() {
 		const me = this;
-		const position = me.position;
-		const p = position.indexOf('@');
+		const anchor = me.anchor;
+		const p = anchor.indexOf('@');
 		return {
-			position: p > 0 ? position.slice(0, p) : position,
-			target: p > 0 ? position.slice(p + 1) : null
+			positioanchor: p > 0 ? anchor.slice(0, p) : anchor,
+			target: p > 0 ? anchor.slice(p + 1) : null
 		};
 	}
 

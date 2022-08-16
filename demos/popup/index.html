@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+    <title>test</title>
+    <script type="text/javascript">
+        self.GS_TEMPLATE_URL='/demos/popup';
+    </script>    
+    <script type="module" src="/modules/index.mjs"></script>
+    <script type="module" src="/modules/components/GSPopup.mjs"></script>
+    <script type="module" src="/modules/components/GSCenter.mjs"></script>
+    <script type="module" src="/modules/components/ext/GSDataAttr.mjs"></script>
+    
+    <gs-css  url="/assets/css/custom_5.2.0.css" ></gs-css>  
+
+<body>
+    <div class="d-flex justify-content-center bg-light border shadow-sm p-2">
+        <div class="flex-column"><img src="/assets/img/logo.png" height="32"></div>
+      </div>
+
+      <div class="m-4 p-1 bg-light border shadow-sm">
+        <button id="b1" class="btn btn-primary" data-bs-toggle="popup" data-bs-target="#mypopup1" title="Toggle popup on/off">Popup 1</button>
+        <button id="b1" class="btn btn-primary" data-bs-toggle="popup" data-bs-target="#mypopup2" title="Toggle popup on/off">Popup 2</button>
+    </div> 
+
+    <!-- target elemnt for popup, also triggers on/off by clicking on it -->
+    <gs-center css="p-4 bg-light border shadow-sm" id="mypanel">
+        <slot>
+            Some panel for popup position testing
+        </slot>
+    </gs-center>
+
+    <!-- position popup at the end of target -->
+    <gs-popup css="text-bg-light border p-4 m-2" template="//content.html" visible="true" v-pos="150" h-pos="40" id="mypopup1" target="#mypanel" placement="bottom"></gs-popup>
+
+    <gs-popup css="text-bg-light border p-4 m-2" visible="true" v-pos="150" h-pos="300" id="mypopup2">
+        <slot>
+            <div class="mb-3">
+                <label for="email" class="form-label">Email address</label>
+                <input name="email" type="email" class="form-control" placeholder="email" required="">
+            </div>            
+        </slot>
+    </gs-popup>
+
+</body>
+</html>

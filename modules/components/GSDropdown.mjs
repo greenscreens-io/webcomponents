@@ -152,7 +152,7 @@ export default class GSDropdown extends GSElement {
     return GSUtil.getAttributeAsBool(me, 'flat', me.title ? false : true);
   }
 
-  get position() {
+  get anchor() {
     return 'unwrap';
   }
 

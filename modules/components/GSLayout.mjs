@@ -53,7 +53,7 @@ export default class GSLayout extends GSElement {
         return style.display === 'flex' && style.flexGrow !== '0';
     }
 
-    get position() {
+    get anchor() {
         return 'unwrap'
     }
 

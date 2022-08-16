@@ -65,7 +65,7 @@ export default class GSProgress extends GSElement {
         return true;
     }
 
-    get position() {
+    get anchor() {
         return 'self';
     }
 

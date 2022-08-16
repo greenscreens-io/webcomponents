@@ -183,7 +183,7 @@ export default class GSButton extends GSElement {
         return true;
     }
 
-    get position() {
+    get anchor() {
         return 'self';
     }
 

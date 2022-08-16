@@ -106,7 +106,7 @@ export default class GSToast extends GSElement {
     return true;
   }
 
-  get position() {
+  get anchor() {
     return 'self';
   }
 

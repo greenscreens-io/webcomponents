@@ -129,7 +129,7 @@ export default class GSTooltip extends GSElement {
         return true;
     }
 
-    get position() {
+    get anchor() {
         return 'self';
     }
 

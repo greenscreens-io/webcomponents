@@ -99,10 +99,6 @@ export default class GSPopover extends GSElement {
         `;
     }
 
-    get position() {
-        return 'self';
-    }
-
     get target() {
         const me = this;
         if (me.ref) {
@@ -175,7 +171,7 @@ export default class GSPopover extends GSElement {
         return true;
     }
 
-    get position() {
+    get anchor() {
         return 'self';
     }
 

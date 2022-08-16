@@ -125,7 +125,7 @@ export default class GSAlert extends GSElement {
         return GSUtil.getAttributeAsBool(this, 'flat', true);
     }
 
-    get position() {
+    get anchor() {
         return 'self';
     }
 

@@ -64,9 +64,6 @@ export default class GSContext extends GSElement {
     me.#online = true;
   }
 
-  /*
-   * Called when element removed from parent DOM node
-   */
   disconnectedCallback() {
     const me = this;
     me.#online = false;
@@ -91,7 +88,7 @@ export default class GSContext extends GSElement {
     const me = this;
     me.#attached = false;
     me.removeEvent(document, 'contextmenu');
-    me.#findTarget().forEach(target => me.removeEvent(target, 'contextmenu'));
+    GSComponents.findTarget(me, me.target).forEach(target => me.removeEvent(target, 'contextmenu'));
     me.#attachTarget();
   }
 
@@ -115,7 +112,7 @@ export default class GSContext extends GSElement {
     return this.parentElement !== document.body;
   }
 
-  get position() {
+  get anchor() {
     return 'beforeend@body';
   }
 
@@ -293,8 +290,9 @@ export default class GSContext extends GSElement {
    */
   async #attachTarget() {
     const me = this;
+    if (!me.target) return;
     if (me.#attached) return;
-    const targets = me.#findTarget();
+    const targets = GSComponents.findTarget(me, me.target);
     if (targets.length === 0) {
       if (me.#online) {
         await GSUtil.timeout(1000);
@@ -308,25 +306,6 @@ export default class GSContext extends GSElement {
     targets.forEach(target => me.attachEvent(target, 'contextmenu', me.#onPopup.bind(me)));
     me.removeEvent(document, 'gs-components');
     me.attachEvent(document, 'contextmenu', me.close.bind(me));
-  }
-
-  /**
-   * Find all elements that match target query
-   * @returns {Array<HTMLElement>}
-   */
-  #findTarget() {
-    const me = this;
-    if (!me.target) return [];
-    const parent = GSUtil.parent(me);
-    // in parent tree
-    let target = GSUtil.findAll(me.target, parent, true);
-    // in parent shadow
-    if (target.length === 0) target = GSUtil.findAll(me.target, GSUtil.unwrap(parent), true);
-    // whole document
-    if (target.length === 0) target = GSUtil.findAll(me.target, document, true);
-    // all component shadows
-    if (target.length === 0) target = GSComponents.queryAll(me.target);
-    return target;
   }
 
   #renderMenuDOM(children, level = 0) {

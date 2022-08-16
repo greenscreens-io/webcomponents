@@ -74,16 +74,37 @@ export default class GSComponents {
     }
 
     /**
+     * Find all elements that match target query
+     * @param {HTMLElement} own Owner element 
+     * @param {string} tgt Target element selector
+     * @returns {Array<HTMLElement>}
+     */
+    static findTarget(own, tgt) {
+        const me = own;
+        if (!tgt) return [];
+        const parent = GSUtil.parent(me);
+        // in parent tree
+        let target = GSUtil.findAll(tgt, parent, true);
+        // in parent shadow
+        if (target.length === 0) target = GSUtil.findAll(tgt, GSUtil.unwrap(parent), true);
+        // whole document
+        if (target.length === 0) target = GSUtil.findAll(tgt, document, true);
+        // all component shadows
+        if (target.length === 0) target = GSComponents.queryAll(tgt);
+        return target;
+    }
+
+    /**
      * Find all elements matched by CSS selector in all shadow doms
      * @param {string} value A CSS query selector
      * @returns {Array<HTMLElement>}
      */
     static queryAll(value = '') {
         const data = GSComponents.findAll()
-                            .filter(el => GSUtil.isFunction(el.findAll))
-                            .map(el => Array.from(el.findAll(value)))
-                            .filter(o => o.length > 0)
-                            .flat();
+            .filter(el => GSUtil.isFunction(el.findAll))
+            .map(el => Array.from(el.findAll(value)))
+            .filter(o => o.length > 0)
+            .flat();
         return GSUtil.uniqe(data);
     }
 

@@ -9,8 +9,8 @@ Every Shadow DOM would need its own instance of Bootstrap JavaScript library, wh
 As DOM Observer is used to monitor element add / remove events to a page, this class will detect standard Bootstrap **data-bs-*** attributes and attach proper click listeners to automatically handle mouse click events such as modal popup, collapse, offcanvas open and many more.
 
  * Process Bootstrap data-bs-* attributes
- * toggle="offcanvas|collapse|dropdown|button|tab|pill|popover|tooltip|modal"
- * dismiss="offcanvas|modal|alert"
+ * toggle="offcanvas|collapse|dropdown|button|tab|pill|popover|tooltip|modal|popup"
+ * dismiss="offcanvas|modal|alert|popup"
  
  Additional attributes used for automatic handling
 

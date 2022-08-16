@@ -15,8 +15,8 @@ import GSListeners from "../../base/GSListeners.mjs";
 
 /**
  * Process Bootstrap data-bs-* attributes
- * toggle="offcanvas|collapse|dropdown|button|tab|pill|popover|tooltip|modal" 
- * dismiss="offcanvas|modal|alert"
+ * toggle="offcanvas|collapse|dropdown|button|tab|pill|popover|tooltip|modal|popup" 
+ * dismiss="offcanvas|modal|alert|popup"
  * 
  * TODO : trigger events to document.body
  * @class
@@ -29,8 +29,8 @@ export default class GSDataAttr {
     static #injectCSS = 'data-inject';
     static #dataCSS = 'data-css';
 
-    static #toggleValues = "offcanvas|collapse|dropdown|button|tab|pill|popover|tooltip|modal";
-    static #dismissValues = "offcanvas|modal|alert";
+    static #toggleValues = "offcanvas|collapse|dropdown|button|tab|pill|popover|tooltip|modal|popup";
+    static #dismissValues = "offcanvas|modal|alert|popup";
 
     static {
         GSDOMObserver.registerFilter(GSDataAttr.#onMonitorFilter, GSDataAttr.#onMonitorResult);
@@ -123,6 +123,8 @@ export default class GSDataAttr {
                 break;
             case "popover":
                 break;
+            case "poup":
+                break;                
             case "tab":
                 break;
             case "tooltip":
@@ -290,6 +292,8 @@ export default class GSDataAttr {
                 break;
             case "popover":
                 break;
+            case "popup":
+                break;                
             case "tab":
                 break;
             case "tooltip":
@@ -322,9 +326,8 @@ export default class GSDataAttr {
                 GSDataAttr.#remove(obj, type);
                 break;
             case "modal":
-                GSDataAttr.#toggle(obj, type);
-                break;
-            case "offcanvas":
+            case "offcanvas":            
+            case "popup":            
                 GSDataAttr.#toggle(obj, type);
                 break;
         }
