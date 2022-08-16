@@ -523,7 +523,7 @@ export default class GSElement extends HTMLElement {
 		const anchor = me.anchor;
 		const p = anchor.indexOf('@');
 		return {
-			positioanchor: p > 0 ? anchor.slice(0, p) : anchor,
+			anchor: p > 0 ? anchor.slice(0, p) : anchor,
 			target: p > 0 ? anchor.slice(p + 1) : null
 		};
 	}
