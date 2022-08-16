@@ -16,6 +16,8 @@ export default class GSBase extends HTMLElement {
 
 	static #id = 0
 
+	#refid = '';
+
 	static get observedAttributes() {
 		return [];
 	}
@@ -108,8 +110,8 @@ export default class GSBase extends HTMLElement {
 				}
 
 				if (me.isAuto) {
-					me.#id = GSBase.nextID();
-					el.id = me.#id;
+					el.id = el.id ? el.id : GSBase.nextID();
+					me.#refid = el.id;
 				}
 
 			}
@@ -128,7 +130,7 @@ export default class GSBase extends HTMLElement {
 
 		const me = this;
 		if (me.isAuto) {
-			const el = document.querySelector(`#${me.#id}`);
+			const el = document.querySelector(`#${me.#refid}`);
 			if (el) el.remove();
 		}
 		me.dispose();
@@ -321,7 +323,7 @@ export default class GSBase extends HTMLElement {
 	 * @returns {boolean}
 	 */
 	get async() {
-		return this.getAttributeBool('async');
+		return this.getAttributeBool('async', 'false');
 	}
 
 	/**
@@ -329,7 +331,7 @@ export default class GSBase extends HTMLElement {
 	 * @returns {boolean}
 	 */
 	get defer() {
-		return this.getAttributeBool('defer');
+		return this.getAttributeBool('defer', 'false');
 	}
 
 	/**
@@ -370,8 +372,8 @@ export default class GSBase extends HTMLElement {
 	 * @param {string} name Attribute name
 	 * @returns {boolean}
 	 */
-	getAttributeBool(name = '') {
-		const val = this.getAttribute(name) || 'true';
+	getAttributeBool(name = '', dft = 'true') {
+		const val = this.getAttribute(name) || dft;
 		return val === 'true';
 	}
 
