@@ -25,12 +25,8 @@ export default class GSLink extends GSBase {
 		const me = this;
 		const el = document.createElement('link');
 
-		el.async = me.async;
-		el.defer = me.defer;
-		el.rel = me.rel;
-		el.type = me.type;
 		el.href = me.url;
-		el.nonce = me.nonce;
+		me.getAttributeNames().filter(v => v !== 'url').forEach(v => el.setAttribute(v, me.getAttribute(v)));
 
 		if (me.shadow && el.rel === 'stylesheet') el.setAttribute('is', 'gs-linkext');
 

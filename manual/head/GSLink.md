@@ -4,7 +4,7 @@ GSLink WebComponent is a replacement for a ```<link>``` tag, allowing conditiona
 
 **NOTE:** For more information about conditional attributes, please refer to [GSBase](./GSBase.md) page.
 
-The only required attribute is **url**.
+The only required attribute is **url**. All other attributes from ```<link>``` tag are suported.
 
 The only way to control how the browser will load the script is to use a custom tag instead of extending HTMLScriptElement.
 

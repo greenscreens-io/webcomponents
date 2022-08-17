@@ -5,6 +5,8 @@
 
     <script type="module" src="/modules/index.mjs"></script>
 
+    <gs-css  url="/assets/icons/bootstrap-icons.css"  notheme="true"></gs-css>  
+    
     <!-- 
         When auto=true gs-css monitors for #theme changes to activate / deactivate loaded css
      -->
@@ -19,9 +21,7 @@
 </head>
 <body>
     
-  <div class="d-flex justify-content-center bg-light border shadow-sm p-2">
-    <div class="flex-column"><img src="/assets/img/logo.png" height="32"></div>
-  </div>
+  <gs-template href="/demos/_header.html"></gs-template>
 
     <!-- buttons does not change here on theme change as button custom variables are the same as colors for custom theme -->
     <div class="m-4 p-1 bg-light border shadow-sm">        

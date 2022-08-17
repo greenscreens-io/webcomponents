@@ -49,7 +49,7 @@ export default class GSCalendar extends GSElement {
         const me = this;
         me.#update();
         me.attachEvent(me.findEl('.header'), 'click', me.#onArrow.bind(me));
-        me.attachEvent(me.findEl('.days'), 'click', me.#onDay.bind(me));
+        me.attachEvent(me.findEl('div'), 'click', me.#onDay.bind(me));
         me.attachEvent(me.yearEl, 'change', me.#onYear.bind(me));
         me.attachEvent(me.monthEl, 'change', me.#onMonth.bind(me));
         super.onReady();
@@ -229,7 +229,8 @@ export default class GSCalendar extends GSElement {
 
     #update() {
         const me = this;        
-        me.findEl('.days').innerHTML = me.#daysHTML();
+        me.findAll('.days').forEach(el => el.remove());
+        me.findEl('.weeks').insertAdjacentHTML('afterend', me.#daysHTML());
         me.monthEl.selectedIndex = me.#date.month;
         me.yearEl.value = me.#date.getFullYear();
     }
@@ -249,9 +250,9 @@ export default class GSCalendar extends GSElement {
                 return `<div class="col p-0">${d}</div>`;
             })
             .map((v ,i) => {
-                if (i === 0) return `<div class="row">${v}`;
+                if (i === 0) return `<div class="row days">${v}`;
                 const isBreak = i % 7 == 0;                            
-                return isBreak ? `</div><div class="row">${v}` : v;
+                return isBreak ? `</div><div class="row days">${v}` : v;
             });
             html.push('</div>');
             return html.join('');
@@ -294,7 +295,7 @@ export default class GSCalendar extends GSElement {
                 </style>
                 <div class="container-fluid text-center ${me.css}">
                 <div class="row align-items-center ${me.cssHeader} header">
-                    <div class="col-1 p-0">
+                    <div class="col-auto">
                         <a href="#" class="btn ${me.cssNav} arrow prev">${me.arrowPrev}</a>
                     </div>
                     <div class="col"></div>
@@ -303,12 +304,11 @@ export default class GSCalendar extends GSElement {
                         ${year}
                     </div>
                     <div class="col"></div>
-                    <div class="col-1 p-0">
+                    <div class="col-auto">
                         <a href="#" class="btn ${me.cssNav} arrow next">${me.arrowNext}</a>
                     </div>
                 </div>
-                <div class="row weeks ${me.cssWeeks}">${week}</div>
-                <div class="row days ${me.cssDays}"></div>
+                <div class="row weeks ${me.cssWeeks}">${week}</div>                
             </div>`.replace(/\n/g,'');
     }
 }

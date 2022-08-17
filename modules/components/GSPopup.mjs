@@ -58,7 +58,7 @@ export default class GSPopup extends GSElement {
         const me = this;
         const tpl = await super.getTemplate(val);
         const state = me.visible ? '' : 'invisible';
-        return `<div class="position-${me.position} ${me.css} ${state}"><slot>${tpl}</slot></div>`;
+        return `<div class="position-${me.position} ${me.css} ${state}" style="${this.getStyle()}"><slot>${tpl}</slot></div>`;
     }
 
     onReady() {

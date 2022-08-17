@@ -367,6 +367,22 @@ export default class GSBase extends HTMLElement {
 		return this.getAttribute('nonce') || '';
 	}
 
+	get crossorigin() {
+		return this.getAttribute('crossorigin');
+	}
+
+	get fetchpriority() {
+		return this.getAttribute('fetchpriority') || 'auto';
+	}
+
+	get integrity() {
+		return this.getAttribute('integrity');
+	}
+
+	get referrerpolicy() {
+		return this.getAttribute('referrerpolicy');
+	}
+
 	/**
 	 * Check if attribute is true or just available
 	 * @param {string} name Attribute name

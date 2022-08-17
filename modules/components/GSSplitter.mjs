@@ -48,7 +48,7 @@ export default class GSSplitter extends GSElement {
                     background-color: lightgray;
                 }                        
             </style>
-            <div class="splitter ${me.css}"></div>
+            <div class="splitter ${me.css}" style="${this.getStyle()}"></div>
         `;
     }
 

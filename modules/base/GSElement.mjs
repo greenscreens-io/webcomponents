@@ -238,6 +238,14 @@ export default class GSElement extends HTMLElement {
 	}
 
 	/**
+	 * Retrieve custom style for rendered items, does not apply to this element.
+	 * @returns {string}
+	 */
+	getStyle() {
+		return GSUtil.getAttribute(this, 'style', '');
+	}
+
+	/**
 	 * Find element by its ID
 	 * @param {string} name 
 	 * @returns {HTMLElement}

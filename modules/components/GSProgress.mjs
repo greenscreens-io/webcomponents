@@ -51,7 +51,7 @@ export default class GSProgress extends GSElement {
         const me = this;
         const label = me.label ? GSUtil.fromTemplateLiteral(me.label, { now: me.value, min: me.min, max: me.max, percentage: me.percentage }) : '';
         return `
-        <div class="progress">
+        <div class="progress" style="${this.getStyle()}">
             <div class="progress-bar ${me.css}" role="progressbar" style="width: ${me.percentage}%" aria-valuenow="${me.value}" aria-valuemin="${me.min}" aria-valuemax="${me.max}">${label}</div>
         </div>    
         `;

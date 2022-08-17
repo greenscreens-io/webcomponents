@@ -65,7 +65,7 @@ export default class GSAlert extends GSElement {
     get template() {
         const me = this;
         return `
-        <div class="alert ${me.css}" role="class">
+        <div class="alert ${me.css}" style="${this.getStyle()}" role="class">
             <slot>${me.message}</slot>
             ${me.dismissible ? me.#dismissCSS : ''}
         </class>`;

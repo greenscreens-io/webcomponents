@@ -24,11 +24,8 @@ export default class GSScript extends GSBase {
 		const me = this;
 		const el = document.createElement('script');
 
-		el.async = me.async;
-		el.defer = me.defer;
-		el.type = me.type;
 		el.src = me.url;
-		el.nonce = me.nonce;
+		me.getAttributeNames().filter(v => v !== 'url').forEach(v => el.setAttribute(v, me.getAttribute(v)));
 
 		return el;
 

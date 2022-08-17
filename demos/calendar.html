@@ -12,14 +12,13 @@
   <script type="module" src="/modules/components/GSCalendar.mjs"></script>
 
   <gs-css url="/assets/css/custom_5.2.0.css"></gs-css>
-
+  <gs-css  url="/assets/icons/bootstrap-icons.css"  notheme="true"></gs-css>  
+  
 </head>
 
 <body class="vh-100 overflow-hidden">
 
-  <div class="d-flex justify-content-center bg-light border shadow-sm p-2">
-    <div class="flex-column"><img src="/assets/img/logo.png" height="32"></div>
-  </div>
+  <gs-template href="/demos/_header.html"></gs-template>
 
   <!-- auto-generated gs-popover based on data-bs-toggle="popover" and title attribute -->
   <div class="row m-4 p-1 bg-light border shadow-sm">
@@ -39,7 +38,7 @@
   </div>
 
   <!-- attach to ref targeted element -->
-  <gs-center css="m-4 p-1 bg-light border shadow-sm w-25">
+  <gs-center css="m-4 p-1 bg-light border shadow-sm" style="min-width:355px;">
     <gs-calendar id="mycalendar"></gs-calendar>
   </gs-center>
 
