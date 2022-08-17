@@ -10,6 +10,7 @@
 import GSCacheTemplate from "./GSCacheTemplate.mjs";
 import GSCacheStyles from "../head/GSCacheStyles.mjs";
 import GSDOMObserver from "../base/GSDOMObserver.mjs";
+import GSComponents from "../base/GSComponents.mjs"
 import GSUtil from "../base/GSUtil.mjs";
 import GSLog from "../base/GSLog.mjs";
 import GSID from "../base/GSID.mjs";
