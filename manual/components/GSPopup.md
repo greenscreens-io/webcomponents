@@ -29,7 +29,7 @@ GSPopup WebComponent is a component similar to GSContext except it is generic po
 ---
  
 **NOTE :** 
-For more details, check [popup.html](../../demos/popup.html)
+For more details, check [Popup demo](../../demos/popup/)
 
 With injected template 
 

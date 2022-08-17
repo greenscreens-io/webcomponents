@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Tooltip Test</title>
+
+    <script type="module" src="/modules/index.mjs"></script>
+    <script type="module" src="/modules/components/ext/GSNavLink.mjs"></script>
+    <script type="module" src="/modules/components/GSPopup.mjs"></script>
+    <script type="module" src="/modules/components/GSCalendar.mjs"></script>
+
+    <gs-css  url="/assets/css/custom_5.2.0.css" ></gs-css>  
+
+</head>
+<body class="vh-100 overflow-hidden">
+  
+  <div class="d-flex justify-content-center bg-light border shadow-sm p-2">
+    <div class="flex-column"><img src="/assets/img/logo.png" height="32"></div>
+  </div>
+
+    <!-- auto-generated gs-popover based on data-bs-toggle="popover" and title attribute -->
+    <div class="m-4 p-1 bg-light border shadow-sm">
+        <button type="button" class="btn btn-secondary" data-bs-toggle="calendar" data-bs-target="#mycalendar">
+            Calendar toggle
+          </button>
+    </div> 
+
+    <!-- attach to ref targeted element -->
+    <div class="m-4 p-1 bg-light border shadow-sm">        
+        <gs-calendar id="mycalendar"></gs-calendar>
+    </div> 
+
+    <script defer="true" type="module">
+      const tbl = GSComponents.find('gs-calendar');
+      tbl.listen('date', (e) => console.log(e.detail));
+  </script>    
+</body>
+
+</html>
