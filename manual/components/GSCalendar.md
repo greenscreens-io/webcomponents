@@ -11,8 +11,8 @@ GSCalendar WebComponent is a month selector renderer.
 |--------------------|----------------------------------------------------------|
 | css                | CSS classes for content                                  |
 | css-header         | CSS classes for title header                             |
-| css-title          | CSS classes for Month name                               |
-| css-subtitle       | CSS classes for Year                                     |
+| css-month          | CSS classes for Month name                               |
+| css-year           | CSS classes for Year                                     |
 | css-nav            | CSS classes for month navigation                         |
 | css-days           | CSS classes for days row                                 |
 | css-weeks          | CSS classes for weeks bar                                |

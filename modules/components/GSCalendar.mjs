@@ -48,9 +48,10 @@ export default class GSCalendar extends GSElement {
     onReady() {
         const me = this;
         me.#update();
-        //me.findAll('.arrow').forEach(el => me.attachEvent(el, 'click', me.#onArrow.bind(me)) );                
         me.attachEvent(me.findEl('.header'), 'click', me.#onArrow.bind(me));
         me.attachEvent(me.findEl('.days'), 'click', me.#onDay.bind(me));
+        me.attachEvent(me.yearEl, 'change', me.#onYear.bind(me));
+        me.attachEvent(me.monthEl, 'change', me.#onMonth.bind(me));
         super.onReady();
     }
 
@@ -82,20 +83,20 @@ export default class GSCalendar extends GSElement {
         GSUtil.setAttribute(this, 'css-header', val);
     }
 
-    get cssTitle() {
-        return GSUtil.getAttribute(this, 'css-title', 'fs-3 fw-bold');
+    get cssMonth() {
+        return GSUtil.getAttribute(this, 'css-month', 'form-control fs-3 fw-bold border-0 text-center m-1 p-0');
     }
 
-    set cssTitle(val = '') {
-        GSUtil.setAttribute(this, 'css-title', val);
+    set cssMonth(val = '') {
+        GSUtil.setAttribute(this, 'css-month', val);
     }
 
-    get cssSubtitle() {
-        return GSUtil.getAttribute(this, 'css-subtitle', 'fs-5 fw-bold');
+    get cssYear() {
+        return GSUtil.getAttribute(this, 'css-year', 'form-control fs-5 fw-bold border-0 text-center m-1 p-0');
     }
 
-    set cssSubtitle(val = '') {
-        GSUtil.setAttribute(this, 'css-subtitle', val);
+    set cssYear(val = '') {
+        GSUtil.setAttribute(this, 'css-year', val);
     }
 
     get cssNav() {
@@ -138,6 +139,70 @@ export default class GSCalendar extends GSElement {
         GSUtil.setAttribute(this, 'css-today', val);
     }
 
+    get monthEl() {
+        return this.findEl('.month');
+    }
+
+    get yearEl() {
+        return this.findEl('.year');
+    }
+
+    get prevEl() {
+        return this.findEl('.prev');
+    }
+
+    get nextEl() {
+        return this.findEl('.next');
+    }
+
+    get arrowsEl() {
+        return this.findEl('.arrow');
+    }
+
+    get arrowNext() {
+        return GSUtil.getAttribute(this, 'arrow-next', '&#10095;');
+    }
+
+    set arrowNext(val) {
+        return GSUtil.setAttribute(this, 'arrow-next', val);
+    }
+
+    get arrowPrev() {
+        return GSUtil.getAttribute(this, 'arrow-prev', '&#10094;');
+    }
+
+    set arrowPrev(val) {
+        return GSUtil.setAttribute(this, 'arrow-prev', val);
+    }
+
+    get minYear() {
+        return GSUtil.getAttributeAsNum(this, 'year-min', '1900');
+    }
+
+    set minYear(val) {
+        return GSUtil.setAttributeAsNum(this, 'year-min', val);
+    }
+
+    get maxYear() {
+        return GSUtil.getAttributeAsNum(this, 'year-max', '2100');
+    }
+
+    set maxYear(val) {
+        return GSUtil.setAttributeAsNum(this, 'year-max', val);
+    }
+
+    #onYear(e) {
+        const me = this;
+        me.#date.year = me.yearEl.value;
+        me.#update();
+    }
+
+    #onMonth(e) {
+        const me = this;
+        me.#date.month = me.monthEl.selectedIndex;
+        me.#update();
+    }
+
     #onDay(e) {
         const me = this;
         const btn = e.path[0];
@@ -165,8 +230,8 @@ export default class GSCalendar extends GSElement {
     #update() {
         const me = this;        
         me.findEl('.days').innerHTML = me.#daysHTML();
-        me.findEl('.month').innerHTML = me.#date.monthName;
-        me.findEl('.year').innerHTML = me.#date.getFullYear();
+        me.monthEl.selectedIndex = me.#date.month;
+        me.yearEl.value = me.#date.getFullYear();
     }
 
     #isToday(v, date) {
@@ -179,7 +244,10 @@ export default class GSCalendar extends GSElement {
         const today = new GSDate();
         const list = me.#date.build();
         const html = list
-            .map(v => `<div class="col p-0"><a href="#" class="btn ${ me.#isToday(v, today) ? me.cssToday : '' } ${v ? 'day' : ''}">${v}</a></div>`)
+            .map(v =>  {
+                const d = v ? `<a href="#" class="btn ${ me.#isToday(v, today) ? me.cssToday : '' } day">${v}</a>` : ''
+                return `<div class="col p-0">${d}</div>`;
+            })
             .map((v ,i) => {
                 if (i === 0) return `<div class="row">${v}`;
                 const isBreak = i % 7 == 0;                            
@@ -189,22 +257,54 @@ export default class GSCalendar extends GSElement {
             return html.join('');
     }
 
+
+    #monthsHTML() {
+        const me = this;
+        const current = me.#date.monthName;
+        const list = GSDate.MONTHS.map((v, i) => {
+           const sel = current == v ? 'selected' : '';
+           return `<option value="${i}" ${sel}>${v}</option>` ;
+        }).join('\n');
+        return `<select class="month ${me.cssMonth}" value="${current}">
+                    ${list}
+                </select>`;
+    }
+
+    #yearHTML() {
+        const me = this;
+        return `<input class="year ${me.cssYear}" value="${me.#date.getFullYear()}" type="number" min="${me.minYear}" max="${me.maxYear}">`;
+    }
+
     #toHTML() {
         const me = this;
         const date = me.#date;
         const week = GSDate.weekDays(date.isMondayFirst, true).map(v => `<div class="col">${v}</div>`).join('');
-        return `<div class="container-fluid text-center ${me.css}">
+        const months = me.#monthsHTML();
+        const year = me.#yearHTML();
+
+        return `<style>
+                .year::-webkit-outer-spin-button,
+                .year::-webkit-inner-spin-button {
+                  -webkit-appearance: none;
+                  margin: 0;
+                }                
+                .year {
+                  -moz-appearance: textfield;
+                }                
+                </style>
+                <div class="container-fluid text-center ${me.css}">
                 <div class="row align-items-center ${me.cssHeader} header">
                     <div class="col-1 p-0">
-                        <a href="#" class="btn ${me.cssNav} arrow prev">&#10094;</a>
+                        <a href="#" class="btn ${me.cssNav} arrow prev">${me.arrowPrev}</a>
                     </div>
-                    <div class="col title">
-                        <span class="${me.cssTitle} month">${date.monthName}</span>
-                        <br>
-                        <span class="${me.cssSubtitle} year">${date.getFullYear()}</span>
+                    <div class="col"></div>
+                    <div class="col-auto">
+                        ${months}
+                        ${year}
                     </div>
+                    <div class="col"></div>
                     <div class="col-1 p-0">
-                        <a href="#" class="btn ${me.cssNav} arrow next">&#10095;</a>
+                        <a href="#" class="btn ${me.cssNav} arrow next">${me.arrowNext}</a>
                     </div>
                 </div>
                 <div class="row weeks ${me.cssWeeks}">${week}</div>
