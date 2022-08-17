@@ -246,7 +246,7 @@ export default class GSDataAttr {
 
         const obj = GSDataAttr.#findTarget(source, target, type);
 
-        obj.comps.filter(el => GSUtil.isFunction(el.toggle)).forEach(el => el.toggle());
+        obj.comps.filter(el => GSUtil.isFunction(el.toggle)).forEach(el => el.toggle(source));
 
         GSDataAttr.#onToggleBefore(source, target, type, obj);
         GSDataAttr.#toggle(obj, type);

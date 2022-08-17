@@ -37,7 +37,8 @@ export default class GSPopup extends GSElement {
         const me = this;
 
         if (name === 'visible') {
-            GSUtil.toggleClass(me.#panel, !me.visible, 'd-none hide');
+            me.#resize();
+            GSUtil.toggleClass(me.#panel, !me.visible, 'invisible');
         }
     }
 
@@ -56,7 +57,8 @@ export default class GSPopup extends GSElement {
     async getTemplate(val = '') {
         const me = this;
         const tpl = await super.getTemplate(val);
-        return `<div class="position-${me.position} ${me.css}"><slot>${tpl}</slot></div>`;
+        const state = me.visible ? '' : 'invisible';
+        return `<div class="position-${me.position} ${me.css} ${state}"><slot>${tpl}</slot></div>`;
     }
 
     onReady() {
@@ -130,7 +132,7 @@ export default class GSPopup extends GSElement {
      * Set popup visible or hiden
      */
     get visible() {
-        return GSUtil.getAttributeAsBool(this, 'visible');
+        return GSUtil.getAttributeAsBool(this, 'visible', false);
     }
 
     set visible(val = '') {
@@ -217,8 +219,10 @@ export default class GSPopup extends GSElement {
         this.visible = true;
     }
 
-    toggle() {
-        this.visible = !this.visible;
+    toggle(e) {
+        const me = this;
+        if (e) return me.#onPopup(e);
+        me.visible = !me.visible;
     }
 
     /**
@@ -232,16 +236,24 @@ export default class GSPopup extends GSElement {
         const panel = me.#panel;
         if (!panel) return;
         requestAnimationFrame(() => {
+            me.visible = true;
             panel.style.top = '0px';
             panel.style.left = '0px';
-            if (me.wMax) panel.style.maxWidth = `${me.wMax}px`;
-            if (me.wMin) panel.style.minWidth = `${me.wMin}px`;
-            if (me.hMax) panel.style.maxHeight = `${me.hMax}px`;
-            if (me.hMin) panel.style.minHeight = `${me.hMin}px`;
+            me.#resize();
             panel.style.transform = `translate(${x}px, ${y}px)`;
-            me.visible = true;
         });
 
+    }
+
+    #resize() {
+        const me = this;
+        const panel = me.#panel;
+        if (!panel) return;
+        if (!me.visible) me.style.transform = 'unset';
+        if (me.wMax) panel.style.maxWidth = `${me.wMax}px`;
+        if (me.wMin) panel.style.minWidth = `${me.wMin}px`;
+        if (me.hMax) panel.style.maxHeight = `${me.hMax}px`;
+        if (me.hMin) panel.style.minHeight = `${me.hMin}px`;
     }
 
     #onResize(e) {
@@ -249,11 +261,13 @@ export default class GSPopup extends GSElement {
     }
 
     #onPopup(e) {
-        if (e instanceof Event) e.preventDefault();
         const me = this;
-        me.#caller = e.path.filter(e => (!(e instanceof HTMLSlotElement)))[0]
-        //me.#caller = e.currentTarget.self.firstElementChild;
-        // TODO - calculate target position start/end/top/bottom
+        me.#caller = e;
+        if (e instanceof Event) {
+            e.preventDefault();
+            me.#caller = e.path.filter(e => (!(e instanceof HTMLSlotElement)))[0];
+        } 
+        
         if (me.placement) {
             GSUtil.position(me.placement, me.#panel, me.#caller, false);
             me.visible = true;
@@ -298,6 +312,7 @@ export default class GSPopup extends GSElement {
         me.#attachTarget();
         me.attachEvent(document, 'gs-component', me.#attachTarget.bind(me));
         me.attachEvent(window, 'resize', me.#onResize.bind(me));
+        me.#resize();
         if (me.autoclose) me.attachEvent(me.#panel, 'mouseleave', me.close.bind(me));
         if (me.visible) me.popup(me.hPos, me.vPos);
     }

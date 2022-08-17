@@ -1,38 +1,69 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <title>Tooltip Test</title>
+  <title>Tooltip Test</title>
 
-    <script type="module" src="/modules/index.mjs"></script>
-    <script type="module" src="/modules/components/ext/GSNavLink.mjs"></script>
-    <script type="module" src="/modules/components/GSPopup.mjs"></script>
-    <script type="module" src="/modules/components/GSCalendar.mjs"></script>
+  <script type="module" src="/modules/index.mjs"></script>
+  <script type="module" src="/modules/components/ext/GSNavLink.mjs"></script>
+  <script type="module" src="/modules/components/ext/GSDataAttr.mjs"></script>
+  <script type="module" src="/modules/components/GSPopup.mjs"></script>
+  <script type="module" src="/modules/components/GSCenter.mjs"></script>
+  <script type="module" src="/modules/components/GSCalendar.mjs"></script>
 
-    <gs-css  url="/assets/css/custom_5.2.0.css" ></gs-css>  
+  <gs-css url="/assets/css/custom_5.2.0.css"></gs-css>
 
 </head>
+
 <body class="vh-100 overflow-hidden">
-  
+
   <div class="d-flex justify-content-center bg-light border shadow-sm p-2">
     <div class="flex-column"><img src="/assets/img/logo.png" height="32"></div>
   </div>
 
-    <!-- auto-generated gs-popover based on data-bs-toggle="popover" and title attribute -->
-    <div class="m-4 p-1 bg-light border shadow-sm">
-        <button type="button" class="btn btn-secondary" data-bs-toggle="calendar" data-bs-target="#mycalendar">
-            Calendar toggle
-          </button>
-    </div> 
+  <!-- auto-generated gs-popover based on data-bs-toggle="popover" and title attribute -->
+  <div class="row m-4 p-1 bg-light border shadow-sm">
+    <div class="col-auto">
+      <button type="button" class="btn btn-secondary" data-bs-toggle="popup" data-bs-target="#mypopup">
+        Calendar toggle
+      </button>
+    </div>
+    <div class="col-auto">
+      <!-- modern browser does not need calendar ui if type is set to "date" -->
+      <input class="form-control" name="mydate" type="date" title="Browser native date selector">
+    </div>
+    <div class="col-auto">
+      <!-- here is a fallback how to use it if browser does not have calendar selection -->
+      <input class="form-control" name="mydate2" id="mydate2" type="text" pattern="\d{1,2}/\d{1,2}/\d{4}" data-bs-toggle="popup" data-bs-target="#mypopup" title="Custom UI date selector">
+    </div>    
+  </div>
 
-    <!-- attach to ref targeted element -->
-    <div class="m-4 p-1 bg-light border shadow-sm">        
-        <gs-calendar id="mycalendar"></gs-calendar>
-    </div> 
+  <!-- attach to ref targeted element -->
+  <gs-center css="m-4 p-1 bg-light border shadow-sm w-25">
+    <gs-calendar id="mycalendar"></gs-calendar>
+  </gs-center>
 
-    <script defer="true" type="module">
-      const tbl = GSComponents.find('gs-calendar');
-      tbl.listen('date', (e) => console.log(e.detail));
-  </script>    
+  <!-- 
+    target and placement tells popup component where to show up (below input field) 
+    if target not set, it will take calling element as target
+  -->
+  <gs-popup css="text-bg-light border p-1 m-2" w-max="360" target_="#mydate2" placement="bottom" id="mypopup">
+    <slot>
+      <gs-calendar id="calendar"></gs-calendar>
+    </slot>
+  </gs-popup>
+
+  <script defer="true" type="module">
+    GSComponents.get('mycalendar').listen('date', (e) => console.log(e.detail));
+  </script>
+
+<script defer="true" type="module">
+  GSComponents.get('calendar').listen('date', (e) => {
+    GSComponents.get('mypopup').close();
+    document.getElementById('mydate2').value = e.detail.date.toLocaleDateString("en-US");
+  });
+</script>
+
 </body>
 
 </html>

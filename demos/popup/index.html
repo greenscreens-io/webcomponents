@@ -28,7 +28,11 @@
         </slot>
     </gs-center>
 
-    <!-- position popup at the end of target -->
+    <!-- 
+        position popup at the end of target 
+        target and placement attributes tells popup component where to show up 
+        if target not set, it will take calling element as a target
+    -->
     <gs-popup css="text-bg-light border p-4 m-2" template="//content.html" visible="true" v-pos="150" h-pos="40" id="mypopup1" target="#mypanel" placement="bottom"></gs-popup>
 
     <gs-popup css="text-bg-light border p-4 m-2" visible="true" v-pos="150" h-pos="300" id="mypopup2">
