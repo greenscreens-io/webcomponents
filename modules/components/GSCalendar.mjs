@@ -7,12 +7,14 @@
  * @module components/GSCalendar
  */
 
+import GSComponents from '../base/GSComponents.mjs';
 import GSDate from '../base/GSDate.mjs';
 import GSElement from '../base/GSElement.mjs'
 import GSUtil from '../base/GSUtil.mjs';
 
 /**
  * Generator for month selector panel
+ * 
  * @class
  * @extends {GSElement}
  */
@@ -34,6 +36,9 @@ export default class GSCalendar extends GSElement {
         if (name === 'date') {
             me.#date = new GSDate(newVal);
             me.#update();
+        }
+        if (name === 'format') {
+            me.#date.format = newVal;
         }
     }
 
@@ -65,6 +70,30 @@ export default class GSCalendar extends GSElement {
 
     set date(val = '') {
         GSUtil.setAttribute(this, 'date', val);
+    }
+
+    get target() {
+        return GSUtil.getAttribute(this, 'target');
+    }
+
+    set target(val = '') {
+        GSUtil.setAttribute(this, 'target', val);
+    }
+
+    get format() {
+        return GSUtil.getAttribute(this, 'format');
+    }
+
+    set format(val = '') {
+        GSUtil.setAttribute(this, 'format', val);
+    }
+
+    get locale() {
+        return GSUtil.getAttribute(this, 'locale', GSUtil.locale);
+    }
+
+    set locale(val = '') {
+        GSUtil.setAttribute(this, 'locale', val);
     }
 
     get css() {
@@ -191,6 +220,11 @@ export default class GSCalendar extends GSElement {
         return GSUtil.setAttributeAsNum(this, 'year-max', val);
     }
 
+    formatted(date) {
+        const me = this;
+        return (date || me.#date).toFormat(me.format, me.locale);
+    }
+
     #onYear(e) {
         const me = this;
         me.#date.year = me.yearEl.value;
@@ -214,7 +248,8 @@ export default class GSCalendar extends GSElement {
         });
         const date = new GSDate(me.#date);
         date.day = day;
-        GSUtil.sendEvent(me, 'date', {date}, true);
+        GSUtil.sendEvent(me, 'date', {type:'calendar', date:date, val : me.formatted(date)}, true, true);
+        me.#updateTarget(date);
     }
 
     #onArrow(e) {
@@ -225,6 +260,19 @@ export default class GSCalendar extends GSElement {
         const isPrev = GSUtil.hasClass(btn, 'prev');
         isPrev ? me.#date.month-- : me.#date.month++;
         me.#update();
+    }
+
+    #updateTarget(date) {
+        const me = this;
+        if (!me.target) return;
+        const tgt = GSComponents.query(me.target) || document.body.querySelector(me.target);
+        if (!tgt) return;
+
+        if (tgt instanceof HTMLInputElement) {
+            if (tgt.type === 'date') return tgt.valueAsDate = date;
+            return tgt.value = me.formatted(date);
+        }
+        tgt.innerHTML = me.formatted(date);
     }
 
     #update() {

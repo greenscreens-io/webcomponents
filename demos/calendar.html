@@ -42,17 +42,17 @@
     </div>
     <div class="col-auto">
       <!-- modern browser does not need calendar ui if type is set to "date" -->
-      <input class="form-control" name="mydate" type="date" title="Browser native date selector">
+      <input class="form-control" name="mydate" id="mydate" type="date" title="Browser native date selector">
     </div>
     <div class="col-auto">
       <!-- here is a fallback how to use it if browser does not have calendar selection -->
       <input class="form-control" name="mydate2" id="mydate2" type="text" pattern="\d{1,2}/\d{1,2}/\d{4}" data-bs-toggle="popup" data-bs-target="#mypopup" title="Custom UI date selector">
-    </div>    
+    </div>        
   </div>
 
   <!-- attach to ref targeted element -->
   <gs-center css="m-4 p-1 bg-light border shadow-sm" style="min-width:355px;">
-    <gs-calendar id="mycalendar"></gs-calendar>
+    <gs-calendar id="mycalendar" target="#mydate"></gs-calendar>
   </gs-center>
 
   <!-- 
@@ -61,9 +61,15 @@
   -->
   <gs-popup css="text-bg-light border p-1 m-2" w-max="360" target_="#mydate2" placement="bottom" id="mypopup">
     <slot>
-      <gs-calendar id="calendar"></gs-calendar>
+      <gs-calendar id="calendar" target="#mydate2" format="dd/mm/yyyy" locale="en"></gs-calendar>
     </slot>
   </gs-popup>
+
+  <script>
+    self.GS_FORMAT_DATE = (date, format, locale) => {
+      return `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
+    }
+  </script>
 
   <script defer="true" type="module">
     GSComponents.get('mycalendar').listen('date', (e) => console.log(e.detail));
@@ -72,7 +78,7 @@
 <script defer="true" type="module">
   GSComponents.get('calendar').listen('date', (e) => {
     GSComponents.get('mypopup').close();
-    document.getElementById('mydate2').value = e.detail.date.toLocaleDateString("en-US");
+    //document.getElementById('mydate2').value = e.detail.date.toLocaleDateString("en-US");
   });
 </script>
 

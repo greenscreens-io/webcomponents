@@ -19,6 +19,8 @@ GSCalendar WebComponent is a month selector renderer.
 | css-selected       | CSS classes for selected day                             |
 | css-today          | CSS classes for current day                              |
 | date               | Initial date                                             |
+| format             | String format the date                                   |
+| locale             | Local language support                                   |
 
 <br>
 
@@ -29,11 +31,11 @@ GSCalendar WebComponent is a month selector renderer.
 For more details, check [calendar.html](../../demos/calendar.html)
 
 ```html
-<gs-calendar date="" css=""></gs-calendar>
+<gs-calendar date="" css="" format="dd.mm.yyyy" locale="hr"></gs-calendar>
 ```
 How to listen for date slection:
 
 ```JavaScript
 const el = GSComponents.find('gs-calendar');
-el.listen('date', e => consonle.log(e));
+el.listen('date', e => console.log(e));
 ```

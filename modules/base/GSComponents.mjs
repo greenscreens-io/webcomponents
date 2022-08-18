@@ -100,7 +100,7 @@ export default class GSComponents {
      * @returns {Array<HTMLElement>}
      */
     static queryAll(value = '') {
-        const data = GSComponents.findAll()
+        const data = GSComponents.findAll(null, true, true)
             .filter(el => GSUtil.isFunction(el.findAll))
             .map(el => Array.from(el.findAll(value)))
             .filter(o => o.length > 0)
@@ -114,7 +114,11 @@ export default class GSComponents {
      * @returns {HTMLElement}
      */
     static query(value = '') {
-        return GSComponents.findAll().filter(el => GSUtil.isFunction(el.findEl)).map(el => el.findEl(value)).filter(o => o != null).shift();
+        return GSComponents.findAll(null, true, true)
+                .filter(el => GSUtil.isFunction(el.findEl))
+                .map(el => el.findEl(value))
+                .filter(o => o != null)
+                .shift();
     }
 
     static #waitForInternal(name = '', r) {

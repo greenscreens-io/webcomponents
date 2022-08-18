@@ -44,6 +44,14 @@ export default class GSUtil {
 
 	static initerror = () => { throw new Error('This class cannot be instantiated') };
 
+	/**
+	 * Get browser efautl locale
+	 * @returns {string}
+	 */
+	static get locale() {
+		return navigator.language ? navigator.language : navigator.languages[0];
+	}
+
 	static isJsonString(val = '') {
 		return typeof val == 'string' && (val.startsWith('{') || val.startsWith('['));
 	}
@@ -987,7 +995,7 @@ export default class GSUtil {
 			.forEach(v => GSUtil.setAttribute(target, v.name, v.value));
 		return true;
 	}
-	    
+
 	/**
 	 * Convert list of data attributes into a string list
 	 * @param {HTMLElement} el 
@@ -995,9 +1003,9 @@ export default class GSUtil {
 	 */
 	static dataAttrsToString(el) {
 		return Array.from(el.attributes)
-					.filter(v => v.name.startsWith('data-'))
-					.map(v => `${v.name}="${v.value}"`)
-					.join(' ');
+			.filter(v => v.name.startsWith('data-'))
+			.map(v => `${v.name}="${v.value}"`)
+			.join(' ');
 	}
 
 	/**
