@@ -16,6 +16,7 @@ GSButton WebComponent extends [GSElement](../base/GSElement.md) and all its attr
 | disable            | Render button disabled, ignore click events                   |
 | icon               | Button icon, can be combined with title                       |
 | title              | Button text                                                   |
+| select             | If false, blur the element - prevent selection focus          |
 | target             | CSS selector to element which will be affected by click event |
 | toggle             | *Type of target, defines different behavior                   |
 | dismiss            | *Type of target, defines different behavior                   |

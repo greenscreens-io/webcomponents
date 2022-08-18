@@ -44,6 +44,7 @@ export default class GSButton extends GSElement {
             me.#state = !me.#state;
             GSUtil.toggleClass(me.firstElementChild, me.#state, 'active');
         }
+        if (!me.select) me.findEl('button').blur();
     }
 
     onReady() {
@@ -168,8 +169,15 @@ export default class GSButton extends GSElement {
     }
 
     set disable(val = '') {
-        val = GSUtil.asBool(val);
-        return GSUtil.setAttribute(this, 'disable', val);
+        return GSUtil.setAttributeAsBool(this, 'disable', val);
+    }
+
+    get select() {
+        return GSUtil.getAttributeAsBool(this, 'select', true);
+    }
+
+    set select(val = '') {
+        return GSUtil.setAttributeAsBool(this, 'select', val);
     }
 
     toggle() {

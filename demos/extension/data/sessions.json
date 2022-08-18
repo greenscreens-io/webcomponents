@@ -1,0 +1,20 @@
+[
+    {
+        "codepage": "870",
+        "dbcs": "0",
+        "display": "DSPGSADMIN",
+        "drawer1": "-1",
+        "drawer2": "-1",
+        "driver": "0",
+        "duplicats": "",
+        "host": "DEMO",
+        "id": "1654849549275",
+        "name": "DEMO",
+        "password": "",
+        "printer": "",
+        "sessionID": "",
+        "theme": "",
+        "user": "",
+        "uuid": "DEMO"
+    }
+]

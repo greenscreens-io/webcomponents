@@ -32,13 +32,6 @@ export default class GSTable extends GSElement {
 
     #store = null;
 
-    #map = {
-        'css':'table',
-        'css-header' : 'table thead',
-        'css-row' : 'table tbody tr',
-        'css-cell' : 'table tbody td'        
-    };
-
     #selectCSS = 'bg-dark text-light fw-bold';
     #tableCSS = 'table table-hover table-striped user-select-none m-0';
     #headerCSS = 'user-select-none table-light';
@@ -65,7 +58,13 @@ export default class GSTable extends GSElement {
 
     attributeCallback(name = '', oldValue = '', newValue = '') {
         const me = this;
-        me.#setCSS(me.map[name], newValue);
+
+        if (name.indexOf('-') > 0) name = GSUtil.capitalizeAttr(name);
+
+        if (GSComponents.hasSetter(me, name)) {
+            me[name] = newValue;
+        }
+
     }
 
     disconnectedCallback() {
@@ -143,48 +142,37 @@ export default class GSTable extends GSElement {
         me.#select = GSUtil.asBool(val);
     }
 
-    get css() { 
-        return GSUtil.getAttribute(this, 'css', this.#tableCSS); 
-    }
-
-    get cssSelect() { 
-        return GSUtil.getAttribute(this, 'css-select', this.#selectCSS); 
-    }
-
-    get cssHeader() {
-        return GSUtil.getAttribute(this, 'css-header', this.#headerCSS); 
-    }
-    
-    get cssRow() { 
-        return GSUtil.getAttribute(this, 'css-row', this.#rowCSS); 
-    }
-    
-    get cssCell() { 
-        return GSUtil.getAttribute(this, 'css-cell', this.#cellCSS); 
-    }
+    get css() { return this.#tableCSS; }
+    get cssSelect() { return this.#selectCSS; }
+    get cssHeader() { return this.#headerCSS; }
+    get cssRow() { return this.#rowCSS; }
+    get cssCell() { return this.#cellCSS; }
 
     set css(val = '') {
-        GSUtil.setAttribute(this, 'css', val); 
+        this.#tableCSS = val;
+        this.#setCSS('table', val);
     }
 
     set cssSelect(val = '') {
-        GSUtil.setAttribute(this, 'css-select', val); 
+        this.#selectCSS = val;
     }
 
     set cssHeader(val = '') {
-        GSUtil.setAttribute(this, 'css-header', val); 
+        this.#headerCSS = val;
+        this.#setCSS('table thead', val);
     }
 
     set cssRow(val = '') {
-        GSUtil.setAttribute(this, 'css-row', val); 
+        this.#rowCSS = val;
+        this.#setCSS('table tbody tr', val);
     }
 
     set cssCell(val = '') {
-        GSUtil.setAttribute(this, 'css-cell', val); 
+        this.#cellCSS = val;
+        this.#setCSS('table tbody td', val);
     }
 
     #setCSS(qry, val) {
-        if (!qry) return;
         this.findAll(qry, true).forEach(el => {
             GSUtil.setAttribute(el, 'class', val);
         });

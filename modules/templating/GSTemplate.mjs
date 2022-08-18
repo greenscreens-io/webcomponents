@@ -35,8 +35,6 @@ class GSTemplate extends HTMLElement {
 
 	constructor() {
 		super();
-		const me = this;
-		if (!me.id) me.id = GSID.id;
 	}
 
 	get id() {
@@ -115,10 +113,11 @@ class GSTemplate extends HTMLElement {
 	connectedCallback() {
 		const me = this;
 		const pe = me.parentElement;
-		if (pe && pe.tagName == 'GS-ITEM') return;
+		if (pe && pe.tagName == 'GS-ITEM') return;		
 		if (!(me.isValidEnvironment && me.isValidBrowser && me.isValidOS)) {
 			return me.remove();
 		}
+		if (!me.id) me.id = GSID.id;
 		me.#connected = true;
 		GSComponents.store(me);
 		me.loadTemplate();

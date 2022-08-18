@@ -22,6 +22,9 @@ import "./filebox/index.mjs";
 import "./table/index.mjs";
 import "./toast/index.mjs";
 
+import "./GSTime.mjs";
+import "./GSYear.mjs";
+
 /*
 export { default as GSInput } from "./ext/GSInput.mjs";
 export { default as GSDataList } from "./ext/GSDataList.mjs";

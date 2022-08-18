@@ -1,3 +1,53 @@
-<div class="border shadow-sm text-bg-light m-4 p-4">
-    <h4>Template loaded from sessions.html</h4>
+<div class="d-flex justify-content-between align-items-center bg-light border shadow-sm px-4">
+    <div class="fs-5 fw-bold">Terminal Sessions</div>
+    <div class="w-50 input-group">
+        <i class="input-group-text bg-white bi bi-search"></i>
+        <input class="form-control border-start-0" placeholder="search" name="search" id="search">
+    </div>
+    <div>
+        <gs-button select="false" comment="Add new definition" css="text-bg-light" icon="bi bi-file-earmark-medical fs-4 fw-bold"></gs-button>
+        <gs-button select="false" comment="Refresh data" css="text-bg-light" icon="bi bi-arrow-repeat fs-4 fw-bold">
+        </gs-button>
+    </div>
+</div>
+
+<div class="d-flex justify-content-between align-items-center bg-light border shadow-sm p-1">
+
+    <gs-table index=false class="flex-fill"
+        css="table table-light table-hover user-select-none m-0 border"
+        css-select="table-active table-primary" 
+        css-header="user-select-none table-secondary">
+        <gs-header>
+            <gs-column title="Name" name="name"></gs-column>
+            <gs-column title="UUID" name="uuid"></gs-column>
+            <gs-column title="Host" name="host"></gs-column>
+            <gs-column title="Display Name" name="display"></gs-column>
+            <gs-column title="Printer Name" name="printer"></gs-column>
+            <gs-column title="User" name="user"></gs-column>
+            <gs-column title="Code Page" name="codepage"></gs-column>
+            <gs-column title="Session ID" name="sessionID"></gs-column>
+            <gs-column title="Theme" name="theme"></gs-column>
+        </gs-header>
+        <gs-data src="data/sessions.json" id="sessions" limit=10>
+            <gs-item name="name"></gs-item>
+            <gs-item name="uuid"></gs-item>
+            <gs-item name="host"></gs-item>
+            <gs-item name="display"></gs-item>
+            <gs-item name="printer"></gs-item>
+            <gs-item name="user"></gs-item>
+            <gs-item name="codepage"></gs-item>
+            <gs-item name="sessionID"></gs-item>
+            <gs-item name="theme"></gs-item>
+        </gs-data>
+        <gs-context slot="extra" target="tbody tr">
+            <gs-item name="Details" action="details"></gs-item>
+            <gs-item name="Clone" action="clone"></gs-item>
+            <gs-item name="Start" action="start"></gs-item>
+            <gs-item name="Remove" action="remove"></gs-item>
+        </gs-context>
+        <!--
+            <gs-pager slot="extra" previous="&laquo;" next="&raquo;" firstlast="false"></gs-pager>
+         -->
+    </gs-table>
+
 </div>

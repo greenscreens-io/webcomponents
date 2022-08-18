@@ -388,8 +388,9 @@ export default class GSElement extends HTMLElement {
 	 */
 	connectedCallback() {
 		const me = this;
-		const pe = me.parentElement;
-		if (pe && pe.tagName == 'GS-ITEM') return;
+		
+		if (me.#isConfig()) return;
+
 		if (!(me.isValidEnvironment && me.isValidBrowser && me.isValidOS)) {
 			return me.remove();
 		}
@@ -450,6 +451,14 @@ export default class GSElement extends HTMLElement {
 			if (me.offline) return;
 			me.isValidOrientation ? me.show(true) : me.hide(true)
 		});
+	}
+
+	#isConfig() {
+		const me = this;		
+		let pe = me.parentElement;
+		if (pe && pe.tagName == 'GS-ITEM') return true;
+		pe = GSComponents.getOwner(me, 'GS-ITEM');
+		return (pe && pe.tagName == 'GS-ITEM');
 	}
 
 	#styleChange() {
