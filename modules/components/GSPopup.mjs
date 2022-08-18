@@ -46,6 +46,7 @@ export default class GSPopup extends GSElement {
         super.connectedCallback();
         const me = this;
         me.#online = true;
+        me.attachEvent(me, 'form', me.#onForm.bind(me));
     }
 
     disconnectedCallback() {
@@ -167,7 +168,7 @@ export default class GSPopup extends GSElement {
     get vPos() {
         return GSUtil.getAttributeAsNum(this, 'v-pos');
     }
-    
+
     set vPos(val = '') {
         return GSUtil.setAttributeAsNum(this, 'v-pos', val);
     }
@@ -188,7 +189,7 @@ export default class GSPopup extends GSElement {
     get wMin() {
         return GSUtil.getAttributeAsNum(this, 'w-min');
     }
-    
+
     set hMax(val = '') {
         return GSUtil.setAttributeAsNum(this, 'h-max', val);
     }
@@ -211,7 +212,7 @@ export default class GSPopup extends GSElement {
         if (e instanceof Event) {
             e.preventDefault();
             const opt = { type: 'popup', option: e.target, caller: me.#caller, data: null };
-            GSUtil.sendEvent(me, 'action', opt, true, true); 
+            GSUtil.sendEvent(me, 'action', opt, true, true);
         }
     }
 
@@ -266,8 +267,8 @@ export default class GSPopup extends GSElement {
         if (e instanceof Event) {
             e.preventDefault();
             me.#caller = e.path.filter(e => (!(e instanceof HTMLSlotElement)))[0];
-        } 
-        
+        }
+
         if (me.placement) {
             GSUtil.position(me.placement, me.#panel, me.#caller, false);
             me.visible = true;
@@ -317,4 +318,18 @@ export default class GSPopup extends GSElement {
         if (me.visible) me.popup(me.hPos, me.vPos);
     }
 
+    #onForm(e) {
+        const me = this;
+        let sts = me.#validateCaller(e, e.target, 'submit', 'GS-POPUP');
+        if (!sts) return;
+        GSUtil.preventEvent(e);
+        sts = GSUtil.sendEvent(me, 'data', { type: 'popup', data: e.detail.data, evt: e }, true, true, true);
+        if (sts) me.close();
+    }
+
+    #validateCaller(e, own, type, comp) {
+        if (e.detail.type !== type) return false;
+        const parent = GSComponents.getOwner(own, comp);
+        return parent == this;
+    }
 }
