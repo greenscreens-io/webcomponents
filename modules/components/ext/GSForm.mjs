@@ -62,8 +62,6 @@ export default class GSForm extends HTMLFormElement {
 
     static #attachEvents(me) {
         GSListeners.attachEvent(me, me, 'submit', GSForm.#onSubmit.bind(me));
-        GSListeners.attachEvent(me, GSForm.#buttonCancel(me), 'click', GSForm.#onCancel.bind(me));
-        GSListeners.attachEvent(me, GSForm.#buttonReset(me), 'click', me.reset.bind(me));
         GSListeners.attachEvent(me, document.body, 'action', GSForm.#onAction.bind(me));
     }
 
@@ -74,14 +72,20 @@ export default class GSForm extends HTMLFormElement {
      */
     static #onAction(e, own) {
         const me = own || this;
-        if (e.detail.type !== 'modal') return;
-        const modal = GSComponents.getOwner(me, 'GS-MODAL');
-        if (modal !== e.target) return; 
+        const sts = GSForm.#validateCaller(e, me, 'modal', 'GS-MODAL');
+        if (!sts) return; 
+
         if (e.detail.ok) return GSForm.#onSubmit(e, me);
         
         const evt = e.detail.evt;
         const isReset = evt && evt.target.className.indexOf('reset') > 0;
         if (isReset) me.reset();
+    }
+
+    static #validateCaller(e, own, type, comp) {
+        if (e.detail.type !== type) return false;
+        const parent = GSComponents.getOwner(own, comp);
+        return parent == e.target; 
     }
 
     /**
@@ -90,23 +94,14 @@ export default class GSForm extends HTMLFormElement {
      */
     static #onSubmit(e, own) {
         GSUtil.preventEvent(e);
-        GSForm.#submit(e, own || this);
-    }
-
-    static #submit(e, own) {
         const me = own || this;
         const isValid = me.checkValidity();
         const obj = GSUtil.toObject(me);
-        if (e.detail) e.detail.data = obj;
-        if (isValid) return GSUtil.sendEvent(me, 'form', { type: 'submit', data: obj, source: e }, true, true);
-        GSUtil.preventEvent(e);
+        const type = isValid ? 'submit' : 'invalid';
+        const data = { type: type, data: obj, source: e, valid : isValid };
+        if (e.detail) e.detail.data = data;
+        GSUtil.sendEvent(me, 'form', data, true, true);
         return me.reportValidity();
-    }
-
-    static #onCancel(e, own) {
-        const me = own || this;
-        GSUtil.preventEvent(e);
-        GSUtil.sendEvent(me, 'form', { type: 'cancel', source: e }, true, true);
     }
 
     get buttonOK() {
@@ -121,17 +116,12 @@ export default class GSForm extends HTMLFormElement {
         return GSForm.#buttonReset(this);
     }
 
-    static #hasButtons(own) {
-        return GSForm.#buttonOK(own) || GSForm.#buttonCancel(own) || GSForm.#buttonReset(own);
-    }
-
     static #buttonOK(own) {
-        return GSUtil.findEl('button[type="submit"],.modal-ok', own);
+        return GSUtil.findEl('button[type="submit"]', own);
     }
 
     static #buttonCancel(own) {
-        const el = GSForm.#find(own, 'cancel');
-        return el ? el : GSUtil.findEl('button:not([type="submit"]),.modal-cancel', own);
+        return GSForm.#find(own, 'cancel');
     }
 
     static #buttonReset(own) {
@@ -139,7 +129,7 @@ export default class GSForm extends HTMLFormElement {
     }
 
     static #find(own, name = '') {
-        return GSUtil.findEl(`button[data-action="${name}"],.modal-${name}`, own);
+        return GSUtil.findEl(`button[data-action="${name}"]`, own);
     }
 
 }

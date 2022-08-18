@@ -17,6 +17,8 @@ import GSUtil from "../base/GSUtil.mjs";
  */
 export default class GSModal extends GSElement {
 
+  static #actions = ['ok', 'cancel'];
+
   static {
     customElements.define('gs-modal', GSModal);
   }
@@ -45,32 +47,44 @@ export default class GSModal extends GSElement {
 
   onReady() {
     const me = this;
-    const btns = me.findAll('.modal-footer .btn');
-    Array.from(btns).forEach(btn => me.attachEvent(btn, 'click', me.#onClick.bind(me)));
+    me.attachEvent(me, 'click', me.#onClick.bind(me));
     me.attachEvent(me, 'form', me.#onForm.bind(me));
+    me.attachEvent(me, 'modal', me.#onModal.bind(me));
     super.onReady();
     if (me.visible) me.open();
   }
 
+  #onModal(e) {
+    const me = this;
+    const sts = me.#validateCaller(e, e.target, 'close', 'GS-MODAL');
+    if (!sts) return;
+    GSUtil.preventEvent(e);
+     me.close();
+  }
+
   #onForm(e) {
     const me = this;
-    let sts = true;
+    let sts = me.#validateCaller(e, e.target, 'submit', 'GS-MODAL');
+    if (!sts) return;
     GSUtil.preventEvent(e);
-    const isSubmit = e.detail.type === 'submit';
-    try {
-      if (isSubmit) sts = GSUtil.sendEvent(me, 'data', { type: 'modal', data: e.detail.data, evt: e }, true, true, true);
-    } finally {
-      if (sts) me.close();
-    }
+    sts = GSUtil.sendEvent(me, 'data', { type: 'modal', data: e.detail.data, evt: e }, true, true, true);
+    if (sts) me.close();
+  }
 
+  #validateCaller(e, own, type, comp) {
+    if (e.detail.type !== type) return false;
+    const parent = GSComponents.getOwner(own, comp);
+    return parent == this;
   }
 
   #onClick(e) {
     const me = this;
     let sts = true;
     try {
+      const action = GSUtil.getAttribute(e.path[0], 'data-action');
+      if (GSModal.#actions.indexOf(action) < 0) return sts = false;
       GSUtil.preventEvent(e);
-      const isOk = e.target.className.indexOf('ok') > 0;
+      const isOk = action === 'ok';
       sts = GSUtil.sendEvent(me, 'action', { type: 'modal', ok: isOk, evt: e }, true, true, true);
     } finally {
       if (sts) me.close();
@@ -96,14 +110,14 @@ export default class GSModal extends GSElement {
 
   /**
    * Change size of modal window to "extra large"
-   */  
+   */
   extra() {
     this.#setSize('modal-xl');
   }
 
   /**
    * Change size of modal window to "default"
-   */  
+   */
   normal() {
     this.#setSize();
   }
@@ -139,7 +153,8 @@ export default class GSModal extends GSElement {
   /**
    * Show modal panel
    */
-  open() {
+  open(e) {
+    GSUtil.preventEvent(e);
     const me = this;
     const sts = GSUtil.sendEvent(me, 'open', { type: 'modal' }, true, true, true);
     if (sts) me.visible = true;
@@ -148,7 +163,8 @@ export default class GSModal extends GSElement {
   /**
    * Hide modal panel
    */
-  close() {
+  close(e) {
+    GSUtil.preventEvent(e);
     const me = this;
     const sts = GSUtil.sendEvent(me, 'close', { type: 'modal' }, true, true, true);
     if (sts) me.visible = false;
@@ -168,9 +184,17 @@ export default class GSModal extends GSElement {
    */
   focusable() {
     const me = this;
-    if (me.cancelable) return me.buttonCancel;
-    if (me.closable) return me.buttonOK;
+    if (me.cancelable) return me.#buttonCancelEl;
+    if (me.closable) return me.#buttonOkEl;
     return me;
+  }
+
+  get #buttonOkEl() {
+    return this.findEl('.modal-ok');
+  }
+
+  get #buttonCancelEl() {
+    return this.findEl('.modal-cancel');
   }
 
   #showEL(name) {
@@ -189,8 +213,8 @@ export default class GSModal extends GSElement {
 
   #update() {
     const me = this;
-    GSUtil.toggleClass(me.buttonOK, !me.closable);
-    GSUtil.toggleClass(me.buttonCancel, !me.cancelable);
+    GSUtil.toggleClass(me.#buttonOkEl, !me.closable);
+    GSUtil.toggleClass(me.#buttonCancelEl, !me.cancelable);
     const css = `justify-content-${me.align}`;
     const footer = me.findEl('.modal-footer');
     GSUtil.toggleClass(footer, true, css);
@@ -250,32 +274,33 @@ export default class GSModal extends GSElement {
     this.#update();
   }
 
-  get titleOk() {
-    return this.buttonOK.innerText;
+  get buttonOk() {
+    return GSUtil.getAttribute(this, "button-ok", "Ok");
   }
 
-  set titleOk(val = 'Ok') {
-    this.buttonOK.innerText = val;
-  }
-
-  get titleCancel() {
-    return this.buttonCancel.innerText;
-  }
-
-  set titleCancel(val = 'Cancel') {
-    this.buttonCancel.innerText = val;
-  }
-
-  get buttonOK() {
-    return this.findEl('.modal-ok');
+  set buttonOk(val = 'Ok') {
+    GSUtil.setAttribute(this, "button-ok", val);
   }
 
   get buttonCancel() {
-    return this.findEl('.modal-cancel');
+    return GSUtil.getAttribute(this, "button-cancel", "Cancel");
+  }
+
+  set buttonCancel(val = 'Cancel') {
+    GSUtil.setAttribute(this, "button-cancel", val);
+  }
+
+  get cssButtonOk() {
+    return GSUtil.getAttribute(this, "css-button-ok", "btn-primary");
+  }
+
+  get cssButtonCancel() {
+    return GSUtil.getAttribute(this, "css-button-cancel", "btn-secondary");
   }
 
   async getTemplate(val = '') {
     if (val) return super.getTemplate(val || '//modal.tpl');
+    const me = this;
     return `
         <div class="modal d-none fade">
         <div class="modal-dialog modal-dialog-centered">
@@ -288,9 +313,9 @@ export default class GSModal extends GSElement {
             <div class="modal-body">
               <slot name="body"></slot>
             </div>
-            <div class="modal-footer border-0">
-              <button class="btn modal-cancel">Cancel</button>
-              <button class="btn modal-ok">Ok</button>
+            <div class="modal-footer border-0 justify-content-${me.align}">
+              <button class="btn ${me.cssButtonCancel} modal-cancel" data-action="cancel">${me.buttonCancel}</button>
+              <button class="btn ${me.cssButtonOk} modal-ok" data-action="ok">${me.buttonOk}</button>
             </div>
           </div>
         </div>

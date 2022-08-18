@@ -15,6 +15,8 @@ When HTML buttons added to the component with **data-action** attributes, compon
 * **cancel** - If form is under the ```<gs-modal>``` panel, panel will be closed.
 * **reset**  - Will clear all input fields located under the **form** tag.
 
+<br>
+
 ## Example
 ---
 
@@ -25,12 +27,18 @@ Define HTML form block with input fields and/or buttons as childs.
     ... other input fields ...
     <button type="submit" data-action="submit">Submit</button>        
     <button data-action="cancel">Cancel</button>
-    <button data-action="reset">Reset</button>
+    <button type="reset" data-action="reset">Reset</button>
 </form>
 ```
-Sample code how to catch form **action** event triggered by buttons.
+ 
+## Events
+---
+
+Custom event **form** is triggered on form **submit**, **cancel** or **invalid** validation.
+
+Check for **e.data.type** to determine type of form action.
 
 ```JavaScript
 cosnt frm = document.querySelector('.myform');
-frm.addEventListener('action', e => console.log(e));
+frm.addEventListener('form', e => console.log(e.data.type));
 ```

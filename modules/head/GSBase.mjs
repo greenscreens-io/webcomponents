@@ -53,14 +53,18 @@ export default class GSBase extends HTMLElement {
 	}
 
 	/**
-	 * Generic event dispatcher
-	 * @param {HTMLElement} sender An element that dispatch the event
-	 * @param {string} name Event name 
-	 * @param {object} obj Event data
-	 * @returns {boolean} Event response state
+	 * Generic event disaptcher
+	 * 
+	 * @param {HTMLElement} sender element that send event
+	 * @param {string} name  Event name oto trigger
+	 * @param {object} obj Data object to send 
+	 * @param {boolean} bubbles Send event to parent
+	 * @param {boolean} composed Send event across shadowDom
+	 * @param {boolean} cancelable Event is cancelable
+	 * @returns {boolean}
 	 */
-	static sendEvent(sender = document, name, obj = '') {
-		const event = new CustomEvent(name, { detail: obj });
+	 static sendEvent(sender = document, name, obj = '', bubbles = false, composed = false, cancelable = false) {
+		const event = new CustomEvent(name, { detail: obj, bubbles: bubbles, composed: composed, cancelable: cancelable });
 		return sender.dispatchEvent(event);
 	}
 

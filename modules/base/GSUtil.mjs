@@ -812,12 +812,12 @@ export default class GSUtil {
 	 * @param {string} name  Event name oto trigger
 	 * @param {object} obj Data object to send 
 	 * @param {boolean} bubbles Send event to parent
-	 * @param {boolean} compose Send event across shadowDom
+	 * @param {boolean} composed Send event across shadowDom
 	 * @param {boolean} cancelable Event is cancelable
 	 * @returns {boolean}
 	 */
-	static sendEvent(sender = document, name, obj = '', bubbles = false, compose = false, cancelable = false) {
-		const event = new CustomEvent(name, { detail: obj, bubbles: bubbles, compose: compose, cancelable: cancelable });
+	static sendEvent(sender = document, name, obj = '', bubbles = false, composed = false, cancelable = false) {
+		const event = new CustomEvent(name, { detail: obj, bubbles: bubbles, composed: composed, cancelable: cancelable });
 		return sender.dispatchEvent(event);
 	}
 
@@ -828,14 +828,14 @@ export default class GSUtil {
 	 * @param {string} name  Event name oto trigger
 	 * @param {object} obj Data object to send 
 	 * @param {boolean} bubbles Send event to parent
-	 * @param {boolean} compose Send event across shadowDom
+	 * @param {boolean} composed Send event across shadowDom
 	 * @param {boolean} cancelable Event is cancelable
 	 * @returns {void} 
 	 */
-	static sendSuspendedEvent(sender = document, name, obj = '', bubbles = false, compose = false, cancelable = false) {
+	static sendSuspendedEvent(sender = document, name, obj = '', bubbles = false, composed = false, cancelable = false) {
 		if (!name) return;
 		requestAnimationFrame(() => {
-			GSUtil.sendEvent(sender, name, obj, bubbles, compose, cancelable);
+			GSUtil.sendEvent(sender, name, obj, bubbles, composed, cancelable);
 		});
 	}
 
