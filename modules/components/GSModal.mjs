@@ -39,7 +39,7 @@ export default class GSModal extends GSElement {
         me.#hideEL('.modal-backdrop');
         me.normal();
       }
-      GSUtil.sendEvent(me, 'action', { type: 'modal', ok: me.visible });
+      GSUtil.sendEvent(me, 'visible', { type: 'modal', ok: me.visible }, true, true);
     }
   }
 
@@ -47,19 +47,33 @@ export default class GSModal extends GSElement {
     const me = this;
     const btns = me.findAll('.modal-footer .btn');
     Array.from(btns).forEach(btn => me.attachEvent(btn, 'click', me.#onClick.bind(me)));
+    me.attachEvent(me, 'form', me.#onForm.bind(me));
     super.onReady();
     if (me.visible) me.open();
   }
 
+  #onForm(e) {
+    const me = this;
+    let sts = true;
+    GSUtil.preventEvent(e);
+    const isSubmit = e.detail.type === 'submit';
+    try {
+      if (isSubmit) sts = GSUtil.sendEvent(me, 'data', { type: 'modal', data: e.detail.data, evt: e }, true, true, true);
+    } finally {
+      if (sts) me.close();
+    }
+
+  }
+
   #onClick(e) {
     const me = this;
+    let sts = true;
     try {
-      const isOk = e.target.className.indexOf('ok') > 0;
-      const obj = GSUtil.toObject(me.body);
-      GSUtil.sendEvent(me, 'action', { type: 'modal', ok: isOk, data: obj });
-    } finally {
-      me.close();
       GSUtil.preventEvent(e);
+      const isOk = e.target.className.indexOf('ok') > 0;
+      sts = GSUtil.sendEvent(me, 'action', { type: 'modal', ok: isOk, evt: e }, true, true, true);
+    } finally {
+      if (sts) me.close();
     }
   }
 
@@ -126,14 +140,18 @@ export default class GSModal extends GSElement {
    * Show modal panel
    */
   open() {
-    this.visible = true;
+    const me = this;
+    const sts = GSUtil.sendEvent(me, 'open', { type: 'modal' }, true, true, true);
+    if (sts) me.visible = true;
   }
 
   /**
    * Hide modal panel
    */
   close() {
-    this.visible = false;
+    const me = this;
+    const sts = GSUtil.sendEvent(me, 'close', { type: 'modal' }, true, true, true);
+    if (sts) me.visible = false;
   }
 
   /**

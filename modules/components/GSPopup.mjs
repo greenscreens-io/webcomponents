@@ -211,7 +211,7 @@ export default class GSPopup extends GSElement {
         if (e instanceof Event) {
             e.preventDefault();
             const opt = { type: 'popup', option: e.target, caller: me.#caller, data: null };
-            GSUtil.sendEvent(me, 'action', opt, true); // notify self            
+            GSUtil.sendEvent(me, 'action', opt, true, true); 
         }
     }
 

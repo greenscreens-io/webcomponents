@@ -361,8 +361,6 @@ export default class GSElement extends HTMLElement {
 
 	/**
 	* Generic event listener appender
-	* TODO handle once events to self remove
-	* TODO handle fucntion key override with same function signature dif instance
 	* 
 	* @param {HTMLElement} el Element on which to monitor for named events
 	* @param {string} name Event name to watch for

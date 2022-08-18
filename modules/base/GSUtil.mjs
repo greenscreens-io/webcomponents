@@ -796,7 +796,7 @@ export default class GSUtil {
 	}
 
 	/**
-	 * Generic prevent event buubling
+	 * Generic prevent event bubling
 	 * 
 	 * @param {Event} e 
 	 */

@@ -25,7 +25,7 @@ export default class GSListeners {
 	 * @param {string} name Event name to moinitor
 	 * @param {Function} fn Callback to trigger on event
 	 * @param {boolean} once Monitor event only once
-	 * @param {boolean} capture Allwo event capture
+	 * @param {boolean} capture Allow event capture
 	 * @returns {boolean}
 	 */
 	static attachEvent(own, el, name = '', fn, once = false, capture = false) {

@@ -71,10 +71,23 @@
         </gs-modal>
     -->
 
-    <gs-modal template="#modal" id="dialog1" visible="true">
+    <gs-modal template="#modal" id="dialog1" visible="true" closable="false" cancelable="false">
         <h4 slot="title">Login</h4>
         <gs-template slot="body" flat="true" href="//dialog.tpl"></gs-template>
     </gs-modal>
+
+    <script defer="true" type="module">
+        GSComponents.find('gs-modal').listen('data', (e) => {
+            const obj = e.detail.data;
+            console.log(obj);
+            const sts = obj.password.length > 5;
+            if (sts) return;
+            // stop processing (prevent modal close)
+            e.preventDefault();
+            alert('Invalid password length');
+            
+        });
+      </script>
 
 </body>
 </html>

@@ -33,7 +33,6 @@ export default class GSForm extends HTMLFormElement {
 
     static #onMonitorResult(el) {
         GSForm.#attachEvents(el);
-        GSForm.#updateModal(el);
     }
 
     static #onMonitorRemove(el) {
@@ -52,7 +51,6 @@ export default class GSForm extends HTMLFormElement {
         const me = this;
         if (!me.id) me.setAttribute('id', GSID.id);
         GSForm.#attachEvents(me);
-        GSForm.#updateModal(me);
         //GSComponents.store(me);
     }
 
@@ -66,34 +64,49 @@ export default class GSForm extends HTMLFormElement {
         GSListeners.attachEvent(me, me, 'submit', GSForm.#onSubmit.bind(me));
         GSListeners.attachEvent(me, GSForm.#buttonCancel(me), 'click', GSForm.#onCancel.bind(me));
         GSListeners.attachEvent(me, GSForm.#buttonReset(me), 'click', me.reset.bind(me));
-    }
-
-    static #updateModal(me) {
-        const modal = GSComponents.getOwner(me, 'GS-MODAL');
-        if (!modal) return;
-        const isBtn = GSForm.#hasButtons(me);
-        modal.closable = isBtn ? false : modal.closable;
-        modal.cancelable = isBtn ? false : modal.cancelable;
+        GSListeners.attachEvent(me, document.body, 'action', GSForm.#onAction.bind(me));
     }
 
     /**
-     * Trigger form submit, close gs-modal if it is parent
+     * 
+     * @param {*} e 
+     * @param {*} own 
+     */
+    static #onAction(e, own) {
+        const me = own || this;
+        if (e.detail.type !== 'modal') return;
+        const modal = GSComponents.getOwner(me, 'GS-MODAL');
+        if (modal !== e.target) return; 
+        if (e.detail.ok) return GSForm.#onSubmit(e, me);
+        
+        const evt = e.detail.evt;
+        const isReset = evt && evt.target.className.indexOf('reset') > 0;
+        if (isReset) me.reset();
+    }
+
+    /**
+     * Trigger form submit only if form data is valid
      * @param {*} e 
      */
     static #onSubmit(e, own) {
-        const me = own || this;
         GSUtil.preventEvent(e);
+        GSForm.#submit(e, own || this);
+    }
+
+    static #submit(e, own) {
+        const me = own || this;
         const isValid = me.checkValidity();
         const obj = GSUtil.toObject(me);
-        GSUtil.sendEvent(me, 'action', { type: 'submit', ok: isValid, data: obj, source: e });
-        if (!isValid) return me.reportValidity();
-        GSForm.#onCancel(e, me);
+        if (e.detail) e.detail.data = obj;
+        if (isValid) return GSUtil.sendEvent(me, 'form', { type: 'submit', data: obj, source: e }, true, true);
+        GSUtil.preventEvent(e);
+        return me.reportValidity();
     }
 
     static #onCancel(e, own) {
         const me = own || this;
-        const modal = GSComponents.getOwner(me, 'GS-MODAL');
-        if (modal) modal.close();
+        GSUtil.preventEvent(e);
+        GSUtil.sendEvent(me, 'form', { type: 'cancel', source: e }, true, true);
     }
 
     get buttonOK() {
