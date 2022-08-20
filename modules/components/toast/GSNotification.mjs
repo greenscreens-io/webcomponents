@@ -64,6 +64,9 @@ export default class GSNotification extends GSElement {
     </div>`;
   }
 
+  /**
+   * Generic css for notifiction container
+   */
   get css() {
     return GSUtil.getAttribute(this, 'css', 'p-3');
   }
@@ -72,6 +75,10 @@ export default class GSNotification extends GSElement {
     GSUtil.setAttribute(this, 'css', val);
   }
 
+  /**
+   * Position where to show notification
+   * NOTE: Might interfer with "css" attribute
+   */
   get position() {
     return GSUtil.getAttribute(this, 'position', GSNotification.DEFAULT);
   }
@@ -80,6 +87,9 @@ export default class GSNotification extends GSElement {
     GSUtil.setAttribute(this, 'position', val);
   }
 
+  /**
+   * Set browser native notification usage
+   */
   get native() {
     return GSUtil.getAttributeAsBool(this, 'native', false);
   }
@@ -165,6 +175,9 @@ export default class GSNotification extends GSElement {
     me.owner.#list.delete(me.notification);
   }
 
+  /**
+   * Clear all triggered notifications
+   */
   clear() {
     const me = this;
     Array.from(me.querySelectorAll('gs-toast')).forEach(el => el.remove());
@@ -172,14 +185,26 @@ export default class GSNotification extends GSElement {
     me.#list.clear();
   }
 
+  /**
+   * Check if native notification is supported
+   * @returns {boolean} 
+   */  
   static get isNativeSupported() {
     return "Notification" in self;
   }
 
+  /**
+   * Check if native notification is allowed
+   * @returns {boolean} 
+   */
   static get isGranted() {
     return Notification.permission === "granted";
   }
 
+  /**
+   * Request useage for browser native notification
+   * @returns {boolean} Return granted status
+   */
   static async requestPermission() {
     if (!GSNotification.isNativeSupported) return false;
     if (!GSNotification.isGranted) await Notification.requestPermission();
