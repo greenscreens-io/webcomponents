@@ -66,8 +66,8 @@ export default class GSTooltip extends GSElement {
     // https://javascript.info/mousemove-mouseover-mouseout-mouseenter-mouseleave
     #attachEvents() {
         const me = this;
-        GSListeners.attachEvent(me, me.target, 'mouseover', me.show.bind(me));
-        GSListeners.attachEvent(me, me.target, 'mouseout', me.hide.bind(me));
+        GSListeners.attachEvent(me, me.target, 'mouseenter', me.show.bind(me));
+        GSListeners.attachEvent(me, me.target, 'mouseleave', me.hide.bind(me));
     }
 
     #render() {
@@ -80,7 +80,7 @@ export default class GSTooltip extends GSElement {
     get #html() {
         const me = this;
         return `
-         <div class="tooltip bs-tooltip-${me.placement} fade " role="tooltip">
+         <div class="position-fixed m-0 p-0 tooltip bs-tooltip-${me.placement} fade " role="tooltip">
             <div class="tooltip-arrow"></div>
             <div class="tooltip-inner">${me.title}</div>
         </div>        
@@ -138,9 +138,9 @@ export default class GSTooltip extends GSElement {
      */
     show() {
         const me = this;
-        const el = GSUtil.parse(me.#html);
-        me.insertAdjacentElement('afterbegin', el);
         requestAnimationFrame(() => {
+            const el = GSUtil.parse(me.#html);
+            me.insertAdjacentElement('afterbegin', el);
             me.#render();
             GSUtil.toggleClass(this.firstElementChild, true, 'show');
         });

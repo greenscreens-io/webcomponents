@@ -1,3 +1,6 @@
+
+<gs-script auto="false" type="module" url="/demos/extension/scripts/colors.mjs"></gs-script>
+
 <div class="d-flex justify-content-between align-items-center bg-light border shadow-sm px-4">
     <div class="fs-5 fw-bold">Color Themes</div>
     <div class="w-50 input-group">
@@ -13,7 +16,7 @@
 
 <div class="d-flex justify-content-between align-items-center bg-light border shadow-sm">
 
-    <gs-table index=false class="flex-fill"
+    <gs-table id="table-colors" index=false class="flex-fill"
         css="table table-light table-hover user-select-none m-0"
         css-select="table-active table-primary" 
         css-header="user-select-none table-secondary">
@@ -36,4 +39,8 @@
          -->
     </gs-table>
 
+    <gs-modal id="modal-color" visible="false">
+        <h4 slot="title">Theme Colors</h4>
+        <gs-template slot="body" href="//color-dialog.html"></gs-template>
+    </gs-modal>    
 </div>

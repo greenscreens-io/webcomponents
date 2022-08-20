@@ -75,4 +75,8 @@ export default class GSNotification extends GSElement {
     me.appendChild(el);
   }
 
+  clear() {
+    Array.from(this.querySelectorAll('gs-toast')).forEach(el => el.remove());
+  }
+
 }

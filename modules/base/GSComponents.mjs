@@ -121,7 +121,7 @@ export default class GSComponents {
                 .shift();
     }
 
-    static #waitForInternal(name = '', r) {
+    static #waitForInternal(name = '', timeout = 0, r) {
         const fn = (e) => {
             const el = e.detail;
             const isComp = name.startsWith('gs-') && el.tagName === name.toUpperCase();
@@ -130,7 +130,9 @@ export default class GSComponents {
                 return r(el);
             }
         };
-        GSUtil.listen(document, null, 'gs-component', fn);
+        const opt = {once:true, capture : false};
+        if(timeout > 0) opt.signal = AbortSignal.timeout(timeout);
+        GSUtil.listen(document, null, 'gs-component', fn, opt);
     }
 
     /**
@@ -138,12 +140,30 @@ export default class GSComponents {
      * @param {string} name A name of GSComponent type (gs-form, etc...)
      * @returns {GSElement}
      */
-    static waitFor(name = '') {
+    static waitFor(name = '', timeout = 0) {
         return new Promise((r, e) => {
-            const el = GSComponents.find(name);
+            let el = GSComponents.find(name);
+            if (!el) el = GSComponents.get(name);
             if (el) return r(el);
-            GSComponents.#waitForInternal(name, r);
+            GSComponents.#waitForInternal(name, timeout, r);
         });
+    }
+
+    /**
+     * Notify when GSElement is registered, 
+     * @param {*} name Element id or GS-* tagName
+     * @param {*} fn Callback function
+     */
+    static notifyFor(name = '', fn) {
+        if (!GSUtil.isFunction(fn)) return false;
+        const callback = (e) => {
+            const el = e.path[0];
+            const ok = el.id === name || el.tagName === name;
+            if (!ok) return ;
+            fn(el, e);
+        };
+        GSUtil.listen(document.body, null, 'componentready', callback);
+        return callback;
     }
 
     /**

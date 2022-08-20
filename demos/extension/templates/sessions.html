@@ -1,3 +1,6 @@
+
+<gs-script auto="false" type="module" url="/demos/extension/scripts/sessions.mjs"></gs-script>
+
 <div class="d-flex justify-content-between align-items-center bg-light border shadow-sm px-4">
     <div class="fs-5 fw-bold">Terminal Sessions</div>
     <div class="w-50 input-group">
@@ -13,7 +16,7 @@
 
 <div class="d-flex justify-content-between align-items-center bg-light border shadow-sm p-1">
 
-    <gs-table index=false class="flex-fill"
+    <gs-table id="table-sessions" index=false class="flex-fill"
         css="table table-light table-hover user-select-none m-0 border"
         css-select="table-active table-primary" 
         css-header="user-select-none table-secondary">
@@ -49,5 +52,10 @@
             <gs-pager slot="extra" previous="&laquo;" next="&raquo;" firstlast="false"></gs-pager>
          -->
     </gs-table>
+
+    <gs-modal id="modal-session" visible="false">
+        <h4 slot="title">Terminal Session</h4>
+        <gs-template slot="body" href="//session-dialog.html"></gs-template>
+    </gs-modal>    
 
 </div>

@@ -94,7 +94,7 @@ export default class GSBase extends HTMLElement {
 
 			const tmp = document.querySelector(`[data-hash="${hash}"]`);
 			if (tmp) {
-				console.log(`URL already exists: ${me.url}`);
+				// console.log(`URL already exists: ${me.url}`);
 				me.remove();
 				return;
 			}

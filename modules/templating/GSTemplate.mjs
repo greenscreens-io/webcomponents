@@ -182,7 +182,7 @@ class GSTemplate extends HTMLElement {
 	}
 
 	/**
-	 * Load and instantiate HTML tempalte that injects into element
+	 * Load and instantiate HTML template that injects into element
 	 * @returns {HTMLTemplateElement}
 	 */
 	async loadTemplate() {
@@ -209,7 +209,7 @@ class GSTemplate extends HTMLElement {
 				me.shadow.innerHTML = tpl.innerHTML;
 			}
 			// GSUtil.walk(me.self, el => GSDOMObserver.parse(el));
-			GSUtil.sendSuspendedEvent(me, 'ready', { id: me.id, href: me.href });
+			GSUtil.sendSuspendedEvent(me, 'templateready', { id: me.id, href: me.href });
 		});
 		return tpl;
 	}
@@ -222,7 +222,7 @@ class GSTemplate extends HTMLElement {
 	waitWhenReady(href = '') {
 		const me = this;
 		if (href) me.href = href;
-		return me.waitEvent('ready');
+		return me.waitEvent('templateready');
 	}
 
 	/**

@@ -574,7 +574,7 @@ export default class GSElement extends HTMLElement {
 		if (me.offline) return;
 		const fn = GSUtil.parseFunction(me.onready);
 		GSUtil.callFunction(fn);
-		GSUtil.sendEvent(me, 'ready', me.id);
+		GSUtil.sendEvent(me, 'componentready', me.id, true, true);
 	}
 
 }
