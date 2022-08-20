@@ -33,15 +33,15 @@
           <label for="selectToastPlacement">Toast placement</label>
           <select class="form-select mt-2" id="selectToastPlacement">
             <option value="" selected>Select a position...</option>
-            <option value="position-fixed top-0 start-0">Top left</option>
-            <option value="position-fixed top-0 start-50 translate-middle-x">Top center</option>
-            <option value="position-fixed top-0 end-0">Top right</option>
-            <option value="position-fixed top-50 start-0 translate-middle-y">Middle left</option>
-            <option value="position-fixed top-50 start-50 translate-middle">Middle center</option>
-            <option value="position-fixed top-50 end-0 translate-middle-y">Middle right</option>
-            <option value="position-fixed bottom-0 start-0">Bottom left</option>
-            <option value="position-fixed bottom-0 start-50 translate-middle-x">Bottom center</option>
-            <option value="position-fixed bottom-0 end-0">Bottom right</option>
+            <option value="TOP_START">Top left</option>
+            <option value="TOP_CENTER">Top center</option>
+            <option value="TOP_END">Top right</option>
+            <option value="MIDDLE_START">Middle left</option>
+            <option value="MIDDLE_CENTER">Middle center</option>
+            <option value="MIDDLE_END">Middle right</option>
+            <option value="BOTTOM_START">Bottom left</option>
+            <option value="BOTTOM_CENTER">Bottom center</option>
+            <option value="BOTTOM_END">Bottom right</option>
           </select>
         </div>
     </form>
@@ -54,11 +54,9 @@
     </gs-notification>
 
     <script>
-        const el = document.getElementById('toast');
-        let css = el.css;
         document.querySelector('select').addEventListener('change', (e) =>{
-            if (!css) css = el.css;
-            el.css = css + ' ' + e.target.value;
+            const el = GSComponents.find('gs-notification');
+            el.position = e.target.value;
         });        
     </script>
 </body>
