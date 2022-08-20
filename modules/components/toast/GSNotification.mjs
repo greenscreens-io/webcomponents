@@ -18,24 +18,27 @@ import GSUtil from "../../base/GSUtil.mjs";
 export default class GSNotification extends GSElement {
 
   static TOP_START = "position-fixed top-0 start-0";
-  static TOP_CENTER ="position-fixed top-0 start-50 translate-middle-x";
+  static TOP_CENTER = "position-fixed top-0 start-50 translate-middle-x";
   static TOP_END = "position-fixed top-0 end-0";
   static MIDDLE_START = "position-fixed top-50 start-0 translate-middle-y";
   static MIDDLE_CENTER = "position-fixed top-50 start-50 translate-middle";
   static MIDDLE_END = "position-fixed top-50 end-0 translate-middle-y";
   static BOTTOM_START = "position-fixed bottom-0 start-0";
-  static BOTTOM_CENTER ="position-fixed bottom-0 start-50 translate-middle-x";
+  static BOTTOM_CENTER = "position-fixed bottom-0 start-50 translate-middle-x";
   static BOTTOM_END = "position-fixed bottom-0 end-0";
 
   static DEFAULT = GSNotification.BOTTOM_END;
 
-  static {
-    customElements.define('gs-notification', GSNotification);
-  }
+  #list = new Set();
 
   static get observedAttributes() {
     const attrs = ['position'];
     return GSUtil.mergeArrays(attrs, super.observedAttributes);
+  }
+
+  connectCallback() {
+    const me = this;
+    super.connectedCallback();
   }
 
   attributeCallback(name = '', oldVal = '', newVal = '') {
@@ -57,7 +60,7 @@ export default class GSNotification extends GSElement {
   async getTemplate(val = '') {
     const me = this;
     return `<div class="toast-container ${me.css} ${me.position}" style="z-index: 10000;">
-      <slot name="content"></slot>
+    <slot name="content"></slot>
     </div>`;
   }
 
@@ -77,47 +80,115 @@ export default class GSNotification extends GSElement {
     GSUtil.setAttribute(this, 'position', val);
   }
 
+  get native() {
+    return GSUtil.getAttributeAsBool(this, 'native', false);
+  }
+
+  set native(val = '') {
+    GSUtil.setAttributeAsBool(this, 'native', val);
+  }
+
   info(title = '', message = '', closable = false, timeout = 2) {
-    this.show(title, message, 'bg-info', closable, timeout);
+    return this.show(title, message, 'bg-info', closable, timeout);
   }
 
   success(title = '', message = '', closable = false, timeout = 2) {
-    this.show(title, message, 'bg-success', closable, timeout);
+    return this.show(title, message, 'bg-success', closable, timeout);
   }
 
   warn(title = '', message = '', closable = false, timeout = 2) {
-    this.show(title, message, 'bg-warning', closable, timeout);
+    return this.show(title, message, 'bg-warning', closable, timeout);
   }
 
   danger(title = '', message = '', closable = false, timeout = 2) {
-    this.show(title, message, 'bg-danger', closable, timeout);
+    return this.show(title, message, 'bg-danger', closable, timeout);
   }
 
   primary(title = '', message = '', closable = false, timeout = 2) {
-    this.show(title, message, 'bg-primary', closable, timeout);
+    return this.show(title, message, 'bg-primary', closable, timeout);
   }
 
   secondary(title = '', message = '', closable = false, timeout = 2) {
-    this.show(title, message, 'bg-secondary', closable, timeout);
+    return this.show(title, message, 'bg-secondary', closable, timeout);
   }
 
   dark(title = '', message = '', closable = false, timeout = 2) {
-    this.show(title, message, 'bg-dark', closable, timeout);
+    return this.show(title, message, 'bg-dark', closable, timeout);
   }
 
   light(title = '', message = '', closable = false, timeout = 2) {
-    this.show(title, message, 'bg-light', closable, timeout);
+    return this.show(title, message, 'bg-light', closable, timeout);
   }
 
-  show(title = '', message = '', css = '', closable = false, timeout = 2) {
+  /**
+   * Main function to show notification. 
+   * It has support for Bootstrap based and web based notifications.
+   * @param {string} title Notification title
+   * @param {string} message Notification message
+   * @param {string} css CSS styling (web only)
+   * @param {boolean} closable Can user close it (web only)
+   * @param {number} timeout Timeout after which to close notification
+   * @param {object} options Options for native Notification
+   * @returns {Notification|GSToast}
+   */
+  async show(title = '', message = '', css = '', closable = false, timeout = 2, options) {
     const me = this;
+    if (me.native) {
+      let sts = await GSNotification.requestPermission();
+      if (sts) sts = me.#showNative(title, message, timeout, options);
+      if (sts) return sts;
+    }
+    return me.#showWeb(title, message, css, closable, timeout);
+  }
+
+  #showWeb(title = '', message = '', css = '', closable = false, timeout = 2) {
     const tpl = `<gs-toast slot="content" css="${css}"  closable="${closable}" timeout="${timeout}" message="${message}" title="${title}"></gs-toast>`;
     const el = GSUtil.parse(tpl);
-    me.appendChild(el);
+    this.appendChild(el);
+    return el;
+  }
+
+  #showNative(title = '', message = '', timeout = 2, options = {}) {
+    const me = this;
+    options.body = options.body || message;
+    const notification = new Notification(title, options);
+    me.#list.add(notification);
+    const callback = me.#clearNative.bind({notification : notification, owner:me});
+    notification.addEventListener('close', callback);
+    if (timeout > 0) setTimeout(callback, timeout * 1000);
+    return notification;
+  }
+
+  #clearNative() {
+    const me = this;
+    me.notification.close();
+    me.owner.#list.delete(me.notification);
   }
 
   clear() {
-    Array.from(this.querySelectorAll('gs-toast')).forEach(el => el.remove());
+    const me = this;
+    Array.from(me.querySelectorAll('gs-toast')).forEach(el => el.remove());
+    me.#list.forEach(nn => nn.close());
+    me.#list.clear();
   }
 
-}
+  static get isNativeSupported() {
+    return "Notification" in self;
+  }
+
+  static get isGranted() {
+    return Notification.permission === "granted";
+  }
+
+  static async requestPermission() {
+    if (!GSNotification.isNativeSupported) return false;
+    if (!GSNotification.isGranted) await Notification.requestPermission();
+    return GSNotification.isGranted;
+  }
+
+  static {
+    customElements.define('gs-notification', GSNotification);
+    Object.seal(GSNotification);
+  }
+
+}  

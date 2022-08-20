@@ -1405,7 +1405,7 @@
 	 }
 
 	 /**
-	  * Calculat eelement padding
+	  * Calculate element padding
 	  * @param {HTMLElement} element 
 	  * @returns {object}
 	  */
@@ -1434,8 +1434,8 @@
 	 }
  
 	 /**
-	  * Bootstrap support function to show dropdown element
-	  * @param {string} placement Location on tearget element top|bottom|start|end
+	  * Place element around target element. Bootstrap support for popup etc.
+	  * @param {string} placement Location on target element top|bottom|start|end
 	  * @param {HTMLElement} source Element to show
 	  * @param {HTMLElement} target Element location at which to show
 	  * @param {boolean} arrow if true, will calcualte arrow position
@@ -1453,10 +1453,7 @@
 			 return;
 		 }
  
-		 const rect = GSUtil.boundingRect(target, arrow instanceof HTMLElement);
-		 
 		 source.style.position = 'fixed';
-		 //source.style.inset = 'auto auto 0px 0px';
 		 source.style.top = '0px';
 		 source.style.left = '0px';
 		 source.style.margin = '0px';
@@ -1465,6 +1462,7 @@
 		 const offh = source.clientHeight / 2;
 		 const offw = source.clientWidth / 2;
 		 
+		 const rect = GSUtil.boundingRect(target, arrow instanceof HTMLElement);
 		 const arect = GSUtil.#updateArrow(source, arrow, pos);
 
 		 let x = rect.centerX;
