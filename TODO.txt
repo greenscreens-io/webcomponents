@@ -1,0 +1,3 @@
+-----------------
+onReady after child templates loaded
+findEl across all subchild elements, including gs-template and gs-elements

@@ -1,0 +1,286 @@
+/*
+ * Copyright (C) 2015, 2022 Green Screens Ltd.
+ */
+
+/**
+ * A module loading GSPoper class
+ * @module base/GSPoper
+ */
+
+import GSLog from "./GSLog.mjs";
+
+/**
+ * A generic set of static functions used across GS WebComponents framework
+ * @class
+ */
+export default class GSPoper {
+
+	/**
+	 * Get element offset position
+	 * @param {HTMLElement} el 
+	 * @returns {object} Returns absolute position {left:0, top:0, width:0, height:0,centeY:0 centerX:0}
+	 */
+	static getOffset(el) {
+		const rect = el.getBoundingClientRect();
+		const obj = {
+			left: rect.left + window.scrollX,
+			right: rect.right + window.scrollX,
+			top: rect.top + window.scrollY,
+			bottom: rect.bottom + window.scrollY,
+			height: rect.height,
+			width: rect.width,
+			x: rect.x + window.scrollX,
+			y: rect.y + window.scrollY
+		};
+		obj.centerX = obj.left + (obj.width / 2);
+		obj.centerY = obj.top + (obj.height / 2);
+		return obj;
+	}
+
+	/**
+	 * Return element position and size without padding
+	 * @param {HTMLElement} element 
+	 * @returns {object} Parameters as native getBoundingRect
+	 */
+	static boundingRect(element, calcPadding) {
+
+		const rect = element.getBoundingClientRect();
+		const padding = GSPoper.elementPadding(calcPadding ? element : null);
+
+		const paddingX = padding.x;
+		const paddingY = padding.y;
+
+		const elementWidth = element.clientWidth - paddingX;
+		const elementHeight = element.clientHeight - paddingY;
+
+		const elementX = rect.left + padding.left;
+		const elementY = rect.top + padding.top;
+
+		const x = (elementWidth / 2) + elementX;
+		const y = elementY + (elementHeight / 2);
+
+		return {
+			width: elementWidth,
+			height: elementHeight,
+			top: elementY,
+			left: elementX,
+			x: elementX,
+			y: elementY,
+			centerX: x,
+			centerY: y
+		};
+	}
+
+	/**
+	 * Calculate element padding
+	 * @param {HTMLElement} element 
+	 * @returns {object}
+	 */
+	static elementPadding(element) {
+
+		const obj = {
+			left: 0,
+			right: 0,
+			top: 0,
+			bottom: 0,
+			x: 0,
+			y: 0
+		};
+
+		const isEl = element instanceof HTMLElement;
+		if (!isEl) return obj;
+		const cs = getComputedStyle(element);
+
+		obj.left = parseFloat(cs.paddingLeft);
+		obj.right = parseFloat(cs.paddingRight);
+		obj.top = parseFloat(cs.paddingTop);
+		obj.bottom = parseFloat(cs.paddingBottom);
+		obj.x = obj.left + obj.right;
+		obj.y = obj.top + obj.bottom;
+
+		return obj;
+	}
+
+	/**
+	 * Fixed positioning on a viewport.
+	 * @param {string} placement Location on target element top|bottom|left|right
+	 * @param {HTMLElement} source Element to show
+	 * @param {HTMLElement} target Element location at which to show
+	 * @param {boolean} arrow if true, will calculate arrow position
+	 * @returns {void}
+	 */
+	static popupFixed(placement = 'top', source, target, arrow) {
+
+		if (!source) return false;
+		if (!target) return false;
+
+		const pos = GSPoper.#fromPlacement(placement);
+
+		if (!GSPoper.#isPlacementValid(pos)) {
+			GSLog.warn(source, `Invalid popover position: ${placement}!`);
+			return;
+		}
+
+		source.style.position = 'fixed';
+		source.style.top = '0px';
+		source.style.left = '0px';
+		source.style.margin = '0px';
+		source.style.padding = '0px';
+
+		const offh = source.clientHeight / 2;
+		const offw = source.clientWidth / 2;
+
+		const rect = GSPoper.boundingRect(target, arrow instanceof HTMLElement);
+		const arect = GSPoper.#updateArrow(source, arrow, pos);
+
+		let x = rect.centerX;
+		let y = rect.centerY;
+		if (pos.isTop) {
+			y = rect.top - source.clientHeight - arect.size;
+			x = x - offw;
+		} else if (pos.isBottom) {
+			y = rect.top + rect.height + arect.size;
+			x = x - offw;
+		} else if (pos.isStart) {
+			x = rect.left - source.clientWidth - arect.size;
+			y = y - offh + arect.size;
+		} else if (pos.isEnd) {
+			x = rect.left + rect.width + arect.size;
+			y = y - offh + arect.size;
+		}
+
+		source.style.transform = `translate(${x}px, ${y}px)`;
+
+	}
+
+	/**
+	 * Place element around target element. Bootstrap support for popup etc.
+	 * @param {string} placement Location on target element top|bottom|left|right
+	 * @param {HTMLElement} source Element to show
+	 * @param {HTMLElement} target Element location at which to show
+	 * @param {boolean} arrow if true, will calculate arrow position
+	 * @returns {void}
+	 */
+	static popupAbsolute(placement = 'top', source, target, arrow) {
+
+		if (!source) return false;
+		if (!target) return false;
+
+		const pos = GSPoper.#fromPlacement(placement);
+
+		if (!GSPoper.#isPlacementValid(pos)) {
+			GSLog.warn(source, `Invalid popover position: ${placement}!`);
+			return;
+		}
+
+		source.style.position = 'absolute';
+		source.style.margin = '0px';
+		source.style.inset = GSPoper.#inset(pos);
+
+		arrow.style.position = 'absolute';
+
+		const srect = source.getBoundingClientRect();
+		const arect = arrow.getBoundingClientRect();
+		const offset = GSPoper.getOffset(target);
+
+		const obj = {
+			x : offset.centerX,
+			y : offset.centerY
+		}
+		const arr = {
+			x : (srect.width / 2) - (arect.width / 2),
+			y : (srect.height / 2) - (arect.height / 2)
+		}
+
+		if (pos.isTop) {
+			arr.y = 0;
+			arr.left = '0px';
+			obj.x = obj.x - (srect.width / 2);
+			obj.y = -1 * (srect.bottom - offset.top + arect.height);
+		} else if (pos.isBottom) {
+			arr.y = 0;
+			arr.left = '0px';
+			obj.x = obj.x - (srect.width / 2);
+			obj.y = offset.bottom + arect.height;
+		} else if (pos.isStart) {
+			arr.x = 0;
+			arr.top = '0px';
+			obj.x = -1 * (srect.right - offset.left + arect.width);
+			obj.y = obj.y - (srect.height / 2);
+		} else if (pos.isEnd) {
+			arr.x = 0;
+			arr.top = '0px';
+			obj.x = offset.right + arect.width;
+			obj.y = obj.y - (srect.height / 2);
+		}		
+
+
+		source.style.transform = `translate(${obj.x}px, ${obj.y}px)`;
+
+		arrow.style.transform = `translate(${arr.x}px, ${arr.y}px)`;
+		arrow.style.top = arr.top ? arr.top : '';
+		arrow.style.left = arr.left ? arr.left : '';
+
+	}
+
+	static #inset(obj) {
+		if (obj.isTop) {
+			return 'auto auto 0px 0px';
+		} else if (obj.isBottom) {
+			return '0px auto auto 0px';
+		} else if (obj.isStart) {
+			return '0px 0px auto auto';
+		} else if (obj.isEnd) {
+			return '0px auto auto 0px';
+		}		
+	}
+
+	static #isPlacementValid(obj) {
+		return obj.isStart || obj.isEnd || obj.isTop || obj.isBottom;
+	}
+
+	static #fromPlacement(placement) {
+		return {
+			isStart: placement == 'start' || placement == 'left',
+			isEnd: placement == 'end' || placement == 'right',
+			isTop: placement == 'top',
+			isBottom: placement == 'bottom'
+		}
+	}
+
+	static #updateArrow(element, arrow, pos) {
+
+		if (!arrow) return { x: 0, y: 0, size: 0, width: 0, height: 0 };
+		let shift = 0;
+		const erect = GSPoper.boundingRect(element);
+		const arect = GSPoper.boundingRect(arrow);
+
+		const size = pos.isStart || pos.isEnd ? arect.width : arect.height;
+
+		const arrowPosW = (erect.width / 2) - (size / 2);
+		const arrowPosH = (erect.height / 2) - (size / 2);
+
+		arect.size = size;
+		arrow.style.position = 'absolute';
+
+		if (pos.isStart || pos.isEnd) {
+			arrow.style.left = null;
+			arrow.style.top = '0px';
+			shift = pos.isStart ? size : -1 * size;
+			arrow.style.transform = `translate(${shift}px, ${arrowPosH / 2}px)`;
+		} else {
+			arrow.style.top = null;
+			arrow.style.left = '0px';
+			shift = pos.isTop ? size : -1 * size;
+			arrow.style.transform = `translate(${arrowPosW}px, ${shift}px)`;
+		}
+
+		return arect;
+	}
+
+	static {
+		Object.seal(GSPoper);
+		window.GSPoper = GSPoper;
+	}
+}
+

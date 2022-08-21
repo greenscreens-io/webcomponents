@@ -12,6 +12,7 @@ import GSUtil from "../base/GSUtil.mjs";
 import GSDOMObserver from '../base/GSDOMObserver.mjs';
 import GSListeners from "../base/GSListeners.mjs";
 import GSElement from "../base/GSElement.mjs";
+import GSPoper from "../base/GSPoper.mjs";
 
 /**
  * https://getbootstrap.com/docs/5.1/components/popovers/
@@ -79,11 +80,10 @@ export default class GSPopover extends GSElement {
         }
     }
 
-    #render() {
+    #render(source) {
         const me = this;
-        const source = me.firstElementChild;
-        const arrowEl = me.querySelector('div.popover-arrow');
-        GSUtil.position(me.placement, source, me.target, arrowEl);
+        const arrowEl = source.querySelector('div.popover-arrow');
+        GSPoper.popupAbsolute(me.placement, source, me.target, arrowEl);
         return source;
     }
 
@@ -91,7 +91,7 @@ export default class GSPopover extends GSElement {
         const me = this;
         const head = me.title ? `<h3 class="popover-header">${me.title}</h3>` : '';
         return `
-        <div class="popover bs-popover-${me.placement} fade" style="${this.getStyle()}" role="tooltip">
+        <div class="popover bs-popover-auto fade" data-popper-placement="${me.placement}" style="${this.getStyle()}" role="tooltip">
             <div class="popover-arrow"></div>
             ${head}
             <div class="popover-body">${me.content}</div>
@@ -187,8 +187,8 @@ export default class GSPopover extends GSElement {
         const el = GSUtil.parse(me.#html);
         me.insertAdjacentElement('afterbegin', el);
         requestAnimationFrame(() => {
-            me.#render();
-            GSUtil.toggleClass(this.firstElementChild, true, 'show');
+            me.#render(el);
+            GSUtil.toggleClass(el, true, 'show');
         });
     }
 
@@ -202,7 +202,7 @@ export default class GSPopover extends GSElement {
         setTimeout(() => {
             me.innerHTML = '';
         }, 250);
-        return GSUtil.toggleClass(this.firstElementChild, false, 'show');
+        return GSUtil.toggleClass(me.firstElementChild, false, 'show');
     }
 
     /**

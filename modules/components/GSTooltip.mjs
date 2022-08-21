@@ -12,6 +12,7 @@ import GSUtil from "../base/GSUtil.mjs";
 import GSDOMObserver from '../base/GSDOMObserver.mjs';
 import GSListeners from "../base/GSListeners.mjs";
 import GSElement from "../base/GSElement.mjs";
+import GSPoper from "../base/GSPoper.mjs";
 
 /**
  * Process Bootstrap tooltip efinition
@@ -73,14 +74,14 @@ export default class GSTooltip extends GSElement {
     #render() {
         const me = this;
         const arrowEl = me.querySelector('div.tooltip-arrow');
-        GSUtil.position(me.placement, me.firstElementChild, me.target, arrowEl);
+        GSPoper.popupAbsolute(me.placement, me.firstElementChild, me.target, arrowEl);
         return me.firstElementChild;
     }
 
     get #html() {
         const me = this;
         return `
-         <div class="position-fixed m-0 p-0 tooltip bs-tooltip-${me.placement} fade " role="tooltip">
+         <div class="tooltip bs-tooltip-auto fade " data-popper-placement="${me.placement}" role="tooltip">
             <div class="tooltip-arrow"></div>
             <div class="tooltip-inner">${me.title}</div>
         </div>        

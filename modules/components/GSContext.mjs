@@ -14,7 +14,7 @@ import GSComponents from "../base/GSComponents.mjs";
 
 /**
  * Context menu
- * NOTE: Must be rendered in body, as transform_translate(...) issues
+ *
  * @class
  * @extends {GSElement}
  */
@@ -106,14 +106,6 @@ export default class GSContext extends GSElement {
 
   get target() {
     return GSUtil.getAttribute(this, 'target');
-  }
-
-  get _isFlat() {
-    return this.parentElement !== document.body;
-  }
-
-  get anchor() {
-    return 'beforeend@body';
   }
 
   close(e) {
@@ -313,7 +305,7 @@ export default class GSContext extends GSElement {
     children = children || me.children;
     const list = [];
 
-    const sub = level === 0 ? '' : 'submenu';
+    const sub = level === 0 ? 'position-fixed' : 'submenu';
 
     list.push(`<ul class="${sub} dropdown-menu ${me.dark ? 'dropdown-menu-dark' : ''}">`);
 
