@@ -26,7 +26,7 @@
             <button class="btn btn-secondary ms-1" data-action="cancel">Cancel</button>
         </div>
         <div class="col d-flex justify-content-end">
-            <button type="reset" class="btn btn-light ms-1" _data-action="reset">Reset</button>
+            <button type="reset" class="btn btn-light ms-1">Reset</button>
         </div>
     </div>    
 </form>

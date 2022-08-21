@@ -75,7 +75,7 @@
 	 }
  
 	 /**
-	  * Conver provided paramter to JSON
+	  * Convert provided paramter to JSON
 	  * @param {string|object} val 
 	  * @returns {boolean}
 	  */
@@ -125,7 +125,7 @@
 	  * @param {string} url 
 	  * @return {string}
 	  */
-	 static normalizeURL(url = '') {
+	 static normalizeURL(url = '', nocache = false) {
  
 		 url = url || '';
 		 let path = null;
@@ -147,7 +147,11 @@
 			 path = `${location.origin}${location.pathname}/${url}`;
 		 }
  
-		 return new URL(path.replaceAll('//', '/')).href;
+		 const uri = new URL(path.replaceAll('//', '/'));
+		 // to handle caching
+		 if (nocache) uri.searchParams.append('_dc', Date.now());
+
+		 return uri.href;
 	 }
  
 	 /**
@@ -183,11 +187,12 @@
 	  */
 	 static getTemplateURL(url = '') {
  
+		 const caching = self.GS_DEV_MODE === true;
 		 if (url.startsWith('//')) {
-			 return GSUtil.normalizeURL(GSUtil.templateURL + url);
+			 return GSUtil.normalizeURL(GSUtil.templateURL + url, caching);
 		 }
  
-		 return GSUtil.normalizeURL(url);
+		 return GSUtil.normalizeURL(url, caching);
 	 }
  
 	 /**
@@ -195,7 +200,7 @@
 	  * @return {string}
 	  */
 	 static get templateURL() {
-		 return GSUtil.normalizeURL(GSUtil.templatePath);
+		 return GSUtil.normalizeURL(GSUtil.templatePath, false);
 	 }
  
 	 /**
@@ -893,7 +898,7 @@
 	  * @returns {boolean}
 	  */
 	 static isStringNonEmpty(val = '') {
-		 if (typeof val === 'string') return val.trim().length > 0;
+		 if (GSUtil.isString(val)) return val.trim().length > 0;
 		 return false;
 	 }
  
@@ -1042,6 +1047,22 @@
 			 params[el.name] = GSUtil.toValue(el);
 		 });
 		 return params;
+	 }
+
+	 /**
+	  * Convert JSON Object into HTMLElements (input)
+	  * @param {*} owner 
+	  * @param {*} qry 
+	  * @param {*} obj 
+	  * @returns 
+	  */
+	 static fromObject(owner, obj, qry = 'input, textarea, select') {
+		if (!obj) return;
+		const root = GSUtil.unwrap(owner);
+		root.querySelectorAll(qry).forEach(el => {
+			if (!el.name) return;
+			if (obj.hasOwnProperty(el.name)) el.value = obj[el.name];
+		});
 	 }
  
 	 /**
@@ -1269,20 +1290,23 @@
 	 }
  
  
-	 static filterData(filter, data) {
+	 static filterData(filter, data, fields) {
 		 const me = this;
-		 return filter.length === 0 ? data : data.filter(rec => GSUtil.filterRecord(rec, filter));
+		 return filter.length === 0 ? data : data.filter(rec => GSUtil.filterRecord(rec, filter, fields));
 	 }
  
-	 static filterRecord(rec, filter) {
+	 static filterRecord(rec, filter, fields) {
 		 const me = this;
 		 const isSimple = typeof filter === 'string';
-		 return isSimple ? GSUtil.filterSimple(rec, filter) : GSUtil.filterComplex(rec, filter);
+		 return isSimple ? GSUtil.filterSimple(rec, filter, fields) : GSUtil.filterComplex(rec, filter);
 	 }
  
-	 static filterSimple(rec, filter) {
-		 for (let value of Object.values(rec)) {
-			 if (value.toLowerCase().indexOf(filter) > -1) return true;
+	 static filterSimple(rec, filter, fields) {
+		 fields = fields || Object.keys(rec);
+		 let value = null;
+		 for (let key of fields) {
+			value = rec[key];
+			if (value && value.toString().toLowerCase().indexOf(filter) > -1) return true;
 		 }
 		 return false;
 	 }

@@ -130,7 +130,7 @@ export default class GSComponents {
                 return r(el);
             }
         };
-        const opt = {once:true, capture : false};
+        const opt = {once:false, capture : false};
         if(timeout > 0) opt.signal = AbortSignal.timeout(timeout);
         GSUtil.listen(document, null, 'gs-component', fn, opt);
     }
@@ -162,6 +162,9 @@ export default class GSComponents {
             if (!ok) return ;
             fn(el, e);
         };
+        let el = GSComponents.find(name);
+        if (!el) el = GSComponents.get(name);
+        if (el) return fn(el);
         GSUtil.listen(document.body, null, 'componentready', callback);
         return callback;
     }

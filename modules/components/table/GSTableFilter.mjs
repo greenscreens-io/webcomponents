@@ -52,9 +52,7 @@ export default class GSTableFilter extends HTMLTableRowElement {
 
     #attachChangeListener() {
         const me = this;
-        GSUtil.findAll('input, select', me, true).forEach(el => {
-            GSListeners.attachEvent(me, el, 'change', e => me.#onChange(e.target));
-        });
+        GSUtil.findAll('input, select', me, true).forEach(el => GSListeners.attachEvent(me, el, 'change', e => me.#onChange(e.target)) );
     }
 
     #attachDataListener() {

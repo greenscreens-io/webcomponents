@@ -99,35 +99,35 @@ export default class GSNotification extends GSElement {
   }
 
   info(title = '', message = '', closable = false, timeout = 2) {
-    return this.show(title, message, 'bg-info', closable, timeout);
+    return this.show(title, message, 'text-bg-info', closable, timeout);
   }
 
   success(title = '', message = '', closable = false, timeout = 2) {
-    return this.show(title, message, 'bg-success', closable, timeout);
+    return this.show(title, message, 'text-bg-success', closable, timeout);
   }
 
   warn(title = '', message = '', closable = false, timeout = 2) {
-    return this.show(title, message, 'bg-warning', closable, timeout);
+    return this.show(title, message, 'text-bg-warning', closable, timeout);
   }
 
   danger(title = '', message = '', closable = false, timeout = 2) {
-    return this.show(title, message, 'bg-danger', closable, timeout);
+    return this.show(title, message, 'text-bg-danger', closable, timeout);
   }
 
   primary(title = '', message = '', closable = false, timeout = 2) {
-    return this.show(title, message, 'bg-primary', closable, timeout);
+    return this.show(title, message, 'text-bg-primary', closable, timeout);
   }
 
   secondary(title = '', message = '', closable = false, timeout = 2) {
-    return this.show(title, message, 'bg-secondary', closable, timeout);
+    return this.show(title, message, 'text-bg-secondary', closable, timeout);
   }
 
   dark(title = '', message = '', closable = false, timeout = 2) {
-    return this.show(title, message, 'bg-dark', closable, timeout);
+    return this.show(title, message, 'text-bg-dark', closable, timeout);
   }
 
   light(title = '', message = '', closable = false, timeout = 2) {
-    return this.show(title, message, 'bg-light', closable, timeout);
+    return this.show(title, message, 'text-bg-light', closable, timeout);
   }
 
   /**

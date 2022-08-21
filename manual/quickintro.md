@@ -30,4 +30,31 @@ There are 3 types of WebComponents in use
        
  
 **GS WebComponents** are ES2022 JavaScript Classes written as JavaScript Modules in plain vanilla JavaScript without need for any external tools or other framework dependencies to be used in web browsers.
- 
+
+<br>
+
+## Development Basics
+
+Many developers get used to programming models such as MVC, MMVC, MMVM etc... and also to server side compiling  / transpilig tools. Here, those tools are not required.
+
+With Green Screens WebComponents, **everything is a WebComponent**.
+
+It is different approach, relying soley on browser engine and tag activation. There is no need for custom **controller** classes etc. Every component is a handler for child element (html tags) and forwards native browser events across components.
+
+To lear more how to develop SPA application with WebComponents, check out our showcase apps such as [Extension App](../demos/extension/index.html).
+
+[Extension App](../demos/extension/index.html) is a showcase UI for our browser extension for Green Screens Web Terminal for IBM i developed with WebComponents. Here, the basic development concepts are presented showing interaction between various componentes and dynamic templates.
+
+<br>
+
+## Global variables
+
+Global variables are framework flags that needs to be set in head of a documnet, before loading framework.
+
+| Variable              | Type      | Description                            |
+|-----------------------|-----------|----------------------------------------|
+| self.GS_DEV_MODE      | Boolean   | Set to true to prevent browser caching | 
+| self.GS_FLAT          | Boolean   | Set to true to prevent Shadow DOM      | 
+| self.GS_FORMAT_DATE   | String    | Default date format                    | 
+| self.GS_TEMPLATE_URL  | String    | Set path to templates                  |
+

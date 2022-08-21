@@ -1,22 +1,11 @@
 
-<gs-script auto="false" type="module" url="/demos/extension/scripts/colors.mjs"></gs-script>
-
-<div class="d-flex justify-content-between align-items-center bg-light border shadow-sm px-4">
-    <div class="fs-5 fw-bold">Color Themes</div>
-    <div class="w-50 input-group">
-        <i class="input-group-text bg-white bi bi-search"></i>
-        <input class="form-control border-start-0" placeholder="search" name="search" id="search">
-    </div>
-    <div>
-        <gs-button select="false" comment="Add new definition" css="text-bg-light" icon="bi bi-file-earmark-medical fs-4 fw-bold"></gs-button>
-        <gs-button select="false" comment="Refresh data" css="text-bg-light" icon="bi bi-arrow-repeat fs-4 fw-bold">
-        </gs-button>
-    </div>
-</div>
+<gs-template href="//toolbar.html" id="toolbar">
+    <slot>Color Theme</slot>
+</gs-template>
 
 <div class="d-flex justify-content-between align-items-center bg-light border shadow-sm">
 
-    <gs-table id="table-colors" index=false class="flex-fill"
+    <gs-table id="table-main" index=false class="flex-fill"
         css="table table-light table-hover user-select-none m-0"
         css-select="table-active table-primary" 
         css-header="user-select-none table-secondary">
@@ -39,7 +28,7 @@
          -->
     </gs-table>
 
-    <gs-modal id="modal-color" visible="false">
+    <gs-modal id="modal-main" visible="false">
         <h4 slot="title">Theme Colors</h4>
         <gs-template slot="body" href="//color-dialog.html"></gs-template>
     </gs-modal>    

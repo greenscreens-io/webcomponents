@@ -55,7 +55,7 @@ export default class GSContext extends GSElement {
   async getTemplate(val = '') {
     const me = this;
     if (!val && me.childElementCount > 0) return me.#renderMenuDOM();
-    return super.getTemplate(val || '//context.tpl');
+    return super.getTemplate(val);
   }
 
   connectedCallback() {
@@ -108,7 +108,7 @@ export default class GSContext extends GSElement {
     return GSUtil.getAttribute(this, 'target');
   }
 
-  get isFlat() {
+  get _isFlat() {
     return this.parentElement !== document.body;
   }
 
@@ -255,7 +255,7 @@ export default class GSContext extends GSElement {
     me.close();
     const data = GSUtil.getDataAttrs(e.target);
     const opt = { type: 'contextmenu', option: e.target, caller: me.#caller, data: data };
-    GSUtil.sendEvent(me, 'action', opt, true); // notify self
+    GSUtil.sendEvent(me, 'action', opt, true, true, true); // notify self
   }
 
   /**

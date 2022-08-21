@@ -209,7 +209,7 @@ class GSTemplate extends HTMLElement {
 				me.shadow.innerHTML = tpl.innerHTML;
 			}
 			// GSUtil.walk(me.self, el => GSDOMObserver.parse(el));
-			GSUtil.sendSuspendedEvent(me, 'templateready', { id: me.id, href: me.href });
+			GSUtil.sendSuspendedEvent(me, 'templateready', { id: me.id, href: me.href }, true, true);
 		});
 		return tpl;
 	}

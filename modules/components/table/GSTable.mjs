@@ -65,7 +65,7 @@ export default class GSTable extends GSElement {
 
     attributeCallback(name = '', oldValue = '', newValue = '') {
         const me = this;
-        me.#setCSS(me.map[name], newValue);
+        me.#setCSS(me.#map[name], newValue);
     }
 
     disconnectedCallback() {
@@ -89,7 +89,7 @@ export default class GSTable extends GSElement {
         me.attachEvent(me.shadow, 'sort', e => me.#onColumnSort(e.detail));
         me.attachEvent(me.shadow, 'filter', e => me.#onColumnFilter(e.detail));
         me.attachEvent(me.shadow, 'select', e => me.#onRowSelect(e.detail));
-        me.attachEvent(me.shadow, 'action', e => me.#onContextMenu(e.detail));
+        me.attachEvent(me.shadow, 'action', e => me.#onContextMenu(e));
         me.attachEvent(me, 'data', e => me.#onData(e));
 
         me.store.page = 1;
@@ -262,17 +262,26 @@ export default class GSTable extends GSElement {
         me.shadow.innerHTML = `<table class="${me.css}">${html}<tbody is="gs-tbody"></tbody></table><slot name="extra"></slot>`;
     }
 
-    #onContextMenu(data) {
+    /**
+     * Just update (override) event data, and let it bubble up
+     * @param {*} e 
+     */
+    #onContextMenu(e) {
         const me = this;
-        const opt = { action: data.data.action, data: me.#selected };
-        GSUtil.sendEvent(me, 'action', opt);
+        const o = e.detail;
+        o.action = o.data.action;
+        o.data = me.#selected;
+        o.type = 'table';
+        //const opt = { action: data.data.action, data: me.#selected };
+        //GSUtil.sendEvent(me, 'action', opt, true, true, true);
     }
 
     #onRowSelect(data = []) {
+        if (data.length === 0) return;
         const me = this;
         me.#selected = [];
         data.forEach(i => {
-            const rec = me.#data[i];
+            const rec = me.#data[i-1];
             if (rec) me.#selected.push(rec);
         });
         GSUtil.sendEvent(me, 'selected', me.#selected);

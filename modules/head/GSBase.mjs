@@ -296,10 +296,22 @@ export default class GSBase extends HTMLElement {
 	get url() {
 
 		const me = this;
-		const url = me.getAttribute('url') || '';
+		let url = me.getAttribute('url') || '';
 
 		if (me.env === 'assets') {
 			return '**' + url;
+		}
+
+		// prevent caching in dev mode
+		if (self.GS_DEV_MODE) {
+			try {
+				const base = url.startsWith('//') || url.startsWith('http') ? undefined : location.origin;
+				const uri = new URL(url, base);
+				uri.searchParams.append('_dc', Date.now());
+				url = uri.href;
+			} catch (e) {
+				console.log(e);
+			}
 		}
 
 		return url;

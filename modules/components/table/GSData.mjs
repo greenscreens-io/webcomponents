@@ -240,7 +240,7 @@ export default class GSData extends HTMLElement {
 
     set filter(val) {
         const me = this;
-        me.#filter = GSUtil.isString(val) ? JSON.parse(val) : val;
+        me.#filter = GSUtil.isJson(val) ? GSUtil.toJson(val) : val;
         me.reload();
     }
 
@@ -334,7 +334,6 @@ export default class GSData extends HTMLElement {
     async load(val, opt) {
         const me = this;
         if (!me.#online) return false;
-        me.clear();
         const url = val || me.src;
         if (url.length === 0) return false;
         opt = opt || {};
@@ -343,12 +342,12 @@ export default class GSData extends HTMLElement {
         opt.headers.Accept = 'application/json';
         const res = await fetch(url, opt);
         if (!res.ok) return false;
-        let data = await res.json();
-        me.setData(data);
-        return true;
+        const data = await res.json();
+        me.#update(data);
+        return data;
     }
 
-    setData(data = [], append = false) {
+    #update(data = [], append = false) {
 
         const me = this;
         const isRaw = Array.isArray(data);
@@ -365,7 +364,12 @@ export default class GSData extends HTMLElement {
 
         me.#data = append ? me.#data.concat(records) : records;
         if (me.#total < me.#data.length) me.#total = me.#data.length;
-        me.#notify(append ? 'append' : 'refresh', me.#data);
+    }
+
+    setData(data = [], append = false) {
+        const me = this;
+        me.#update(data, append);
+        me.#notify('data', me.#data);
     }
 
     async getData(skip = 0, limit = 0, filter, sort) {
@@ -374,14 +378,16 @@ export default class GSData extends HTMLElement {
         sort = me.#formatSort(sort || me.sort);
         let data = [];
 
-        if (me.remote || me.data.length == 0) {
+        const simple = GSUtil.isStringNonEmpty(filter);
+
+        if (!simple && (me.remote || me.data.length == 0)) {
             const url = me.#toURL(me.src, skip, limit, filter, sort);
-            await me.load(url);
-            data = me.data;
+            data = await me.load(url);
         }
 
         if (!me.remote) {
-            data = GSUtil.filterData(filter, me.#data);
+            const fields = me.#fields();
+            data = GSUtil.filterData(filter, me.#data, fields);
             data = GSUtil.sortData(sort, data);
             limit = limit === 0 ? data.length : limit;
             data = data.slice(skip, skip + limit);
@@ -405,7 +411,7 @@ export default class GSData extends HTMLElement {
         return src + GSUtil.fromLiteral(me.action, opt);
     }
 
-    async #notify(name = 'refresh', data) {
+    async #notify(name = 'data', data) {
         const me = this;
         setTimeout(() => {
             GSUtil.sendEvent(me, name, data, true);
@@ -435,6 +441,10 @@ export default class GSData extends HTMLElement {
             sort[idx - 1] = { ord: val };
         }
         return sort;
+    }
+
+    #fields() {
+        return Array.from(this.querySelectorAll('gs-item')).map(o => o.name);
     }
 
 }

@@ -227,11 +227,13 @@ export default class GSDataAttr {
 
         if (!GSDataAttr.#isInject(inject)) return;
 
+        const isComp = inject.toLowerCase().startsWith('gs-');
         const list = GSComponents.queryAll(target);
         const css = GSUtil.getAttribute(source, GSDataAttr.#dataCSS, '');
 
-        list.forEach(el => el.innerHTML = `<gs-template href="${inject}" class="${css}"></gs-template>`);
+        const html = isComp ? `<${inject}></${inject}>` : `<gs-template href="${inject}" class="${css}"></gs-template>`;
 
+        list.forEach(el =>  el.innerHTML = html);
     }
 
     /**
