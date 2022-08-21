@@ -12,7 +12,7 @@ import GSUtil from "../base/GSUtil.mjs";
 import GSDOMObserver from '../base/GSDOMObserver.mjs';
 import GSListeners from "../base/GSListeners.mjs";
 import GSElement from "../base/GSElement.mjs";
-import GSPoper from "../base/GSPoper.mjs";
+import GSPopper from "../base/GSPopper.mjs";
 
 /**
  * https://getbootstrap.com/docs/5.1/components/popovers/
@@ -83,7 +83,7 @@ export default class GSPopover extends GSElement {
     #render(source) {
         const me = this;
         const arrowEl = source.querySelector('div.popover-arrow');
-        GSPoper.popupAbsolute(me.placement, source, me.target, arrowEl);
+        GSPopper.popupAbsolute(me.placement, source, me.target, arrowEl);
         return source;
     }
 

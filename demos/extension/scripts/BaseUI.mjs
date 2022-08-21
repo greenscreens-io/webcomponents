@@ -183,7 +183,7 @@ export default class BaseUI extends GSElement {
      * Toolbar table action - filter records
      * @param {*} val 
      */
-    search(val) {
+    search(e) {
         this.#store.filter = e.detail.value;
     }
 

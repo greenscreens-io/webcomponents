@@ -270,14 +270,14 @@ export default class GSTable extends GSElement {
         const me = this;
         const o = e.detail;
         o.action = o.data.action;
-        o.data = me.#selected;
+        // clone to prevent removing data by client code
+        o.data = [...me.#selected];
         o.type = 'table';
         //const opt = { action: data.data.action, data: me.#selected };
         //GSUtil.sendEvent(me, 'action', opt, true, true, true);
     }
 
     #onRowSelect(data = []) {
-        if (data.length === 0) return;
         const me = this;
         me.#selected = [];
         data.forEach(i => {

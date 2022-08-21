@@ -8,7 +8,7 @@
  */
 
 import GSElement from "../base/GSElement.mjs";
-import GSPoper from "../base/GSPoper.mjs";
+import GSPopper from "../base/GSPopper.mjs";
 import GSUtil from "../base/GSUtil.mjs";
 
 /**
@@ -271,7 +271,7 @@ export default class GSPopup extends GSElement {
         }
 
         if (me.placement) {
-            GSPoper.popupFixed(me.placement, me.#panel, me.#caller);
+            GSPopper.popupFixed(me.placement, me.#panel, me.#caller);
             me.visible = true;
             return;
         }

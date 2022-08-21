@@ -1,3 +1,4 @@
 -----------------
 onReady after child templates loaded
 findEl across all subchild elements, including gs-template and gs-elements
+modal esc key to close

@@ -3,8 +3,8 @@
  */
 
 /**
- * A module loading GSPoper class
- * @module base/GSPoper
+ * A module loading GSPopper class
+ * @module base/GSPopper
  */
 
 import GSLog from "./GSLog.mjs";
@@ -13,7 +13,7 @@ import GSLog from "./GSLog.mjs";
  * A generic set of static functions used across GS WebComponents framework
  * @class
  */
-export default class GSPoper {
+export default class GSPopper {
 
 	/**
 	 * Get element offset position
@@ -45,7 +45,7 @@ export default class GSPoper {
 	static boundingRect(element, calcPadding) {
 
 		const rect = element.getBoundingClientRect();
-		const padding = GSPoper.elementPadding(calcPadding ? element : null);
+		const padding = GSPopper.elementPadding(calcPadding ? element : null);
 
 		const paddingX = padding.x;
 		const paddingY = padding.y;
@@ -114,9 +114,9 @@ export default class GSPoper {
 		if (!source) return false;
 		if (!target) return false;
 
-		const pos = GSPoper.#fromPlacement(placement);
+		const pos = GSPopper.#fromPlacement(placement);
 
-		if (!GSPoper.#isPlacementValid(pos)) {
+		if (!GSPopper.#isPlacementValid(pos)) {
 			GSLog.warn(source, `Invalid popover position: ${placement}!`);
 			return;
 		}
@@ -130,8 +130,8 @@ export default class GSPoper {
 		const offh = source.clientHeight / 2;
 		const offw = source.clientWidth / 2;
 
-		const rect = GSPoper.boundingRect(target, arrow instanceof HTMLElement);
-		const arect = GSPoper.#updateArrow(source, arrow, pos);
+		const rect = GSPopper.boundingRect(target, arrow instanceof HTMLElement);
+		const arect = GSPopper.#updateArrow(source, arrow, pos);
 
 		let x = rect.centerX;
 		let y = rect.centerY;
@@ -166,22 +166,22 @@ export default class GSPoper {
 		if (!source) return false;
 		if (!target) return false;
 
-		const pos = GSPoper.#fromPlacement(placement);
+		const pos = GSPopper.#fromPlacement(placement);
 
-		if (!GSPoper.#isPlacementValid(pos)) {
+		if (!GSPopper.#isPlacementValid(pos)) {
 			GSLog.warn(source, `Invalid popover position: ${placement}!`);
 			return;
 		}
 
 		source.style.position = 'absolute';
 		source.style.margin = '0px';
-		source.style.inset = GSPoper.#inset(pos);
+		source.style.inset = GSPopper.#inset(pos);
 
 		arrow.style.position = 'absolute';
 
 		const srect = source.getBoundingClientRect();
 		const arect = arrow.getBoundingClientRect();
-		const offset = GSPoper.getOffset(target);
+		const offset = GSPopper.getOffset(target);
 
 		const obj = {
 			x : offset.centerX,
@@ -252,8 +252,8 @@ export default class GSPoper {
 
 		if (!arrow) return { x: 0, y: 0, size: 0, width: 0, height: 0 };
 		let shift = 0;
-		const erect = GSPoper.boundingRect(element);
-		const arect = GSPoper.boundingRect(arrow);
+		const erect = GSPopper.boundingRect(element);
+		const arect = GSPopper.boundingRect(arrow);
 
 		const size = pos.isStart || pos.isEnd ? arect.width : arect.height;
 
@@ -279,8 +279,8 @@ export default class GSPoper {
 	}
 
 	static {
-		Object.seal(GSPoper);
-		window.GSPoper = GSPoper;
+		Object.seal(GSPopper);
+		window.GSPopper = GSPopper;
 	}
 }
 
