@@ -7,8 +7,10 @@
  * @module components/GSCalendar
  */
 
+import GSAttr from '../base/GSAttr.mjs';
 import GSComponents from '../base/GSComponents.mjs';
 import GSDate from '../base/GSDate.mjs';
+import GSDOM from '../base/GSDOM.mjs';
 import GSElement from '../base/GSElement.mjs'
 import GSEvent from '../base/GSEvent.mjs';
 import GSUtil from '../base/GSUtil.mjs';
@@ -32,7 +34,7 @@ export default class GSCalendar extends GSElement {
         this.#date = new GSDate();
     }
 
-    attributeChanged(name = '', oldVal = '', newVal = '') {
+    attributeChanged(name = '', oldVal = '', newVal = '') {debugger;
         const me = this;
         if (name === 'date') {
             me.#date = new GSDate(newVal);
@@ -66,107 +68,107 @@ export default class GSCalendar extends GSElement {
     }
 
     get date() {
-        return GSUtil.getAttribute(this, 'date', this.#date.toISOString());
+        return GSAttr.get(this, 'date', this.#date.toISOString());
     }
 
     set date(val = '') {
-        GSUtil.setAttribute(this, 'date', val);
+        GSAttr.set(this, 'date', val);
     }
 
     get target() {
-        return GSUtil.getAttribute(this, 'target');
+        return GSAttr.get(this, 'target');
     }
 
     set target(val = '') {
-        GSUtil.setAttribute(this, 'target', val);
+        GSAttr.set(this, 'target', val);
     }
 
     get format() {
-        return GSUtil.getAttribute(this, 'format');
+        return GSAttr.get(this, 'format');
     }
 
     set format(val = '') {
-        GSUtil.setAttribute(this, 'format', val);
+        GSAttr.set(this, 'format', val);
     }
 
     get locale() {
-        return GSUtil.getAttribute(this, 'locale', GSUtil.locale);
+        return GSAttr.get(this, 'locale', GSUtil.locale);
     }
 
     set locale(val = '') {
-        GSUtil.setAttribute(this, 'locale', val);
+        GSAttr.set(this, 'locale', val);
     }
 
     get css() {
-        return GSUtil.getAttribute(this, 'css');
+        return GSAttr.get(this, 'css');
     }
 
     set css(val = '') {
-        GSUtil.setAttribute(this, 'css', val);
+        GSAttr.set(this, 'css', val);
     }
 
     get cssHeader() {
-        return GSUtil.getAttribute(this, 'css-header');
+        return GSAttr.get(this, 'css-header');
     }
 
     set cssHeader(val = '') {
-        GSUtil.setAttribute(this, 'css-header', val);
+        GSAttr.set(this, 'css-header', val);
     }
 
     get cssMonth() {
-        return GSUtil.getAttribute(this, 'css-month', 'form-control fs-3 fw-bold border-0 text-center m-1 p-0');
+        return GSAttr.get(this, 'css-month', 'form-control fs-3 fw-bold border-0 text-center m-1 p-0');
     }
 
     set cssMonth(val = '') {
-        GSUtil.setAttribute(this, 'css-month', val);
+        GSAttr.set(this, 'css-month', val);
     }
 
     get cssYear() {
-        return GSUtil.getAttribute(this, 'css-year', 'form-control fs-5 fw-bold border-0 text-center m-1 p-0');
+        return GSAttr.get(this, 'css-year', 'form-control fs-5 fw-bold border-0 text-center m-1 p-0');
     }
 
     set cssYear(val = '') {
-        GSUtil.setAttribute(this, 'css-year', val);
+        GSAttr.set(this, 'css-year', val);
     }
 
     get cssNav() {
-        return GSUtil.getAttribute(this, 'css-nav', 'btn-light');
+        return GSAttr.get(this, 'css-nav', 'btn-light');
     }
 
     set cssNav(val = '') {
-        GSUtil.setAttribute(this, 'css-nav', val);
+        GSAttr.set(this, 'css-nav', val);
     }
 
     get cssWeeks() {
-        return GSUtil.getAttribute(this, 'css-weeks', 'fw-bold text-bg-dark');
+        return GSAttr.get(this, 'css-weeks', 'fw-bold text-bg-dark');
     }
 
     set cssWeeks(val = '') {
-        GSUtil.setAttribute(this, 'css-weeks', val);
+        GSAttr.set(this, 'css-weeks', val);
     }
 
     get cssDays() {
-        return GSUtil.getAttribute(this, 'css-days');
+        return GSAttr.get(this, 'css-days');
     }
 
     set cssDays(val = '') {
-        GSUtil.setAttribute(this, 'css-days', val);
+        GSAttr.set(this, 'css-days', val);
     }
 
     get cssSelected() {
-        return GSUtil.getAttribute(this, 'css-selected', 'btn-primary');
+        return GSAttr.get(this, 'css-selected', 'btn-primary');
     }
 
     set cssSelected(val = '') {
-        GSUtil.setAttribute(this, 'css-selected', val);
+        GSAttr.set(this, 'css-selected', val);
     }
 
     get cssToday() {
-        return GSUtil.getAttribute(this, 'css-today', 'btn-secondary');
+        return GSAttr.get(this, 'css-today', 'btn-secondary');
     }
 
     set cssToday(val = '') {
-        GSUtil.setAttribute(this, 'css-today', val);
+        GSAttr.set(this, 'css-today', val);
     }
 
     get monthEl() {
@@ -190,35 +192,35 @@ export default class GSCalendar extends GSElement {
     }
 
     get arrowNext() {
-        return GSUtil.getAttribute(this, 'arrow-next', '&#10095;');
+        return GSAttr.get(this, 'arrow-next', '&#10095;');
     }
 
     set arrowNext(val) {
-        return GSUtil.setAttribute(this, 'arrow-next', val);
+        return GSAttr.set(this, 'arrow-next', val);
     }
 
     get arrowPrev() {
-        return GSUtil.getAttribute(this, 'arrow-prev', '&#10094;');
+        return GSAttr.get(this, 'arrow-prev', '&#10094;');
     }
 
     set arrowPrev(val) {
-        return GSUtil.setAttribute(this, 'arrow-prev', val);
+        return GSAttr.set(this, 'arrow-prev', val);
     }
 
     get minYear() {
-        return GSUtil.getAttributeAsNum(this, 'year-min', '1900');
+        return GSAttr.getAsNum(this, 'year-min', '1900');
     }
 
     set minYear(val) {
-        return GSUtil.setAttributeAsNum(this, 'year-min', val);
+        return GSAttr.setAsNum(this, 'year-min', val);
     }
 
     get maxYear() {
-        return GSUtil.getAttributeAsNum(this, 'year-max', '2100');
+        return GSAttr.getAsNum(this, 'year-max', '2100');
     }
 
     set maxYear(val) {
-        return GSUtil.setAttributeAsNum(this, 'year-max', val);
+        return GSAttr.setAsNum(this, 'year-max', val);
     }
 
     formatted(date) {
@@ -241,11 +243,11 @@ export default class GSCalendar extends GSElement {
     #onDay(e) {
         const me = this;
         const btn = e.path[0];
-        if (!GSUtil.hasClass(btn, 'day')) return;
+        if (!GSDOM.hasClass(btn, 'day')) return;
         const day = GSUtil.asNum(btn.innerText.trim());
         requestAnimationFrame(()=> {
-            me.findAll('.day').forEach(el => GSUtil.toggleClass(el, false, me.cssSelected));
-            GSUtil.toggleClass(btn, true, me.cssSelected);
+            me.findAll('.day').forEach(el => GSDOM.toggleClass(el, false, me.cssSelected));
+            GSDOM.toggleClass(btn, true, me.cssSelected);
         });
         const date = new GSDate(me.#date);
         date.day = day;
@@ -256,9 +258,9 @@ export default class GSCalendar extends GSElement {
     #onArrow(e) {
         const me = this;
         const btn = e.path[0];
-        if (!GSUtil.hasClass(btn, 'arrow')) return;
+        if (!GSDOM.hasClass(btn, 'arrow')) return;
         btn.blur();
-        const isPrev = GSUtil.hasClass(btn, 'prev');
+        const isPrev = GSDOM.hasClass(btn, 'prev');
         isPrev ? me.#date.month-- : me.#date.month++;
         me.#update();
     }

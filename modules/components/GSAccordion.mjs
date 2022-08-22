@@ -13,6 +13,8 @@ import GSItem from "../base/GSItem.mjs";
 import GSEvent from "../base/GSEvent.mjs";
 import GSLoader from "../base/GSLoader.mjs";
 import GSUtil from "../base/GSUtil.mjs";
+import GSAttr from "../base/GSAttr.mjs";
+import GSDOM from "../base/GSDOM.mjs";
 
 /**
  * <gs-accordion css="" css-item="" css-header="" css-body="">
@@ -59,8 +61,8 @@ export default class GSAccordion extends GSElement {
     if (css) {
       const els = me.findAll(css);
       els.forEach(el => {
-        GSUtil.toggleClass(el, false, oldValue);
-        GSUtil.toggleClass(el, true, newValue);
+        GSDOM.toggleClass(el, false, oldValue);
+        GSDOM.toggleClass(el, true, newValue);
       });
     }
   }
@@ -80,27 +82,27 @@ export default class GSAccordion extends GSElement {
   }
 
   get css() {
-    return GSUtil.getAttribute(this, 'css', '');
+    return GSAttr.get(this, 'css', '');
   }
 
   set css(val = '') {
-    GSUtil.setAttribute(this, 'css', val);
+    GSAttr.set(this, 'css', val);
   }
 
   get cssHead() {
-    return GSUtil.getAttribute(this, 'css-head');
+    return GSAttr.get(this, 'css-head');
   }
 
   set cssHead(val = '') {
-    return GSUtil.setAttribute(this, 'css-head', val);
+    return GSAttr.set(this, 'css-head', val);
   }
 
   get cssBody() {
-    return GSUtil.getAttribute(this, 'css-body');
+    return GSAttr.get(this, 'css-body');
   }
 
   set cssBody(val = '') {
-    return GSUtil.setAttribute(this, 'css-body', val);
+    return GSAttr.set(this, 'css-body', val);
   }
 
   async #html(id, el) {
@@ -127,19 +129,19 @@ export default class GSAccordion extends GSElement {
   }
 
   #getTitle(el) {
-    return GSUtil.getAttribute(el, 'title');
+    return GSAttr.get(el, 'title');
   }
 
   #getMessage(el) {
-    return GSUtil.getAttribute(el, 'message');
+    return GSAttr.get(el, 'message');
   }
 
   #isVisible(el) {
-    return GSUtil.getAttributeAsBool(el, 'visible', false);
+    return GSAttr.getAsBool(el, 'visible', false);
   }
 
   #getAutoclose(el) {
-    return GSUtil.getAttributeAsBool(el, 'autoclose', true);
+    return GSAttr.getAsBool(el, 'autoclose', true);
   }
 
   /**

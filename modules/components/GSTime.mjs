@@ -5,6 +5,7 @@
 import GSUtil from "../base/GSUtil.mjs";
 import GSElement from "../base/GSElement.mjs";
 import GSEvent from "../base/GSEvent.mjs";
+import GSAttr from "../base/GSAttr.mjs";
 
 /**
  * A module rendering current time on a page
@@ -68,19 +69,19 @@ export default class GSTime extends GSElement {
     }
 
     get interval() {
-        return GSUtil.getAttributeAsNum(this, 'interval', 1);
+        return GSAttr.getAsNum(this, 'interval', 1);
     }
 
     set interval(val = 60) {
-        return GSUtil.setAttributeAsNum(this, 'interval', val);
+        return GSAttr.setAsNum(this, 'interval', val);
     }
 
     get locale() {
-        return GSUtil.getAttribute(this, 'locale', GSUtil.locale);
+        return GSAttr.get(this, 'locale', GSUtil.locale);
     }
 
     set locale(val = 60) {
-        return GSUtil.setAttribute(this, 'locale', val);
+        return GSAttr.set(this, 'locale', val);
     }
 
     static {

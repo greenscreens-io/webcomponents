@@ -6,7 +6,9 @@
  * A module loading GSSearch class
  * @module GSSearch
  */
+import GSAttr from "../../../modules/base/GSAttr.mjs";
 import GSElement from "../../../modules/base/GSElement.mjs"
+import GSEvent from "../../../modules/base/GSEvent.mjs";
 import GSUtil from "../../../modules/base/GSUtil.mjs";
 
 /**
@@ -38,10 +40,10 @@ export default class GSSearch extends GSElement {
     }
 
     #onSearch(e) {
-        GSUtil.preventEvent(e);
+        GSEvent.prevent(e);
         const me = this;
         const opt = { type: 'search', action: 'search', value: me.#searchEl.value };
-        GSUtil.sendEvent(me, 'action', opt, true, true, true);
+        GSEvent.send(me, 'action', opt, true, true, true);
     }
 
     get #searchEl() {
@@ -49,43 +51,43 @@ export default class GSSearch extends GSElement {
     }
 
     get css() {
-        return GSUtil.getAttribute(this, 'css', '');
+        return GSAttr.get(this, 'css', '');
     }
 
     set css(val = '') {
-        return GSUtil.setAttribute(this, 'css', val);
+        return GSAttr.set(this, 'css', val);
     }
 
     get iconCSS() {
-        return GSUtil.getAttribute(this, 'css-icon', 'bg-white bi bi-search');
+        return GSAttr.get(this, 'css-icon', 'bg-white bi bi-search');
     }
 
     set iconCSS(val = '') {
-        return GSUtil.setAttribute(this, 'css-icon', val);
+        return GSAttr.set(this, 'css-icon', val);
     }
 
     get inputCSS() {
-        return GSUtil.getAttribute(this, 'css-input', 'border-start-0');
+        return GSAttr.get(this, 'css-input', 'border-start-0');
     }
 
     set inputCSS(val = '') {
-        return GSUtil.setAttribute(this, 'css-input', val);
+        return GSAttr.set(this, 'css-input', val);
     }
 
     get placeholder() {
-        return GSUtil.getAttribute(this, 'placeholder', 'search');
+        return GSAttr.get(this, 'placeholder', 'search');
     }
 
     set placeholder(val = '') {
-        return GSUtil.setAttribute(this, 'placeholder', val);
+        return GSAttr.set(this, 'placeholder', val);
     }
 
     get name() {
-        return GSUtil.getAttribute(this, 'name', 'search');
+        return GSAttr.get(this, 'name', 'search');
     }
 
     set name(val = '') {
-        return GSUtil.setAttribute(this, 'name', val);
+        return GSAttr.set(this, 'name', val);
     }
 
 }

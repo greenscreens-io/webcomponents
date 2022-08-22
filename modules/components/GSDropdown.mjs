@@ -12,6 +12,8 @@ import GSItem from "../base/GSItem.mjs";
 import GSEvent from "../base/GSEvent.mjs";
 import GSLoader from "../base/GSLoader.mjs";
 import GSUtil from "../base/GSUtil.mjs";
+import GSAttr from "../base/GSAttr.mjs";
+import GSDOM from "../base/GSDOM.mjs";
 
 /**
  * Dropdown menu
@@ -45,15 +47,15 @@ export default class GSDropdown extends GSElement {
       me.#submenus.forEach(el => el.classList.remove('show'));
       const menu = me.#menu;
       if (!menu) return;
-      GSUtil.toggleClass(menu, me.visible, 'show');
+      GSDOM.toggleClass(menu, me.visible, 'show');
       if (me.visible) requestAnimationFrame(() => {
         me.#updatePos(menu);
       });
     }
 
     if (name === 'css') {
-      GSUtil.toggleClass(me.#button, false, oldValue);
-      GSUtil.toggleClass(me.#button, true, newValue);
+      GSDOM.toggleClass(me.#button, false, oldValue);
+      GSDOM.toggleClass(me.#button, true, newValue);
     }
 
     if (name === 'title' && me.#button) {
@@ -122,36 +124,36 @@ export default class GSDropdown extends GSElement {
   }
 
   get css() {
-    return GSUtil.getAttribute(this, 'css');
+    return GSAttr.get(this, 'css');
   }
 
   set css(val = '') {
-    return GSUtil.setAttribute(this, 'css', val);
+    return GSAttr.set(this, 'css', val);
   }
 
   get title() {
-    return GSUtil.getAttribute(this, 'title');
+    return GSAttr.get(this, 'title');
   }
 
   set title(val = '') {
-    return GSUtil.setAttribute(this, 'title', val);
+    return GSAttr.set(this, 'title', val);
   }
 
   get visible() {
-    return GSUtil.getAttributeAsBool(this, 'visible');
+    return GSAttr.getAsBool(this, 'visible');
   }
 
   set visible(val = '') {
-    return GSUtil.setAttributeAsBool(this, 'visible', val);
+    return GSAttr.setAsBool(this, 'visible', val);
   }
 
   get dark() {
-    return GSUtil.getAttributeAsBool(this, 'dark');
+    return GSAttr.getAsBool(this, 'dark');
   }
 
   get isFlat() {
     const me = this;
-    return GSUtil.getAttributeAsBool(me, 'flat', me.title ? false : true);
+    return GSAttr.getAsBool(me, 'flat', me.title ? false : true);
   }
 
   get anchor() {
@@ -262,9 +264,9 @@ export default class GSDropdown extends GSElement {
     const me = this;
     const li = e.target.closest('li');
     const ul = li.closest('ul');
-    const sub = GSUtil.findEl('.submenu', li);
+    const sub = GSDOM.findEl('.submenu', li);
     requestAnimationFrame(() => {
-      GSUtil.findAll('.submenu', ul, true)
+      GSDOM.findAll('.submenu', ul, true)
         .forEach(el => el.classList.remove('show'));
       if (sub) {
         const val = li.offsetTop;
@@ -330,14 +332,14 @@ export default class GSDropdown extends GSElement {
   }
 
   #renderSub(el) {
-    const name = GSUtil.getAttribute(el, 'name');
+    const name = GSAttr.get(el, 'name');
     return `<li><a class="dropdown-item" href="#">${name} &raquo; </a>`;
   }
 
   #renderChild(el) {
-    const name = GSUtil.getAttribute(el, 'name');
-    const action = GSUtil.getAttribute(el, 'action');
-    const header = GSUtil.getAttribute(el, 'header');
+    const name = GSAttr.get(el, 'name');
+    const action = GSAttr.get(el, 'action');
+    const header = GSAttr.get(el, 'header');
     if (header) return `<li><h6 class="dropdown-header"/>${header}</h6></li>`;
     if (!name) return `<li><hr class="dropdown-divider"/></li>`;
     if (!action) return ``;

@@ -8,8 +8,9 @@
  */
 
 import GSID from "../../base/GSID.mjs";
-import GSUtil from "../../base/GSUtil.mjs";
 import GSEvent from "../../base/GSEvent.mjs";
+import GSAttr from "../../base/GSAttr.mjs";
+import GSDOM from "../../base/GSDOM.mjs";
 
 /**
  * Table header filter with filtering input fields foer every column
@@ -31,7 +32,7 @@ export default class GSTableFilter extends HTMLTableRowElement {
     connectedCallback() {
         const me = this;
         if (!me.id) me.setAttribute('id', GSID.id);
-        me.#auto = GSUtil.findEl('input[auto="true"],select[auto="true"]') != null;
+        me.#auto = GSDOM.findEl('input[auto="true"],select[auto="true"]') != null;
         me.#attachChangeListener();
         me.#attachDataListener();
         GSComponents.store(me);
@@ -47,12 +48,12 @@ export default class GSTableFilter extends HTMLTableRowElement {
     }
 
     get root() {
-        return GSUtil.getRoot(this);
+        return GSDOM.getRoot(this);
     }
 
     #attachChangeListener() {
         const me = this;
-        GSUtil.findAll('input, select', me, true).forEach(el => GSEvent.attach(me, el, 'change', e => me.#onChange(e.target)) );
+        GSDOM.findAll('input, select', me, true).forEach(el => GSEvent.attach(me, el, 'change', e => me.#onChange(e.target)) );
     }
 
     #attachDataListener() {
@@ -64,7 +65,7 @@ export default class GSTableFilter extends HTMLTableRowElement {
     #onChange(el) {
         const me = this;
         const filter = [];
-        GSUtil.findAll('input, select', me, true).forEach(el => {
+        GSDOM.findAll('input, select', me, true).forEach(el => {
             const value = me.#getValue(el);
             if (value) filter.push({ name: el.name, value: value });
         });
@@ -77,12 +78,12 @@ export default class GSTableFilter extends HTMLTableRowElement {
 
     #getValue(el) {
         const me = this;
-        const listID = GSUtil.getAttribute(el, 'list');
+        const listID = GSAttr.get(el, 'list');
         const list = me.root.getElementById(listID);
         if (!list) return el.value;
         const opt = list.querySelector(`option[value="${el.value}"]`);
         if (!opt) return el.value;
-        return GSUtil.getAttribute(opt, 'data-value', el.value);
+        return GSAttr.get(opt, 'data-value', el.value);
     }
 
 }

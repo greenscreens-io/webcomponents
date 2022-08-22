@@ -7,6 +7,7 @@
  * @module base/GSLoader
  */
 
+import GSDOM from "./GSDOM.mjs";
 import GSFunction from "./GSFunction.mjs";
 import GSLog from "./GSLog.mjs";
 import GSUtil from "./GSUtil.mjs";
@@ -72,7 +73,7 @@ export default class GSLoader {
     static async getTemplate(def = '') {
         const isRef = def.startsWith('#');
         if (isRef) {
-            const el = GSUtil.findEl(def);
+            const el = GSDOM.findEl(def);
             return el ? el.innerHTML : def;
         }
         const isURL = GSUtil.isURL(def);

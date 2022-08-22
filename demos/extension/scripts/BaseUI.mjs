@@ -6,9 +6,9 @@
  * A module loading BaseUI class
  * @module BaseUI
  */
+import GSDOM from "../../../modules/base/GSDOM.mjs";
 import GSElement from "../../../modules/base/GSElement.mjs";
 import GSFunction from "../../../modules/base/GSFunction.mjs";
-import GSUtil from "../../../modules/base/GSUtil.mjs";
 
 /**
  * BaseUI handles basic screen (used by other UI elements)
@@ -119,7 +119,7 @@ export default class BaseUI extends GSElement {
         if (!data) return;
 
         me.#form.reset();
-        GSUtil.fromObject(me.#form, data);
+        GSDOM.fromObject(me.#form, data);
         me.#modal.open();
         const result = await me.#modal.waitEvent('data');
 

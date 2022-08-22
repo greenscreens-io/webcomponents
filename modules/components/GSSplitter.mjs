@@ -11,6 +11,8 @@ import GSID from "../base/GSID.mjs";
 import GSUtil from "../base/GSUtil.mjs";
 import GSElement from "../base/GSElement.mjs";
 import GSEvent from "../base/GSEvent.mjs";
+import GSAttr from "../base/GSAttr.mjs";
+import GSDOM from "../base/GSDOM.mjs";
 
 /**
  * Renderer for element splitter
@@ -57,15 +59,15 @@ export default class GSSplitter extends GSElement {
      * @returns {boolean}
      */
     get isVertical() {
-        return GSUtil.getAttribute(this, 'split', 'vertical') === 'vertical';
+        return GSAttr.get(this, 'split', 'vertical') === 'vertical';
     }
 
     get css() {
-        return GSUtil.getAttribute(this, 'css');
+        return GSAttr.get(this, 'css');
     }
 
     set css(val = '') {
-        return GSUtil.setAttribute(this, 'css', val);
+        return GSAttr.set(this, 'css', val);
     }
 
     /**
@@ -73,11 +75,11 @@ export default class GSSplitter extends GSElement {
      * @returns {number}
      */
     get size() {
-        return GSUtil.getAttributeAsNum(this, 'size', 8);
+        return GSAttr.getAsNum(this, 'size', 8);
     }
 
     set size(val = '') {
-        return GSUtil.setAttributeAsNum(this, 'size', val);
+        return GSAttr.setAsNum(this, 'size', val);
     }
 
     /**
@@ -85,11 +87,11 @@ export default class GSSplitter extends GSElement {
      * @returns {string} start|end|top|bottom
      */
     get resize() {
-        return GSUtil.getAttribute(this, 'resize', 'start');
+        return GSAttr.get(this, 'resize', 'start');
     }
 
     set resize(val = '') {
-        return GSUtil.setAttribute(this, 'resize', val);
+        return GSAttr.set(this, 'resize', val);
     }
 
     /**
@@ -116,7 +118,7 @@ export default class GSSplitter extends GSElement {
         const me = this;
         let el = me.#isPreceeding ? me.start : me.end;
         el = el || me.parentElement;
-        el = GSUtil.isGSElement(el) ? el.self : el;
+        el = GSDOM.isGSElement(el) ? el.self : el;
         if (el instanceof ShadowRoot) {
             el = Array.from(el.children).filter(o => window.getComputedStyle(o).display !== 'none').pop();
         }

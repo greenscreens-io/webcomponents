@@ -9,6 +9,7 @@
 
 import GSID from "./GSID.mjs";
 import GSUtil from "./GSUtil.mjs";
+import GSAttr from "./GSAttr.mjs";
 import GSLoader from "./GSLoader.mjs";
 //import GSDOMObserver from "./GSDOMObserver.mjs";
 import GSEvent from "./GSEvent.mjs";
@@ -18,6 +19,7 @@ import GSLog from "./GSLog.mjs";
 import GSFunction from "./GSFunction.mjs";
 import GSData from "./GSData.mjs";
 import GSEnvironment from "./GSEnvironment.mjs";
+import GSDOM from "./GSDOM.mjs";
 
 /**
  * Base element inherited by all other registered GS-Elements
@@ -61,11 +63,11 @@ export default class GSElement extends HTMLElement {
 	 * @returns {string} 
 	 */
 	get template() {
-		return GSUtil.getAttribute(this, 'template', '');
+		return GSAttr.get(this, 'template', '');
 	}
 
 	set template(val) {
-		GSUtil.setAttribute(this, 'template', val);
+		GSAttr.set(this, 'template', val);
 	}
 
 	/**
@@ -74,7 +76,7 @@ export default class GSElement extends HTMLElement {
 	 * @returns {boolean} 
 	 */
 	get isFlat() {
-		return GSUtil.FLAT || GSUtil.getAttributeAsBool(this, 'flat');
+		return GSUtil.FLAT || GSAttr.getAsBool(this, 'flat');
 	}
 
 	/**
@@ -86,11 +88,11 @@ export default class GSElement extends HTMLElement {
 	 * @returns {string} 
 	 */
 	get environment() {
-		return GSUtil.getAttribute(this, 'environment', '');
+		return GSAttr.get(this, 'environment', '');
 	}
 
 	set environment(val) {
-		GSUtil.setAttribute(this, 'environment', val);
+		GSAttr.set(this, 'environment', val);
 	}
 
 	/**
@@ -98,11 +100,11 @@ export default class GSElement extends HTMLElement {
 	 * @returns {string} 
 	 */
 	get os() {
-		return GSUtil.getAttribute(this, 'os', '');
+		return GSAttr.get(this, 'os', '');
 	}
 
 	set os(val) {
-		GSUtil.setAttribute(this, 'os', val);
+		GSAttr.set(this, 'os', val);
 	}
 
 	/**
@@ -111,11 +113,11 @@ export default class GSElement extends HTMLElement {
 	 * @returns {string} 
 	 */
 	get browser() {
-		return GSUtil.getAttribute(this, 'browser', '');
+		return GSAttr.get(this, 'browser', '');
 	}
 
 	set browser(val) {
-		GSUtil.setAttribute(this, 'browser', val);
+		GSAttr.set(this, 'browser', val);
 	}
 
 	/**
@@ -126,11 +128,11 @@ export default class GSElement extends HTMLElement {
 	 * @returns {string} 
 	 */
 	get orientation() {
-		return GSUtil.getAttribute(this, 'orientation', '');
+		return GSAttr.get(this, 'orientation', '');
 	}
 
 	set orientation(val) {
-		GSUtil.setAttribute(this, 'orientation', val);
+		GSAttr.set(this, 'orientation', val);
 	}
 
 	/**
@@ -139,11 +141,11 @@ export default class GSElement extends HTMLElement {
 	 * @returns {string}  Functio name
 	 */
 	get onready() {
-		return GSUtil.getAttribute(this, 'onready', '');
+		return GSAttr.get(this, 'onready', '');
 	}
 
 	set onready(val) {
-		GSUtil.setAttribute(this, 'onready', val);
+		GSAttr.set(this, 'onready', val);
 	}
 
 	/**
@@ -210,7 +212,7 @@ export default class GSElement extends HTMLElement {
 	 * @returns {string}  Vlues parent|self|unwrap|[html insertion position]
 	 */
 	get anchor() {
-		return GSUtil.getAttribute(this, 'anchor', 'afterend');
+		return GSAttr.get(this, 'anchor', 'afterend');
 	}
 
 	/**
@@ -250,7 +252,7 @@ export default class GSElement extends HTMLElement {
 	 * @returns {string}
 	 */
 	getStyle() {
-		return GSUtil.getAttribute(this, 'style', '');
+		return GSAttr.get(this, 'style', '');
 	}
 
 	/**
@@ -259,7 +261,7 @@ export default class GSElement extends HTMLElement {
 	 * @returns {HTMLElement}
 	 */
 	getEl(name = '') {
-		return GSUtil.getEl(name, this.self);
+		return GSDOM.getEl(name, this.self);
 	}
 
 	/**
@@ -268,7 +270,7 @@ export default class GSElement extends HTMLElement {
 	 * @returns {HTMLElement}
 	 */
 	findEl(name = '') {
-		return GSUtil.findEl(name, this.self);
+		return GSDOM.findEl(name, this.self);
 	}
 
 	/**
@@ -277,7 +279,7 @@ export default class GSElement extends HTMLElement {
 	 * @returns {HTMLElement}
 	 */
 	findAll(name = '', asArray = false) {
-		return GSUtil.findAll(name, this.self, asArray);
+		return GSDOM.findAll(name, this.self, asArray);
 	}
 
 	/**
@@ -294,7 +296,7 @@ export default class GSElement extends HTMLElement {
 	 * @param {boolean} orientation 
 	 */
 	hide(orientation = false) {
-		GSUtil.hide(this, orientation);
+		GSDOM.hide(this, orientation);
 	}
 
 	/**
@@ -302,7 +304,7 @@ export default class GSElement extends HTMLElement {
 	 * @param {boolean} orientation 
 	 */
 	show(orientation = false) {
-		GSUtil.show(this, orientation);
+		GSDOM.show(this, orientation);
 	}
 
 	/**
@@ -531,14 +533,14 @@ export default class GSElement extends HTMLElement {
 		const me = this;
 
 		if (unwrap) {
-			const tpl = GSUtil.parse(src);
-			GSUtil.setAttribute(tpl, 'ref', me.id);
-			if (me.slot) GSUtil.setAttribute(tpl, 'slot', me.slot);
+			const tpl = GSDOM.parse(src);
+			GSAttr.set(tpl, 'ref', me.id);
+			if (me.slot) GSAttr.set(tpl, 'slot', me.slot);
 			return tpl;
 		}
 
 		const slot = me.slot ? ` slot="${me.slot}" ` : '';
-		return GSUtil.parse(`<gs-block ${slot} ref=${me.id}>${src}</gs-block>`);
+		return GSDOM.parse(`<gs-block ${slot} ref=${me.id}>${src}</gs-block>`);
 	}
 
 	#injection() {

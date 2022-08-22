@@ -7,9 +7,9 @@
  * @module components/table/GSColumn
  */
 
+import GSAttr from "../../base/GSAttr.mjs";
 import GSID from "../../base/GSID.mjs";
 import GSItem from "../../base/GSItem.mjs";
-import GSUtil from "../../base/GSUtil.mjs";
 
 /**
  * Table column renderer for GSTable
@@ -84,9 +84,9 @@ export default class GSColumn extends HTMLElement {
         const me = this;
         const list = [];
         me.items.forEach(el => {
-            const def = GSUtil.getAttributeAsBool(el, 'default', false);
-            const value = GSUtil.getAttribute(el, 'value', '');
-            const title = GSUtil.getAttribute(el, 'title', value);
+            const def = GSAttr.getAsBool(el, 'default', false);
+            const value = GSAttr.get(el, 'value', '');
+            const title = GSAttr.get(el, 'title', value);
             let html = '';
             if (isCombo) {
                 html = `<option value="${value}" ${def ? 'selected' : ''}>${title}</option>`;
@@ -103,28 +103,28 @@ export default class GSColumn extends HTMLElement {
     }
 
     get cssFilter() {
-        return GSUtil.getAttribute(this, 'css-filter', 'form-control');
+        return GSAttr.get(this, 'css-filter', 'form-control');
     }
 
     get filter() {
-        return GSUtil.getAttributeAsBool(this, 'filter', false);
+        return GSAttr.getAsBool(this, 'filter', false);
     }
 
     get sortable() {
         const me = this;
-        return me.name && !me.counter ? GSUtil.getAttributeAsBool(me, 'sortable', true) : false;
+        return me.name && !me.counter ? GSAttr.getAsBool(me, 'sortable', true) : false;
     }
 
     get width() {
-        return GSUtil.getAttribute(this, 'width');
+        return GSAttr.get(this, 'width');
     }
 
     get name() {
-        return GSUtil.getAttribute(this, 'name', '');
+        return GSAttr.get(this, 'name', '');
     }
 
     get title() {
-        return GSUtil.getAttribute(this, 'title', '');
+        return GSAttr.get(this, 'title', '');
     }
 
     get counter() {
@@ -132,7 +132,7 @@ export default class GSColumn extends HTMLElement {
     }
 
     get index() {
-        return GSUtil.getAttributeAsNum(this, 'index', -1);
+        return GSAttr.getAsNum(this, 'index', -1);
     }
 
     /**
@@ -140,7 +140,7 @@ export default class GSColumn extends HTMLElement {
      */
     get list() {
         const me = this;
-        const val = GSUtil.getAttribute(me, 'list', '').toLowerCase();
+        const val = GSAttr.get(me, 'list', '').toLowerCase();
         const isValid = ['fixed', 'flexi'].indexOf(val) > -1;
         if (!isValid && !me.auto) return 'flexi';
         return isValid ? val : '';

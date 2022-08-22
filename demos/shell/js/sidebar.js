@@ -1,23 +1,23 @@
 import GSElement from "/modules/base/GSElement.mjs";
-import GSUtil from "/modules/base/GSUtil.mjs";
 import GSEvent from "/modules/base/GSEvent.mjs";
+import GSAttr from "../../../modules/base/GSAttr.mjs";
 
 class GSSidebar extends GSElement {
 
 	get template() {
-		return GSUtil.getAttribute(this, 'template', '//sidebar_narrow.html');
+		return GSAttr.get(this, 'template', '//sidebar_narrow.html');
 	}
 
 	get minWidth() {
-		return GSUtil.getAttribute(this, 'minWidth', '64');
+		return GSAttr.get(this, 'minWidth', '64');
 	}
 
 	get maxWidth() {
-		return GSUtil.getAttribute(this, 'maxWidth', '280');
+		return GSAttr.get(this, 'maxWidth', '280');
 	}
 
 	get auto() {
-		return GSUtil.getAttributeAsBool(this, 'auto', 'true');
+		return GSAttr.getAsBool(this, 'auto', 'true');
 	}
 
 	onReady() {
@@ -56,6 +56,10 @@ class GSSidebar extends GSElement {
 	get topEl() {
 		return this.findEl('div');
 	}
+
+	static {
+		customElements.define('gs-sidebar', GSSidebar);
+		Object.seal(GSSidebar);
+	}
 }
 
-customElements.define('gs-sidebar', GSSidebar);

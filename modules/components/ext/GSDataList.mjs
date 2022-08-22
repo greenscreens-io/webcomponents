@@ -8,9 +8,9 @@
  */
 
 import GSID from "../../base/GSID.mjs";
-import GSUtil from "../../base/GSUtil.mjs";
 import GSComponents from "../../base/GSComponents.mjs";
 import GSLoader from "../../base/GSLoader.mjs";
+import GSDOM from "../../base/GSDOM.mjs";
 
 /**
  * Add JSON loader to datalist element
@@ -49,7 +49,7 @@ export default class GSDataList extends HTMLDataListElement {
 
     get owner() {
         const own = GSComponents.getOwner(this);
-        return GSUtil.unwrap(own);
+        return GSDOM.unwrap(own);
     }
 
     async load(url = '') {

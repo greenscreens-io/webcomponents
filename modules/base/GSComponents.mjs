@@ -2,11 +2,12 @@
  * Copyright (C) 2015, 2022 Green Screens Ltd.
  */
 
-import GSUtil from "./GSUtil.mjs";
+import GSAttr from "./GSAttr.mjs";
 import GSCacheStyles from "../head/GSCacheStyles.mjs";
 import GSEvent from "./GSEvent.mjs";
 import GSFunction from "./GSFunction.mjs";
 import GSData from "./GSData.mjs";
+import GSDOM from "./GSDOM.mjs";
 
 /**
  * A module loading GSComponent class
@@ -40,13 +41,13 @@ export default class GSComponents {
     }
 
     static #storeElement(el) {
-        if (!GSUtil.isGSElement(el)) return false;
+        if (!GSDOM.isGSElement(el)) return false;
         this.#cache.set(el.id, el);
         requestAnimationFrame(() => GSEvent.send(document, 'gs-component', el));
     }
 
     static #storeExtra(el) {
-        if (!GSUtil.isGSExtra(el)) return false;
+        if (!GSDOM.isGSExtra(el)) return false;
         this.#extra.set(el.id, el);
         requestAnimationFrame(() => GSEvent.send(document, 'gs-component', el));
     }
@@ -61,8 +62,8 @@ export default class GSComponents {
             this.#cache.delete(el);
             this.#extra.delete(el);
         }
-        if (GSUtil.isGSElement(el)) this.#cache.delete(el.id);
-        if (GSUtil.isGSExtra(el)) this.#extra.delete(el.id);
+        if (GSDOM.isGSElement(el)) this.#cache.delete(el.id);
+        if (GSDOM.isGSExtra(el)) this.#extra.delete(el.id);
     }
 
     /**
@@ -85,13 +86,13 @@ export default class GSComponents {
     static findTarget(own, tgt) {
         const me = own;
         if (!tgt) return [];
-        const parent = GSUtil.parent(me);
+        const parent = GSDOM.parent(me);
         // in parent tree
-        let target = GSUtil.findAll(tgt, parent, true);
+        let target = GSDOM.findAll(tgt, parent, true);
         // in parent shadow
-        if (target.length === 0) target = GSUtil.findAll(tgt, GSUtil.unwrap(parent), true);
+        if (target.length === 0) target = GSDOM.findAll(tgt, GSDOM.unwrap(parent), true);
         // whole document
-        if (target.length === 0) target = GSUtil.findAll(tgt, document, true);
+        if (target.length === 0) target = GSDOM.findAll(tgt, document, true);
         // all component shadows
         if (target.length === 0) target = GSComponents.queryAll(tgt);
         return target;
@@ -208,7 +209,7 @@ export default class GSComponents {
 
     static #filterAllString(list, name) {
         const str = name.toUpperCase();
-        return Array.from(list.values()).filter(v => v.tagName === str || GSUtil.getAttribute(v, 'is', '').toUpperCase() === str);
+        return Array.from(list.values()).filter(v => v.tagName === str || GSAttr.get(v, 'is', '').toUpperCase() === str);
     }
 
     static #filterAll(list, name) {
@@ -233,7 +234,7 @@ export default class GSComponents {
      * @returns {boolean}
      */
     static isElement(name = '') {
-        return GSUtil.isGSElement(name) || GSUtil.isGSElement(name.prototype);
+        return GSDOM.isGSElement(name) || GSDOM.isGSElement(name.prototype);
     }
 
     /**
@@ -242,7 +243,7 @@ export default class GSComponents {
      * @returns {boolean}
      */
     static isExtra(name = '') {
-        return GSUtil.isGSExtra(name) || GSUtil.isGSExtra(name.prototype)
+        return GSDOM.isGSExtra(name) || GSDOM.isGSExtra(name.prototype)
     }
 
     /**
@@ -252,22 +253,22 @@ export default class GSComponents {
     * @returns {HTMLElement} A parent of provided element
     */
     static getOwner(el, type) {
-        const isEl = GSUtil.isGSElement(el) || GSUtil.isHTMLElement(el);
+        const isEl = GSDOM.isGSElement(el) || GSDOM.isHTMLElement(el);
         if (!isEl) return null;
 
-        const it = GSUtil.parentAll(el);
+        const it = GSDOM.parentAll(el);
         for (let v of it) {
             if (!v) break;
             if (v instanceof ShadowRoot) {
-                const parent = GSUtil.parent(v);
+                const parent = GSDOM.parent(v);
                 if (!type) return parent;
-                if (GSUtil.isElement(parent, type)) return parent;
+                if (GSDOM.isElement(parent, type)) return parent;
                 return GSComponents.getOwner(parent, type);
             }
-            if (GSUtil.isElement(v, type)) return v;
+            if (GSDOM.isElement(v, type)) return v;
         }
 
-        return type ? null : GSUtil.parent(el);
+        return type ? null : GSDOM.parent(el);
     }
 
     /**

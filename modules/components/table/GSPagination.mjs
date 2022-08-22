@@ -8,8 +8,8 @@
  */
 
 import GSElement from "../../base/GSElement.mjs";
-import GSUtil from "../../base/GSUtil.mjs";
 import GSComponents from "../../base/GSComponents.mjs";
+import GSAttr from "../../base/GSAttr.mjs";
 
 /**
  * Table pagination
@@ -104,30 +104,30 @@ export default class GSPagination extends GSElement {
     }
 
     get nextprev() {
-        return GSUtil.getAttributeAsBool(this, 'nextprev', true);
+        return GSAttr.getAsBool(this, 'nextprev', true);
     }
 
     get firstlast() {
-        return GSUtil.getAttributeAsBool(this, 'firstlast', true);
+        return GSAttr.getAsBool(this, 'firstlast', true);
     }
 
     get pages() {
-        return GSUtil.getAttributeAsNum(this, 'pages', 5);
+        return GSAttr.getAsNum(this, 'pages', 5);
     }
 
     get first() {
-        return GSUtil.getAttribute(this, 'first', 'First');
+        return GSAttr.get(this, 'first', 'First');
     }
 
     get last() {
-        return GSUtil.getAttribute(this, 'last', 'Last');
+        return GSAttr.get(this, 'last', 'Last');
     }
 
     get next() {
-        return GSUtil.getAttribute(this, 'next', 'Next');
+        return GSAttr.get(this, 'next', 'Next');
     }
 
     get previous() {
-        return GSUtil.getAttribute(this, 'previous', 'Previous');
+        return GSAttr.get(this, 'previous', 'Previous');
     }
 }

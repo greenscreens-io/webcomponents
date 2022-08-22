@@ -12,6 +12,7 @@ import GSElement from "../base/GSElement.mjs";
 import GSItem from "../base/GSItem.mjs";
 import GSLoader from "../base/GSLoader.mjs";
 import GSEvent from "../base/GSEvent.mjs";
+import GSAttr from "../base/GSAttr.mjs";
 
 /**
  * Renderer for bootstrap list group 
@@ -38,11 +39,11 @@ export default class GSList extends GSElement {
     }
 
     get css() {
-        return GSUtil.getAttribute(this, 'css', '');
+        return GSAttr.get(this, 'css', '');
     }
 
     set css(val = '') {
-        return GSUtil.setAttribute(this, 'css', val);
+        return GSAttr.set(this, 'css', val);
     }
 
     attributeCallback(name = '', oldValue = '', newValue = '') {
@@ -83,23 +84,23 @@ export default class GSList extends GSElement {
     }
 
     #title(el) {
-        return GSUtil.getAttribute(el, 'title');
+        return GSAttr.get(el, 'title');
     }
 
     #getCSS(el) {
-        return GSUtil.getAttribute(el, 'css', '');
+        return GSAttr.get(el, 'css', '');
     }
 
     #getActive(el) {
-        return GSUtil.getAttributeAsBool(el, 'active');
+        return GSAttr.getAsBool(el, 'active');
     }
 
     get selectable() {
-        return GSUtil.getAttributeAsBool(this, 'selectable', true);
+        return GSAttr.getAsBool(this, 'selectable', true);
     }
 
     #getHref(el) {
-        return GSUtil.getAttribute(el, 'href', "#");
+        return GSAttr.get(el, 'href', "#");
     }
 
     /**

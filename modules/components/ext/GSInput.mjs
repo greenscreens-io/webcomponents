@@ -8,9 +8,10 @@
  */
 
 import GSID from "../../base/GSID.mjs";
-import GSUtil from "../../base/GSUtil.mjs";
 import GSEvent from "../../base/GSEvent.mjs";
 import GSComponents from "../../base/GSComponents.mjs";
+import GSAttr from "../../base/GSAttr.mjs";
+import GSDOM from "../../base/GSDOM.mjs";
 
 /**
  * Add custom field processing
@@ -67,27 +68,27 @@ export default class GSInput extends HTMLInputElement {
 
     get owner() {
         const own = GSComponents.getOwner(this);
-        return GSUtil.unwrap(own);
+        return GSDOM.unwrap(own);
     }
 
     get list() {
         const me = this;
-        const list = GSUtil.getAttribute(me, 'list');
-        return GSUtil.getEl(list, me.owner);
+        const list = GSAttr.get(me, 'list');
+        return GSDOM.getEl(list, me.owner);
     }
 
     get filter() {
         const me = this;
-        const filter = GSUtil.getAttribute(me, 'data-filter');
-        return GSUtil.getEl(filter, me.owner);
+        const filter = GSAttr.get(me, 'data-filter');
+        return GSDOM.getEl(filter, me.owner);
     }
 
     get mask() {
-        return GSUtil.getAttribute(this, 'mask', '');
+        return GSAttr.get(this, 'mask', '');
     }
 
     get strict() {
-        return GSUtil.getAttribute(this, 'strict', '');
+        return GSAttr.get(this, 'strict', '');
     }
 
     #toPattern() {
@@ -129,10 +130,10 @@ export default class GSInput extends HTMLInputElement {
     }
 
     #togleEl(el, key = '', value = '') {
-        const data = GSUtil.getAttribute(el, `data-${key}`, '').split(/[,;;]/);
+        const data = GSAttr.get(el, `data-${key}`, '').split(/[,;;]/);
         const isMatch = value.length > 0 && data.indexOf(value) > -1;
-        isMatch ? GSUtil.show(el) : GSUtil.hide(el);
-        GSUtil.findAll('input,textarea,select', el).forEach(el => GSUtil.setAttribute(el, 'data-ignore', isMatch ? null : true));
+        isMatch ? GSDOM.show(el) : GSDOM.hide(el);
+        GSDOM.findAll('input,textarea,select', el).forEach(el => GSAttr.set(el, 'data-ignore', isMatch ? null : true));
     }
 
     isInList() {
@@ -152,14 +153,14 @@ export default class GSInput extends HTMLInputElement {
     #onDataChange(e) {
         const me = this;
         const own = me.owner;
-        let opt = GSUtil.findEl(`option[value="${me.value}"]`, me.list);
+        let opt = GSDOM.findEl(`option[value="${me.value}"]`, me.list);
         let clean = false;
         if (!opt) {
             opt = me.list.querySelector('option');
             clean = true;
         }
 
-        const obj = GSUtil.getDataAttrs(opt);
+        const obj = GSAttr.getData(opt);
 
         Object.entries(obj).forEach(p => {
             const val = clean ? '' : p[1];
@@ -168,9 +169,9 @@ export default class GSInput extends HTMLInputElement {
             if (key === 'id' || key === 'group') return;
 
             const filter = `[data-${key}]:not([data-${key}=""]`;
-            const els = Array.from(GSUtil.findAll(filter, own));
+            const els = Array.from(GSDOM.findAll(filter, own));
             els.filter(el => el.tagName !== 'OPTION')
-                .filter(el => GSUtil.getAttribute(el, 'list', null) == null).forEach(el => me.#togleEl(el, key, val))
+                .filter(el => GSAttr.get(el, 'list', null) == null).forEach(el => me.#togleEl(el, key, val))
         });
     }
 
@@ -182,10 +183,10 @@ export default class GSInput extends HTMLInputElement {
         const me = this;
         const list = me.list;
         me.value = '';
-        const dataGroup = GSUtil.getAttribute(me.filter, 'data-group');
-        GSUtil.findAll('option', list).forEach(el => GSUtil.setAttribute(el, 'disabled', true));
+        const dataGroup = GSAttr.get(me.filter, 'data-group');
+        GSDOM.findAll('option', list).forEach(el => GSAttr.set(el, 'disabled', true));
         const filter = dataGroup ? `option[data-group="${dataGroup}"]` : `option[data-id="${e.target.value}"]`;
-        GSUtil.findAll(filter, list).forEach(el => GSUtil.setAttribute(el, 'disabled'));
+        GSDOM.findAll(filter, list).forEach(el => GSAttr.set(el, 'disabled'));
     }
 
     #onBlur(e) {

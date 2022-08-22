@@ -9,6 +9,7 @@ export { default as GSDOMObserver } from "./GSDOMObserver.mjs";
 export { default as GSComponents } from "./GSComponents.mjs";
 export { default as GSEvent } from "./GSEvent.mjs";
 export { default as GSUtil } from "./GSUtil.mjs";
+export { default as GSDOM } from "./GSDOM.mjs";
 export { default as GSData } from "./GSData.mjs";
 export { default as GSPopper } from "./GSPopper.mjs";
 export { default as GSItem } from "./GSItem.mjs";

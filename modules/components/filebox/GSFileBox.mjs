@@ -7,9 +7,9 @@
  * @module components/filebox/GSFileBox
  */
 
+import GSAttr from "../../base/GSAttr.mjs";
 import GSElement from "../../base/GSElement.mjs";
 import GSEvent from "../../base/GSEvent.mjs";
-import GSUtil from "../../base/GSUtil.mjs";
 import GSAttachment from "./GSAttachment.mjs";
 
 /**
@@ -30,7 +30,7 @@ export default class GSFileBox extends GSElement {
         super();
         const me = this;
         //me.style.setProperty('border-style', 'dashed', 'important');
-        //GSUtil.toggleClass(me, true, GSFileBox.CSS);
+        //GSDOM.toggleClass(me, true, GSFileBox.CSS);
     }
 
     async getTemplate(val = '') {
@@ -60,6 +60,7 @@ export default class GSFileBox extends GSElement {
     onReady() {
         const me = this;
         const target = me.self; // me.isFlat ? me.findEl('div') : me;
+        me.attachEvent(target, 'click', me.#onClick.bind(me));
         me.attachEvent(target, 'dragenter', me.#onDragenter.bind(me));
         me.attachEvent(target, 'dragover', me.#onDragenter.bind(me));
         me.attachEvent(target, 'dragleave', me.#onDragleave.bind(me));
@@ -81,96 +82,102 @@ export default class GSFileBox extends GSElement {
      * CSS for filebox frame
      */
     get css() {
-        return GSUtil.getAttribute(this, 'css', GSFileBox.CSS);
+        return GSAttr.get(this, 'css', GSFileBox.CSS);
     }
 
     set css(val = '') {
-        return GSUtil.setAttribute(this, 'css');
+        return GSAttr.set(this, 'css');
     }
 
     /**
     * CSS for text list of selected files
     */
     get cssList() {
-        return GSUtil.getAttribute(this, 'css-list', '');
+        return GSAttr.get(this, 'css-list', '');
     }
 
     set cssList(val = '') {
-        return GSUtil.setAttribute(this, 'css-list');
+        return GSAttr.set(this, 'css-list');
     }
 
     /**
      * CSS for filebox info message
      */
     get cssLabel() {
-        return GSUtil.getAttribute(this, 'css-label', '');
+        return GSAttr.get(this, 'css-label', '');
     }
 
     set cssLabel(val = '') {
-        return GSUtil.setAttribute(this, 'css-label');
+        return GSAttr.set(this, 'css-label');
     }
 
     /**
      * CSS for filebox input element
      */
     get cssInput() {
-        return GSUtil.getAttribute(this, 'css-input', 'd-none');
+        return GSAttr.get(this, 'css-input', 'd-none');
     }
 
     set cssInput(val = '') {
-        return GSUtil.setAttribute(this, 'css-input');
+        return GSAttr.set(this, 'css-input');
     }
 
     /**
      * Set to true to enable multiple file or directory selection
      */
     get multiple() {
-        return GSUtil.getAttributeAsBool(this, 'multiple', true);
+        return GSAttr.getAsBool(this, 'multiple', true);
     }
 
     set multiple(val = '') {
-        return GSUtil.setAttributeAsBool(this, 'mulltiple', val == 'true');
+        return GSAttr.setAsBool(this, 'mulltiple', val);
     }
 
     /**
      * Filebox info message 
      */
     get title() {
-        return GSUtil.getAttribute(this, 'title', GSFileBox.TITLE);
+        return GSAttr.get(this, 'title', GSFileBox.TITLE);
     }
 
     set title(val = '') {
-        return GSUtil.setAttribute(this, 'title', GSFileBox.TITLE);
+        return GSAttr.set(this, 'title', GSFileBox.TITLE);
     }
 
     /**
      * Input field name and id
      */
     get name() {
-        return GSUtil.getAttribute(this, 'name', '');
+        return GSAttr.get(this, 'name', '');
     }
 
     set name(val = '') {
-        return GSUtil.setAttribute(this, 'name', '');
+        return GSAttr.set(this, 'name', '');
     }
 
     /**
      * Regex for paste accept 
      */
     get filter() {
-        return GSUtil.getAttribute(this, 'filter', '^image\/(gif|png|jpeg)$');
+        return GSAttr.get(this, 'filter', '^image\/(gif|png|jpeg)$');
     }
 
     set filter(val = '') {
-        return GSUtil.setAttribute(this, 'filter');
+        return GSAttr.set(this, 'filter');
     }
 
     get directory() {
-        return GSUtil.getAttributeAsBool(this, 'directory', false);
+        return GSAttr.getAsBool(this, 'directory', false);
     }
 
     set directory(value = '') {
-        return GSUtil.setAttributeAsBool(this, 'directory', val == 'true');
+        return GSAttr.setAsBool(this, 'directory', val);
+    }
+
+    #onClick(e) {
+        if (e.target instanceof HTMLLabelElement) return;
+        const label = this.fileEl.previousElementSibling;
+        if (label instanceof HTMLLabelElement) label.click();
     }
 
     #onDragenter(e) {

@@ -7,6 +7,7 @@
  * @module components/GSOffcanvas
  */
 
+import GSAttr from "../base/GSAttr.mjs";
 import GSDOM from "../base/GSDOM.mjs";
 import GSElement from "../base/GSElement.mjs";
 import GSEvent from "../base/GSEvent.mjs";
@@ -61,9 +62,9 @@ export default class GSOffcanvas extends GSElement {
 
     if (me.#titleEl) me.#titleEl.innerHTML = me.title;
 
-    GSUtil.toggleClass(me.#canvasEl, true, 'visible');
-    GSUtil.toggleClass(me.#closeEl, !me.closable, 'invisible');
-    GSUtil.toggleClass(me.#backdropEl, me.backdrop && me.visible, 'show');
+    GSDOM.toggleClass(me.#canvasEl, true, 'visible');
+    GSDOM.toggleClass(me.#closeEl, !me.closable, 'invisible');
+    GSDOM.toggleClass(me.#backdropEl, me.backdrop && me.visible, 'show');
 
     me.#updateAnim();
     me.#updateShow();
@@ -90,31 +91,31 @@ export default class GSOffcanvas extends GSElement {
 
   #updateShow() {
     const me = this;
-    if (me.min === 0 && me.visible) return GSUtil.toggleClass(me.#canvasEl, me.visible, 'show');
+    if (me.min === 0 && me.visible) return GSDOM.toggleClass(me.#canvasEl, me.visible, 'show');
     setTimeout(() => {
-      GSUtil.toggleClass(me.#canvasEl, me.min === 0 ? me.visible : true, 'show');
+      GSDOM.toggleClass(me.#canvasEl, me.min === 0 ? me.visible : true, 'show');
     }, GSDOM.SPEED);
   }
 
   #updateBackdrop() {
     const me = this;
     setTimeout(() => {
-      GSUtil.toggleClass(me.#backdropEl, !(me.backdrop && me.visible), 'invisible');
+      GSDOM.toggleClass(me.#backdropEl, !(me.backdrop && me.visible), 'invisible');
     }, GSDOM.SPEED);
   }
 
   #updatePlacement(name = '', oldValue = '', newValue = '') {
     if (name !== 'placement') return;
     const me = this;
-    GSUtil.toggleClass(me.#canvasEl, false, `offcanvas-${oldValue}`);
-    GSUtil.toggleClass(me.#canvasEl, true, `offcanvas-${newValue}`);
+    GSDOM.toggleClass(me.#canvasEl, false, `offcanvas-${oldValue}`);
+    GSDOM.toggleClass(me.#canvasEl, true, `offcanvas-${newValue}`);
   }
 
   #updateCSS(name = '', oldValue = '', newValue = '') {
     if (name !== 'css') return;
     const me = this;
-    GSUtil.toggleClass(me.#canvasEl, false, oldValue);
-    GSUtil.toggleClass(me.#canvasEl, true, newValue);
+    GSDOM.toggleClass(me.#canvasEl, false, oldValue);
+    GSDOM.toggleClass(me.#canvasEl, true, newValue);
   }
 
   get isVertical() {
@@ -138,111 +139,111 @@ export default class GSOffcanvas extends GSElement {
   }
 
   get css() {
-    return GSUtil.getAttribute(this, 'css', '');
+    return GSAttr.get(this, 'css', '');
   }
 
   get cssHead() {
-    return GSUtil.getAttribute(this, 'css-head', '');
+    return GSAttr.get(this, 'css-head', '');
   }
 
   get cssBody() {
-    return GSUtil.getAttribute(this, 'css-body', '');
+    return GSAttr.get(this, 'css-body', '');
   }
 
   set css(val = '') {
-    GSUtil.setAttribute(this, 'css', val);
+    GSAttr.set(this, 'css', val);
   }
 
   get transitionDuration() {
-    return GSUtil.getAttributeAsNum(this, 'duration', '0.2');
+    return GSAttr.getAsNum(this, 'duration', '0.2');
   }
 
   set transitionDuration(val = '') {
-    GSUtil.setAttribute(this, 'duration', val);
+    GSAttr.set(this, 'duration', val);
   }
 
   get transitionFunction() {
-    return GSUtil.getAttribute(this, 'transition', 'linear');
+    return GSAttr.get(this, 'transition', 'linear');
   }
 
   set transitionFunction(val = '') {
-    GSUtil.setAttribute(this, 'transition', val);
+    GSAttr.set(this, 'transition', val);
   }
 
   get title() {
-    return GSUtil.getAttribute(this, 'title');
+    return GSAttr.get(this, 'title');
   }
 
   set title(val = '') {
-    GSUtil.setAttribute(this, 'title', val);
+    GSAttr.set(this, 'title', val);
   }
 
   get visible() {
-    return GSUtil.getAttributeAsBool(this, 'visible', false);
+    return GSAttr.getAsBool(this, 'visible', false);
   }
 
   set visible(val = false) {
-    GSUtil.setAttribute(this, 'visible', val == true);
+    GSAttr.setAsBool(this, 'visible', val);
   }
 
   get autoclose() {
-    return GSUtil.getAttributeAsBool(this, 'autoclose', false);
+    return GSAttr.getAsBool(this, 'autoclose', false);
   }
 
   set autoclose(val = false) {
-    GSUtil.setAttribute(this, 'autoclose', val == true);
+    GSAttr.setAsBool(this, 'autoclose', val);
   }
 
   get closable() {
-    return GSUtil.getAttributeAsBool(this, 'closable', true);
+    return GSAttr.getAsBool(this, 'closable', true);
   }
 
   set closable(val = true) {
-    GSUtil.setAttribute(this, 'closable', val == true);
+    GSAttr.setAsBool(this, 'closable', val);
     this.#update();
   }
 
   get placement() {
     const me = this;
-    return GSUtil.getAttribute(me, 'placement') || GSUtil.getAttribute(me.target, 'data-bs-placement', 'start');
+    return GSAttr.get(me, 'placement') || GSAttr.get(me.target, 'data-bs-placement', 'start');
   }
 
   set placement(val = '') {
-    return GSUtil.setAttribute(this, 'placement', val);
+    return GSAttr.set(this, 'placement', val);
   }
 
   get backdrop() {
     const me = this;
-    return GSUtil.getAttributeAsBool(me, 'backdrop', GSUtil.getAttributeAsBool(me.target, 'data-bs-backdrop', 'false'));
+    return GSAttr.getAsBool(me, 'backdrop', GSAttr.getAsBool(me.target, 'data-bs-backdrop', 'false'));
   }
 
   set backdrop(val = '') {
-    return GSUtil.setAttribute(this, 'backdrop', val);
+    return GSAttr.set(this, 'backdrop', val);
   }
 
   get scroll() {
     const me = this;
-    return GSUtil.getAttributeAsBool(me, 'scroll', GSUtil.getAttributeAsBool(me.target, 'data-bs-scroll', 'false'));
+    return GSAttr.getAsBool(me, 'scroll', GSAttr.getAsBool(me.target, 'data-bs-scroll', 'false'));
   }
 
   set scroll(val = '') {
-    return GSUtil.setAttribute(this, 'scroll', val);
+    return GSAttr.set(this, 'scroll', val);
   }
 
   get min() {
-    return GSUtil.getAttributeAsNum(this, 'min', 0);
+    return GSAttr.getAsNum(this, 'min', 0);
   }
 
   set min(val = false) {
-    GSUtil.setAttribute(this, 'min', GSUtil.asNum(val));
+    GSAttr.set(this, 'min', GSUtil.asNum(val));
   }
 
   get max() {
-    return GSUtil.getAttributeAsNum(this, 'max', 0);
+    return GSAttr.getAsNum(this, 'max', 0);
   }
 
   set max(val = false) {
-    GSUtil.setAttribute(this, 'max', GSUtil.asNum(val));
+    GSAttr.set(this, 'max', GSUtil.asNum(val));
   }
 
   get #canvasEl() {

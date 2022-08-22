@@ -13,6 +13,7 @@ import GSID from "../base/GSID.mjs";
 import GSItem from "../base/GSItem.mjs";
 import GSLoader from "../base/GSLoader.mjs";
 import GSEvent from "../base/GSEvent.mjs";
+import GSAttr from "../base/GSAttr.mjs";
 
 /**
  * Render tab panel
@@ -70,15 +71,15 @@ export default class GSTab extends GSElement {
 
   // start, end, top , bottom
   get #placement() {
-    return GSUtil.getAttribute(this, 'placement', 'top');
+    return GSAttr.get(this, 'placement', 'top');
   }
 
   get #cssnav() {
-    return GSUtil.getAttribute(this, 'css-nav', 'nav-tabs');
+    return GSAttr.get(this, 'css-nav', 'nav-tabs');
   }
 
   get #csspane() {
-    return GSUtil.getAttribute(this, 'css-pane');
+    return GSAttr.get(this, 'css-pane');
   }
 
   #renderTabsVertical(tabs) {
@@ -145,7 +146,7 @@ export default class GSTab extends GSElement {
   }
 
   #active(el) {
-    return GSUtil.getAttributeAsBool(el, 'active');
+    return GSAttr.getAsBool(el, 'active');
   }
 
   #activeTabCSS(el) {
@@ -157,31 +158,31 @@ export default class GSTab extends GSElement {
   }
 
   #template(el) {
-    return GSUtil.getAttribute(el, 'template');
+    return GSAttr.get(el, 'template');
   }
 
   #title(el) {
-    return GSUtil.getAttribute(el, 'title');
+    return GSAttr.get(el, 'title');
   }
 
   #icon(el) {
-    return GSUtil.getAttribute(el, 'icon');
+    return GSAttr.get(el, 'icon');
   }
 
   #cssPane(el) {
-    return GSUtil.getAttribute(el, 'css-pane');
+    return GSAttr.get(el, 'css-pane');
   }
 
   #cssNav(el) {
-    return GSUtil.getAttribute(el, 'css-nav');
+    return GSAttr.get(el, 'css-nav');
   }
 
   #cssNavWrap(el) {
-    return GSUtil.getAttribute(el, 'css-nav-wrap');
+    return GSAttr.get(el, 'css-nav-wrap');
   }
 
   get #css() {
-    return GSUtil.getAttribute(this, 'css', '');
+    return GSAttr.get(this, 'css', '');
   }
 
   /**

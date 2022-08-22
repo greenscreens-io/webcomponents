@@ -10,6 +10,8 @@
 import GSFunction from "./GSFunction.mjs";
 import GSID from "./GSID.mjs";
 import GSUtil from "./GSUtil.mjs";
+import GSAttr from "./GSAttr.mjs";
+import GSDOM from "./GSDOM.mjs";
 
 /**
  * Class for handling events, also a registry of all GS-* element listeners
@@ -83,7 +85,7 @@ export default class GSEvent {
 	 */
 	static listen(own, qry, event, callback, opt = false) {
 		if (!qry && own) return own.addEventListener(event, callback, opt);
-		return GSUtil.findAll(qry, own).map(el => el.addEventListener(event, callback, opt));
+		return GSDOM.findAll(qry, own).map(el => el.addEventListener(event, callback, opt));
 	}
 
 	/**
@@ -96,7 +98,7 @@ export default class GSEvent {
 	 */
 	static unlisten(own, qry, event, callback) {
 		if (!qry && own) return own.removeEventListener(event, callback);
-		return GSUtil.findAll(qry, own).map(el => el.removeEventListener(event, callback));
+		return GSDOM.findAll(qry, own).map(el => el.removeEventListener(event, callback));
 	}
 
 	/**
@@ -289,10 +291,10 @@ export default class GSEvent {
 	}
 
 	static #getElementID(el) {
-		let elid = GSUtil.getAttribute(el, 'data-gselid');
+		let elid = GSAttr.get(el, 'data-gselid');
 		if (!elid) {
 			elid = GSID.next()
-			GSUtil.setAttribute(el, 'data-gselid', elid);
+			GSAttr.set(el, 'data-gselid', elid);
 		}
 		return elid;
 	}

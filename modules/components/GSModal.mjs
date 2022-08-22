@@ -7,9 +7,10 @@
  * @module components/GSModal
  */
 
+import GSAttr from "../base/GSAttr.mjs";
+import GSDOM from "../base/GSDOM.mjs";
 import GSElement from "../base/GSElement.mjs";
 import GSEvent from "../base/GSEvent.mjs";
-import GSUtil from "../base/GSUtil.mjs";
 
 /**
  * Bootstrap modal dialog support
@@ -82,7 +83,7 @@ export default class GSModal extends GSElement {
     const me = this;
     let sts = true;
     try {
-      const action = GSUtil.getAttribute(e.path[0], 'data-action');
+      const action = GSAttr.get(e.path[0], 'data-action');
       if (GSModal.#actions.indexOf(action) < 0) return sts = false;
       GSEvent.prevent(e);
       const isOk = action === 'ok';
@@ -214,15 +215,15 @@ export default class GSModal extends GSElement {
 
   #update() {
     const me = this;
-    GSUtil.toggleClass(me.#buttonOkEl, !me.closable);
-    GSUtil.toggleClass(me.#buttonCancelEl, !me.cancelable);
+    GSDOM.toggleClass(me.#buttonOkEl, !me.closable);
+    GSDOM.toggleClass(me.#buttonCancelEl, !me.cancelable);
     const css = `justify-content-${me.align}`;
     const footer = me.findEl('.modal-footer');
-    GSUtil.toggleClass(footer, true, css);
+    GSDOM.toggleClass(footer, true, css);
   }
 
   get title() {
-    return GSUtil.findSlotOrEl(this, 'title', '.modal-title');
+    return GSDOM.findSlotOrEl(this, 'title', '.modal-title');
   }
 
   set title(val = '') {
@@ -230,7 +231,7 @@ export default class GSModal extends GSElement {
   }
 
   get body() {
-    return GSUtil.findSlotOrEl(this, 'body', '.modal-body');
+    return GSDOM.findSlotOrEl(this, 'body', '.modal-body');
   }
 
   set body(val = '') {
@@ -238,28 +239,28 @@ export default class GSModal extends GSElement {
   }
 
   get visible() {
-    return GSUtil.getAttributeAsBool(this, 'visible', false);
+    return GSAttr.getAsBool(this, 'visible', false);
   }
 
   set visible(val = false) {
-    GSUtil.setAttribute(this, 'visible', val == true);
+    GSAttr.setAsBool(this, 'visible', val);
   }
 
   get closable() {
-    return GSUtil.getAttributeAsBool(this, 'closable', true);
+    return GSAttr.getAsBool(this, 'closable', true);
   }
 
   set closable(val = true) {
-    GSUtil.setAttribute(this, 'closable', val == true);
+    GSAttr.setAsBool(this, 'closable', val);
     this.#update();
   }
 
   get cancelable() {
-    return GSUtil.getAttributeAsBool(this, 'cancelable', true);
+    return GSAttr.getAsBool(this, 'cancelable', true);
   }
 
   set cancelable(val = true) {
-    GSUtil.setAttribute(this, 'cancelable', val == true);
+    GSAttr.setAsBool(this, 'cancelable', val);
     this.#update();
   }
 
@@ -267,36 +268,36 @@ export default class GSModal extends GSElement {
    * Align buttons start | end | center
    */
   get align() {
-    return GSUtil.getAttribute(this, 'align', 'end');
+    return GSAttr.get(this, 'align', 'end');
   }
 
   set align(val = 'end') {
-    GSUtil.setAttribute(this, 'align', val);
+    GSAttr.set(this, 'align', val);
     this.#update();
   }
 
   get buttonOk() {
-    return GSUtil.getAttribute(this, "button-ok", "Ok");
+    return GSAttr.get(this, "button-ok", "Ok");
   }
 
   set buttonOk(val = 'Ok') {
-    GSUtil.setAttribute(this, "button-ok", val);
+    GSAttr.set(this, "button-ok", val);
   }
 
   get buttonCancel() {
-    return GSUtil.getAttribute(this, "button-cancel", "Cancel");
+    return GSAttr.get(this, "button-cancel", "Cancel");
   }
 
   set buttonCancel(val = 'Cancel') {
-    GSUtil.setAttribute(this, "button-cancel", val);
+    GSAttr.set(this, "button-cancel", val);
   }
 
   get cssButtonOk() {
-    return GSUtil.getAttribute(this, "css-button-ok", "btn-primary");
+    return GSAttr.get(this, "css-button-ok", "btn-primary");
   }
 
   get cssButtonCancel() {
-    return GSUtil.getAttribute(this, "css-button-cancel", "btn-secondary");
+    return GSAttr.get(this, "css-button-cancel", "btn-secondary");
   }
 
   async getTemplate(val = '') {

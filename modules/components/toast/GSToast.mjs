@@ -8,6 +8,7 @@
  */
 
 
+import GSAttr from "../../base/GSAttr.mjs";
 import GSDOM from "../../base/GSDOM.mjs";
 import GSElement from "../../base/GSElement.mjs";
 import GSUtil from "../../base/GSUtil.mjs";
@@ -32,8 +33,8 @@ export default class GSToast extends GSElement {
     const me = this;
     if (name === 'css') {
       const el = me.findEl('.toast');
-      GSUtil.toggleClass(el, false, oldValue);
-      GSUtil.toggleClass(el, true, newValue);
+      GSDOM.toggleClass(el, false, oldValue);
+      GSDOM.toggleClass(el, true, newValue);
     }
 
   }
@@ -75,7 +76,7 @@ export default class GSToast extends GSElement {
   open() {
     const me = this;
     requestAnimationFrame(async () => {
-      GSUtil.toggleClass(this.#toast, true, 'show');
+      GSDOM.toggleClass(this.#toast, true, 'show');
       if (me.timeout <= 0) return;
       await GSUtil.timeout(me.timeout * 1000);
       me.close();
@@ -91,7 +92,7 @@ export default class GSToast extends GSElement {
   }
 
   async #dismiss() {
-    GSUtil.toggleClass(this.#toast, false, 'show');
+    GSDOM.toggleClass(this.#toast, false, 'show');
     await GSUtil.timeout(GSDOM.SPEED);
     return this.remove();
   }
@@ -112,51 +113,51 @@ export default class GSToast extends GSElement {
   }
 
   get title() {
-    return GSUtil.getAttribute(this, 'title');
+    return GSAttr.get(this, 'title');
   }
 
   set title(val = '') {
-    GSUtil.setAttribute(this, 'title', val);
+    GSAttr.set(this, 'title', val);
   }
 
   get message() {
-    return GSUtil.getAttribute(this, 'message');
+    return GSAttr.get(this, 'message');
   }
 
   set message(val = '') {
-    GSUtil.setAttribute(this, 'message', val);
+    GSAttr.set(this, 'message', val);
   }
 
   get css() {
-    return GSUtil.getAttribute(this, 'css');
+    return GSAttr.get(this, 'css');
   }
 
   set css(val = '') {
-    GSUtil.setAttribute(this, 'css', val);
+    GSAttr.set(this, 'css', val);
   }
 
   get timeout() {
-    return GSUtil.getAttributeAsNum(this, 'timeout', 2);
+    return GSAttr.getAsNum(this, 'timeout', 2);
   }
 
   set timeout(val = 2) {
-    GSUtil.setAttribute(this, 'timeout', val);
+    GSAttr.set(this, 'timeout', val);
   }
 
   get closable() {
-    return GSUtil.getAttributeAsBool(this, 'closable');
+    return GSAttr.getAsBool(this, 'closable');
   }
 
   set closable(val = true) {
-    GSUtil.setAttribute(this, 'closable', val == true);
+    GSAttr.set(this, 'closable', val == true);
   }
 
   get visible() {
-    return GSUtil.getAttributeAsBool(this, 'visible', true);
+    return GSAttr.getAsBool(this, 'visible', true);
   }
 
   set visible(val = true) {
-    GSUtil.setAttribute(this, 'visible', val == true);
+    GSAttr.set(this, 'visible', val == true);
   }
 
 }

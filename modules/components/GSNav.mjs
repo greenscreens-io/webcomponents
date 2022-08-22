@@ -13,6 +13,7 @@ import GSID from "../base/GSID.mjs";
 import GSItem from "../base/GSItem.mjs";
 import GSLoader from "../base/GSLoader.mjs";
 import GSEvent from "../base/GSEvent.mjs";
+import GSAttr from "../base/GSAttr.mjs";
 
 /**
  * Renderer for nav bar/list
@@ -64,7 +65,7 @@ export default class GSNav extends GSElement {
     }
 
     get #isBar() {
-        return GSUtil.getAttributeAsBool(this, 'bar', true);
+        return GSAttr.getAsBool(this, 'bar', true);
     }
 
     #wrap(el) {
@@ -74,7 +75,7 @@ export default class GSNav extends GSElement {
 
     #btn(el) {
         const me = this;
-        const dataAttrs = GSUtil.dataAttrsToString(el);
+        const dataAttrs = GSAttr.dataToString(el);
         const cssnav = me.#getCssNav(el);
         const cssactive = me.#getCssActiveTab(el);
         const title = me.#getTitle(el);
@@ -92,11 +93,11 @@ export default class GSNav extends GSElement {
     }
 
     #getCssNavWrap(el) {
-        return GSUtil.getAttribute(el, 'css-nav-wrap');
+        return GSAttr.get(el, 'css-nav-wrap');
     }
 
     #getCssNav(el) {
-        return GSUtil.getAttribute(el, 'css-nav');
+        return GSAttr.get(el, 'css-nav');
     }
 
     #getCssActiveTab(el) {
@@ -104,15 +105,15 @@ export default class GSNav extends GSElement {
     }
 
     #getActive(el) {
-        return GSUtil.getAttributeAsBool(el, 'active');
+        return GSAttr.getAsBool(el, 'active');
     }
 
     #getTitle(el) {
-        return GSUtil.getAttribute(el, 'title');
+        return GSAttr.get(el, 'title');
     }
 
     #getIcon(el) {
-        return GSUtil.getAttribute(el, 'icon');
+        return GSAttr.get(el, 'icon');
     }
 
     /**

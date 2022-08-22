@@ -9,6 +9,8 @@
 
 import GSLoader from "./GSLoader.mjs";
 import GSUtil from "./GSUtil.mjs";
+import GSAttr from "./GSAttr.mjs";
+import GSDOM from "./GSDOM.mjs";
 
 /**
  * Static class for handling generic configurable tag GS-ITEM
@@ -44,7 +46,7 @@ export default class GSItem extends HTMLElement {
 	* @returns {string}
 	*/
 	static async getTemplate(el) {
-		const tpl = GSUtil.getAttribute(el, 'template');
+		const tpl = GSAttr.get(el, 'template');
 		const cnt = tpl ? await GSLoader.load(tpl) : '';
 		if (cnt) return cnt;
 		return Array.from(el.childNodes)
@@ -59,7 +61,7 @@ export default class GSItem extends HTMLElement {
 	 * @returns {Array<HTMLElement>} 
 	 */
 	static genericItems(root) {
-		if (!GSUtil.isHTMLElement(root)) return [];
+		if (!GSDOM.isHTMLElement(root)) return [];
 		return Array.from(root.childNodes).filter(el => el.tagName == 'GS-ITEM')
 	}
 
@@ -132,35 +134,35 @@ export default class GSItem extends HTMLElement {
 	}
 
 	static getAction(el) {
-		return GSUtil.getAttribute(el, 'action');
+		return GSAttr.get(el, 'action');
 	}
 
 	static getDismiss(el) {
-		return GSUtil.getAttribute(el, 'dismiss');
+		return GSAttr.get(el, 'dismiss');
 	}
 
 	static getTarget(el) {
-		return GSUtil.getAttribute(el, 'target');
+		return GSAttr.get(el, 'target');
 	}
 
 	static getToggle(el) {
-		return GSUtil.getAttribute(el, 'toggle');
+		return GSAttr.get(el, 'toggle');
 	}
 
 	static getInject(el) {
-		return GSUtil.getAttribute(el, 'inject');
+		return GSAttr.get(el, 'inject');
 	}
 
 	static getSelectable(el) {
-		return GSUtil.getAttributeAsBool(el, 'selectable', true);
+		return GSAttr.getAsBool(el, 'selectable', true);
 	}
 
 	static getName(el) {
-		return GSUtil.getAttribute(el, 'name', '');
+		return GSAttr.get(el, 'name', '');
 	}
 
 	static getCSS(el) {
-		return GSUtil.getAttribute(el, 'css', '');
+		return GSAttr.get(el, 'css', '');
 	}
 
 	get dismissAttr() {

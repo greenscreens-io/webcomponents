@@ -12,6 +12,7 @@ import GSUtil from "../../base/GSUtil.mjs";
 import GSEvent from "../../base/GSEvent.mjs";
 import GSComponents from "../../base/GSComponents.mjs";
 import GSData from "../../base/GSData.mjs";
+import GSAttr from "../../base/GSAttr.mjs";
 
 /**
  * Table data handler, pager, loader
@@ -141,14 +142,14 @@ export default class GSStore extends HTMLElement {
      * rest, query, quark 
      */
     get mode() {
-        const mode = GSUtil.getAttribute(this, 'mode', 'query');
+        const mode = GSAttr.get(this, 'mode', 'query');
         const isok = GSStore.#MODES.indexOf(mode) > -1;
         return isok ? mode : 'query';
     }
 
     set mode(val = 'query') {
         const isok = GSStore.#MODES.indexOf(val) > -1;
-        if (isok) return GSUtil.setAttribute(this, 'mode', val);
+        if (isok) return GSAttr.set(this, 'mode', val);
         console.log(`Invalid mode, allowed: ${GSStore.#MODES}`);
     }
 
@@ -169,7 +170,7 @@ export default class GSStore extends HTMLElement {
                 def = '/${limit}/${skip}?sort=${sort}&filter=${filter}';
                 break;
         }
-        return GSUtil.getAttribute(me, 'action', def);
+        return GSAttr.get(me, 'action', def);
     }
 
     get table() {

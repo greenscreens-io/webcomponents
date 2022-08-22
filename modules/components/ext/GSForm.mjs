@@ -8,10 +8,10 @@
  */
 
 import GSID from "../../base/GSID.mjs";
-import GSUtil from "../../base/GSUtil.mjs";
 import GSDOMObserver from '../../base/GSDOMObserver.mjs';
 import GSEvent from "../../base/GSEvent.mjs";
 import GSComponents from "../../base/GSComponents.mjs";
+import GSDOM from "../../base/GSDOM.mjs";
 
 /**
  * Add custom form processing to support forms in modal dialogs
@@ -96,7 +96,7 @@ export default class GSForm extends HTMLFormElement {
         GSEvent.prevent(e);
         const me = own || this;
         const isValid = me.checkValidity();
-        const obj = GSUtil.toObject(me);
+        const obj = GSDOM.toObject(me);
         const type = isValid ? 'submit' : 'invalid';
         const data = { type: type, data: obj, source: e, valid : isValid };
         if (e.detail) e.detail.data = data;
@@ -117,7 +117,7 @@ export default class GSForm extends HTMLFormElement {
     }
 
     static #buttonOK(own) {
-        return GSUtil.findEl('button[type="submit"]', own);
+        return GSDOM.findEl('button[type="submit"]', own);
     }
 
     static #buttonCancel(own) {
@@ -129,7 +129,7 @@ export default class GSForm extends HTMLFormElement {
     }
 
     static #find(own, name = '') {
-        return GSUtil.findEl(`button[data-action="${name}"]`, own);
+        return GSDOM.findEl(`button[data-action="${name}"]`, own);
     }
 
 }

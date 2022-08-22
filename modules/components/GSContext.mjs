@@ -13,6 +13,8 @@ import GSItem from "../base/GSItem.mjs";
 import GSComponents from "../base/GSComponents.mjs";
 import GSLoader from "../base/GSLoader.mjs";
 import GSEvent from "../base/GSEvent.mjs";
+import GSAttr from "../base/GSAttr.mjs";
+import GSDOM from "../base/GSDOM.mjs";
 
 /**
  * Context menu
@@ -50,7 +52,7 @@ export default class GSContext extends GSElement {
     if (name === 'visible') {
       me.#submenus.forEach(el => el.classList.remove('show'));
       const menu = me.#menu;
-      if (menu) GSUtil.toggleClass(menu, me.visible, 'show');
+      if (menu) GSDOM.toggleClass(menu, me.visible, 'show');
     }
   }
 
@@ -94,20 +96,32 @@ export default class GSContext extends GSElement {
     me.#attachTarget();
   }
 
+  get isFlat() {
+    return true;
+  }
+
+  /**
+   * NOTE: Fixed positioning must be rendered in body element 
+   * to prevent css translate coordinates.
+   */
+  get anchor() {
+    return 'beforeend@body';
+  }
+
   get visible() {
-    return GSUtil.getAttributeAsBool(this, 'visible');
+    return GSAttr.getAsBool(this, 'visible');
   }
 
   set visible(val = '') {
-    return GSUtil.setAttributeAsBool(this, 'visible', val);
+    return GSAttr.setAsBool(this, 'visible', val);
   }
 
   get dark() {
-    return GSUtil.getAttributeAsBool(this, 'dark');
+    return GSAttr.getAsBool(this, 'dark');
   }
 
   get target() {
-    return GSUtil.getAttribute(this, 'target');
+    return GSAttr.get(this, 'target');
   }
 
   close(e) {
@@ -247,7 +261,7 @@ export default class GSContext extends GSElement {
     const me = this;
     e.preventDefault();
     me.close();
-    const data = GSUtil.getDataAttrs(e.target);
+    const data = GSAttr.getData(e.target);
     const opt = { type: 'contextmenu', option: e.target, caller: me.#caller, data: data };
     GSEvent.send(me, 'action', opt, true, true, true); // notify self
   }
@@ -260,9 +274,9 @@ export default class GSContext extends GSElement {
   #onSubmenu(e) {
     const li = e.target.parentElement;
     const ul = li.parentElement;
-    const sub = GSUtil.findEl('.submenu', li);
+    const sub = GSDOM.findEl('.submenu', li);
     requestAnimationFrame(() => {
-      GSUtil.findAll('.submenu', ul, true)
+      GSDOM.findAll('.submenu', ul, true)
         .forEach(el => el.classList.remove('show'));
       if (sub) {
         sub.style.top = `${sub.parentElement.offsetTop}px`;
@@ -324,14 +338,14 @@ export default class GSContext extends GSElement {
   }
 
   #renderSub(el) {
-    const name = GSUtil.getAttribute(el, 'name');
+    const name = GSAttr.get(el, 'name');
     return `<li><a class="dropdown-item" href="#">${name} &raquo; </a>`;
   }
 
   #renderChild(el) {
-    const name = GSUtil.getAttribute(el, 'name');
-    const action = GSUtil.getAttribute(el, 'action');
-    const header = GSUtil.getAttribute(el, 'header');
+    const name = GSAttr.get(el, 'name');
+    const action = GSAttr.get(el, 'action');
+    const header = GSAttr.get(el, 'header');
     if (header) return `<li><h6 class="dropdown-header"/>${header}</h6></li>`;
     if (!name) return `<li><hr class="dropdown-divider"/></li>`;
     if (!action) return ``;

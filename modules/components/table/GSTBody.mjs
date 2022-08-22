@@ -8,9 +8,10 @@
  */
 
 import GSID from "../../base/GSID.mjs";
-import GSUtil from "../../base/GSUtil.mjs";
 import GSEvent from "../../base/GSEvent.mjs";
 import GSComponents from "../../base/GSComponents.mjs";
+import GSAttr from "../../base/GSAttr.mjs";
+import GSDOM from "../../base/GSDOM.mjs";
 
 /**
  * Bootstrap table bod renderer
@@ -92,7 +93,7 @@ export default class GSTBody extends HTMLTableSectionElement {
         });
 
         me.innerHTML = rows.join('');
-        GSUtil.findAll('tr', me, true).forEach(el => { if (el.innerText.trim().length === 0) el.remove(); });
+        GSDOM.findAll('tr', me, true).forEach(el => { if (el.innerText.trim().length === 0) el.remove(); });
     }
 
     #arrayToHTML(headers, rec, idx, offset) {
@@ -144,19 +145,19 @@ export default class GSTBody extends HTMLTableSectionElement {
     #onRowSelect(row, append = false) {
 
         const me = this;
-        const isSelected = GSUtil.getAttributeAsBool(row, 'selected');
+        const isSelected = GSAttr.getAsBool(row, 'selected');
 
-        if (!append) GSUtil.findAll('tr', me, true)
+        if (!append) GSDOM.findAll('tr', me, true)
             .forEach(el => {
-                GSUtil.setAttribute(el, 'class', null);
-                GSUtil.setAttribute(el, 'selected', null);
+                GSAttr.set(el, 'class', null);
+                GSAttr.set(el, 'selected', null);
             });
 
-        GSUtil.setAttribute(row, 'class', isSelected ? null : me.cssSelect);
-        GSUtil.setAttribute(row, 'selected', isSelected ? null : true);
+        GSAttr.set(row, 'class', isSelected ? null : me.cssSelect);
+        GSAttr.set(row, 'selected', isSelected ? null : true);
 
         const data = [];
-        GSUtil.findAll('tr[selected=true]', me, true).forEach(el => data.push(el.rowIndex));
+        GSDOM.findAll('tr[selected=true]', me, true).forEach(el => data.push(el.rowIndex));
         GSEvent.send(me, 'select', data, true);
     }
 

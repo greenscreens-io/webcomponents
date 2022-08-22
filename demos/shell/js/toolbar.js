@@ -1,11 +1,11 @@
 import GSElement from "/modules/base/GSElement.mjs";
-import GSUtil from "/modules/base/GSUtil.mjs";
 import GSEvent from "/modules/base/GSEvent.mjs";
+import GSAttr from "../../../modules/base/GSAttr.mjs";
 
 class GSToolbar extends GSElement {
 
 	get template() {
-		return GSUtil.getAttribute(this, 'template', '//toolbar.html');
+		return GSAttr.get(this, 'template', '//toolbar.html');
 	}
 
 	get topEl() {
@@ -23,6 +23,10 @@ class GSToolbar extends GSElement {
 		if (!el) return;
 		GSEvent.send(this, 'gs-evt-view', el.getAttribute('data-view'));
 	}
+
+	static {
+		customElements.define('gs-toolbar', GSToolbar);
+		Object.seal(GSToolbar);
+	}
 }
 
-customElements.define('gs-toolbar', GSToolbar);

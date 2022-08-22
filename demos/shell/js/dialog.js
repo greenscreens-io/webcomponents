@@ -1,18 +1,18 @@
 import GSElement from "/modules/base/GSElement.mjs";
-import GSUtil from "/modules/base/GSUtil.mjs";
 import GSDOM from "/modules/base/GSDOM.mjs";
+import GSAttr from "../../../modules/base/GSAttr.mjs";
 
 class GSDialog extends GSElement {
 
 	get template() {
-		return GSDOM.getAttribute(this, 'template', '//dialog.html');
+		return GSAttr.get(this, 'template', '//dialog.html');
 	}
 
 	set title(val = '') {
 		const el = this.findEl('.modal-title');
 		if (el) el.innerHTML = val;
 		const hd = this.findEl('.modal-header');
-		val.length === 0 ? GSUtil.hide(hd) : GSUtil.show(hd);
+		val.length === 0 ? GSDOM.hide(hd) : GSDOM.show(hd);
 	}
 
 	set content(val = '') {
@@ -55,6 +55,9 @@ class GSDialog extends GSElement {
 		me.content = '';
 		me.title = '';
 	}
-}
 
-customElements.define('gs-dialog', GSDialog);
+	static {
+		customElements.define('gs-dialog', GSDialog);
+		Object.seal(GSDialog);
+	}
+}

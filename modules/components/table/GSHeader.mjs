@@ -7,9 +7,8 @@
  * @module components/table/GSHeader
  */
 
-// import GSID from "../../base/GSID.mjs";
-import GSUtil from "../../base/GSUtil.mjs";
 import GSComponents from "../../base/GSComponents.mjs";
+import GSDOM from "../../base/GSDOM.mjs";
 
 /**
  * Table header renderer for GSTable
@@ -39,8 +38,8 @@ export default class GSHeader extends HTMLElement {
         const me = this;
 
         const table = me.table;
-        const filters = GSUtil.findAll('gs-column[filter=true]', me, true);
-        const columns = GSUtil.findAll('gs-column', me, true);
+        const filters = GSDOM.findAll('gs-column[filter=true]', me, true);
+        const columns = GSDOM.findAll('gs-column', me, true);
 
         const html = [];
         html.push(`<thead class="${table.cssHeader}">`);
@@ -62,7 +61,7 @@ export default class GSHeader extends HTMLElement {
     toJSON() {
         const me = this;
         const heads = [];
-        const cols = GSUtil.findAll('gs-column', me, true);
+        const cols = GSDOM.findAll('gs-column', me, true);
         cols.forEach((el, i) => {
             heads.push(el.toJSON());
         });

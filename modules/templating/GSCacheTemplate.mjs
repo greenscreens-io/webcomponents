@@ -7,10 +7,10 @@
  * @module templating/GSCacheTemplate
  */
 
+import GSDOM from "../base/GSDOM.mjs";
 import GSFunction from "../base/GSFunction.mjs";
 import GSLoader from "../base/GSLoader.mjs";
 import GSLog from "../base/GSLog.mjs";
-import GSUtil from "../base/GSUtil.mjs";
 
 /**
  * Template cache to store loaded and preprocessed templates for reuse
@@ -83,7 +83,7 @@ export default class GSCacheTemplate {
 	 * @returns {HTMLTemplateElement}
 	 */
 	static clone(template) {
-		if (!GSUtil.isTemplateElement(template)) return null;
+		if (!GSDOM.isTemplateElement(template)) return null;
 		return template.content.cloneNode(true);
 	}
 

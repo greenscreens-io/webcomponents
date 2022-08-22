@@ -7,6 +7,8 @@
  * @module components/GSCenter
  */
 
+import GSAttr from "../base/GSAttr.mjs";
+import GSDOM from "../base/GSDOM.mjs";
 import GSElement from "../base/GSElement.mjs";
 import GSUtil from "../base/GSUtil.mjs";
 
@@ -30,8 +32,8 @@ export default class GSCenter extends GSElement {
       const me = this;
       if (name === 'css') {
          const el = me.findEl('div');
-         GSUtil.toggleClass(el, false, oldValue);
-         GSUtil.toggleClass(el, true, newValue);
+         GSDOM.toggleClass(el, false, oldValue);
+         GSDOM.toggleClass(el, true, newValue);
       }
    }
 
@@ -40,11 +42,11 @@ export default class GSCenter extends GSElement {
    }
 
    get css() {
-      return GSUtil.getAttribute(this, 'css', '');
+      return GSAttr.get(this, 'css', '');
    }
 
    set css(val = '') {
-      return GSUtil.setAttribute(this, 'css', vel);
+      return GSAttr.set(this, 'css', vel);
    }
 
 }

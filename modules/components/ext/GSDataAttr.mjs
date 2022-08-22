@@ -14,6 +14,7 @@ import GSDOMObserver from '../../base/GSDOMObserver.mjs';
 import GSEvent from "../../base/GSEvent.mjs";
 import GSFunction from "../../base/GSFunction.mjs";
 import GSDOM from "../../base/GSDOM.mjs";
+import GSAttr from "../../base/GSAttr.mjs";
 
 /**
  * Process Bootstrap data-bs-* attributes
@@ -45,8 +46,8 @@ export default class GSDataAttr {
      * @returns {boolean}
      */
     static #onMonitorFilter(el) {
-        if (GSUtil.isGSElement(el)) return false;
-        if (!GSUtil.isHTMLElement(el)) return false;
+        if (GSDOM.isGSElement(el)) return false;
+        if (!GSDOM.isHTMLElement(el)) return false;
         if (GSDataAttr.#isCollapsible(el)) el.classList.add('collapsible');
         return el.hasAttribute(GSDataAttr.#dismissCSS)
             || el.hasAttribute(GSDataAttr.#toggleCSS)
@@ -184,8 +185,8 @@ export default class GSDataAttr {
     }
 
     static #switch(el, pos, neg) {
-        GSUtil.toggleClass(el, true, pos);
-        GSUtil.toggleClass(el, false, neg);
+        GSDOM.toggleClass(el, true, pos);
+        GSDOM.toggleClass(el, false, neg);
     }
 
     static #hide(el) {
@@ -210,7 +211,7 @@ export default class GSDataAttr {
     }
 
     static async #removeEl(el) {
-        GSUtil.toggleClass(el, false, 'show');
+        GSDOM.toggleClass(el, false, 'show');
         if (GSDataAttr.#faded(el)) await GSUtil.timeout(GSDOM.SPEED);
         el.remove();
     }
@@ -231,7 +232,7 @@ export default class GSDataAttr {
 
         const isComp = inject.toLowerCase().startsWith('gs-');
         const list = GSComponents.queryAll(target);
-        const css = GSUtil.getAttribute(source, GSDataAttr.#dataCSS, '');
+        const css = GSAttr.get(source, GSDataAttr.#dataCSS, '');
 
         const html = isComp ? `<${inject}></${inject}>` : `<gs-template href="${inject}" class="${css}"></gs-template>`;
 
@@ -273,11 +274,11 @@ export default class GSDataAttr {
                 if (isBefore) {
                     obj.list.filter(el => el.classList.contains('accordion-collapse')).forEach(el => {
                         Array.from(el.closest('.accordion').querySelectorAll('.accordion-collapse'))
-                            .filter(itm => itm != el && GSUtil.getAttribute(itm, 'data-bs-parent'))
-                            .forEach(itm => GSUtil.toggleClass(itm, false, 'show'));
+                            .filter(itm => itm != el && GSAttr.get(itm, 'data-bs-parent'))
+                            .forEach(itm => GSDOM.toggleClass(itm, false, 'show'));
                     });
                 } else {
-                    GSUtil.toggleClass(source, null, 'collapsed');
+                    GSDOM.toggleClass(source, null, 'collapsed');
                 }
                 break;
             case "dropdown":
@@ -351,15 +352,15 @@ export default class GSDataAttr {
     }
 
     static #getDismiss(el) {
-        return GSUtil.getAttribute(el, GSDataAttr.#dismissCSS);
+        return GSAttr.get(el, GSDataAttr.#dismissCSS);
     }
 
     static #getToggle(el) {
-        return GSUtil.getAttribute(el, GSDataAttr.#toggleCSS);
+        return GSAttr.get(el, GSDataAttr.#toggleCSS);
     }
 
     static #getInject(el) {
-        return GSUtil.getAttribute(el, GSDataAttr.#injectCSS);
+        return GSAttr.get(el, GSDataAttr.#injectCSS);
     }
 
     /**
@@ -368,7 +369,7 @@ export default class GSDataAttr {
      * @returns {string}
      */
     static getTarget(el) {
-        const tgt = GSUtil.getAttribute(el, GSDataAttr.#targetCSS) || GSUtil.getAttribute(el, 'href');
+        const tgt = GSAttr.get(el, GSDataAttr.#targetCSS) || GSAttr.get(el, 'href');
         return tgt === '#' ? '' : tgt;
     }
 

@@ -7,10 +7,10 @@
  * @module components/GSLayout
  */
 
-import GSUtil from "../base/GSUtil.mjs";
 import GSItem from "../base/GSItem.mjs";
 import GSElement from "../base/GSElement.mjs";
 import GSID from "../base/GSID.mjs";
+import GSAttr from "../base/GSAttr.mjs";
 
 /**
  * Renderer for panel layout 
@@ -66,8 +66,8 @@ export default class GSLayout extends GSElement {
         const me = this;
         const res = me.#resizable(el);
 
-        const id = GSUtil.getAttribute(el, 'id');
-        const name = GSUtil.getAttribute(el, 'name');
+        const id = GSAttr.get(el, 'id');
+        const name = GSAttr.get(el, 'name');
         const tpl = await GSItem.getTemplate(el);
 
         const style = me.#style(el);
@@ -100,8 +100,8 @@ export default class GSLayout extends GSElement {
     #style(el) {
         const me = this;
         const sfx = me.isVertical ? 'height' : 'width';
-        const max = GSUtil.getAttributeAsNum(el, 'max', 0);
-        const min = GSUtil.getAttributeAsNum(el, 'min', 0);
+        const max = GSAttr.getAsNum(el, 'max', 0);
+        const min = GSAttr.getAsNum(el, 'min', 0);
         const smax = max > 0 ? `max-${sfx}: ${max}px;` : '';
         const smin = min > 0 ? `min-${sfx}: ${min}px;` : '';
         return ['style="', smax, smin, '"'].join('');
@@ -116,9 +116,9 @@ export default class GSLayout extends GSElement {
         const me = this;
         const res = me.#resizable(el);
 
-        const css = GSUtil.getAttribute(el, 'css');
-        let vpos = GSUtil.getAttribute(el, 'v-pos');
-        let hpos = GSUtil.getAttribute(el, 'h-pos');
+        const css = GSAttr.get(el, 'css');
+        let vpos = GSAttr.get(el, 'v-pos');
+        let hpos = GSAttr.get(el, 'h-pos');
 
         hpos = hpos ? `justify-content-${hpos}` : '';
         vpos = vpos ? `align-items-${vpos}` : '';
@@ -156,7 +156,7 @@ export default class GSLayout extends GSElement {
      * @returns {boolean}
      */
     #resizable(el) {
-        return GSUtil.getAttributeAsBool(el, 'resizable', false);
+        return GSAttr.getAsBool(el, 'resizable', false);
     }
 
     /**
@@ -164,7 +164,7 @@ export default class GSLayout extends GSElement {
      * @returns {boolean}
      */
     get isVertical() {
-        return GSUtil.getAttribute(this, 'type', 'vertical') === 'vertical';
+        return GSAttr.get(this, 'type', 'vertical') === 'vertical';
     }
 
     /**
@@ -172,11 +172,11 @@ export default class GSLayout extends GSElement {
      * @returns {string}
      */
     get css() {
-        return GSUtil.getAttribute(this, 'css');
+        return GSAttr.get(this, 'css');
     }
 
     set css(val = '') {
-        return GSUtil.setAttribute(this, 'css', val);
+        return GSAttr.set(this, 'css', val);
     }
 
 }

@@ -11,6 +11,8 @@ import GSUtil from "../base/GSUtil.mjs";
 import GSElement from "../base/GSElement.mjs";
 import GSItem from "../base/GSItem.mjs";
 import GSEvent from "../base/GSEvent.mjs";
+import GSAttr from "../base/GSAttr.mjs";
+import GSDOM from "../base/GSDOM.mjs";
 
 /**
  * https://getbootstrap.com/docs/5.1/components/buttons/
@@ -43,7 +45,7 @@ export default class GSButton extends GSElement {
         GSEvent.send(me, 'action', { type: 'button', action: me.action, source: e }, true, true, true);
         if (me.active) {
             me.#state = !me.#state;
-            GSUtil.toggleClass(me.firstElementChild, me.#state, 'active');
+            GSDOM.toggleClass(me.firstElementChild, me.#state, 'active');
         }
         if (!me.select) me.findEl('button').blur();
     }
@@ -59,7 +61,7 @@ export default class GSButton extends GSElement {
         const me = this;
         const el = me.firstElementChild;
         me.#update(name, oldValue, newValue);
-        GSUtil.setAttribute(el, `data-bs-${name}`, newValue);
+        GSAttr.set(el, `data-bs-${name}`, newValue);
     }
 
     #update(name = '', oldValue = '', newValue = '') {
@@ -70,12 +72,12 @@ export default class GSButton extends GSElement {
         if (name == 'title') return el.innerHTML = me.title;
 
         if (name == 'css') {
-            GSUtil.toggleClass(el, false, oldValue);
-            GSUtil.toggleClass(el, true, newValue);
+            GSDOM.toggleClass(el, false, oldValue);
+            GSDOM.toggleClass(el, true, newValue);
         }
 
-        if (name == 'active') return GSUtil.toggleClass(el, me.#state, 'active');
-        if (name == 'disable') return GSUtil.setAttribute(this.firstElementChild, 'disabled', GSUtil.asBool(newValue) ? newValue : null);
+        if (name == 'active') return GSDOM.toggleClass(el, me.#state, 'active');
+        if (name == 'disable') return GSAttr.set(this.firstElementChild, 'disabled', GSUtil.asBool(newValue) ? newValue : null);
     }
 
     get template() {
@@ -93,92 +95,92 @@ export default class GSButton extends GSElement {
 
     get css() {
         const active = this.#state ? 'active' : '';
-        return GSUtil.getAttribute(this, 'css') + ` ${active}`;
+        return GSAttr.get(this, 'css') + ` ${active}`;
     }
 
     set css(val = '') {
-        return GSUtil.setAttribute(this, 'css', val);
+        return GSAttr.set(this, 'css', val);
     }
 
     get action() {
-        return GSUtil.getAttribute(this, 'action');
+        return GSAttr.get(this, 'action');
     }
 
     set action(val = '') {
-        return GSUtil.setAttribute(this, 'action', val);
+        return GSAttr.set(this, 'action', val);
     }
 
     get dismiss() {
-        return GSUtil.getAttribute(this, 'dismiss');
+        return GSAttr.get(this, 'dismiss');
     }
 
     set dismiss(val = '') {
-        return GSUtil.setAttribute(this, 'dismiss', val);
+        return GSAttr.set(this, 'dismiss', val);
     }
 
     get icon() {
-        return GSUtil.getAttribute(this, 'icon');
+        return GSAttr.get(this, 'icon');
     }
 
     set icon(val = '') {
-        return GSUtil.setAttribute(this, 'icon', val);
+        return GSAttr.set(this, 'icon', val);
     }
 
     get target() {
-        return GSUtil.getAttribute(this, 'target');
+        return GSAttr.get(this, 'target');
     }
 
     set target(val = '') {
-        return GSUtil.setAttribute(this, 'target', val);
+        return GSAttr.set(this, 'target', val);
     }
 
     get toggle() {
-        return GSUtil.getAttribute(this, 'toggle');
+        return GSAttr.get(this, 'toggle');
     }
 
     set toggle(val = '') {
-        return GSUtil.setAttribute(this, 'toggle', val);
+        return GSAttr.set(this, 'toggle', val);
     }
 
     get comment() {
-        return GSUtil.getAttribute(this, 'comment');
+        return GSAttr.get(this, 'comment');
     }
 
     set comment(val = '') {
-        return GSUtil.setAttribute(this, 'comment', val);
+        return GSAttr.set(this, 'comment', val);
     }
 
     get title() {
-        return GSUtil.getAttribute(this, 'title');
+        return GSAttr.get(this, 'title');
     }
 
     set title(val = '') {
-        return GSUtil.setAttribute(this, 'title', val);
+        return GSAttr.set(this, 'title', val);
     }
 
     get active() {
-        return GSUtil.getAttributeAsBool(this, 'active', false);
+        return GSAttr.getAsBool(this, 'active', false);
     }
 
     set active(val = '') {
         this.#state = GSUtil.asBool(val);
-        return GSUtil.setAttribute(this, 'active', this.#state);
+        return GSAttr.set(this, 'active', this.#state);
     }
 
     get disable() {
-        return GSUtil.getAttributeAsBool(this, 'disable', false);
+        return GSAttr.getAsBool(this, 'disable', false);
     }
 
     set disable(val = '') {
-        return GSUtil.setAttributeAsBool(this, 'disable', val);
+        return GSAttr.getAsBool(this, 'disable', val);
     }
 
     get select() {
-        return GSUtil.getAttributeAsBool(this, 'select', true);
+        return GSAttr.getAsBool(this, 'select', true);
     }
 
     set select(val = '') {
-        return GSUtil.setAttributeAsBool(this, 'select', val);
+        return GSAttr.setAsBool(this, 'select', val);
     }
 
     toggle() {

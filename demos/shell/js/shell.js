@@ -1,9 +1,10 @@
+import GSAttr from "../../../modules/base/GSAttr.mjs";
 import GSElement from "/modules/base/GSElement.mjs";
 
 class GSShell extends GSElement {
 
 	get template() {
-		return GSUtil.getAttribute(this, 'template', '//shell.html');
+		return GSAttr.get(this, 'template', '//shell.html');
 	}
 
 	get sidebar() {
@@ -33,6 +34,9 @@ class GSShell extends GSElement {
 		el.innerHTML = e.detail;
 	}
 
+	static {
+		customElements.define('gs-shell', GSShell);
+		Object.seal(GSShell);
+	}
 }
 
-customElements.define('gs-shell', GSShell);

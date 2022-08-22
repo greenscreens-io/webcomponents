@@ -10,6 +10,8 @@
 import GSID from "../../base/GSID.mjs";
 import GSUtil from "../../base/GSUtil.mjs";
 import GSEvent from "../../base/GSEvent.mjs";
+import GSAttr from "../../base/GSAttr.mjs";
+import GSDOM from "../../base/GSDOM.mjs";
 
 /**
  * table header sorting coluns
@@ -50,32 +52,32 @@ export default class GSTableSort extends HTMLTableRowElement {
 
         const me = this;
 
-        let ord = GSUtil.getAttributeAsNum(el, 'order', -1);
+        let ord = GSAttr.getAsNum(el, 'order', -1);
         ord = ord > 0 ? -1 : 1;
 
         if (append) {
-            me.#sc = GSUtil.getAttributeAsNum(el, 'idx', me.#sc + 1);
-            GSUtil.toggleClass(el, false, 'sorting_desc sorting_asc table-active');
+            me.#sc = GSAttr.getAsNum(el, 'idx', me.#sc + 1);
+            GSDOM.toggleClass(el, false, 'sorting_desc sorting_asc table-active');
         } else {
             me.#sc = 1;
-            GSUtil.findAll('thead th', me, true).forEach(el => {
-                GSUtil.setAttribute(el, 'idx', null);
-                GSUtil.setAttribute(el, 'order', null);
-                GSUtil.toggleClass(el, false, 'sorting_desc sorting_asc table-active');
+            GSDOM.findAll('thead th', me, true).forEach(el => {
+                GSAttr.set(el, 'idx', null);
+                GSAttr.set(el, 'order', null);
+                GSDOM.toggleClass(el, false, 'sorting_desc sorting_asc table-active');
             });
         }
 
         el.classList.add(ord > 0 ? 'sorting_asc' : 'sorting_desc');
-        GSUtil.setAttribute(el, 'idx', me.#sc);
-        GSUtil.setAttribute(el, 'order', ord);
-        GSUtil.toggleClass(el, true, 'table-active');
+        GSAttr.set(el, 'idx', me.#sc);
+        GSAttr.set(el, 'order', ord);
+        GSDOM.toggleClass(el, true, 'table-active');
 
 
         let sort = [];
-        GSUtil.findAll('.sorting_asc, .sorting_desc', me, true).forEach(el => {
-            const ord = GSUtil.getAttributeAsNum(el, 'order', 1);
-            const idx = GSUtil.getAttributeAsNum(el, 'idx', 1);
-            const name = GSUtil.getAttribute(el, 'name', el.innerText);
+        GSDOM.findAll('.sorting_asc, .sorting_desc', me, true).forEach(el => {
+            const ord = GSAttr.getAsNum(el, 'order', 1);
+            const idx = GSAttr.getAsNum(el, 'idx', 1);
+            const name = GSAttr.get(el, 'name', el.innerText);
             const cfg = { ord: ord, col: el.cellIndex, name: name, idx: idx };
             sort.push(cfg);
         });

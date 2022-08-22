@@ -7,8 +7,8 @@
  * @module base/GSBlock
  */
 
+import GSAttr from "./GSAttr.mjs";
 import GSID from "./GSID.mjs";
-import GSUtil from "./GSUtil.mjs";
 
 /**
  * Contaner for flat rendering (without Shadow DOM)
@@ -45,7 +45,7 @@ export default class GSBlock extends HTMLElement {
      * @returns {string} An ID of GSComponent class
      */
     get ref() {
-        return GSUtil.getAttribute(this, 'ref');
+        return GSAttr.get(this, 'ref');
     }
 
     static {

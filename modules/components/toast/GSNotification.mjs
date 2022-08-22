@@ -7,6 +7,8 @@
  * @module components/toast/GSNotification
  */
 
+import GSAttr from "../../base/GSAttr.mjs";
+import GSDOM from "../../base/GSDOM.mjs";
 import GSElement from "../../base/GSElement.mjs";
 import GSUtil from "../../base/GSUtil.mjs";
 
@@ -48,8 +50,8 @@ export default class GSNotification extends GSElement {
     newVal = me.#fromPosition(newVal);
 
     const wrapEl = me.findEl('div');
-    GSUtil.toggleClass(wrapEl, false, oldVal);
-    GSUtil.toggleClass(wrapEl, true, newVal);
+    GSDOM.toggleClass(wrapEl, false, oldVal);
+    GSDOM.toggleClass(wrapEl, true, newVal);
   }
 
   #fromPosition(val) {
@@ -68,11 +70,11 @@ export default class GSNotification extends GSElement {
    * Generic css for notifiction container
    */
   get css() {
-    return GSUtil.getAttribute(this, 'css', 'p-3');
+    return GSAttr.get(this, 'css', 'p-3');
   }
 
   set css(val = '') {
-    GSUtil.setAttribute(this, 'css', val);
+    GSAttr.set(this, 'css', val);
   }
 
   /**
@@ -80,22 +82,22 @@ export default class GSNotification extends GSElement {
    * NOTE: Might interfer with "css" attribute
    */
   get position() {
-    return GSUtil.getAttribute(this, 'position', GSNotification.DEFAULT);
+    return GSAttr.get(this, 'position', GSNotification.DEFAULT);
   }
 
   set position(val = '') {
-    GSUtil.setAttribute(this, 'position', val);
+    GSAttr.set(this, 'position', val);
   }
 
   /**
    * Set browser native notification usage
    */
   get native() {
-    return GSUtil.getAttributeAsBool(this, 'native', false);
+    return GSAttr.getAsBool(this, 'native', false);
   }
 
   set native(val = '') {
-    GSUtil.setAttributeAsBool(this, 'native', val);
+    GSAttr.setAsBool(this, 'native', val);
   }
 
   info(title = '', message = '', closable = false, timeout = 2) {
@@ -153,7 +155,7 @@ export default class GSNotification extends GSElement {
 
   #showWeb(title = '', message = '', css = '', closable = false, timeout = 2) {
     const tpl = `<gs-toast slot="content" css="${css}"  closable="${closable}" timeout="${timeout}" message="${message}" title="${title}"></gs-toast>`;
-    const el = GSUtil.parse(tpl);
+    const el = GSDOM.parse(tpl);
     this.appendChild(el);
     return el;
   }

@@ -9,6 +9,7 @@
 
 import GSUtil from "../base/GSUtil.mjs";
 import GSElement from "../base/GSElement.mjs";
+import GSAttr from "../base/GSAttr.mjs";
 
 /**
  * Process Bootstrap progress component
@@ -36,7 +37,7 @@ export default class GSProgress extends GSElement {
         const me = this;
         const bar = me.#bar;
         if (!bar) return;
-        GSUtil.setAttribute(bar, `aria-value${name}`, newValue);
+        GSAttr.set(bar, `aria-value${name}`, newValue);
         bar.style.width = `${me.percentage}%`;
         if (me.label) bar.innerHTML = me.#fromLabel();
     }
@@ -75,7 +76,7 @@ export default class GSProgress extends GSElement {
     }
 
     get value() {
-        return GSUtil.getAttributeAsNum(this, 'now', 0);
+        return GSAttr.getAsNum(this, 'now', 0);
     }
 
     set value(val = '') {
@@ -84,39 +85,39 @@ export default class GSProgress extends GSElement {
         let v = GSUtil.asNum(val) || me.value;
         if (v > me.max) v = me.max;
         if (v < me.min) v = me.min;
-        return GSUtil.setAttribute(me, 'now', v);
+        return GSAttr.set(me, 'now', v);
     }
 
     get min() {
-        return GSUtil.getAttributeAsNum(this, 'min', 0);
+        return GSAttr.getAsNum(this, 'min', 0);
     }
 
     set min(val = '') {
-        return GSUtil.isNumber(val) ? GSUtil.setAttribute(this, 'min', val) : false;
+        return GSAttr.setAsNum(this, 'min', 0);
     }
 
     get max() {
-        return GSUtil.getAttributeAsNum(this, 'max', 100);
+        return GSAttr.getAsNum(this, 'max', 100);
     }
 
     set max(val = '') {
-        return GSUtil.isNumber(val) ? GSUtil.setAttribute(this, 'max', val) : false;
+        return GSAttr.setAsNum(this, 'max', 100);
     }
 
     get css() {
-        return GSUtil.getAttribute(this, 'css', '');
+        return GSAttr.get(this, 'css', '');
     }
 
     set css(val = '') {
-        return GSUtil.setAttribute(this, 'css', val);
+        return GSAttr.set(this, 'css', val);
     }
 
     get label() {
-        return GSUtil.getAttribute(this, 'label', '');
+        return GSAttr.get(this, 'label', '');
     }
 
     set label(val = '') {
-        return GSUtil.setAttribute(this, 'label', val);
+        return GSAttr.set(this, 'label', val);
     }
 
     increase(val = 1) {

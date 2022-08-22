@@ -13,6 +13,7 @@ import GSDOMObserver from '../base/GSDOMObserver.mjs';
 import GSEvent from "../base/GSEvent.mjs";
 import GSElement from "../base/GSElement.mjs";
 import GSPopper from "../base/GSPopper.mjs";
+import GSAttr from "../base/GSAttr.mjs";
 
 /**
  * https://getbootstrap.com/docs/5.1/components/popovers/
@@ -103,7 +104,7 @@ export default class GSPopover extends GSElement {
         const me = this;
         if (me.ref) {
             let owner = me.owner;
-            owner = GSUtil.isGSElement(me.owner) ? owner.self : owner;
+            owner = GSDOM.isGSElement(me.owner) ? owner.self : owner;
             return owner.querySelector(me.ref);
         }
         return me.previousElementSibling || me.parentElement;
@@ -111,48 +112,48 @@ export default class GSPopover extends GSElement {
 
     get ref() {
         const me = this;
-        return GSUtil.getAttribute(me, 'ref');
+        return GSAttr.get(me, 'ref');
     }
 
     set ref(val = '') {
-        return GSUtil.setAttribute(this, 'ref', val);
+        return GSAttr.set(this, 'ref', val);
     }
 
     get title() {
         const me = this;
-        return GSUtil.getAttribute(me, 'title') || GSUtil.getAttribute(me.target, 'title');
+        return GSAttr.get(me, 'title') || GSAttr.get(me.target, 'title');
     }
 
     set title(val = '') {
         const me = this;
-        return GSUtil.setAttribute(me, 'title', val);
+        return GSAttr.set(me, 'title', val);
     }
 
     get placement() {
         const me = this;
-        return GSUtil.getAttribute(me, 'placement') || GSUtil.getAttribute(me.target, 'data-bs-placement', 'top');
+        return GSAttr.get(me, 'placement') || GSAttr.get(me.target, 'data-bs-placement', 'top');
     }
 
     set placement(val = '') {
-        return GSUtil.setAttribute(this, 'placement', val);
+        return GSAttr.set(this, 'placement', val);
     }
 
     get content() {
         const me = this;
-        return GSUtil.getAttribute(me, 'content') || GSUtil.getAttribute(me.target, 'data-bs-content', '');
+        return GSAttr.get(me, 'content') || GSAttr.get(me.target, 'data-bs-content', '');
     }
 
     set content(val = '') {
-        return GSUtil.setAttribute(this, 'content', val);
+        return GSAttr.set(this, 'content', val);
     }
 
     get trigger() {
         const me = this;
-        return GSUtil.getAttribute(me, 'trigger') || GSUtil.getAttribute(me.target, 'data-bs-trigger', 'hover focus');
+        return GSAttr.get(me, 'trigger') || GSAttr.get(me.target, 'data-bs-trigger', 'hover focus');
     }
 
     set trigger(val = '') {
-        return GSUtil.setAttribute(this, 'trigger', val);
+        return GSAttr.set(this, 'trigger', val);
     }
 
     get isFocusTrigger() {
@@ -184,11 +185,11 @@ export default class GSPopover extends GSElement {
      */
     show() {
         const me = this;
-        const el = GSUtil.parse(me.#html);
+        const el = GSDOM.parse(me.#html);
         me.insertAdjacentElement('afterbegin', el);
         requestAnimationFrame(() => {
             me.#render(el);
-            GSUtil.toggleClass(el, true, 'show');
+            GSDOM.toggleClass(el, true, 'show');
         });
     }
 
@@ -202,7 +203,7 @@ export default class GSPopover extends GSElement {
         setTimeout(() => {
             me.innerHTML = '';
         }, 250);
-        return GSUtil.toggleClass(me.firstElementChild, false, 'show');
+        return GSDOM.toggleClass(me.firstElementChild, false, 'show');
     }
 
     /**
@@ -245,7 +246,7 @@ export default class GSPopover extends GSElement {
      * @returns {boolean} 
      */
     static #isPopover(el) {
-        return el instanceof HTMLElement && el.hasAttribute('data-bs-content') && GSUtil.getAttribute(el, 'data-bs-toggle') === 'popover';
+        return el instanceof HTMLElement && el.hasAttribute('data-bs-content') && GSAttr.get(el, 'data-bs-toggle') === 'popover';
     }
 
 }

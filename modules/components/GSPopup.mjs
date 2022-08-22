@@ -7,6 +7,8 @@
  * @module components/GSPopup
  */
 
+import GSAttr from "../base/GSAttr.mjs";
+import GSDOM from "../base/GSDOM.mjs";
 import GSElement from "../base/GSElement.mjs";
 import GSEvent from "../base/GSEvent.mjs";
 import GSPopper from "../base/GSPopper.mjs";
@@ -40,7 +42,7 @@ export default class GSPopup extends GSElement {
 
         if (name === 'visible') {
             me.#resize();
-            GSUtil.toggleClass(me.#panel, !me.visible, 'invisible');
+            GSDOM.toggleClass(me.#panel, !me.visible, 'invisible');
         }
     }
 
@@ -72,27 +74,39 @@ export default class GSPopup extends GSElement {
         super.onReady();
     }
 
+    get isFlat() {
+        return true;
+    }
+
+    /**
+     * NOTE: Fixed positioning must be rendered in body element 
+     * to prevent css translate coordinates.
+     */
+    get anchor() {
+        return 'beforeend@body';
+    }
+
     get #panel() {
         return this.findEl('div');
     }
 
     get css() {
-        return GSUtil.getAttribute(this, 'css');
+        return GSAttr.get(this, 'css');
     }
 
     set css(val = '') {
-        return GSUtil.setAttribute(this, 'css', val);
+        return GSAttr.set(this, 'css', val);
     }
 
     /**
      * Event on target element used to trigger popup
      */
     get event() {
-        return GSUtil.getAttribute(this, 'event', 'click');
+        return GSAttr.get(this, 'event', 'click');
     }
 
     set event(val = '') {
-        return GSUtil.setAttribute(this, 'event', val);
+        return GSAttr.set(this, 'event', val);
     }
 
     /**
@@ -100,11 +114,11 @@ export default class GSPopup extends GSElement {
      */
     get placement() {
         const me = this;
-        return GSUtil.getAttribute(me, 'placement') || GSUtil.getAttribute(me.target, 'data-bs-placement');
+        return GSAttr.get(me, 'placement') || GSAttr.get(me.target, 'data-bs-placement');
     }
 
     set placement(val = '') {
-        return GSUtil.setAttribute(this, 'placement', val);
+        return GSAttr.set(this, 'placement', val);
     }
 
     /**
@@ -112,11 +126,11 @@ export default class GSPopup extends GSElement {
      */
     get position() {
         const me = this;
-        return GSUtil.getAttribute(me, 'position', 'absolute');
+        return GSAttr.get(me, 'position', 'absolute');
     }
 
     set position(val = '') {
-        return GSUtil.setAttribute(this, 'position', val);
+        return GSAttr.set(this, 'position', val);
     }
 
     /**
@@ -124,88 +138,88 @@ export default class GSPopup extends GSElement {
      */
     get target() {
         const me = this;
-        return GSUtil.getAttribute(me, 'target');
+        return GSAttr.get(me, 'target');
     }
 
     set target(val = '') {
-        return GSUtil.setAttribute(this, 'target', val);
+        return GSAttr.set(this, 'target', val);
     }
 
     /**
      * Set popup visible or hiden
      */
     get visible() {
-        return GSUtil.getAttributeAsBool(this, 'visible', false);
+        return GSAttr.getAsBool(this, 'visible', false);
     }
 
     set visible(val = '') {
-        return GSUtil.setAttributeAsBool(this, 'visible', val);
+        return GSAttr.getAsBool(this, 'visible', val);
     }
 
     /**
      * Should auto close popup on mouse leave
      */
     get autoclose() {
-        return GSUtil.getAttributeAsBool(this, 'autoclose', true);
+        return GSAttr.getAsBool(this, 'autoclose', true);
     }
 
     set autoclose(val = '') {
-        return GSUtil.setAttributeAsBool(this, 'autoclose', val);
+        return GSAttr.getAsBool(this, 'autoclose', val);
     }
 
     /**
      * X-Axis popup position
      */
     get hPos() {
-        return GSUtil.getAttributeAsNum(this, 'h-pos');
+        return GSAttr.getAsNum(this, 'h-pos');
     }
 
     set hPos(val = '') {
-        return GSUtil.setAttributeAsNum(this, 'h-pos', val);
+        return GSAttr.setAsNum(this, 'h-pos', val);
     }
 
     /**
      * Y-Axis popup position
      */
     get vPos() {
-        return GSUtil.getAttributeAsNum(this, 'v-pos');
+        return GSAttr.getAsNum(this, 'v-pos');
     }
 
     set vPos(val = '') {
-        return GSUtil.setAttributeAsNum(this, 'v-pos', val);
+        return GSAttr.setAsNum(this, 'v-pos', val);
     }
 
 
     set wMax(val = '') {
-        return GSUtil.setAttributeAsNum(this, 'w-max', val);
+        return GSAttr.setAsNum(this, 'w-max', val);
     }
 
     get wMax() {
-        return GSUtil.getAttributeAsNum(this, 'w-max');
+        return GSAttr.getAsNum(this, 'w-max');
     }
 
     set wMin(val = '') {
-        return GSUtil.setAttributeAsNum(this, 'w-min', val);
+        return GSAttr.setAsNum(this, 'w-min', val);
     }
 
     get wMin() {
-        return GSUtil.getAttributeAsNum(this, 'w-min');
+        return GSAttr.getAsNum(this, 'w-min');
     }
 
     set hMax(val = '') {
-        return GSUtil.setAttributeAsNum(this, 'h-max', val);
+        return GSAttr.setAsNum(this, 'h-max', val);
     }
 
     get hMax() {
-        return GSUtil.getAttributeAsNum(this, 'h-max');
+        return GSAttr.getAsNum(this, 'h-max');
     }
 
     set hMin(val = '') {
-        return GSUtil.setAttributeAsNum(this, 'h-min', val);
+        return GSAttr.setAsNum(this, 'h-min', val);
     }
 
     get hMin() {
-        return GSUtil.getAttributeAsNum(this, 'h-min');
+        return GSAttr.getAsNum(this, 'h-min');
     }
 
     close(e) {

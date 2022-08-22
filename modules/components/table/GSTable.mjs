@@ -7,7 +7,9 @@
  * @module components/table/GSTable
  */
 
+import GSAttr from "../../base/GSAttr.mjs";
 import GSComponents from "../../base/GSComponents.mjs";
+import GSDOM from "../../base/GSDOM.mjs";
 import GSElement from "../../base/GSElement.mjs";
 import GSEvent from "../../base/GSEvent.mjs";
 import GSUtil from "../../base/GSUtil.mjs";
@@ -83,7 +85,7 @@ export default class GSTable extends GSElement {
 
         const store = me.store;
         if (!store) {
-            const dataID = GSUtil.getAttribute('data');
+            const dataID = GSAttr.get('data');
             me.#store = await GSComponents.waitFor(dataID);
         }
 
@@ -107,7 +109,7 @@ export default class GSTable extends GSElement {
 
         me.#store = me.querySelector('gs-store');
         if (!me.#store) {
-            const dataID = GSUtil.getAttribute('data');
+            const dataID = GSAttr.get('data');
             me.#store = GSComponents.get(dataID);
         }
         return me.#store;
@@ -145,49 +147,49 @@ export default class GSTable extends GSElement {
     }
 
     get css() { 
-        return GSUtil.getAttribute(this, 'css', this.#tableCSS); 
+        return GSAttr.get(this, 'css', this.#tableCSS); 
     }
 
     get cssSelect() { 
-        return GSUtil.getAttribute(this, 'css-select', this.#selectCSS); 
+        return GSAttr.get(this, 'css-select', this.#selectCSS); 
     }
 
     get cssHeader() {
-        return GSUtil.getAttribute(this, 'css-header', this.#headerCSS); 
+        return GSAttr.get(this, 'css-header', this.#headerCSS); 
     }
     
     get cssRow() { 
-        return GSUtil.getAttribute(this, 'css-row', this.#rowCSS); 
+        return GSAttr.get(this, 'css-row', this.#rowCSS); 
     }
     
     get cssCell() { 
-        return GSUtil.getAttribute(this, 'css-cell', this.#cellCSS); 
+        return GSAttr.get(this, 'css-cell', this.#cellCSS); 
     }
 
     set css(val = '') {
-        GSUtil.setAttribute(this, 'css', val); 
+        GSAttr.set(this, 'css', val); 
     }
 
     set cssSelect(val = '') {
-        GSUtil.setAttribute(this, 'css-select', val); 
+        GSAttr.set(this, 'css-select', val); 
     }
 
     set cssHeader(val = '') {
-        GSUtil.setAttribute(this, 'css-header', val); 
+        GSAttr.set(this, 'css-header', val); 
     }
 
     set cssRow(val = '') {
-        GSUtil.setAttribute(this, 'css-row', val); 
+        GSAttr.set(this, 'css-row', val); 
     }
 
     set cssCell(val = '') {
-        GSUtil.setAttribute(this, 'css-cell', val); 
+        GSAttr.set(this, 'css-cell', val); 
     }
 
     #setCSS(qry, val) {
         if (!qry) return;
         this.findAll(qry, true).forEach(el => {
-            GSUtil.setAttribute(el, 'class', val);
+            GSAttr.set(el, 'class', val);
         });
     }
 
@@ -242,7 +244,7 @@ export default class GSTable extends GSElement {
             });
         }
         defs.push('</gs-header>');
-        const dom = GSUtil.parse(defs.join(''));
+        const dom = GSDOM.parse(defs.join(''));
         me.appendChild(dom);
     }
 

@@ -8,10 +8,11 @@
  */
 
 import GSID from "../../base/GSID.mjs";
-import GSUtil from "../../base/GSUtil.mjs";
 import GSDOMObserver from '../../base/GSDOMObserver.mjs';
 import GSComponents from "../../base/GSComponents.mjs";
 import GSEvent from "../../base/GSEvent.mjs";
+import GSAttr from "../../base/GSAttr.mjs";
+import GSDOM from "../../base/GSDOM.mjs";
 
 /**
  * Add Bootstrap item click / selection processsing.
@@ -32,7 +33,7 @@ export default class GSNavLink extends HTMLAnchorElement {
     }
 
     static #onMonitorFilter(el) {
-        let isValid = el instanceof HTMLElement && GSUtil.getAttribute(el, 'is') !== 'gs-navlink';
+        let isValid = el instanceof HTMLElement && GSAttr.get(el, 'is') !== 'gs-navlink';
         if (isValid) {
             const cl = el.classList;
             isValid = !el.hasAttribute('ignore') && (cl.contains('nav-link') || cl.contains('list-group-item'));
@@ -71,25 +72,25 @@ export default class GSNavLink extends HTMLAnchorElement {
 
     static #onClick(e, own) {
         const me = own || this;
-        const accept = GSUtil.getAttributeAsBool(me, 'data-selectable', true);
+        const accept = GSAttr.getAsBool(me, 'data-selectable', true);
         if (!accept) return GSNavLink.#trigger(e, me);
         const nav = GSNavLink.#nav(me);
         const list = GSNavLink.#list(me);
         const panel = GSNavLink.#panel(me);
         const panelItem = GSNavLink.#panelItem(me);
         requestAnimationFrame(() => {
-            if (list) list.querySelectorAll('.list-group-item').forEach(el => GSUtil.toggleClass(el, false, 'active'));
-            if (nav) nav.querySelectorAll('.nav-link').forEach(el => GSUtil.toggleClass(el, false, 'active'));
-            if (panel) panel.querySelectorAll('.tab-pane').forEach(el => GSUtil.toggleClass(el, false, 'active show'));
-            GSUtil.toggleClass(me, true, 'active');
-            GSUtil.toggleClass(panelItem, true, 'active show');
+            if (list) list.querySelectorAll('.list-group-item').forEach(el => GSDOM.toggleClass(el, false, 'active'));
+            if (nav) nav.querySelectorAll('.nav-link').forEach(el => GSDOM.toggleClass(el, false, 'active'));
+            if (panel) panel.querySelectorAll('.tab-pane').forEach(el => GSDOM.toggleClass(el, false, 'active show'));
+            GSDOM.toggleClass(me, true, 'active');
+            GSDOM.toggleClass(panelItem, true, 'active show');
             GSNavLink.#trigger(e, me);
         });
 
     }
 
     static #trigger(e, el) {
-        const attrs = GSUtil.getDataAttrs(el);
+        const attrs = GSAttr.getData(el);
         const own = GSComponents.getOwner(el);
         GSEvent.send(own, 'action', { type: 'active', data: attrs, source: e }, true);
     }
@@ -109,12 +110,12 @@ export default class GSNavLink extends HTMLAnchorElement {
 
     static #panelItem(own) {
         const nav = GSNavLink.#nav(own);
-        const tgtID = GSUtil.getAttribute(own, 'data-bs-target');
+        const tgtID = GSAttr.get(own, 'data-bs-target');
         return tgtID ? GSNavLink.#owner(nav).querySelector(tgtID) : null;
     }
 
     static #owner(own) {
         const parent = GSComponents.getOwner(own);
-        return GSUtil.unwrap(parent);
+        return GSDOM.unwrap(parent);
     }
 }

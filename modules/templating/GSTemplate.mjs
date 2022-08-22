@@ -16,6 +16,8 @@ import GSLog from "../base/GSLog.mjs";
 import GSID from "../base/GSID.mjs";
 import GSEvent from "../base/GSEvent.mjs";
 import GSEnvironment from "../base/GSEnvironment.mjs";
+import GSAttr from "../base/GSAttr.mjs";
+import GSDOM from "../base/GSDOM.mjs";
 
 /**
  * Dynamic template loader
@@ -40,23 +42,23 @@ class GSTemplate extends HTMLElement {
 	}
 
 	get id() {
-		return GSUtil.getAttribute(this, 'id');
+		return GSAttr.get(this, 'id');
 	}
 
 	set id(val) {
-		GSUtil.setAttribute(this, 'id', val);
+		GSAttr.set(this, 'id', val);
 	}
 
 	get href() {
-		return GSUtil.getAttribute(this, 'href');
+		return GSAttr.get(this, 'href');
 	}
 
 	set href(val) {
-		GSUtil.setAttribute(this, 'href', val);
+		GSAttr.set(this, 'href', val);
 	}
 
 	get isFlat() {
-		return GSUtil.FLAT || GSUtil.getAttributeAsBool(this, 'flat', false);
+		return GSUtil.FLAT || GSAttr.getAsBool(this, 'flat', false);
 	}
 
 	get self() {
@@ -71,22 +73,22 @@ class GSTemplate extends HTMLElement {
 	 *  - desktop - only on desktop devices
 	 */
 	get environment() {
-		return GSUtil.getAttribute(this, 'environment', '');
+		return GSAttr.get(this, 'environment', '');
 	}
 
 	set environment(val) {
-		GSUtil.setAttribute(this, 'environment', val);
+		GSAttr.set(this, 'environment', val);
 	}
 
 	/**
 	 * Browser OS where to render component
 	 */
 	get os() {
-		return GSUtil.getAttribute(this, 'os', '');
+		return GSAttr.get(this, 'os', '');
 	}
 
 	set os(val) {
-		GSUtil.setAttribute(this, 'os', val);
+		GSAttr.set(this, 'os', val);
 	}
 
 	/**
@@ -94,11 +96,11 @@ class GSTemplate extends HTMLElement {
 	 * chrome, edge, ie, firefox, ...
 	 */
 	get browser() {
-		return GSUtil.getAttribute(this, 'browser', '');
+		return GSAttr.get(this, 'browser', '');
 	}
 
 	set browser(val) {
-		GSUtil.setAttribute(this, 'browser', val);
+		GSAttr.set(this, 'browser', val);
 	}
 
 	/**
@@ -200,17 +202,17 @@ class GSTemplate extends HTMLElement {
 		}
 
 		await GSEvent.waitAnimationFrame(async () => {
-			// const content = GSCacheTemplate.clone(tpl); // GSUtil.parse(tpl.innerHTML);
+			// const content = GSCacheTemplate.clone(tpl); // GSDOM.parse(tpl.innerHTML);
 			if (!me.#connected) return;
 			if (me.isFlat) {
 				const slot = me.slot ? ` slot="${me.slot}" ` : '';
-				const body = GSUtil.parse(`<gs-block ${slot} ref=${me.id}>${tpl.innerHTML}</gs-block>`);
+				const body = GSDOM.parse(`<gs-block ${slot} ref=${me.id}>${tpl.innerHTML}</gs-block>`);
 				me.#content = me.insertAdjacentElement('afterend', body);
 			} else {
 				me.shadow.adoptedStyleSheets = GSCacheStyles.styles;
 				me.shadow.innerHTML = tpl.innerHTML;
 			}
-			// GSUtil.walk(me.self, el => GSDOMObserver.parse(el));
+			// GSDOM.walk(me.self, el => GSDOMObserver.parse(el));
 			GSEvent.sendSuspended(me, 'templateready', { id: me.id, href: me.href }, true, true);
 		});
 		return tpl;
@@ -246,7 +248,7 @@ class GSTemplate extends HTMLElement {
 	 * @returns {HTMLElement}
 	 */
 	findEl(name = '') {
-		return GSUtil.findEl(name, GSUtil.unwrap(this));
+		return GSDOM.findEl(name, GSDOM.unwrap(this));
 	}
 
 	/**
@@ -256,7 +258,7 @@ class GSTemplate extends HTMLElement {
 	 * @returns {Aray<HTMLElement>} List of HTMLElement matched
 	 */
 	findAll(name = '', asArray = false) {
-		return GSUtil.findAll(name, GSUtil.unwrap(this), asArray);
+		return GSDOM.findAll(name, GSDOM.unwrap(this), asArray);
 	}
 
 	static {

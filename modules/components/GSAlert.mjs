@@ -11,6 +11,7 @@ import GSUtil from "../base/GSUtil.mjs";
 import GSElement from "../base/GSElement.mjs";
 import GSDOM from "../base/GSDOM.mjs";
 import GSEvent from "../base/GSEvent.mjs";
+import GSAttr from "../base/GSAttr.mjs";
 
 /**
  * https://getbootstrap.com/docs/5.1/components/buttons/
@@ -57,11 +58,11 @@ export default class GSAlert extends GSElement {
         if (name == 'message') el.innerHTML = me.message;
 
         if (name == 'css') {
-            GSUtil.toggleClass(el, false, oldValue);
-            GSUtil.toggleClass(el, true, newValue);
+            GSDOM.toggleClass(el, false, oldValue);
+            GSDOM.toggleClass(el, true, newValue);
         }
 
-        if (name == 'active') GSUtil.toggleClass(el, !me.#state, activeCSS);
+        if (name == 'active') GSDOM.toggleClass(el, !me.#state, activeCSS);
     }
 
     get template() {
@@ -75,39 +76,39 @@ export default class GSAlert extends GSElement {
 
     get css() {
         const tmp = this.dismissible ? 'alert-dismissible fade show' : '';
-        return GSUtil.getAttribute(this, 'css') + ` ${tmp}`;
+        return GSAttr.get(this, 'css') + ` ${tmp}`;
     }
 
     set css(val = '') {
-        return GSUtil.setAttribute(this, 'css', val);
+        return GSAttr.set(this, 'css', val);
     }
 
     get activeCSS() {
-        return GSUtil.getAttribute(this, 'css-active', 'd-none');
+        return GSAttr.get(this, 'css-active', 'd-none');
     }
 
     set activeCSS(val = '') {
-        return GSUtil.getAttribute(this, 'css-active', val);
+        return GSAttr.get(this, 'css-active', val);
     }
 
     get message() {
-        return GSUtil.getAttribute(this, 'message');
+        return GSAttr.get(this, 'message');
     }
 
     set message(val = '') {
-        return GSUtil.setAttribute(this, 'message', val);
+        return GSAttr.set(this, 'message', val);
     }
 
     get dismissible() {
-        return GSUtil.getAttributeAsBool(this, 'dismissible', false);
+        return GSAttr.getAsBool(this, 'dismissible', false);
     }
 
     set dismissible(val = '') {
-        return GSUtil.setAttribute(this, 'dismissible', GSUtil.asBool(val));
+        return GSAttr.set(this, 'dismissible', GSUtil.asBool(val));
     }
 
     async #dismiss() {
-        GSUtil.toggleClass(this.findEl('.alert'), false, 'show');
+        GSDOM.toggleClass(this.findEl('.alert'), false, 'show');
         await GSUtil.timeout(GSDOM.SPEED);
         return this.remove();
     }
@@ -124,7 +125,7 @@ export default class GSAlert extends GSElement {
      * Prevent shadow dom
      */
     get isFlat() {
-        return GSUtil.getAttributeAsBool(this, 'flat', true);
+        return GSAttr.getAsBool(this, 'flat', true);
     }
 
     get anchor() {
