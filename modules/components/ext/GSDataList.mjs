@@ -10,6 +10,7 @@
 import GSID from "../../base/GSID.mjs";
 import GSUtil from "../../base/GSUtil.mjs";
 import GSComponents from "../../base/GSComponents.mjs";
+import GSLoader from "../../base/GSLoader.mjs";
 
 /**
  * Add JSON loader to datalist element
@@ -53,7 +54,7 @@ export default class GSDataList extends HTMLDataListElement {
 
     async load(url = '') {
         if (!url) return;
-        const data = await GSUtil.loadSafe(url, 'GET', true);
+        const data = await GSLoader.loadSafe(url, 'GET', true);
         this.apply(data);
     }
 

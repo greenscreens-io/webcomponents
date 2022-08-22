@@ -11,7 +11,7 @@ import GSID from "../../base/GSID.mjs";
 import GSUtil from "../../base/GSUtil.mjs";
 import GSDOMObserver from '../../base/GSDOMObserver.mjs';
 import GSComponents from "../../base/GSComponents.mjs";
-import GSListeners from "../../base/GSListeners.mjs";
+import GSEvent from "../../base/GSEvent.mjs";
 
 /**
  * Add Bootstrap item click / selection processsing.
@@ -46,7 +46,7 @@ export default class GSNavLink extends HTMLAnchorElement {
     }
 
     static #onMonitorRemove(el) {
-        GSListeners.deattachListeners(el);
+        GSEvent.deattachListeners(el);
     }
 
     constructor() {
@@ -62,11 +62,11 @@ export default class GSNavLink extends HTMLAnchorElement {
 
     disconnectedCallback() {
         //GSComponents.remove(this);
-        GSListeners.deattachListeners(this);
+        GSEvent.deattachListeners(this);
     }
 
     static #attachEvents(own) {
-        GSListeners.attachEvent(own, own, 'click', GSNavLink.#onClick.bind(own));
+        GSEvent.attach(own, own, 'click', GSNavLink.#onClick.bind(own));
     }
 
     static #onClick(e, own) {
@@ -91,7 +91,7 @@ export default class GSNavLink extends HTMLAnchorElement {
     static #trigger(e, el) {
         const attrs = GSUtil.getDataAttrs(el);
         const own = GSComponents.getOwner(el);
-        GSUtil.sendEvent(own, 'action', { type: 'active', data: attrs, source: e }, true);
+        GSEvent.send(own, 'action', { type: 'active', data: attrs, source: e }, true);
     }
 
     static #list(own) {

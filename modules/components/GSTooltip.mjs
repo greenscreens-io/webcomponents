@@ -10,7 +10,7 @@
 import GSID from "../base/GSID.mjs";
 import GSUtil from "../base/GSUtil.mjs";
 import GSDOMObserver from '../base/GSDOMObserver.mjs';
-import GSListeners from "../base/GSListeners.mjs";
+import GSEvent from "../base/GSEvent.mjs";
 import GSElement from "../base/GSElement.mjs";
 import GSPopper from "../base/GSPopper.mjs";
 
@@ -67,8 +67,8 @@ export default class GSTooltip extends GSElement {
     // https://javascript.info/mousemove-mouseover-mouseout-mouseenter-mouseleave
     #attachEvents() {
         const me = this;
-        GSListeners.attachEvent(me, me.target, 'mouseenter', me.show.bind(me));
-        GSListeners.attachEvent(me, me.target, 'mouseleave', me.hide.bind(me));
+        GSEvent.attach(me, me.target, 'mouseenter', me.show.bind(me));
+        GSEvent.attach(me, me.target, 'mouseleave', me.hide.bind(me));
     }
 
     #render() {

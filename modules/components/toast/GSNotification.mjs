@@ -33,7 +33,7 @@ export default class GSNotification extends GSElement {
 
   static get observedAttributes() {
     const attrs = ['position'];
-    return GSUtil.mergeArrays(attrs, super.observedAttributes);
+    return GSElement.observeAttributes(attrs);
   }
 
   connectCallback() {

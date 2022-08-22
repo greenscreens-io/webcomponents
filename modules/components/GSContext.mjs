@@ -11,6 +11,8 @@ import GSElement from "../base/GSElement.mjs";
 import GSUtil from "../base/GSUtil.mjs";
 import GSItem from "../base/GSItem.mjs";
 import GSComponents from "../base/GSComponents.mjs";
+import GSLoader from "../base/GSLoader.mjs";
+import GSEvent from "../base/GSEvent.mjs";
 
 /**
  * Context menu
@@ -33,7 +35,7 @@ export default class GSContext extends GSElement {
 
   static get observedAttributes() {
     const attrs = ['visible', 'title', 'css', 'data'];
-    return GSUtil.mergeArrays(attrs, super.observedAttributes);
+    return GSElement.observeAttributes(attrs);
   }
 
   constructor() {
@@ -247,7 +249,7 @@ export default class GSContext extends GSElement {
     me.close();
     const data = GSUtil.getDataAttrs(e.target);
     const opt = { type: 'contextmenu', option: e.target, caller: me.#caller, data: data };
-    GSUtil.sendEvent(me, 'action', opt, true, true, true); // notify self
+    GSEvent.send(me, 'action', opt, true, true, true); // notify self
   }
 
   /**
@@ -344,12 +346,12 @@ export default class GSContext extends GSElement {
    * @param {JSON|func|url} val 
    */
   async load(val = '') {
-    const data = await GSUtil.loadData(val);
+    const data = await GSLoader.loadData(val);
     if (!GSUtil.isJsonType(data)) return;
     const me = this;
     me.innerHTML = GSItem.generateItem(data);
     GSComponents.remove(me);
-    GSListeners.deattachListeners(me);
+    GSEvent.deattachListeners(me);
     me.connectedCallback();
   }
 

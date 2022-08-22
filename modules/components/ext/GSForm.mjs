@@ -10,7 +10,7 @@
 import GSID from "../../base/GSID.mjs";
 import GSUtil from "../../base/GSUtil.mjs";
 import GSDOMObserver from '../../base/GSDOMObserver.mjs';
-import GSListeners from "../../base/GSListeners.mjs";
+import GSEvent from "../../base/GSEvent.mjs";
 import GSComponents from "../../base/GSComponents.mjs";
 
 /**
@@ -36,7 +36,7 @@ export default class GSForm extends HTMLFormElement {
     }
 
     static #onMonitorRemove(el) {
-        GSListeners.deattachListeners(el);
+        GSEvent.deattachListeners(el);
     }
 
     constructor() {
@@ -57,12 +57,12 @@ export default class GSForm extends HTMLFormElement {
     disconnectedCallback() {
         const me = this;
         //GSComponents.remove(me);
-        GSListeners.deattachListeners(me);
+        GSEvent.deattachListeners(me);
     }
 
     static #attachEvents(me) {
-        GSListeners.attachEvent(me, me, 'submit', GSForm.#onSubmit.bind(me));
-        GSListeners.attachEvent(me, document.body, 'action', GSForm.#onAction.bind(me));
+        GSEvent.attach(me, me, 'submit', GSForm.#onSubmit.bind(me));
+        GSEvent.attach(me, document.body, 'action', GSForm.#onAction.bind(me));
     }
 
     /**
@@ -93,14 +93,14 @@ export default class GSForm extends HTMLFormElement {
      * @param {*} e 
      */
     static #onSubmit(e, own) {
-        GSUtil.preventEvent(e);
+        GSEvent.prevent(e);
         const me = own || this;
         const isValid = me.checkValidity();
         const obj = GSUtil.toObject(me);
         const type = isValid ? 'submit' : 'invalid';
         const data = { type: type, data: obj, source: e, valid : isValid };
         if (e.detail) e.detail.data = data;
-        GSUtil.sendEvent(me, 'form', data, true, true);
+        GSEvent.send(me, 'form', data, true, true);
         return me.reportValidity();
     }
 

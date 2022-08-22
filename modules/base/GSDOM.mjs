@@ -3,106 +3,21 @@
  */
 
 /**
- * A module loading GSUtil class
- * @module base/GSUtil
+ * A module loading GSDOM class
+ * @module base/GSDOM
  */
 
  import GSLog from "./GSLog.mjs";
 
  /**
-  * A generic set of static functions used across GS WebComponents framework
+  * A generic set of static functions to handle DOM tree and DOM elements
   * @class
   */
- export default class GSUtil {
-   
-	 static FLAT = self.GS_FLAT == true;
-	 static ALPHANUM = /^[a-zA-Z0-9-_]+$/;
+ export default class GSDOM {
  
-	 static isNumber = (n) => { return !isNaN(parseFloat(n)) && isFinite(n); };
- 
-	 static isString = value => typeof value === 'string';
- 
-	 static isNull = value => value === null || value === undefined;
- 
-	 static toBinary = (value = 0) => value.toString(2);
- 
-	 static asNum = (val = 0) => GSUtil.isNumber(val) ? parseFloat(val) : 0;
- 
-	 static asBool = (val = false) => val.toString().trim().toLowerCase() === 'true';
- 
-	 static fromLiteral = (str, obj) => str.replace(/\${(.*?)}/g, (x, g) => obj[g]);
- 
-	 static capitalize = (word) => word[0].toUpperCase() + word.slice(1).toLowerCase();
- 
-	 static capitalizeAttr = (word) => word.split('-').map((v, i) => i ? GSUtil.capitalize(v) : v).join('');
- 
-	 static initerror = () => { throw new Error('This class cannot be instantiated') };
- 	  
-	 /**
-	  * Validate string for url format
-	  * @param {string} url 
-	  * @returns {boolean}
-	  */
-	  static isURL = (url = '') => /^(https?:\/\/|\/{1,2}|\.\/{1})(\S*\/*){1,}/i.test(url.trim());
-
-	 /**
-	  * Get browser efautl locale
-	  * @returns {string}
-	  */
-	 static get locale() {
-		 return navigator.language ? navigator.language : navigator.languages[0];
-	 }
- 
-	 static isJsonString(val = '') {
-		 return typeof val == 'string' && (val.startsWith('{') || val.startsWith('['));
-	 }
- 
-	 /**
-	  * Check if provided paramter is of JSON type
-	  * @param {string|object} val 
-	  * @returns {boolean}
-	  */
-	 static isJsonType(val = '') {
-		 return Array.isArray(val) || typeof val == "object";
-	 }
- 
-	 /**
-	  * Check if provided paramter is JSON
-	  * @param {string|object} val 
-	  * @returns {boolean}
-	  */
-	 static isJson(val = '') {
-		 return GSUtil.isJsonString(val) || GSUtil.isJsonType(val);
-	 }
- 
-	 /**
-	  * Convert provided paramter to JSON
-	  * @param {string|object} val 
-	  * @returns {boolean}
-	  */
-	 static toJson(val = '') {
-		 if (GSUtil.isJsonString(val)) return JSON.parse(val);
-		 if (GSUtil.isJsonType(val)) return val;
-		 GSLog.warn(null, `Invalid data to convert into JSON: ${val}`);
-		 return null;
-	 }
- 
-	 /**
-	  * Convert parameterized string literal as template to string 
-	  * 
-	  * 	 const template = 'Example text: ${text}';
-	  *   const result = interpolate(template, {text: 'Foo Boo'});
-	  * 
-	  * @param {string} tpl 
-	  * @param {Object} params 
-	  * @returns {function}
-	  */
-	 static fromTemplateLiteral(tpl, params) {
-		 const names = Object.keys(params);
-		 const vals = Object.values(params);
-		 return new Function(...names, `return \`${tpl}\`;`)(...vals);
-	 }
- 
+	 // Timeout for removing element
+	 static SPEED = 300;
+  
 	 /**
 	 * Parse string into html DOM
 	 *
@@ -166,7 +81,7 @@
 	  * Check if given element is of type GSElement
 	  */
 	 static isGSElement(el) {
-		 if (!GSUtil.isHTMLElement(el)) return false;
+		 if (!GSDOM.isHTMLElement(el)) return false;
 		 // return el instanceof GSElement || el instanceof GSTemplate
 		 return el.tagName.indexOf('GS-') === 0;
 	 }
@@ -177,8 +92,8 @@
 	  * @returns {boolean}
 	  */
 	 static isGSExtra(el) {
-		 if (!GSUtil.isHTMLElement(el)) return false;
-		 return GSUtil.getAttribute(el, 'is', '').indexOf('gs-') === 0;
+		 if (!GSDOM.isHTMLElement(el)) return false;
+		 return GSDOM.getAttribute(el, 'is', '').indexOf('gs-') === 0;
 	 }
  
 	 /**
@@ -187,8 +102,8 @@
 	  * @returns {Array<HTMLElement>}
 	  */
 	 static getChilds(el) {
-		 if (!GSUtil.isHTMLElement(el)) return [];
-		 return Array.from(el.childNodes).filter(e => GSUtil.isGSElement(e));
+		 if (!GSDOM.isHTMLElement(el)) return [];
+		 return Array.from(el.childNodes).filter(e => GSDOM.isGSElement(e));
 	 }
  
 	 /**
@@ -198,7 +113,7 @@
 	  * @returns {void}
 	  */
 	 static hide(el, orientation = false) {
-		 if (!GSUtil.isHTMLElement(el)) return;
+		 if (!GSDOM.isHTMLElement(el)) return;
 		 const css = orientation ? 'gs-hide-orientation' : 'gs-hide';
 		 el.classList.add(css);
 	 }
@@ -210,7 +125,7 @@
 	  * @returns {booelan}
 	  */
 	 static show(el, orientation = false) {
-		 if (!GSUtil.isHTMLElement(el)) return;
+		 if (!GSDOM.isHTMLElement(el)) return;
 		 const css = orientation ? 'gs-hide-orientation' : 'gs-hide';
 		 return el.classList.remove(css);
 	 }
@@ -222,8 +137,8 @@
 	  * @returns {boolean}
 	  */
 	 static addSibling(target, newEl) {
-		 const injectable = GSUtil.isHTMLElement(newEl) || GSUtil.isSVGElement(newEl);
-		 const isOK = GSUtil.isHTMLElement(target) && injectable;
+		 const injectable = GSDOM.isHTMLElement(newEl) || GSDOM.isSVGElement(newEl);
+		 const isOK = GSDOM.isHTMLElement(target) && injectable;
 		 return isOK ? target.parentNode.insertBefore(newEl, target.nextElementSibling) : false;
 	 }
  
@@ -234,7 +149,7 @@
 	  * @returns {boolean}
 	  */
 	 static appendChild(target, newEl) {
-		 const isok = GSUtil.isHTMLElement(target) && GSUtil.isHTMLElement(newEl);
+		 const isok = GSDOM.isHTMLElement(target) && GSDOM.isHTMLElement(newEl);
 		 return isok ? target.appendChild(newEl) : false;
 	 }
  
@@ -244,7 +159,7 @@
 	  * @returns {boolean}
 	  */
 	 static removeElement(el) {
-		 const isOk = GSUtil.isHTMLElement(el) && el.parentNode;
+		 const isOk = GSDOM.isHTMLElement(el) && el.parentNode;
 		 return isOk ? el.parentNode.removeChild(el) : false;
 	 }
  
@@ -258,7 +173,7 @@
 	  */
 	 static findElement(ctx, val = '', def = null) {
 		 if (!val) return def;
-		 if (!GSUtil.isHTMLElement(ctx)) return def;
+		 if (!GSDOM.isHTMLElement(ctx)) return def;
 		 try {
 			 return ctx.querySelector(val) || def;
 		 } catch (e) {
@@ -276,7 +191,7 @@
 	 static walk(rootEL, callback) {
 		 if (typeof callback !== 'function') return false;
 		 callback(rootEL);
-		 rootEL.childNodes.forEach(el => GSUtil.walk(el, callback));
+		 rootEL.childNodes.forEach(el => GSDOM.walk(el, callback));
 		 return true;
 	 }
  
@@ -296,10 +211,10 @@
 	  * @iterator
 	  */
 	 static *parentAll(el) {
-		 let e = GSUtil.parent(el);
+		 let e = GSDOM.parent(el);
 		 while (e) {
 			 yield e;
-			 e = GSUtil.parent(e);
+			 e = GSDOM.parent(e);
 		 }
 		 return yield e;
 	 }
@@ -312,7 +227,7 @@
 	 static getRoot(el) {
 		 if (!el) return null;
  
-		 const it = GSUtil.parentAll(el);
+		 const it = GSDOM.parentAll(el);
 		 for (let v of it) {
 			 if (v instanceof ShadowRoot) return v;
 			 if (v instanceof HTMLBodyElement) return v;
@@ -328,7 +243,7 @@
 	  * @returns {void}
 	  */
 	 static setHTML(el, val = '') {
-		 if (!GSUtil.isHTMLElement(el)) return;
+		 if (!GSDOM.isHTMLElement(el)) return;
 		 el.innerHTML = val;
 	 }
  
@@ -339,7 +254,7 @@
 	  * @returns {void}
 	  */
 	 static setText(el, val = '') {
-		 if (!GSUtil.isHTMLElement(el)) return;
+		 if (!GSDOM.isHTMLElement(el)) return;
 		 el.innerText = val;
 	 }
  
@@ -352,7 +267,7 @@
 	  * @returns {void}
 	  */
 	 static setAttribute(el, name, val) {
-		 if (!GSUtil.isHTMLElement(el)) return;
+		 if (!GSDOM.isHTMLElement(el)) return;
 		 if (val != null) {
 			 el.setAttribute(name, val);
 		 } else {
@@ -369,33 +284,33 @@
 	  * @returns {boolean}
 	  */
 	 static getAttribute(el, name = '', val = '') {
-		 if (!GSUtil.isHTMLElement(el)) return val;
+		 if (!GSDOM.isHTMLElement(el)) return val;
 		 const v = el.getAttribute(name) || val;
 		 return GSUtil.isString(v) ? v.trim() : v;
 	 }
  
 	 static getAttributeAsBool(el, name = '', val = 'false') {
-		 return GSUtil.asBool(GSUtil.getAttribute(el, name, val));
+		 return GSUtil.asBool(GSDOM.getAttribute(el, name, val));
 	 }
  
 	 static getAttributeAsNum(el, name = '', val = '0') {
-		 return GSUtil.asNum(GSUtil.getAttribute(el, name, val));
+		 return GSUtil.asNum(GSDOM.getAttribute(el, name, val));
 	 }
  
 	 static getAttributeAsJson(el, name = '', val = '0') {
-		 return JSON.parse(GSUtil.getAttribute(el, name, val, {}));
+		 return JSON.parse(GSDOM.getAttribute(el, name, val, {}));
 	 }
  
 	 static setAttributeAsBool(el, name = '', val = 'false') {
-		 return GSUtil.setAttribute(el, name, GSUtil.asBool(val), false);
+		 return GSDOM.setAttribute(el, name, GSUtil.asBool(val), false);
 	 }
  
 	 static setAttributeAsNum(el, name = '', val = '0') {
-		 return GSUtil.setAttribute(el, name, GSUtil.asNum(val), NaN);
+		 return GSDOM.setAttribute(el, name, GSUtil.asNum(val), NaN);
 	 }
  
 	 static setAttributeAsJson(el, name = '', val = '0') {
-		 return GSUtil.setAttribute(el, name, JSON.stringify(val), '{}');
+		 return GSDOM.setAttribute(el, name, JSON.stringify(val), '{}');
 	 }
  
 	 /**
@@ -406,7 +321,7 @@
 	  * @returns {boolean}
 	  */
 	 static toggleClass(el, sts = true, val = 'd-none') {
-		 if (!GSUtil.isHTMLElement(el)) return false;
+		 if (!GSDOM.isHTMLElement(el)) return false;
 		 if (!val || val.trim().length == 0) return false;
 		 val = val.split(' ').filter(v => v && v.trim().length > 0);
 		 if (sts === null) return val.forEach(v => el.classList.toggle(v));
@@ -420,7 +335,7 @@
 	  * @returns {boolean}
 	  */
 	 static hasClass(el, val = '') {
-		 if (!GSUtil.isHTMLElement(el)) return false;
+		 if (!GSDOM.isHTMLElement(el)) return false;
 		 return el.classList.contains(val);
 	 }
  
@@ -441,53 +356,6 @@
 		 return own[fn](qry);
 	 }
  
- 
-	 /**
-	  * Convert string pointer to object
-	  * @param {string} value 
-	  * @returns  {*}
-	  */
-	 static parseValue(value) {
-		 if (!GSUtil.isStringNonEmpty(value)) return;
-		 const me = this;
-		 let o = window;
-		 let fn = null;
-		 value.trim().split('.').forEach((v, i, a) => {
-			 if (!o) return;
-			 if (i < a.length - 1) {
-				 return o = o[v];
-			 }
-			 fn = o[v];
-		 });
-		 return fn;
-	 }
- 
-	 /**
-	  * match if strings ha data
-	  * 
-	  * @param {string} val 
-	  * @returns {boolean}
-	  */
-	 static isStringNonEmpty(val = '') {
-		 if (GSUtil.isString(val)) return val.trim().length > 0;
-		 return false;
-	 }
- 
-	 /**
-	  * match two strings, or first is not set
-	  * 
-	  * @param {string} left 
-	  * @param {string} right 
-	  * @returns {boolean}
-	  */
-	 static isStringMatch(left, right) {
-		 const lmatch = GSUtil.isStringNonEmpty(left);
-		 const rmatch = GSUtil.isStringNonEmpty(right);
-		 if (lmatch && rmatch) {
-			 return left.trim().toLowerCase() == right.trim().toLowerCase();
-		 }
-		 return lmatch === rmatch;
-	 }
 
 	 /**
 	  * Alternative way to clear fields instead of form.reset()
@@ -495,7 +363,7 @@
 	  * @param {string} qry 
 	  */
 	 static clearInputs(owner, qry = 'input, textarea') {
-		 const root = GSUtil.unwrap(owner);
+		 const root = GSDOM.unwrap(owner);
 		 requestAnimationFrame(() => {
 			 root.querySelectorAll(qry).forEach((el) => el.value = '');
 		 });
@@ -508,7 +376,7 @@
 	  */
 	 static getDataAttrs(el) {
 		 const o = {}
-		 if (!GSUtil.isHTMLElement(el)) return o;
+		 if (!GSDOM.isHTMLElement(el)) return o;
 		 Array.from(el.attributes)
 			 .filter(v => v.name.startsWith('data-'))
 			 .forEach(v => o[v.name.split('-')[1]] = v.value);
@@ -522,11 +390,11 @@
 	  * @returns {boolean}
 	  */
 	 static setDataAttrs(source, target) {
-		 if (!GSUtil.isHTMLElement(source)) return false;
-		 if (!GSUtil.isHTMLElement(target)) return false;
+		 if (!GSDOM.isHTMLElement(source)) return false;
+		 if (!GSDOM.isHTMLElement(target)) return false;
 		 Array.from(source.attributes)
 			 .filter(v => v.name.startsWith('data-'))
-			 .forEach(v => GSUtil.setAttribute(target, v.name, v.value));
+			 .forEach(v => GSDOM.setAttribute(target, v.name, v.value));
 		 return true;
 	 }
  
@@ -548,7 +416,7 @@
 	  * @returns {string}
 	  */
 	 static toValue(el) {
-		 if (!GSUtil.isHTMLElement(el)) return undefined;
+		 if (!GSDOM.isHTMLElement(el)) return undefined;
 		 let value = el.value;
 		 if ('text' === el.type) {
 			 const map = el.computedStyleMap().get('text-transform');
@@ -568,12 +436,12 @@
 	  * @returns {object}
 	  */
 	 static toObject(owner, qry = 'input, textarea, select', hidden = false) {
-		 const root = GSUtil.unwrap(owner);
+		 const root = GSDOM.unwrap(owner);
 		 const params = {};
 		 root.querySelectorAll(qry).forEach(el => {
 			 if (!el.name) return;
-			 if (!hidden && GSUtil.getAttribute(el, 'data-ignore') === 'true') return;
-			 params[el.name] = GSUtil.toValue(el);
+			 if (!hidden && GSDOM.getAttribute(el, 'data-ignore') === 'true') return;
+			 params[el.name] = GSDOM.toValue(el);
 		 });
 		 return params;
 	 }
@@ -587,7 +455,7 @@
 	  */
 	 static fromObject(owner, obj, qry = 'input, textarea, select') {
 		if (!obj) return;
-		const root = GSUtil.unwrap(owner);
+		const root = GSDOM.unwrap(owner);
 		root.querySelectorAll(qry).forEach(el => {
 			if (!el.name) return;
 			if (obj.hasOwnProperty(el.name)) el.value = obj[el.name];
@@ -602,7 +470,7 @@
 		 location.hash.slice(1).split('&').every((v) => {
 			 if (v.length < 2) return true;
 			 const d = v.split('=');
-			 GSUtil.setValue(`input[name=${d[0]}]`, d[1], owner);
+			 GSDOM.setValue(`input[name=${d[0]}]`, d[1], owner);
 			 return true;
 		 });
 	 }
@@ -614,18 +482,7 @@
 	  */
 	 static unwrap(owner) {
 		 if (!owner) return document;
-		 return GSUtil.isGSElement(owner) ? owner.shadowRoot : owner;
-	 }
- 
-	 /**
-	  * Async version of timeout
-	  * @param {number} time 
-	  * @returns {void}
-	  */
-	 static async timeout(time = 0) {
-		 return new Promise((r) => {
-			 setTimeout(r.bind(null, true), time);
-		 });
+		 return GSDOM.isGSElement(owner) ? owner.shadowRoot : owner;
 	 }
  
 	 /**
@@ -636,7 +493,7 @@
 	  */
 	 static getEl(name, own) {
 		 if (!name) return null;
-		 return GSUtil.findEl(`#${name}`, own);
+		 return GSDOM.findEl(`#${name}`, own);
 	 }
  
 	 /**
@@ -669,8 +526,8 @@
 	  * @param {HTMLElement} own 
 	  */
 	 static enableInput(qry = 'form', own) {
-		 const root = GSUtil.findEl(qry, own);
-		 if (root) GSUtil.findAll('input, select, .btn', own).forEach(el => el.removeAttribute('disabled'));
+		 const root = GSDOM.findEl(qry, own);
+		 if (root) GSDOM.findAll('input, select, .btn', own).forEach(el => el.removeAttribute('disabled'));
 	 }
  
 	 /**
@@ -679,8 +536,8 @@
 	  * @param {HTMLElement} own 
 	  */
 	 static disableInput(qry = 'form', own) {
-		 const root = GSUtil.findEl(qry, own);
-		 if (root) GSUtil.findAll('input, select, .btn', el).forEach(el => el.setAttribute('disabled', true));
+		 const root = GSDOM.findEl(qry, own);
+		 if (root) GSDOM.findAll('input, select, .btn', el).forEach(el => el.setAttribute('disabled', true));
 	 }
  
 	 /**
@@ -690,7 +547,7 @@
 	  * @param {HTMLElement} own 
 	  */
 	 static setHTML(qry, val, own) {
-		 const el = UI.findEl(qry, own);
+		 const el = GSDOM.findEl(qry, own);
 		 if (el) el.innerHTML = val;
 	 }
  
@@ -701,7 +558,7 @@
 	  * @param {HTMLElement} own 
 	  */
 	 static setValue(qry, val, own) {
-		 const el = UI.findEl(qry, own);
+		 const el = GSDOM.findEl(qry, own);
 		 if (el) el.value = val;
 	 }
  
@@ -723,14 +580,14 @@
 	  * @param {HTMLElement} root 
 	  */
 	 static cleanHTML(root) {
-		 const ts = GSUtil.textNodesUnder(root || document).filter(t => t.wholeText.trim().length === 0);
+		 const ts = GSDOM.textNodesUnder(root || document).filter(t => t.wholeText.trim().length === 0);
 		 ts.filter(el => el.nextSibling instanceof Text).forEach(el => el.remove());
 		 ts.forEach(t => t.nodeValue = t.wholeText.replaceAll(/\u0020{4}/g, '\t').replaceAll(/(\n*\t*)*(?=\n\t*)/g, ''));
 	 }
 
 	 static {
-		 Object.seal(GSUtil);
-		 window.GSUtil = GSUtil;
+		 Object.seal(GSDOM);
+		 window.GSDOM = GSDOM;
 	 }
  }
  

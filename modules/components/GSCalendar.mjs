@@ -10,6 +10,7 @@
 import GSComponents from '../base/GSComponents.mjs';
 import GSDate from '../base/GSDate.mjs';
 import GSElement from '../base/GSElement.mjs'
+import GSEvent from '../base/GSEvent.mjs';
 import GSUtil from '../base/GSUtil.mjs';
 
 /**
@@ -248,7 +249,7 @@ export default class GSCalendar extends GSElement {
         });
         const date = new GSDate(me.#date);
         date.day = day;
-        GSUtil.sendEvent(me, 'date', {type:'calendar', date:date, val : me.formatted(date)}, true, true);
+        GSEvent.send(me, 'date', {type:'calendar', date:date, val : me.formatted(date)}, true, true);
         me.#updateTarget(date);
     }
 

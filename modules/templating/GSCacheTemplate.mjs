@@ -7,6 +7,8 @@
  * @module templating/GSCacheTemplate
  */
 
+import GSFunction from "../base/GSFunction.mjs";
+import GSLoader from "../base/GSLoader.mjs";
 import GSLog from "../base/GSLog.mjs";
 import GSUtil from "../base/GSUtil.mjs";
 
@@ -92,8 +94,8 @@ export default class GSCacheTemplate {
 	 * @returns {boolean}
 	 */
 	static isFunctionTemplate(tpl) {
-		const fn = GSUtil.parseFunction(tpl);
-		return GSUtil.isFunction(fn) ? fn : false;
+		const fn = GSFunction.parseFunction(tpl);
+		return GSFunction.isFunction(fn) ? fn : false;
 	}
 
 	/**
@@ -164,7 +166,7 @@ export default class GSCacheTemplate {
 			let template = null;
 			if (cached) template = me.load(o);
 			if (template) return template;
-			template = await GSUtil.load(o);
+			template = await GSLoader.load(o);
 			return me.initTemplate(cached, name, template);
 		} catch (e) {
 			GSLog.error(me, e);
@@ -188,7 +190,7 @@ export default class GSCacheTemplate {
 			let template = null;
 			if (me.cached) template = me.load(o);
 			if (template) return template;
-			template = GSUtil.isFunctionAsync(fn) ? await fn() : fn();
+			template = GSFunction.isFunctionAsync(fn) ? await fn() : fn();
 			return me.initTemplate(cached, name, template);
 		} catch (e) {
 			GSLog.error(me, e);

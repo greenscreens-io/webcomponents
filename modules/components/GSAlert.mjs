@@ -9,6 +9,8 @@
 
 import GSUtil from "../base/GSUtil.mjs";
 import GSElement from "../base/GSElement.mjs";
+import GSDOM from "../base/GSDOM.mjs";
+import GSEvent from "../base/GSEvent.mjs";
 
 /**
  * https://getbootstrap.com/docs/5.1/components/buttons/
@@ -28,7 +30,7 @@ export default class GSAlert extends GSElement {
 
     static get observedAttributes() {
         const attrs = ['css', 'message', 'active'];
-        return GSUtil.mergeArrays(attrs, super.observedAttributes);
+        return GSElement.observeAttributes(attrs);
     }
 
     constructor() {
@@ -37,7 +39,7 @@ export default class GSAlert extends GSElement {
 
     #onClick(e) {
         const me = this;
-        GSUtil.sendEvent(me, 'action', { type: 'alert', source: e }, true);
+        GSEvent.send(me, 'action', { type: 'alert', source: e }, true);
         me.dismiss();
     }
 
@@ -106,7 +108,7 @@ export default class GSAlert extends GSElement {
 
     async #dismiss() {
         GSUtil.toggleClass(this.findEl('.alert'), false, 'show');
-        await GSUtil.timeout(GSUtil.SPEED);
+        await GSUtil.timeout(GSDOM.SPEED);
         return this.remove();
     }
 

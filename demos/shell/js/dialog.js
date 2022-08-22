@@ -1,10 +1,11 @@
 import GSElement from "/modules/base/GSElement.mjs";
 import GSUtil from "/modules/base/GSUtil.mjs";
+import GSDOM from "/modules/base/GSDOM.mjs";
 
 class GSDialog extends GSElement {
 
 	get template() {
-		return GSUtil.getAttribute(this, 'template', '//dialog.html');
+		return GSDOM.getAttribute(this, 'template', '//dialog.html');
 	}
 
 	set title(val = '') {

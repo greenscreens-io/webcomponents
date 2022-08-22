@@ -10,6 +10,7 @@
 import GSUtil from "../base/GSUtil.mjs";
 import GSElement from "../base/GSElement.mjs";
 import GSItem from "../base/GSItem.mjs";
+import GSEvent from "../base/GSEvent.mjs";
 
 /**
  * https://getbootstrap.com/docs/5.1/components/buttons/
@@ -29,7 +30,7 @@ export default class GSButton extends GSElement {
 
     static get observedAttributes() {
         const attrs = ['css', 'dismiss', 'target', 'toggle', 'title', 'active', 'disable'];
-        return GSUtil.mergeArrays(attrs, super.observedAttributes);
+        return GSElement.observeAttributes(attrs);
     }
 
     constructor() {
@@ -39,7 +40,7 @@ export default class GSButton extends GSElement {
     #onClick(e) {
         const me = this;
         if (me.disable) return false;
-        GSUtil.sendEvent(me, 'action', { type: 'button', action: me.action, source: e }, true, true, true);
+        GSEvent.send(me, 'action', { type: 'button', action: me.action, source: e }, true, true, true);
         if (me.active) {
             me.#state = !me.#state;
             GSUtil.toggleClass(me.firstElementChild, me.#state, 'active');

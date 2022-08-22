@@ -11,26 +11,31 @@ import GSLog from "./GSLog.mjs";
 
 /**
  * A generic set of static functions used across GS WebComponents framework
+ * used for placing elements at fixed positions.
+ * Also used to replace Bootstrap popper.
  * @class
  */
 export default class GSPopper {
 
 	/**
 	 * Get element offset position
+	 * Returns absolute position {left:0, top:0, width:0, height:0,centeY:0 centerX:0}
 	 * @param {HTMLElement} el 
-	 * @returns {object} Returns absolute position {left:0, top:0, width:0, height:0,centeY:0 centerX:0}
+	 * @returns {object} 
 	 */
 	static getOffset(el) {
 		const rect = el.getBoundingClientRect();
+		const sx = window.scrollX;
+		const sy = window.scrollY;
 		const obj = {
-			left: rect.left + window.scrollX,
-			right: rect.right + window.scrollX,
-			top: rect.top + window.scrollY,
-			bottom: rect.bottom + window.scrollY,
+			left: rect.left + sx,
+			right: rect.right + sx,
+			top: rect.top + sy,
+			bottom: rect.bottom + sy,
 			height: rect.height,
 			width: rect.width,
-			x: rect.x + window.scrollX,
-			y: rect.y + window.scrollY
+			x: rect.x + sx,
+			y: rect.y + sy
 		};
 		obj.centerX = obj.left + (obj.width / 2);
 		obj.centerY = obj.top + (obj.height / 2);
@@ -39,8 +44,9 @@ export default class GSPopper {
 
 	/**
 	 * Return element position and size without padding
+	 * Returned objext is the same format as native getBoundingRect
 	 * @param {HTMLElement} element 
-	 * @returns {object} Parameters as native getBoundingRect
+	 * @returns {object} 
 	 */
 	static boundingRect(element, calcPadding) {
 
@@ -56,8 +62,8 @@ export default class GSPopper {
 		const elementX = rect.left + padding.left;
 		const elementY = rect.top + padding.top;
 
-		const x = (elementWidth / 2) + elementX;
-		const y = elementY + (elementHeight / 2);
+		const centerX = (elementWidth / 2) + elementX;
+		const centerY = elementY + (elementHeight / 2);
 
 		return {
 			width: elementWidth,
@@ -66,8 +72,8 @@ export default class GSPopper {
 			left: elementX,
 			x: elementX,
 			y: elementY,
-			centerX: x,
-			centerY: y
+			centerX: centerX,
+			centerY: centerY
 		};
 	}
 
@@ -133,23 +139,18 @@ export default class GSPopper {
 		const rect = GSPopper.boundingRect(target, arrow instanceof HTMLElement);
 		const arect = GSPopper.#updateArrow(source, arrow, pos);
 
-		let x = rect.centerX;
-		let y = rect.centerY;
-		if (pos.isTop) {
-			y = rect.top - source.clientHeight - arect.size;
-			x = x - offw;
-		} else if (pos.isBottom) {
-			y = rect.top + rect.height + arect.size;
-			x = x - offw;
-		} else if (pos.isStart) {
-			x = rect.left - source.clientWidth - arect.size;
-			y = y - offh + arect.size;
-		} else if (pos.isEnd) {
-			x = rect.left + rect.width + arect.size;
-			y = y - offh + arect.size;
+		const obj = {
+			x : rect.centerX,
+			y : rect.centerY,
+			offH : offh,
+			offW : offw,
+			srcH : source.clientHeight,
+			srcW : source.clientWidth
 		}
 
-		source.style.transform = `translate(${x}px, ${y}px)`;
+		GSPopper.#calcFixed(pos, obj, rect, arect);
+
+		source.style.transform = `translate(${obj.x}px, ${obj.y}px)`;
 
 	}
 
@@ -173,11 +174,10 @@ export default class GSPopper {
 			return;
 		}
 
+		arrow.style.position = 'absolute';
 		source.style.position = 'absolute';
 		source.style.margin = '0px';
 		source.style.inset = GSPopper.#inset(pos);
-
-		arrow.style.position = 'absolute';
 
 		const srect = source.getBoundingClientRect();
 		const arect = arrow.getBoundingClientRect();
@@ -187,11 +187,22 @@ export default class GSPopper {
 			x : offset.centerX,
 			y : offset.centerY
 		}
+
 		const arr = {
 			x : (srect.width / 2) - (arect.width / 2),
 			y : (srect.height / 2) - (arect.height / 2)
 		}
 
+		GSPopper.#calcAbsolute(pos, obj, arr, srect, arect, offset);
+
+		source.style.transform = `translate(${obj.x}px, ${obj.y}px)`;
+		arrow.style.transform = `translate(${arr.x}px, ${arr.y}px)`;
+		arrow.style.top = arr.top ? arr.top : '';
+		arrow.style.left = arr.left ? arr.left : '';
+
+	}
+
+	static #calcAbsolute(pos, obj, arr, srect, arect, offset) {
 		if (pos.isTop) {
 			arr.y = 0;
 			arr.left = '0px';
@@ -212,15 +223,23 @@ export default class GSPopper {
 			arr.top = '0px';
 			obj.x = offset.right + arect.width;
 			obj.y = obj.y - (srect.height / 2);
-		}		
+		}	
+	}
 
-
-		source.style.transform = `translate(${obj.x}px, ${obj.y}px)`;
-
-		arrow.style.transform = `translate(${arr.x}px, ${arr.y}px)`;
-		arrow.style.top = arr.top ? arr.top : '';
-		arrow.style.left = arr.left ? arr.left : '';
-
+	static #calcFixed(pos, obj, trect, arect) {
+		if (pos.isTop) {
+			obj.y = trect.top - obj.srcH - arect.size;
+			obj.x = obj.x - obj.offW;
+		} else if (pos.isBottom) {
+			obj.y = trect.top + trect.height + arect.size;
+			obj.x = obj.x - obj.offW;
+		} else if (pos.isStart) {
+			obj.x = trect.left - obj.srcW - arect.size;
+			obj.y = obj.y - obj.offH + arect.size;
+		} else if (pos.isEnd) {
+			obj.x = trect.left + trect.width + arect.size;
+			obj.y = obj.y - obj.offH + arect.size;
+		}
 	}
 
 	static #inset(obj) {

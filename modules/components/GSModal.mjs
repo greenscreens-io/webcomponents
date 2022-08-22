@@ -8,6 +8,7 @@
  */
 
 import GSElement from "../base/GSElement.mjs";
+import GSEvent from "../base/GSEvent.mjs";
 import GSUtil from "../base/GSUtil.mjs";
 
 /**
@@ -25,7 +26,7 @@ export default class GSModal extends GSElement {
 
   static get observedAttributes() {
     const attrs = ['cancelable', 'closable', 'title', 'visible'];
-    return GSUtil.mergeArrays(attrs, super.observedAttributes);
+    return GSElement.observeAttributes(attrs);
   }
 
   attributeCallback(name = '', oldValue = '', newValue = '') {
@@ -41,7 +42,7 @@ export default class GSModal extends GSElement {
         me.#hideEL('.modal-backdrop');
         me.normal();
       }
-      GSUtil.sendEvent(me, 'visible', { type: 'modal', ok: me.visible }, true, true);
+      GSEvent.send(me, 'visible', { type: 'modal', ok: me.visible }, true, true);
     }
   }
 
@@ -58,7 +59,7 @@ export default class GSModal extends GSElement {
     const me = this;
     const sts = me.#validateCaller(e, e.target, 'close', 'GS-MODAL');
     if (!sts) return;
-    GSUtil.preventEvent(e);
+    GSEvent.prevent(e);
      me.close();
   }
 
@@ -66,8 +67,8 @@ export default class GSModal extends GSElement {
     const me = this;
     let sts = me.#validateCaller(e, e.target, 'submit', 'GS-MODAL');
     if (!sts) return;
-    GSUtil.preventEvent(e);
-    sts = GSUtil.sendEvent(me, 'data', { type: 'modal', data: e.detail.data, evt: e }, true, true, true);
+    GSEvent.prevent(e);
+    sts = GSEvent.send(me, 'data', { type: 'modal', data: e.detail.data, evt: e }, true, true, true);
     if (sts) me.close();
   }
 
@@ -83,9 +84,9 @@ export default class GSModal extends GSElement {
     try {
       const action = GSUtil.getAttribute(e.path[0], 'data-action');
       if (GSModal.#actions.indexOf(action) < 0) return sts = false;
-      GSUtil.preventEvent(e);
+      GSEvent.prevent(e);
       const isOk = action === 'ok';
-      sts = GSUtil.sendEvent(me, 'action', { type: 'modal', ok: isOk, evt: e }, true, true, true);
+      sts = GSEvent.send(me, 'action', { type: 'modal', ok: isOk, evt: e }, true, true, true);
     } finally {
       if (sts) me.close();
     }
@@ -154,9 +155,9 @@ export default class GSModal extends GSElement {
    * Show modal panel
    */
   open(e) {
-    GSUtil.preventEvent(e);
+    GSEvent.prevent(e);
     const me = this;
-    const sts = GSUtil.sendEvent(me, 'open', { type: 'modal' }, true, true, true);
+    const sts = GSEvent.send(me, 'open', { type: 'modal' }, true, true, true);
     if (sts) me.visible = true;
   }
 
@@ -164,9 +165,9 @@ export default class GSModal extends GSElement {
    * Hide modal panel
    */
   close(e) {
-    GSUtil.preventEvent(e);
+    GSEvent.prevent(e);
     const me = this;
-    const sts = GSUtil.sendEvent(me, 'close', { type: 'modal' }, true, true, true);
+    const sts = GSEvent.send(me, 'close', { type: 'modal' }, true, true, true);
     if (sts) me.visible = false;
   }
 

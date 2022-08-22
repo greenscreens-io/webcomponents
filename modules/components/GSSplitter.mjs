@@ -10,7 +10,7 @@
 import GSID from "../base/GSID.mjs";
 import GSUtil from "../base/GSUtil.mjs";
 import GSElement from "../base/GSElement.mjs";
-import GSListeners from "../base/GSListeners.mjs";
+import GSEvent from "../base/GSEvent.mjs";
 
 /**
  * Renderer for element splitter
@@ -186,7 +186,7 @@ export default class GSSplitter extends GSElement {
     */
     #onMouseDown(e) {
         const me = this;
-        GSUtil.preventEvent(e);
+        GSEvent.prevent(e);
         me.#cursor = me.isVertical ? e.clientX : e.clientY;
         me.attachEvent(document, 'mouseup', me.#onMouseUp.bind(me), true);
         me.attachEvent(document, 'mousemove', me.#onMouseMove.bind(me));
@@ -198,8 +198,8 @@ export default class GSSplitter extends GSElement {
      */
     #onMouseUp(e) {
         const me = this;
-        GSUtil.preventEvent(e);
-        GSListeners.deattachListeners(me);
+        GSEvent.prevent(e);
+        GSEvent.deattachListeners(me);
         me.#save();
         me.#listen();
     }
@@ -211,7 +211,7 @@ export default class GSSplitter extends GSElement {
      */
     #onMouseMove(e) {
         const me = this;
-        GSUtil.preventEvent(e);
+        GSEvent.prevent(e);
         const pos = me.isVertical ? e.clientX : e.clientY;
         me.#update(pos);
     }

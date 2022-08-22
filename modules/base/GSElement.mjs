@@ -9,11 +9,15 @@
 
 import GSID from "./GSID.mjs";
 import GSUtil from "./GSUtil.mjs";
+import GSLoader from "./GSLoader.mjs";
 //import GSDOMObserver from "./GSDOMObserver.mjs";
-import GSListeners from "./GSListeners.mjs";
+import GSEvent from "./GSEvent.mjs";
 import GSComponents from "./GSComponents.mjs";
 import GSCacheStyles from "../head/GSCacheStyles.mjs";
 import GSLog from "./GSLog.mjs";
+import GSFunction from "./GSFunction.mjs";
+import GSData from "./GSData.mjs";
+import GSEnvironment from "./GSEnvironment.mjs";
 
 /**
  * Base element inherited by all other registered GS-Elements
@@ -33,6 +37,10 @@ export default class GSElement extends HTMLElement {
 
 	constructor() {
 		super();
+	}
+
+	static observeAttributes(attributes) {
+		return GSData.mergeArrays(attributes, GSElement.observedAttributes);
 	}
 
 	/**
@@ -144,7 +152,7 @@ export default class GSElement extends HTMLElement {
 	 * @returns {boolean} 
 	 */
 	get isValidEnvironment() {
-		return GSUtil.isValidEnvironment(this.environment);
+		return GSEnvironment.isValidEnvironment(this.environment);
 	}
 
 	/**
@@ -152,7 +160,7 @@ export default class GSElement extends HTMLElement {
 	 * @returns {boolean} 
 	 */
 	get isValidOS() {
-		return GSUtil.isDevice(this.os);
+		return GSEnvironment.isDevice(this.os);
 	}
 
 	/**
@@ -160,7 +168,7 @@ export default class GSElement extends HTMLElement {
 	 * @returns {boolean} 
 	 */
 	get isValidOrientation() {
-		return GSUtil.isValidOrientation(this.orientation);
+		return GSEnvironment.isValidOrientation(this.orientation);
 	}
 
 	/**
@@ -168,7 +176,7 @@ export default class GSElement extends HTMLElement {
 	 * @returns {boolean} 
 	 */
 	get isValidBrowser() {
-		return GSUtil.isValidBrowser(this.browser);
+		return GSEnvironment.isValidBrowser(this.browser);
 	}
 
 	/**
@@ -278,7 +286,7 @@ export default class GSElement extends HTMLElement {
 	 * @returns {string}
 	 */
 	async getTemplate(def = '') {
-		return GSUtil.getTemplate(def);
+		return GSLoader.getTemplate(def);
 	}
 
 	/**
@@ -369,7 +377,7 @@ export default class GSElement extends HTMLElement {
 	* @returns {boolean} State if attachment was successful
 	*/
 	attachEvent(el, name = '', fn, once = false) {
-		return GSListeners.attachEvent(this, el, name, fn, once);
+		return GSEvent.attach(this, el, name, fn, once);
 	}
 
 	/**
@@ -380,7 +388,7 @@ export default class GSElement extends HTMLElement {
 	* @returns {boolean} State if attachment was successful	
 	*/
 	removeEvent(el, name = '', fn) {
-		return GSListeners.removeEvent(this, el, name, fn);
+		return GSEvent.remove(this, el, name, fn);
 	}
 
 	/**
@@ -407,7 +415,7 @@ export default class GSElement extends HTMLElement {
 		me.#removed = true;
 		if (me.#observer) me.#observer.disconnect();
 		GSComponents.remove(me);
-		GSListeners.deattachListeners(me);
+		GSEvent.deattachListeners(me);
 		me.#removeFlat();
 	}
 
@@ -477,7 +485,7 @@ export default class GSElement extends HTMLElement {
 		const src = await me.getTemplate(me.template);
 		if (!src) return;
 
-		await GSUtil.waitAnimationFrame(() => {
+		await GSEvent.waitAnimationFrame(() => {
 
 			if (me.offline) return;
 
@@ -557,7 +565,7 @@ export default class GSElement extends HTMLElement {
 	 */
 	async #render() {
 		const me = this;
-		// await GSUtil.waitPageLoad();
+		// await GSFunction.waitPageLoad();
 		await me.#aplyTemplate();
 		if (me.offline) return;
 		me.attachEvent(this, document, 'gs-style', me.#styleChange.bind(me));
@@ -572,9 +580,9 @@ export default class GSElement extends HTMLElement {
 	onReady() {
 		const me = this;
 		if (me.offline) return;
-		const fn = GSUtil.parseFunction(me.onready);
-		GSUtil.callFunction(fn);
-		GSUtil.sendEvent(me, 'componentready', me.id, true, true);
+		const fn = GSFunction.parseFunction(me.onready);
+		GSFunction.callFunction(fn);
+		GSEvent.send(me, 'componentready', me.id, true, true);
 	}
 
 }

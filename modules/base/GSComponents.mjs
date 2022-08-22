@@ -4,6 +4,9 @@
 
 import GSUtil from "./GSUtil.mjs";
 import GSCacheStyles from "../head/GSCacheStyles.mjs";
+import GSEvent from "./GSEvent.mjs";
+import GSFunction from "./GSFunction.mjs";
+import GSData from "./GSData.mjs";
 
 /**
  * A module loading GSComponent class
@@ -39,13 +42,13 @@ export default class GSComponents {
     static #storeElement(el) {
         if (!GSUtil.isGSElement(el)) return false;
         this.#cache.set(el.id, el);
-        requestAnimationFrame(() => GSUtil.sendEvent(document, 'gs-component', el));
+        requestAnimationFrame(() => GSEvent.send(document, 'gs-component', el));
     }
 
     static #storeExtra(el) {
         if (!GSUtil.isGSExtra(el)) return false;
         this.#extra.set(el.id, el);
-        requestAnimationFrame(() => GSUtil.sendEvent(document, 'gs-component', el));
+        requestAnimationFrame(() => GSEvent.send(document, 'gs-component', el));
     }
 
     /**
@@ -101,11 +104,11 @@ export default class GSComponents {
      */
     static queryAll(value = '') {
         const data = GSComponents.findAll(null, true, true)
-            .filter(el => GSUtil.isFunction(el.findAll))
+            .filter(el => GSFunction.isFunction(el.findAll))
             .map(el => Array.from(el.findAll(value)))
             .filter(o => o.length > 0)
             .flat();
-        return GSUtil.uniqe(data);
+        return GSData.uniqe(data);
     }
 
     /**
@@ -115,7 +118,7 @@ export default class GSComponents {
      */
     static query(value = '') {
         return GSComponents.findAll(null, true, true)
-                .filter(el => GSUtil.isFunction(el.findEl))
+                .filter(el => GSFunction.isFunction(el.findEl))
                 .map(el => el.findEl(value))
                 .filter(o => o != null)
                 .shift();
@@ -126,13 +129,13 @@ export default class GSComponents {
             const el = e.detail;
             const isComp = name.startsWith('gs-') && el.tagName === name.toUpperCase();
             if (isComp || el.id === name) {
-                GSUtil.unlisten(document, null, 'gs-component', fn);
+                GSEvent.unlisten(document, null, 'gs-component', fn);
                 return r(el);
             }
         };
         const opt = {once:false, capture : false};
         if(timeout > 0) opt.signal = AbortSignal.timeout(timeout);
-        GSUtil.listen(document, null, 'gs-component', fn, opt);
+        GSEvent.listen(document, null, 'gs-component', fn, opt);
     }
 
     /**
@@ -155,7 +158,7 @@ export default class GSComponents {
      * @param {*} fn Callback function
      */
     static notifyFor(name = '', fn) {
-        if (!GSUtil.isFunction(fn)) return false;
+        if (!GSFunction.isFunction(fn)) return false;
         const callback = (e) => {
             const el = e.path[0];
             const ok = el.id === name || el.tagName === name;
@@ -165,7 +168,7 @@ export default class GSComponents {
         let el = GSComponents.find(name);
         if (!el) el = GSComponents.get(name);
         if (el) return fn(el);
-        GSUtil.listen(document.body, null, 'componentready', callback);
+        GSEvent.listen(document.body, null, 'componentready', callback);
         return callback;
     }
 

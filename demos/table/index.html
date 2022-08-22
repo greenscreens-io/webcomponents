@@ -49,11 +49,11 @@
                     <gs-column name="Start date" title="Start Date" format="dd.mm.yyyy" width="130px"></gs-column>
                     <gs-column></gs-column>
                 </gs-header>
-                <gs-data src="data2.json" id="employees" limit=10>
+                <gs-store src="data2.json" id="employees" limit=10>
                     <gs-item name="Age" type="number"></gs-item>
                     <gs-item name="Salary" type="number" format="$\d"></gs-item>
                     <gs-item name="Start date" type="date" format="yyyy/mm/dd"></gs-item>
-                </gs-data>
+                </gs-store>
                 <gs-context slot="extra" target="tbody tr" _template="./templates/context.tpl">
                     <gs-item name="Open" action="open"></gs-item>
                     <gs-item></gs-item>

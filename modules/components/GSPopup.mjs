@@ -8,6 +8,7 @@
  */
 
 import GSElement from "../base/GSElement.mjs";
+import GSEvent from "../base/GSEvent.mjs";
 import GSPopper from "../base/GSPopper.mjs";
 import GSUtil from "../base/GSUtil.mjs";
 
@@ -31,7 +32,7 @@ export default class GSPopup extends GSElement {
 
     static get observedAttributes() {
         const attrs = ['visible', 'css'];
-        return GSUtil.mergeArrays(attrs, super.observedAttributes);
+        return GSElement.observeAttributes(attrs);
     }
 
     attributeCallback(name = '', oldValue = '', newValue = '') {
@@ -213,7 +214,7 @@ export default class GSPopup extends GSElement {
         if (e instanceof Event) {
             e.preventDefault();
             const opt = { type: 'popup', option: e.target, caller: me.#caller, data: null };
-            GSUtil.sendEvent(me, 'action', opt, true, true);
+            GSEvent.send(me, 'action', opt, true, true);
         }
     }
 
@@ -323,8 +324,8 @@ export default class GSPopup extends GSElement {
         const me = this;
         let sts = me.#validateCaller(e, e.target, 'submit', 'GS-POPUP');
         if (!sts) return;
-        GSUtil.preventEvent(e);
-        sts = GSUtil.sendEvent(me, 'data', { type: 'popup', data: e.detail.data, evt: e }, true, true, true);
+        GSEvent.prevent(e);
+        sts = GSEvent.send(me, 'data', { type: 'popup', data: e.detail.data, evt: e }, true, true, true);
         if (sts) me.close();
     }
 

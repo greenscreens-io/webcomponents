@@ -23,7 +23,7 @@ export default class GSCenter extends GSElement {
 
    static get observedAttributes() {
       const attrs = ['css'];
-      return GSUtil.mergeArrays(attrs, super.observedAttributes);
+      return GSElement.observeAttributes(attrs);
    }
 
    attributeCallback(name = '', oldValue = '', newValue = '') {

@@ -8,6 +8,7 @@
  */
 
 import GSElement from "../../base/GSElement.mjs";
+import GSEvent from "../../base/GSEvent.mjs";
 import GSUtil from "../../base/GSUtil.mjs";
 import GSAttachment from "./GSAttachment.mjs";
 
@@ -187,7 +188,7 @@ export default class GSFileBox extends GSElement {
         const me = this;
         if (e.dataTransfer) e.dataTransfer.dropEffect = 'none';
         me.removeAttribute('hover');
-        GSUtil.preventEvent(e);
+        GSEvent.prevent(e);
     }
 
     #onDrop(e) {
@@ -196,7 +197,7 @@ export default class GSFileBox extends GSElement {
         const transfer = e.dataTransfer;
         if (!transfer || !me.#hasFile(transfer)) return;
         me.#attach(transfer);
-        GSUtil.preventEvent(e);
+        GSEvent.prevent(e);
     }
 
     #onPaste(e) {
@@ -250,10 +251,10 @@ export default class GSFileBox extends GSElement {
             ? await GSAttachment.traverse(transferred, me.directory)
             : GSAttachment.from(transferred);
 
-        const accepted = GSUtil.sendEvent(me, 'accept', { attachments }, true, false, true);
+        const accepted = GSEvent.send(me, 'accept', { attachments }, true, false, true);
         if (accepted && attachments.length) {
             me.#accept(attachments);
-            GSUtil.sendEvent(me, 'accepted', { attachments }, true);
+            GSEvent.send(me, 'accepted', { attachments }, true);
         }
     }
 

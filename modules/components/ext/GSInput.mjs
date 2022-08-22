@@ -9,7 +9,7 @@
 
 import GSID from "../../base/GSID.mjs";
 import GSUtil from "../../base/GSUtil.mjs";
-import GSListeners from "../../base/GSListeners.mjs";
+import GSEvent from "../../base/GSEvent.mjs";
 import GSComponents from "../../base/GSComponents.mjs";
 
 /**
@@ -57,7 +57,7 @@ export default class GSInput extends HTMLInputElement {
     disconnectedCallback() {
         const me = this;
         GSComponents.remove(me);
-        GSListeners.deattachListeners(me);
+        GSEvent.deattachListeners(me);
     }
 
     attributeChangedCallback(name, oldValue, newValue) {
@@ -118,13 +118,13 @@ export default class GSInput extends HTMLInputElement {
 
     #attachEvents() {
         const me = this;
-        GSListeners.attachEvent(me, me, 'input', me.#onInput.bind(me));
-        GSListeners.attachEvent(me, me, 'blur', me.#onBlur.bind(me));
+        GSEvent.attach(me, me, 'input', me.#onInput.bind(me));
+        GSEvent.attach(me, me, 'blur', me.#onBlur.bind(me));
         requestAnimationFrame(() => {
             const list = me.list;
             if (!list) return;
-            GSListeners.attachEvent(me, me, 'change', me.#onDataChange.bind(me));
-            GSListeners.attachEvent(me, me.filter, 'change', me.#onMonitor.bind(me));
+            GSEvent.attach(me, me, 'change', me.#onDataChange.bind(me));
+            GSEvent.attach(me, me.filter, 'change', me.#onMonitor.bind(me));
         });
     }
 
@@ -191,7 +191,7 @@ export default class GSInput extends HTMLInputElement {
     #onBlur(e) {
         const me = this;
         me.reportValidity();
-        if (!me.isInList()) GSUtil.sendEvent(me, 'strict', { ok: false, source: e });
+        if (!me.isInList()) GSEvent.send(me, 'strict', { ok: false, source: e });
     }
 
     #onInput(e) {

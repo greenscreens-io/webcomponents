@@ -10,6 +10,8 @@
 import GSUtil from "../base/GSUtil.mjs";
 import GSElement from "../base/GSElement.mjs";
 import GSItem from "../base/GSItem.mjs";
+import GSLoader from "../base/GSLoader.mjs";
+import GSEvent from "../base/GSEvent.mjs";
 
 /**
  * Renderer for bootstrap list group 
@@ -28,7 +30,7 @@ export default class GSList extends GSElement {
 
     static get observedAttributes() {
         const attrs = ['data'];
-        return GSUtil.mergeArrays(attrs, super.observedAttributes);
+        return GSElement.observeAttributes(attrs);
     }
 
     constructor() {
@@ -105,12 +107,12 @@ export default class GSList extends GSElement {
      * @param {JSON|func|url} val 
      */
     async load(val = '') {
-        const data = await GSUtil.loadData(val);
+        const data = await GSLoader.loadData(val);
         if (!GSUtil.isJsonType(data)) return;
         const me = this;
         me.innerHTML = GSItem.generateItem(data);
         GSComponents.remove(me);
-        GSListeners.deattachListeners(me);
+        GSEvent.deattachListeners(me);
         me.connectedCallback();
     }
 

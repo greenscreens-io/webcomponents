@@ -7,7 +7,9 @@
  * @module components/GSOffcanvas
  */
 
+import GSDOM from "../base/GSDOM.mjs";
 import GSElement from "../base/GSElement.mjs";
+import GSEvent from "../base/GSEvent.mjs";
 import GSUtil from "../base/GSUtil.mjs";
 
 /**
@@ -23,7 +25,7 @@ export default class GSOffcanvas extends GSElement {
 
   static get observedAttributes() {
     const attrs = ['title', 'visible', 'backdrop', 'placement', 'css', 'closable'];
-    return GSUtil.mergeArrays(attrs, super.observedAttributes);
+    return GSElement.observeAttributes(attrs);
   }
 
   constructor() {
@@ -34,7 +36,7 @@ export default class GSOffcanvas extends GSElement {
   attributeCallback(name = '', oldValue = '', newValue = '') {
     const me = this;
     me.#update(name, oldValue, newValue);
-    if (name === 'visible') GSUtil.sendEvent(me, 'action', { type: 'offcanvas', ok: newValue });
+    if (name === 'visible') GSEvent.send(me, 'action', { type: 'offcanvas', ok: newValue });
   }
 
   async getTemplate(val = '') {
@@ -91,14 +93,14 @@ export default class GSOffcanvas extends GSElement {
     if (me.min === 0 && me.visible) return GSUtil.toggleClass(me.#canvasEl, me.visible, 'show');
     setTimeout(() => {
       GSUtil.toggleClass(me.#canvasEl, me.min === 0 ? me.visible : true, 'show');
-    }, GSUtil.SPEED);
+    }, GSDOM.SPEED);
   }
 
   #updateBackdrop() {
     const me = this;
     setTimeout(() => {
       GSUtil.toggleClass(me.#backdropEl, !(me.backdrop && me.visible), 'invisible');
-    }, GSUtil.SPEED);
+    }, GSDOM.SPEED);
   }
 
   #updatePlacement(name = '', oldValue = '', newValue = '') {

@@ -2,6 +2,8 @@
  * Copyright (C) 2015, 2022 Green Screens Ltd.
  */
 
+import GSFunction from "./GSFunction.mjs";
+
 /**
  * A module loading GSDate class
  * @module base/GSDate
@@ -59,7 +61,7 @@ export default class GSDate extends Date {
      */
     toFormat(format = '', locale = 'en') {
         const me = this;
-        const valid = format && GSUtil.isFunction(self.GS_FORMAT_DATE);
+        const valid = format && GSFunction.isFunction(self.GS_FORMAT_DATE);
         if (!valid) return me.toISOString();
         return self.GS_FORMAT_DATE(me, format, locale);
     }

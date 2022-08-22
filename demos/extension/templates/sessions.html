@@ -21,7 +21,7 @@
             <gs-column title="Session ID" name="sessionID"></gs-column>
             <gs-column title="Theme" name="theme"></gs-column>
         </gs-header>
-        <gs-data src="data/sessions.json" id="sessions" limit=10>
+        <gs-store src="data/sessions.json" id="sessions" limit=10>
             <gs-item name="name"></gs-item>
             <gs-item name="uuid"></gs-item>
             <gs-item name="host"></gs-item>
@@ -31,7 +31,7 @@
             <gs-item name="codepage"></gs-item>
             <gs-item name="sessionID"></gs-item>
             <gs-item name="theme"></gs-item>
-        </gs-data>
+        </gs-store>
         <gs-context slot="extra" target="tbody tr">
             <gs-item name="Details" action="details"></gs-item>
             <gs-item name="Clone" action="clone"></gs-item>

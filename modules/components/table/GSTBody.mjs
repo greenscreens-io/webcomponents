@@ -9,7 +9,7 @@
 
 import GSID from "../../base/GSID.mjs";
 import GSUtil from "../../base/GSUtil.mjs";
-import GSListeners from "../../base/GSListeners.mjs";
+import GSEvent from "../../base/GSEvent.mjs";
 import GSComponents from "../../base/GSComponents.mjs";
 
 /**
@@ -29,8 +29,8 @@ export default class GSTBody extends HTMLTableSectionElement {
     connectedCallback() {
         const me = this;
         if (!me.id) me.setAttribute('id', GSID.id);
-        GSListeners.attachEvent(me, me, 'click', e => me.#onClick(e));
-        GSListeners.attachEvent(me, me, 'contextmenu', e => me.#onMenu(e), false, true);
+        GSEvent.attach(me, me, 'click', e => me.#onClick(e));
+        GSEvent.attach(me, me, 'contextmenu', e => me.#onMenu(e), false, true);
         GSComponents.store(me);
         me.#table = GSComponents.getOwner(me);
     }
@@ -39,7 +39,7 @@ export default class GSTBody extends HTMLTableSectionElement {
         const me = this;
         me.#table = null;
         GSComponents.remove(me);
-        GSListeners.deattachListeners(me);
+        GSEvent.deattachListeners(me);
     }
 
     get index() {
@@ -157,7 +157,7 @@ export default class GSTBody extends HTMLTableSectionElement {
 
         const data = [];
         GSUtil.findAll('tr[selected=true]', me, true).forEach(el => data.push(el.rowIndex));
-        GSUtil.sendEvent(me, 'select', data, true);
+        GSEvent.send(me, 'select', data, true);
     }
 
 }

@@ -4,6 +4,7 @@
 
 import GSUtil from "../base/GSUtil.mjs";
 import GSElement from "../base/GSElement.mjs";
+import GSEvent from "../base/GSEvent.mjs";
 
 /**
  * A module rendering current time on a page
@@ -46,7 +47,7 @@ export default class GSTime extends GSElement {
         const me = this;
         const date = new Date();
         me.innerHTML = date.toLocaleTimeString(me.locale);
-        GSUtil.sendEvent(me, 'time', { date }, true, true);
+        GSEvent.send(me, 'time', { date }, true, true);
     }
 
     start() {

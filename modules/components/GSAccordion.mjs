@@ -10,6 +10,8 @@
 import GSElement from "../base/GSElement.mjs";
 import GSID from "../base/GSID.mjs";
 import GSItem from "../base/GSItem.mjs";
+import GSEvent from "../base/GSEvent.mjs";
+import GSLoader from "../base/GSLoader.mjs";
 import GSUtil from "../base/GSUtil.mjs";
 
 /**
@@ -27,7 +29,7 @@ export default class GSAccordion extends GSElement {
 
   static get observedAttributes() {
     const attrs = ['css', 'css-item', 'css-header', 'css-body', 'data'];
-    return GSUtil.mergeArrays(attrs, super.observedAttributes);
+    return GSElement.observeAttributes(attrs);
   }
 
   attributeCallback(name = '', oldValue = '', newValue = '') {
@@ -104,8 +106,8 @@ export default class GSAccordion extends GSElement {
   async #html(id, el) {
     const me = this;
     const itemid = GSID.id;
-    const title = await GSUtil.getTemplate(me.#getTitle(el));
-    const message = await GSUtil.getTemplate(me.#getMessage(el));
+    const title = await GSLoader.getTemplate(me.#getTitle(el));
+    const message = await GSLoader.getTemplate(me.#getMessage(el));
     const autoclose = me.#getAutoclose(el) ? `data-bs-parent=#${id}` : '';
     const isVisible = me.#isVisible(el);
     return `
@@ -145,12 +147,12 @@ export default class GSAccordion extends GSElement {
    * @param {JSON|func|url} val 
    */
   async load(val = '') {
-    const data = await GSUtil.loadData(val);
+    const data = await GSLoader.loadData(val);
     if (!GSUtil.isJsonType(data)) return;
     const me = this;
     me.innerHTML = GSItem.generateItem(data);
     GSComponents.remove(me);
-    GSListeners.deattachListeners(me);
+    GSEvent.deattachListeners(me);
     me.connectedCallback();
   }
 

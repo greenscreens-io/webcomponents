@@ -25,7 +25,7 @@ export default class GSProgress extends GSElement {
 
     static get observedAttributes() {
         const attrs = ['min', 'max', 'now'];
-        return GSUtil.mergeArrays(attrs, super.observedAttributes);
+        return GSElement.observeAttributes(attrs);
     }
 
     constructor() {

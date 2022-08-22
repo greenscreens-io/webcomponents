@@ -9,11 +9,12 @@
 
 import GSComponents from "../../base/GSComponents.mjs";
 import GSElement from "../../base/GSElement.mjs";
+import GSEvent from "../../base/GSEvent.mjs";
 import GSUtil from "../../base/GSUtil.mjs";
 
-// use GSData
-// - if data attr set to gs-data id find el
-// - if internal gs-data el, use that
+// use GSStore
+// - if data attr set to gs-store id find el
+// - if internal gs-store el, use that
 
 /**
  * Boottrap table WebComponent
@@ -51,7 +52,7 @@ export default class GSTable extends GSElement {
 
     static get observedAttributes() {
         const attrs = ['src', 'select', 'multiselect', 'css', 'css-header', 'css-row', 'css-cell', 'css-select'];
-        return GSUtil.mergeArrays(attrs, GSElement.observedAttributes);
+        return GSElement.observeAttributes(attrs);
     }
 
     constructor() {
@@ -104,7 +105,7 @@ export default class GSTable extends GSElement {
         const me = this;
         if (me.#store) return me.#store;
 
-        me.#store = me.querySelector('gs-data');
+        me.#store = me.querySelector('gs-store');
         if (!me.#store) {
             const dataID = GSUtil.getAttribute('data');
             me.#store = GSComponents.get(dataID);
@@ -194,7 +195,7 @@ export default class GSTable extends GSElement {
         e.preventDefault();
         const me = this;
         me.#processData(e.detail);
-        setTimeout(() => GSUtil.sendEvent(me.shadow, 'data', e.detail), 10);
+        setTimeout(() => GSEvent.send(me.shadow, 'data', e.detail), 10);
     }
 
     #processData(data) {
@@ -274,7 +275,7 @@ export default class GSTable extends GSElement {
         o.data = [...me.#selected];
         o.type = 'table';
         //const opt = { action: data.data.action, data: me.#selected };
-        //GSUtil.sendEvent(me, 'action', opt, true, true, true);
+        //GSEvent.send(me, 'action', opt, true, true, true);
     }
 
     #onRowSelect(data = []) {
@@ -284,7 +285,7 @@ export default class GSTable extends GSElement {
             const rec = me.#data[i-1];
             if (rec) me.#selected.push(rec);
         });
-        GSUtil.sendEvent(me, 'selected', me.#selected);
+        GSEvent.send(me, 'selected', me.#selected);
     }
 
     #onColumnSort(data) {

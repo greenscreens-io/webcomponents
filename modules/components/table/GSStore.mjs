@@ -3,21 +3,22 @@
  */
 
 /**
- * A module loading GSData class
- * @module components/table/GSData
+ * A module loading GSStore class
+ * @module components/table/GSStore
  */
 
 import GSID from "../../base/GSID.mjs";
 import GSUtil from "../../base/GSUtil.mjs";
-import GSListeners from "../../base/GSListeners.mjs";
+import GSEvent from "../../base/GSEvent.mjs";
 import GSComponents from "../../base/GSComponents.mjs";
+import GSData from "../../base/GSData.mjs";
 
 /**
  * Table data handler, pager, loader
  * @class
  * @extends {HTMLElement}
  */
-export default class GSData extends HTMLElement {
+export default class GSStore extends HTMLElement {
 
     static #MODES = ['rest', 'query', 'quark'];
     #online = false;
@@ -34,7 +35,7 @@ export default class GSData extends HTMLElement {
     #total = 0;
 
     static {
-        customElements.define('gs-data', GSData);
+        customElements.define('gs-store', GSStore);
     }
 
     static get observedAttributes() {
@@ -125,14 +126,14 @@ export default class GSData extends HTMLElement {
     * TODO handle fucntion key override with same function signature dif instance
     */
     attachEvent(el, name = '', fn, once = false) {
-        return GSListeners.attachEvent(this, el, name, fn, once);
+        return GSEvent.attach(this, el, name, fn, once);
     }
 
     /**
     * Generic event listener remover
     */
     removeEvent(el, name = '', fn) {
-        GSListeners.removeEvent(this, el, name, fn);
+        GSEvent.remove(this, el, name, fn);
     }
 
     /**
@@ -141,14 +142,14 @@ export default class GSData extends HTMLElement {
      */
     get mode() {
         const mode = GSUtil.getAttribute(this, 'mode', 'query');
-        const isok = GSData.#MODES.indexOf(mode) > -1;
+        const isok = GSStore.#MODES.indexOf(mode) > -1;
         return isok ? mode : 'query';
     }
 
     set mode(val = 'query') {
-        const isok = GSData.#MODES.indexOf(val) > -1;
+        const isok = GSStore.#MODES.indexOf(val) > -1;
         if (isok) return GSUtil.setAttribute(this, 'mode', val);
-        console.log(`Invalid mode, allowed: ${GSData.#MODES}`);
+        console.log(`Invalid mode, allowed: ${GSStore.#MODES}`);
     }
 
     /**
@@ -387,8 +388,8 @@ export default class GSData extends HTMLElement {
 
         if (!me.remote) {
             const fields = me.#fields();
-            data = GSUtil.filterData(filter, me.#data, fields);
-            data = GSUtil.sortData(sort, data);
+            data = GSData.filterData(filter, me.#data, fields);
+            data = GSData.sortData(sort, data);
             limit = limit === 0 ? data.length : limit;
             data = data.slice(skip, skip + limit);
         }
@@ -414,7 +415,7 @@ export default class GSData extends HTMLElement {
     async #notify(name = 'data', data) {
         const me = this;
         setTimeout(() => {
-            GSUtil.sendEvent(me, name, data, true);
+            GSEvent.send(me, name, data, true);
         }, 1);
     }
 

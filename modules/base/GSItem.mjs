@@ -7,6 +7,7 @@
  * @module base/GSItem
  */
 
+import GSLoader from "./GSLoader.mjs";
 import GSUtil from "./GSUtil.mjs";
 
 /**
@@ -44,7 +45,7 @@ export default class GSItem extends HTMLElement {
 	*/
 	static async getTemplate(el) {
 		const tpl = GSUtil.getAttribute(el, 'template');
-		const cnt = tpl ? await GSUtil.load(tpl) : '';
+		const cnt = tpl ? await GSLoader.load(tpl) : '';
 		if (cnt) return cnt;
 		return Array.from(el.childNodes)
 			.filter(el => el.tagName != 'GS-ITEM')

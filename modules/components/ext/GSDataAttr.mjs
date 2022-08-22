@@ -11,7 +11,9 @@ import GSID from "../../base/GSID.mjs";
 import GSUtil from "../../base/GSUtil.mjs";
 import GSComponents from "../../base/GSComponents.mjs";
 import GSDOMObserver from '../../base/GSDOMObserver.mjs';
-import GSListeners from "../../base/GSListeners.mjs";
+import GSEvent from "../../base/GSEvent.mjs";
+import GSFunction from "../../base/GSFunction.mjs";
+import GSDOM from "../../base/GSDOM.mjs";
 
 /**
  * Process Bootstrap data-bs-* attributes
@@ -57,7 +59,7 @@ export default class GSDataAttr {
      */
     static #onMonitorResult(el) {
         el.id = el.id || GSID.id;
-        GSListeners.attachEvent(el, el, 'click', GSDataAttr.#onClick.bind(el));
+        GSEvent.attach(el, el, 'click', GSDataAttr.#onClick.bind(el));
     }
 
     /**
@@ -65,7 +67,7 @@ export default class GSDataAttr {
      * @param {HTMLElement} el 
      */
     static #onMonitorRemove(el) {
-        GSListeners.deattachListeners(el);
+        GSEvent.deattachListeners(el);
     }
 
     /**
@@ -209,7 +211,7 @@ export default class GSDataAttr {
 
     static async #removeEl(el) {
         GSUtil.toggleClass(el, false, 'show');
-        if (GSDataAttr.#faded(el)) await GSUtil.timeout(GSUtil.SPEED);
+        if (GSDataAttr.#faded(el)) await GSUtil.timeout(GSDOM.SPEED);
         el.remove();
     }
 
@@ -248,7 +250,7 @@ export default class GSDataAttr {
 
         const obj = GSDataAttr.#findTarget(source, target, type);
 
-        obj.comps.filter(el => GSUtil.isFunction(el.toggle)).forEach(el => el.toggle(source));
+        obj.comps.filter(el => GSFunction.isFunction(el.toggle)).forEach(el => el.toggle(source));
 
         GSDataAttr.#onToggleBefore(source, target, type, obj);
         GSDataAttr.#toggle(obj, type);
@@ -304,7 +306,7 @@ export default class GSDataAttr {
     }
 
     static #hideExt(source) {
-        GSUtil.once(source, null, 'mouseleave', (e) => source.classList.remove('show'));
+        GSEvent.once(source, null, 'mouseleave', (e) => source.classList.remove('show'));
     }
 
     /**
@@ -319,8 +321,8 @@ export default class GSDataAttr {
 
         const obj = GSDataAttr.#findTarget(source, target, type);
 
-        obj.comps.filter(el => GSUtil.isFunction(el.close)).forEach(el => el.close());
-        obj.comps.filter(el => GSUtil.isFunction(el.dismiss)).forEach(el => el.dismiss());
+        obj.comps.filter(el => GSFunction.isFunction(el.close)).forEach(el => el.close());
+        obj.comps.filter(el => GSFunction.isFunction(el.dismiss)).forEach(el => el.dismiss());
 
 
         switch (type) {

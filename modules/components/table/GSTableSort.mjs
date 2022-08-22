@@ -9,7 +9,7 @@
 
 import GSID from "../../base/GSID.mjs";
 import GSUtil from "../../base/GSUtil.mjs";
-import GSListeners from "../../base/GSListeners.mjs";
+import GSEvent from "../../base/GSEvent.mjs";
 
 /**
  * table header sorting coluns
@@ -28,14 +28,14 @@ export default class GSTableSort extends HTMLTableRowElement {
     connectedCallback() {
         const me = this;
         if (!me.id) me.setAttribute('id', GSID.id);
-        GSListeners.attachEvent(me, me, 'click', e => me.#onClick(e));
+        GSEvent.attach(me, me, 'click', e => me.#onClick(e));
         GSComponents.store(me);
     }
 
     disconnectedCallback() {
         const me = this;
         GSComponents.remove(me);
-        GSListeners.deattachListeners(me);
+        GSEvent.deattachListeners(me);
     }
 
     #onClick(e) {
@@ -81,7 +81,7 @@ export default class GSTableSort extends HTMLTableRowElement {
         });
         sort = GSUtil.sortData([{ name: 'idx', ord: 1 }], sort);
 
-        GSUtil.sendEvent(me, 'sort', sort, true);
+        GSEvent.send(me, 'sort', sort, true);
     }
 
 }

@@ -1,5 +1,6 @@
 import GSElement from "/modules/base/GSElement.mjs";
 import GSUtil from "/modules/base/GSUtil.mjs";
+import GSLoader from "/modules/base/GSLoader.mjs";
 import GSLog from "/modules/base/GSLog.mjs";
 
 class GSInjectable extends GSElement {
@@ -26,7 +27,7 @@ class GSInjectable extends GSElement {
 
 	async inject() {
 		const me = this;
-		const data = await GSUtil.loadSafe(me.template);
+		const data = await GSLoader.loadSafe(me.template);
 		const el = GSUtil.parse(data, me.mime);
 		GSUtil.addSibling(this, el);
 	}

@@ -8,6 +8,7 @@
  */
 
 
+import GSDOM from "../../base/GSDOM.mjs";
 import GSElement from "../../base/GSElement.mjs";
 import GSUtil from "../../base/GSUtil.mjs";
 
@@ -24,7 +25,7 @@ export default class GSToast extends GSElement {
 
   static get observedAttributes() {
     const attrs = ['placement', 'css'];
-    return GSUtil.mergeArrays(attrs, super.observedAttributes);
+    return GSElement.observeAttributes(attrs);
   }
 
   attributeCallback(name = '', oldValue = '', newValue = '') {
@@ -91,7 +92,7 @@ export default class GSToast extends GSElement {
 
   async #dismiss() {
     GSUtil.toggleClass(this.#toast, false, 'show');
-    await GSUtil.timeout(GSUtil.SPEED);
+    await GSUtil.timeout(GSDOM.SPEED);
     return this.remove();
   }
 

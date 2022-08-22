@@ -7,6 +7,7 @@
  * @module BaseUI
  */
 import GSElement from "../../../modules/base/GSElement.mjs";
+import GSFunction from "../../../modules/base/GSFunction.mjs";
 import GSUtil from "../../../modules/base/GSUtil.mjs";
 
 /**
@@ -49,7 +50,7 @@ export default class BaseUI extends GSElement {
 
     #onAction(e) {
         const action = e.detail.action;
-        if (GSUtil.isFunction(this[action])) this[action](e);
+        if (GSFunction.isFunction(this[action])) this[action](e);
     }
 
     /**

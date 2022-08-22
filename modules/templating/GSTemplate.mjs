@@ -14,6 +14,8 @@ import GSComponents from "../base/GSComponents.mjs"
 import GSUtil from "../base/GSUtil.mjs";
 import GSLog from "../base/GSLog.mjs";
 import GSID from "../base/GSID.mjs";
+import GSEvent from "../base/GSEvent.mjs";
+import GSEnvironment from "../base/GSEnvironment.mjs";
 
 /**
  * Dynamic template loader
@@ -149,7 +151,7 @@ class GSTemplate extends HTMLElement {
 	 * @return {boolean}
 	 */
 	get isValidEnvironment() {
-		return GSUtil.isValidEnvironment(this.environment);
+		return GSEnvironment.isValidEnvironment(this.environment);
 	}
 
 	/**
@@ -157,7 +159,7 @@ class GSTemplate extends HTMLElement {
 	 * @return {boolean}
 	 */
 	get isValidOS() {
-		return GSUtil.isDevice(this.os);
+		return GSEnvironment.isDevice(this.os);
 	}
 
 	/**
@@ -165,7 +167,7 @@ class GSTemplate extends HTMLElement {
 	 * @return {boolean}
 	 */
 	get isValidBrowser() {
-		return GSUtil.isValidBrowser(this.browser);
+		return GSEnvironment.isValidBrowser(this.browser);
 	}
 
 	/**
@@ -193,11 +195,11 @@ class GSTemplate extends HTMLElement {
 			return false;
 		}
 		if (me.parentElement instanceof HTMLHeadElement) {
-			GSUtil.sendSuspendedEvent(document, 'gs-template', { id: me.id, href: me.href });
+			GSEvent.sendSuspended(document, 'gs-template', { id: me.id, href: me.href });
 			return tpl;
 		}
 
-		await GSUtil.waitAnimationFrame(async () => {
+		await GSEvent.waitAnimationFrame(async () => {
 			// const content = GSCacheTemplate.clone(tpl); // GSUtil.parse(tpl.innerHTML);
 			if (!me.#connected) return;
 			if (me.isFlat) {
@@ -209,7 +211,7 @@ class GSTemplate extends HTMLElement {
 				me.shadow.innerHTML = tpl.innerHTML;
 			}
 			// GSUtil.walk(me.self, el => GSDOMObserver.parse(el));
-			GSUtil.sendSuspendedEvent(me, 'templateready', { id: me.id, href: me.href }, true, true);
+			GSEvent.sendSuspended(me, 'templateready', { id: me.id, href: me.href }, true, true);
 		});
 		return tpl;
 	}
@@ -234,7 +236,7 @@ class GSTemplate extends HTMLElement {
 		const me = this;
 		return new Promise((r, e) => {
 			if (!name) return e('Event undefined!');
-			GSUtil.once(me, null, name, (e) => r(e.detail), { once: true });
+			GSEvent.once(me, null, name, (e) => r(e.detail), { once: true });
 		});
 	}
 

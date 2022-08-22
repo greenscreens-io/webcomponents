@@ -9,7 +9,7 @@
 
 import GSID from "../../base/GSID.mjs";
 import GSUtil from "../../base/GSUtil.mjs";
-import GSListeners from "../../base/GSListeners.mjs";
+import GSEvent from "../../base/GSEvent.mjs";
 
 /**
  * Table header filter with filtering input fields foer every column
@@ -43,7 +43,7 @@ export default class GSTableFilter extends HTMLTableRowElement {
     disconnectedCallback() {
         const me = this;
         GSComponents.remove(me);
-        GSListeners.deattachListeners(me);
+        GSEvent.deattachListeners(me);
     }
 
     get root() {
@@ -52,13 +52,13 @@ export default class GSTableFilter extends HTMLTableRowElement {
 
     #attachChangeListener() {
         const me = this;
-        GSUtil.findAll('input, select', me, true).forEach(el => GSListeners.attachEvent(me, el, 'change', e => me.#onChange(e.target)) );
+        GSUtil.findAll('input, select', me, true).forEach(el => GSEvent.attach(me, el, 'change', e => me.#onChange(e.target)) );
     }
 
     #attachDataListener() {
         const me = this;
         if (!me.#auto) return;
-        GSListeners.attachEvent(me, me.root, 'data', e => me.#onData(e.detail), false, true);
+        GSEvent.attach(me, me.root, 'data', e => me.#onData(e.detail), false, true);
     }
 
     #onChange(el) {
@@ -68,7 +68,7 @@ export default class GSTableFilter extends HTMLTableRowElement {
             const value = me.#getValue(el);
             if (value) filter.push({ name: el.name, value: value });
         });
-        GSUtil.sendEvent(me, 'filter', filter, true);
+        GSEvent.send(me, 'filter', filter, true);
     }
 
     #onData(data) {
