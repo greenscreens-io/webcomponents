@@ -22,11 +22,11 @@
     <div class="row m-1">
         <div class="col"></div>
         <div class="col d-flex">
-            <button type="submit" class="btn btn-primary me-1"  data-action="submit">Submit</button>        
+            <button type="submit" class="btn btn-primary me-1" data-action="submit">Submit</button>
             <button class="btn btn-secondary ms-1" data-action="cancel">Cancel</button>
         </div>
         <div class="col d-flex justify-content-end">
             <button type="reset" class="btn btn-light ms-1">Reset</button>
         </div>
-    </div>    
+    </div>
 </form>

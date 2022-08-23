@@ -8,7 +8,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
-    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+    <meta name="viewport"
+        content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
 
     <meta name="subject" content="Green Scereens Ltd.">
     <meta name="author" content="www.greenscreens.ltd">
@@ -24,14 +25,15 @@
     <script type="module" src="/modules/index.mjs"></script>
     <script type="module" src="/modules/components/index.mjs"></script>
     <script type="module" src="./scripts/index.mjs"></script>
-    
-    <gs-css url="/assets/css/custom_5.2.0.css" ></gs-css>
-    <gs-css url="/assets/icons/bootstrap-icons.css"  notheme="true"></gs-css>
+
+    <gs-css url="/assets/css/custom_5.2.0.css"></gs-css>
+    <gs-css url="/assets/icons/bootstrap-icons.css" notheme="true"></gs-css>
 
     <style is="gs-styleext">
-        .nav-link:hover, .nav-link:focus {
+        .nav-link:hover,
+        .nav-link:focus {
             background-color: rgb(67 89 113 / 13%) !important;
-        }        
+        }
     </style>
 </head>
 
@@ -43,13 +45,16 @@
         <!-- <gs-item v-pos="center" h-pos="center" min="5" template="//header.html"></gs-item> -->
 
         <!-- TOP HEADER WITH LOGO -->
-        <gs-item v-pos="center" h-pos="center" min="5" css="p-2 border-bottom shadow-sm text-bg-light d-flex justify-content-between">
+        <gs-item v-pos="center" h-pos="center" min="5"
+            css="p-2 border-bottom shadow-sm text-bg-light d-flex justify-content-between">
             <template>
                 <div></div>
                 <div>
                     <img src="/assets/img/logo.png" height="32">
                 </div>
-                <div><gs-time interval="10" locale="hr"></gs-time></div>
+                <div>
+                    <gs-time interval="10" locale="hr"></gs-time>
+                </div>
             </template>
         </gs-item>
 
@@ -57,10 +62,10 @@
         <gs-item>
             <template>
                 <gs-layout type="horizontal">
-    
+
                     <!-- SIDEBAR - template contains clicable action with injection targets -->
                     <gs-item css="p-3" min="260" max="260" template="//sidebar.html"></gs-item>
-    
+
                     <!-- CONTENT - target where to inject templates -->
                     <gs-item css="p-3" name="content" v-pos="top" h-pos="center">
                         <template>
@@ -68,7 +73,7 @@
                             <gs-ext-settings></gs-ext-settings>
                         </template>
                     </gs-item>
-    
+
                 </gs-layout>
             </template>
         </gs-item>
@@ -76,7 +81,8 @@
         <!-- APP FOOTER WITH Copyright notice -->
         <gs-item css="p-2" name="footer" v-pos="bottom" h-pos="center" max="60">
             <template>
-                <a href="https://www.greenscreens.ltd" target="_blank" class="text-muted">&copy; Green Screens Ltd. 2015. - <gs-year></gs-year>.</a>
+                <a href="https://www.greenscreens.ltd" target="_blank" class="text-muted">&copy; Green Screens Ltd.
+                    2015. - <gs-year></gs-year>.</a>
             </template>
         </gs-item>
 
@@ -84,7 +90,9 @@
 
     <!-- Application toast notification -->
     <gs-notification id="notification">
-        <gs-toast slot="content" css="bg-dark text-bg-dark" message="Welcome to the portal" closable="false" timeout="4" visible="true"></gs-toast>
+        <gs-toast slot="content" css="bg-dark text-bg-dark" message="Welcome to the portal" closable="false" timeout="4"
+            visible="true"></gs-toast>
     </gs-notification>
 </body>
+
 </html>

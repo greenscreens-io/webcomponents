@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <title>Tooltip Test</title>
     <meta charset="utf-8">
@@ -7,7 +8,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
-    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+    <meta name="viewport"
+        content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
 
     <meta name="subject" content="Green Scereens Ltd.">
     <meta name="author" content="www.greenscreens.ltd">
@@ -19,44 +21,50 @@
     <script type="module" src="/modules/index.mjs"></script>
     <script type="module" src="/modules/components/filebox/GSFileBox.mjs"></script>
 
-    <gs-css url="/assets/css/custom_5.2.0.css"></gs-css>  
-    <gs-css url="/assets/css/bootstrap_5.2.0.css" theme="bs"></gs-css>  
+    <gs-css url="/assets/css/custom_5.2.0.css"></gs-css>
+    <gs-css url="/assets/css/bootstrap_5.2.0.css" theme="bs"></gs-css>
 
-    <gs-css  url="/assets/icons/bootstrap-icons.css"  notheme="true"></gs-css>  
+    <gs-css url="/assets/icons/bootstrap-icons.css" notheme="true"></gs-css>
 
     <style>
         gs-filebox {
             --gs-fieldbox-border: dotted;
             --gs-fieldbox-border-color: dimgray;
-        }      
+        }
+
         gs-filebox#other {
             --gs-fieldbox-border-color: green;
             --gs-fieldbox-color: red;
         }
+
         gs-filebox#other::part(border) {
             background-color: white;
         }
+
         gs-filebox#other::part(list) {
             color: greenyellow;
-        } 
+        }
+
         /*
         gs-filebox#other::part(input) {
             background-color: lightskyblue;
         }
-        */        
-      </style>
+        */
+    </style>
 </head>
+
 <body>
 
     <gs-template href="/demos/_header.html"></gs-template>
 
     <div class="container mt-4">
-        <gs-filebox multiple="true" elid="file" name="files" css="" css-input="" css-label="mb-2 text-secondary" css-list="text-info"></gs-filebox>
-    </div> 
+        <gs-filebox multiple="true" elid="file" name="files" css="" css-input="" css-label="mb-2 text-secondary"
+            css-list="text-info"></gs-filebox>
+    </div>
 
     <div class="container mt-4">
         <gs-filebox id="other" flat="true" multiple="true" directory="true" elid="test" name="dir"></gs-filebox>
-    </div> 
+    </div>
 </body>
 
 </html>

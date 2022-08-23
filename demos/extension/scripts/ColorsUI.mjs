@@ -51,7 +51,7 @@ class ColorsUI extends BaseUI {
      * Handle remote record update
      * @param {*} data 
      * @returns {boolean|Error}
-     */    
+     */
     async onUpdate(data) {
         return true;
     }
@@ -60,8 +60,9 @@ class ColorsUI extends BaseUI {
      * Handle remote record remove
      * @param {*} data 
      * @returns {boolean|Error}
-     */    
+     */
     async onRemove(data) {
         return true;
     }
+    
 }

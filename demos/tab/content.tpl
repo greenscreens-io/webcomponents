@@ -1,6 +1,7 @@
 <form class="text-start" is="gs-form">
     <div class="mb-3">
-        <label for="email" class="form-label" data-bs-toggle="tooltip" data-bs-placement="top" title="Login email">Email address</label>
+        <label for="email" class="form-label" data-bs-toggle="tooltip" data-bs-placement="top" title="Login email">Email
+            address</label>
         <input name="email" type="email" class="form-control" placeholder="email" required="">
         <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
     </div>
@@ -22,13 +23,15 @@
     <div class="row m-1">
         <div class="col"></div>
         <div class="col d-flex">
-            <button type="submit" class="btn btn-primary me-1"  data-action="submit" data-bs-toggle="tooltip" data-bs-placement="top" title="Click to login">Submit</button>        
+            <button type="submit" class="btn btn-primary me-1" data-action="submit" data-bs-toggle="tooltip"
+                data-bs-placement="top" title="Click to login">Submit</button>
             <button class="btn btn-secondary ms-1" data-action="cancel">Cancel</button>
         </div>
         <div class="col d-flex justify-content-end">
-            <button class="btn btn-light ms-1" data-action="reset" data-bs-toggle="tooltip" data-bs-placement="top" title="Click to reset field data">Reset</button>
+            <button class="btn btn-light ms-1" data-action="reset" data-bs-toggle="tooltip" data-bs-placement="top"
+                title="Click to reset field data">Reset</button>
         </div>
-    </div>    
+    </div>
 
 
 </form>

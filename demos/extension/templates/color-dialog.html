@@ -1,114 +1,123 @@
 <form is="gs-form" id="form-main" class="form-horizontal form-label-left flat" novalidate="">
-<div class="container  mb-2 p-2">
+	<div class="container  mb-2 p-2">
 
-	<div class="row form-group m-1 field">
+		<div class="row form-group m-1 field">
 
-		<label class="control-label text-right col-md-4 col-sm-4 col-xs-12" for="name">Theme Name</label>
+			<label class="control-label text-right col-md-4 col-sm-4 col-xs-12" for="name">Theme Name</label>
 
-		<div class="col-md-6 col-sm-3 col-xs-3">
-			<input class="form-control" data-toggle="tooltip" id="name" name="name" required=""  type="text" maxlength="20" pattern="^[a-zA-Z0-9]+$">
+			<div class="col-md-6 col-sm-3 col-xs-3">
+				<input class="form-control" data-toggle="tooltip" id="name" name="name" required="" type="text"
+					maxlength="20" pattern="^[a-zA-Z0-9]+$">
+			</div>
+			<gs-tooltip placement="bottom" title="Theme name"></gs-tooltip>
+
 		</div>
-        <gs-tooltip placement="bottom" title="Theme name"></gs-tooltip>
-								
-	</div>
 
-	<div class="row form-group m-1 field">
+		<div class="row form-group m-1 field">
 
-		<label class="control-label text-right col-md-4 col-sm-4 col-xs-12" for="description">Description</label>
+			<label class="control-label text-right col-md-4 col-sm-4 col-xs-12" for="description">Description</label>
 
-		<div class="col-md-6 col-sm-3 col-xs-3">
-			<input class="form-control" data-toggle="tooltip" id="description" name="description">
+			<div class="col-md-6 col-sm-3 col-xs-3">
+				<input class="form-control" data-toggle="tooltip" id="description" name="description">
+			</div>
+			<gs-tooltip placement="bottom" title="Theme description"></gs-tooltip>
+
 		</div>
-        <gs-tooltip placement="bottom" title="Theme description"></gs-tooltip>
-								
+
 	</div>
+	<div class="container border p-2 text-bg-light shadow-sm">
 
-</div>
-<div class="container border p-2 text-bg-light shadow-sm">
+		<div class="row form-group m-1 field">
 
-	<div class="row form-group m-1 field">
+			<label class="control-label text-right col-md-4 col-sm-4 col-xs-12" for="themes">Theme template</label>
 
-		<label class="control-label text-right col-md-4 col-sm-4 col-xs-12" for="themes">Theme template</label>
+			<div class="col-md-6 col-sm-3 col-xs-3">
+				<select class="form-control" data-toggle="tooltip" id="themes" name="themes" required="">
+					<option value="1">Standard</option>
+					<option value="2">Alternate</option>
+					<option value="3">Commodore</option>
+					<option value="4">Moonlight</option>
+					<option value="5">Mono</option>
+					<option value="6">Mono Inverse</option>
+				</select>
+			</div>
+			<gs-tooltip placement="bottom" title="Select predefined color theme for terminal UI"></gs-tooltip>
 
-		<div class="col-md-6 col-sm-3 col-xs-3">
-			<select class="form-control" data-toggle="tooltip" id="themes" name="themes" required="">
-				<option value="1">Standard</option>
-				<option value="2">Alternate</option>
-				<option value="3">Commodore</option>
-				<option value="4">Moonlight</option>
-				<option value="5">Mono</option>
-				<option value="6">Mono Inverse</option>
-			</select>
 		</div>
-        <gs-tooltip placement="bottom" title="Select predefined color theme for terminal UI"></gs-tooltip>
-								
+
 	</div>
+	<div class="container border p-2 text-bg-light shadow-sm">
 
-</div>
-<div class="container border p-2 text-bg-light shadow-sm">
-
-	<div class="row form-group m-1 field">
-		<div class="text-right col-md-4 col-sm-4 col-xs-12" for="black">Background</div>
-		<div class="col-md-6">
-			<input class="form-control p-0" data-toggle="tooltip" id="black" name="black" type="color" value="#000000">
+		<div class="row form-group m-1 field">
+			<div class="text-right col-md-4 col-sm-4 col-xs-12" for="black">Background</div>
+			<div class="col-md-6">
+				<input class="form-control p-0" data-toggle="tooltip" id="black" name="black" type="color"
+					value="#000000">
+			</div>
 		</div>
-	</div>
 
-	<div class="row form-group m-1 field">
-		<div class="text-right col-md-4 col-sm-4 col-xs-12" for="blue">Blue</div>
-		<div class="col-md-6">
-			<input class="form-control p-0" data-toggle="tooltip" id="blue" name="blue" type="color" value="#6A5ACD">
+		<div class="row form-group m-1 field">
+			<div class="text-right col-md-4 col-sm-4 col-xs-12" for="blue">Blue</div>
+			<div class="col-md-6">
+				<input class="form-control p-0" data-toggle="tooltip" id="blue" name="blue" type="color"
+					value="#6A5ACD">
+			</div>
 		</div>
-	</div>
 
-	<div class="row form-group m-1 field">
-		<div class="text-right col-md-4 col-sm-4 col-xs-12" for="green">Green</div>
-		<div class="col-md-6">
-			<input class="form-control p-0" data-toggle="tooltip" id="green" name="green" type="color" value="#00FF00">
+		<div class="row form-group m-1 field">
+			<div class="text-right col-md-4 col-sm-4 col-xs-12" for="green">Green</div>
+			<div class="col-md-6">
+				<input class="form-control p-0" data-toggle="tooltip" id="green" name="green" type="color"
+					value="#00FF00">
+			</div>
 		</div>
-	</div>
 
-	<div class="row form-group m-1 field">
-		<div class="text-right col-md-4 col-sm-4 col-xs-12" for="pink">Pink</div>
-		<div class="col-md-6">
-			<input class="form-control p-0" data-toggle="tooltip" id="pink" name="pink" type="color" value="#FF00FF">
+		<div class="row form-group m-1 field">
+			<div class="text-right col-md-4 col-sm-4 col-xs-12" for="pink">Pink</div>
+			<div class="col-md-6">
+				<input class="form-control p-0" data-toggle="tooltip" id="pink" name="pink" type="color"
+					value="#FF00FF">
+			</div>
 		</div>
-	</div>
 
-	<div class="row form-group m-1 field">
-		<div class="text-right col-md-4 col-sm-4 col-xs-12" for="red">Red</div>
-		<div class="col-md-6">
-			<input class="form-control p-0" data-toggle="tooltip" id="red" name="red" type="color" value="#ff0000">
+		<div class="row form-group m-1 field">
+			<div class="text-right col-md-4 col-sm-4 col-xs-12" for="red">Red</div>
+			<div class="col-md-6">
+				<input class="form-control p-0" data-toggle="tooltip" id="red" name="red" type="color" value="#ff0000">
+			</div>
 		</div>
-	</div>
 
-	<div class="row form-group m-1 field">
-		<div class="text-right col-md-4 col-sm-4 col-xs-12" for="yellow">Yellow</div>
-		<div class="col-md-6">
-			<input class="form-control p-0" data-toggle="tooltip" id="yellow" name="yellow" type="color" value="#FFFF00">
+		<div class="row form-group m-1 field">
+			<div class="text-right col-md-4 col-sm-4 col-xs-12" for="yellow">Yellow</div>
+			<div class="col-md-6">
+				<input class="form-control p-0" data-toggle="tooltip" id="yellow" name="yellow" type="color"
+					value="#FFFF00">
+			</div>
 		</div>
-	</div>
 
-	<div class="row form-group m-1 field">
-		<div class="text-right col-md-4 col-sm-4 col-xs-12" for="turquoise">Turquoise</div>
-		<div class="col-md-6">
-			<input class="form-control p-0" data-toggle="tooltip" id="turquoise" name="turquoise" type="color" value="#40E0D0">
+		<div class="row form-group m-1 field">
+			<div class="text-right col-md-4 col-sm-4 col-xs-12" for="turquoise">Turquoise</div>
+			<div class="col-md-6">
+				<input class="form-control p-0" data-toggle="tooltip" id="turquoise" name="turquoise" type="color"
+					value="#40E0D0">
+			</div>
 		</div>
-	</div>
 
-	<div class="row form-group m-1 field">
-		<div class="text-right col-md-4 col-sm-4 col-xs-12" for="white">White</div>
-		<div class="col-md-6">
-			<input class="form-control p-0" data-toggle="tooltip" id="white" name="white" type="color" value="#ffffff">
+		<div class="row form-group m-1 field">
+			<div class="text-right col-md-4 col-sm-4 col-xs-12" for="white">White</div>
+			<div class="col-md-6">
+				<input class="form-control p-0" data-toggle="tooltip" id="white" name="white" type="color"
+					value="#ffffff">
+			</div>
 		</div>
-	</div>
 
-	<div class="row form-group m-1 field">
-		<div class="text-right col-md-4 col-sm-4 col-xs-12" for="icons">Status Text</div>
-		<div class="col-md-6">
-			<input class="form-control p-0" data-toggle="tooltip" id="icons" name="icons" type="color" value="#616161">
+		<div class="row form-group m-1 field">
+			<div class="text-right col-md-4 col-sm-4 col-xs-12" for="icons">Status Text</div>
+			<div class="col-md-6">
+				<input class="form-control p-0" data-toggle="tooltip" id="icons" name="icons" type="color"
+					value="#616161">
+			</div>
 		</div>
-	</div>
 
-</div>
+	</div>
 </form>

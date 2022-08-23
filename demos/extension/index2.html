@@ -8,7 +8,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
-    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+    <meta name="viewport"
+        content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
 
     <meta name="subject" content="Green Scereens Ltd.">
     <meta name="author" content="www.greenscreens.ltd">
@@ -24,9 +25,9 @@
     <script type="module" src="/modules/index.mjs"></script>
     <script type="module" src="/modules/components/index.mjs"></script>
     <script type="module" src="./scripts/index.mjs"></script>
-    
-    <gs-css url="/assets/css/custom_5.2.0.css" ></gs-css>
-    <gs-css url="/assets/icons/bootstrap-icons.css"  notheme="true"></gs-css>
+
+    <gs-css url="/assets/css/custom_5.2.0.css"></gs-css>
+    <gs-css url="/assets/icons/bootstrap-icons.css" notheme="true"></gs-css>
 </head>
 
 <body>
@@ -44,18 +45,18 @@
         <gs-item>
             <template>
                 <gs-layout type="horizontal">
-    
+
                     <!-- here we inject childs through template tag -->
                     <gs-item css="p-3" min="260" max="260" template="//sidebar.html"></gs-item>
-    
+
                     <!-- target where to inject templates -->
                     <gs-item css="p-3" name="content" v-pos="top" h-pos="center">
                         <template>
                             <!-- default page the same as sidebar selected item -->
                             <gs-ext-settings></gs-ext-settings>
-                        </template>              
+                        </template>
                     </gs-item>
-    
+
                 </gs-layout>
             </template>
         </gs-item>
@@ -69,4 +70,5 @@
     </gs-layout>
 
 </body>
+
 </html>

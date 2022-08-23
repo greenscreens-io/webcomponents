@@ -1,4 +1,3 @@
-
 <gs-template href="//toolbar.html" id="toolbar">
     <slot>Terminal Sessions</slot>
 </gs-template>
@@ -7,8 +6,7 @@
 <div class="d-flex justify-content-between align-items-center bg-light border shadow-sm p-1">
 
     <gs-table id="table-main" index=false class="flex-fill"
-        css="table table-light table-hover user-select-none m-0 border"
-        css-select="table-active table-primary" 
+        css="table table-light table-hover user-select-none m-0 border" css-select="table-active table-primary"
         css-header="user-select-none table-secondary">
         <gs-header>
             <gs-column title="Name" name="name"></gs-column>
@@ -46,6 +44,6 @@
     <gs-modal id="modal-main" visible="false">
         <h4 slot="title">Terminal Session</h4>
         <gs-template slot="body" href="//session-dialog.html"></gs-template>
-    </gs-modal>    
+    </gs-modal>
 
 </div>

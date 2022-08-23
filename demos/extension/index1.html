@@ -8,7 +8,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
-    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+    <meta name="viewport"
+        content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
 
     <meta name="subject" content="Green Scereens Ltd.">
     <meta name="author" content="www.greenscreens.ltd">
@@ -24,9 +25,9 @@
     <script type="module" src="/modules/index.mjs"></script>
     <script type="module" src="/modules/components/index.mjs"></script>
     <script type="module" src="./scripts/index.mjs"></script>
-    
-    <gs-css url="/assets/css/custom_5.2.0.css" ></gs-css>
-    <gs-css url="/assets/icons/bootstrap-icons.css"  notheme="true"></gs-css>
+
+    <gs-css url="/assets/css/custom_5.2.0.css"></gs-css>
+    <gs-css url="/assets/icons/bootstrap-icons.css" notheme="true"></gs-css>
 </head>
 
 <body>
@@ -49,22 +50,28 @@
                         <template>
                             <gs-nav clasS="flex-fill px-3" css-nav="nav-pills fw-bold" bar="false">
                                 <!-- template action to inject -->
-                                <gs-item title="Settings" icon="bi bi-gear me-2 fs-5" css="flex-fill"  css-nav-wrap="" css-nav="nav-pill" inject="//settings.html" target="#content"></gs-item>
+                                <gs-item title="Settings" icon="bi bi-gear me-2 fs-5" css="flex-fill" css-nav-wrap=""
+                                    css-nav="nav-pill" inject="//settings.html" target="#content"></gs-item>
 
                                 <!-- template action to inject -->
-                                <gs-item title="Colors" icon="bi bi-eye-fill me-2 fs-5" css="flex-fill" inject="//colors.html" target="#content"></gs-item>
-                                
+                                <gs-item title="Colors" icon="bi bi-eye-fill me-2 fs-5" css="flex-fill"
+                                    inject="//colors.html" target="#content"></gs-item>
+
                                 <!-- template action to inject -->
-                                <gs-item title="Sessions" icon="bi bi-display me-2 fs-5" css="flex-fill" inject="//sessions.html" target="#content"></gs-item>
+                                <gs-item title="Sessions" icon="bi bi-display me-2 fs-5" css="flex-fill"
+                                    inject="//sessions.html" target="#content"></gs-item>
 
                                 <!-- event action to call -->
-                                <gs-item title="Import Data" icon="bi bi-upload me-2 fs-5" css-nav-wrap="mt-3" selectable="false" action="import"></gs-item>
-                                
+                                <gs-item title="Import Data" icon="bi bi-upload me-2 fs-5" css-nav-wrap="mt-3"
+                                    selectable="false" action="import"></gs-item>
+
                                 <!-- event action to call -->
-                                <gs-item title="Export Data" icon="bi bi-download me-2 fs-5" selectable="false" action="export"></gs-item>
+                                <gs-item title="Export Data" icon="bi bi-download me-2 fs-5" selectable="false"
+                                    action="export"></gs-item>
 
                                 <!-- template action to inject -->
-                                <gs-item title="About" icon="bi bi-info-circle-fill me-2 fs-5" css="flex-fill" css-nav-wrap="mt-3" inject="//about.html" target="#content"></gs-item>
+                                <gs-item title="About" icon="bi bi-info-circle-fill me-2 fs-5" css="flex-fill"
+                                    css-nav-wrap="mt-3" inject="//about.html" target="#content"></gs-item>
                             </gs-nav>
                         </template>
                     </gs-item>
@@ -90,4 +97,5 @@
     </gs-layout>
 
 </body>
+
 </html>

@@ -1,14 +1,11 @@
-
 <gs-template href="//toolbar.html" id="toolbar">
     <slot>Color Theme</slot>
 </gs-template>
 
 <div class="d-flex justify-content-between align-items-center bg-light border shadow-sm">
 
-    <gs-table id="table-main" index=false class="flex-fill"
-        css="table table-light table-hover user-select-none m-0"
-        css-select="table-active table-primary" 
-        css-header="user-select-none table-secondary">
+    <gs-table id="table-main" index=false class="flex-fill" css="table table-light table-hover user-select-none m-0"
+        css-select="table-active table-primary" css-header="user-select-none table-secondary">
         <gs-header>
             <gs-column title="Name" name="name" width="250px" filter="false"></gs-column>
             <gs-column title="Description" name="description" filter="false"></gs-column>
@@ -31,5 +28,5 @@
     <gs-modal id="modal-main" visible="false">
         <h4 slot="title">Theme Colors</h4>
         <gs-template slot="body" href="//color-dialog.html"></gs-template>
-    </gs-modal>    
+    </gs-modal>
 </div>
