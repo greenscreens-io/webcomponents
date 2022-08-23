@@ -19,15 +19,12 @@
 
     <script type="text/javascript">
         self.GS_TEMPLATE_URL = '/demos/extension/templates';
+        self.GS_DEV_MODE = true;
     </script>
     <script type="module" src="/modules/index.mjs"></script>
-    <script type="module" src="/modules/components/ext/GSDataAttr.mjs"></script>
-    <script type="module" src="/modules/components/ext/GSNavLink.mjs"></script>
-    <script type="module" src="/modules/components/GSSplitter.mjs"></script>
-    <script type="module" src="/modules/components/GSLayout.mjs"></script>
-    <script type="module" src="/modules/components/GSNav.mjs"></script>
-    <script type="module" src="./scripts/main.mjs"></script>
-
+    <script type="module" src="/modules/components/index.mjs"></script>
+    <script type="module" src="./scripts/index.mjs"></script>
+    
     <gs-css url="/assets/css/custom_5.2.0.css" ></gs-css>
     <gs-css url="/assets/icons/bootstrap-icons.css"  notheme="true"></gs-css>
 </head>
@@ -37,50 +34,57 @@
     <gs-layout type="vertical" css="">
 
         <gs-item v-pos="center" h-pos="center" min="5" css="p-2 border-bottom shadow-sm text-bg-light">
-            <div class=" ">
-                <img src="/assets/img/logo.png" height="32">
-            </div>
+            <template>
+                <div class=" ">
+                    <img src="/assets/img/logo.png" height="32">
+                </div>
+            </template>
         </gs-item>
 
         <gs-item>
-            <gs-layout type="horizontal">
+            <template>
+                <gs-layout type="horizontal">
+                    <!-- instead of using template, we injected elements directly (see index.html) -->
+                    <gs-item css="p-3" min="260" max="260">
+                        <template>
+                            <gs-nav clasS="flex-fill px-3" css-nav="nav-pills fw-bold" bar="false">
+                                <!-- template action to inject -->
+                                <gs-item title="Settings" icon="bi bi-gear me-2 fs-5" css="flex-fill"  css-nav-wrap="" css-nav="nav-pill" inject="//settings.html" target="#content"></gs-item>
 
-                <!-- instead of using template, we injected elements directly (see index.html) -->
-                <gs-item css="p-3" min="260" max="260">
+                                <!-- template action to inject -->
+                                <gs-item title="Colors" icon="bi bi-eye-fill me-2 fs-5" css="flex-fill" inject="//colors.html" target="#content"></gs-item>
+                                
+                                <!-- template action to inject -->
+                                <gs-item title="Sessions" icon="bi bi-display me-2 fs-5" css="flex-fill" inject="//sessions.html" target="#content"></gs-item>
 
-                    <gs-nav clasS="flex-fill px-3" css-nav="nav-pills fw-bold" bar="false">
-                        <!-- template action to inject -->
-                        <gs-item title="Settings" icon="bi bi-gear me-2 fs-5" css="flex-fill"  css-nav-wrap="" css-nav="nav-pill" inject="//settings.html" target="#content"></gs-item>
+                                <!-- event action to call -->
+                                <gs-item title="Import Data" icon="bi bi-upload me-2 fs-5" css-nav-wrap="mt-3" selectable="false" action="import"></gs-item>
+                                
+                                <!-- event action to call -->
+                                <gs-item title="Export Data" icon="bi bi-download me-2 fs-5" selectable="false" action="export"></gs-item>
 
-                        <!-- template action to inject -->
-                        <gs-item title="Colors" icon="bi bi-eye-fill me-2 fs-5" css="flex-fill" inject="//colors.html" target="#content"></gs-item>
-                        
-                        <!-- template action to inject -->
-                        <gs-item title="Sessions" icon="bi bi-display me-2 fs-5" css="flex-fill" inject="//sessions.html" target="#content"></gs-item>
+                                <!-- template action to inject -->
+                                <gs-item title="About" icon="bi bi-info-circle-fill me-2 fs-5" css="flex-fill" css-nav-wrap="mt-3" inject="//about.html" target="#content"></gs-item>
+                            </gs-nav>
+                        </template>
+                    </gs-item>
 
-                        <!-- event action to call -->
-                        <gs-item title="Import Data" icon="bi bi-upload me-2 fs-5" css-nav-wrap="mt-3" selectable="false" action="import"></gs-item>
-                        
-                        <!-- event action to call -->
-                        <gs-item title="Export Data" icon="bi bi-download me-2 fs-5" selectable="false" action="export"></gs-item>
+                    <!-- target where to inject templates -->
+                    <gs-item css="p-3" name="content" v-pos="top" h-pos="center">
+                        <!-- default page the same as sidebar selected item -->
+                        <template>
+                            <gs-ext-settings></gs-ext-settings>
+                        </template>
+                    </gs-item>
 
-                        <!-- template action to inject -->
-                        <gs-item title="About" icon="bi bi-info-circle-fill me-2 fs-5" css="flex-fill" css-nav-wrap="mt-3" inject="//about.html" target="#content"></gs-item>
-                    </gs-nav>
-
-                </gs-item>
-
-                <!-- target where to inject templates -->
-                <gs-item css="p-3" name="content" v-pos="top" h-pos="center">
-                    <!-- default page the same as sidebar selected item -->
-                    <gs-template href="//settings.html" class="flex-fill"></gs-template>                    
-                </gs-item>
-
-            </gs-layout>
+                </gs-layout>
+            </template>
         </gs-item>
 
         <gs-item css="p-2" name="footer" v-pos="bottom" h-pos="center" max="60">
-            <small>&copy; Green Screens Ltd. 2015. - 2022.</small>
+            <template>
+                <small>&copy; Green Screens Ltd. 2015. - 2022.</small>
+            </template>
         </gs-item>
 
     </gs-layout>

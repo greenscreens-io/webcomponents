@@ -19,15 +19,12 @@
 
     <script type="text/javascript">
         self.GS_TEMPLATE_URL = '/demos/extension/templates';
+        self.GS_DEV_MODE = true;
     </script>
     <script type="module" src="/modules/index.mjs"></script>
-    <script type="module" src="/modules/components/ext/GSDataAttr.mjs"></script>
-    <script type="module" src="/modules/components/ext/GSNavLink.mjs"></script>
-    <script type="module" src="/modules/components/GSSplitter.mjs"></script>
-    <script type="module" src="/modules/components/GSLayout.mjs"></script>
-    <script type="module" src="/modules/components/GSNav.mjs"></script>
-    <script type="module" src="./scripts/main.mjs"></script>
-
+    <script type="module" src="/modules/components/index.mjs"></script>
+    <script type="module" src="./scripts/index.mjs"></script>
+    
     <gs-css url="/assets/css/custom_5.2.0.css" ></gs-css>
     <gs-css url="/assets/icons/bootstrap-icons.css"  notheme="true"></gs-css>
 </head>
@@ -37,30 +34,36 @@
     <gs-layout type="vertical" css="">
 
         <gs-item v-pos="center" h-pos="center" min="5" css="p-2 border-bottom shadow-sm text-bg-light">
-            <div class=" ">
-                <img src="/assets/img/logo.png" height="32">
-            </div>
+            <template>
+                <div class=" ">
+                    <img src="/assets/img/logo.png" height="32">
+                </div>
+            </template>
         </gs-item>
 
         <gs-item>
-            <gs-layout type="horizontal">
-
-                <!-- here we inject childs through template tag -->
-                <gs-item css="p-3" min="260" max="260">
-                    <gs-template href="//sidebar.html"></gs-template>
-                </gs-item>
-
-                <!-- target where to inject templates -->
-                <gs-item css="p-3" name="content" v-pos="top" h-pos="center">
-                    <!-- default page the same as sidebar selected item -->
-                    <gs-template href="//settings.html" class="flex-fill"></gs-template>                    
-                </gs-item>
-
-            </gs-layout>
+            <template>
+                <gs-layout type="horizontal">
+    
+                    <!-- here we inject childs through template tag -->
+                    <gs-item css="p-3" min="260" max="260" template="//sidebar.html"></gs-item>
+    
+                    <!-- target where to inject templates -->
+                    <gs-item css="p-3" name="content" v-pos="top" h-pos="center">
+                        <template>
+                            <!-- default page the same as sidebar selected item -->
+                            <gs-ext-settings></gs-ext-settings>
+                        </template>              
+                    </gs-item>
+    
+                </gs-layout>
+            </template>
         </gs-item>
 
         <gs-item css="p-2" name="footer" v-pos="bottom" h-pos="center" max="60">
-            <small>&copy; Green Screens Ltd. 2015. - 2022.</small>
+            <template>
+                <small>&copy; Green Screens Ltd. 2015. - 2022.</small>
+            </template>
         </gs-item>
 
     </gs-layout>
