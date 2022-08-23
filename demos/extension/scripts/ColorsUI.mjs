@@ -22,7 +22,7 @@ class ColorsUI extends BaseUI {
     }
 
     async getTemplate(val = '') {
-        return super.getTemplate('//colors.html');
+        return super.getTemplate('//views/colors.html');
     }
 
     constructor() {

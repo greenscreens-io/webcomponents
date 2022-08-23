@@ -42,7 +42,7 @@
     <!-- Main SPA app layout -->
     <gs-layout type="vertical" css="">
 
-        <!-- <gs-item v-pos="center" h-pos="center" min="5" template="//header.html"></gs-item> -->
+        <!-- <gs-item v-pos="center" h-pos="center" min="5" template="//shell/header.html"></gs-item> -->
 
         <!-- TOP HEADER WITH LOGO -->
         <gs-item v-pos="center" h-pos="center" min="5"
@@ -64,7 +64,7 @@
                 <gs-layout type="horizontal">
 
                     <!-- SIDEBAR - template contains clicable action with injection targets -->
-                    <gs-item css="p-3" min="260" max="260" template="//sidebar.html"></gs-item>
+                    <gs-item css="p-3" min="260" max="260" template="//shell/sidebar.html"></gs-item>
 
                     <!-- CONTENT - target where to inject templates -->
                     <gs-item css="p-3" name="content" v-pos="top" h-pos="center">
@@ -81,8 +81,8 @@
         <!-- APP FOOTER WITH Copyright notice -->
         <gs-item css="p-2" name="footer" v-pos="bottom" h-pos="center" max="60">
             <template>
-                <a href="https://www.greenscreens.ltd" target="_blank" class="text-muted">&copy; Green Screens Ltd.
-                    2015. - <gs-year></gs-year>.</a>
+                <a href="https://www.greenscreens.ltd" target="_blank" class="text-muted">
+                    &copy; Green Screens Ltd. 2015. - <gs-year></gs-year>.</a>
             </template>
         </gs-item>
 

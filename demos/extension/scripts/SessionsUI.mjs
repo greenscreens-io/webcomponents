@@ -22,7 +22,7 @@ class SessionsUI extends BaseUI {
     }
 
     async getTemplate(val = '') {
-        return super.getTemplate('//sessions.html');
+        return super.getTemplate('//views/sessions.html');
     }
 
     constructor() {

@@ -23,7 +23,7 @@ class SettingsUI extends GSElement {
     }
 
     async getTemplate(val = '') {
-        return super.getTemplate('//settings.html');
+        return super.getTemplate('//views/settings.html');
     }
 
     constructor() {
