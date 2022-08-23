@@ -25,6 +25,7 @@ export default class GSTBody extends HTMLTableSectionElement {
 
     static {
         customElements.define('gs-tbody', GSTBody, { extends: 'tbody' });
+        Object.seal(GSTBody);
     }
 
     connectedCallback() {

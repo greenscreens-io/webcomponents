@@ -22,6 +22,7 @@ export default class GSPagination extends GSElement {
 
     static {
         customElements.define('gs-pager', GSPagination);
+        Object.seal(GSPagination);
     }
 
     constructor() {

@@ -24,6 +24,7 @@ export default class GSNav extends GSElement {
 
     static {
         customElements.define('gs-nav', GSNav);
+        Object.seal(GSNav);
     }
 
     static get observedAttributes() {

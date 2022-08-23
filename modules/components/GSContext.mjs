@@ -33,6 +33,7 @@ export default class GSContext extends GSElement {
 
   static {
     customElements.define('gs-context', GSContext);
+    Object.seal(GSContext);
   }
 
   static get observedAttributes() {

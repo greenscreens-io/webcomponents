@@ -37,6 +37,7 @@ export default class GSStore extends HTMLElement {
 
     static {
         customElements.define('gs-store', GSStore);
+        Object.seal(GSStore);
     }
 
     static get observedAttributes() {

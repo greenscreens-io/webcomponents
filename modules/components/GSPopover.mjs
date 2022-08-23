@@ -8,7 +8,6 @@
  */
 
 import GSID from "../base/GSID.mjs";
-import GSUtil from "../base/GSUtil.mjs";
 import GSDOMObserver from '../base/GSDOMObserver.mjs';
 import GSEvent from "../base/GSEvent.mjs";
 import GSElement from "../base/GSElement.mjs";
@@ -30,6 +29,7 @@ export default class GSPopover extends GSElement {
 
     static {
         customElements.define('gs-popover', GSPopover);
+        Object.seal(GSPopover);
         GSDOMObserver.registerFilter(GSPopover.#onMonitorFilter, GSPopover.#onMonitorResult);
     }
 

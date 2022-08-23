@@ -27,6 +27,7 @@ export default class GSAccordion extends GSElement {
 
   static {
     customElements.define('gs-accordion', GSAccordion);
+    Object.seal(GSAccordion);
   }
 
   static get observedAttributes() {

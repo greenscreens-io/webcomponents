@@ -27,6 +27,7 @@ export default class GSCalendar extends GSElement {
 
     static {
         customElements.define('gs-calendar', GSCalendar);
+        Object.seal(GSCalendar);
     }
 
     constructor() {

@@ -34,6 +34,7 @@ export default class GSInput extends HTMLInputElement {
 
     static {
         customElements.define('gs-input', GSInput, { extends: 'input' });
+        Object.seal(GSInput);
     }
 
     constructor() {

@@ -25,6 +25,7 @@ export default class GSTableSort extends HTMLTableRowElement {
 
     static {
         customElements.define('gs-tablesort', GSTableSort, { extends: 'tr' });
+        Object.seal(GSTableSort);
     }
 
     connectedCallback() {

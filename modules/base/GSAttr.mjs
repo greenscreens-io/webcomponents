@@ -20,7 +20,7 @@ export default class GSAttr {
 	 * NOTE: GSDOM.isHTMLElement duplicate- p revent circualr import
 	 * @returns {boolean}
 	 */
-	 static isHTMLElement(el) {
+	static isHTMLElement(el) {
 		return el instanceof HTMLElement;
 	}
 
@@ -75,7 +75,7 @@ export default class GSAttr {
 	 * @param {string} name Attribute name
 	 * @param {string} val Default value
 	 * @returns {number}
-	 */	
+	 */
 	static getAsNum(el, name = '', val = '0') {
 		const attr = GSAttr.get(el, name, val);
 		return GSUtil.asNum(attr);
@@ -88,7 +88,7 @@ export default class GSAttr {
 	 * @param {string} name Attribute name
 	 * @param {string} val Default value
 	 * @returns {JSON}
-	 */	
+	 */
 	static getAsJson(el, name = '', val = '0') {
 		const attr = GSAttr.get(el, name, val, {});
 		return JSON.parse(attr);

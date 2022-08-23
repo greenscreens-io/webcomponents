@@ -50,7 +50,7 @@ export default class GSDOM {
 		const nodes = GSDOM.#fromNode(doc.head.children).concat(GSDOM.#fromNode(doc.body.children));
 		const wrap = forceWrap || nodes.length !== 1;
 
-		const tpl = GSDOM.wrap(own, wrap ?  null : nodes.shift());
+		const tpl = GSDOM.wrap(own, wrap ? null : nodes.shift());
 
 		while (nodes.length > 0) tpl.appendChild(nodes.shift());
 
@@ -128,7 +128,7 @@ export default class GSDOM {
 	 */
 	static isGSExtra(el) {
 		if (!GSDOM.isHTMLElement(el)) return false;
-		return (el.getAttribute('is') ||'').indexOf('gs-') === 0;
+		return (el.getAttribute('is') || '').indexOf('gs-') === 0;
 	}
 
 	/**

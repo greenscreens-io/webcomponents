@@ -82,5 +82,6 @@ export default class GSTime extends GSElement {
 
     static {
         customElements.define('gs-time', GSTime);
+        Object.seal(GSTime);
     }
 }

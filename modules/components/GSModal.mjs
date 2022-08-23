@@ -23,6 +23,7 @@ export default class GSModal extends GSElement {
 
   static {
     customElements.define('gs-modal', GSModal);
+    Object.seal(GSModal);
   }
 
   static get observedAttributes() {

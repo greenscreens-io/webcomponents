@@ -21,5 +21,6 @@ export default class GSYear extends HTMLElement {
 
     static {
         customElements.define('gs-year', GSYear);
+        Object.seal(GSYear);
     }
 }

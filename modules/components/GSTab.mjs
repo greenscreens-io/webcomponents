@@ -32,6 +32,7 @@ export default class GSTab extends GSElement {
 
   static {
     customElements.define('gs-tab', GSTab);
+    Object.seal(GSTab);
   }
 
   static get observedAttributes() {

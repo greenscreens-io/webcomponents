@@ -22,6 +22,7 @@ export default class GSOffcanvas extends GSElement {
 
   static {
     customElements.define('gs-offcanvas', GSOffcanvas);
+    Object.seal(GSOffcanvas);
   }
 
   static get observedAttributes() {

@@ -165,7 +165,7 @@ export default class GSNotification extends GSElement {
     options.body = options.body || message;
     const notification = new Notification(title, options);
     me.#list.add(notification);
-    const callback = me.#clearNative.bind({notification : notification, owner:me});
+    const callback = me.#clearNative.bind({ notification: notification, owner: me });
     notification.addEventListener('close', callback);
     if (timeout > 0) setTimeout(callback, timeout * 1000);
     return notification;
@@ -190,7 +190,7 @@ export default class GSNotification extends GSElement {
   /**
    * Check if native notification is supported
    * @returns {boolean} 
-   */  
+   */
   static get isNativeSupported() {
     return "Notification" in self;
   }

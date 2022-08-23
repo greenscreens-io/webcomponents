@@ -23,6 +23,7 @@ export default class GSForm extends HTMLFormElement {
 
     static {
         customElements.define('gs-form', GSForm, { extends: 'form' });
+        Object.seal(GSForm);
         GSDOMObserver.registerFilter(GSForm.#onMonitorFilter, GSForm.#onMonitorResult);
         GSDOMObserver.registerFilter(GSForm.#onMonitorFilter, GSForm.#onMonitorRemove, true);
     }
@@ -73,10 +74,10 @@ export default class GSForm extends HTMLFormElement {
     static #onAction(e, own) {
         const me = own || this;
         const sts = GSForm.#validateCaller(e, me, 'modal', 'GS-MODAL');
-        if (!sts) return; 
+        if (!sts) return;
 
         if (e.detail.ok) return GSForm.#onSubmit(e, me);
-        
+
         const evt = e.detail.evt;
         const isReset = evt && evt.target.className.indexOf('reset') > 0;
         if (isReset) me.reset();
@@ -85,7 +86,7 @@ export default class GSForm extends HTMLFormElement {
     static #validateCaller(e, own, type, comp) {
         if (e.detail.type !== type) return false;
         const parent = GSComponents.getOwner(own, comp);
-        return parent == e.target || e.path.indexOf(parent) > -1; 
+        return parent == e.target || e.path.indexOf(parent) > -1;
     }
 
     /**
@@ -98,7 +99,7 @@ export default class GSForm extends HTMLFormElement {
         const isValid = me.checkValidity();
         const obj = GSDOM.toObject(me);
         const type = isValid ? 'submit' : 'invalid';
-        const data = { type: type, data: obj, source: e, valid : isValid };
+        const data = { type: type, data: obj, source: e, valid: isValid };
         if (e.detail) e.detail.data = data;
         GSEvent.send(me, 'form', data, true, true);
         return me.reportValidity();

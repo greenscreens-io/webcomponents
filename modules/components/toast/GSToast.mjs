@@ -22,6 +22,7 @@ export default class GSToast extends GSElement {
 
   static {
     customElements.define('gs-toast', GSToast);
+    Object.seal(GSToast);
   }
 
   static get observedAttributes() {

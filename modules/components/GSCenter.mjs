@@ -10,7 +10,6 @@
 import GSAttr from "../base/GSAttr.mjs";
 import GSDOM from "../base/GSDOM.mjs";
 import GSElement from "../base/GSElement.mjs";
-import GSUtil from "../base/GSUtil.mjs";
 
 /**
  * Center inside browser
@@ -21,6 +20,7 @@ export default class GSCenter extends GSElement {
 
    static {
       customElements.define('gs-center', GSCenter);
+      Object.seal(GSCenter);
    }
 
    static get observedAttributes() {

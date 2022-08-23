@@ -28,6 +28,7 @@ export default class GSNavLink extends HTMLAnchorElement {
 
     static {
         customElements.define('gs-navlink', GSNavLink, { extends: 'a' });
+        Object.seal(GSNavLink);
         GSDOMObserver.registerFilter(GSNavLink.#onMonitorFilter, GSNavLink.#onMonitorResult);
         GSDOMObserver.registerFilter(GSNavLink.#onMonitorFilter, GSNavLink.#onMonitorRemove, true);
     }

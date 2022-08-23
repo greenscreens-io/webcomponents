@@ -117,7 +117,7 @@ class GSTemplate extends HTMLElement {
 	connectedCallback() {
 		const me = this;
 		const pe = me.parentElement;
-		if (pe && pe.tagName == 'GS-ITEM') return;		
+		if (pe && pe.tagName == 'GS-ITEM') return;
 		if (!(me.isValidEnvironment && me.isValidBrowser && me.isValidOS)) {
 			return me.remove();
 		}
@@ -261,6 +261,7 @@ class GSTemplate extends HTMLElement {
 
 	static {
 		customElements.define('gs-template', GSTemplate);
+		Object.seal(GSTemplate);
 	}
 
 }

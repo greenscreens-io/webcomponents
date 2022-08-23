@@ -30,6 +30,7 @@ export default class GSPopup extends GSElement {
 
     static {
         customElements.define('gs-popup', GSPopup);
+        Object.seal(GSPopup);
     }
 
     static get observedAttributes() {

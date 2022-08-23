@@ -51,14 +51,14 @@ export default class GSItem extends HTMLElement {
 		const cnt = tpl ? await GSLoader.load(tpl) : '';
 		if (cnt) return cnt;
 		tpl = el.querySelector('template');
-		return tpl ? tpl.innerHTML : '';			
+		return tpl ? tpl.innerHTML : '';
 	}
 
 	static getBody(el) {
 		let tpl = GSItem.getTemplate(el);
 		if (tpl) return `<gs-template href="${tpl}"></gs-template>`;
 		tpl = el.querySelector('template');
-		return tpl ? tpl.innerHTML : '';		
+		return tpl ? tpl.innerHTML : '';
 	}
 
 	/**

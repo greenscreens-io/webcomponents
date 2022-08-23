@@ -33,7 +33,7 @@ export default class GSElement extends HTMLElement {
 	#removed = false;
 	#content = null;
 	#observer = null;
-	
+
 	#proxied = false;
 	#opts = null;
 
@@ -427,16 +427,16 @@ export default class GSElement extends HTMLElement {
 	 */
 	connectedCallback() {
 		const me = this;
-		
+
 		if (me.#isConfig()) return;
-		
+
 		if (!(me.isValidEnvironment && me.isValidBrowser && me.isValidOS)) {
 			return me.remove();
 		}
-		
+
 		me.#opts = me.#injection();
 		me.#proxied = me.#opts.ref;
-		
+
 		if (!me.id) me.setAttribute('id', GSID.id);
 		GSComponents.store(me);
 		me.#render();
@@ -500,11 +500,11 @@ export default class GSElement extends HTMLElement {
 	}
 
 	#isConfig() {
-		const me = this;		
+		const me = this;
 		let pe = me.parentElement;
 		if (pe && pe.tagName == 'GS-ITEM') return true;
 		pe = GSComponents.getOwner(me, 'GS-ITEM');
-		if(pe && pe.tagName == 'GS-ITEM') return true;
+		if (pe && pe.tagName == 'GS-ITEM') return true;
 		pe = GSComponents.getOwner(me, GSElement);
 		return pe && pe.isProxy;
 	}
@@ -538,7 +538,7 @@ export default class GSElement extends HTMLElement {
 
 			if (me.#proxied) {
 				if (useTpl) {
-					me.#content = GSDOM.parseWrapped(me, src, true);	
+					me.#content = GSDOM.parseWrapped(me, src, true);
 				} else {
 					me.#content = GSDOM.parse(src, true);
 					me.#content.id = me.id;
@@ -573,22 +573,22 @@ export default class GSElement extends HTMLElement {
 			me.#content = GSDOM.parseWrapped(me, src, true);
 			GSDOM.link(me, me.#content);
 			GSDOM.insertAdjacent(inject.target, me.#content, inject.anchor);
-			
+
 		});
 	}
 
 	#injection() {
 
-		const me = this;		
+		const me = this;
 		const tpl = me.anchor;
 		const idx = tpl.indexOf('@');
-		
+
 		let anchor = idx > 0 ? tpl.slice(0, idx) : tpl;
 		let target = idx > 0 ? tpl.slice(idx + 1) : 'self';
 
 		if (anchor === 'self' || anchor === 'parent') {
-			target = target ? target: anchor;
-			anchor = null;	
+			target = target ? target : anchor;
+			anchor = null;
 		}
 
 		anchor = GSUtil.normalize(anchor, 'beforeend');
@@ -596,10 +596,10 @@ export default class GSElement extends HTMLElement {
 
 		let el = null;
 		switch (target) {
-			case 'self' : 
+			case 'self':
 				el = me;
 				break;
-			case 'parent' :
+			case 'parent':
 				el = me.parentElement;
 				break;
 			default:

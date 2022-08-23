@@ -27,6 +27,7 @@ export default class GSList extends GSElement {
 
     static {
         customElements.define('gs-list', GSList);
+        Object.seal(GSList);
     }
 
     static get observedAttributes() {

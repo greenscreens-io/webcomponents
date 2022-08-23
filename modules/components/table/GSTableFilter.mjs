@@ -24,6 +24,7 @@ export default class GSTableFilter extends HTMLTableRowElement {
 
     static {
         customElements.define('gs-tablefilter', GSTableFilter, { extends: 'tr' });
+        Object.seal(GSTableFilter);
     }
 
     /*
@@ -53,7 +54,7 @@ export default class GSTableFilter extends HTMLTableRowElement {
 
     #attachChangeListener() {
         const me = this;
-        GSDOM.findAll('input, select', me, true).forEach(el => GSEvent.attach(me, el, 'change', e => me.#onChange(e.target)) );
+        GSDOM.findAll('input, select', me, true).forEach(el => GSEvent.attach(me, el, 'change', e => me.#onChange(e.target)));
     }
 
     #attachDataListener() {

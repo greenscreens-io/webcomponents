@@ -22,6 +22,7 @@ export default class GSDataList extends HTMLDataListElement {
 
     static {
         customElements.define('gs-datalist', GSDataList, { extends: 'datalist' });
+        Object.seal(GSDataList);
     }
 
     constructor() {

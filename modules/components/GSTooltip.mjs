@@ -26,6 +26,7 @@ export default class GSTooltip extends GSElement {
 
     static {
         customElements.define('gs-tooltip', GSTooltip);
+        Object.seal(GSTooltip);
         GSDOMObserver.registerFilter(GSTooltip.#onMonitorFilter, GSTooltip.#onMonitorResult);
     }
 

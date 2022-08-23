@@ -119,10 +119,10 @@ export default class GSComponents {
      */
     static query(value = '') {
         return GSComponents.findAll(null, true, true)
-                .filter(el => GSFunction.isFunction(el.findEl))
-                .map(el => el.findEl(value))
-                .filter(o => o != null)
-                .shift();
+            .filter(el => GSFunction.isFunction(el.findEl))
+            .map(el => el.findEl(value))
+            .filter(o => o != null)
+            .shift();
     }
 
     static #waitForInternal(name = '', timeout = 0, r) {
@@ -134,8 +134,8 @@ export default class GSComponents {
                 return r(el);
             }
         };
-        const opt = {once:false, capture : false};
-        if(timeout > 0) opt.signal = AbortSignal.timeout(timeout);
+        const opt = { once: false, capture: false };
+        if (timeout > 0) opt.signal = AbortSignal.timeout(timeout);
         GSEvent.listen(document, null, 'gs-component', fn, opt);
     }
 
@@ -163,7 +163,7 @@ export default class GSComponents {
         const callback = (e) => {
             const el = e.path[0];
             const ok = el.id === name || el.tagName === name;
-            if (!ok) return ;
+            if (!ok) return;
             fn(el, e);
         };
         let el = GSComponents.find(name);

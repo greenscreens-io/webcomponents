@@ -50,6 +50,7 @@ export default class GSBlock extends HTMLElement {
 
     static {
         customElements.define('gs-block', GSBlock);
+        Object.seal(GSBlock);
     }
 
 }

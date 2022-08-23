@@ -1,6 +1,6 @@
 /*
- * Copyright (C) 2015, 2022 Green Screens Ltd.
- */
+* Copyright (C) 2015, 2022 Green Screens Ltd.
+*/
 
 /**
  * A module loading GSButton class
@@ -28,6 +28,7 @@ export default class GSButton extends GSElement {
 
     static {
         customElements.define('gs-button', GSButton);
+        Object.seal(GSButton);
     }
 
     static get observedAttributes() {

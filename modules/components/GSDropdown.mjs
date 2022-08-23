@@ -26,6 +26,7 @@ export default class GSDropdown extends GSElement {
 
   static {
     customElements.define('gs-dropdown', GSDropdown);
+    Object.seal(GSDropdown);
   }
 
   static get observedAttributes() {

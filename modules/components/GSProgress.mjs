@@ -22,6 +22,7 @@ export default class GSProgress extends GSElement {
 
     static {
         customElements.define('gs-progress', GSProgress);
+        Object.seal(GSProgress);
     }
 
     static get observedAttributes() {

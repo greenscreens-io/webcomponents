@@ -36,10 +36,10 @@ export default class GSTable extends GSElement {
     #store = null;
 
     #map = {
-        'css':'table',
-        'css-header' : 'table thead',
-        'css-row' : 'table tbody tr',
-        'css-cell' : 'table tbody td'        
+        'css': 'table',
+        'css-header': 'table thead',
+        'css-row': 'table tbody tr',
+        'css-cell': 'table tbody td'
     };
 
     #selectCSS = 'bg-dark text-light fw-bold';
@@ -50,6 +50,7 @@ export default class GSTable extends GSElement {
 
     static {
         customElements.define('gs-table', GSTable);
+        Object.seal(GSTable);
     }
 
     static get observedAttributes() {
@@ -83,7 +84,7 @@ export default class GSTable extends GSElement {
             const dataID = GSAttr.get('data');
             me.#store = await GSComponents.waitFor(dataID);
         }
-        
+
         super.onReady();
 
         me.attachEvent(me.self, 'sort', e => me.#onColumnSort(e.detail));
@@ -142,44 +143,44 @@ export default class GSTable extends GSElement {
         me.#select = GSUtil.asBool(val);
     }
 
-    get css() { 
-        return GSAttr.get(this, 'css', this.#tableCSS); 
+    get css() {
+        return GSAttr.get(this, 'css', this.#tableCSS);
     }
 
-    get cssSelect() { 
-        return GSAttr.get(this, 'css-select', this.#selectCSS); 
+    get cssSelect() {
+        return GSAttr.get(this, 'css-select', this.#selectCSS);
     }
 
     get cssHeader() {
-        return GSAttr.get(this, 'css-header', this.#headerCSS); 
+        return GSAttr.get(this, 'css-header', this.#headerCSS);
     }
-    
-    get cssRow() { 
-        return GSAttr.get(this, 'css-row', this.#rowCSS); 
+
+    get cssRow() {
+        return GSAttr.get(this, 'css-row', this.#rowCSS);
     }
-    
-    get cssCell() { 
-        return GSAttr.get(this, 'css-cell', this.#cellCSS); 
+
+    get cssCell() {
+        return GSAttr.get(this, 'css-cell', this.#cellCSS);
     }
 
     set css(val = '') {
-        GSAttr.set(this, 'css', val); 
+        GSAttr.set(this, 'css', val);
     }
 
     set cssSelect(val = '') {
-        GSAttr.set(this, 'css-select', val); 
+        GSAttr.set(this, 'css-select', val);
     }
 
     set cssHeader(val = '') {
-        GSAttr.set(this, 'css-header', val); 
+        GSAttr.set(this, 'css-header', val);
     }
 
     set cssRow(val = '') {
-        GSAttr.set(this, 'css-row', val); 
+        GSAttr.set(this, 'css-row', val);
     }
 
     set cssCell(val = '') {
-        GSAttr.set(this, 'css-cell', val); 
+        GSAttr.set(this, 'css-cell', val);
     }
 
     #setCSS(qry, val) {
@@ -281,7 +282,7 @@ export default class GSTable extends GSElement {
         const me = this;
         me.#selected = [];
         data.forEach(i => {
-            const rec = me.#data[i-1];
+            const rec = me.#data[i - 1];
             if (rec) me.#selected.push(rec);
         });
         GSEvent.send(me, 'selected', me.#selected);

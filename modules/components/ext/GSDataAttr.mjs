@@ -127,7 +127,7 @@ export default class GSDataAttr {
             case "popover":
                 break;
             case "poup":
-                break;                
+                break;
             case "tab":
                 break;
             case "tooltip":
@@ -236,7 +236,7 @@ export default class GSDataAttr {
 
         const html = isComp ? `<${inject}></${inject}>` : `<gs-template href="${inject}" class="${css}"></gs-template>`;
 
-        list.forEach(el =>  el.innerHTML = html);
+        list.forEach(el => el.innerHTML = html);
     }
 
     /**
@@ -298,7 +298,7 @@ export default class GSDataAttr {
             case "popover":
                 break;
             case "popup":
-                break;                
+                break;
             case "tab":
                 break;
             case "tooltip":
@@ -331,8 +331,8 @@ export default class GSDataAttr {
                 GSDataAttr.#remove(obj, type);
                 break;
             case "modal":
-            case "offcanvas":            
-            case "popup":            
+            case "offcanvas":
+            case "popup":
                 GSDataAttr.#toggle(obj, type);
                 break;
         }

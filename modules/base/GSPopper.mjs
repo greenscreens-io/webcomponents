@@ -140,12 +140,12 @@ export default class GSPopper {
 		const arect = GSPopper.#updateArrow(source, arrow, pos);
 
 		const obj = {
-			x : rect.centerX,
-			y : rect.centerY,
-			offH : offh,
-			offW : offw,
-			srcH : source.clientHeight,
-			srcW : source.clientWidth
+			x: rect.centerX,
+			y: rect.centerY,
+			offH: offh,
+			offW: offw,
+			srcH: source.clientHeight,
+			srcW: source.clientWidth
 		}
 
 		GSPopper.#calcFixed(pos, obj, rect, arect);
@@ -184,13 +184,13 @@ export default class GSPopper {
 		const offset = GSPopper.getOffset(target);
 
 		const obj = {
-			x : offset.centerX,
-			y : offset.centerY
+			x: offset.centerX,
+			y: offset.centerY
 		}
 
 		const arr = {
-			x : (srect.width / 2) - (arect.width / 2),
-			y : (srect.height / 2) - (arect.height / 2)
+			x: (srect.width / 2) - (arect.width / 2),
+			y: (srect.height / 2) - (arect.height / 2)
 		}
 
 		GSPopper.#calcAbsolute(pos, obj, arr, srect, arect, offset);
@@ -223,7 +223,7 @@ export default class GSPopper {
 			arr.top = '0px';
 			obj.x = offset.right + arect.width;
 			obj.y = obj.y - (srect.height / 2);
-		}	
+		}
 	}
 
 	static #calcFixed(pos, obj, trect, arect) {
@@ -251,7 +251,7 @@ export default class GSPopper {
 			return '0px 0px auto auto';
 		} else if (obj.isEnd) {
 			return '0px auto auto 0px';
-		}		
+		}
 	}
 
 	static #isPlacementValid(obj) {

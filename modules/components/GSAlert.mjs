@@ -27,6 +27,7 @@ export default class GSAlert extends GSElement {
 
     static {
         customElements.define('gs-alert', GSAlert);
+        Object.seal(GSAlert);
     }
 
     static get observedAttributes() {
