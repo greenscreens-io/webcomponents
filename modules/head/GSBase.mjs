@@ -63,7 +63,7 @@ export default class GSBase extends HTMLElement {
 	 * @param {boolean} cancelable Event is cancelable
 	 * @returns {boolean}
 	 */
-	 static sendEvent(sender = document, name, obj = '', bubbles = false, composed = false, cancelable = false) {
+	static sendEvent(sender = document, name, obj = '', bubbles = false, composed = false, cancelable = false) {
 		const event = new CustomEvent(name, { detail: obj, bubbles: bubbles, composed: composed, cancelable: cancelable });
 		return sender.dispatchEvent(event);
 	}

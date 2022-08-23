@@ -221,7 +221,7 @@ export default class GSCacheTemplate {
 			template = document.getElementById(tpl.slice(1));
 			//template = template ? template.innerHTML : null;
 		}
-		
+
 		if (!template) {
 			template = me.loadHTMLTemplate(cached, name, tpl);
 		}
