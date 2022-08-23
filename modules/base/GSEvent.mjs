@@ -13,6 +13,7 @@ import GSUtil from "./GSUtil.mjs";
 import GSAttr from "./GSAttr.mjs";
 import GSDOM from "./GSDOM.mjs";
 
+
 /**
  * Class for handling events, also a registry of all GS-* element listeners
  * @Class
@@ -68,6 +69,7 @@ export default class GSEvent {
 					r();
 					if (typeof callback === 'function') callback();
 				} catch (er) {
+					console.log(er);
 					e(er);
 				}
 			});

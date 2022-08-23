@@ -30,12 +30,10 @@ import GSDOM from "./GSDOM.mjs";
 export default class GSElement extends HTMLElement {
 
 	#ready = false;
+	#shadow = false;
 	#removed = false;
 	#content = null;
 	#observer = null;
-	
-	#proxied = false;
-	#opts = null;
 
 	static {
 		customElements.define('gs-element', GSElement);
@@ -81,21 +79,6 @@ export default class GSElement extends HTMLElement {
 	 */
 	get isFlat() {
 		return GSUtil.FLAT || GSAttr.getAsBool(this, 'flat');
-	}
-
-	/**
-	 * Check if element is proxied to another target
-	 */
-	get isProxy() {
-		return this.#proxied;
-	}
-
-	/**
-	 * Check if element is referenced by proxy element
-	 * @returns {string|boolean} Return proxy component id or false if not referenced
-	 */
-	get proxy() {
-		return GSAttr.get(this, 'proxy', false);
 	}
 
 	/**
@@ -238,32 +221,32 @@ export default class GSElement extends HTMLElement {
 	 * @returns {string}  Vlues parent|self|unwrap|[html insertion position]
 	 */
 	get anchor() {
-		const me = this;
-		const dft = 'beforeend@self';
-		return me.proxy ? dft : GSAttr.get(this, 'anchor', dft);
+		return GSAttr.get(this, 'anchor', 'beforeend@self');
 	}
 
 	/**
 	 * Get element shadowRoot, autocreate if does not exist
 	 * @returns {ShadowRoot} 
 	 */
-	get #shadow() {
+	get shadow() {
 		const me = this;
-		if (!me.shadowRoot) {
-			me.attachShadow({ mode: 'open' });
+		const el = me.#content; // || me;
+		if (el && !el.shadowRoot) {
+			el.attachShadow({ mode: 'open' });
+			me.#shadow = el.shadowRoot;			
 			me.#observer = GSDOMObserver.create(me.#shadow);
 			me.updateUI();
 		}
-		return me.shadowRoot;
+		return me.#shadow;
 	}
 
 	/**
-	 * Avaialble only after render, after template is applied
+	 * Avaialable only after render, after template is applied
 	 * @returns {ShadowRoot|HTMLElement} 
 	 */
 	get self() {
 		const me = this;
-		return me.isProxy && GSDOM.isGSElement(me.#content) ? me.#content.self : me.#content;
+		return me.isFlat ? me.#content : me.shadow;
 	}
 
 	/**
@@ -271,7 +254,7 @@ export default class GSElement extends HTMLElement {
 	 */
 	updateUI() {
 		const me = this;
-		if (me.shadowRoot) me.shadowRoot.adoptedStyleSheets = GSCacheStyles.styles;
+		if (me.#shadow) me.#shadow.adoptedStyleSheets = GSCacheStyles.styles;
 	}
 
 	/**
@@ -429,14 +412,10 @@ export default class GSElement extends HTMLElement {
 		const me = this;
 		
 		if (me.#isConfig()) return;
-		
+
 		if (!(me.isValidEnvironment && me.isValidBrowser && me.isValidOS)) {
 			return me.remove();
 		}
-		
-		me.#opts = me.#injection();
-		me.#proxied = me.#opts.ref;
-		
 		if (!me.id) me.setAttribute('id', GSID.id);
 		GSComponents.store(me);
 		me.#render();
@@ -448,13 +427,11 @@ export default class GSElement extends HTMLElement {
 	disconnectedCallback() {
 		const me = this;
 		me.#removed = true;
+		me.#shadow = null;
 		if (me.#observer) me.#observer.disconnect();
 		GSComponents.remove(me);
 		GSEvent.deattachListeners(me);
 		me.#removeFlat();
-		me.#observer = null;
-		me.#content = null;
-		me.#opts = null;
 	}
 
 	/**
@@ -504,9 +481,7 @@ export default class GSElement extends HTMLElement {
 		let pe = me.parentElement;
 		if (pe && pe.tagName == 'GS-ITEM') return true;
 		pe = GSComponents.getOwner(me, 'GS-ITEM');
-		if(pe && pe.tagName == 'GS-ITEM') return true;
-		pe = GSComponents.getOwner(me, GSElement);
-		return pe && pe.isProxy;
+		return (pe && pe.tagName == 'GS-ITEM');
 	}
 
 	#styleChange() {
@@ -516,64 +491,35 @@ export default class GSElement extends HTMLElement {
 		});
 	}
 
-	get #useTemplate() {
-		const me = this;
-		return (me.#proxied && me.isFlat) || !me.#proxied;
-	}
-
 	async #aplyTemplate() {
 
 		const me = this;
 
 		if (me.offline) return;
 
-		const useTpl = me.#useTemplate;
-		const src = useTpl ? await me.getTemplate(me.template) : me.outerHTML;
+		const src = await me.getTemplate(me.template);
+		if (!src) return;
 
 		await GSEvent.waitAnimationFrame(() => {
 
 			if (me.offline) return;
 
-			const inject = me.#opts;
-
-			if (me.#proxied) {
-				if (useTpl) {
-					me.#content = GSDOM.parseWrapped(me, src, true);	
-				} else {
-					me.#content = GSDOM.parse(src, true);
-					me.#content.id = me.id;
-					me.id = GSID.id;
-				}
-				GSDOM.link(me, me.#content);
-				GSDOM.insertAdjacent(inject.target, me.#content, inject.anchor);
-				return;
-			}
-
-			if (inject.target === me) {
-				if (me.isFlat) {
-					const tpl = GSDOM.parseWrapped(me, src, false);
-					me.#content = tpl;
-					GSDOM.insertAdjacent(inject.target, tpl, inject.anchor);
-				} else {
-					me.#content = me.#shadow;
-					me.#content.innerHTML = src;
-					me.updateUI();
-				}
-				return;
-			}
-
-
-			if (inject.target === me.parentElement) {
-				me.#content = me.isFlat ? me : me.#shadow;
-				me.#content.innerHTML = src;
-				me.updateUI();
-				return;
-			}
-
-			me.#content = GSDOM.parseWrapped(me, src, true);
-			GSDOM.link(me, me.#content);
-			GSDOM.insertAdjacent(inject.target, me.#content, inject.anchor);
+			const inject = me.#injection();
 			
+			if (me.isFlat) {
+				const tpl = GSDOM.parseWrapped(me, src);
+				me.#content = inject.target === tpl ? tpl : inject.target.insertAdjacentElement(inject.anchor, tpl);
+			} else if (inject.target === me) {
+				me.#content = inject.target;
+				me.shadow.innerHTML = src;
+			} else {
+				me.#content = GSDOM.wrap(me);
+				Array.from(me.childNodes).filter(el => el.tagName != 'GS-ITEM').forEach(el => me.#content.appendChild(el));
+				inject.target.insertAdjacentElement(inject.anchor, me.#content);
+				me.shadow.innerHTML = src;
+				me.updateUI();
+			}
+
 		});
 	}
 
@@ -612,18 +558,15 @@ export default class GSElement extends HTMLElement {
 			throw new Error(msg);
 		}
 
-		const ref = !(el === me || el === me.parentElement);
-
 		return {
 			anchor: anchor,
-			target: el,
-			ref: ref
+			target: el
 		};
 	}
 
 	#removeFlat() {
 		const me = this;
-		if (me.#content && me.#content.remove) {
+		if (me.#content) {
 			me.#content.remove();
 			me.#content = null;
 		}
@@ -638,7 +581,6 @@ export default class GSElement extends HTMLElement {
 		// await GSFunction.waitPageLoad();
 		await me.#aplyTemplate();
 		if (me.offline) return;
-		if (!me.#useTemplate) return;
 		if (!me.isFlat) me.attachEvent(this, document, 'gs-style', me.#styleChange.bind(me));
 		me.attachEvent(this, screen.orientation, 'change', me.#onOrientation.bind(me));
 		requestAnimationFrame(() => me.onReady());

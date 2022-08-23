@@ -108,7 +108,7 @@ export default class GSDropdown extends GSElement {
   async getTemplate(val = '') {
     const me = this;
     if (!val && me.childElementCount > 0) return me.#renderMenuDOM();
-    return super.getTemplate(val || '//context.tpl');
+    return super.getTemplate(val);
   }
 
   onReady() {
@@ -157,7 +157,7 @@ export default class GSDropdown extends GSElement {
   }
 
   get anchor() {
-    return 'unwrap';
+    return 'afterend@self';
   }
 
   close() {

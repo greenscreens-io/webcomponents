@@ -185,7 +185,7 @@ export default class GSPopover extends GSElement {
      */
     show() {
         const me = this;
-        const el = GSDOM.parse(me.#html);
+        const el = GSDOM.parse(me.#html, true);
         me.insertAdjacentElement('afterbegin', el);
         requestAnimationFrame(() => {
             me.#render(el);

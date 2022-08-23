@@ -23,8 +23,8 @@ export default class GSTime extends GSElement {
     #id = 0;
 
     static get observedAttributes() {
-		return ['interval'];
-	}
+        return ['interval'];
+    }
 
     attributeChanged(name = '', oldVal = '', newVal = '') {
         const me = this;
@@ -62,10 +62,6 @@ export default class GSTime extends GSElement {
 
     get isFlat() {
         return true;
-    }
-
-    get anchor() {
-        return 'self';
     }
 
     get interval() {

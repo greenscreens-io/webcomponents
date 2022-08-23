@@ -115,10 +115,12 @@ export default class GSTab extends GSElement {
     //const contentTpl = me.rtl ? `${title} ${iconTpl}` : `${iconTpl} ${title}`;
     const contentTpl = `${iconTpl} ${title}`;
 
+    const actievCSS = el.active ? me.#activeTabCSS(el) : '';
+
     return `${wrap}
           <a type="button" role="tab" is="gs-navlink"
               id="${el.id}-tab" 
-              class="nav-link ${me.#cssNav(el)} ${me.#activeTabCSS(el)}" 
+              class="nav-link ${me.#cssNav(el)} ${actievCSS}" 
               aria-controls="${el.id}-tab"                 
               data-bs-target="#${el.id}-pane" 
               data-bs-toggle="tab">${contentTpl}</a>
@@ -128,21 +130,15 @@ export default class GSTab extends GSElement {
 
   #renderPane(el) {
     const me = this;
+    const actievCSS = el.active ? me.#activePaneCSS(el) : '';
+    const body = GSItem.getBody(el);
     return `
       <div  id="${el.id}-pane" aria-labelledby="${el.id}-tab" 
-          class="tab-pane fade ${me.#cssPane(el)}  ${me.#activePaneCSS(el)}" 
+          class="tab-pane fade ${me.#cssPane(el)}  ${actievCSS}" 
           role="tabpanel">
-          ${me.#body(el)}
+          ${body}
       </div>        
       `;
-  }
-
-  #body(el) {
-    const me = this;
-    if (me.#template(el)) return `<gs-template href="${me.#template(el)}"></gs-template>`;
-    const list = Array.from(el.childNodes).filter(el => !(el instanceof Text && el.data.trim().length == 0));
-    if (list.length === 1 && list[0] instanceof Comment) return list[0].data;
-    return el.innerHTML;
   }
 
   #active(el) {
@@ -155,10 +151,6 @@ export default class GSTab extends GSElement {
 
   #activePaneCSS(el) {
     return this.#active(el) ? 'active show' : '';
-  }
-
-  #template(el) {
-    return GSAttr.get(el, 'template');
   }
 
   #title(el) {

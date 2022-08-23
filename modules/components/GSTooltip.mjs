@@ -131,17 +131,13 @@ export default class GSTooltip extends GSElement {
         return true;
     }
 
-    get anchor() {
-        return 'self';
-    }
-
     /**
      * Show tooltip
      */
     show() {
         const me = this;
         requestAnimationFrame(() => {
-            const el = GSDOM.parse(me.#html);
+            const el = GSDOM.parse(me.#html, true);
             me.insertAdjacentElement('afterbegin', el);
             me.#render();
             GSDOM.toggleClass(this.firstElementChild, true, 'show');

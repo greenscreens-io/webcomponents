@@ -59,14 +59,17 @@ export default class GSList extends GSElement {
     async #render() {
         const me = this;
         const list = GSItem.genericItems(me).map(el => me.#html(el));
-        const html = await Promise.all(list);
-        return html.join('');
+        //const html = await Promise.all(list);
+        // return html.join('');
+        return list.join('');
     }
 
-    async #html(el) {
+    //async 
+    #html(el) {
         const me = this;
         const message = me.#title(el);
-        const tpl = await GSItem.getTemplate(el);
+        //const tpl = await GSItem.getTemplate(el);
+        const tpl = GSItem.getBody(el);
         const css = me.#getCSS(el);
         const href = me.#getHref(el);
         const action = GSItem.getActionAttr(el);

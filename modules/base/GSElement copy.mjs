@@ -29,13 +29,9 @@ import GSDOM from "./GSDOM.mjs";
  */
 export default class GSElement extends HTMLElement {
 
-	#ready = false;
 	#removed = false;
 	#content = null;
 	#observer = null;
-	
-	#proxied = false;
-	#opts = null;
 
 	static {
 		customElements.define('gs-element', GSElement);
@@ -81,21 +77,6 @@ export default class GSElement extends HTMLElement {
 	 */
 	get isFlat() {
 		return GSUtil.FLAT || GSAttr.getAsBool(this, 'flat');
-	}
-
-	/**
-	 * Check if element is proxied to another target
-	 */
-	get isProxy() {
-		return this.#proxied;
-	}
-
-	/**
-	 * Check if element is referenced by proxy element
-	 * @returns {string|boolean} Return proxy component id or false if not referenced
-	 */
-	get proxy() {
-		return GSAttr.get(this, 'proxy', false);
 	}
 
 	/**
@@ -225,45 +206,37 @@ export default class GSElement extends HTMLElement {
 	}
 
 	/**
-	 * If component rendered
-	 */
-	get ready() {
-		return this.#ready;
-	}
-
-	/**
 	 * Where to position flat element
 	 * HTML insertAdjacent value or *(gs-block) or self(within)
-	 * Format position | position@target (self)
+	 * Format position | position@target
 	 * @returns {string}  Vlues parent|self|unwrap|[html insertion position]
 	 */
 	get anchor() {
-		const me = this;
-		const dft = 'beforeend@self';
-		return me.proxy ? dft : GSAttr.get(this, 'anchor', dft);
+		return GSAttr.get(this, 'anchor', 'afterend');
 	}
 
 	/**
 	 * Get element shadowRoot, autocreate if does not exist
 	 * @returns {ShadowRoot} 
 	 */
-	get #shadow() {
+	get shadow() {
 		const me = this;
 		if (!me.shadowRoot) {
 			me.attachShadow({ mode: 'open' });
-			me.#observer = GSDOMObserver.create(me.#shadow);
+			me.#observer = GSDOMObserver.create(me.shadowRoot);
 			me.updateUI();
 		}
 		return me.shadowRoot;
 	}
 
 	/**
-	 * Avaialble only after render, after template is applied
+	 * Avaialable only after render, after template is applied
 	 * @returns {ShadowRoot|HTMLElement} 
 	 */
 	get self() {
 		const me = this;
-		return me.isProxy && GSDOM.isGSElement(me.#content) ? me.#content.self : me.#content;
+		if (!me.isFlat) return me.shadow;
+		return me.anchor.indexOf("unwrap") === 0 ? me.#content.parentElement : me.#content;
 	}
 
 	/**
@@ -288,8 +261,7 @@ export default class GSElement extends HTMLElement {
 	 * @returns {HTMLElement}
 	 */
 	getEl(name = '') {
-		const me = this.self;
-		return me && me.id == name ? me : GSDOM.getEl(name, this.self);
+		return GSDOM.getEl(name, this.self);
 	}
 
 	/**
@@ -298,8 +270,7 @@ export default class GSElement extends HTMLElement {
 	 * @returns {HTMLElement}
 	 */
 	findEl(name = '') {
-		const me = this.self;
-		return me && me.matches && me.matches(name) ? me : GSDOM.findEl(name, this.self);
+		return GSDOM.findEl(name, this.self);
 	}
 
 	/**
@@ -429,14 +400,10 @@ export default class GSElement extends HTMLElement {
 		const me = this;
 		
 		if (me.#isConfig()) return;
-		
+
 		if (!(me.isValidEnvironment && me.isValidBrowser && me.isValidOS)) {
 			return me.remove();
 		}
-		
-		me.#opts = me.#injection();
-		me.#proxied = me.#opts.ref;
-		
 		if (!me.id) me.setAttribute('id', GSID.id);
 		GSComponents.store(me);
 		me.#render();
@@ -452,9 +419,6 @@ export default class GSElement extends HTMLElement {
 		GSComponents.remove(me);
 		GSEvent.deattachListeners(me);
 		me.#removeFlat();
-		me.#observer = null;
-		me.#content = null;
-		me.#opts = null;
 	}
 
 	/**
@@ -471,7 +435,7 @@ export default class GSElement extends HTMLElement {
 			GSComponents.remove(oldValue);
 			GSComponents.store(me);
 		}
-		if (me.#ready) {
+		if (me.shadowRoot || (me.isFlat && me.firstElementChild)) {
 			requestAnimationFrame(() => {
 				me.attributeCallback(name, oldValue, newValue);
 			});
@@ -504,9 +468,7 @@ export default class GSElement extends HTMLElement {
 		let pe = me.parentElement;
 		if (pe && pe.tagName == 'GS-ITEM') return true;
 		pe = GSComponents.getOwner(me, 'GS-ITEM');
-		if(pe && pe.tagName == 'GS-ITEM') return true;
-		pe = GSComponents.getOwner(me, GSElement);
-		return pe && pe.isProxy;
+		return (pe && pe.tagName == 'GS-ITEM');
 	}
 
 	#styleChange() {
@@ -516,114 +478,84 @@ export default class GSElement extends HTMLElement {
 		});
 	}
 
-	get #useTemplate() {
-		const me = this;
-		return (me.#proxied && me.isFlat) || !me.#proxied;
-	}
-
 	async #aplyTemplate() {
 
 		const me = this;
 
 		if (me.offline) return;
 
-		const useTpl = me.#useTemplate;
-		const src = useTpl ? await me.getTemplate(me.template) : me.outerHTML;
+		const src = await me.getTemplate(me.template);
+		if (!src) return;
 
 		await GSEvent.waitAnimationFrame(() => {
 
 			if (me.offline) return;
 
-			const inject = me.#opts;
-
-			if (me.#proxied) {
-				if (useTpl) {
-					me.#content = GSDOM.parseWrapped(me, src, true);	
-				} else {
-					me.#content = GSDOM.parse(src, true);
-					me.#content.id = me.id;
-					me.id = GSID.id;
-				}
-				GSDOM.link(me, me.#content);
-				GSDOM.insertAdjacent(inject.target, me.#content, inject.anchor);
+			if (!me.isFlat) {
+				me.shadow.adoptedStyleSheets = GSCacheStyles.styles;
+				me.shadow.innerHTML = src;
 				return;
 			}
 
-			if (inject.target === me) {
-				if (me.isFlat) {
-					const tpl = GSDOM.parseWrapped(me, src, false);
-					me.#content = tpl;
-					GSDOM.insertAdjacent(inject.target, tpl, inject.anchor);
+			let tpl = null;
+			const inject = me.#injection();
+
+			if (inject.target) {
+				const ip = GSComponents.query(inject.target);
+				if (ip) {
+					tpl = me.#body(src, false);
+					me.#content = ip.insertAdjacentElement(inject.anchor, tpl);
 				} else {
-					me.#content = me.#shadow;
-					me.#content.innerHTML = src;
-					me.updateUI();
+					GSLog.warn(me, 'Injection point not available for flat component!');
+					GSLog.warn(me, `Element: ${me.tagName}, Id:${me.id}, tgt:${inject.target}`);
 				}
 				return;
 			}
 
-
-			if (inject.target === me.parentElement) {
-				me.#content = me.isFlat ? me : me.#shadow;
-				me.#content.innerHTML = src;
-				me.updateUI();
-				return;
+			if (inject.anchor === 'parent') {
+				tpl = me.#body(src, false);
+				me.#content = me.parentElement.insertAdjacentElement('beforeend', tpl);
+			} else if (inject.anchor === 'self') {
+				me.innerHTML = src;
+				me.#content = me;
+			} else if (inject.anchor === 'unwrap') {
+				tpl = me.#body(src, true);
+				me.#content = me.insertAdjacentElement('afterend', tpl);
+			} else {
+				tpl = me.#body(src, false);
+				me.#content = me.insertAdjacentElement(me.anchor, tpl);
 			}
 
-			me.#content = GSDOM.parseWrapped(me, src, true);
-			GSDOM.link(me, me.#content);
-			GSDOM.insertAdjacent(inject.target, me.#content, inject.anchor);
-			
 		});
 	}
 
+	#body(src = '', unwrap = false) {
+		const me = this;
+
+		if (unwrap) {
+			const tpl = GSDOM.parse(src);
+			GSAttr.set(tpl, 'ref', me.id);
+			if (me.slot) GSAttr.set(tpl, 'slot', me.slot);
+			return tpl;
+		}
+
+		const slot = me.slot ? ` slot="${me.slot}" ` : '';
+		return GSDOM.parse(`<gs-block ${slot} ref=${me.id}>${src}</gs-block>`);
+	}
+
 	#injection() {
-
-		const me = this;		
-		const tpl = me.anchor;
-		const idx = tpl.indexOf('@');
-		
-		let anchor = idx > 0 ? tpl.slice(0, idx) : tpl;
-		let target = idx > 0 ? tpl.slice(idx + 1) : 'self';
-
-		if (anchor === 'self' || anchor === 'parent') {
-			target = target ? target: anchor;
-			anchor = null;	
-		}
-
-		anchor = GSUtil.normalize(anchor, 'beforeend');
-		target = GSUtil.normalize(target, 'self');
-
-		let el = null;
-		switch (target) {
-			case 'self' : 
-				el = me;
-				break;
-			case 'parent' :
-				el = me.parentElement;
-				break;
-			default:
-				el = GSComponents.query(target);
-		}
-
-		if (!el) {
-			const msg = `Injection point not available!\nElement: ${me.tagName}, Id:${me.id}, tgt:${target}`;
-			GSLog.error(me, msg);
-			throw new Error(msg);
-		}
-
-		const ref = !(el === me || el === me.parentElement);
-
+		const me = this;
+		const anchor = me.anchor;
+		const p = anchor.indexOf('@');
 		return {
-			anchor: anchor,
-			target: el,
-			ref: ref
+			anchor: p > 0 ? anchor.slice(0, p) : anchor,
+			target: p > 0 ? anchor.slice(p + 1) : null
 		};
 	}
 
 	#removeFlat() {
 		const me = this;
-		if (me.#content && me.#content.remove) {
+		if (me.#content) {
 			me.#content.remove();
 			me.#content = null;
 		}
@@ -638,8 +570,7 @@ export default class GSElement extends HTMLElement {
 		// await GSFunction.waitPageLoad();
 		await me.#aplyTemplate();
 		if (me.offline) return;
-		if (!me.#useTemplate) return;
-		if (!me.isFlat) me.attachEvent(this, document, 'gs-style', me.#styleChange.bind(me));
+		me.attachEvent(this, document, 'gs-style', me.#styleChange.bind(me));
 		me.attachEvent(this, screen.orientation, 'change', me.#onOrientation.bind(me));
 		requestAnimationFrame(() => me.onReady());
 	}
@@ -651,7 +582,6 @@ export default class GSElement extends HTMLElement {
 	onReady() {
 		const me = this;
 		if (me.offline) return;
-		me.#ready = true;
 		const fn = GSFunction.parseFunction(me.onready);
 		GSFunction.callFunction(fn);
 		GSEvent.send(me, 'componentready', me.id, true, true);

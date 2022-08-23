@@ -23,15 +23,25 @@
     <script type="module" src="/modules/components/GSSplitter.mjs"></script>
     <script type="module" src="/modules/components/GSLayout.mjs"></script>
     <gs-css  url="/assets/css/custom_5.2.0.css" ></gs-css>
+    
+    <template id="center">centered data</template>
 </head>
 
 <body >
 
 <!-- header main footer -->
 <gs-layout type="vertical">
-    <gs-item css="text-bg-light" resizable="true" id="header" template="head">header</gs-item>
-    <gs-item css="text-bg-primary" id="main">centerd data</gs-item>
-    <gs-item css="text-bg-dark" resizable="true" id="footer" template="foot">footer</gs-item>
+    <gs-item css="text-bg-light" resizable="true" id="header" >
+        <template>
+            header
+        </template>
+    </gs-item>
+    <gs-item css="text-bg-primary" id="main" template="#center">centerd data</gs-item>
+    <gs-item css="text-bg-dark" resizable="true" id="footer">
+        <template>
+            footer
+        </template>
+    </gs-item>
 </gs-layout>
 
 </body>

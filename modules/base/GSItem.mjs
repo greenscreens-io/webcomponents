@@ -33,6 +33,7 @@ export default class GSItem extends HTMLElement {
 
 	static {
 		customElements.define('gs-item', GSItem);
+		Object.seal(GSItem);
 	}
 
 	constructor() {
@@ -46,17 +47,22 @@ export default class GSItem extends HTMLElement {
 	* @returns {string}
 	*/
 	static async getTemplate(el) {
-		const tpl = GSAttr.get(el, 'template');
+		let tpl = GSItem.getTemplate(el);
 		const cnt = tpl ? await GSLoader.load(tpl) : '';
 		if (cnt) return cnt;
-		return Array.from(el.childNodes)
-			.filter(el => el.tagName != 'GS-ITEM')
-			.map(it => it instanceof Text ? it.nodeValue : it.outerHTML)
-			.join('');
+		tpl = el.querySelector('template');
+		return tpl ? tpl.innerHTML : '';			
+	}
+
+	static getBody(el) {
+		let tpl = GSItem.getTemplate(el);
+		if (tpl) return `<gs-template href="${tpl}"></gs-template>`;
+		tpl = el.querySelector('template');
+		return tpl ? tpl.innerHTML : '';		
 	}
 
 	/**
-	 * Get first level of generic gs-item elemtn, used for configuring gs-* components
+	 * Get first level of generic gs-item element, used for configuring gs-* components
 	 * @param {HTMLElement} root 
 	 * @returns {Array<HTMLElement>} 
 	 */
@@ -133,6 +139,10 @@ export default class GSItem extends HTMLElement {
 		return v ? '' : `${GSItem.#selectable}="${v}"`;
 	}
 
+	static getActive(el) {
+		return GSAttr.getAsBool(el, 'active');
+	}
+
 	static getAction(el) {
 		return GSAttr.get(el, 'action');
 	}
@@ -163,6 +173,10 @@ export default class GSItem extends HTMLElement {
 
 	static getCSS(el) {
 		return GSAttr.get(el, 'css', '');
+	}
+
+	static getTemplate(el) {
+		return GSAttr.get(el, 'template', '');
 	}
 
 	get dismissAttr() {
@@ -215,5 +229,17 @@ export default class GSItem extends HTMLElement {
 
 	get css() {
 		return GSItem.getCSS(this);
+	}
+
+	get active() {
+		return GSItem.getActive(this);
+	}
+
+	get template() {
+		return GSItem.getTemplate(this);
+	}
+
+	get body() {
+		return GSItem.getBody(el);
 	}
 }

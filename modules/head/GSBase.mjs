@@ -133,7 +133,7 @@ export default class GSBase extends HTMLElement {
 	disconnectedCallback() {
 
 		const me = this;
-		if (me.isAuto) {
+		if (me.isAuto && me.#refid) {
 			const el = document.querySelector(`#${me.#refid}`);
 			if (el) el.remove();
 		}

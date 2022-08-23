@@ -61,7 +61,7 @@ export default class GSModal extends GSElement {
     const sts = me.#validateCaller(e, e.target, 'close', 'GS-MODAL');
     if (!sts) return;
     GSEvent.prevent(e);
-     me.close();
+    me.close();
   }
 
   #onForm(e) {

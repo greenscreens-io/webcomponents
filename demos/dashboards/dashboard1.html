@@ -38,36 +38,40 @@
 <gs-layout type="vertical" css="" >
     
     <gs-item v-pos="center" h-pos="between" min="5" css="p-1 border-bottom shadow-sm text-bg-light">
-        <div></div>
-        <div><img src="/assets/img/logo.png" height="32"></div>
-        <div class="">
-            <a type="button" class="btn dropdown-toggle" data-bs-toggle="dropdown" data-bs-target="">
-                <i class="bi-list fs-3"></i>
-            </a>  
-            <gs-dropdown dark="false">
-                <gs-item header="Menu group"></gs-item>
-                <gs-item name="Open" action="open"></gs-item>
-                <gs-item></gs-item>
-                <gs-item name="Submenu 1">
-                    <gs-item name="Submenu 1" action="sub_1_1"></gs-item>
-                    <gs-item name="Submenu 2" action="sub_1_2"></gs-item>
-                </gs-item>
-                <gs-item name="Submenu 2">
-                    <gs-item name="Submenu 2.1" action="sub_2_1"></gs-item>
-                    <gs-item name="Submenu 2.2" action="sub_2_2"></gs-item>
-                    <gs-item name="Submenu 2.3">
-                        <gs-item name="Submenu 2.3.1" action="sub_2_3_1"></gs-item>
-                        <gs-item name="Submenu 2.3.2" action="sub_2_3_2"></gs-item>
-                    </gs-item>              
-                </gs-item>               
-            </gs-dropdown>                      
-        </div>
+        <template>
+            <div></div>
+            <div><img src="/assets/img/logo.png" height="32"></div>
+            <div class="">
+                <a type="button" class="btn dropdown-toggle" data-bs-toggle="dropdown" data-bs-target="">
+                    <i class="bi-list fs-3"></i>
+                </a>  
+                <gs-dropdown dark="false">
+                    <gs-item header="Menu group"></gs-item>
+                    <gs-item name="Open" action="open"></gs-item>
+                    <gs-item></gs-item>
+                    <gs-item name="Submenu 1">
+                        <gs-item name="Submenu 1" action="sub_1_1"></gs-item>
+                        <gs-item name="Submenu 2" action="sub_1_2"></gs-item>
+                    </gs-item>
+                    <gs-item name="Submenu 2">
+                        <gs-item name="Submenu 2.1" action="sub_2_1"></gs-item>
+                        <gs-item name="Submenu 2.2" action="sub_2_2"></gs-item>
+                        <gs-item name="Submenu 2.3">
+                            <gs-item name="Submenu 2.3.1" action="sub_2_3_1"></gs-item>
+                            <gs-item name="Submenu 2.3.2" action="sub_2_3_2"></gs-item>
+                        </gs-item>              
+                    </gs-item>               
+                </gs-dropdown>                      
+            </div>
+        </template>
     </gs-item>
 
     <gs-item>
-        <gs-layout type="horizontal">
-            <gs-item css="p-3" id="content" v-pos="top" h-pos="center">centerd data</gs-item>
-        </gs-layout>    
+        <template>
+            <gs-layout type="horizontal">
+                <gs-item css="p-3" id="content" v-pos="top" h-pos="center">centerd data</gs-item>
+            </gs-layout>
+        </template>
     </gs-item>
 
 </gs-layout>
@@ -80,16 +84,20 @@
 
     <gs-list slot="body"  css="" selectable="false">
         <gs-item css="border-0 p-1">
-            <div class="d-flex w-100 justify-content-start align-items-center fs-5">
-                <span class="bi-house fs-2 pe-4"></span>
-                <span><b>Home</b></span>
-            </div>            
+            <template>
+                <div class="d-flex w-100 justify-content-start align-items-center fs-5">
+                    <span class="bi-house fs-2 pe-4"></span>
+                    <span><b>Home</b></span>
+                </div>            
+            </template>
         </gs-item>
         <gs-item css="border-0 p-1">
-            <div class="d-flex w-100 justify-content-start align-items-center  fs-5">
-                <span class="bi-person fs-2 pe-3"></span>
-                <span><b>Contact</b></span>
-            </div>
+            <template>
+                <div class="d-flex w-100 justify-content-start align-items-center  fs-5">
+                    <span class="bi-person fs-2 pe-3"></span>
+                    <span><b>Contact</b></span>
+                </div>
+            </template>
         </gs-item>
     </gs-list>
 

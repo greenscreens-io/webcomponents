@@ -39,31 +39,42 @@
 
     <gs-layout type="vertical" css="">
 
+        <!--
+            <gs-item v-pos="center" h-pos="center" min="5" template="//header.html"></gs-item>
+        -->
         <gs-item v-pos="center" h-pos="center" min="5" css="p-2 border-bottom shadow-sm text-bg-light d-flex justify-content-between">
-            <div></div>
-            <div>
-                <img src="/assets/img/logo.png" height="32">
-            </div>
-            <div><gs-time interval="10" locale="hr"></gs-time></div>
+            <template>
+                <div></div>
+                <div>
+                    <img src="/assets/img/logo.png" height="32">
+                </div>
+                <div><gs-time interval="10" locale="hr"></gs-time></div>
+            </template>
         </gs-item>
 
         <gs-item>
-            <gs-layout type="horizontal">
-
-                <!-- template contains clicable action wit injection targets -->
-                <gs-item css="p-3" min="260" max="260" template="//sidebar.html"></gs-item>
-
-                <!-- target where to inject templates -->
-                <gs-item css="p-3" name="content" v-pos="top" h-pos="center">
+            <template>
+                <gs-layout type="horizontal">
+    
+                    <!-- template contains clicable action with injection targets -->
+                    <gs-item css="p-3" min="260" max="260" template="//sidebar.html"></gs-item>
+    
+                    <!-- target where to inject templates -->
                     <!-- default page the same as sidebar selected item -->
-                    <gs-template href="//settings.html" class="flex-fill"></gs-template>
-                </gs-item>
-
-            </gs-layout>
+                    <gs-item css="p-3" name="content" v-pos="top" h-pos="center">
+                        <template>
+                            <gs-ext-settings></gs-ext-settings>
+                        </template>
+                    </gs-item>
+    
+                </gs-layout>
+            </template>
         </gs-item>
 
         <gs-item css="p-2" name="footer" v-pos="bottom" h-pos="center" max="60">
-            <a href="https://www.greenscreens.ltd" target="_blank" class="text-muted">&copy; Green Screens Ltd. 2015. - <gs-year></gs-year>.</a>
+            <template>
+                <a href="https://www.greenscreens.ltd" target="_blank" class="text-muted">&copy; Green Screens Ltd. 2015. - <gs-year></gs-year>.</a>
+            </template>
         </gs-item>
 
     </gs-layout>

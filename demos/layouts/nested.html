@@ -29,24 +29,37 @@
 
 <!-- header main footer -->
 <gs-layout type="vertical">
+    
     <!-- header - tries to load template, if not found, show text-->
-    <gs-item css="text-bg-light" resizable="true" id="hdr1" template="head" v-pos="center" h-pos="center" min="5">header</gs-item>
-    <!-- main - central panel containing another elements as tempalte or child components  -->
-    <gs-item css="text-bg-info">
-
-        <!-- left-sidebar main right-sidebar -->
-        <gs-layout type="horizontal">
-            <!-- left sidebar panel -->
-            <gs-item css="text-bg-secondary" id="sb1" resizable="true" min="60" max="280" template="">left-sidebar</gs-item>
-            <!-- central panel -->
-            <gs-item css="text-bg-primary" id="content" v-pos="top" h-pos="center">centerd data</gs-item>
-            <!-- right sidebar panel -->
-            <gs-item css="text-bg-secondary" id="sb2" resizable="true" min="60" max="280" template="" v-pos="top" h-pos="end">right-sidebar</gs-item>
-        </gs-layout>
-        
+    <gs-item css="text-bg-light" resizable="true" id="hdr1" v-pos="center" h-pos="center" min="5">
+        <template>header</template>
     </gs-item>
+    
+    <!-- main - central panel containing another elements as template or child components  -->
+    <gs-item css="text-bg-info">
+        <template>
+            <!-- left-sidebar main right-sidebar -->
+            <gs-layout type="horizontal">
+                <!-- left sidebar panel -->
+                <gs-item css="text-bg-secondary" id="sb1" resizable="true" min="60" max="280" >
+                    <template>left-sidebar</template>
+                </gs-item>
+                <!-- central panel -->
+                <gs-item css="text-bg-primary" id="content" v-pos="top" h-pos="center">
+                    <template>centerd data</template>
+                </gs-item>
+                <!-- right sidebar panel -->
+                <gs-item css="text-bg-secondary" id="sb2" resizable="true" min="60" max="280" v-pos="top" h-pos="end">
+                    <template>right-sidebar</template>
+                </gs-item>
+            </gs-layout>
+        </template>
+    </gs-item>
+
     <!-- footer - tries to load template, if not found, show text-->
-    <gs-item css="text-bg-dark" resizable="true" id="ftr1" template="foot" v-pos="center" h-pos="center" min="5">footer</gs-item>
+    <gs-item css="text-bg-dark" resizable="true" id="ftr1" v-pos="center" h-pos="center" min="5">
+        <template>footer</template>
+    </gs-item>
 </gs-layout>
 
 </body>

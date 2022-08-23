@@ -24,15 +24,20 @@
     <script type="module" src="/modules/components/GSSplitter.mjs"></script>
     <script type="module" src="/modules/components/GSLayout.mjs"></script>
     <gs-css  url="/assets/css/custom_5.2.0.css" ></gs-css>
+
+    <template id="sidebar">sidebar</template>
+
 </head>
 
-<body>
+<body> 
 
     <!-- left-sidebar main right-sidebar -->
     <gs-layout type="horizontal">
-        <gs-item css="text-bg-secondary" id="left-sidebar" resizable="true" min="60" max="280" tempalte="sidebar">sidebar</gs-item>
-        <gs-item css="text-bg-primary"  id="content" v-pos="top" h-pos="center" template="content">content</gs-item>
-        <gs-item css="text-bg-secondary" id="right-sidebar" resizable="true" min="60" max="280" tempalte="sidebar">sidebar</gs-item>
+        <gs-item css="text-bg-secondary" id="left-sidebar" resizable="true" min="60" max="280" template="#sidebar"></gs-item>
+        <gs-item css="text-bg-primary"  id="content" v-pos="top" h-pos="center">
+            <template>content</template>
+        </gs-item>
+        <gs-item css="text-bg-secondary" id="right-sidebar" resizable="true" min="60" max="280" template="#sidebar"></gs-item>
     </gs-layout>
 
 </body>

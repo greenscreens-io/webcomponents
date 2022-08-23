@@ -30,17 +30,29 @@
 
 <gs-layout type="vertical" css="" >
     
-    <gs-item template="head" v-pos="center" h-pos="center" min="5" css="p-3 border-bottm shadow-sm text-bg-light">
-        <div class=" ">
-            <img src="/assets/img/logo.png" height="32">
-        </div>
+    <gs-item v-pos="center" h-pos="center" min="5" css="p-3 border-bottm shadow-sm text-bg-light">
+        <template>
+            <div class=" ">
+                <img src="/assets/img/logo.png" height="32">
+            </div>
+        </template>
     </gs-item>
 
     <gs-item>
-        <gs-layout type="horizontal">
-            <gs-item css="p-3 border-end shadow-sm text-bg-dark" min="260" max="260" template="">left-sidebar</gs-item>
-            <gs-item css="p-3" id="content" v-pos="top" h-pos="center">centerd data</gs-item>            
-        </gs-layout>    
+        <template>
+            <gs-layout type="horizontal">
+                <gs-item css="p-3 border-end shadow-sm text-bg-dark" min="260" max="260">
+                    <template>
+                        left-sidebar    
+                    </template>
+                </gs-item>
+                <gs-item css="p-3" id="content" v-pos="top" h-pos="center">
+                    <template>
+                        centerd data
+                    </template>
+                </gs-item>
+            </gs-layout>    
+        </template>
     </gs-item>
 
 </gs-layout>

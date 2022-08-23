@@ -88,6 +88,15 @@
 	 }
  
 	 /**
+	  * Makes string value safe, always return value
+	  * @param {string|object} val 
+	  * @returns {string}
+	  */
+	 static normalize(val, def = '') {
+		 return GSUtil.isString(val) ? val.trim() : (val || def).toString();
+	 }
+
+	 /**
 	  * Convert parameterized string literal as template to string 
 	  * 
 	  * 	 const template = 'Example text: ${text}';

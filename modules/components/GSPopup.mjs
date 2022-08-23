@@ -75,7 +75,7 @@ export default class GSPopup extends GSElement {
     }
 
     get isFlat() {
-        return true;
+        return this.parentElement !== document.body;
     }
 
     /**
@@ -153,7 +153,7 @@ export default class GSPopup extends GSElement {
     }
 
     set visible(val = '') {
-        return GSAttr.getAsBool(this, 'visible', val);
+        return GSAttr.setAsBool(this, 'visible', val);
     }
 
     /**

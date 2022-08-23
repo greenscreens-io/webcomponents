@@ -34,7 +34,8 @@ export default class GSCalendar extends GSElement {
         this.#date = new GSDate();
     }
 
-    attributeChanged(name = '', oldVal = '', newVal = '') {debugger;
+    attributeChanged(name = '', oldVal = '', newVal = '') {
+        debugger;
         const me = this;
         if (name === 'date') {
             me.#date = new GSDate(newVal);
@@ -245,13 +246,13 @@ export default class GSCalendar extends GSElement {
         const btn = e.path[0];
         if (!GSDOM.hasClass(btn, 'day')) return;
         const day = GSUtil.asNum(btn.innerText.trim());
-        requestAnimationFrame(()=> {
+        requestAnimationFrame(() => {
             me.findAll('.day').forEach(el => GSDOM.toggleClass(el, false, me.cssSelected));
             GSDOM.toggleClass(btn, true, me.cssSelected);
         });
         const date = new GSDate(me.#date);
         date.day = day;
-        GSEvent.send(me, 'date', {type:'calendar', date:date, val : me.formatted(date)}, true, true);
+        GSEvent.send(me, 'date', { type: 'calendar', date: date, val: me.formatted(date) }, true, true);
         me.#updateTarget(date);
     }
 
@@ -279,7 +280,7 @@ export default class GSCalendar extends GSElement {
     }
 
     #update() {
-        const me = this;        
+        const me = this;
         me.findAll('.days').forEach(el => el.remove());
         me.findEl('.weeks').insertAdjacentHTML('afterend', me.#daysHTML());
         me.monthEl.selectedIndex = me.#date.month;
@@ -296,17 +297,17 @@ export default class GSCalendar extends GSElement {
         const today = new GSDate();
         const list = me.#date.build();
         const html = list
-            .map(v =>  {
-                const d = v ? `<a href="#" class="btn ${ me.#isToday(v, today) ? me.cssToday : '' } day">${v}</a>` : ''
+            .map(v => {
+                const d = v ? `<a href="#" class="btn ${me.#isToday(v, today) ? me.cssToday : ''} day">${v}</a>` : ''
                 return `<div class="col p-0">${d}</div>`;
             })
-            .map((v ,i) => {
+            .map((v, i) => {
                 if (i === 0) return `<div class="row days">${v}`;
-                const isBreak = i % 7 == 0;                            
+                const isBreak = i % 7 == 0;
                 return isBreak ? `</div><div class="row days">${v}` : v;
             });
-            html.push('</div>');
-            return html.join('');
+        html.push('</div>');
+        return html.join('');
     }
 
 
@@ -314,8 +315,8 @@ export default class GSCalendar extends GSElement {
         const me = this;
         const current = me.#date.monthName;
         const list = GSDate.MONTHS.map((v, i) => {
-           const sel = current == v ? 'selected' : '';
-           return `<option value="${i}" ${sel}>${v}</option>` ;
+            const sel = current == v ? 'selected' : '';
+            return `<option value="${i}" ${sel}>${v}</option>`;
         }).join('\n');
         return `<select class="month ${me.cssMonth}" value="${current}">
                     ${list}
@@ -360,6 +361,6 @@ export default class GSCalendar extends GSElement {
                     </div>
                 </div>
                 <div class="row weeks ${me.cssWeeks}">${week}</div>                
-            </div>`.replace(/\n/g,'');
+            </div>`.replace(/\n/g, '');
     }
 }

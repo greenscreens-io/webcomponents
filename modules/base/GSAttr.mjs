@@ -34,7 +34,7 @@ export default class GSAttr {
 	 */
 	static set(el, name, val) {
 		if (!GSAttr.isHTMLElement(el)) return;
-		if (val != null) {
+		if (GSUtil.normalize(val)) {
 			el.setAttribute(name, val);
 		} else {
 			el.removeAttribute(name);
@@ -52,7 +52,7 @@ export default class GSAttr {
 	static get(el, name = '', val = '') {
 		if (!GSAttr.isHTMLElement(el)) return val;
 		const v = el.getAttribute(name) || val;
-		return GSUtil.isString(v) ? v.trim() : v;
+		return GSUtil.normalize(v);
 	}
 
 	/**

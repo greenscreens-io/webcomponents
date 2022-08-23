@@ -8,10 +8,10 @@
  */
 
 import GSID from "../../base/GSID.mjs";
-import GSUtil from "../../base/GSUtil.mjs";
 import GSEvent from "../../base/GSEvent.mjs";
 import GSAttr from "../../base/GSAttr.mjs";
 import GSDOM from "../../base/GSDOM.mjs";
+import GSData from "../../base/GSData.mjs";
 
 /**
  * table header sorting coluns
@@ -81,7 +81,7 @@ export default class GSTableSort extends HTMLTableRowElement {
             const cfg = { ord: ord, col: el.cellIndex, name: name, idx: idx };
             sort.push(cfg);
         });
-        sort = GSUtil.sortData([{ name: 'idx', ord: 1 }], sort);
+        sort = GSData.sortData([{ name: 'idx', ord: 1 }], sort);
 
         GSEvent.send(me, 'sort', sort, true);
     }

@@ -202,11 +202,9 @@ class GSTemplate extends HTMLElement {
 		}
 
 		await GSEvent.waitAnimationFrame(async () => {
-			// const content = GSCacheTemplate.clone(tpl); // GSDOM.parse(tpl.innerHTML);
 			if (!me.#connected) return;
 			if (me.isFlat) {
-				const slot = me.slot ? ` slot="${me.slot}" ` : '';
-				const body = GSDOM.parse(`<gs-block ${slot} ref=${me.id}>${tpl.innerHTML}</gs-block>`);
+				const body = GSDOM.parseWrapped(me, tpl.innerHTML);
 				me.#content = me.insertAdjacentElement('afterend', body);
 			} else {
 				me.shadow.adoptedStyleSheets = GSCacheStyles.styles;

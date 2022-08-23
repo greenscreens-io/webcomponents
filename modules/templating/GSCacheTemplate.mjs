@@ -216,7 +216,13 @@ export default class GSCacheTemplate {
 		// try to load override template (by GSElement tag name)
 		let template = false;
 
-		if (tpl.indexOf('#') !== 0) {
+		if (tpl.indexOf('#') == 0) {
+			//template = me.clone(document.getElementById(tpl.slice(1)));
+			template = document.getElementById(tpl.slice(1));
+			//template = template ? template.innerHTML : null;
+		}
+		
+		if (!template) {
 			template = me.loadHTMLTemplate(cached, name, tpl);
 		}
 

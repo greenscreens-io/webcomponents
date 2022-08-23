@@ -97,7 +97,7 @@ export default class GSContext extends GSElement {
   }
 
   get isFlat() {
-    return true;
+    return this.parentElement !== document.body;
   }
 
   /**

@@ -7,6 +7,7 @@
  * @module base/GSDOM
  */
 
+import GSElement from "./GSElement.mjs";
 import GSLog from "./GSLog.mjs";
 
 /**
@@ -21,19 +22,54 @@ export default class GSDOM {
 	/**
 	* Parse string into html DOM
 	*
-	* @param {string} html
-	* @param {string} mime
+	* @param {string} html Source to parse
+	* @param {boolean} single Return first element or all
+	* @param {string} mime Src mime type
 	* @return {HTMLElement}
 	*/
-	static parse(html = '', mime = 'text/html') {
+	static parse(html = '', single = false, mime = 'text/html') {
 		try {
 			const parser = new DOMParser();
 			const doc = parser.parseFromString(html, mime);
-			return doc.body ? doc.body.firstElementChild : doc.firstElementChild;
+			return single ? doc.body.firstElementChild : doc;
 		} catch (e) {
 			GSLog.error(null, e);
 			throw e;
 		}
+	}
+
+	/**
+	 * Parse source and auto wrap if required
+	 * @param {GSElement} own 
+	 * @param {string} src 
+	 * @returns {HTMLElement}
+	 */
+	static parseWrapped(own, src = '', forceWrap = false) {
+
+		const doc = GSDOM.parse(src);
+		const nodes = GSDOM.#fromNode(doc.head.children).concat(GSDOM.#fromNode(doc.body.children));
+		const wrap = forceWrap || nodes.length !== 1;
+
+		const tpl = GSDOM.wrap(own, wrap ?  null : nodes.shift());
+
+		while (nodes.length > 0) tpl.appendChild(nodes.shift());
+
+		return tpl;
+	}
+
+	static wrap(own, tpl) {
+		tpl = tpl || document.createElement('gs-block');
+		GSDOM.link(own, tpl);
+		return tpl;
+	}
+
+	static link(own, tpl) {
+		tpl.setAttribute('proxy', own.id);
+		if (own.slot) tpl.setAttribute('slot', own.slot);
+	}
+
+	static #fromNode(nodes) {
+		return nodes ? Array.from(nodes).filter(el => (!(el instanceof Text))) : [];
 	}
 
 	/**
@@ -138,7 +174,8 @@ export default class GSDOM {
 	static addSibling(target, newEl) {
 		const injectable = GSDOM.isHTMLElement(newEl) || GSDOM.isSVGElement(newEl);
 		const isOK = GSDOM.isHTMLElement(target) && injectable;
-		return isOK ? target.parentNode.insertBefore(newEl, target.nextElementSibling) : false;
+		const invalid = target === newEl && target.parentNode === newEl || target.nextElementSibling === newEl;
+		return isOK && !invalid ? target.parentNode.insertBefore(newEl, target.nextElementSibling) : false;
 	}
 
 	/**
@@ -149,11 +186,23 @@ export default class GSDOM {
 	 */
 	static appendChild(target, newEl) {
 		const isok = GSDOM.isHTMLElement(target) && GSDOM.isHTMLElement(newEl);
-		return isok ? target.appendChild(newEl) : false;
+		return isok && target !== newEl ? target.appendChild(newEl) : false;
 	}
 
 	/**
-	 * Remove genreated componnt from parent
+	 * Add node to a target at specified place
+	 * @param {HTMLElement} target 
+	 * @param {HTMLElement} newEl 
+	 * @returns {boolean}
+	 */
+	static insertAdjacent(target, newEl, placement) {
+		const isok = GSDOM.isHTMLElement(target) && GSDOM.isHTMLElement(newEl);
+		const invalid = target === newEl && target.parentNode === newEl
+		return isok && !invalid ? target.insertAdjacentElement(placement, newEl) : false;
+	}
+
+	/**
+	 * Remove genreted componnt from parent
 	 * @param {HTMLElement} el 
 	 * @returns {boolean}
 	 */

@@ -61,11 +61,6 @@ export default class GSTable extends GSElement {
         super();
     }
 
-    async getTemplate(val = '') {
-        //return super.getTemplate(val || '//table.tpl');
-        return super.getTemplate(val);
-    }
-
     attributeCallback(name = '', oldValue = '', newValue = '') {
         const me = this;
         me.#setCSS(me.#map[name], newValue);
@@ -88,15 +83,16 @@ export default class GSTable extends GSElement {
             const dataID = GSAttr.get('data');
             me.#store = await GSComponents.waitFor(dataID);
         }
+        
+        super.onReady();
 
-        me.attachEvent(me.shadow, 'sort', e => me.#onColumnSort(e.detail));
-        me.attachEvent(me.shadow, 'filter', e => me.#onColumnFilter(e.detail));
-        me.attachEvent(me.shadow, 'select', e => me.#onRowSelect(e.detail));
-        me.attachEvent(me.shadow, 'action', e => me.#onContextMenu(e));
+        me.attachEvent(me.self, 'sort', e => me.#onColumnSort(e.detail));
+        me.attachEvent(me.self, 'filter', e => me.#onColumnFilter(e.detail));
+        me.attachEvent(me.self, 'select', e => me.#onRowSelect(e.detail));
+        me.attachEvent(me.self, 'action', e => me.#onContextMenu(e));
         me.attachEvent(me, 'data', e => me.#onData(e));
 
         me.store.page = 1;
-        super.onReady();
     }
 
     get contextMenu() {
@@ -196,8 +192,9 @@ export default class GSTable extends GSElement {
     #onData(e) {
         e.preventDefault();
         const me = this;
+        if (!me.self) return;
         me.#processData(e.detail);
-        setTimeout(() => GSEvent.send(me.shadow, 'data', e.detail), 10);
+        setTimeout(() => GSEvent.send(me.self, 'data', e.detail), 10);
     }
 
     #processData(data) {
@@ -244,13 +241,13 @@ export default class GSTable extends GSElement {
             });
         }
         defs.push('</gs-header>');
-        const dom = GSDOM.parse(defs.join(''));
+        const dom = GSDOM.parse(defs.join(''), true);
         me.appendChild(dom);
     }
 
     #renderPage() {
         const me = this;
-        me.shadow.querySelector('tbody').render(me.#headers, me.#data, me.store.offset);
+        me.self.querySelector('tbody').render(me.#headers, me.#data, me.store.offset);
         const ctx = me.contextMenu;
         if (ctx) {
             ctx.close();
@@ -262,7 +259,7 @@ export default class GSTable extends GSElement {
         const me = this;
         if (!me.#hasHeaders) return;
         const html = me.querySelector('gs-header').render();
-        me.shadow.innerHTML = `<table class="${me.css}">${html}<tbody is="gs-tbody"></tbody></table><slot name="extra"></slot>`;
+        me.self.innerHTML = `<table class="${me.css}">${html}<tbody is="gs-tbody"></tbody></table><slot name="extra"></slot>`;
     }
 
     /**

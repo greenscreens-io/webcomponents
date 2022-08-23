@@ -155,7 +155,7 @@ export default class GSNotification extends GSElement {
 
   #showWeb(title = '', message = '', css = '', closable = false, timeout = 2) {
     const tpl = `<gs-toast slot="content" css="${css}"  closable="${closable}" timeout="${timeout}" message="${message}" title="${title}"></gs-toast>`;
-    const el = GSDOM.parse(tpl);
+    const el = GSDOM.parse(tpl, true);
     this.appendChild(el);
     return el;
   }

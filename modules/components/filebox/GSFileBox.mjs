@@ -267,6 +267,7 @@ export default class GSFileBox extends GSElement {
 
     static {
         customElements.define('gs-filebox', GSFileBox);
+        Object.seal(GSFileBox);
     }
 
 }

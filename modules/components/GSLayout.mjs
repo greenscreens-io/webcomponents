@@ -38,7 +38,7 @@ export default class GSLayout extends GSElement {
     }
 
     /**
-     * Determin if gs-layout is nested in another layout
+     * Determine if gs-layout is nested in another layout
      * If nested, rendering is flat.
      * @returns {boolean}
      */
@@ -47,14 +47,14 @@ export default class GSLayout extends GSElement {
         if (me.owner instanceof GSLayout) return true;
 
         const el = me.closest('gs-layout');
-        if (el && el != me) return true;
+        if (el && el !== me) return true;
 
         const style = window.getComputedStyle(me.parentElement);
         return style.display === 'flex' && style.flexGrow !== '0';
     }
 
     get anchor() {
-        return 'unwrap'
+        return 'afterend@self';
     }
 
     /**
@@ -68,7 +68,7 @@ export default class GSLayout extends GSElement {
 
         const id = GSAttr.get(el, 'id');
         const name = GSAttr.get(el, 'name');
-        const tpl = await GSItem.getTemplate(el);
+        const tpl = GSItem.getBody(el);
 
         const style = me.#style(el);
         const fixed = style.length > 10 ? true : false;

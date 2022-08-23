@@ -25,56 +25,54 @@
     <script type="module" src="/modules/components/GSTab.mjs"></script>
 
     <gs-css  url="/assets/css/custom_5.2.0.css" ></gs-css>  
-    <gs-css url="/assets/icons/bootstrap-icons.css"  notheme="true"></gs-css>  
+    <gs-css url="/assets/icons/bootstrap-icons.css"  notheme="true"></gs-css>
 
     <template id="test">
         Test
     </template>
+    
+     <template id="test2">
+        <p>About - This is internal text to be shown in tab panel</p>
+     </template>
+     
+     <template id="test3">
+          This is internal text to be shown in tab panel
+     </template>
 </head>
 <body>
     
-	<gs-template href="/demos/_header.html"></gs-template>
+    <gs-template href="/demos/_header.html"></gs-template>
 
     <gs-tab css="m-4 p-1 bg-light border shadow-sm" css-nav="nav-tabs nav-pills" css-pane="">
-        <gs-item title="Home"  template="//content.tpl" css-nav-wrap="" css-nav="nav-pill active" css-pane=""></gs-item>
+        <gs-item title="Home"  active="true" template="//content.tpl" css-nav-wrap="" css-nav="nav-pill active" css-pane=""></gs-item>
         <gs-item title="Test1" flat="true" template="//content2.tpl" icon="bi-alarm ms-1"></gs-item>
         <gs-item title="Test2" template="#test"></gs-item>
-        <gs-item title="Blog" css-nav-wrap="" css-nav="" css-pane="">
-            <!--
-                This is internal text to be shown in tab panel
-            -->
-        </gs-item>
-        <gs-item title="Contact" css-nav-wrap="" css-nav="" css-pane="">
-            <h1>This is internal text to be shown in tab panel</h1>
-        </gs-item>
+        <gs-item title="Blog" template="#test2" css-nav-wrap="" css-nav="" css-pane=""></gs-item>
+        <gs-item title="Contact" template="#test3" css-nav-wrap="" css-nav="" css-pane=""></gs-item>
     </gs-tab>
-    
+
 
     <gs-tab css="m-4 p-3 bg-light border shadow-sm" css-nav="nav-tabs nav-pills" css-pane="" placement="start">
-        <gs-item  title="About" css-nav="active" css-pane="">
-            <p>About - This is internal text to be shown in tab panel</p>
+        <gs-item active="true"  title="About" css-nav="active" css-pane="">
+            <template>
+                 <p>About - This is internal text to be shown in tab panel</p>
+            </template>
         </gs-item>
         <gs-item title="Contact" css-nav="" css-pane="">
-            <p>Contact - This is internal text to be shown in tab panel</p>
+            <template>
+                <p>Contact - This is internal text to be shown in tab panel</p>
+            </template>
         </gs-item>            
     </gs-tab>
 
     <gs-tab css="m-4 p-3 bg-light border shadow-sm" css-nav="nav-tabs nav-pills" css-pane="" placement="end">
-        <gs-item  title="About" css-nav="active" css-pane="">
-            <p>About - This is internal text to be shown in tab panel</p>
-        </gs-item>
-        <gs-item title="Contact" css-nav="" css-pane="">
-            <p>Contact - This is internal text to be shown in tab panel</p>
-        </gs-item>            
+        <gs-item active="true" template="#test2"  title="About" css-nav="active" css-pane=""></gs-item>
+        <gs-item template="#test3"  title="Contact" css-nav="" css-pane=""></gs-item>            
     </gs-tab>
 
     <gs-tab css="m-4 p-3 bg-light border shadow-sm" css-nav="nav-pills" css-pane="" placement="bottom">
-        <gs-item  title="About" css-nav-wrap="" css-nav="active" css-pane="">
-            <p>About - This is internal text to be shown in tab panel</p>
-        </gs-item>
-        <gs-item title="Contact" css-nav-wrap="" css-nav="" css-pane="">
-            <p>Contact - This is internal text to be shown in tab panel</p>
-        </gs-item>            
+        <gs-item active="true" template="#test2"  title="About" css-nav-wrap="" css-nav="active" css-pane=""></gs-item>
+        <gs-item template="#test3" title="Contact" css-nav-wrap="" css-nav="" css-pane=""></gs-item>
     </gs-tab>
 
 </body>

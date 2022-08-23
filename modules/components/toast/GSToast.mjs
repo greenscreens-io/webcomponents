@@ -108,10 +108,6 @@ export default class GSToast extends GSElement {
     return true;
   }
 
-  get anchor() {
-    return 'self';
-  }
-
   get title() {
     return GSAttr.get(this, 'title');
   }
