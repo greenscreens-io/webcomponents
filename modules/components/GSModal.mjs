@@ -53,6 +53,7 @@ export default class GSModal extends GSElement {
     me.attachEvent(me, 'click', me.#onClick.bind(me));
     me.attachEvent(me, 'form', me.#onForm.bind(me));
     me.attachEvent(me, 'modal', me.#onModal.bind(me));
+    me.attachEvent(document, 'keyup', me.#onEscape.bind(me));
     super.onReady();
     if (me.visible) me.open();
   }
@@ -78,6 +79,12 @@ export default class GSModal extends GSElement {
     if (e.detail.type !== type) return false;
     const parent = GSComponents.getOwner(own, comp);
     return parent == this;
+  }
+
+  #onEscape(e) {
+    const me = this;
+    if (!me.cancelable) return;
+    if (e.key === 'Escape') me.close();
   }
 
   #onClick(e) {
@@ -302,7 +309,7 @@ export default class GSModal extends GSElement {
   }
 
   async getTemplate(val = '') {
-    if (val) return super.getTemplate(val || '//modal.tpl');
+    if (val) return super.getTemplate(val);
     const me = this;
     return `
         <div class="modal d-none fade">
