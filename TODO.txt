@@ -1,7 +1,9 @@
 -----------------
 onReady after child templates loaded
 findEl across all subchild elements, including gs-template and gs-elements
-i18n support <gs-text lang="hr" key="">Default value</gs-text>
+i18n support <gs-i18n lang="hr"></gs-i18n>
+
+{HELLO_WORLD}
 
 validate alloed nodes - gs-table
 https://developer.mozilla.org/en-US/docs/Web/API/ElementInternals
