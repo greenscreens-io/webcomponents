@@ -3,3 +3,7 @@ onReady after child templates loaded
 findEl across all subchild elements, including gs-template and gs-elements
 modal esc key to close 
 i18n support <gs-text lang="hr" key="">Default value</gs-text>
+
+validate alloed nodes - gs-table
+https://developer.mozilla.org/en-US/docs/Web/API/ElementInternals
+https://developer.mozilla.org/en-US/docs/Web/API/HTMLSlotElement

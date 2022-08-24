@@ -26,6 +26,7 @@ export default class GSLayout extends GSElement {
 
     constructor() {
         super();
+        GSItem.validate(this, this.tagName);
     }
 
     async getTemplate(val = '') {

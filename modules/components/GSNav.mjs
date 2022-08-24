@@ -34,6 +34,7 @@ export default class GSNav extends GSElement {
 
     constructor() {
         super();
+        GSItem.validate(this, this.tagName);
     }
 
     attributeCallback(name = '', oldValue = '', newValue = '') {

@@ -22,6 +22,11 @@ export default class GSColumn extends HTMLElement {
         customElements.define('gs-column', GSColumn);
     }
 
+    constructor() {
+        super();
+        GSItem.validate(this, this.tagName);
+    }
+
     /*
     connectedCallback() {
         const me = this;

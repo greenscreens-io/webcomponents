@@ -37,6 +37,7 @@ export default class GSList extends GSElement {
 
     constructor() {
         super();
+        GSItem.validate(this, this.tagName);
     }
 
     get css() {

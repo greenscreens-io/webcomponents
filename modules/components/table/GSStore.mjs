@@ -13,6 +13,8 @@ import GSEvent from "../../base/GSEvent.mjs";
 import GSComponents from "../../base/GSComponents.mjs";
 import GSData from "../../base/GSData.mjs";
 import GSAttr from "../../base/GSAttr.mjs";
+import GSItem from "../../base/GSItem.mjs";
+import GSDOM from "../../base/GSDOM.mjs";
 
 /**
  * Table data handler, pager, loader
@@ -46,6 +48,7 @@ export default class GSStore extends HTMLElement {
 
     constructor() {
         super();
+        GSItem.validate(this, this.tagName);
     }
 
     attributeChangedCallback(name = '', oldValue = '', newValue = '') {

@@ -12,6 +12,8 @@ import GSComponents from "../../base/GSComponents.mjs";
 import GSDOM from "../../base/GSDOM.mjs";
 import GSElement from "../../base/GSElement.mjs";
 import GSEvent from "../../base/GSEvent.mjs";
+import GSID from "../../base/GSID.mjs";
+import GSItem from "../../base/GSItem.mjs";
 import GSUtil from "../../base/GSUtil.mjs";
 
 // use GSStore
@@ -25,6 +27,7 @@ import GSUtil from "../../base/GSUtil.mjs";
  */
 export default class GSTable extends GSElement {
 
+    static #tagList = ['GS-HEADER', 'GS-STORE'];
     #select = true;
     #multiselect = false;
 
@@ -60,6 +63,16 @@ export default class GSTable extends GSElement {
 
     constructor() {
         super();
+        this.#validateAllowed();
+    }
+
+    #validateAllowed() {
+        const me = this;
+        let list = Array.from(me.childNodes).filter(el => el.slot && el.slot !== 'extra');
+        if (list.length > 0) throw new Error(`Custom element injection must contain slot="extra" attribute! Element: ${me.tagName}, ID: ${me.id}`);
+        list = Array.from(me.childNodes).filter(el => !el.slot);
+        const allowed = GSDOM.isAllowed(list, GSTable.#tagList);
+        if (!allowed) throw new Error(GSDOM.toValidationError(me, GSTable.#tagList));
     }
 
     attributeCallback(name = '', oldValue = '', newValue = '') {

@@ -434,10 +434,10 @@ export default class GSElement extends HTMLElement {
 			return me.remove();
 		}
 
+		if (!me.id) me.id = GSID.id;
 		me.#opts = me.#injection();
 		me.#proxied = me.#opts.ref;
 
-		if (!me.id) me.setAttribute('id', GSID.id);
 		GSComponents.store(me);
 		me.#render();
 	}
@@ -501,11 +501,7 @@ export default class GSElement extends HTMLElement {
 
 	#isConfig() {
 		const me = this;
-		let pe = me.parentElement;
-		if (pe && pe.tagName == 'GS-ITEM') return true;
-		pe = GSComponents.getOwner(me, 'GS-ITEM');
-		if (pe && pe.tagName == 'GS-ITEM') return true;
-		pe = GSComponents.getOwner(me, GSElement);
+		const pe = GSComponents.getOwner(me, GSElement);
 		return pe && pe.isProxy;
 	}
 

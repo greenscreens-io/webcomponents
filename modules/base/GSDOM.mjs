@@ -526,6 +526,44 @@ export default class GSDOM {
 		ts.forEach(t => t.nodeValue = t.wholeText.replaceAll(/\u0020{4}/g, '\t').replaceAll(/(\n*\t*)*(?=\n\t*)/g, ''));
 	}
 
+	/**
+	 * Validate against provided list, if child elements allowed inside provided element
+	 * @param {HTMLElement} el Ellment which slild list to validate
+	 * @param {string} tagName Expected owner element tag name
+	 * @param {string} whiteList Uppercase list of tag names allowed as child
+	 * @param {boolean} asState return state as bool or throw an error (default)
+	 * @returns {boolean} return true if validation is ok.
+	 * @throws {Error}
+	 */
+	 static validate(own, tagName, whiteList, asState = false) {
+		if(own.tagName !== tagName) {
+			if (asState) return false;
+			throw new Error(`Owner element : ${own.tagName}, id:${own.id} is not of excpected type: ${tagName}`);
+		} 
+		//const ok = Array.from(own.childNodes).filter(el => GSDOM.isAllowed(el, whiteList)).length === 0;
+		const ok = GSDOM.isAllowed(Array.from(own.childNodes), whiteList);
+		if (ok) return true;
+		if (asState) return false;
+		const msg = GSDOM.toValidationError(own, whiteList);
+		throw new Error(msg);
+	}
+
+	/**
+	 * Check against provided list, if child elements allowed inside provided element
+	 * @param {HTMLElement|Array<HTMLElement>} el Element which childs to validate against provided list
+	 * @param {string} whiteList Uppercase list of tag names allowed as child nodes
+	 * @returns {boolean} return tr ue if validation is ok.
+	 */
+	static isAllowed(el, whiteList) {
+		if(Array.isArray(el)) return el.filter(el => GSDOM.isAllowed(el, whiteList)).length === 0;
+		return !(el instanceof Text || el instanceof Comment) && ( whiteList.indexOf(el.tagName) === -1);
+	}
+
+	static toValidationError(own, whiteList) {
+		const list =  `<${whiteList.join('>, <')}>`;
+		return `${own.tagName} ID: ${own.id} allows as a child nodes only : ${list}!`;
+	}
+
 	static {
 		Object.seal(GSDOM);
 		window.GSDOM = GSDOM;

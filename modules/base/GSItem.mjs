@@ -31,6 +31,8 @@ export default class GSItem extends HTMLElement {
 
 	static #selectable = 'data-selectable';
 
+	static #tags = ['GS-ITEM', 'TEMPLATE']
+
 	static {
 		customElements.define('gs-item', GSItem);
 		Object.seal(GSItem);
@@ -38,6 +40,11 @@ export default class GSItem extends HTMLElement {
 
 	constructor() {
 		super();
+		GSItem.validate(this);
+	}
+
+	static validate(own, tagName = 'GS-ITEM') {
+		return GSDOM.validate(own, tagName, GSItem.#tags);
 	}
 
 	/**

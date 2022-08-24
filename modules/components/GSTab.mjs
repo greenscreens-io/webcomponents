@@ -42,6 +42,7 @@ export default class GSTab extends GSElement {
 
   constructor() {
     super();
+    GSItem.validate(this, this.tagName);
   }
 
   attributeCallback(name = '', oldValue = '', newValue = '') {
