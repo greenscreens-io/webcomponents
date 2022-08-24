@@ -166,7 +166,7 @@ export default class GSCacheTemplate {
 			let template = null;
 			if (cached) template = me.load(o);
 			if (template) return template;
-			template = await GSLoader.load(o);
+			template = await GSLoader.loadTemplate(o);
 			return me.initTemplate(cached, name, template);
 		} catch (e) {
 			GSLog.error(me, e);

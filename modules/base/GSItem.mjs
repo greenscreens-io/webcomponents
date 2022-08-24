@@ -55,7 +55,7 @@ export default class GSItem extends HTMLElement {
 	*/
 	static async getTemplate(el) {
 		let tpl = GSItem.getTemplate(el);
-		const cnt = tpl ? await GSLoader.load(tpl) : '';
+		const cnt = tpl ? await GSLoader.loadTemplate(tpl) : '';
 		if (cnt) return cnt;
 		tpl = el.querySelector('template');
 		return tpl ? tpl.innerHTML : '';

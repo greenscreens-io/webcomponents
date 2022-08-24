@@ -271,7 +271,10 @@ export default class GSElement extends HTMLElement {
 	 */
 	updateUI() {
 		const me = this;
-		if (me.shadowRoot) me.shadowRoot.adoptedStyleSheets = GSCacheStyles.styles;
+		if (!me.shadowRoot) return;
+		me.shadowRoot.adoptedStyleSheets = GSCacheStyles.styles;
+		const i18n = GSComponents.find('gs-i18n');
+		if (i18n) i18n.translateDOM(me.shadowRoot);
 	}
 
 	/**
@@ -553,7 +556,6 @@ export default class GSElement extends HTMLElement {
 				} else {
 					me.#content = me.#shadow;
 					me.#content.innerHTML = src;
-					me.updateUI();
 				}
 				return;
 			}
@@ -562,15 +564,15 @@ export default class GSElement extends HTMLElement {
 			if (inject.target === me.parentElement) {
 				me.#content = me.isFlat ? me : me.#shadow;
 				me.#content.innerHTML = src;
-				me.updateUI();
 				return;
 			}
-
+			
 			me.#content = GSDOM.parseWrapped(me, src, true);
 			GSDOM.link(me, me.#content);
 			GSDOM.insertAdjacent(inject.target, me.#content, inject.anchor);
-
+			
 		});
+		me.updateUI();
 	}
 
 	#injection() {

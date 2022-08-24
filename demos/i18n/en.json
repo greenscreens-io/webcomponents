@@ -1,0 +1,7 @@
+{
+    "HELLO_WORLD" : "Hello world!!",
+    "TESTING" : "Testing Internationalization",
+    "USER_NAME" : "Username",
+    "PASSWORD" : "Password",
+    "MAIL_ADDRESS" : "Email address"
+}

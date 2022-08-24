@@ -134,13 +134,23 @@ export default class GSUtil {
 	}
 
 	/**
-	 * match if strings ha data
+	 * Check if strings has data
 	 * 
 	 * @param {string} val 
 	 * @returns {boolean}
 	 */
 	static isStringNonEmpty(val = '') {
-		if (GSUtil.isString(val)) return val.trim().length > 0;
+		return !GSUtil.isStringEmpty(val);
+	}
+
+	/**
+	 * Check if strings is empty
+	 * 
+	 * @param {string} val 
+	 * @returns {boolean}
+	 */
+	static isStringEmpty(val = '') {
+		if (GSUtil.isString(val)) return val.trim().length === 0;
 		return false;
 	}
 

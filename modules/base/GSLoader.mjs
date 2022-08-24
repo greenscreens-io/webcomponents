@@ -77,7 +77,9 @@ export default class GSLoader {
             return el ? el.innerHTML : def;
         }
         const isURL = GSUtil.isURL(def);
-        return isURL ? GSLoader.loadSafe(def) : def;
+        if (!isURL) return def;
+        def = GSLoader.getTemplateURL(def);
+        return  GSLoader.loadSafe(def);
     }
 
     /**
@@ -112,6 +114,18 @@ export default class GSLoader {
     }
 
     /**
+     * Load html template (used for template cache)
+     * @param {string} val Full or partial url path
+     * @param {string} method HTTP methog get|put|post
+     * @returns {string}
+     * @throws {Error}
+     */
+    static async loadTemplate(val = '', method = 'GET') {
+        const url = GSLoader.getTemplateURL(val);
+        return await GSLoader.load(url, method);
+    }
+
+    /**
      * Load remote data as text (for loading templates)
      * 
      * @param {string} val Full or partial url path
@@ -119,10 +133,13 @@ export default class GSLoader {
      * @param {boolean} asjson Parse returned data as JSON
      * @returns {object|string}
      */
-    static async load(val = '', method = 'GET', asjson = false) {
+    static async load(val = '', method = 'GET', headers, asjson = false) {
         let data = null;
-        const url = GSLoader.getTemplateURL(val);
-        const res = await fetch(url, { method: method });
+        const ct = 'Content-Type';
+        headers = headers || {};
+        headers[ct] = asjson ? 'application/json' : headers[ct] || 'text/plain';
+        const url = GSLoader.normalizeURL(val);
+        const res = await fetch(url, { method: method, headers : headers});
         if (res.ok) data = asjson ? await res.json() : await res.text();
         return data;
     }

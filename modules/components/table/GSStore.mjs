@@ -14,7 +14,6 @@ import GSComponents from "../../base/GSComponents.mjs";
 import GSData from "../../base/GSData.mjs";
 import GSAttr from "../../base/GSAttr.mjs";
 import GSItem from "../../base/GSItem.mjs";
-import GSDOM from "../../base/GSDOM.mjs";
 
 /**
  * Table data handler, pager, loader
@@ -62,6 +61,11 @@ export default class GSStore extends HTMLElement {
 
         if (GSComponents.hasSetter(me, name)) {
             me[name] = newValue;
+        }
+
+        if (name === 'src') {
+            me.#data = [];
+            me.reload();
         }
 
     }
@@ -384,7 +388,7 @@ export default class GSStore extends HTMLElement {
         sort = me.#formatSort(sort || me.sort);
         let data = [];
 
-        const simple = GSUtil.isStringNonEmpty(filter);
+        const simple = GSUtil.isString(filter) && GSUtil.isStringNonEmpty(filter);
 
         if (!simple && (me.remote || me.data.length == 0)) {
             const url = me.#toURL(me.src, skip, limit, filter, sort);

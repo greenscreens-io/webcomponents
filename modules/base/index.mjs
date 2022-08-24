@@ -15,3 +15,5 @@ export { default as GSPopper } from "./GSPopper.mjs";
 export { default as GSItem } from "./GSItem.mjs";
 export { default as GSBlock } from "./GSBlock.mjs";
 export { default as GSElement } from "./GSElement.mjs";
+export { default as GSi18n } from "./GSi18n.mjs";
+
