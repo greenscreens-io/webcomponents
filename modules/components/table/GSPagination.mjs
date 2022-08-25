@@ -8,8 +8,8 @@
  */
 
 import GSElement from "../../base/GSElement.mjs";
-import GSComponents from "../../base/GSComponents.mjs";
 import GSAttr from "../../base/GSAttr.mjs";
+import GSDOM from "../../base/GSDOM.mjs";
 
 /**
  * Table pagination
@@ -64,7 +64,7 @@ export default class GSPagination extends GSElement {
         const me = this;
         requestAnimationFrame(() => {
             let page = Math.floor((me.store.page - 1) / me.pages) * me.pages + 1;
-            me.findAll('a[name=""]').forEach(el => {
+            me.queryAll('a[name=""]').forEach(el => {
                 el.parentElement.classList.remove('active', 'disabled', 'd-none');
                 if (page == me.store.page) el.parentElement.classList.add('active');
                 if (page > me.store.pages) el.parentElement.classList.add('disabled', 'd-none');
@@ -93,11 +93,11 @@ export default class GSPagination extends GSElement {
     onReady() {
         const me = this;
         me.attachEvent(me.store, 'data', me.#onStore.bind(me));
-        me.findAll('a').forEach(el => me.attachEvent(el, 'click', me.#onClick.bind(me)));
+        me.queryAll('a').forEach(el => me.attachEvent(el, 'click', me.#onClick.bind(me)));
     }
 
     get table() {
-        return GSComponents.getOwner(this, 'GS-TABLE');
+        return GSDOM.closest(this, 'GS-TABLE');
     }
 
     get store() {

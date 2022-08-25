@@ -77,7 +77,7 @@ export default class GSModal extends GSElement {
 
   #validateCaller(e, own, type, comp) {
     if (e.detail.type !== type) return false;
-    const parent = GSComponents.getOwner(own, comp);
+    const parent = GSDOM.closest(own, comp);
     return parent == this;
   }
 
@@ -103,7 +103,7 @@ export default class GSModal extends GSElement {
 
   #setSize(size = '') {
     const me = this;
-    const dlg = me.findEl('.modal-dialog');
+    const dlg = me.query('.modal-dialog');
     if (!dlg) return;
     requestAnimationFrame(() => {
       dlg.classList.remove('modal-xl', 'modal-lg');
@@ -200,22 +200,22 @@ export default class GSModal extends GSElement {
   }
 
   get #buttonOkEl() {
-    return this.findEl('.modal-ok');
+    return this.query('.modal-ok');
   }
 
   get #buttonCancelEl() {
-    return this.findEl('.modal-cancel');
+    return this.query('.modal-cancel');
   }
 
   #showEL(name) {
-    const el = this.findEl(name);
+    const el = this.query(name);
     if (!el) return;
     el.classList.remove('d-none');
     el.classList.add('show', 'd-block');
   }
 
   #hideEL(name) {
-    const el = this.findEl(name);
+    const el = this.query(name);
     if (!el) return;
     el.classList.add('d-none');
     el.classList.remove('show', 'd-block');
@@ -226,12 +226,26 @@ export default class GSModal extends GSElement {
     GSDOM.toggleClass(me.#buttonOkEl, !me.closable);
     GSDOM.toggleClass(me.#buttonCancelEl, !me.cancelable);
     const css = `justify-content-${me.align}`;
-    const footer = me.findEl('.modal-footer');
+    const footer = me.query('.modal-footer');
     GSDOM.toggleClass(footer, true, css);
   }
+  
+	/**
+	 * Search for named slot tag or css selector 
+	 * @param {string} name Tagged slot  name
+	 * @param {*} qry CSS selector
+	 * @returns {HTMLElement|Array<HTMLElement>}
+	 */
+	#findSlotOrEl(name = '', qry = '') {
+    const me = this;
+		const el = name ? me.self.querySelector(`[slot="${name}"]`) : null;
+		if (!el) el = me.self.querySelector(qry);
+    return el;
+	}
+
 
   get title() {
-    return GSDOM.findSlotOrEl(this, 'title', '.modal-title');
+    return this.#findSlotOrEl(this, 'title', '.modal-title');
   }
 
   set title(val = '') {
@@ -239,7 +253,7 @@ export default class GSModal extends GSElement {
   }
 
   get body() {
-    return GSDOM.findSlotOrEl(this, 'body', '.modal-body');
+    return this.#findSlotOrEl(this, 'body', '.modal-body');
   }
 
   set body(val = '') {

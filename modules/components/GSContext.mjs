@@ -10,7 +10,6 @@
 import GSElement from "../base/GSElement.mjs";
 import GSUtil from "../base/GSUtil.mjs";
 import GSItem from "../base/GSItem.mjs";
-import GSComponents from "../base/GSComponents.mjs";
 import GSLoader from "../base/GSLoader.mjs";
 import GSEvent from "../base/GSEvent.mjs";
 import GSAttr from "../base/GSAttr.mjs";
@@ -94,7 +93,7 @@ export default class GSContext extends GSElement {
     const me = this;
     me.#attached = false;
     me.removeEvent(document, 'contextmenu');
-    GSComponents.findTarget(me, me.target).forEach(target => me.removeEvent(target, 'contextmenu'));
+    GSDOM.queryAll(document.documentElement, me.target).forEach(target => me.removeEvent(target, 'contextmenu'));
     me.#attachTarget();
   }
 
@@ -200,15 +199,15 @@ export default class GSContext extends GSElement {
   }
 
   get #menu() {
-    return this.findEl('.dropdown-menu');
+    return this.query('.dropdown-menu');
   }
 
   get #items() {
-    return this.findAll('.dropdown-item', true);
+    return this.queryAll('.dropdown-item', true);
   }
 
   get #submenus() {
-    return this.findAll('.submenu', true);
+    return this.queryAll('.submenu', true);
   }
 
   #onResize(e) {
@@ -276,9 +275,9 @@ export default class GSContext extends GSElement {
   #onSubmenu(e) {
     const li = e.target.parentElement;
     const ul = li.parentElement;
-    const sub = GSDOM.findEl('.submenu', li);
+    const sub = GSDOM.query(li, '.submenu');
     requestAnimationFrame(() => {
-      GSDOM.findAll('.submenu', ul, true)
+      GSDOM.queryAll(ul, '.submenu')
         .forEach(el => el.classList.remove('show'));
       if (sub) {
         sub.style.top = `${sub.parentElement.offsetTop}px`;
@@ -302,7 +301,7 @@ export default class GSContext extends GSElement {
     const me = this;
     if (!me.target) return;
     if (me.#attached) return;
-    const targets = GSComponents.findTarget(me, me.target);
+    const targets = GSDOM.queryAll(document.documentElement, me.target);
     if (targets.length === 0) {
       if (me.#online) {
         await GSUtil.timeout(1000);
@@ -366,7 +365,6 @@ export default class GSContext extends GSElement {
     if (!GSUtil.isJsonType(data)) return;
     const me = this;
     me.innerHTML = GSItem.generateItem(data);
-    GSComponents.remove(me);
     GSEvent.deattachListeners(me);
     me.connectedCallback();
   }

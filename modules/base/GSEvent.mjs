@@ -87,7 +87,7 @@ export default class GSEvent {
 	 */
 	static listen(own, qry, event, callback, opt = false) {
 		if (!qry && own) return own.addEventListener(event, callback, opt);
-		return GSDOM.findAll(qry, own).map(el => el.addEventListener(event, callback, opt));
+		return GSDOM.queryAll(own, qry).map(el => el.addEventListener(event, callback, opt));
 	}
 
 	/**
@@ -100,7 +100,7 @@ export default class GSEvent {
 	 */
 	static unlisten(own, qry, event, callback) {
 		if (!qry && own) return own.removeEventListener(event, callback);
-		return GSDOM.findAll(qry, own).map(el => el.removeEventListener(event, callback));
+		return GSDOM.queryAll(own, qry).map(el => el.removeEventListener(event, callback));
 	}
 
 	/**

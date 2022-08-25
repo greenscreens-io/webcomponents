@@ -117,7 +117,6 @@ export default class GSList extends GSElement {
         if (!GSUtil.isJsonType(data)) return;
         const me = this;
         me.innerHTML = GSItem.generateItem(data);
-        GSComponents.remove(me);
         GSEvent.deattachListeners(me);
         me.connectedCallback();
     }

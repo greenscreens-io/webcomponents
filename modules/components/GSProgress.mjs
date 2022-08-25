@@ -60,7 +60,7 @@ export default class GSProgress extends GSElement {
     }
 
     get #bar() {
-        return this.findEl('.progress-bar');
+        return this.query('.progress-bar');
     }
 
     get isFlat() {

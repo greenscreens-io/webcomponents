@@ -145,7 +145,7 @@ export default class GSSplitter extends GSElement {
     }
 
     get #splitter() {
-        return this.findEl('div');
+        return this.query('div');
     }
 
     #load() {

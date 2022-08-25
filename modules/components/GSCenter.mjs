@@ -31,7 +31,7 @@ export default class GSCenter extends GSElement {
    attributeCallback(name = '', oldValue = '', newValue = '') {
       const me = this;
       if (name === 'css') {
-         const el = me.findEl('div');
+         const el = me.query('div');
          GSDOM.toggleClass(el, false, oldValue);
          GSDOM.toggleClass(el, true, newValue);
       }

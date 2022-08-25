@@ -252,19 +252,19 @@ export default class GSOffcanvas extends GSElement {
   }
 
   get #canvasEl() {
-    return this.findEl('.offcanvas');
+    return this.query('.offcanvas');
   }
 
   get #titleEl() {
-    return this.findEl('.offcanvas-title');
+    return this.query('.offcanvas-title');
   }
 
   get #backdropEl() {
-    return this.findEl('.offcanvas-backdrop');
+    return this.query('.offcanvas-backdrop');
   }
 
   get #closeEl() {
-    return this.findEl('.btn-close[data-bs-dismiss="offcanvas"]');
+    return this.query('.btn-close[data-bs-dismiss="offcanvas"]');
   }
 
   get #headSlot() {
@@ -275,7 +275,7 @@ export default class GSOffcanvas extends GSElement {
     const me = this;
     const title = me.title ? `<div class="offcanvas-title ${me.cssTitle}">${me.title}</div>` : '';
     const closeBtn = me.closable ? `<button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"></button>` : '';
-    const header = title || closeBtn || me.#headSlot() ? `<div class="offcanvas-header ${me.cssHead}"><slot name="header">${title}${closeBtn}</slot></div>` : '';
+    const header = title || closeBtn || me.#headSlot ? `<div class="offcanvas-header ${me.cssHead}"><slot name="header">${title}${closeBtn}</slot></div>` : '';
     return `
       <div class="offcanvas offcanvas-${me.placement} overflow-hidden ${me.css}" data-bs-scroll="${me.scroll}" data-bs-backdrop="${me.backdrop}" tabindex="-1">      
       ${header}

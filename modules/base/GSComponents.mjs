@@ -77,54 +77,6 @@ export default class GSComponents {
         return el;
     }
 
-    /**
-     * Find all elements that match target query
-     * @param {HTMLElement} own Owner element 
-     * @param {string} tgt Target element selector
-     * @returns {Array<HTMLElement>}
-     */
-    static findTarget(own, tgt) {
-        const me = own;
-        if (!tgt) return [];
-        const parent = GSDOM.parent(me);
-        // in parent tree
-        let target = GSDOM.findAll(tgt, parent, true);
-        // in parent shadow
-        if (target.length === 0) target = GSDOM.findAll(tgt, GSDOM.unwrap(parent), true);
-        // whole document
-        if (target.length === 0) target = GSDOM.findAll(tgt, document, true);
-        // all component shadows
-        if (target.length === 0) target = GSComponents.queryAll(tgt);
-        return target;
-    }
-
-    /**
-     * Find all elements matched by CSS selector in all shadow doms
-     * @param {string} value A CSS query selector
-     * @returns {Array<HTMLElement>}
-     */
-    static queryAll(value = '') {
-        const data = GSComponents.findAll(null, true, true)
-            .filter(el => GSFunction.isFunction(el.findAll))
-            .map(el => Array.from(el.findAll(value)))
-            .filter(o => o.length > 0)
-            .flat();
-        return GSData.uniqe(data);
-    }
-
-    /**
-     * Find first element matched by CSS selector in all shadow doms
-     * @param {string} value A css query selector
-     * @returns {HTMLElement}
-     */
-    static query(value = '') {
-        return GSComponents.findAll(null, true, true)
-            .filter(el => GSFunction.isFunction(el.findEl))
-            .map(el => el.findEl(value))
-            .filter(o => o != null)
-            .shift();
-    }
-
     static #waitForInternal(name = '', timeout = 0, r) {
         const fn = (e) => {
             const el = e.detail;

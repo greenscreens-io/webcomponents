@@ -8,7 +8,6 @@
  */
 
 import GSAttr from '../base/GSAttr.mjs';
-import GSComponents from '../base/GSComponents.mjs';
 import GSDate from '../base/GSDate.mjs';
 import GSDOM from '../base/GSDOM.mjs';
 import GSElement from '../base/GSElement.mjs'
@@ -58,9 +57,9 @@ export default class GSCalendar extends GSElement {
     onReady() {
         const me = this;
         me.#update();
-        me.attachEvent(me.findEl('.header'), 'click', me.#onArrow.bind(me));
-        me.attachEvent(me.findEl('div'), 'click', me.#onDay.bind(me));
-        me.attachEvent(me.yearEl, 'change', me.#onYear.bind(me));
+        me.attachEvent(me.query('.header'), 'click', me.#onArrow.bind(me));
+        me.attachEvent(me.query('div'), 'click', me.#onDay.bind(me));
+        me.attachEvent(me.query, 'change', me.#onYear.bind(me));
         me.attachEvent(me.monthEl, 'change', me.#onMonth.bind(me));
         super.onReady();
     }
@@ -174,23 +173,23 @@ export default class GSCalendar extends GSElement {
     }
 
     get monthEl() {
-        return this.findEl('.month');
+        return this.query('.month');
     }
 
     get yearEl() {
-        return this.findEl('.year');
+        return this.query('.year');
     }
 
     get prevEl() {
-        return this.findEl('.prev');
+        return this.query('.prev');
     }
 
     get nextEl() {
-        return this.findEl('.next');
+        return this.query('.next');
     }
 
     get arrowsEl() {
-        return this.findEl('.arrow');
+        return this.query('.arrow');
     }
 
     get arrowNext() {
@@ -270,7 +269,7 @@ export default class GSCalendar extends GSElement {
     #updateTarget(date) {
         const me = this;
         if (!me.target) return;
-        const tgt = GSComponents.query(me.target) || document.body.querySelector(me.target);
+        const tgt = GSDOM.query(document.documentElement, me.target);
         if (!tgt) return;
 
         if (tgt instanceof HTMLInputElement) {
@@ -282,8 +281,8 @@ export default class GSCalendar extends GSElement {
 
     #update() {
         const me = this;
-        me.findAll('.days').forEach(el => el.remove());
-        me.findEl('.weeks').insertAdjacentHTML('afterend', me.#daysHTML());
+        me.queryAll('.days').forEach(el => el.remove());
+        me.query('.weeks').insertAdjacentHTML('afterend', me.#daysHTML());
         me.monthEl.selectedIndex = me.#date.month;
         me.yearEl.value = me.#date.getFullYear();
     }

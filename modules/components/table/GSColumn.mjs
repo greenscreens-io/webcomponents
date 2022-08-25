@@ -8,6 +8,7 @@
  */
 
 import GSAttr from "../../base/GSAttr.mjs";
+import GSDOM from "../../base/GSDOM.mjs";
 import GSID from "../../base/GSID.mjs";
 import GSItem from "../../base/GSItem.mjs";
 
@@ -26,19 +27,6 @@ export default class GSColumn extends HTMLElement {
         super();
         GSItem.validate(this, this.tagName);
     }
-
-    /*
-    connectedCallback() {
-        const me = this;
-        if (!me.id) me.setAttribute('id', GSID.id);
-        GSComponents.store(me);
-    }
-
-    disconnectedCallback() {
-        const me = this;
-        GSComponents.remove(me);
-    }
-    */
 
     render() {
         const me = this;
@@ -104,7 +92,7 @@ export default class GSColumn extends HTMLElement {
     }
 
     get table() {
-        return GSComponents.getOwner(this, 'GS-TABLE')
+        return GSDOM.closest(this, 'GS-TABLE');
     }
 
     get cssFilter() {

@@ -263,7 +263,7 @@ export default class GSElement extends HTMLElement {
 	 */
 	get self() {
 		const me = this;
-		return me.isProxy && GSDOM.isGSElement(me.#content) ? me.#content.self : me.#content;
+		return me.isProxy && me.#content instanceof GSElement ? me.#content.self : me.#content;
 	}
 
 	/**
@@ -290,9 +290,17 @@ export default class GSElement extends HTMLElement {
 	 * @param {string} name 
 	 * @returns {HTMLElement}
 	 */
-	getEl(name = '') {
-		const me = this.self;
-		return me && me.id == name ? me : GSDOM.getEl(name, this.self);
+	getByID(query = '') {
+		return GSDOM.getByID(this, query);
+	}
+
+	/**
+	 * Find closest top element by CSS selector
+	 * @param {string} query 
+	 * @returns {HTMLElement}
+	 */
+	closest(query = '') {
+		return GSDOM.closest(this, query);
 	}
 
 	/**
@@ -300,18 +308,17 @@ export default class GSElement extends HTMLElement {
 	 * @param {string} name 
 	 * @returns {HTMLElement}
 	 */
-	findEl(name = '') {
-		const me = this.self;
-		return me && me.matches && me.matches(name) ? me : GSDOM.findEl(name, this.self);
+	query(query = '') {
+		return GSDOM.query(this.self, query);
 	}
 
 	/**
 	 * Find multiple elements by CSS selector (top level is this element)
-	 * @param {string} name 
-	 * @returns {HTMLElement}
+	 * @param {string} query 
+	 * @returns {Array<HTMLElement>}
 	 */
-	findAll(name = '', asArray = false) {
-		return GSDOM.findAll(name, this.self, asArray);
+	queryAll(query = '') {
+		return GSDOM.queryAll(this.self, query);
 	}
 
 	/**
@@ -601,7 +608,7 @@ export default class GSElement extends HTMLElement {
 				el = me.parentElement;
 				break;
 			default:
-				el = GSComponents.query(target);
+				el = GSDOM.query(document.documentElement, target);
 		}
 
 		if (!el) {

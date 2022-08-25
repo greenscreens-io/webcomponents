@@ -73,7 +73,7 @@ export default class GSLoader {
     static async getTemplate(def = '') {
         const isRef = def.startsWith('#');
         if (isRef) {
-            const el = GSDOM.findEl(def);
+            const el = GSDOM.query(document.documentElement, def);
             return el ? el.innerHTML : def;
         }
         const isURL = GSUtil.isURL(def);
@@ -154,7 +154,7 @@ export default class GSLoader {
      */
     static async loadSafe(url = '', method = 'GET', asjson = false, dft) {
         try {
-            return GSLoader.load(url, method, asjson);
+            return GSLoader.load(url, method, null, asjson);
         } catch (e) {
             GSLog.error(this, e);
         }

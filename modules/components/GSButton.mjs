@@ -48,13 +48,12 @@ export default class GSButton extends GSElement {
             me.#state = !me.#state;
             GSDOM.toggleClass(me.firstElementChild, me.#state, 'active');
         }
-        if (!me.select) me.findEl('button').blur();
+        if (!me.select) me.#button.blur();
     }
 
     onReady() {
         const me = this;
-        const btn = me.findEl('button');
-        me.attachEvent(btn, 'click', me.#onClick.bind(me));
+        me.attachEvent(me.#button, 'click', me.#onClick.bind(me));
         super.onReady();
     }
 
@@ -63,6 +62,10 @@ export default class GSButton extends GSElement {
         const el = me.firstElementChild;
         me.#update(name, oldValue, newValue);
         GSAttr.set(el, `data-bs-${name}`, newValue);
+    }
+
+    get #button() {
+        return this.query('button');
     }
 
     #update(name = '', oldValue = '', newValue = '') {

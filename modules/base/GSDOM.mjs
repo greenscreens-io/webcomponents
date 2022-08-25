@@ -7,7 +7,6 @@
  * @module base/GSDOM
  */
 
-import GSElement from "./GSElement.mjs";
 import GSLog from "./GSLog.mjs";
 
 /**
@@ -58,18 +57,17 @@ export default class GSDOM {
 	}
 
 	static wrap(own, tpl) {
-		tpl = tpl || document.createElement('gs-block');
-		GSDOM.link(own, tpl);
-		return tpl;
+		return GSDOM.link(own, tpl || document.createElement('gs-block'));
 	}
 
 	static link(own, tpl) {
-		tpl.setAttribute('proxy', own.id);
+		tpl.setAttribute('proxy', `#${own.id}`);
 		if (own.slot) tpl.setAttribute('slot', own.slot);
+		return tpl;
 	}
 
 	static #fromNode(nodes) {
-		return nodes ? Array.from(nodes).filter(el => (!(el instanceof Text))) : [];
+		return Array.from(nodes || []).filter(el => !GSDOM.isText(el));
 	}
 
 	/**
@@ -111,6 +109,22 @@ export default class GSDOM {
 	 */
 	static isSVGElement(el) {
 		return el instanceof SVGElement;
+	}
+
+	/**
+	 * Check if given element is of type Text
+	 * @returns {boolean}
+	 */
+	static isText(el) {
+		return el instanceof Text;
+	}
+
+	/**
+	 * Check if given element is of type Comment
+	 * @returns {boolean}
+	 */
+	static isComment(el) {
+		return el instanceof Comment;
 	}
 
 	/*
@@ -193,6 +207,7 @@ export default class GSDOM {
 	 * Add node to a target at specified place
 	 * @param {HTMLElement} target 
 	 * @param {HTMLElement} newEl 
+	 * @param {string} placement
 	 * @returns {boolean}
 	 */
 	static insertAdjacent(target, newEl, placement) {
@@ -202,7 +217,7 @@ export default class GSDOM {
 	}
 
 	/**
-	 * Remove genreted componnt from parent
+	 * Remove genarated componnt from parent
 	 * @param {HTMLElement} el 
 	 * @returns {boolean}
 	 */
@@ -212,39 +227,41 @@ export default class GSDOM {
 	}
 
 	/**
-	 * Find element by css selector from given context or return default element
+	 * Walk node tree
 	 * 
-	 * @param {HTMLElement} ctx 
-	 * @param {string} val CSS query selector
-	 * @param {HTMLElement} def Default element
-	 * @returns {HTMLElement}
+	 * @param {HTMLLegendElement} node Start node to walk from 
+	 * @param {boolean} closest Direction down (false) or up (true)
+	 * @param {boolean} all  Filter HTMLElements (false) only or text also (true) (only down)
+	 * @param {boolean} shadow Traverse shadow DOM also (only down)
+	 * @returns {Iterable}
 	 */
-	static findElement(ctx, val = '', def = null) {
-		if (!val) return def;
-		if (!GSDOM.isHTMLElement(ctx)) return def;
-		try {
-			return ctx.querySelector(val) || def;
-		} catch (e) {
-			GSLog.error(ctx, e);
-		}
-		return def;
+	static walk(node, closest = false, all = false, shadow = true) {
+		return closest ? GSDOM.parentAll(node) : GSDOM.childAll(node, all, shadow);
 	}
 
 	/**
-	 * Walk node tree
-	 * @param {HTMLLegendElement} rootEL 
-	 * @param {function} callback 
-	 * @returns {boolean}
+	 * Traverse DOM tree top-to-bottom
+	 * 
+	 * @param {*} node Start node
+	 * @param {*} all  Include all elements (Text,Comment, HTMLElements)
+	 * @param {*} shadow Include traversing aacross shadow tree
+	 * @param {*} child Inernal, do not use
+	 * @returns {Iterable}
 	 */
-	static walk(rootEL, callback) {
-		if (typeof callback !== 'function') return false;
-		callback(rootEL);
-		rootEL.childNodes.forEach(el => GSDOM.walk(el, callback));
-		return true;
+	static *childAll(node, all = false, shadow = true, child = false) {
+		if (!node) return;
+		if (child) yield node;
+		if (shadow) yield* GSDOM.childAll(node.shadowRoot, all, shadow, true);
+		const list = all ? node.childNodes : node.children;
+		if (!list) return;
+		for (let child of list) {
+			yield* GSDOM.childAll(child, all, shadow, true);
+		}
 	}
 
 	/**
 	 * Get parent element
+	 * 
 	 * @param {HTMLElement} el 
 	 * @returns {HTMLElement}
 	 */
@@ -264,11 +281,11 @@ export default class GSDOM {
 			yield e;
 			e = GSDOM.parent(e);
 		}
-		return yield e;
+		if (e) return yield e;
 	}
 
 	/**
-	 * Get root element whch might be shadow root, GSElelement, any parent element
+	 * Get root element whch might be shadow root, GSElement, any parent element
 	 * @param {HTMLElement} el 
 	 * @returns {HTMLElement|ShadowRoot}
 	 */
@@ -282,6 +299,80 @@ export default class GSDOM {
 		}
 
 		return null;
+	}
+
+	/**
+	 * Find element by ID within DOM Tree across Shadow DOM
+	 * @param {HTMLElement} el Root node to start from
+	 * @param {string} id Element id
+	 * @returns {HTMLElement} 
+	 */
+	 static getByID(el, id) {
+		if(!(el && qry)) return null;
+		const it = GSDOM.walk(el, true);
+		for (let o of it) {
+			if (o.id === id) return o;
+		}
+		return null;		
+	}
+
+	/**
+	 * Query DOM Tree up to find closest element across Shadow DOM
+	 * @param {HTMLElement} el Root node to start from
+	 * @param {string} qry CSS query
+	 * @returns {HTMLElement} 
+	 */
+	static closest(el, qry) {
+		if(!(el && qry)) return null;
+		const it = GSDOM.walk(el, true);
+		for (let o of it) {
+			if (GSDOM.matches(o, qry))  return o;
+		}
+		return null;		
+	}
+
+	/**
+	 * Query DOM tree with support for Shadow DOM
+	 * 
+	 * @param {HTMLElement} el Root node to start from
+	 * @param {string} qry CSS query
+	 * @returns {HTMLElement} 
+	 */
+	static query(el, qry) {
+		if(!(el && qry)) return null;
+		if (GSDOM.matches(el, qry)) return el;
+		const it = GSDOM.walk(el, false, false);
+		for (let o of it) {
+			if (GSDOM.matches(o, qry)) return o;
+		}
+		return null;		
+	}
+
+	/**
+	 * Match element against CSS query
+	 * @param {HTMLElement} el 
+	 * @param {string} qry 
+	 * @returns {boolean}
+	 */
+	static matches(el, qry) {
+		return el && typeof el.matches === 'function' && el.matches(qry);
+	}
+
+	/**
+	 * Query DOM tree with support for Shadow DOM
+	 * 
+	 * @param {HTMLElement} el Root node to start from
+	 * @param {string} qry CSS query
+	 * @returns {Array<HTMLElement>}
+	 */	
+	static queryAll(el, qry) {
+		const res = [];
+		if(!(el && qry)) return res;
+		const it = GSDOM.walk(el, false, false);
+		for (let o of it) {
+			if (GSDOM.matches(o, qry)) res.push(o);
+		}
+		return res;
 	}
 
 	/**
@@ -331,24 +422,6 @@ export default class GSDOM {
 		if (!GSDOM.isHTMLElement(el)) return false;
 		return el.classList.contains(val);
 	}
-
-	/**
-	 * Search for named slot tag or css selector 
-	 * @param {HTMLElement} own 
-	 * @param {string} name Tagged slot  name
-	 * @param {*} qry CSS selector
-	 * @param {*} multi true to return array or false for a single element
-	 * @returns {HTMLElement|Array<HTMLElement>}
-	 */
-	static findSlotOrEl(own, name = '', qry = '', multi = false) {
-		const fn = multi ? 'querySelectorAll' : 'querySelector';
-		if (!(own && own[fn])) return multi ? [] : null;
-		const el = name ? own[fn](`[slot="${name}"]`) : null;
-		if (el) return el;
-		if (!el && own.shadowRoot) return own.shadowRoot[fn](qry);
-		return own[fn](qry);
-	}
-
 
 	/**
 	 * Alternative way to clear fields instead of form.reset()
@@ -434,42 +507,8 @@ export default class GSDOM {
 	 */
 	static unwrap(owner) {
 		if (!owner) return document;
-		return GSDOM.isGSElement(owner) ? owner.shadowRoot : owner;
-	}
-
-	/**
-	 * Get element by id, searcing down owner element as root
-	 * @param {string} name 
-	 * @param {HTMLElement} own 
-	 * @returns {HTMLElement}
-	 */
-	static getEl(name, own) {
-		if (!name) return null;
-		return GSDOM.findEl(`#${name}`, own);
-	}
-
-	/**
-	 * Find element by css selector, searching down owner element as root
-	 * @param {string} name 
-	 * @param {HTMLElement} own 
-	 * @returns {HTMLElement}
-	 */
-	static findEl(name, own) {
-		if (!name) return null;
-		return (own || document).querySelector(name);
-	}
-
-	/**
-	 * Find all elements by css selector, searching down owner element as root
-	 * @param {string} name 
-	 * @param {HTMLElement} own 
-	 * @param {boolean} asArray 
-	 * @returns {Array<HTMLElement>|NodeList} 
-	 */
-	static findAll(name, own, asArray = false) {
-		if (!name) return null;
-		const list = (own || document).querySelectorAll(name);
-		return asArray ? Array.from(list) : list;
+		//return GSDOM.isGSElement(owner) ? owner.shadowRoot : owner;
+		return owner.self || owner;
 	}
 
 	/**
@@ -478,8 +517,7 @@ export default class GSDOM {
 	 * @param {HTMLElement} own 
 	 */
 	static enableInput(qry = 'form', own) {
-		const root = GSDOM.findEl(qry, own);
-		if (root) GSDOM.findAll('input, select, .btn', own).forEach(el => el.removeAttribute('disabled'));
+		GSDOM.queryAll(own, 'input, select, .btn').forEach(el => el.removeAttribute('disabled'));
 	}
 
 	/**
@@ -488,8 +526,7 @@ export default class GSDOM {
 	 * @param {HTMLElement} own 
 	 */
 	static disableInput(qry = 'form', own) {
-		const root = GSDOM.findEl(qry, own);
-		if (root) GSDOM.findAll('input, select, .btn', el).forEach(el => el.setAttribute('disabled', true));
+		GSDOM.queryAll(el, 'input, select, .btn').forEach(el => el.setAttribute('disabled', true));
 	}
 
 	/**
@@ -499,7 +536,7 @@ export default class GSDOM {
 	 * @param {HTMLElement} own 
 	 */
 	static setValue(qry, val, own) {
-		const el = GSDOM.findEl(qry, own);
+		const el = GSDOM.query(own, qry);
 		if (el) el.value = val;
 	}
 
@@ -528,18 +565,18 @@ export default class GSDOM {
 
 	/**
 	 * Validate against provided list, if child elements allowed inside provided element
-	 * @param {HTMLElement} el Ellment which slild list to validate
+	 * @param {HTMLElement} el Element which slild list to validate
 	 * @param {string} tagName Expected owner element tag name
 	 * @param {string} whiteList Uppercase list of tag names allowed as child
 	 * @param {boolean} asState return state as bool or throw an error (default)
 	 * @returns {boolean} return true if validation is ok.
 	 * @throws {Error}
 	 */
-	 static validate(own, tagName, whiteList, asState = false) {
-		if(own.tagName !== tagName) {
+	static validate(own, tagName, whiteList, asState = false) {
+		if (own.tagName !== tagName) {
 			if (asState) return false;
 			throw new Error(`Owner element : ${own.tagName}, id:${own.id} is not of excpected type: ${tagName}`);
-		} 
+		}
 		//const ok = Array.from(own.childNodes).filter(el => GSDOM.isAllowed(el, whiteList)).length === 0;
 		const ok = GSDOM.isAllowed(Array.from(own.childNodes), whiteList);
 		if (ok) return true;
@@ -555,12 +592,12 @@ export default class GSDOM {
 	 * @returns {boolean} return tr ue if validation is ok.
 	 */
 	static isAllowed(el, whiteList) {
-		if(Array.isArray(el)) return el.filter(el => GSDOM.isAllowed(el, whiteList)).length === 0;
-		return !(el instanceof Text || el instanceof Comment) && ( whiteList.indexOf(el.tagName) === -1);
+		if (Array.isArray(el)) return el.filter(el => GSDOM.isAllowed(el, whiteList)).length === 0;
+		return !(el instanceof Text || el instanceof Comment) && (whiteList.indexOf(el.tagName) === -1);
 	}
 
 	static toValidationError(own, whiteList) {
-		const list =  `<${whiteList.join('>, <')}>`;
+		const list = `<${whiteList.join('>, <')}>`;
 		return `${own.tagName} ID: ${own.id} allows as a child nodes only : ${list}!`;
 	}
 

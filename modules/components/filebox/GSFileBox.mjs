@@ -59,7 +59,7 @@ export default class GSFileBox extends GSElement {
 
     onReady() {
         const me = this;
-        const target = me.self; // me.isFlat ? me.findEl('div') : me;
+        const target = me.self; // me.isFlat ? me.query('div') : me;
         me.attachEvent(target, 'click', me.#onClick.bind(me));
         me.attachEvent(target, 'dragenter', me.#onDragenter.bind(me));
         me.attachEvent(target, 'dragover', me.#onDragenter.bind(me));
@@ -71,11 +71,11 @@ export default class GSFileBox extends GSElement {
     }
 
     get listEl() {
-        return this.findEl('pre');
+        return this.query('pre');
     }
 
     get fileEl() {
-        return this.findEl('input');
+        return this.query('input');
     }
 
     /**

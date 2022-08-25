@@ -75,13 +75,13 @@ export default class GSInput extends HTMLInputElement {
     get list() {
         const me = this;
         const list = GSAttr.get(me, 'list');
-        return GSDOM.getEl(list, me.owner);
+        return GSDOM.getByID(me.owner, list);
     }
 
     get filter() {
         const me = this;
         const filter = GSAttr.get(me, 'data-filter');
-        return GSDOM.getEl(filter, me.owner);
+        return GSDOM.getByID(me.owner, filter);
     }
 
     get mask() {
@@ -134,7 +134,7 @@ export default class GSInput extends HTMLInputElement {
         const data = GSAttr.get(el, `data-${key}`, '').split(/[,;;]/);
         const isMatch = value.length > 0 && data.indexOf(value) > -1;
         isMatch ? GSDOM.show(el) : GSDOM.hide(el);
-        GSDOM.findAll('input,textarea,select', el).forEach(el => GSAttr.set(el, 'data-ignore', isMatch ? null : true));
+        GSDOM.queryAll(el, 'input,textarea,select').forEach(el => GSAttr.set(el, 'data-ignore', isMatch ? null : true));
     }
 
     isInList() {
@@ -154,7 +154,7 @@ export default class GSInput extends HTMLInputElement {
     #onDataChange(e) {
         const me = this;
         const own = me.owner;
-        let opt = GSDOM.findEl(`option[value="${me.value}"]`, me.list);
+        let opt = GSDOM.query(me.list, `option[value="${me.value}"]`);
         let clean = false;
         if (!opt) {
             opt = me.list.querySelector('option');
@@ -170,7 +170,7 @@ export default class GSInput extends HTMLInputElement {
             if (key === 'id' || key === 'group') return;
 
             const filter = `[data-${key}]:not([data-${key}=""]`;
-            const els = Array.from(GSDOM.findAll(filter, own));
+            const els = Array.from(GSDOM.queryAll(own, filter));
             els.filter(el => el.tagName !== 'OPTION')
                 .filter(el => GSAttr.get(el, 'list', null) == null).forEach(el => me.#togleEl(el, key, val))
         });
@@ -185,9 +185,9 @@ export default class GSInput extends HTMLInputElement {
         const list = me.list;
         me.value = '';
         const dataGroup = GSAttr.get(me.filter, 'data-group');
-        GSDOM.findAll('option', list).forEach(el => GSAttr.set(el, 'disabled', true));
+        GSDOM.queryAll(list, 'option').forEach(el => GSAttr.set(el, 'disabled', true));
         const filter = dataGroup ? `option[data-group="${dataGroup}"]` : `option[data-id="${e.target.value}"]`;
-        GSDOM.findAll(filter, list).forEach(el => GSAttr.set(el, 'disabled'));
+        GSDOM.queryAll(list, filter).forEach(el => GSAttr.set(el, 'disabled'));
     }
 
     #onBlur(e) {

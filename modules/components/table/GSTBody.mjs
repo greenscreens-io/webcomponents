@@ -9,7 +9,6 @@
 
 import GSID from "../../base/GSID.mjs";
 import GSEvent from "../../base/GSEvent.mjs";
-import GSComponents from "../../base/GSComponents.mjs";
 import GSAttr from "../../base/GSAttr.mjs";
 import GSDOM from "../../base/GSDOM.mjs";
 
@@ -33,14 +32,12 @@ export default class GSTBody extends HTMLTableSectionElement {
         if (!me.id) me.setAttribute('id', GSID.id);
         GSEvent.attach(me, me, 'click', e => me.#onClick(e));
         GSEvent.attach(me, me, 'contextmenu', e => me.#onMenu(e), false, true);
-        GSComponents.store(me);
-        me.#table = GSComponents.getOwner(me);
+        me.#table = GSDOM.closest(me, 'GS-TABLE');
     }
 
     disconnectedCallback() {
         const me = this;
         me.#table = null;
-        GSComponents.remove(me);
         GSEvent.deattachListeners(me);
     }
 
@@ -69,7 +66,7 @@ export default class GSTBody extends HTMLTableSectionElement {
     }
 
     get table() {
-        return this.#table || GSComponents.getOwner(this);
+        return this.#table || GSDOM.closest(this, 'GS-TABLE');
     }
 
     render(headers, data, offset) {
@@ -94,7 +91,7 @@ export default class GSTBody extends HTMLTableSectionElement {
         });
 
         me.innerHTML = rows.join('');
-        GSDOM.findAll('tr', me, true).forEach(el => { if (el.innerText.trim().length === 0) el.remove(); });
+        GSDOM.queryAll(me, 'tr').forEach(el => { if (el.innerText.trim().length === 0) el.remove(); });
     }
 
     #arrayToHTML(headers, rec, idx, offset) {
@@ -148,7 +145,7 @@ export default class GSTBody extends HTMLTableSectionElement {
         const me = this;
         const isSelected = GSAttr.getAsBool(row, 'selected');
 
-        if (!append) GSDOM.findAll('tr', me, true)
+        if (!append) GSDOM.queryAll(me, 'tr')
             .forEach(el => {
                 GSAttr.set(el, 'class', null);
                 GSAttr.set(el, 'selected', null);
@@ -158,7 +155,7 @@ export default class GSTBody extends HTMLTableSectionElement {
         GSAttr.set(row, 'selected', isSelected ? null : true);
 
         const data = [];
-        GSDOM.findAll('tr[selected=true]', me, true).forEach(el => data.push(el.rowIndex));
+        GSDOM.queryAll(me, 'tr[selected=true]').forEach(el => data.push(el.rowIndex));
         GSEvent.send(me, 'select', data, true);
     }
 

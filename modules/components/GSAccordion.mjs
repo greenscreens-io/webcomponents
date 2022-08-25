@@ -60,8 +60,7 @@ export default class GSAccordion extends GSElement {
     }
 
     if (css) {
-      const els = me.findAll(css);
-      els.forEach(el => {
+      me.queryAll(css).forEach(el => {
         GSDOM.toggleClass(el, false, oldValue);
         GSDOM.toggleClass(el, true, newValue);
       });
@@ -154,7 +153,6 @@ export default class GSAccordion extends GSElement {
     if (!GSUtil.isJsonType(data)) return;
     const me = this;
     me.innerHTML = GSItem.generateItem(data);
-    GSComponents.remove(me);
     GSEvent.deattachListeners(me);
     me.connectedCallback();
   }

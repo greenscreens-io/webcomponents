@@ -33,15 +33,15 @@ export default class BaseUI extends GSElement {
     }
 
     get #table() {
-        return this.findEl('#table-main');
+        return this.query('#table-main');
     }
 
     get #modal() {
-        return this.findEl('#modal-main');
+        return this.query('#modal-main');
     }
 
     get #form() {
-        return GSComponents.query('#form-main');
+        return GSDOM.query(document.body, '#form-main');
     }
 
     get #notify() {

@@ -33,7 +33,7 @@ export default class GSToast extends GSElement {
   attributeCallback(name = '', oldValue = '', newValue = '') {
     const me = this;
     if (name === 'css') {
-      const el = me.findEl('.toast');
+      const el = me.query('.toast');
       GSDOM.toggleClass(el, false, oldValue);
       GSDOM.toggleClass(el, true, newValue);
     }
@@ -57,7 +57,7 @@ export default class GSToast extends GSElement {
 
   onReady() {
     const me = this;
-    const btns = me.findAll('button');
+    const btns = me.queryAll('button');
     Array.from(btns).forEach(btn => me.attachEvent(btn, 'click', me.close.bind(me)));
     super.onReady();
     if (me.visible) me.open();
@@ -99,7 +99,7 @@ export default class GSToast extends GSElement {
   }
 
   get #toast() {
-    return this.findEl('.toast');
+    return this.query('.toast');
   }
 
   /**

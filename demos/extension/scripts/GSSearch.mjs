@@ -9,7 +9,6 @@
 import GSAttr from "../../../modules/base/GSAttr.mjs";
 import GSElement from "../../../modules/base/GSElement.mjs"
 import GSEvent from "../../../modules/base/GSEvent.mjs";
-import GSUtil from "../../../modules/base/GSUtil.mjs";
 
 /**
  * Search input box 
@@ -47,7 +46,7 @@ export default class GSSearch extends GSElement {
     }
 
     get #searchEl() {
-        return this.findEl('input');
+        return this.query('input');
     }
 
     get css() {

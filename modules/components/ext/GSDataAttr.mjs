@@ -9,7 +9,6 @@
 
 import GSID from "../../base/GSID.mjs";
 import GSUtil from "../../base/GSUtil.mjs";
-import GSComponents from "../../base/GSComponents.mjs";
 import GSDOMObserver from '../../base/GSDOMObserver.mjs';
 import GSEvent from "../../base/GSEvent.mjs";
 import GSFunction from "../../base/GSFunction.mjs";
@@ -92,8 +91,8 @@ export default class GSDataAttr {
         const el = GSDataAttr.#toClicker(e.target);
         const inject = GSDataAttr.getInject(el);
         const dismiss = GSDataAttr.getDismiss(el);
-        const toggle = GSDataAttr.#getToggle(el);
         const target = GSDataAttr.getTarget(el);
+        const toggle = GSDataAttr.#getToggle(el);
         GSDataAttr.#onToggle(el, target, toggle);
         GSDataAttr.#onDismiss(el, target, dismiss);
         GSDataAttr.#onInject(el, target, inject);
@@ -134,7 +133,7 @@ export default class GSDataAttr {
                 break;
         }
 
-        let gs = GSComponents.findAll(`gs-${type}`);
+        let gs = GSDOM.queryAll(document.documentElement, `gs-${type}`);
         const css = target ? target : `.${type}`;
         if (target) {
             gs = gs.filter(el => el.matches(css));
@@ -146,8 +145,7 @@ export default class GSDataAttr {
             }
         }
 
-
-        const allComps = GSComponents.queryAll(css);
+        const allComps = GSDOM.queryAll(document.documentElement, css);
         const allRoot = Array.from(document.querySelectorAll(css));
 
         // all not descendants of component
@@ -231,7 +229,7 @@ export default class GSDataAttr {
         if (!GSDataAttr.#isInject(inject)) return;
 
         const isComp = inject.toLowerCase().startsWith('gs-');
-        const list = GSComponents.queryAll(target);
+        const list = GSDOM.queryAll(document.documentElement, target);
         const css = GSAttr.get(source, GSDataAttr.#dataCSS, '');
 
         const html = isComp ? `<${inject}></${inject}>` : `<gs-template href="${inject}" class="${css}"></gs-template>`;

@@ -92,7 +92,7 @@ export default class GSNavLink extends HTMLAnchorElement {
 
     static #trigger(e, el) {
         const attrs = GSAttr.getData(el);
-        const own = GSComponents.getOwner(el);
+        const own = GSNavLink.#owner(el);
         GSEvent.send(own, 'action', { type: 'active', data: attrs, source: e }, true);
     }
 

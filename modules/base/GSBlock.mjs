@@ -8,6 +8,7 @@
  */
 
 import GSAttr from "./GSAttr.mjs";
+import GSDOM from "./GSDOM.mjs";
 import GSID from "./GSID.mjs";
 
 /**
@@ -17,8 +18,6 @@ import GSID from "./GSID.mjs";
  */
 export default class GSBlock extends HTMLElement {
 
-    #parent = null;
-
     constructor() {
         super();
     }
@@ -26,26 +25,20 @@ export default class GSBlock extends HTMLElement {
     connectedCallback() {
         const me = this;
         if (!me.id) me.setAttribute('id', GSID.id);
-        me.#parent = me.parentElement;
     }
 
     disconnectedCallback() {
         const me = this;
-        if (me.#parent && me.ref) {
-            const ref = `#${me.ref}`;
-            let el = me.#parent.querySelector(ref);
-            if (!el) el = GSComponents.query(ref);
-            if (el) el.remove();
-        }
-        me.#parent = null;
+        const el = GSDOM.query(document.body, me.proxy);
+        if (el) el.remove();
     }
 
     /**
      * Return an ID of GSComponent class that owns this element
      * @returns {string} An ID of GSComponent class
      */
-    get ref() {
-        return GSAttr.get(this, 'ref');
+    get proxy() {
+        return GSAttr.get(this, 'proxy');
     }
 
     static {

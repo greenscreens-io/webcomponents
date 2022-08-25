@@ -7,7 +7,6 @@
  * @module components/table/GSHeader
  */
 
-import GSComponents from "../../base/GSComponents.mjs";
 import GSDOM from "../../base/GSDOM.mjs";
 
 /**
@@ -38,8 +37,8 @@ export default class GSHeader extends HTMLElement {
         const me = this;
 
         const table = me.table;
-        const filters = GSDOM.findAll('gs-column[filter=true]', me, true);
-        const columns = GSDOM.findAll('gs-column', me, true);
+        const filters = GSDOM.queryAll(me, 'gs-column[filter=true]');
+        const columns = GSDOM.queryAll(me, 'gs-column');
 
         const html = [];
         html.push(`<thead class="${table.cssHeader}">`);
@@ -61,7 +60,7 @@ export default class GSHeader extends HTMLElement {
     toJSON() {
         const me = this;
         const heads = [];
-        const cols = GSDOM.findAll('gs-column', me, true);
+        const cols = GSDOM.queryAll(me, 'gs-column');
         cols.forEach((el, i) => {
             heads.push(el.toJSON());
         });
@@ -69,7 +68,7 @@ export default class GSHeader extends HTMLElement {
     }
 
     get table() {
-        return GSComponents.getOwner(this, 'GS-TABLE')
+        return GSDOM.closest(this, 'GS-TABLE')
     }
 }
 

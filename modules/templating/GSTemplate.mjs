@@ -210,7 +210,6 @@ class GSTemplate extends HTMLElement {
 				me.shadow.adoptedStyleSheets = GSCacheStyles.styles;
 				me.shadow.innerHTML = tpl.innerHTML;
 			}
-			// GSDOM.walk(me.self, el => GSDOMObserver.parse(el));
 			GSEvent.sendSuspended(me, 'templateready', { id: me.id, href: me.href }, true, true);
 		});
 		return tpl;
@@ -245,8 +244,8 @@ class GSTemplate extends HTMLElement {
 	 * @param {string} name CSS selector query
 	 * @returns {HTMLElement}
 	 */
-	findEl(name = '') {
-		return GSDOM.findEl(name, GSDOM.unwrap(this));
+	query(name = '') {
+		return GSDOM.query(this, name);
 	}
 
 	/**
@@ -255,8 +254,8 @@ class GSTemplate extends HTMLElement {
 	 * @param {boolean} asArray  Return result wrapped as array
 	 * @returns {Aray<HTMLElement>} List of HTMLElement matched
 	 */
-	findAll(name = '', asArray = false) {
-		return GSDOM.findAll(name, GSDOM.unwrap(this), asArray);
+	queryAll(name = '', asArray = false) {
+		return GSDOM.queryAll(this, name);
 	}
 
 	static {

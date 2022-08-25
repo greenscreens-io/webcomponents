@@ -8,6 +8,7 @@
  */
 
 import GSAttr from "../base/GSAttr.mjs";
+import GSComponents from "../base/GSComponents.mjs";
 import GSDOM from "../base/GSDOM.mjs";
 import GSElement from "../base/GSElement.mjs";
 import GSEvent from "../base/GSEvent.mjs";
@@ -88,7 +89,7 @@ export default class GSPopup extends GSElement {
     }
 
     get #panel() {
-        return this.findEl('div');
+        return this.query('div');
     }
 
     get css() {
@@ -308,7 +309,7 @@ export default class GSPopup extends GSElement {
         const me = this;
         if (!me.target) return;
         if (me.#attached) return;
-        const targets = GSComponents.findTarget(me, me.target);
+        const targets = GSDOM.queryAll(document.documentElement, me.target);
         if (targets.length === 0) {
             if (me.#online) {
                 await GSUtil.timeout(1000);

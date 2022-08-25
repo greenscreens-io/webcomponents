@@ -12,8 +12,6 @@ import GSComponents from "../../base/GSComponents.mjs";
 import GSDOM from "../../base/GSDOM.mjs";
 import GSElement from "../../base/GSElement.mjs";
 import GSEvent from "../../base/GSEvent.mjs";
-import GSID from "../../base/GSID.mjs";
-import GSItem from "../../base/GSItem.mjs";
 import GSUtil from "../../base/GSUtil.mjs";
 
 // use GSStore
@@ -120,7 +118,7 @@ export default class GSTable extends GSElement {
         me.#store = me.querySelector('gs-store');
         if (!me.#store) {
             const dataID = GSAttr.get('data');
-            me.#store = GSComponents.get(dataID);
+            me.#store = GSDOM.query(`gs-data#${dataID}`);
         }
         return me.#store;
     }

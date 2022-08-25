@@ -118,7 +118,7 @@ export default class GSForm extends HTMLFormElement {
     }
 
     static #buttonOK(own) {
-        return GSDOM.findEl('button[type="submit"]', own);
+        return GSDOM.query(own, 'button[type="submit"]');
     }
 
     static #buttonCancel(own) {
@@ -130,7 +130,7 @@ export default class GSForm extends HTMLFormElement {
     }
 
     static #find(own, name = '') {
-        return GSDOM.findEl(`button[data-action="${name}"]`, own);
+        return GSDOM.query(own, `button[data-action="${name}"]`);
     }
 
 }

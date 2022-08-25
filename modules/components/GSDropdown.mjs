@@ -225,19 +225,19 @@ export default class GSDropdown extends GSElement {
   }
 
   get #menu() {
-    return this.findEl('.dropdown-menu');
+    return this.query('.dropdown-menu');
   }
 
   get #button() {
-    return this.findEl('.dropdown-toggle');
+    return this.query('.dropdown-toggle');
   }
 
   get #items() {
-    return this.findAll('.dropdown-item', true);
+    return this.queryAll('.dropdown-item');
   }
 
   get #submenus() {
-    return this.findAll('.submenu', true);
+    return this.queryAll('.submenu');
   }
 
   /**
@@ -266,9 +266,9 @@ export default class GSDropdown extends GSElement {
     const me = this;
     const li = e.target.closest('li');
     const ul = li.closest('ul');
-    const sub = GSDOM.findEl('.submenu', li);
+    const sub = GSDOM.query(li, '.submenu');
     requestAnimationFrame(() => {
-      GSDOM.findAll('.submenu', ul, true)
+      GSDOM.queryAll(ul, '.submenu')
         .forEach(el => el.classList.remove('show'));
       if (sub) {
         const val = li.offsetTop;
@@ -360,7 +360,6 @@ export default class GSDropdown extends GSElement {
     if (!GSUtil.isJsonType(data)) return;
     const me = this;
     me.innerHTML = GSItem.generateItem(data);
-    GSComponents.remove(me);
     GSEvent.deattachListeners(me);
     me.connectedCallback();
   }

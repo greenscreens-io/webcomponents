@@ -47,7 +47,7 @@ export default class GSAlert extends GSElement {
 
     onReady() {
         const me = this;
-        const btn = me.findEl('.btn-close');
+        const btn = me.query('.btn-close');
         me.attachEvent(btn, 'click', me.#onClick.bind(me));
         super.onReady();
     }
@@ -109,9 +109,10 @@ export default class GSAlert extends GSElement {
     }
 
     async #dismiss() {
-        GSDOM.toggleClass(this.findEl('.alert'), false, 'show');
+        const me = this;
+        GSDOM.toggleClass(me.query('.alert'), false, 'show');
         await GSUtil.timeout(GSDOM.SPEED);
-        return this.remove();
+        return me.remove();
     }
 
     dismiss() {

@@ -33,7 +33,7 @@ export default class GSTableFilter extends HTMLTableRowElement {
     connectedCallback() {
         const me = this;
         if (!me.id) me.setAttribute('id', GSID.id);
-        me.#auto = GSDOM.findEl('input[auto="true"],select[auto="true"]') != null;
+        me.#auto = GSDOM.query(me, 'input[auto="true"],select[auto="true"]') != null;
         me.#attachChangeListener();
         me.#attachDataListener();
         GSComponents.store(me);
@@ -54,7 +54,7 @@ export default class GSTableFilter extends HTMLTableRowElement {
 
     #attachChangeListener() {
         const me = this;
-        GSDOM.findAll('input, select', me, true).forEach(el => GSEvent.attach(me, el, 'change', e => me.#onChange(e.target)));
+        GSDOM.queryAll(me, 'input, select').forEach(el => GSEvent.attach(me, el, 'change', e => me.#onChange(e.target)));
     }
 
     #attachDataListener() {
@@ -66,7 +66,7 @@ export default class GSTableFilter extends HTMLTableRowElement {
     #onChange(el) {
         const me = this;
         const filter = [];
-        GSDOM.findAll('input, select', me, true).forEach(el => {
+        GSDOM.queryAll(me, 'input, select').forEach(el => {
             const value = me.#getValue(el);
             if (value) filter.push({ name: el.name, value: value });
         });
