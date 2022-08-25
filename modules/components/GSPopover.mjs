@@ -90,9 +90,9 @@ export default class GSPopover extends GSElement {
 
     get #html() {
         const me = this;
-        const head = me.title ? `<h3 class="popover-header">${me.title}</h3>` : '';
+        const head = me.title ? `<div class="popover-header ${me.cssHead}">${me.title}</div>` : '';
         return `
-        <div class="popover bs-popover-auto fade" data-popper-placement="${me.placement}" style="${this.getStyle()}" role="tooltip">
+        <div class="popover bs-popover-auto fade ${me.css}" data-popper-placement="${me.placement}" style="${this.getStyle()}" role="tooltip">
             <div class="popover-arrow"></div>
             ${head}
             <div class="popover-body">${me.content}</div>
@@ -108,6 +108,22 @@ export default class GSPopover extends GSElement {
             return owner.querySelector(me.ref);
         }
         return me.previousElementSibling || me.parentElement;
+    }
+
+    get css() {
+        return GSAttr.get(this, 'css');
+    }
+
+    set css(val = '') {
+        return GSAttr.set(this, 'css', val);
+    }
+
+    get cssHead() {
+        return GSAttr.get(this, 'css-head', 'fs-3');
+    }
+
+    set cssHead(val = '') {
+        return GSAttr.set(this, 'css-head', val);
     }
 
     get ref() {

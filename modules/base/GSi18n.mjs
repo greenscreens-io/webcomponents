@@ -16,21 +16,18 @@ import GSUtil from "./GSUtil.mjs";
 /**
  * Support for i18n Internationalization
  * Class loads requested language translations and applies to the templates
- * Two operational modes are available
- * 1. map text from default language to requested langiage
- * 2. map text key to a translation in requested language map, or use default
- * @class
+  * @class
  */
 export default class GSi18n extends HTMLElement {
 
     static #expr = /\{\w+\}/g;
 
-    #default = new Map();
-    #language = new Map();
+    #languages = new Map();
 
     #cache = new Set();
     #loading = false;
 
+    #interval = 0;
     #isDuplicate = false;
     #filter = this.#onFilter.bind(this);
     #callback = this.#onCallback.bind(this);
@@ -41,7 +38,7 @@ export default class GSi18n extends HTMLElement {
     }
 
     static get observedAttributes() {
-        return ['default', 'lang', 'auto'];
+        return ['lang', 'auto'];
     }
 
     constructor() {
@@ -53,35 +50,38 @@ export default class GSi18n extends HTMLElement {
         me.id = me.id ? me.id : GSID.id;
         me.#isDuplicate = GSComponents.find(this.tagName) ? true : false;
         if (me.#isDuplicate) return console.log(`${me.tagName} ID: ${me.id} is ignored, i18n is already in use by another instance!`);
-        me.#load(me.default, me.#default);
-        me.#load(me.lang, me.#language);
-        GSDOMObserver.registerFilter(me.#filter, me.#callback);
         GSComponents.store(me);
+        me.#toggleAuto();
     }
 
     disconnectedCallback() {
         const me = this;
+        clearInterval(me.#interval);
         GSDOMObserver.unregisterFilter(me.#filter, me.#callback);
         GSComponents.remove(me);
-        me.#default.clear();
-        me.#language.clear();
-        me.#default = null;
-        me.#language = null;
+        me.#languages.clear();
+        me.#languages = null;
         me.#callback = null;
         me.#filter = null;
     }
 
     attributeChangedCallback(name = '', oldVal = '', newVal = '') {
+        this.#attributeChanged(name, oldVal, newVal);
+    }
+    
+    async #attributeChanged(name = '', oldVal = '', newVal = '') {
+
         const me = this;
-        if (name === 'lang' && newVal && oldVal !== newVal) {
-            me.#language.clear();
-            if (newVal === me.default) {
-                me.#language = new Map(me.#default);
-                me.translateDOM(document.documentElement);
-            } else {
-                me.#cache.add(document.documentElement);
-                me.#load(newVal, me.#language);
+        
+        if (name === 'lang') {
+            if (!me.#languages.has(newVal)) {
+                await me.#load(newVal);
             }
+            me.translateDOM(document.documentElement, me.auto);
+        }
+
+        if (name === 'auto') {
+            me.#toggleAuto();
         }
     }
 
@@ -94,8 +94,10 @@ export default class GSi18n extends HTMLElement {
     }
 
     #onFilter(el) {
+        
         const me = this;
         const isText = el instanceof Text;
+
         if (isText && el.textContent.trim().length == 0) return false;
 
         const tmp = isText ? el.parentElement : el;
@@ -108,19 +110,35 @@ export default class GSi18n extends HTMLElement {
 
     #onCallback(el) {
         const me = this;
-        requestAnimationFrame(() => me.#doTranslate(el));
+        me.#cache.add(el);
+    }
+
+    #onInterval() {
+        const me = this;
+        if (me.#loading) return;
+        if (me.#cache.size === 0) return;
+        requestAnimationFrame(() => {
+            try {
+                Array.from(me.#cache).forEach(el => {
+                    me.#cache.delete(el);
+                    me.#doTranslate(el);
+                });
+            } catch(e) {
+                console.log(e);
+            }
+        });
     }
     
     #doTranslate(el) {
         const me = this;
         if (me.#loading > 0) return me.#cache.add(el);
         if (el === document.documentElement) {
-           Array.from(document.documentElement.childNodes).forEach(el => me.translateDOM(el));
-        } else{
+           me.translateDOM(el, me.auto);
+        } else {
             const isText = (el instanceof Text);
             isText ? me.#doTranslateText(el) : me.#doTranslateAttrs(el);
         }
-        if (el.shadowRoot) me.translateDOM(el.shadowRoot);
+        if (el.shadowRoot) me.translateDOM(el.shadowRoot, me.auto);
     }
 
     #doTranslateAttrs(el) {
@@ -152,7 +170,7 @@ export default class GSi18n extends HTMLElement {
         el.textContent = me.translate(el.gsi18n);
     }
 
-    async #load(val = '', map) {
+    async #load(lang = '') {
 
         const me = this;
         const headers = {
@@ -163,42 +181,34 @@ export default class GSi18n extends HTMLElement {
         let res = null;
         try {
             me.#loading++;
-            val = GSLoader.normalizeURL(`${me.url}/${val}.json`);
+            const url = GSLoader.normalizeURL(`${me.url}/${lang}.json`);
 
-            res = await GSLoader.load(val, 'GET', headers, true);
-            if (!res && val.indexOf('_') > 0) res = await me.#load(val.split('_')[0], map);
+            res = await GSLoader.load(url, 'GET', headers, true);
+            if (!res && lang.indexOf('_') > 0) res = await me.#load(lang.split('_')[0]);
             if (!res) return false;
+            me.#store(lang, res);
 
         } finally {
             me.#loading--;
         }
+        
+        if (!me.auto) me.#onInterval();
 
-        if (me.#loading === 0) me.#renderCache();
-
-        return me.#store(res, map);
-    }
-
-    #renderCache() {
-        const me =  this;
-        requestAnimationFrame(() => {
-            try {
-                me.#cache.forEach(el => me.#doTranslate(el));
-            } finally {
-                me.#cache.clear();
-            }
-        });
+        return true; 
     }
 
     /**
      * Store object properties as set of key-value pairs,
      * keys are not stores as name, but as hash calc
-     * valuses double stored as a hash-key/value and hash-value/hash-key
+     * values double stored as a hash-key/value and hash-value/hash-key
+     * 
+     * @param {string} lang 
      * @param {object} obj 
-     * @param {Map} map 
      * @returns 
      */
-    #store(obj, map) {
-        if (!(obj && map)) return false;
+    #store(lang, obj) {
+        if (!(obj && lang)) return false;
+        const map = this.#getLanguage(lang);
         Object.entries(obj).forEach((kv) => {
             const hk = GSID.hashCode(kv[0]);
             map.set(hk, kv[1]);
@@ -207,24 +217,53 @@ export default class GSi18n extends HTMLElement {
     }
 
     /**
-     * Translate complete tree from given node
-     * @param {HTMLElement | Text} el 
+     * Get language map. Create a new one if not found.
+     * @param {*} val 
+     * @returns 
      */
-    translateDOM(el) {
+    #getLanguage(val = '') {
+        const me = this;
+        if (!me.#languages.has(val)) {
+            me.#languages.set(val, new Map());
+            me.#load(val);
+        }
+        return me.#languages.get(val);
+    }
+
+    #toggleAuto() {
+        const me = this;
+        if (me.auto) {
+            GSDOMObserver.registerFilter(me.#filter, me.#callback);
+            me.#interval = setInterval(me.#onInterval.bind(me), 500);
+        } else {
+            GSDOMObserver.unregisterFilter(me.#filter, me.#callback);
+            clearInterval(me.#interval);
+        }        
+    }
+
+    /**
+     * Translate complete tree from given node.
+     * 
+     * @param {HTMLElement | Text} el Node to  translate from (inclusive)
+     * @param {boolean} auto Immediate translate or automated 
+     */
+    translateDOM(el, auto = false) {
 
         const me = this;
 
-        me.#doTranslate(el);
-
+        if (el !== document.documentElement) me.#cache.add(el);
         Array.from(el.childNodes)
             .filter(el => me.#onFilter(el))
-            .forEach(el => el.childNodes.length == 0 ? me.#doTranslate(el) : me.translateDOM(el));
+            .forEach(el => el.childNodes.length == 0 ? me.#cache.add(el) : me.translateDOM(el, true));
+
+        if (!auto) me.#onInterval();    
     }
 
     /**
      * Translate text from default language to the requested one
      * 1. full string hash is searched for mapping
      * 2. string keys are extracted, then hashed and replaced
+     * 
      * @param {*} val 
      * @returns 
      */
@@ -234,8 +273,6 @@ export default class GSi18n extends HTMLElement {
 
         const me = this;
 
-        val = me.find(val.trim());
-
         let tmp = val;
         let key = null;
         let res = null;
@@ -244,7 +281,7 @@ export default class GSi18n extends HTMLElement {
         GSi18n.#expr.lastIndex = -1;
         while ((arr = GSi18n.#expr.exec(val)) !== null) {
             key = arr[0];
-            res = me.find(key.slice(1, -1), true);
+            res = me.find(key.slice(1, -1));
             tmp = tmp.replace(key, res);
         }
 
@@ -253,44 +290,23 @@ export default class GSi18n extends HTMLElement {
 
     /**
      * Find string or key for translation
-     * @param {string} val Can be whoel string or key name
+     * 
+     * @param {string} val translation  key name
+     * 
      * @returns {string} translated text
      */
-    find(val, isKey = false) {
-        const me = this;
-        return isKey ? me.#findByKey(val) : me.#findByVal(val);
-    }
-
-    #findByKey(val) {
+    find(val) {
         const me = this;
         const hv = GSID.hashCode(val);
-        return me.#language.get(hv) || val;
-    }
-
-    #findByVal(val) {
-        const me = this;
-        const hv = GSID.hashCode(val);
-        let temp = me.#default.get(hv);
-        temp = temp ? me.#language.get(temp) : null;
-        return temp || val;
+        return me.#getLanguage(me.lang).get(hv) || val;
     }
 
     /**
-     * Retlanslate all elements allready on the page
-     */
-    #retlanslate() {
-
-    }
-
-    /**
-     * Translate text from default to requested language.
-     * If false, will translate {key} only to a language text
-     * If true, will map text in default language to a key, then get key translation
-     * If translation not successful, key  or original text will stay
-     * @returns {boolean}
+     * Enable auto translation by monitoring DOM
+     * If set to false, translation must be called from code
      */
     get auto() {
-        return GSAttr.getAsBool(this, 'auto', false);
+        return GSAttr.getAsBool(this, 'auto', true);
     }
 
     set auto(val = '') {

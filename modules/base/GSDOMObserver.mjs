@@ -110,9 +110,11 @@ export default class GSDOMObserver extends MutationObserver {
 
     /**
      * Execute observer logic 
+     * 
      * @param {HTMLElement} el node root
      * @param {Function} filter function to filter nodes
      * @param {Function} callback function to be called on selected node
+     * 
      * @returns {boolean}
      */
     static #exec(el, filter, callback) {
@@ -143,24 +145,31 @@ export default class GSDOMObserver extends MutationObserver {
 
     /**
      * Register element filter
+     * 
      * @param {Function} filter - filter function returns true
      * @param {Function} callback - result function
      * @param {boolean} forRemove - call on node remove or add
+     * 
      * @returns {boolean} Returns true if filter registered
      */
     static registerFilter(filter, callback, forRemove = false) {
-        const sts = GSDOMObserver.#isFunctions(filter, callback) ? GSDOMObserver.#getFilter(forRemove).set(filter, callback) : false;
+
+        if (!GSDOMObserver.#isFunctions(filter, callback)) return false;
+        
+        GSDOMObserver.#getFilter(forRemove).set(filter, callback);
 
         // initially loaded does not trigger 
-        if (sts && !forRemove) GSDOMObserver.#exec(document.body, filter, callback)
+        if (!forRemove) GSDOMObserver.#exec(document.body, filter, callback);
 
-        return sts;
+        return true;
     }
 
     /**
      * Unregister element filter
+     * 
      * @param {Function} fn Filter function
      * @param {boolean} forRemove Call on node remove or add
+     * 
      * @returns {boolean} Returns true if unregistered
      */
     static unregisterFilter(fn, forRemove = false) {
@@ -173,7 +182,7 @@ export default class GSDOMObserver extends MutationObserver {
     static {
         Object.freeze(GSDOMObserver);
         window.GSDOMObserver = GSDOMObserver;
-        const observer = GSDOMObserver.create(document.head.parentElement);
+        const observer = GSDOMObserver.create(document.documentElement);
         window.addEventListener('unload', () => { observer.disconnect() });
     }
 

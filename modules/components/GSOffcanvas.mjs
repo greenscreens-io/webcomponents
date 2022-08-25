@@ -143,6 +143,10 @@ export default class GSOffcanvas extends GSElement {
     return GSAttr.get(this, 'css', '');
   }
 
+  get cssTitle() {
+    return GSAttr.get(this, 'css-title', 'fs-5');
+  }
+
   get cssHead() {
     return GSAttr.get(this, 'css-head', '');
   }
@@ -263,11 +267,15 @@ export default class GSOffcanvas extends GSElement {
     return this.findEl('.btn-close[data-bs-dismiss="offcanvas"]');
   }
 
+  get #headSlot() {
+    return this.querySelector('[slot="header"]');
+  }
+
   #html() {
     const me = this;
-    const title = me.title ? `<h5 class="offcanvas-title">${me.title}</h5>` : '';
+    const title = me.title ? `<div class="offcanvas-title ${me.cssTitle}">${me.title}</div>` : '';
     const closeBtn = me.closable ? `<button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"></button>` : '';
-    const header = title || closeBtn ? `<div class="offcanvas-header ${me.cssHead}"><slot name="header">${title}${closeBtn}</slot></div>` : '';
+    const header = title || closeBtn || me.#headSlot() ? `<div class="offcanvas-header ${me.cssHead}"><slot name="header">${title}${closeBtn}</slot></div>` : '';
     return `
       <div class="offcanvas offcanvas-${me.placement} overflow-hidden ${me.css}" data-bs-scroll="${me.scroll}" data-bs-backdrop="${me.backdrop}" tabindex="-1">      
       ${header}
