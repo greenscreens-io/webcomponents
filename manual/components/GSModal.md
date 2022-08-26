@@ -31,7 +31,7 @@ For cancelable events, call e.preventDefault() to cancel operations (closing a m
 |--------------------|--------------------------------------------------------------|
 | action             | Cancelable button action (e.data.ok = true | false )         |
 | close              | Cancelable event before modal is closed                      |
-| data               | Data event when modal contains gs-form element (form submit) |
+| data               | Data event when modal contains gs-ext-form element (form submit) |
 | open               | Cancelable event before modal is opened                      |
 | visible            | Event triggered when modal visibility status changed         |
 

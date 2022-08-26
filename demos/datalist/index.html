@@ -18,7 +18,7 @@
 
     <script type="module" src="/modules/head/index.mjs"></script>
     <script type="module" src="/modules/templating/index.mjs"></script>
-    <script type="module" src="/modules/components/ext/GSDataList.mjs"></script>
+    <script type="module" src="/modules/components/ext/GSDataListExt.mjs"></script>
     <gs-css url="/assets/css/custom_5.2.0.css"></gs-css>
     <gs-css url="/assets/icons/bootstrap-icons.css" notheme="true"></gs-css>
 </head>
@@ -31,7 +31,7 @@
         Example loading data list from JSON file
         <input type="text" list="types" name="type" class="form-control" autocomplete="on" autocorrect="off"
             autocapitalize="off" spellcheck="false">
-        <datalist id="types" is="gs-datalist" data="datalist.json"></datalist>
+        <datalist id="types" is="gs-ext-datalist" data="datalist.json"></datalist>
     </div>
 
 </body>

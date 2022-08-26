@@ -1,4 +1,4 @@
-<form class="text-start" is="gs-form">
+<form class="text-start" is="gs-ext-form">
     <div class="mb-3">
         <label for="email" class="form-label" data-bs-toggle="tooltip" data-bs-placement="top" title="Login email">Email
             address</label>

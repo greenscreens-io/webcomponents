@@ -3,8 +3,8 @@
  */
 
 /**
- * A module loading GSNavLink class
- * @module components/ext/GSNavLink
+ * A module loading GSNavLinkExt class
+ * @module components/ext/GSNavLinkExt
  */
 
 import GSID from "../../base/GSID.mjs";
@@ -16,25 +16,25 @@ import GSDOM from "../../base/GSDOM.mjs";
 
 /**
  * Add Bootstrap item click / selection processsing.
- * For all A tags set as gs-navlink type this class will toggle "active" class
- * <a is="gs-navlink">
+ * For all A tags set as gs-ext-navlink type this class will toggle "active" class
+ * <a is="gs-ext-navlink">
  * @class
  * @extends {HTMLAnchorElement}
  */
-export default class GSNavLink extends HTMLAnchorElement {
+export default class GSNavLinkExt extends HTMLAnchorElement {
 
     static CSS_TAB_ACTIVE = "text-bg-primary";
     static CSS_TAB_INACTIVE = "text-bg-secondary";
 
     static {
-        customElements.define('gs-navlink', GSNavLink, { extends: 'a' });
-        Object.seal(GSNavLink);
-        GSDOMObserver.registerFilter(GSNavLink.#onMonitorFilter, GSNavLink.#onMonitorResult);
-        GSDOMObserver.registerFilter(GSNavLink.#onMonitorFilter, GSNavLink.#onMonitorRemove, true);
+        customElements.define('gs-ext-navlink', GSNavLinkExt, { extends: 'a' });
+        Object.seal(GSNavLinkExt);
+        GSDOMObserver.registerFilter(GSNavLinkExt.#onMonitorFilter, GSNavLinkExt.#onMonitorResult);
+        GSDOMObserver.registerFilter(GSNavLinkExt.#onMonitorFilter, GSNavLinkExt.#onMonitorRemove, true);
     }
 
     static #onMonitorFilter(el) {
-        let isValid = el instanceof HTMLElement && GSAttr.get(el, 'is') !== 'gs-navlink';
+        let isValid = el instanceof HTMLElement && GSAttr.get(el, 'is') !== 'gs-ext-navlink';
         if (isValid) {
             const cl = el.classList;
             isValid = !el.hasAttribute('ignore') && (cl.contains('nav-link') || cl.contains('list-group-item'));
@@ -44,7 +44,7 @@ export default class GSNavLink extends HTMLAnchorElement {
     }
 
     static #onMonitorResult(el) {
-        GSNavLink.#attachEvents(el);
+        GSNavLinkExt.#attachEvents(el);
     }
 
     static #onMonitorRemove(el) {
@@ -58,7 +58,7 @@ export default class GSNavLink extends HTMLAnchorElement {
     connectedCallback() {
         const me = this;
         if (!me.id) me.setAttribute('id', GSID.id);
-        GSNavLink.#attachEvents(me);
+        GSNavLinkExt.#attachEvents(me);
         //GSComponents.store(me);
     }
 
@@ -68,31 +68,31 @@ export default class GSNavLink extends HTMLAnchorElement {
     }
 
     static #attachEvents(own) {
-        GSEvent.attach(own, own, 'click', GSNavLink.#onClick.bind(own));
+        GSEvent.attach(own, own, 'click', GSNavLinkExt.#onClick.bind(own));
     }
 
     static #onClick(e, own) {
         const me = own || this;
         const accept = GSAttr.getAsBool(me, 'data-selectable', true);
-        if (!accept) return GSNavLink.#trigger(e, me);
-        const nav = GSNavLink.#nav(me);
-        const list = GSNavLink.#list(me);
-        const panel = GSNavLink.#panel(me);
-        const panelItem = GSNavLink.#panelItem(me);
+        if (!accept) return GSNavLinkExt.#trigger(e, me);
+        const nav = GSNavLinkExt.#nav(me);
+        const list = GSNavLinkExt.#list(me);
+        const panel = GSNavLinkExt.#panel(me);
+        const panelItem = GSNavLinkExt.#panelItem(me);
         requestAnimationFrame(() => {
             if (list) list.querySelectorAll('.list-group-item').forEach(el => GSDOM.toggleClass(el, false, 'active'));
             if (nav) nav.querySelectorAll('.nav-link').forEach(el => GSDOM.toggleClass(el, false, 'active'));
             if (panel) panel.querySelectorAll('.tab-pane').forEach(el => GSDOM.toggleClass(el, false, 'active show'));
             GSDOM.toggleClass(me, true, 'active');
             GSDOM.toggleClass(panelItem, true, 'active show');
-            GSNavLink.#trigger(e, me);
+            GSNavLinkExt.#trigger(e, me);
         });
 
     }
 
     static #trigger(e, el) {
         const attrs = GSAttr.getData(el);
-        const own = GSNavLink.#owner(el);
+        const own = GSNavLinkExt.#owner(el);
         GSEvent.send(own, 'action', { type: 'active', data: attrs, source: e }, true);
     }
 
@@ -105,14 +105,14 @@ export default class GSNavLink extends HTMLAnchorElement {
     }
 
     static #panel(own) {
-        const item = GSNavLink.#panelItem(own);
+        const item = GSNavLinkExt.#panelItem(own);
         return item ? item.closest('.tab-content') : null;
     }
 
     static #panelItem(own) {
-        const nav = GSNavLink.#nav(own);
+        const nav = GSNavLinkExt.#nav(own);
         const tgtID = GSAttr.get(own, 'data-bs-target');
-        return tgtID ? GSNavLink.#owner(nav).querySelector(tgtID) : null;
+        return tgtID ? GSNavLinkExt.#owner(nav).querySelector(tgtID) : null;
     }
 
     static #owner(own) {

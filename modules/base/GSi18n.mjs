@@ -22,6 +22,7 @@ export default class GSi18n extends HTMLElement {
 
     static #expr = /\{\w+\}/g;
 
+    static #init = false;
     #languages = new Map();
 
     #cache = new Set();
@@ -41,6 +42,10 @@ export default class GSi18n extends HTMLElement {
         return ['lang', 'auto'];
     }
 
+    static get isInitialized() {
+        return GSi18n.#init;
+    }
+
     constructor() {
         super();
     }
@@ -50,6 +55,7 @@ export default class GSi18n extends HTMLElement {
         me.id = me.id ? me.id : GSID.id;
         me.#isDuplicate = GSComponents.find(this.tagName) ? true : false;
         if (me.#isDuplicate) return console.log(`${me.tagName} ID: ${me.id} is ignored, i18n is already in use by another instance!`);
+        GSi18n.#init = me;
         GSComponents.store(me);
         me.#toggleAuto();
     }
@@ -63,6 +69,7 @@ export default class GSi18n extends HTMLElement {
         me.#languages = null;
         me.#callback = null;
         me.#filter = null;
+        if (!me.#isDuplicate) GSi18n.#init = null;
     }
 
     attributeChangedCallback(name = '', oldVal = '', newVal = '') {

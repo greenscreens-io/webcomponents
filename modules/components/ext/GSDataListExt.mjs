@@ -3,8 +3,8 @@
  */
 
 /**
- * A module loading GSDataList class
- * @module components/ext/GSDataList
+ * A module loading GSDataListExt class
+ * @module components/ext/GSDataListExt
  */
 
 import GSID from "../../base/GSID.mjs";
@@ -14,15 +14,15 @@ import GSDOM from "../../base/GSDOM.mjs";
 
 /**
  * Add JSON loader to datalist element
- * <datalist is="gs-datalist">
+ * <datalist is="gs-ext-datalist">
  * @class
  * @extends {HTMLDataListElement}
  */
-export default class GSDataList extends HTMLDataListElement {
+export default class GSDataListExt extends HTMLDataListElement {
 
     static {
-        customElements.define('gs-datalist', GSDataList, { extends: 'datalist' });
-        Object.seal(GSDataList);
+        customElements.define('gs-ext-datalist', GSDataListExt, { extends: 'datalist' });
+        Object.seal(GSDataListExt);
     }
 
     constructor() {

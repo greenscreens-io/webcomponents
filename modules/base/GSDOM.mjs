@@ -355,6 +355,7 @@ export default class GSDOM {
 	 * @returns {boolean}
 	 */
 	static matches(el, qry) {
+		// return el && qry && typeof el.matches === 'function' && el.matches(qry);
 		return el && typeof el.matches === 'function' && el.matches(qry);
 	}
 

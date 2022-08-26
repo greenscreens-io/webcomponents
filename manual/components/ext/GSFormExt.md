@@ -1,6 +1,6 @@
-# GSForm WebComponent
+# GSFormExt WebComponent
 
-GSForm WebComponent is an extended HTMLFormElement which adds following functionalities:
+GSFormExt WebComponent is an extended HTMLFormElement which adds following functionalities:
 
 * Integration with ```<gs-modal>```
 * Automatic ```<button>``` processing for Submit / Cancel
@@ -23,7 +23,7 @@ When HTML buttons added to the component with **data-action** attributes, compon
 Define HTML form block with input fields and/or buttons as childs.
 
 ```html
-<form is="gs-form">
+<form is="gs-ext-form">
     ... other input fields ...
     <button type="submit" data-action="submit">Submit</button>        
     <button data-action="cancel">Cancel</button>

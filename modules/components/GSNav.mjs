@@ -86,7 +86,7 @@ export default class GSNav extends GSElement {
         //const contentTpl = me.rtl ? `${title} ${iconTpl}` : `${iconTpl} ${title}`;
         const contentTpl = `${iconTpl} ${title}`;
 
-        return `<a type="button" role="nav" is="gs-navlink" class="nav-link ${cssnav} ${cssactive}" id="${GSID.id}-nav"                
+        return `<a type="button" role="nav" is="gs-ext-navlink" class="nav-link ${cssnav} ${cssactive}" id="${GSID.id}-nav"                
                 ${GSItem.getDismissAttr(el)} ${GSItem.getTargetAttr(el)} 
                 ${GSItem.getToggleAttr(el)} ${GSItem.getActionAttr(el)} 
                 ${GSItem.getInjectAttr(el)} ${GSItem.getCSSAttr(el)}

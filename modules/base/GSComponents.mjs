@@ -2,11 +2,9 @@
  * Copyright (C) 2015, 2022 Green Screens Ltd.
  */
 
-import GSAttr from "./GSAttr.mjs";
 import GSCacheStyles from "../head/GSCacheStyles.mjs";
 import GSEvent from "./GSEvent.mjs";
 import GSFunction from "./GSFunction.mjs";
-import GSData from "./GSData.mjs";
 import GSDOM from "./GSDOM.mjs";
 
 /**
@@ -23,12 +21,7 @@ export default class GSComponents {
     /**
      * Store GS-* elements
      */
-    static #cache = new Map();
-
-    /**
-     * Store html elements extended with is=gs-* attribute
-     */
-    static #extra = new Map();
+    static #cache = new Set();
 
     /**
      * Store component in component registry cache
@@ -36,20 +29,7 @@ export default class GSComponents {
      * @returns {void}
      */
     static store(el) {
-        GSComponents.#storeElement(el);
-        GSComponents.#storeExtra(el);
-    }
-
-    static #storeElement(el) {
-        if (!GSDOM.isGSElement(el)) return false;
-        this.#cache.set(el.id, el);
-        requestAnimationFrame(() => GSEvent.send(document, 'gs-component', el));
-    }
-
-    static #storeExtra(el) {
-        if (!GSDOM.isGSExtra(el)) return false;
-        this.#extra.set(el.id, el);
-        requestAnimationFrame(() => GSEvent.send(document, 'gs-component', el));
+        GSComponents.#cache.add(el);
     }
 
     /**
@@ -58,12 +38,7 @@ export default class GSComponents {
      * @returns {void}
      */
     static remove(el) {
-        if (typeof el === 'string') {
-            this.#cache.delete(el);
-            this.#extra.delete(el);
-        }
-        if (GSDOM.isGSElement(el)) this.#cache.delete(el.id);
-        if (GSDOM.isGSExtra(el)) this.#extra.delete(el.id);
+        GSComponents.#cache.delete(el);
     }
 
     /**
@@ -72,9 +47,8 @@ export default class GSComponents {
      * @returns {GSElement}
      */
     static get(id = '') {
-        let el = this.#cache.get(id);
-        if (!el) el = this.#extra.get(id);
-        return el;
+        const els = this.#cache.forEach(el => el.id == id);
+        return els.length === 0 ? null : els[0];
     }
 
     static #waitForInternal(name = '', timeout = 0, r) {
@@ -82,18 +56,18 @@ export default class GSComponents {
             const el = e.detail;
             const isComp = name.startsWith('gs-') && el.tagName === name.toUpperCase();
             if (isComp || el.id === name) {
-                GSEvent.unlisten(document, null, 'gs-component', fn);
+                GSEvent.unlisten(document.body, null, 'componentready', fn);
                 return r(el);
             }
         };
         const opt = { once: false, capture: false };
         if (timeout > 0) opt.signal = AbortSignal.timeout(timeout);
-        GSEvent.listen(document, null, 'gs-component', fn, opt);
+        GSEvent.listen(document.body, null, 'componentready', fn, opt);
     }
 
     /**
      * Wait for GSElement to become registered (initialized)
-     * @param {string} name A name of GSComponent type (gs-form, etc...)
+     * @param {string} name A name of GSComponent type (gs-ext-form, etc...)
      * @returns {GSElement}
      */
     static waitFor(name = '', timeout = 0) {
@@ -133,15 +107,9 @@ export default class GSComponents {
      * @returns {Array<GSElement>}
      */
     static findAll(name = '', flat = true, shadow = true) {
-        const me = this;
-        let result = null;
-        if (name) {
-            result = GSComponents.findAllElements(name);
-            result = result.concat(GSComponents.findAllExtra(name));
-        } else {
-            result = Array.from(me.#cache.values()).concat(Array.from(me.#extra.values()));
-        }
-
+        
+        let result = Array.from(GSComponents.#cache);
+        if (name) result = result.filter(el => el && GSDOM.matches(el, name));       
         if (!flat) result = result.filter(el => el.shadowRoot);
         if (!shadow) result = result.filter(el => !el.shadowRoot);
 
@@ -157,27 +125,6 @@ export default class GSComponents {
      */
     static find(name = '', flat = true, shadow = true) {
         return GSComponents.findAll(name, flat, shadow).shift();
-    }
-
-    static #filterAllString(list, name) {
-        const str = name.toUpperCase();
-        return Array.from(list.values()).filter(v => v.tagName === str || GSAttr.get(v, 'is', '').toUpperCase() === str);
-    }
-
-    static #filterAll(list, name) {
-        return Array.from(list.values()).filter(v => v instanceof name);
-    }
-
-    static findAllElements(name = '') {
-        const me = this;
-        if (typeof name === 'string') return GSComponents.#filterAllString(me.#cache, name);
-        return GSComponents.isElement(name) ? GSComponents.#filterAll(me.#cache, name) : [];
-    }
-
-    static findAllExtra(name = '') {
-        const me = this;
-        if (typeof name === 'string') return GSComponents.#filterAllString(me.#extra, name);
-        return GSComponents.isExtra(name) ? GSComponents.#filterAll(me.#extra, name) : [];
     }
 
     /**
@@ -277,7 +224,7 @@ export default class GSComponents {
     static #listener = false;
     static #onStyles() {
         requestAnimationFrame(() => {
-            GSComponents.findAll().filter(el => el.shadowRoot).forEach(el => el.shadowRoot.adoptedStyleSheets = GSCacheStyles.styles);
+            GSComponents.findAll(null, false, true).filter(el => el.shadowRoot).forEach(el => el.shadowRoot.adoptedStyleSheets = GSCacheStyles.styles);
         });
     }
 

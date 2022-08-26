@@ -1,6 +1,6 @@
-# GSDataList WebComponent
+# GSDataListExt WebComponent
  
-GSDataList WebComponent is an extension of a standard HTMLDataList element that adds automatic JSON data loading and items self generation.
+GSDataListExt WebComponent is an extension of a standard HTMLDataList element that adds automatic JSON data loading and items self generation.
  
 ## Example
 ---
@@ -8,5 +8,5 @@ Input field names "type" is linked to a **<datalist>** named **types**. When **<
  
 ```
 <input type="text" list="types" name="type" class="form-control">
-<datalist id="types" is="gs-datalist" data="datalist.json"></datalist>11
+<datalist id="types" is="gs-ext-datalist" data="datalist.json"></datalist>11
 ```

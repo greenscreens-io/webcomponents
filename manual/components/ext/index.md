@@ -7,7 +7,7 @@ Also, this library contains replacement for Bootstrap Javascript support for **d
 ## Table of content
 
 1. [GSDataAttr](./GSDataAttr.md)
-2. [GSDataList](./GSDataList.md)
-3. [GSForm](./GSForm.md)
-4. [GSInput](./GSInput.md)
-5. [GSNavLink](./GSNavLink.md)
+2. [GSDataListExt](./GSDataListExt.md)
+3. [GSFormExt](./GSFormExt.md)
+4. [GSInputExt](./GSInputExt.md)
+5. [GSNavLinkExt](./GSNavLinkExt.md)

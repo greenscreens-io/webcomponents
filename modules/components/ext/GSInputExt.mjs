@@ -3,8 +3,8 @@
  */
 
 /**
- * A module loading GSInput class
- * @module components/ext/GSInput
+ * A module loading GSInputExt class
+ * @module components/ext/GSInputExt
  */
 
 import GSID from "../../base/GSID.mjs";
@@ -15,11 +15,11 @@ import GSDOM from "../../base/GSDOM.mjs";
 
 /**
  * Add custom field processing
- * <input is="gs-input">
+ * <input is="gs-ext-input">
  * @class
  * @extends {HTMLInputElement}
  */
-export default class GSInput extends HTMLInputElement {
+export default class GSInputExt extends HTMLInputElement {
 
     static #special = ".^$*+-?()[]{}\|—/";
     static #maskType = {
@@ -33,8 +33,8 @@ export default class GSInput extends HTMLInputElement {
     #masks = [];
 
     static {
-        customElements.define('gs-input', GSInput, { extends: 'input' });
-        Object.seal(GSInput);
+        customElements.define('gs-ext-input', GSInputExt, { extends: 'input' });
+        Object.seal(GSInputExt);
     }
 
     constructor() {
@@ -101,13 +101,13 @@ export default class GSInput extends HTMLInputElement {
         me.#masks = [];
 
         chars.forEach(v => {
-            if (GSInput.#special.indexOf(v) > -1) {
+            if (GSInputExt.#special.indexOf(v) > -1) {
                 me.#masks.push(v);
                 masks.push(`\${v}`);
                 return;
             }
 
-            const m = GSInput.#maskType[v];
+            const m = GSInputExt.#maskType[v];
             if (m) {
                 me.#masks.push(new RegExp(m, 'g'));
                 masks.push(m);

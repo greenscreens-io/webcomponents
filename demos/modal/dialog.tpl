@@ -1,4 +1,4 @@
-<form class="text-start" is="gs-form">
+<form class="text-start" is="gs-ext-form">
     <div class="mb-3">
         <label for="email" class="form-label">Email address</label>
         <input name="email" type="email" class="form-control" placeholder="email" required="">

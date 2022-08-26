@@ -120,7 +120,7 @@ export default class GSTab extends GSElement {
     const actievCSS = el.active ? me.#activeTabCSS(el) : '';
 
     return `${wrap}
-          <a type="button" role="tab" is="gs-navlink"
+          <a type="button" role="tab" is="gs-ext-navlink"
               id="${el.id}-tab" 
               class="nav-link ${me.#cssNav(el)} ${actievCSS}" 
               aria-controls="${el.id}-tab"                 

@@ -80,7 +80,7 @@ export default class GSList extends GSElement {
         const toggle = GSItem.getToggleAttr(el);
 
         const active = me.#getActive(el) ? 'active' : '';
-        const select = me.selectable ? 'is="gs-navlink"' : 'ignore';
+        const select = me.selectable ? 'is="gs-ext-navlink"' : 'ignore';
 
         return `<a  ${select} class="list-group-item list-group-item-action ${active} ${css}"
                 href="${href}" ${action} ${toggle} ${target} ${dissmis}>

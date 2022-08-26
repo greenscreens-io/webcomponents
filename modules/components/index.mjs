@@ -26,6 +26,6 @@ import "./GSTime.mjs";
 import "./GSYear.mjs";
 
 /*
-export { default as GSInput } from "./ext/GSInput.mjs";
-export { default as GSDataList } from "./ext/GSDataList.mjs";
+export { default as GSInputExt } from "./ext/GSInputExt.mjs";
+export { default as GSDataListExt } from "./ext/GSDataListExt.mjs";
 */
