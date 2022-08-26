@@ -2,7 +2,7 @@
  * Install tools
  * npm install webpack -g
  * npm install terser -g
- * npm install terser-webpack-plugin -g --save-dev
+ * npm install terser-webpack-plugin --save-dev
  * 
  * then call "webpack" from command line
  */

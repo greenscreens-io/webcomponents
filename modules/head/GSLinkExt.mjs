@@ -88,7 +88,7 @@ export default class GSLinkExt extends HTMLLinkElement {
 	}
 
 	static {
-		customElements.define('gs-linkext', GSLinkExt, { extends: 'link' });
+		customElements.define('gs-ext-link', GSLinkExt, { extends: 'link' });
 		Object.freeze(GSLinkExt);
 	}
 }

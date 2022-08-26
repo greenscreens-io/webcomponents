@@ -9,5 +9,6 @@
         "doc": "npm run doc1 && npm run doc2 && npm run doc3"
     },
     "devDependencies": {
+        "terser-webpack-plugin": "^5.3.5"
     }
 }

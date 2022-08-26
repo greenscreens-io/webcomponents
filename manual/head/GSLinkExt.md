@@ -11,5 +11,5 @@ Loaded CSS is cached inside a **GSCachedStyles** registry, which fires a loading
 Example to use it:
  
 ```
-<link is="gs-linkext" src=""></link>
+<link is="gs-ext-link" src=""></link>
 ```

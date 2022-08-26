@@ -11,7 +11,7 @@ Style is cached inside a **GSCachedStyles** registry, which fires a loading even
 Example to use it:
  
 ```
-<style is="gs-styleext">
+<style is="gs-ext-style">
     ... some css ...
 </style>
 ```

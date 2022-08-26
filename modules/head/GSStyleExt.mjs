@@ -66,7 +66,7 @@ export default class GSStyleExt extends HTMLStyleElement {
 
 	static {
 		Object.freeze(GSStyleExt);
-		customElements.define('gs-styleext', GSStyleExt, { extends: 'style' });
+		customElements.define('gs-ext-style', GSStyleExt, { extends: 'style' });
 	}
 
 }
