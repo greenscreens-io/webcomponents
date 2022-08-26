@@ -67,8 +67,10 @@ export default class GSLoader {
     /**
      * Used for override to get predefined template
      * Can be html source or url, checks if load or not
+     * 
+     * @async
      * @param {string} def
-     * @return {string}
+     * @return {Promise<string>}
      */
     static async getTemplate(def = '') {
         const isRef = def.startsWith('#');
@@ -115,9 +117,11 @@ export default class GSLoader {
 
     /**
      * Load html template (used for template cache)
+     * 
+     * @async
      * @param {string} val Full or partial url path
      * @param {string} method HTTP methog get|put|post
-     * @returns {string}
+     * @returns {Promise<string>}
      * @throws {Error}
      */
     static async loadTemplate(val = '', method = 'GET') {
@@ -128,10 +132,11 @@ export default class GSLoader {
     /**
      * Load remote data as text (for loading templates)
      * 
+     * @async
      * @param {string} val Full or partial url path
      * @param {string} method HTTP methog get|put|post
      * @param {boolean} asjson Parse returned data as JSON
-     * @returns {object|string}
+     * @returns {Promise<object|string>}
      */
     static async load(val = '', method = 'GET', headers, asjson = false) {
         let data = null;
@@ -146,11 +151,13 @@ export default class GSLoader {
 
     /**
      * Load remote data without throwing an exception
-     * @param {*} url Full or partial url path
-     * @param {*} method http method GET|POST|PUT
-     * @param {*} asjson return json or string
-     * @param {*} dft default value
-     * @returns {object|string}
+     * 
+     * @async
+     * @param {string} url Full or partial url path
+     * @param {string} method http method GET|POST|PUT
+     * @param {boolean} asjson return json or string
+     * @param {object} dft default value
+     * @returns {Promise<object|string>}
      */
     static async loadSafe(url = '', method = 'GET', asjson = false, dft) {
         try {
@@ -165,9 +172,13 @@ export default class GSLoader {
 
     /**
      * Load data from various sources
+     * 
+     * @async
      * @param {JSON|func|url} val 
+     * @returns {Promise}
      */
     static async loadData(val = '') {
+        
         const isJson = GSUtil.isJson(val);
         const func = !isJson && GSFunction.parseFunction(val);
         const isFunc = GSFunction.isFunction(func);

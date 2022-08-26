@@ -14,6 +14,7 @@ import GSItem from "../base/GSItem.mjs";
 import GSLoader from "../base/GSLoader.mjs";
 import GSEvent from "../base/GSEvent.mjs";
 import GSAttr from "../base/GSAttr.mjs";
+import GSDOM from "../base/GSDOM.mjs";
 
 /**
  * Render tab panel
@@ -134,6 +135,23 @@ export default class GSTab extends GSElement {
     const me = this;
     const actievCSS = el.active ? me.#activePaneCSS(el) : '';
     const body = GSItem.getBody(el);
+    const slot = GSDOM.parseWrapped(me, body);
+    GSAttr.set(slot, 'slot', el.id);
+    GSDOM.appendChild(me, slot);
+    return `
+      <div  id="${el.id}-pane" aria-labelledby="${el.id}-tab" 
+          class="tab-pane fade ${me.#cssPane(el)}  ${actievCSS}" 
+          role="tabpanel">
+          <slot name="${el.id}"></slot>
+      </div>        
+      `;
+  }
+
+  /*
+  #renderPane(el) {
+    const me = this;
+    const actievCSS = el.active ? me.#activePaneCSS(el) : '';
+    const body = GSItem.getBody(el);
     return `
       <div  id="${el.id}-pane" aria-labelledby="${el.id}-tab" 
           class="tab-pane fade ${me.#cssPane(el)}  ${actievCSS}" 
@@ -142,6 +160,7 @@ export default class GSTab extends GSElement {
       </div>        
       `;
   }
+  */
 
   #active(el) {
     return GSAttr.getAsBool(el, 'active');
@@ -181,7 +200,10 @@ export default class GSTab extends GSElement {
 
   /**
    * Load data from various sources
+   * 
+   * @async
    * @param {JSON|func|url} val 
+   * @returns {Promise}
    */
   async load(val = '') {
     const data = await GSLoader.loadData(val);

@@ -110,7 +110,10 @@ export default class GSList extends GSElement {
 
     /**
      * Load data from various sources
+     * 
      * @param {JSON|func|url} val 
+     * @async
+     * @returns {Promise}
      */
     async load(val = '') {
         const data = await GSLoader.loadData(val);
@@ -119,6 +122,7 @@ export default class GSList extends GSElement {
         me.innerHTML = GSItem.generateItem(data);
         GSEvent.deattachListeners(me);
         me.connectedCallback();
+        return data;
     }
 
 }

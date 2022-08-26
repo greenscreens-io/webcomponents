@@ -65,7 +65,17 @@ export default class GSPopup extends GSElement {
         const me = this;
         const tpl = await super.getTemplate(val);
         const state = me.visible ? '' : 'invisible';
-        return `<div class="position-${me.position} ${me.css} ${state}" style="${this.getStyle()}"><slot>${tpl}</slot></div>`;
+
+        if (tpl) {
+            requestAnimationFrame(()=>{
+                const slot = GSDOM.parse(tpl);
+                for (let el of slot.body.children) {
+                    GSDOM.appendChild(me, el);
+                }
+            });
+        }
+
+        return `<div class="position-${me.position} ${me.css} ${state}" style="${this.getStyle()}"><slot></slot></div>`;
     }
 
     onReady() {
@@ -304,6 +314,9 @@ export default class GSPopup extends GSElement {
 
     /**
      * Attach popup to target
+     * 
+     * @async
+     * @returns {Promise}
      */
     async #attachTarget() {
         const me = this;

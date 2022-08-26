@@ -49,9 +49,11 @@ export default class GSItem extends HTMLElement {
 
 	/**
 	* Retrieve gs-item template or internal content
-	* NOTE: If tempalte set, item content is overriden
+	* NOTE: If template set, item content is overriden
+	* 
+	* @async
 	* @param {HTMLElement} el 
-	* @returns {string}
+	* @returns {Promise<string>}
 	*/
 	static async getTemplate(el) {
 		let tpl = GSItem.getTemplate(el);
@@ -61,6 +63,12 @@ export default class GSItem extends HTMLElement {
 		return tpl ? tpl.innerHTML : '';
 	}
 
+	/**
+	 * Retuen content of HTMLTemplate child element
+	 * 
+	 * @param {HTMLElement} el 
+	 * @returns {string}
+	 */
 	static getBody(el) {
 		let tpl = GSItem.getTemplate(el);
 		if (tpl) return `<gs-template href="${tpl}"></gs-template>`;

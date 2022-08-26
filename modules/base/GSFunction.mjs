@@ -50,6 +50,7 @@ export default class GSFunction {
     /**
      * Generic asynchronous function caller
      * 
+     * @async
      * @param {function} fn 
      * @param {object} owner 
      * @returns  {Promise}

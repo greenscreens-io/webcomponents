@@ -120,7 +120,10 @@ export default class GSNav extends GSElement {
 
     /**
      * Load data from various sources
+     * 
+     * @async
      * @param {JSON|func|url} val 
+     * @returns {Promise}
      */
     async load(val = '') {
         const data = await GSLoader.loadData(val);

@@ -135,13 +135,15 @@ export default class GSNotification extends GSElement {
   /**
    * Main function to show notification. 
    * It has support for Bootstrap based and web based notifications.
+   * 
+   * @async
    * @param {string} title Notification title
    * @param {string} message Notification message
    * @param {string} css CSS styling (web only)
    * @param {boolean} closable Can user close it (web only)
    * @param {number} timeout Timeout after which to close notification
    * @param {object} options Options for native Notification
-   * @returns {Notification|GSToast}
+   * @returns {Promise<Notification|GSToast>}
    */
   async show(title = '', message = '', css = '', closable = false, timeout = 2, options) {
     const me = this;
@@ -205,7 +207,9 @@ export default class GSNotification extends GSElement {
 
   /**
    * Request useage for browser native notification
-   * @returns {boolean} Return granted status
+   * 
+   * @async
+   * @returns {Promise<boolean>} Return granted status
    */
   static async requestPermission() {
     if (!GSNotification.isNativeSupported) return false;

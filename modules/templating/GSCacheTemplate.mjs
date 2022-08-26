@@ -153,10 +153,11 @@ export default class GSCacheTemplate {
 	/**
 	 * Retrieve template from given URL
 	 * 
+	 * @async
 	 * @param {boolean} cached Set to true to auto cache if template does not exist
 	 * @param {string} name Template name
 	 * @param {string} template Template source
-	 * @returns {HTMLTemplateElement} Template instance
+	 * @returns {Promise<HTMLTemplateElement>} Template instance
 	 */
 	static async loadURLTemplate(cached = false, name = '', tpl) {
 		const me = GSCacheTemplate;
@@ -177,10 +178,11 @@ export default class GSCacheTemplate {
 	/**
 	 * Retrieve template from given function
 	 * 
+	 * @async
 	 * @param {boolean} cached Set to true to auto cache if template does not exist
 	 * @param {string} name Template name
 	 * @param {string} template Template source
-	 * @returns {HTMLTemplateElement} Template instance
+	 * @returns {Promise<HTMLTemplateElement>} Template instance
 	 */
 	static async loadFunctionTemplate(cached = false, name = '', tpl) {
 		const me = GSCacheTemplate;
@@ -201,10 +203,11 @@ export default class GSCacheTemplate {
 	/**
 	 * Retrieve and cache html template for element
 	 * 
+	 * @async
 	 * @param {boolean} cached Set to true to auto cache if template does not exist
 	 * @param {string} name Template name
 	 * @param {string} template Template source
-	 * @returns {HTMLTemplateElement} Template instance
+	 * @returns {Promise<HTMLTemplateElement>} Template instance
 	 */
 	static async loadTemplate(cached = false, name = '', tpl) {
 

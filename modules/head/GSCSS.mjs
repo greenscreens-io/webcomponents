@@ -47,6 +47,9 @@ export default class GSCSS extends GSBase {
 
 	/**
 	 * Load, initialize and cache stylesheet for sharing among WebComponents
+	 * 
+	 * @async
+	 * @returns {Promise}
 	 */
 	async render() {
 		const me = this;

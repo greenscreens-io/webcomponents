@@ -47,7 +47,7 @@ export default class GSComponents {
      * @returns {GSElement}
      */
     static get(id = '') {
-        const els = this.#cache.forEach(el => el.id == id);
+        const els = Array.from(this.#cache).filter(el => el.id === id);
         return els.length === 0 ? null : els[0];
     }
 

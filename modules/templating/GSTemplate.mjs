@@ -187,7 +187,9 @@ class GSTemplate extends HTMLElement {
 
 	/**
 	 * Load and instantiate HTML template that injects into element
-	 * @returns {HTMLTemplateElement}
+	 * 
+	 * @async
+	 * @returns {Promise<HTMLTemplateElement>}
 	 */
 	async loadTemplate() {
 		const me = this;

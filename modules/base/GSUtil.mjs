@@ -172,8 +172,10 @@ export default class GSUtil {
 
 	/**
 	 * Async version of timeout
+	 * 
+	 * @async
 	 * @param {number} time 
-	 * @returns {void}
+	 * @returns {Promise<void>}
 	 */
 	static async timeout(time = 0) {
 		return new Promise((r) => {

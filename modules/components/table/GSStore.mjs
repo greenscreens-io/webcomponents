@@ -92,8 +92,10 @@ export default class GSStore extends HTMLElement {
 
     /**
      * Wait for event to happen
+     * 
+     * @async
      * @param {*} name 
-     * @returns {void}
+     * @returns {Promise<void>}
      */
     async waitEvent(name = '') {
         if (!name) throw new Error('Event undefined!');
@@ -105,6 +107,7 @@ export default class GSStore extends HTMLElement {
 
     /**
      * Listen once for triggered event
+     * 
      * @param {*} name 
      * @param {*} func 
      */
@@ -114,6 +117,7 @@ export default class GSStore extends HTMLElement {
 
     /**
      * Attach event to this element
+     * 
      * @param {*} name 
      * @param {*} func 
      */
@@ -123,6 +127,7 @@ export default class GSStore extends HTMLElement {
 
     /**
      * Remove event from this element
+     * 
      * @param {*} name 
      * @param {*} func 
      */

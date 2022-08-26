@@ -309,7 +309,8 @@ export default class GSElement extends HTMLElement {
 	/**
 	 * Used for override to get predefined template
 	 * Can be html source or url, checks if load or not
-	 * @returns {string}
+	 * @async
+	 * @returns {Promisa<string>}
 	 */
 	async getTemplate(def = '') {
 		return GSLoader.getTemplate(def);
@@ -333,8 +334,9 @@ export default class GSElement extends HTMLElement {
 
 	/**
 	 * Wait for event to happen
+	 * @async
 	 * @param {string} name 
-	 * @returns {void}
+	 * @returns {Promisa}
 	 */
 	async waitEvent(name = '') {
 		if (!name) throw new Error('Event undefined!');
@@ -432,7 +434,6 @@ export default class GSElement extends HTMLElement {
 		if (!me.id) me.id = GSID.id;
 		me.#opts = me.#injection();
 		me.#proxied = me.#opts.ref;
-
 		GSComponents.store(me);
 		me.#render();
 	}
@@ -539,6 +540,11 @@ export default class GSElement extends HTMLElement {
 		return (me.#proxied && me.isFlat) || !me.#proxied;
 	}
 
+	/**
+	 * Internal function to handle loaded template
+	 * @async
+	 * @returns {Promise}
+	 */
 	async #aplyTemplate() {
 
 		const me = this;
@@ -648,7 +654,9 @@ export default class GSElement extends HTMLElement {
 
 	/**
 	 * Render component in DOM
-	 * @returns {void}
+	 * 
+	 * @async
+	 * @returns {Promise}
 	 */
 	async #render() {
 		const me = this;

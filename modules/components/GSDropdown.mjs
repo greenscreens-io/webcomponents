@@ -353,7 +353,10 @@ export default class GSDropdown extends GSElement {
    * Json format: array of json or json (child elemetns stored in item property
    * Any property will be rendered as gs-item element attribute
    * Example: [{title:"test2", message:"test2", items: [{title:"test2", message:"test2"}]}]
+   * 
+   * @async
    * @param {JSON|func|url} val 
+   * @returns {Promise}
    */
   async load(val = '') {
     const data = await GSLoader.loadData(val);
@@ -362,8 +365,7 @@ export default class GSDropdown extends GSElement {
     me.innerHTML = GSItem.generateItem(data);
     GSEvent.deattachListeners(me);
     me.connectedCallback();
+    return data;
   }
 
 }
-
-

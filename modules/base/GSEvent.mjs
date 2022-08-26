@@ -44,10 +44,12 @@ export default class GSEvent {
 
 	/**
 	 * Wai for web page to competely load
+	 * 
+	 * @async
 	 * @param {HTMLElement} target 
 	 * @param {string} name 
 	 * @param {function} callback 
-	 * @param {number} timeout 
+	 * @param {Promise<number>} timeout 
 	 */
 	static async waitPageLoad(target, name = 'loaded', callback, timeout = 100) {
 		if (!GSEvent.#loaded) await GSEvent.wait(window, 'load'); // DOMContentLoaded
@@ -59,8 +61,10 @@ export default class GSEvent {
 
 	/**
 	 * Async version of animation frame
+	 * 
+	 * @async
 	 * @param {function} callback 
-	 * @returns {void}
+	 * @returns {Promise}
 	 */
 	static async waitAnimationFrame(callback) {
 		return new Promise((r, e) => {
@@ -117,6 +121,8 @@ export default class GSEvent {
 
 	/**
 	 * Async version of event listener
+	 * 
+	 * @async
 	 * @param {*} own 
 	 * @param {*} name 
 	 * @returns {Promise}
