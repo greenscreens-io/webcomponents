@@ -74,8 +74,10 @@ Copy **modules** directory to a web server along with Bootstrap 5.2.0.+ CSS and 
         <!-- load all UI components -->
         <script type="module" src="/modules/components/index.mjs"></script>
    
-        <!-- load mandatory Bootstrap CSS and optionally Bootstrap Icons -->
+        <!-- load mandatory Bootstrap CSS -->
         <gs-css global="true" url="/assets/css/custom_5.2.0.css" rel="stylesheet"></gs-css>  
+        
+        <!-- and optionally Bootstrap Icons -->
         <gs-css global="true" url="/assets/icons/bootstrap-icons.css" rel="stylesheet" notheme="true"></gs-css>        
     </head>
     <body>
@@ -83,3 +85,26 @@ Copy **modules** directory to a web server along with Bootstrap 5.2.0.+ CSS and 
 </html>
 ```
 
+When using library built with WebPack, use the following template.
+ 
+```html
+<html>
+    <head>
+        <!-- If using templates, set template root path -->
+        <script type="text/javascript">
+            self.GS_TEMPLATE_URL = '/assets/templates';
+        </script>
+       
+        <!-- load library core - head,base,template libraries -->
+        <script type="module" src="/release/io.greenscreens.components.all.js"></script>
+          
+        <!-- load mandatory Bootstrap CSS and optionally Bootstrap Icons -->
+        <gs-css global="true" url="/assets/css/custom_5.2.0.css" rel="stylesheet"></gs-css>  
+
+        <!-- and optionally Bootstrap Icons -->
+        <gs-css global="true" url="/assets/icons/bootstrap-icons.css" rel="stylesheet" notheme="true"></gs-css>        
+    </head>
+    <body>
+    </body>
+</html>
+```
