@@ -244,20 +244,6 @@ export default class GSElement extends HTMLElement {
 	}
 
 	/**
-	 * Get element shadowRoot, autocreate if does not exist
-	 * @returns {ShadowRoot} 
-	 */
-	get #shadow() {
-		const me = this;
-		if (!me.shadowRoot) {
-			me.attachShadow({ mode: 'open' });
-			me.#observer = GSDOMObserver.create(me.#shadow);
-			me.updateUI();
-		}
-		return me.shadowRoot;
-	}
-
-	/**
 	 * Avaialble only after render, after template is applied
 	 * @returns {ShadowRoot|HTMLElement} 
 	 */
@@ -498,6 +484,19 @@ export default class GSElement extends HTMLElement {
 	}
 
 	/**
+	 * Called when element fully rendered
+	 * @returns {void}
+	 */
+	 onReady() {
+		const me = this;
+		if (me.offline) return;
+		me.#ready = true;
+		const fn = GSFunction.parseFunction(me.onready);
+		GSFunction.callFunction(fn);
+		GSEvent.send(me, 'componentready', me.id, true, true);
+	}
+
+	/**
 	 * Update UI state if orientation changes
 	 */
 	#onOrientation(e) {
@@ -519,6 +518,20 @@ export default class GSElement extends HTMLElement {
 		requestAnimationFrame(() => {
 			me.updateUI();
 		});
+	}
+
+	/**
+	 * Get element shadowRoot, autocreate if does not exist
+	 * @returns {ShadowRoot} 
+	 */
+	 get #shadow() {
+		const me = this;
+		if (!me.shadowRoot) {
+			me.attachShadow({ mode: 'open' });
+			me.#observer = GSDOMObserver.create(me.#shadow);
+			me.updateUI();
+		}
+		return me.shadowRoot;
 	}
 
 	get #useTemplate() {
@@ -648,19 +661,4 @@ export default class GSElement extends HTMLElement {
 		requestAnimationFrame(() => me.onReady());
 	}
 
-	/**
-	 * Called when element fully rendered
-	 * @returns {void}
-	 */
-	onReady() {
-		const me = this;
-		if (me.offline) return;
-		me.#ready = true;
-		const fn = GSFunction.parseFunction(me.onready);
-		GSFunction.callFunction(fn);
-		GSEvent.send(me, 'componentready', me.id, true, true);
-	}
-
 }
-
-

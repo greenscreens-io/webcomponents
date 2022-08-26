@@ -32,7 +32,7 @@ export default class GSID {
 	}
 
 	/**
-	 * Auto cenerate next ID
+	 * Auto generate next ID
 	 * @returns {string} A generated ID
 	 */
 	static get id() {
@@ -40,7 +40,7 @@ export default class GSID {
 	}
 
 	/**
-	 * Calcualte hashcode from string (Java compatible)
+	 * Calculate hashcode from string (Java compatible)
 	 * @param {*} s A text fro mwhich hashcode is calculated 
 	 * @returns {Number} Generated numeric hashcode
 	 */
