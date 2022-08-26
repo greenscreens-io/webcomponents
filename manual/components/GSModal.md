@@ -91,3 +91,4 @@ To send modal close from injected child (template inside body)
 const child = ... some element inside injected template ....
 GSUtil.sendEvent(child, 'modal', {type : 'close'}, true, true);
 ```
+

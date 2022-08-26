@@ -61,3 +61,4 @@ This example shows how to catch list item click events.
 const menu = GSComponents.find('gs-list');
 menu.listen('action', (e) => console.log(e.detail));
 ```
+

@@ -10,3 +10,4 @@ This component is used internally by composite GS WebComponets.
 ```html
 <a is="gs-ext-navlink">
 ```
+

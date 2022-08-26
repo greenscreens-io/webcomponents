@@ -237,3 +237,4 @@ export default class GSCacheTemplate {
 		return template;
 	}
 }
+

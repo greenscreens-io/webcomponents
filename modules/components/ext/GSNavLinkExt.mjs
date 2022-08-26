@@ -120,3 +120,4 @@ export default class GSNavLinkExt extends HTMLAnchorElement {
         return GSDOM.unwrap(parent);
     }
 }
+

@@ -47,3 +47,4 @@ export default class GSBlock extends HTMLElement {
     }
 
 }
+

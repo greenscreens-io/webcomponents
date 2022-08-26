@@ -67,3 +67,4 @@ For more details, check [Layouts Demo](../../demos/layouts/)
     <gs-item css="text-bg-dark" resizable="true" id="ftr1" template="foot" v-pos="center" h-pos="center" min="5">footer</gs-item>
 </gs-layout>
 ```
+

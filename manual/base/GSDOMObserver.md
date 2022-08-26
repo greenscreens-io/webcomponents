@@ -17,3 +17,4 @@ const handler = (el) => { console.log(el); }
 
 GSDOMObserver.registerFilter(filter, handler);
 ```
+

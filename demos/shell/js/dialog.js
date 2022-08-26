@@ -61,3 +61,4 @@ class GSDialog extends GSElement {
 		Object.seal(GSDialog);
 	}
 }
+

@@ -307,3 +307,4 @@ export default class GSTable extends GSElement {
         this.store.filter = data || [];
     }
 }
+

@@ -219,3 +219,4 @@ export default class GSNotification extends GSElement {
   }
 
 }  
+

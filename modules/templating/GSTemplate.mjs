@@ -264,3 +264,4 @@ class GSTemplate extends HTMLElement {
 	}
 
 }
+

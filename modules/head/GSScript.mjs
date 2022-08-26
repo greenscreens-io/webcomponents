@@ -37,3 +37,4 @@ export default class GSScript extends GSBase {
 	}
 
 }
+

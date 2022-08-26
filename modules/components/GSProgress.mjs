@@ -133,3 +133,4 @@ export default class GSProgress extends GSElement {
         return true;
     }
 }
+

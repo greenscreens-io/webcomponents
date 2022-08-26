@@ -65,3 +65,4 @@ class SessionsUI extends BaseUI {
         return true;
     }
 }
+

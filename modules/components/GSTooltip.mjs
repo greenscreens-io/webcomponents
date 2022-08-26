@@ -183,3 +183,4 @@ export default class GSTooltip extends GSElement {
     }
 
 }
+

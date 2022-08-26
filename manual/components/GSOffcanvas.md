@@ -34,3 +34,4 @@ For more details, check [offcanvas.html](../../demos/offcanvas.html)
 ```html
 <gs-offcanvas title="Offfcanvas panel" visible="true" closable="false" placement="end"  backdrop="true"></gs-offcanvas>
 ```
+

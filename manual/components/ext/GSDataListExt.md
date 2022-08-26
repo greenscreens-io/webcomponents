@@ -10,3 +10,4 @@ Input field names "type" is linked to a **<datalist>** named **types**. When **<
 <input type="text" list="types" name="type" class="form-control">
 <datalist id="types" is="gs-ext-datalist" data="datalist.json"></datalist>11
 ```
+

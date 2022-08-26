@@ -108,3 +108,4 @@ When using library built with WebPack, use the following template.
     </body>
 </html>
 ```
+

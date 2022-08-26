@@ -44,3 +44,4 @@ class SettingsUI extends GSElement {
     }
 
 }
+

@@ -52,3 +52,4 @@ This example shows how to catch menu click events.
 const menu = GSComponents.find('gs-dropdown');
 menu.listen('action', (e) => console.log(e.detail));
 ```
+

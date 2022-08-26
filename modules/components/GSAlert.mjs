@@ -135,3 +135,4 @@ export default class GSAlert extends GSElement {
     }
 
 }
+

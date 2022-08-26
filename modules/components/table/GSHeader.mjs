@@ -72,3 +72,4 @@ export default class GSHeader extends HTMLElement {
     }
 }
 
+

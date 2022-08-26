@@ -63,3 +63,4 @@ class GSSidebar extends GSElement {
 	}
 }
 
+

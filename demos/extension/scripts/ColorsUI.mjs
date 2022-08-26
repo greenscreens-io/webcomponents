@@ -66,3 +66,4 @@ class ColorsUI extends BaseUI {
     }
     
 }
+

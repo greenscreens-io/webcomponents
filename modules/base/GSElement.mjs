@@ -662,3 +662,4 @@ export default class GSElement extends HTMLElement {
 	}
 
 }
+

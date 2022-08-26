@@ -132,3 +132,4 @@ export default class GSPagination extends GSElement {
         return GSAttr.get(this, 'previous', 'Previous');
     }
 }
+

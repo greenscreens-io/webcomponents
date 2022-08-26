@@ -59,3 +59,4 @@ notifier.native = true;
 // Shows a toast for 5 sec.
 notifier.info('My Title', 'My message', false, 5);
 ```
+

@@ -18,3 +18,4 @@ Example from JavaScript.
 GSComponents.find('gs-progress').increase();
 GSComponents.find('gs-progress').decrease();
 ```
+

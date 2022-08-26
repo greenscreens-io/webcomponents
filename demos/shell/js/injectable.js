@@ -49,3 +49,4 @@ class GSInjectable extends GSElement {
 	}
 
 }
+

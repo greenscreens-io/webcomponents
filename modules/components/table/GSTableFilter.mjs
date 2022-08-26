@@ -88,3 +88,4 @@ export default class GSTableFilter extends HTMLTableRowElement {
     }
 
 }
+

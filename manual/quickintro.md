@@ -78,3 +78,5 @@ UI WebComponents are divided into following groups
 * Composites based - similar to generators, but reders a template based on multiple GS Components such as [GSTable](../modules/components/table/GSTable.mjs)
 * Extension based - extends browser native HTMLElement descendats, such as [GSTable](../modules/components/ext/GSFormExt.mjs). Requires extending native tag with "is" attribute... ```<form is="gs-ext-form"></gsform>```
 
+
+

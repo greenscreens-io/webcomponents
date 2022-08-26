@@ -259,3 +259,4 @@ export default class GSSplitter extends GSElement {
         me.#cursor = pos;
     }
 }
+

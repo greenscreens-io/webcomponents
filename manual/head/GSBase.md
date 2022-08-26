@@ -17,3 +17,4 @@ GSBase Class is not registered as WebComponent itself. Injecting it into a page 
 | target         | Check browser target by value (windows, linux, apple)                       |
 | url            | Retrieve resource url (src or href)                                         |
  
+

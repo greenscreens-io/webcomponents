@@ -40,3 +40,4 @@ This example shows how to catch menu click events.
 const ctx = GSComponents.find('gs-context');
 ctx.listen('action', (e) => console.log(e.detail));
 ```
+

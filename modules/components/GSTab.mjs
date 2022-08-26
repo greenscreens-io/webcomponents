@@ -193,3 +193,4 @@ export default class GSTab extends GSElement {
   }
 
 }
+

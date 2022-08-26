@@ -103,3 +103,4 @@ export default class GSCacheStyles {
 		GSCacheStyles.injectStyle(style);
 	}
 }
+

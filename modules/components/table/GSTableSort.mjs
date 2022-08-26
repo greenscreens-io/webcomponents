@@ -88,3 +88,4 @@ export default class GSTableSort extends HTMLTableRowElement {
     }
 
 }
+

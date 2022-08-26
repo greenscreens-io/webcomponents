@@ -330,3 +330,4 @@ export default class GSEvent {
 		Object.freeze(GSEvent);
 	}
 }
+

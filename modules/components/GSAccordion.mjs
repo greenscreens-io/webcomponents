@@ -158,3 +158,4 @@ export default class GSAccordion extends GSElement {
   }
 
 }
+

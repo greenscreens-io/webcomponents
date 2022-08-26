@@ -92,3 +92,4 @@ export default class GSLinkExt extends HTMLLinkElement {
 		Object.freeze(GSLinkExt);
 	}
 }
+
