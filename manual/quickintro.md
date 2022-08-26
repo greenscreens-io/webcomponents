@@ -41,7 +41,7 @@ With Green Screens WebComponents, **everything is a WebComponent**.
 
 It is different approach, relying soley on browser engine and tag activation. There is no need for custom **controller** classes etc. Every component is a handler for child element (html tags) and forwards native browser events across components.
 
-To lear more how to develop SPA application with WebComponents, check out our showcase apps such as [Extension App](../demos/extension/index.html).
+To learn more how to develop SPA applications with WebComponents, check out our showcase apps such as [Extension App](../demos/extension/index.html).
 
 [Extension App](../demos/extension/index.html) is a showcase UI for our browser extension for Green Screens Web Terminal for IBM i developed with WebComponents. Here, the basic development concepts are presented showing interaction between various componentes and dynamic templates.
 
@@ -57,4 +57,24 @@ Global variables are framework flags that needs to be set in head of a documnet,
 | self.GS_FLAT          | Boolean   | Set to true to prevent Shadow DOM      | 
 | self.GS_FORMAT_DATE   | String    | Default date format                    | 
 | self.GS_TEMPLATE_URL  | String    | Set path to templates                  |
+
+<br>
+
+## Source Code Organization
+
+There are 2 main parts:
+
+* Core - [Head](../modules/head/), [Templating](../modules/templating/), [Base](../modules/base/) libraries are core engine to build GS WebComponents and hable various browser "things"
+* UI - [Components](../modules/components/) library is a set of UI WebComponents based on Bootstrap 5.2.0+ CSS
+
+### UI Library
+
+UI Library contains 2 type of WebComponents, those which extends [GSElement](../modules/base/GSElement.mjs), and those which extends standard browser HTML* classes.
+
+UI WebComponents are divided into following groups
+
+* Template based - contains predefined Bootstrap template for specific Bootstrap UI such as [GSModal](../modules/components/GSModal.mjs)
+* Generator based - dynamically renders HTML, mostly Bootstrap based such as [GSDropdown](../modules/components/GSDropdown.mjs) 
+* Composites based - similar to generators, but reders a template based on multiple GS Components such as [GSTable](../modules/components/table/GSTable.mjs)
+* Extension based - extends browser native HTMLElement descendats, such as [GSTable](../modules/components/ext/GSFormExt.mjs). Requires extending native tag with "is" attribute... ```<form is="gs-ext-form"></gsform>```
 

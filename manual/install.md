@@ -26,7 +26,9 @@ https://github.com/greenscreens-io/webcomponents.git
  
 GS WebComponents are written in ES2022 JavaScript as modules. Generally, building the source into a single JavaScript file is not required.  
  
-As source requires modern browsers, and as modern browsers use HTTPS/2 which, when a web server is configured properly, pushes resources through a single channel, requirements to build modules is not so important anymore.
+As source requires modern browsers, and as modern browsers use HTTPS/2 which, when a web server is configured properly, pushes resources through a single channel, requirements to build modules is not so important anymore. 
+
+However, we preapred Webpack configuration if tehre is a requirement to build a single library. Check inside [webpack.config.js](../webpack.config.js) for instructions.
  
 <br>
  
@@ -49,7 +51,7 @@ Even though there is a comprehensive manual for every UI component, one can gene
 ### <a name="demos"></a> **Use Demos**
 ---
  
-To use provided demos of GS WebComponents, simply copy the whole project to a web server root path and point to a **./webcomponents/demos** folder. There is no need for any other dependencies or building process.
+To use provided GS WebComponents demos, simply copy the whole project to a web server root path and point to a **./webcomponents/demos** folder. There is no need for any other dependencies or building process.
  
 <br>
  
