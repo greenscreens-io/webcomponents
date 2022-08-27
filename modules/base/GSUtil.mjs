@@ -45,6 +45,8 @@ export default class GSUtil {
 	 */
 	static isURL = (url = '') => /^(https?:\/\/|\/{1,2}|\.\/{1})(\S*\/*){1,}/i.test(url.trim());
 
+	static isHTML = (val = '') => val.indexOf('<') > -1 && val.indexOf('>') > 0;
+
 	/**
 	 * Get browser efautl locale
 	 * @returns {string}

@@ -51,12 +51,13 @@ To learn more how to develop SPA applications with WebComponents, check out our 
 
 Global variables are framework flags that needs to be set in head of a documnet, before loading framework.
 
-| Variable              | Type      | Description                            |
-|-----------------------|-----------|----------------------------------------|
-| self.GS_DEV_MODE      | Boolean   | Set to true to prevent browser caching | 
-| self.GS_FLAT          | Boolean   | Set to true to prevent Shadow DOM      | 
-| self.GS_FORMAT_DATE   | String    | Default date format                    | 
-| self.GS_TEMPLATE_URL  | String    | Set path to templates                  |
+| Variable              | Type      | Description                                       |
+|-----------------------|-----------|---------------------------------------------------|
+| self.GS_DEV_MODE      | Boolean   | Set to true to expose Classes to the global scope | 
+| self.GS_NO_CACHE      | Boolean   | Set to true to prevent browser caching            | 
+| self.GS_FLAT          | Boolean   | Set to true to prevent Shadow DOM                 | 
+| self.GS_FORMAT_DATE   | String    | Default date format                               | 
+| self.GS_TEMPLATE_URL  | String    | Set path to templates                             |
 
 <br>
 

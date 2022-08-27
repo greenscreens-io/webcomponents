@@ -19,6 +19,7 @@ import GSUtil from "./GSUtil.mjs";
 export default class GSLoader {
 
     static TEMPLATE_URL = self.GS_TEMPLATE_URL || location.origin;
+    static NO_CACHE = false;
 
     static {
         if (!self.GS_TEMPLATE_URL) {
@@ -27,13 +28,20 @@ export default class GSLoader {
             GSLoader.TEMPLATE_URL = url.endsWith('/') ? url : seg.slice(0, -1).join('/');
             self.GS_TEMPLATE_URL = GSLoader.TEMPLATE_URL;
         }
+
+        if (self.hasOwnProperty('GS_NO_CACHE')) {
+            GSLoader.NO_CACHE = self.GS_NO_CACHE === true;
+            if(localStorage) localStorage.setItem('GS_NO_CACHE', GSLoader.NO_CACHE);
+        }
+        GSLoader.NO_CACHE = localStorage ?  localStorage.getItem('GS_NO_CACHE') == 'true' : false;
+
     }
     /**
      * Convert partial URL to a real URL
      * @param {string} url 
      * @return {string}
      */
-    static normalizeURL(url = '', nocache = false) {
+    static normalizeURL(url = '', base = false) {
 
         url = url || '';
         let path = null;
@@ -49,7 +57,7 @@ export default class GSLoader {
 
         const uri = new URL(path.replaceAll('//', '/'));
         // to handle caching
-        if (nocache) uri.searchParams.append('_dc', Date.now());
+        if (!base && GSLoader.NO_CACHE) uri.searchParams.append('_dc', Date.now());
 
         return uri.href;
     }
@@ -79,11 +87,12 @@ export default class GSLoader {
             const el = GSDOM.query(document.documentElement, def);
             return el ? el.innerHTML : def;
         }
-        /*
-        const isURL = GSUtil.isURL(def);
-        if (!isURL) return def;
-        */
-        def = GSLoader.getTemplateURL(def);
+       
+       const isSkip = GSUtil.isHTML(def); // GSUtil.isURL(def);
+       if (isSkip) return def;
+       
+       if (def.indexOf('<') > -1 && def.indexOf('>')>0) return def;
+        def = GSLoader.#getTemplateURL(def);
         return  GSLoader.loadSafe(def);
     }
 
@@ -92,26 +101,25 @@ export default class GSLoader {
      * @param {string} url 
      * @return {string}
      */
-    static getTemplateURL(url = '') {
-        const caching = self.GS_DEV_MODE === true;
+    static #getTemplateURL(url = '') {
         const isDirect =  /^(https?:\/\/)/i.test(url);
-        url = isDirect ? url : GSLoader.templateURL + '/' + url;
-        return GSLoader.normalizeURL(url, caching);
+        url = isDirect ? url : GSLoader.#templateURL + '/' + url;
+        return GSLoader.normalizeURL(url);
     }
 
     /**
      * Retrieve default template url
      * @return {string}
      */
-    static get templateURL() {
-        return GSLoader.normalizeURL(GSLoader.templatePath, false);
+    static get #templateURL() {
+        return GSLoader.normalizeURL(GSLoader.#templatePath, true);
     }
 
     /**
-     * Retrieve defult tempalte path
+     * Retrieve defult template path
      * @return {string}
      */
-    static get templatePath() {
+    static get #templatePath() {
         return GSLoader.TEMPLATE_URL ? GSLoader.TEMPLATE_URL.replace('//', '/') : '';
     }
 
@@ -125,7 +133,7 @@ export default class GSLoader {
      * @throws {Error}
      */
     static async loadTemplate(val = '', method = 'GET') {
-        const url = GSLoader.getTemplateURL(val);
+        const url = GSLoader.#getTemplateURL(val);
         return await GSLoader.load(url, method);
     }
 
@@ -143,7 +151,7 @@ export default class GSLoader {
         const ct = 'Content-Type';
         headers = headers || {};
         headers[ct] = asjson ? 'application/json' : headers[ct] || 'text/plain';
-        const url = GSLoader.normalizeURL(val);
+        const url = GSLoader.normalizeURL(val, true);
         const res = await fetch(url, { method: method, headers : headers});
         if (res.ok) data = asjson ? await res.json() : await res.text();
         return data;

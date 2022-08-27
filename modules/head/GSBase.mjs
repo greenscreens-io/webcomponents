@@ -302,8 +302,9 @@ export default class GSBase extends HTMLElement {
 			return '**' + url;
 		}
 
+
 		// prevent caching in dev mode
-		if (self.GS_DEV_MODE) {
+		if (me.#nocache) {
 			try {
 				const base = url.startsWith('//') || url.startsWith('http') ? undefined : location.origin;
 				const uri = new URL(url, base);
@@ -407,6 +408,14 @@ export default class GSBase extends HTMLElement {
 	getAttributeBool(name = '', dft = 'true') {
 		const val = this.getAttribute(name) || dft;
 		return val === 'true';
+	}
+
+	get #nocache() {
+		let no_cache = false;
+        if (self.hasOwnProperty('GS_NO_CACHE')) {
+            return self.GS_NO_CACHE;
+        }
+        return localStorage ?  localStorage.getItem('GS_NO_CACHE') == 'true' : false;		
 	}
 
 	static {
