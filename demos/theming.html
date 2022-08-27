@@ -18,26 +18,26 @@
   <meta name="revisit-after" content="3 month">
   <meta name="description" content="WebComponents UI library based on Bootstrap.">
 
-  <script type="module" src="../modules/index.mjs"></script>
+  <script type="module" src="/modules/index.mjs"></script>
 
-  <gs-css url="../assets/icons/bootstrap-icons.css" notheme="true"></gs-css>
+  <gs-css url="/assets/icons/bootstrap-icons.css" notheme="true"></gs-css>
 
   <!-- 
         When auto=true gs-css monitors for #theme changes to activate / deactivate loaded css
      -->
-  <gs-css auto="true" url="../assets/css/custom_5.2.0.css"></gs-css>
-  <gs-css auto="true" url="../assets/css/bootstrap_5.2.0.css" disabled="true" theme="bs"></gs-css>
+  <gs-css auto="true" url="/assets/css/custom_5.2.0.css"></gs-css>
+  <gs-css auto="true" url="/assets/css/bootstrap_5.2.0.css" disabled="true" theme="bs"></gs-css>
 
   <!-- 
         modify bootstrap only with variables
     -->
-  <gs-css auto="true" url="../assets/css/theme.css" disabled="true" theme="bs"></gs-css>
+  <gs-css auto="true" url="/assets/css/theme.css" disabled="true" theme="bs"></gs-css>
 
 </head>
 
 <body>
 
-  <gs-template href="../demos/_header.html"></gs-template>
+  <gs-template href="../demos/header.tpl"></gs-template>
 
   <!-- buttons does not change here on theme change as button custom variables are the same as colors for custom theme -->
   <div class="m-4 p-1 bg-light border shadow-sm">
