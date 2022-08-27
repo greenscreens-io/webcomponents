@@ -31,7 +31,7 @@ export default class GSHighlight extends GSElement {
     }
 
     static get observedAttributes() {
-        const attrs = ['theme', 'url', 'target'];
+        const attrs = ['theme', 'url', 'target', 'lang'];
         return GSElement.observeAttributes(attrs);
     }
 
@@ -43,6 +43,9 @@ export default class GSHighlight extends GSElement {
         const me = this;
 
         switch (name) {
+            case 'lang':
+                me.#onLanguage(oldValue, newValue);
+                break;                
             case 'theme':
                 me.#onTheme();
                 break;
@@ -126,6 +129,12 @@ export default class GSHighlight extends GSElement {
 
     set lang(val = '') {
         return GSAttr.set(this, 'lang', val);
+    }
+
+    #onLanguage(oldValue, newValue) {
+        const me = this;
+        if(oldValue) me.#code.remove(`language-${oldValue}`);
+        if(newValue) me.#code.add(`language-${newValue}`);
     }
 
     async #onTheme() {
