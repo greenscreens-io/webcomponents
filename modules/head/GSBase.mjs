@@ -306,7 +306,7 @@ export default class GSBase extends HTMLElement {
 		// prevent caching in dev mode
 		if (me.#nocache) {
 			try {
-				const base = url.startsWith('//') || url.startsWith('http') ? undefined : location.origin;
+				const base = url.startsWith('//') || url.startsWith('http') ? undefined : `${location.origin}${location.pathname}`;
 				const uri = new URL(url, base);
 				uri.searchParams.append('_dc', Date.now());
 				url = uri.href;
