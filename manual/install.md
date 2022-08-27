@@ -69,16 +69,16 @@ Copy **modules** directory to a web server along with Bootstrap 5.2.0.+ CSS and 
         </script>
        
         <!-- load library core - head,base,template libraries -->
-        <script type="module" src="/modules/index.mjs"></script>
+        <script type="module" src="/webcomponents/modules/index.mjs"></script>
        
         <!-- load all UI components -->
-        <script type="module" src="/modules/components/index.mjs"></script>
+        <script type="module" src="/webcomponents/modules/components/index.mjs"></script>
    
         <!-- load mandatory Bootstrap CSS -->
-        <gs-css global="true" url="/assets/css/custom_5.2.0.css" rel="stylesheet"></gs-css>  
+        <gs-css global="true" src="/webcomponents/assets/css/custom_5.2.0.css" rel="stylesheet"></gs-css>  
         
         <!-- and optionally Bootstrap Icons -->
-        <gs-css global="true" url="/assets/icons/bootstrap-icons.css" rel="stylesheet" notheme="true"></gs-css>        
+        <gs-css global="true" src="/webcomponents/assets/icons/bootstrap-icons.css" rel="stylesheet" notheme="true"></gs-css>        
     </head>
     <body>
     </body>
@@ -102,7 +102,7 @@ When using library built with WebPack, use the following template.
         <gs-css global="true" url="/release/io.greenscreens.bootstrap_5.2.0.min.css" rel="stylesheet"></gs-css>  
 
         <!-- and optionally Bootstrap Icons -->
-        <gs-css global="true" url="/assets/icons/bootstrap-icons.css" rel="stylesheet" notheme="true"></gs-css>        
+        <gs-css global="true" src="/webcomponents/assets/icons/bootstrap-icons.css" rel="stylesheet" notheme="true"></gs-css>        
     </head>
     <body>
     </body>

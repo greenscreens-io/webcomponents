@@ -1,5 +1,5 @@
-import GSElement from "/modules/base/GSElement.mjs";
-import GSDOM from "/modules/base/GSDOM.mjs";
+import GSElement from "../../../modules/base/GSElement.mjs";
+import GSDOM from "../../../modules/base/GSDOM.mjs";
 import GSAttr from "../../../modules/base/GSAttr.mjs";
 
 class GSDialog extends GSElement {

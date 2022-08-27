@@ -49,6 +49,8 @@ export default class GSLoader {
 
         if (url.startsWith('http')) {
             path = url;
+        } else if (url.startsWith('/')) {
+            path = `${location.origin}/${url}`;
         } else if (isFile && !url.startsWith('../')) {
             path = `${location.origin}${location.pathname}/../${url}`;
         } else {
@@ -102,8 +104,11 @@ export default class GSLoader {
      * @return {string}
      */
     static #getTemplateURL(url = '') {
+        /*
         const isDirect =  /^(https?:\/\/)/i.test(url);
         url = isDirect ? url : GSLoader.#templateURL + '/' + url;
+        */
+        url = url.startsWith('//') ? GSLoader.#templateURL + '/' + url : url;
         return GSLoader.normalizeURL(url);
     }
 

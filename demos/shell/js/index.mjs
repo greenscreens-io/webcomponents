@@ -1,4 +1,4 @@
-self.GS_TEMPLATE_URL = '/demos/shell/templates';
+self.GS_TEMPLATE_URL = '/webcomponents/demos/shell/templates';
 
 import { } from "./sidebar.js";
 import { } from "./toolbar.js";
