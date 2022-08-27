@@ -19,8 +19,8 @@ import GSCacheStyles from "./GSCacheStyles.mjs";
  * To change theme use hashtag (auto=true retured and theme=THEME_NAME)
  * http://localhost:8080/demos/button.html#theme=bs
  * 
- * <gs-css auto="true" global="true" url="/assets/css/custom.css" rel="stylesheet"></gs-css>
- * <gs-css auto="true" global="true" url="/assets/css/bootstrap_5.2.0.css" rel="stylesheet" disabled="true" theme="bs"></gs-css>
+ * <gs-css auto="true" global="true" src="/webcomponents/assets/css/custom.css" rel="stylesheet"></gs-css>
+ * <gs-css auto="true" global="true" src="/webcomponents/assets/css/bootstrap_5.2.0.css" rel="stylesheet" disabled="true" theme="bs"></gs-css>
  * 
  * Use attribute disabled to disable theme programatically
  * @class
