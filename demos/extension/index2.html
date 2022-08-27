@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>test</title>
+    <meta charset="utf-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="viewport"
+        content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+
+    <meta name="subject" content="Green Scereens Ltd.">
+    <meta name="author" content="www.greenscreens.ltd">
+    <meta name="keywords" content="JavaScript,WebComponents">
+    <meta name="robots" content="index, follow">
+    <meta name="revisit-after" content="3 month">
+    <meta name="description" content="WebComponents UI library based on Bootstrap.">
+
+    <script type="text/javascript">
+        self.GS_TEMPLATE_URL = './templates';
+        self.GS_NO_CACHE = true;
+    </script>
+    <script type="module" src="../../modules/index.mjs"></script>
+    <script type="module" src="../../modules/components/index.mjs"></script>
+    <script type="module" src="./scripts/index.mjs"></script>
+
+    <gs-css url="../../assets/css/custom_5.2.0.css"></gs-css>
+    <gs-css url="../../assets/icons/bootstrap-icons.css" notheme="true"></gs-css>
+</head>
+
+<body>
+
+    <gs-layout type="vertical" css="">
+
+        <gs-item v-pos="center" h-pos="center" min="5" css="p-2 border-bottom shadow-sm text-bg-light">
+            <template>
+                <div class=" ">
+                    <img src="../../assets/img/logo.png" height="32">
+                </div>
+            </template>
+        </gs-item>
+
+        <gs-item>
+            <template>
+                <gs-layout type="horizontal">
+
+                    <!-- here we inject childs through template tag -->
+                    <gs-item css="p-3" min="260" max="260" template="//shell/sidebar.html"></gs-item>
+
+                    <!-- target where to inject templates -->
+                    <gs-item css="p-3" name="content" v-pos="top" h-pos="center">
+                        <template>
+                            <!-- default page the same as sidebar selected item -->
+                            <gs-ext-settings></gs-ext-settings>
+                        </template>
+                    </gs-item>
+
+                </gs-layout>
+            </template>
+        </gs-item>
+
+        <gs-item css="p-2" name="footer" v-pos="bottom" h-pos="center" max="60">
+            <template>
+                <small>&copy; Green Screens Ltd. 2015. - 2022.</small>
+            </template>
+        </gs-item>
+
+    </gs-layout>
+
+</body>
+
+</html>

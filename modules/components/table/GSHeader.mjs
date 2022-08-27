@@ -1,0 +1,75 @@
+/*
+ * Copyright (C) 2015, 2022 Green Screens Ltd.
+ */
+
+/**
+ * A module loading GSHeader class
+ * @module components/table/GSHeader
+ */
+
+import GSDOM from "../../base/GSDOM.mjs";
+
+/**
+ * Table header renderer for GSTable
+ * @class
+ * @extends {HTMLElement}
+ */
+export default class GSHeader extends HTMLElement {
+
+    static {
+        customElements.define('gs-header', GSHeader);
+    }
+
+    /*
+    connectedCallback() {
+        const me = this;
+        if (!me.id) me.setAttribute('id', GSID.id);
+        GSComponents.store(me);
+    }
+
+    disconnectedCallback() {
+        const me = this;
+        GSComponents.remove(me);
+    }
+    */
+
+    render() {
+        const me = this;
+
+        const table = me.table;
+        const filters = GSDOM.queryAll(me, 'gs-column[filter=true]');
+        const columns = GSDOM.queryAll(me, 'gs-column');
+
+        const html = [];
+        html.push(`<thead class="${table.cssHeader}">`);
+
+        if (filters.length > 0) {
+            html.push('<tr is="gs-tablefilter">');
+            columns.forEach(el => html.push(el.renderFilter()));
+            html.push('</tr>');
+        }
+
+        html.push('<tr is="gs-tablesort">');
+        columns.forEach(el => html.push(el.render()));
+        html.push('</tr>');
+
+        html.push('</thead>');
+        return html.join('');
+    }
+
+    toJSON() {
+        const me = this;
+        const heads = [];
+        const cols = GSDOM.queryAll(me, 'gs-column');
+        cols.forEach((el, i) => {
+            heads.push(el.toJSON());
+        });
+        return heads;
+    }
+
+    get table() {
+        return GSDOM.closest(this, 'GS-TABLE')
+    }
+}
+
+

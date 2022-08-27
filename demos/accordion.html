@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Accordion Test</title>
+
+    <meta charset="utf-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+
+    <meta name="subject" content="Green Scereens Ltd.">
+    <meta name="author" content="www.greenscreens.ltd">
+    <meta name="keywords" content="JavaScript,WebComponents">
+    <meta name="robots" content="index, follow">
+    <meta name="revisit-after" content="3 month">
+    <meta name="description" content="WebComponents UI library based on Bootstrap.">
+
+    <script type="module" src="../modules/index.mjs"></script>
+    <script type="module" src="../modules/components/ext/GSDataAttr.mjs"></script>
+    <script type="module" src="../modules/components/GSAccordion.mjs"></script>
+
+    <gs-css  url="../assets/icons/bootstrap-icons.css"  notheme="true"></gs-css>  
+    <gs-css  url="../assets/css/custom_5.2.0.css" ></gs-css>  
+
+</head>
+<body>
+
+    <gs-template href="_header.html"></gs-template>
+
+    <!-- auto-generated gs-accordion -->
+    <div class="m-4 p-1 bg-light border shadow-sm">
+        <gs-accordion css-item="m-1 shadow-sm border" css-header="" css-body="">
+            <gs-item title="Accordion Item #1" message="GS tag accordion item #1" autoclose="false" visible="true"></gs-item>
+            <gs-item title="Accordion Item #2" message="GS tag accordion item #2"></gs-item>
+            <gs-item title="Accordion Item #3" message="GS tag accordion item #3"></gs-item>
+        </gs-accordion>
+    </div> 
+
+    <!--
+      Load from ref id
+      <gs-accordionitem title="#title1" message="#body1"></gs-accordionitem>
+              
+      Load from remote template
+      <gs-accordionitem title="//title1.tpl" message="//body1.tpl"></gs-accordionitem>
+    -->
+
+    <hr>
+    
+    <!-- bootstrap accordion -->
+    <div class="m-4 p-1 bg-light border shadow-sm">
+        <div class="accordion" id="bsaccordion">
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="headingOne">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne">
+                  Accordion Item #1
+                </button>
+              </h2>
+              <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="bsaccordion">
+                <div class="accordion-body">
+                  <strong>This is the first item's accordion body.</strong> It is shown by default.
+                </div>
+              </div>
+            </div>
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="headingTwo">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo">
+                  Accordion Item #2
+                </button>
+              </h2>
+              <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="bsaccordion">
+                <div class="accordion-body">
+                  <strong>This is the second item's accordion body.</strong> It is hidden by default.
+                </div>
+              </div>
+            </div>
+          </div>
+    </div> 
+   
+
+</body>
+</html>

@@ -1,0 +1,14 @@
+<div class="d-flex align-items-stretch h-100 bg-light">
+	<slot name="sidebar">
+		<gs-sidebar auto="false" maxWidth="64"></gs-sidebar>
+	</slot>
+	<div class="flex-column flex-fill">
+		<slot name="toolbar">
+			<gs-toolbar></gs-toolbar>
+		</slot>
+		<div class="container-float m-2">
+			<slot name="content"></slot>
+		</div>
+	</div>
+</div>
+<gs-dialog></gs-dialog>

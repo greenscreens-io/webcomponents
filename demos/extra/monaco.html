@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Monaco editor Test</title>
+    <meta charset="utf-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="viewport"
+        content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+
+    <meta name="subject" content="Green Scereens Ltd.">
+    <meta name="author" content="www.greenscreens.ltd">
+    <meta name="keywords" content="JavaScript,WebComponents">
+    <meta name="robots" content="index, follow">
+    <meta name="revisit-after" content="3 month">
+    <meta name="description" content="WebComponents UI library based on Bootstrap.">
+
+    <script type="module" src="../../modules/index.mjs"></script>
+    <script type="module" src="../../modules/extra/GSMonaco.mjs"></script>
+
+    <gs-css url="../../assets/css/custom_5.2.0.css"></gs-css>
+    <gs-css url="../../assets/icons/bootstrap-icons.css" notheme="true"></gs-css>
+
+</head>
+
+<body>
+    <gs-template href="../assets/_header.html"></gs-template>
+
+    <!-- toolbar -->
+    <div class="m-4 p-1 bg-light border shadow-sm row form-row">
+        <div class="m-4 w-25 col">
+            <select class="form-select mt-2" id="selectTheme">
+                <option value="" selected>Select theme...</option>
+                <option value="vs-dark">Dark</option>
+                <option value="vs-light">Light</option>
+            </select>    
+        </div>  
+        <div class="m-4 w-25 col">
+            <select class="form-select mt-2" id="selectLang">
+                <option value="" selected>Select language...(Auto)</option>
+                <option value="css">CSS</option>
+                <option value="html">HTML</option>
+                <option value="javascript">JavaScript</option>
+            </select>    
+        </div>  
+        <div class="m-4 w-25 col">
+            <input class="form-select mt-2" id="source" list="sources" placeholder="Enter source url" value="monaco.html">
+            <datalist id="sources">
+                <option value="monaco.html">
+                <option value="../../assets/css/style.css">
+                <option value="../../assets/css/theme.css">
+            </datalist>            
+        </div>                        
+    </div>
+    
+    <!-- container for code editor -->
+    <div class="d-flex m-4 bg-dark border shadow-sm" id="wrapper" style="height:500px">
+        <gs-monaco url="monaco.html" language="" class="flex-fill d-flex" css="flex-fill"></gs-monaco>
+    </div>
+
+    <script>
+        document.querySelector('#selectTheme').addEventListener('change', (e) => {
+            const el = GSDOM.query(document.body, 'gs-monaco');
+            if (!e.target.value) return;
+            el.theme = e.target.value;
+        });
+
+        document.querySelector('#selectLang').addEventListener('change', (e) => {
+            // if (!e.target.value) return;
+            const el = GSDOM.query(document.body, 'gs-monaco');
+            el.language = e.target.value;
+        });
+
+        document.querySelector('#source').addEventListener('keypress', (e) => {
+            if (e.which !== 13) return;
+            const el = GSDOM.query(document.body, 'gs-monaco');
+            el.code = '';
+            el.url = e.target.value;
+        });
+        
+    </script>
+
+</body>
+
+</html>

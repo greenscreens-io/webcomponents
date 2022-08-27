@@ -1,0 +1,39 @@
+<html>
+
+<head>
+    <meta charset="utf-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="viewport"
+        content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+
+    <meta name="subject" content="Green Scereens Ltd.">
+    <meta name="author" content="www.greenscreens.ltd">
+    <meta name="keywords" content="JavaScript,WebComponents">
+    <meta name="robots" content="index, follow">
+    <meta name="revisit-after" content="3 month">
+    <meta name="description" content="WebComponents UI library based on Bootstrap.">
+
+    <script type="module" src="../../modules/head/index.mjs"></script>
+    <script type="module" src="../../modules/templating/index.mjs"></script>
+    <script type="module" src="../../modules/components/ext/GSDataListExt.mjs"></script>
+    <gs-css url="../../assets/css/custom_5.2.0.css"></gs-css>
+    <gs-css url="../../assets/icons/bootstrap-icons.css" notheme="true"></gs-css>
+</head>
+
+<body>
+
+    <gs-template href="../assets/_header.html"></gs-template>
+
+    <div class="container text-bg-light mt-4 p-4 border shadow-sm">
+        Example loading data list from JSON file
+        <input type="text" list="types" name="type" class="form-control" autocomplete="on" autocorrect="off"
+            autocapitalize="off" spellcheck="false">
+        <datalist id="types" is="gs-ext-datalist" data="datalist.json"></datalist>
+    </div>
+
+</body>
+
+</html>

@@ -1,0 +1,16 @@
+[
+    {
+        "name": "Test",
+        "description": "Example custom theme",
+        "black": "#000000",
+        "blue": "#6a5acd",
+        "green": "#00ff00",
+        "icons": "#616161",
+        "pink": "#ff00ff",
+        "red": "#ff0000",
+        "themes": "1",
+        "turquoise": "#40e0d0",
+        "white": "#ffffff",
+        "yellow": "#ffff00"
+    }
+]

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>test</title>
+  <meta charset="utf-8">
+
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="viewport"
+    content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+
+  <meta name="subject" content="Green Scereens Ltd.">
+  <meta name="author" content="www.greenscreens.ltd">
+  <meta name="keywords" content="JavaScript,WebComponents">
+  <meta name="robots" content="index, follow">
+  <meta name="revisit-after" content="3 month">
+  <meta name="description" content="WebComponents UI library based on Bootstrap.">
+
+  <script type="text/javascript">
+    self.GS_TEMPLATE_URL = '/demos/tab';
+  </script>
+  <script type="module" src="../modules/index.mjs"></script>
+  <script type="module" src="../modules/components/ext/GSNavLinkExt.mjs"></script>
+  <script type="module" src="../modules/components/GSList.mjs"></script>
+
+
+  <gs-css url="../assets/css/custom_5.2.0.css"></gs-css>
+  <gs-css url="../assets/icons/bootstrap-icons.css" notheme="true"></gs-css>
+
+  <template id="test">
+    Test
+  </template>
+</head>
+
+<body>
+
+  <gs-template href="_header.html"></gs-template>
+
+  <!-- selectable -->
+  <div class="m-4 p-1 bg-light text-bg-light border shadow-sm">
+    <gs-list css="">
+      <gs-item title="Home" action="home"></gs-item>
+      <gs-item title="Test1" action="test1"></gs-item>
+      <gs-item title="Test2" action="test2">
+        <template>
+          <div class="d-flex w-100 justify-content-between">
+            <h5 class="mb-1">List group item heading</h5>
+            <small class="text-muted">3 days ago</small>
+          </div>
+          <p class="mb-1">Some placeholder content in a paragraph.</p>
+          <small class="text-muted">And some muted small print.</small>
+        </template>
+      </gs-item>
+    </gs-list>
+  </div>
+
+  <!-- non selectable -->
+  <div class="m-4 p-1 bg-light text-bg-light border shadow-sm">
+    <gs-list css="" selectable="false">
+      <gs-item title="Home"></gs-item>
+      <gs-item title="Test1"></gs-item>
+      <gs-item title="Test2">
+        <template>
+          <div class="d-flex w-100 justify-content-between">
+            <h5 class="mb-1">List group item heading</h5>
+            <small class="text-muted">3 days ago</small>
+          </div>
+          <p class="mb-1">Some placeholder content in a paragraph.</p>
+          <small class="text-muted">And some muted small print.</small>
+          <template>
+      </gs-item>
+    </gs-list>
+  </div>
+
+  <!-- automatic attachment to plain bootstrap -->
+  <div class="m-4 p-1 bg-light text-bg-light border shadow-sm">
+    <div class="list-group">
+      <a href="#" class="list-group-item list-group-item-action active" aria-current="true">
+        <div class="d-flex w-100 justify-content-between">
+          <h5 class="mb-1">List group item heading</h5>
+          <small>3 days ago</small>
+        </div>
+        <p class="mb-1">Some placeholder content in a paragraph.</p>
+        <small>And some small print.</small>
+      </a>
+      <a href="#" class="list-group-item list-group-item-action">
+        <div class="d-flex w-100 justify-content-between">
+          <h5 class="mb-1">List group item heading</h5>
+          <small class="text-muted">3 days ago</small>
+        </div>
+        <p class="mb-1">Some placeholder content in a paragraph.</p>
+        <small class="text-muted">And some muted small print.</small>
+      </a>
+      <a href="#" class="list-group-item list-group-item-action">
+        <div class="d-flex w-100 justify-content-between">
+          <h5 class="mb-1">List group item heading</h5>
+          <small class="text-muted">3 days ago</small>
+        </div>
+        <p class="mb-1">Some placeholder content in a paragraph.</p>
+        <small class="text-muted">And some muted small print.</small>
+      </a>
+    </div>
+
+  </div>
+
+  <script defer="true" type="module">
+    const tbl = GSComponents.find('gs-list');
+    tbl.listen('action', (e) => console.log(e.detail));
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,32 @@
+<gs-template href="//shell/toolbar.html" id="toolbar">
+    <slot>Color Themes</slot>
+</gs-template>
+
+<div class="d-flex justify-content-between align-items-center bg-light border shadow-sm">
+
+    <gs-table id="table-main" index=false class="flex-fill" css="table table-light table-hover user-select-none m-0"
+        css-select="table-active table-primary" css-header="user-select-none table-secondary">
+        <gs-header>
+            <gs-column title="Name" name="name" width="250px" filter="false"></gs-column>
+            <gs-column title="Description" name="description" filter="false"></gs-column>
+        </gs-header>
+        <gs-store src="data/colors.json" id="colors" limit=10>
+            <gs-item name="name"></gs-item>
+            <gs-item name="description"></gs-item>
+        </gs-store>
+        <gs-context slot="extra" target="tbody tr">
+            <gs-item name="Details" action="details"></gs-item>
+            <gs-item name="Clone" action="clone"></gs-item>
+            <gs-item name="Export to CSS" action="export"></gs-item>
+            <gs-item name="Remove" action="remove"></gs-item>
+        </gs-context>
+        <!--
+            <gs-pager slot="extra" previous="&laquo;" next="&raquo;" firstlast="false"></gs-pager>
+         -->
+    </gs-table>
+
+    <gs-modal id="modal-main" visible="false">
+        <h4 slot="title">Theme Colors</h4>
+        <gs-template slot="body" href="//forms/color.html"></gs-template>
+    </gs-modal>
+</div>
