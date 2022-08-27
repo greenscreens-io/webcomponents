@@ -35,7 +35,6 @@ export default class GSCalendar extends GSElement {
     }
 
     attributeChanged(name = '', oldVal = '', newVal = '') {
-        debugger;
         const me = this;
         if (name === 'date') {
             me.#date = new GSDate(newVal);

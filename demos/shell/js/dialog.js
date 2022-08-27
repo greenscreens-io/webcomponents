@@ -9,21 +9,21 @@ class GSDialog extends GSElement {
 	}
 
 	set title(val = '') {
-		const el = this.findEl('.modal-title');
+		const el = this.query('.modal-title');
 		if (el) el.innerHTML = val;
-		const hd = this.findEl('.modal-header');
+		const hd = this.query('.modal-header');
 		val.length === 0 ? GSDOM.hide(hd) : GSDOM.show(hd);
 	}
 
 	set content(val = '') {
-		const el = this.findEl('slot[name="body"]');
+		const el = this.query('slot[name="body"]');
 		if (el) el.innerHTML = val;
 	}
 
 	onReady() {
 		const me = this;
-		const btnok = me.findEl('.btn-primary');
-		const btncl = me.findEl('.btn-secondary');
+		const btnok = me.query('.btn-primary');
+		const btncl = me.query('.btn-secondary');
 
 		me.attachEvent(btnok, 'click', me.onOk);
 		me.attachEvent(btncl, 'click', me.onCancel);
@@ -38,7 +38,7 @@ class GSDialog extends GSElement {
 	}
 
 	toggle(val = false) {
-		const el = this.findEl('.modal');
+		const el = this.query('.modal');
 		if (el) el.style.display = val ? 'block' : 'none';
 	}
 

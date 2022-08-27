@@ -9,7 +9,7 @@ class GSToolbar extends GSElement {
 	}
 
 	get topEl() {
-		return this.findEl('div');
+		return this.query('div');
 	}
 
 	onReady() {

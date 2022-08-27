@@ -3,7 +3,6 @@
  */
 
 import "./ext/index.mjs";
-import "./GSInput.mjs";
 import "./GSAlert.mjs";
 import "./GSAccordion.mjs";
 import "./GSButton.mjs";

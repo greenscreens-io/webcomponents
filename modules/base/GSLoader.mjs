@@ -20,6 +20,14 @@ export default class GSLoader {
 
     static TEMPLATE_URL = self.GS_TEMPLATE_URL || location.origin;
 
+    static {
+        if (!self.GS_TEMPLATE_URL) {
+            const url = location.href.split('?').pop();
+            let seg = url.split('/');
+            GSLoader.TEMPLATE_URL = url.endsWith('/') ? url : seg.slice(0, -1).join('/');
+            self.GS_TEMPLATE_URL = GSLoader.TEMPLATE_URL;
+        }
+    }
     /**
      * Convert partial URL to a real URL
      * @param {string} url 
@@ -33,15 +41,7 @@ export default class GSLoader {
 
         if (url.startsWith('http')) {
             path = url;
-        } else if (url.startsWith('./')) {
-            path = `${location.origin}${location.pathname}/.${url}`;
-        } else if (url.startsWith('../')) {
-            path = `${location.origin}${location.pathname}/${url}`;
-        } else if (url.startsWith('/')) {
-            path = `${location.origin}${url}`;
-        } else if (location.href.endsWith('/')) {
-            path = `${location.origin}${location.pathname}/${url}`;
-        } else if (isFile) {
+        } else if (isFile && !url.startsWith('../')) {
             path = `${location.origin}${location.pathname}/../${url}`;
         } else {
             path = `${location.origin}${location.pathname}/${url}`;
@@ -78,8 +78,10 @@ export default class GSLoader {
             const el = GSDOM.query(document.documentElement, def);
             return el ? el.innerHTML : def;
         }
+        /*
         const isURL = GSUtil.isURL(def);
         if (!isURL) return def;
+        */
         def = GSLoader.getTemplateURL(def);
         return  GSLoader.loadSafe(def);
     }
@@ -90,12 +92,9 @@ export default class GSLoader {
      * @return {string}
      */
     static getTemplateURL(url = '') {
-
         const caching = self.GS_DEV_MODE === true;
-        if (url.startsWith('//')) {
-            return GSLoader.normalizeURL(GSLoader.templateURL + url, caching);
-        }
-
+        const isDirect =  /^(https?:\/\/)/i.test(url);
+        url = isDirect ? url : GSLoader.templateURL + '/' + url;
         return GSLoader.normalizeURL(url, caching);
     }
 

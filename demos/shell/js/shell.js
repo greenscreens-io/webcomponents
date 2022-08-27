@@ -8,19 +8,19 @@ class GSShell extends GSElement {
 	}
 
 	get sidebar() {
-		return this.findEl('gs-sidebar');
+		return this.query('gs-sidebar');
 	}
 
 	get toolbar() {
-		return this.findEl('gs-toolbar');
+		return this.query('gs-toolbar');
 	}
 
 	get content() {
-		return this.findEl('slot[name="content"]');
+		return this.query('slot[name="content"]');
 	}
 
 	get dialog() {
-		return this.findEl('gs-dialog');
+		return this.query('gs-dialog');
 	}
 
 	onReady() {

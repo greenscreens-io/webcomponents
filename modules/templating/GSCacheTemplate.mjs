@@ -161,8 +161,9 @@ export default class GSCacheTemplate {
 	 */
 	static async loadURLTemplate(cached = false, name = '', tpl) {
 		const me = GSCacheTemplate;
-		const o = me.isURLTemplate(tpl);
-		if (!o) return o;
+		//const o = me.isURLTemplate(tpl);
+		//if (!o) return o;
+		const o = tpl;
 		try {
 			let template = null;
 			if (cached) template = me.load(o);
