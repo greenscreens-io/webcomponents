@@ -1,6 +1,6 @@
-import GSElement from "/modules/base/GSElement.mjs";
-import GSLoader from "/modules/base/GSLoader.mjs";
-import GSLog from "/modules/base/GSLog.mjs";
+import GSElement from "../../../modules/base/GSElement.mjs";
+import GSLoader from "../../../modules/base/GSLoader.mjs";
+import GSLog from "../../../modules/base/GSLog.mjs";
 import GSDOM from "../../../modules/base/GSDOM.mjs";
 
 class GSInjectable extends GSElement {

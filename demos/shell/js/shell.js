@@ -1,5 +1,5 @@
 import GSAttr from "../../../modules/base/GSAttr.mjs";
-import GSElement from "/modules/base/GSElement.mjs";
+import GSElement from "../../../modules/base/GSElement.mjs";
 
 class GSShell extends GSElement {
 

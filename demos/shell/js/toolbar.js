@@ -1,5 +1,5 @@
-import GSElement from "/modules/base/GSElement.mjs";
-import GSEvent from "/modules/base/GSEvent.mjs";
+import GSElement from "../../../modules/base/GSElement.mjs";
+import GSEvent from "../../../modules/base/GSEvent.mjs";
 import GSAttr from "../../../modules/base/GSAttr.mjs";
 
 class GSToolbar extends GSElement {

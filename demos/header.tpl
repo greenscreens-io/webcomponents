@@ -1,12 +1,12 @@
 <div class="d-flex justify-content-between  bg-light border shadow-sm p-2">
     <div>
-        <a href="index.html" title="Return to the main demo page">
+        <a href="/webcomponents/demos/index.html" title="Return to the main demo page">
                 <i class="bi bi-house fs-4 fw-bold"></i>
         </a>
     </div>
     <div>
         <a href="https://webcomponents.greenscreens.ltd" target="_blank" title="Open Green Screens WebComponents landing page">
-                <img src="/assets/img/logo.png" height="32">
+                <img src="/webcomponents/assets/img/logo.png" height="32">
         </a>
     </div>
     <div>
