@@ -7,6 +7,8 @@ NOTE: Code is made in ES2022. Even not required, build with Babel, WebPack, Roll
 NOTE: Currently, we do not accept pull requests!!!!!
  
 Clone a repo and use the web server to point to the repo root directory, then access demos at http://localhost/demos to learn how to use components.
+
+Or try live version on Github at https://greenscreens-io.github.io/webcomponents/demos/
  
 Project web page [here](https://webcomponents.greenscreens.ltd/).
  
