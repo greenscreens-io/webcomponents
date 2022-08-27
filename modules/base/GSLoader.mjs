@@ -51,7 +51,7 @@ export default class GSLoader {
             path = url;
         } else if (url.startsWith('/')) {
             path = `${location.origin}/${url}`;
-        } else if (isFile && !url.startsWith('../')) {
+        } else if (isFile) {
             path = `${location.origin}${location.pathname}/../${url}`;
         } else {
             path = `${location.origin}${location.pathname}/${url}`;
