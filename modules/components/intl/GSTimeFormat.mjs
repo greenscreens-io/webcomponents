@@ -2,14 +2,14 @@
  * Copyright (C) 2015, 2022 Green Screens Ltd.
  */
 
-import GSUtil from "../base/GSUtil.mjs";
-import GSElement from "../base/GSElement.mjs";
-import GSEvent from "../base/GSEvent.mjs";
-import GSAttr from "../base/GSAttr.mjs";
+import GSUtil from "../../base/GSUtil.mjs";
+import GSElement from "../../base/GSElement.mjs";
+import GSEvent from "../../base/GSEvent.mjs";
+import GSAttr from "../../base/GSAttr.mjs";
 
 /**
  * A module rendering current time on a page
- * @module components/GSTime
+ * @module components/GSTimeFormat
  */
 
 /**
@@ -18,7 +18,7 @@ import GSAttr from "../base/GSAttr.mjs";
  * @class
  * @extends {HTMLElement}
  */
-export default class GSTime extends GSElement {
+export default class GSTimeFormat extends GSElement {
 
     #id = 0;
 
@@ -47,13 +47,14 @@ export default class GSTime extends GSElement {
     #update() {
         const me = this;
         const date = new Date();
-        me.innerHTML = date.toLocaleTimeString(me.locale);
+        me.self.innerHTML = date.toLocaleTimeString(me.locale);
         GSEvent.send(me, 'time', { date }, true, true);
+        return 0;
     }
 
     start() {
         const me = this;
-        me.#id = setInterval(me.#update.bind(me), me.interval * 1000);
+        me.#id = me.interval > 0 ? setInterval(me.#update.bind(me), me.interval * 1000) : me.#update();
     }
 
     stop() {
@@ -76,12 +77,12 @@ export default class GSTime extends GSElement {
         return GSAttr.get(this, 'locale', GSUtil.locale);
     }
 
-    set locale(val = 60) {
+    set locale(val = '') {
         return GSAttr.set(this, 'locale', val);
     }
 
     static {
-        customElements.define('gs-time', GSTime);
-        Object.seal(GSTime);
+        customElements.define('gs-time-format', GSTimeFormat);
+        Object.seal(GSTimeFormat);
     }
 }

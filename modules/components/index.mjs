@@ -3,6 +3,8 @@
  */
 
 import "./ext/index.mjs";
+import "./intl/index.mjs";
+
 import "./GSAlert.mjs";
 import "./GSAccordion.mjs";
 import "./GSButton.mjs";
@@ -18,12 +20,11 @@ import "./GSSplitter.mjs";
 import "./GSTab.mjs";
 import "./GSTooltip.mjs";
 import "./GSOffcanvas.mjs";
+
 import "./filebox/index.mjs";
 import "./table/index.mjs";
 import "./toast/index.mjs";
 
-import "./GSTime.mjs";
-import "./GSYear.mjs";
 
 /*
 export { default as GSInputExt } from "./ext/GSInputExt.mjs";

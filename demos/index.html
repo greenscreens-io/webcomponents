@@ -22,6 +22,7 @@
   </script>
 
   <script type="module" src="/webcomponents/modules/index.mjs"></script>
+  <script type="module" src="/webcomponents/modules/components/intl/GSYearFormat.mjs"></script>
   <gs-css url="/webcomponents/assets/css/custom_5.2.0.css"></gs-css>
   <gs-css url="/webcomponents/assets/icons/bootstrap-icons.css" notheme="true"></gs-css>
 
@@ -31,46 +32,118 @@
 
   <gs-template href="/webcomponents/demos/header.tpl" ></gs-template>
 
-  <div class="m-4 p-1 bg-light border shadow-sm">
-    <a class="btn btn-primary m-1" href="accordion.html" target="_blank">Accordion</a>
-    <a class="btn btn-primary m-1" href="alert.html" target="_blank">Alert</a>
-    <a class="btn btn-primary m-1" href="button.html" target="_blank">Button</a>
-    <a class="btn btn-primary m-1" href="collapse.html" target="_blank">Collapse</a>
-    <a class="btn btn-primary m-1" href="contextmenu.html" target="_blank">Contextmenu</a>
-    <a class="btn btn-primary m-1" href="datalist/index.html" target="_blank">Datalist</a>
-    <a class="btn btn-primary m-1" href="dropdown.html" target="_blank">Dropdown</a>
-    <a class="btn btn-primary m-1" href="filebox.html" target="_blank">Filebox</a>
-    <a class="btn btn-primary m-1" href="list.html" target="_blank">List</a>
-    <a class="btn btn-primary m-1" href="nav.html" target="_blank">Nav</a>
-    <a class="btn btn-primary m-1" href="offcanvas.html" target="_blank">Offcanvas</a>
-    <a class="btn btn-primary m-1" href="popover.html" target="_blank">Popover</a>
-    <a class="btn btn-primary m-1" href="popup/index.html" target="_blank">Popup</a>
-    <a class="btn btn-primary m-1" href="progress.html" target="_blank">Progress</a>
-    <a class="btn btn-primary m-1" href="splitter.html" target="_blank">Splitter</a>
-    <a class="btn btn-primary m-1" href="toast.html" target="_blank">Toast</a>
-    <a class="btn btn-primary m-1" href="tooltip.html" target="_blank">Tooltip</a>
+  <div class="row m-4 p-1 bg-light border shadow-sm">
+    <div class="col-2">General</div>
+    <div class="col">
+      <a class="btn btn-primary m-1" href="accordion.html" target="_blank">Accordion</a>      
+      <a class="btn btn-primary m-1" href="button.html" target="_blank">Button</a>
+      <a class="btn btn-primary m-1" href="collapse.html" target="_blank">Collapse</a>
+      <a class="btn btn-primary m-1" href="datalist/index.html" target="_blank">Datalist</a>
+      <a class="btn btn-primary m-1" href="filebox.html" target="_blank">Filebox</a>
+      <a class="btn btn-primary m-1" href="list.html" target="_blank">List</a>
+      <a class="btn btn-primary m-1" href="nav.html" target="_blank">Nav</a>
+      <a class="btn btn-primary m-1" href="progress.html" target="_blank">Progress</a>
+      <a class="btn btn-primary m-1" href="splitter.html" target="_blank">Splitter</a>
+    </div>    
   </div>
 
-  <div class="m-4 p-1 bg-light border shadow-sm">
-    <a class="btn btn-primary m-1" href="modal/index.html" target="_blank">Modal</a>
-    <a class="btn btn-primary m-1" href="tab/index.html" target="_blank">Tab</a>
-    <a class="btn btn-primary m-1" href="table/index.html" target="_blank">Table</a>
-    <a class="btn btn-primary m-1" href="layouts/index.html" target="_blank">Layout</a>
-    <a class="btn btn-primary m-1" href="dashboards/index.html" target="_blank">Dashboards</a>
-    <a class="btn btn-primary m-1" href="shell/index.html" target="_blank">Shell</a>
-    <a class="btn btn-primary m-1" href="calendar.html" target="_blank">Calendar</a>
-    <a class="btn btn-primary m-1" href="theming.html" target="_blank">Switch Theme</a>
-    <a class="btn btn-primary m-1" href="i18n.html" target="_blank">I18N</a>
+  <!-- Menus -->
+  <div class="row m-4 p-1 bg-light border shadow-sm">    
+    <div class="col-2">Menus</div>
+    <div class="col">
+      <a class="btn btn-primary m-1" href="contextmenu.html" target="_blank">Contextmenu</a>
+      <a class="btn btn-primary m-1" href="dropdown.html" target="_blank">Dropdown</a>
+    </div>
+  </div>
+  
+  <!-- Info -->
+  <div class="row m-4 p-1 bg-light border shadow-sm">    
+    <div class="col-2">Informational</div>
+    <div class="col">
+      <a class="btn btn-primary m-1" href="alert.html" target="_blank">Alert</a>      
+      <a class="btn btn-primary m-1" href="popup/index.html" target="_blank">Popup</a>
+      <a class="btn btn-primary m-1" href="toast.html" target="_blank">Toast</a>
+      <a class="btn btn-primary m-1" href="tooltip.html" target="_blank">Tooltip</a>
+    </div>
+  </div>
+  
+  <!-- Composites -->
+  <div class="row m-4 p-1 bg-light border shadow-sm">    
+    <div class="col-2">Composites</div>
+    <div class="col">
+      <a class="btn btn-primary m-1" href="calendar.html" target="_blank">Calendar</a>
+      <a class="btn btn-primary m-1" href="modal/index.html" target="_blank">Modal</a>
+      <a class="btn btn-primary m-1" href="popover.html" target="_blank">Popover</a>      
+      <a class="btn btn-primary m-1" href="tab/index.html" target="_blank">Tab</a>
+      <a class="btn btn-primary m-1" href="table/index.html" target="_blank">Table</a>
+    </div>
+  </div>
+  
+  <!-- Layouts -->
+  <div class="row m-4 p-1 bg-light border shadow-sm">
+    <div class="col-2">
+      <a class="m-1"href="layouts/index.html" target="_blank">Layouts</a>
+    </div>
+    <div class="col">
+      <a class="btn btn-primary m-1" target="_blank" href="layouts/vertical.html">Vertical</a>
+      <a class="btn btn-primary m-1" target="_blank" href="layouts/horizontal.html">Horizontal</a>
+      <a class="btn btn-primary m-1" target="_blank" href="layouts/nested.html">Nested</a>
+      <a class="btn btn-primary m-1" target="_blank" href="layouts/bootstrap.html">Bootstrap</a>    
+    </div>    
   </div>
 
-  <div class="m-4 p-1 bg-light border shadow-sm">
-    <a class="btn btn-primary m-1" href="extra/highlight.html" target="_blank">Code Highlight</a>
-    <a class="btn btn-primary m-1" href="extra/monaco.html" target="_blank">Code Editor</a>
+  <!-- Dashboards -->
+  <div class="row m-4 p-1 bg-light border shadow-sm">    
+    <div class="col-2">
+      <a class="m-1" href="dashboards/index.html" target="_blank">Dashboards</a>      
+    </div>
+    <div class="col">
+      <a class="btn btn-primary m-1" href="offcanvas.html" target="_blank">Offcanvas</a>  
+      <a class="btn btn-primary m-1" href="dashboards/dashboard1.html" target="_blank">Dashboard 1</a>
+      <a class="btn btn-primary m-1" href="dashboards/dashboard2.html" target="_blank">Dashboard 2</a>
+      <a class="btn btn-primary m-1" href="dashboards/dashboard3.html" target="_blank">Dashboard 3</a>
+  
+      <a class="btn btn-primary m-1" href="shell/index.html" target="_blank">SPA Shell</a>
+  
+      <a class="btn btn-primary m-1" href="extension/index.html" target="_blank">SPA App</a>
+    </div>
+  </div>
+
+  <!-- Int -->
+  <div class="row m-4 p-1 bg-light border shadow-sm">
+    <div class="col-2">Internationalization</div>
+    <div class="col">
+      <a class="btn btn-primary m-1" href="intl/i18n.html" target="_blank">I18N</a>
+      <a class="btn btn-primary m-1" href="intl/currency.html" target="_blank">Currency</a>
+      <a class="btn btn-primary m-1" href="intl/date.html" target="_blank">Date</a>
+      <a class="btn btn-primary m-1" href="intl/time.html" target="_blank">Time</a>
+      <a class="btn btn-primary m-1" href="intl/year.html" target="_blank">Year</a>
+    </div>
   </div>  
+  
+  <!-- Programming -->
+  <div class="row m-4 p-1 bg-light border shadow-sm">
+    <div class="col-2">Programmig</div>
+    <div class="col">
+      <a class="btn btn-primary m-1" href="extra/highlight.html" target="_blank">Code Highlight</a>
+      <a class="btn btn-primary m-1" href="extra/monaco.html" target="_blank">Code Editor</a>
+    </div>    
+  </div>  
+  
+  <!-- CSS styles -->
+  <div class="row m-4 p-1 bg-light border shadow-sm">
+    <div class="col-2">CSS styles</div>
+    <div class="col auto">
+      <a class="btn btn-primary m-1" href="theming.html" target="_blank">Switch Themes</a>
+      <a class="btn btn-primary m-1" href="cheatsheet_gs_5.2.0.html" target="_blank">Custom BS 5.2.0</a>
+      <a class="btn btn-primary m-1" href="cheatsheet_5.2.0.html" target="_blank">BS 5.2.0</a>
+    </div>
+  </div>
 
-  <div class="m-4 p-1 bg-light border shadow-sm">
-    <a class="btn btn-primary m-1" href="cheatsheet_gs_5.2.0.html" target="_blank">Custom BS 5.2.0</a>
-    <a class="btn btn-primary m-1" href="cheatsheet_5.2.0.html" target="_blank">BS 5.2.0</a>
+  <div class="position-fixed bottom-0 start-50 translate-middle-x mb-4 text-center">
+    <a href="https://www.greenscreens.ltd" target="_blank" class="text-muted">&copy; Green Screens Ltd. 2015. - <gs-year-format></gs-year-format>.</a>
+    <br>
+    <a href="https://webcomponents.greenscreens.ltd" target="_blank">webcomponents.greenscreens.ltd</a>
   </div>
 
 </body>

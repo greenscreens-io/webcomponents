@@ -27,13 +27,13 @@ Once SCS style is loaded and cached, this element is automatically removed from 
 
 Standard CSS injection to a document and all Shadow DOM elements.
 ```
-<gs-css url="/assets/css/theme.css"></gs-css>
+<gs-css src="/webcomponents/assets/css/theme.css"></gs-css>
 ```
 <br>
 
 CSS injection excluded from theme switcher.
 ```
-<gs-css url="/assets/icons/bootstrap-icons.css" notheme="true"></gs-css>  
+<gs-css src="/webcomponents/assets/icons/bootstrap-icons.css" notheme="true"></gs-css>  
 ```
 
 <br>
@@ -49,8 +49,8 @@ https://localhost/app.html#theme=lite
 ```
 
 ```
-<gs-css url="/assets/css/bootstrap.css" theme="default"></gs-css>
-<gs-css url="/assets/css/custom_dark.css" theme="dark"></gs-css>
-<gs-css url="/assets/css/custom_lite.css" theme="lite"></gs-css>
+<gs-css src="/webcomponents/assets/css/bootstrap.css" theme="default"></gs-css>
+<gs-css src="/webcomponents/assets/css/custom_dark.css" theme="dark"></gs-css>
+<gs-css src="/webcomponents/assets/css/custom_lite.css" theme="lite"></gs-css>
 ```
 

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>test</title>
+  <meta charset="utf-8">
+
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="viewport"
+    content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+
+  <meta name="subject" content="Green Scereens Ltd.">
+  <meta name="author" content="www.greenscreens.ltd">
+  <meta name="keywords" content="JavaScript,WebComponents">
+  <meta name="robots" content="index, follow">
+  <meta name="revisit-after" content="3 month">
+  <meta name="description" content="WebComponents UI library based on Bootstrap.">
+
+  <script type="module" src="/webcomponents/modules/index.mjs"></script>
+  <script type="module" src="/webcomponents/modules/base/GSi18n.mjs"></script>
+
+  <gs-css url="/webcomponents/assets/css/custom_5.2.0.css"></gs-css>
+  <gs-css url="/webcomponents/assets/icons/bootstrap-icons.css" notheme="true"></gs-css>
+
+  <template id="test">
+    Test
+  </template>
+</head>
+
+<body>
+  <gs-i18n id="i18n" default="en" lang="hr" url="./i18n/"></gs-i18n>
+
+  <gs-template href="/webcomponents/demos/header.tpl" ></gs-template>
+
+  <div class="row m-4 p-1 bg-light text-bg-light border shadow-sm" translate="false">
+    <div class="col-auto pt-2">
+      <label for="lang" class="label-control">
+        Select language to translate :
+      </label>
+    </div>
+    <div class="col-auto">
+      <select name="lang" id="lang" class="form-control" title="Choose language to translate to">
+        <option value="hr">Croatian</option>
+        <option value="en">English</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- -->
+  <div class="m-4 p-1 bg-light text-bg-light border shadow-sm">
+    Text here >>> <b class="text-danger"> {HELLO_WORLD} </b><<< is translated!!
+  </div>
+
+  <!-- to keep key from translation, make spacing around -->
+  <div class="m-4 p-1 bg-light text-bg-light border shadow-sm" title="{HELLO_WORLD}">
+      Put cursor above this text to see translated "title" attribute.
+  </div>
+
+  <div class="m-4 p-1 bg-light text-bg-light border shadow-sm">
+    This text is disabled from translation so we can show translation key such as this >>> <b class="text-danger" translate="false">{HELLO_WORLD}</b> <<<
+</div>
+
+<script>
+  const i18n = document.querySelector('gs-i18n#i18n');
+  document.querySelector('select#lang').addEventListener('change', e => {
+    i18n.lang = e.target.value;
+  });
+</script>
+</body>
+</html>
+

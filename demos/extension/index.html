@@ -42,21 +42,8 @@
     <!-- Main SPA app layout -->
     <gs-layout type="vertical" css="">
 
-        <!-- <gs-item v-pos="center" h-pos="center" min="5" template="//shell/header.html"></gs-item> -->
-
-        <!-- TOP HEADER WITH LOGO -->
-        <gs-item v-pos="center" h-pos="center" min="5"
-            css="p-2 border-bottom shadow-sm text-bg-light d-flex justify-content-between">
-            <template>
-                <div></div>
-                <div>
-                    <img src="/webcomponents/assets/img/logo.png" height="32">
-                </div>
-                <div>
-                    <gs-time interval="10" locale="hr"></gs-time>
-                </div>
-            </template>
-        </gs-item>
+        <!-- TOP HEADER WITH LOGO -->       
+        <gs-item v-pos="center" h-pos="center" min="5" template="//shell/header.html" css-template="flex-fill"></gs-item> 
 
         <!-- center layout with left/right panels  -->
         <gs-item>
@@ -82,7 +69,7 @@
         <gs-item css="p-2" name="footer" v-pos="bottom" h-pos="center" max="60">
             <template>
                 <a href="https://www.greenscreens.ltd" target="_blank" class="text-muted">
-                    &copy; Green Screens Ltd. 2015. - <gs-year></gs-year>.</a>
+                    &copy; Green Screens Ltd. 2015. - <gs-year-format></gs-year-format>.</a>
             </template>
         </gs-item>
 
