@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-  <title>Offcanvas Test</title>
+  <title>Demo pages</title>
   <meta charset="utf-8">
 
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -19,9 +19,6 @@
   <meta name="description" content="WebComponents UI library based on Bootstrap.">
 
   <script type="module" src="/webcomponents/modules/index.mjs"></script>
-  <script type="module" src="/webcomponents/modules/components/ext/GSDataAttr.mjs"></script>
-  <script type="module" src="/webcomponents/modules/components/GSOffcanvas.mjs"></script>
-
   <gs-css url="/webcomponents/assets/css/custom_5.2.0.css"></gs-css>
   <gs-css url="/webcomponents/assets/icons/bootstrap-icons.css" notheme="true"></gs-css>
 
@@ -31,14 +28,12 @@
 
   <gs-template href="/webcomponents/demos/header.tpl" ></gs-template>
 
-  <div class="m-4 p-4 bg-light border shadow-sm d-flex justify-content-center position-relative start-50 translate-middle-x text-center w-25">
-    <button type="button" class="btn btn-secondary" data-bs-toggle="offcanvas" data-bs-target=""
-      title="When no target set, all ofcanvases will be selected">Open sidebars</button>
+  <div class="m-4 p-1 bg-light border shadow-sm">
+    <a class="btn btn-primary m-1" href="currency.html" target="_blank">Currency</a>
+    <a class="btn btn-primary m-1" href="date.html" target="_blank">Date</a>
+    <a class="btn btn-primary m-1" href="time.html" target="_blank">Time</a>
+    <a class="btn btn-primary m-1" href="year.html" target="_blank">Year</a>
   </div>
-
-  <gs-offcanvas css="border shadow-sm" visible="true" closable="false" autoclose="true" min="65" max="260">
-  </gs-offcanvas>
-  <gs-offcanvas title="Offfcanvas panel" visible="true" closable="false" placement="end" backdrop="true"></gs-offcanvas>
 
 </body>
 

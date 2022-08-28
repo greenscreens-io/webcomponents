@@ -71,7 +71,8 @@ export default class GSItem extends HTMLElement {
 	 */
 	static getBody(el) {
 		let tpl = GSItem.getTemplate(el);
-		if (tpl) return `<gs-template href="${tpl}"></gs-template>`;
+		const cls = GSAttr.get(el, 'css-template', '');
+		if (tpl) return `<gs-template href="${tpl}" class="${cls}"></gs-template>`;
 		tpl = el.querySelector('template');
 		return tpl ? tpl.innerHTML : '';
 	}
