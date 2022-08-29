@@ -172,9 +172,9 @@ export default class GSLoader {
      * @param {object} dft default value
      * @returns {Promise<object|string>}
      */
-    static async loadSafe(url = '', method = 'GET', asjson = false, dft) {
+    static async loadSafe(url = '', method = 'GET', headers, asjson = false, dft) {
         try {
-            return GSLoader.load(url, method, null, asjson);
+            if (url) return GSLoader.load(url, method, headers, asjson);
         } catch (e) {
             GSLog.error(this, e);
         }

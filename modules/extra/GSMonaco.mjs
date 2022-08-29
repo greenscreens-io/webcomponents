@@ -14,15 +14,17 @@ import GSDOM from "../base/GSDOM.mjs";
 import GSEvent from "../base/GSEvent.mjs";
 
 /**
- * Code highlighter based on hljs library
- * <gs-highlight url="" target=""></gs-highlight>
+ * Code editor based on MS Monaco 
+ * https://microsoft.github.io/monaco-editor/
+ * 
+ * <gs-monaco url="" target="" theme="vs-dark" langauage="html"></gs-monaco>
  * 
  * @class
  * @extends {GSElement}
  */
 export default class GSMonaco extends GSElement {
 
-    static URL_LIB = 'https://unpkg.com/monaco-editor@latest/min/';
+    static URL_LIB = self.GS_URL_MONACO || 'https://unpkg.com/monaco-editor@latest/min/';
 
     static #initialized = false;
     #editor = null;
@@ -66,7 +68,6 @@ export default class GSMonaco extends GSElement {
         const id = setInterval(() => {
             if (typeof self.require !== 'function') return;
             require.config({ paths: { 'vs': `${GSMonaco.URL_LIB}/vs` }});
-            //require([`${GSMonaco.URL_LIB}vs/editor/editor.main`], () => {
             require(['vs/editor/editor.main'], () => {
                 clearInterval(id);
                 GSMonaco.#initialized = true;
@@ -123,6 +124,9 @@ export default class GSMonaco extends GSElement {
         if (me.#editor) me.#editor.setValue(data);
     }
     
+    /**
+     * Must be flat, as Monaco is loading and injecting CSS on its own
+     */
     get isFlat() {
         return true;
     }
@@ -134,7 +138,7 @@ export default class GSMonaco extends GSElement {
     }    
 
     /**
-     * URL location from where to load data to highlight
+     * URL location from where to load data
      * 
      * @returns {string}
      */
@@ -147,7 +151,7 @@ export default class GSMonaco extends GSElement {
     }
 
     /**
-     * CSS query location from where to load innerHTML data to highlight
+     * CSS query location from where to load innerHTML data 
      * 
      * @returns {string}
      */

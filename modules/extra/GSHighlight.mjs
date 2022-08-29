@@ -14,6 +14,8 @@ import GSDOM from "../base/GSDOM.mjs";
 
 /**
  * Code highlighter based on hljs library
+ * https://highlightjs.org/
+ * 
  * <gs-highlight url="" target=""></gs-highlight>
  * 
  * @class
@@ -21,9 +23,7 @@ import GSDOM from "../base/GSDOM.mjs";
  */
 export default class GSHighlight extends GSElement {
 
-    static URL_LIB = 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/highlight.min.js';
-    static URL_CSS = 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/styles/';
-    static URL_LANG = 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/languages/';
+    static URL_LIB = self.GS_URL_HLJS || 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0';
 
     static {
         customElements.define('gs-highlight', GSHighlight);
@@ -31,7 +31,7 @@ export default class GSHighlight extends GSElement {
     }
 
     static get observedAttributes() {
-        const attrs = ['theme', 'url', 'target', 'lang'];
+        const attrs = ['theme', 'url', 'target', 'language'];
         return GSElement.observeAttributes(attrs);
     }
 
@@ -43,7 +43,7 @@ export default class GSHighlight extends GSElement {
         const me = this;
 
         switch (name) {
-            case 'lang':
+            case 'language':
                 me.#onLanguage(oldValue, newValue);
                 break;                
             case 'theme':
@@ -119,16 +119,16 @@ export default class GSHighlight extends GSElement {
     }
 
     /**
-     * Comma separated lsit of additiona languages
+     * Comma separated list of additiona languages
      * 
      * @returns {string}
      */
-     get lang() {
-        return GSAttr.get(this, 'lang', '');
+     get language() {
+        return GSAttr.get(this, 'language', '');
     }
 
-    set lang(val = '') {
-        return GSAttr.set(this, 'lang', val);
+    set language(val = '') {
+        return GSAttr.set(this, 'language', val);
     }
 
     #onLanguage(oldValue, newValue) {
@@ -138,17 +138,8 @@ export default class GSHighlight extends GSElement {
     }
 
     async #onTheme() {
-        const me = this;
-        try {
-			const res = await fetch(`${GSHighlight.URL_CSS}${me.theme}.min.css`);
-			if (!res.ok) return;
-			const css = await res.text();
-            const sheet = new CSSStyleSheet();
-			sheet.replaceSync(css);
-			me.shadowRoot.adoptedStyleSheets = [sheet];
-        } catch (e) {
-            console.log(e);
-        }
+        const url = `${GSHighlight.URL_LIB}/styles/${this.theme}.min.css`;
+        GSDOM.injectCSS(this, url);
     }
 
     /**
@@ -194,9 +185,9 @@ export default class GSHighlight extends GSElement {
 
     get #worker() {
         const me = this;
-        const langs = me.lang ? me.lang.split(',').map(v => `importScripts('${GSHighlight.URL_LANG}${v.trim}.min.js');`).join('') : '';
+        const langs = me.language ? me.language.split(',').map(v => `importScripts('${GSHighlight.URL_LIB}$/languages/{v.trim}.min.js');`).join('') : '';
         return `self.onmessage = (event) => {
-                importScripts('${GSHighlight.URL_LIB}');
+                importScripts('${GSHighlight.URL_LIB}/highlight.min.js');
                 ${langs}
                 const result = self.hljs.highlightAuto(event.data.data);
                 postMessage({data:result.value, url:event.data.url});};`
