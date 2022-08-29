@@ -36,7 +36,6 @@ export default class GSItem extends HTMLElement {
 	static {
 		customElements.define('gs-item', GSItem);
 		Object.seal(GSItem);
-		self.GSItem = GSItem;
 	}
 
 	constructor() {
