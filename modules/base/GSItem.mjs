@@ -262,6 +262,10 @@ export default class GSItem extends HTMLElement {
 	/**
 	 * Convert JSON structure to DOM structure
 	 * 
+	 * const o = {....}
+	 * document.body.innerHTML = GSItem.toDom(o);
+	 * GSItem.toJson(document.body.firstElementChild);
+	 * 
 	 * @param {object} obj JSON Object to convert
 	 * @param {string} tag DOM tag name
 	 * @param {string} name DOM attribute name for object key
@@ -335,6 +339,10 @@ export default class GSItem extends HTMLElement {
 
 	/**
 	 * Convert DOM tree into a JSON structure
+	 * 
+	 * const o = {....}
+	 * document.body.innerHTML = GSItem.toDom(o);
+	 * GSItem.toJson(document.body.firstElementChild);
 	 * 
 	 * @param {HTMLElement} obj HTML element instance to convert
 	 * @param {string} name DOM attribute name for object key
