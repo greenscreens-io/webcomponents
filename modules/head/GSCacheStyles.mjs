@@ -81,7 +81,7 @@ export default class GSCacheStyles {
 	}
 
 	/*
-	* Inject special CSS used by framework
+	* Inject CSS used by framework
 	*/
 	static injectStyle(css = '', hash = 0) {
 		if (!css) return;

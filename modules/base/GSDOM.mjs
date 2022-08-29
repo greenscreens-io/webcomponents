@@ -307,13 +307,13 @@ export default class GSDOM {
 	 * @param {string} id Element id
 	 * @returns {HTMLElement} 
 	 */
-	 static getByID(el, id) {
-		if(!(el && qry)) return null;
+	static getByID(el, id) {
+		if (!(el && qry)) return null;
 		const it = GSDOM.walk(el, true);
 		for (let o of it) {
 			if (o.id === id) return o;
 		}
-		return null;		
+		return null;
 	}
 
 	/**
@@ -323,12 +323,12 @@ export default class GSDOM {
 	 * @returns {HTMLElement} 
 	 */
 	static closest(el, qry) {
-		if(!(el && qry)) return null;
+		if (!(el && qry)) return null;
 		const it = GSDOM.walk(el, true);
 		for (let o of it) {
-			if (GSDOM.matches(o, qry))  return o;
+			if (GSDOM.matches(o, qry)) return o;
 		}
-		return null;		
+		return null;
 	}
 
 	/**
@@ -339,13 +339,13 @@ export default class GSDOM {
 	 * @returns {HTMLElement} 
 	 */
 	static query(el, qry) {
-		if(!(el && qry)) return null;
+		if (!(el && qry)) return null;
 		if (GSDOM.matches(el, qry)) return el;
 		const it = GSDOM.walk(el, false, false);
 		for (let o of it) {
 			if (GSDOM.matches(o, qry)) return o;
 		}
-		return null;		
+		return null;
 	}
 
 	/**
@@ -365,10 +365,10 @@ export default class GSDOM {
 	 * @param {HTMLElement} el Root node to start from
 	 * @param {string} qry CSS query
 	 * @returns {Array<HTMLElement>}
-	 */	
+	 */
 	static queryAll(el, qry) {
 		const res = [];
-		if(!(el && qry)) return res;
+		if (!(el && qry)) return res;
 		const it = GSDOM.walk(el, false, false);
 		for (let o of it) {
 			if (GSDOM.matches(o, qry)) res.push(o);
@@ -600,6 +600,31 @@ export default class GSDOM {
 	static toValidationError(own, whiteList) {
 		const list = `<${whiteList.join('>, <')}>`;
 		return `${own.tagName} ID: ${own.id} allows as a child nodes only : ${list}!`;
+	}
+
+	/**
+	 * Inject css directly into a shadowRoot of an element
+	 * 
+	 * @async
+	 * @param {HTMLElement} own 
+	 * @param {string} url 
+	 * @returns {Promise<boolean>}
+	 */
+	static async injectCSS(own, url) {
+		if (!own && own.shadowRoot instanceof ShadowRoot) return false;
+		let sts = true;
+		try {
+			const res = await fetch(url);
+			if (!res.ok) return;
+			const css = await res.text();
+			const sheet = new CSSStyleSheet();
+			sheet.replaceSync(css);
+			own.shadowRoot.adoptedStyleSheets = [sheet];
+		} catch (e) {
+			console.log(e);
+			sts = false;
+		}
+		return sts;
 	}
 
 	static {

@@ -55,7 +55,7 @@ export default class GSDataListExt extends HTMLDataListElement {
 
     async load(url = '') {
         if (!url) return;
-        const data = await GSLoader.loadSafe(url, 'GET', true);
+        const data = await GSLoader.loadSafe(url, 'GET', null, true);
         this.apply(data);
     }
 
