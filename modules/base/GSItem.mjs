@@ -346,7 +346,7 @@ export default class GSItem extends HTMLElement {
 	static toJson(el, name = 'name', value = 'value', type = 'type') {
 		
 		
-		if (!(el instanceof HTMLElement)) return obj;
+		if (!(el instanceof HTMLElement)) return {};
 		
 		const nameV = el.getAttribute(name);
 		const valV = el.getAttribute(value);

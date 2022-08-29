@@ -138,7 +138,7 @@ export default class GSHighlight extends GSElement {
     }
 
     async #onTheme() {
-        const url = `${GSHighlight.URL_LIB}/styles/${me.theme}.min.css`;
+        const url = `${GSHighlight.URL_LIB}/styles/${this.theme}.min.css`;
         GSDOM.injectCSS(this, url);
     }
 
