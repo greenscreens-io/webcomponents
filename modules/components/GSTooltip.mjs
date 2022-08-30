@@ -121,7 +121,7 @@ export default class GSTooltip extends GSElement {
 
     get placement() {
         const me = this;
-        return GSAttr.get(me, 'placement') || GSAttr.get(me.target, 'data-bs-placement', 'top');
+        return GSAttr.get(me, 'placement', me.target?.dataset?.bsPlacement || 'top');
     }
 
     set placement(val = '') {
@@ -170,7 +170,7 @@ export default class GSTooltip extends GSElement {
      * @returns {boolean} 
      */
     static #hasTooltip(el) {
-        return el && (el.firstElementChild instanceof GSTooltip || el.nextElementSibling instanceof GSTooltip);
+        return (el?.firstElementChild || el?.nextElementSibling) instanceof GSTooltip;
     }
 
     /**
@@ -179,7 +179,7 @@ export default class GSTooltip extends GSElement {
      * @returns {boolean} 
      */
     static #isTooltip(el) {
-        return el instanceof HTMLElement && el.hasAttribute('title') && GSAttr.get(el, 'data-bs-toggle') === 'tooltip';
+        return el?.title && el?.dataset?.bsToggle === 'tooltip';
     }
 
 }

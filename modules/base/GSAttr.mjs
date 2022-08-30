@@ -107,35 +107,6 @@ export default class GSAttr {
 	}
 
 	/**
-	 * Convert element data-* attributes into JSON object
-	 * @param {HTMLElement} el 
-	 * @returns {object}
-	 */
-	static getData(el) {
-		const o = {}
-		if (!GSAttr.isHTMLElement(el)) return o;
-		Array.from(el.attributes)
-			.filter(v => v.name.startsWith('data-'))
-			.forEach(v => o[v.name.split('-')[1]] = v.value);
-		return o;
-	}
-
-	/**
-	 * Copy data attributes from one element to another
-	 * @param {HTMLElement} source 
-	 * @param {HTMLElement} target 
-	 * @returns {boolean}
-	 */
-	static setData(source, target) {
-		if (!GSAttr.isHTMLElement(source)) return false;
-		if (!GSAttr.isHTMLElement(target)) return false;
-		Array.from(source.attributes)
-			.filter(v => v.name.startsWith('data-'))
-			.forEach(v => GSAttr.set(target, v.name, v.value));
-		return true;
-	}
-
-	/**
 	 * Convert list of data attributes into a string list
 	 * @param {HTMLElement} el 
 	  @returns {string}

@@ -73,7 +73,7 @@ export default class GSNavLinkExt extends HTMLAnchorElement {
 
     static #onClick(e, own) {
         const me = own || this;
-        const accept = GSAttr.getAsBool(me, 'data-selectable', true);
+        const accept = me.dataset.selectable === 'true';
         if (!accept) return GSNavLinkExt.#trigger(e, me);
         const nav = GSNavLinkExt.#nav(me);
         const list = GSNavLinkExt.#list(me);
@@ -91,9 +91,8 @@ export default class GSNavLinkExt extends HTMLAnchorElement {
     }
 
     static #trigger(e, el) {
-        const attrs = GSAttr.getData(el);
         const own = GSNavLinkExt.#owner(el);
-        GSEvent.send(own, 'action', { type: 'active', data: attrs, source: e }, true);
+        GSEvent.send(own, 'action', { type: 'active', data: el.dataset, source: e }, true);
     }
 
     static #list(own) {
@@ -111,7 +110,7 @@ export default class GSNavLinkExt extends HTMLAnchorElement {
 
     static #panelItem(own) {
         const nav = GSNavLinkExt.#nav(own);
-        const tgtID = GSAttr.get(own, 'data-bs-target');
+        const tgtID = own?.dataset.bsTarget;
         return tgtID ? GSNavLinkExt.#owner(nav).querySelector(tgtID) : null;
     }
 

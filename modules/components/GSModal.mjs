@@ -91,7 +91,7 @@ export default class GSModal extends GSElement {
     const me = this;
     let sts = true;
     try {
-      const action = GSAttr.get(e.path[0], 'data-action');
+      const action = e.path[0].dataset.action;
       if (GSModal.#actions.indexOf(action) < 0) return sts = false;
       GSEvent.prevent(e);
       const isOk = action === 'ok';

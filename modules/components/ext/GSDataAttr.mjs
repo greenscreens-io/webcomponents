@@ -25,12 +25,6 @@ import GSAttr from "../../base/GSAttr.mjs";
  */
 export default class GSDataAttr {
 
-    static #dismissCSS = 'data-bs-dismiss';
-    static #toggleCSS = 'data-bs-toggle';
-    static #targetCSS = 'data-bs-target';
-    static #injectCSS = 'data-inject';
-    static #dataCSS = 'data-css';
-
     static #toggleValues = "offcanvas|collapse|dropdown|button|tab|pill|popover|tooltip|modal|popup";
     static #dismissValues = "offcanvas|modal|alert|popup";
 
@@ -48,9 +42,9 @@ export default class GSDataAttr {
         if (GSDOM.isGSElement(el)) return false;
         if (!GSDOM.isHTMLElement(el)) return false;
         if (GSDataAttr.#isCollapsible(el)) el.classList.add('collapsible');
-        return el.hasAttribute(GSDataAttr.#dismissCSS)
-            || el.hasAttribute(GSDataAttr.#toggleCSS)
-            || el.hasAttribute(GSDataAttr.#injectCSS);
+        return el.dataset.bsDismiss
+            || el.dataset.bsToggle
+            || el.dataset.inject;
     }
 
     /**
@@ -77,9 +71,9 @@ export default class GSDataAttr {
      */
     static #toClicker(el) {
         if (!el) return;
-        if (el.hasAttribute(GSDataAttr.#toggleCSS)) return el;
-        if (el.hasAttribute(GSDataAttr.#dismissCSS)) return el;
-        if (el.hasAttribute(GSDataAttr.#injectCSS)) return el;
+        if (el.dataset?.bsToggle) return el;
+        if (el.dataset?.bsDismiss) return el;
+        if (el.dataset?.inject) return el;
         return GSDataAttr.#toClicker(el.parentElement);
     }
 
@@ -89,10 +83,10 @@ export default class GSDataAttr {
      */
     static #onClick(e) {
         const el = GSDataAttr.#toClicker(e.target);
-        const inject = GSDataAttr.getInject(el);
-        const dismiss = GSDataAttr.getDismiss(el);
-        const target = GSDataAttr.getTarget(el);
-        const toggle = GSDataAttr.#getToggle(el);
+        const inject = el?.dataset?.injejct;
+        const dismiss = el?.dataset?.bsDismiss;
+        const target = el?.dataset?.bsTarget;
+        const toggle = el?.dataset?.bsToggle;
         GSDataAttr.#onToggle(el, target, toggle);
         GSDataAttr.#onDismiss(el, target, dismiss);
         GSDataAttr.#onInject(el, target, inject);
@@ -230,7 +224,7 @@ export default class GSDataAttr {
 
         const isComp = inject.toLowerCase().startsWith('gs-');
         const list = GSDOM.queryAll(document.documentElement, target);
-        const css = GSAttr.get(source, GSDataAttr.#dataCSS, '');
+        const css = source?.dataset?.css || '';
 
         const html = isComp ? `<${inject}></${inject}>` : `<gs-template href="${inject}" class="${css}"></gs-template>`;
 
@@ -350,15 +344,15 @@ export default class GSDataAttr {
     }
 
     static #getDismiss(el) {
-        return GSAttr.get(el, GSDataAttr.#dismissCSS);
+        return el?.dataset.bsDismiss;
     }
 
     static #getToggle(el) {
-        return GSAttr.get(el, GSDataAttr.#toggleCSS);
+        return el?.dataset?.bsToggle;
     }
 
     static #getInject(el) {
-        return GSAttr.get(el, GSDataAttr.#injectCSS);
+        return el?.dataset?.inject;
     }
 
     /**
@@ -367,7 +361,7 @@ export default class GSDataAttr {
      * @returns {string}
      */
     static getTarget(el) {
-        const tgt = GSAttr.get(el, GSDataAttr.#targetCSS) || GSAttr.get(el, 'href');
+        const tgt = el?.dataset?.bsTarget || GSAttr.get(el, 'href');
         return tgt === '#' ? '' : tgt;
     }
 

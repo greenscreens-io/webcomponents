@@ -54,13 +54,9 @@ export default class GSDateFormat extends HTMLElement {
         this.innerHTML = this.format;
     }
 
-    get #options() {
-        return GSAttr.getData(this);
-    }
-
     get format() {
         const me = this;
-        return new Intl.DateTimeFormat(me.locale, me.#options).format(me.value);
+        return new Intl.DateTimeFormat(me.locale, me.dataset).format(me.value);
     }
 
     get value() {

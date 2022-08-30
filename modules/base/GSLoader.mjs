@@ -31,9 +31,9 @@ export default class GSLoader {
 
         if (self.hasOwnProperty('GS_NO_CACHE')) {
             GSLoader.NO_CACHE = self.GS_NO_CACHE === true;
-            if(localStorage) localStorage.setItem('GS_NO_CACHE', GSLoader.NO_CACHE);
+            if (localStorage) localStorage.setItem('GS_NO_CACHE', GSLoader.NO_CACHE);
         }
-        GSLoader.NO_CACHE = localStorage ?  localStorage.getItem('GS_NO_CACHE') == 'true' : false;
+        GSLoader.NO_CACHE = localStorage ? localStorage.getItem('GS_NO_CACHE') == 'true' : false;
 
     }
     /**
@@ -83,19 +83,20 @@ export default class GSLoader {
      * @return {Promise<string>}
      */
     static async getTemplate(def = '') {
+
         if (!def) return def;
+        
         const isRef = def.startsWith('#');
         if (isRef) {
             const el = GSDOM.query(document.documentElement, def);
             return el ? el.innerHTML : def;
         }
-       
-       const isSkip = GSUtil.isHTML(def); // GSUtil.isURL(def);
-       if (isSkip) return def;
-       
-       if (def.indexOf('<') > -1 && def.indexOf('>')>0) return def;
+
+        const isHTML = GSUtil.isHTML(def);
+        if (isHTML) return def;
+
         def = GSLoader.#getTemplateURL(def);
-        return  GSLoader.loadSafe(def);
+        return GSLoader.loadSafe(def);
     }
 
     /**
@@ -157,7 +158,7 @@ export default class GSLoader {
         headers = headers || {};
         headers[ct] = asjson ? 'application/json' : headers[ct] || 'text/plain';
         const url = GSLoader.normalizeURL(val, true);
-        const res = await fetch(url, { method: method, headers : headers});
+        const res = await fetch(url, { method: method, headers: headers });
         if (res.ok) data = asjson ? await res.json() : await res.text();
         return data;
     }
@@ -191,7 +192,7 @@ export default class GSLoader {
      * @returns {Promise}
      */
     static async loadData(val = '') {
-        
+
         const isJson = GSUtil.isJson(val);
         const func = !isJson && GSFunction.parseFunction(val);
         const isFunc = GSFunction.isFunction(func);

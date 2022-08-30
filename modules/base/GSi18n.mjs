@@ -157,7 +157,7 @@ export default class GSi18n extends HTMLElement {
 
         const me = this;
 
-        const dname = `data-ga-i8n-${name}`;
+        const dname = `data-gs-i8n-${name}`;
 
         let dval = GSAttr.get(el, dname);
         let val = GSAttr.get(el, name);

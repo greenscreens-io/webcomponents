@@ -210,7 +210,7 @@ export default class GSOffcanvas extends GSElement {
 
   get placement() {
     const me = this;
-    return GSAttr.get(me, 'placement') || GSAttr.get(me.target, 'data-bs-placement', 'start');
+    return GSAttr.get(me, 'placement', me.target?.dataset?.bsPlacement || 'start');
   }
 
   set placement(val = '') {
@@ -219,7 +219,7 @@ export default class GSOffcanvas extends GSElement {
 
   get backdrop() {
     const me = this;
-    return GSAttr.getAsBool(me, 'backdrop', GSAttr.getAsBool(me.target, 'data-bs-backdrop', 'false'));
+    return GSAttr.getAsBool(me, 'backdrop',  me.target?.dataset?.bsBackdrop || 'false');
   }
 
   set backdrop(val = '') {
@@ -228,7 +228,7 @@ export default class GSOffcanvas extends GSElement {
 
   get scroll() {
     const me = this;
-    return GSAttr.getAsBool(me, 'scroll', GSAttr.getAsBool(me.target, 'data-bs-scroll', 'false'));
+    return GSAttr.getAsBool(me, 'scroll', me.target?.dataset?.bsScroll || 'false');
   }
 
   set scroll(val = '') {

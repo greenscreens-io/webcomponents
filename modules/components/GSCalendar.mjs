@@ -246,7 +246,7 @@ export default class GSCalendar extends GSElement {
         if (!GSDOM.hasClass(btn, 'day')) return;
         const day = GSUtil.asNum(btn.innerText.trim());
         requestAnimationFrame(() => {
-            me.findAll('.day').forEach(el => GSDOM.toggleClass(el, false, me.cssSelected));
+            me.queryAll('.day').forEach(el => GSDOM.toggleClass(el, false, me.cssSelected));
             GSDOM.toggleClass(btn, true, me.cssSelected);
         });
         const date = new GSDate(me.#date);

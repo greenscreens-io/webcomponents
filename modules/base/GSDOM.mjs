@@ -30,7 +30,7 @@ export default class GSDOM {
 		try {
 			const parser = new DOMParser();
 			const doc = parser.parseFromString(html, mime);
-			return single ? doc.body.firstElementChild : doc;
+			return single ? doc?.body?.firstElementChild : doc;
 		} catch (e) {
 			GSLog.error(null, e);
 			throw e;
@@ -56,14 +56,28 @@ export default class GSDOM {
 		return tpl;
 	}
 
-	static wrap(own, tpl) {
-		return GSDOM.link(own, tpl || document.createElement('gs-block'));
+	/**
+	 * The same as lin function, with default wrapper element
+	 * 
+	 * @param {HTMLElement} own Owner element to which target is linked
+	 * @param {HTMLElement} target Target elemetn to link to owner
+	 * @returns {HTMLElement} Return target
+	 */
+	static wrap(own, target) {
+		return GSDOM.link(own, target || document.createElement('gs-block'));
 	}
 
-	static link(own, tpl) {
-		tpl.setAttribute('proxy', `#${own.id}`);
-		if (own.slot) tpl.setAttribute('slot', own.slot);
-		return tpl;
+	/**
+	 * Create reference between two HTMLElements
+	 * 
+	 * @param {HTMLElement} own Owner element to which target is linked
+	 * @param {HTMLElement} target Target elemetn to link to owner
+	 * @returns {HTMLElement} Return target
+	 */
+	static link(own, target) {
+		target.setAttribute('proxy', `#${own.id}`);
+		if (own.slot) target.setAttribute('slot', own.slot);
+		return target;
 	}
 
 	static #fromNode(nodes) {
@@ -130,8 +144,7 @@ export default class GSDOM {
 	 * Check if given element is of type GSElement
 	 */
 	static isGSElement(el) {
-		if (!GSDOM.isHTMLElement(el)) return false;
-		return el.tagName.indexOf('GS-') === 0;
+		return el?.tagName?.indexOf('GS-') === 0;
 	}
 
 	/**
@@ -140,8 +153,7 @@ export default class GSDOM {
 	 * @returns {boolean}
 	 */
 	static isGSExtra(el) {
-		if (!GSDOM.isHTMLElement(el)) return false;
-		return (el.getAttribute('is') || '').indexOf('gs-') === 0;
+		return el?.getAttribute('is')?.indexOf('GS-') === 0;
 	}
 
 	/**
@@ -150,32 +162,27 @@ export default class GSDOM {
 	 * @returns {Array<HTMLElement>}
 	 */
 	static getChilds(el) {
-		if (!GSDOM.isHTMLElement(el)) return [];
-		return Array.from(el.childNodes).filter(e => GSDOM.isGSElement(e));
+		return Array.from(el?.childNodes || []).filter(e => GSDOM.isGSElement(e));
 	}
 
 	/**
 	 * Hide html element
 	 * @param {HTMLElement} el 
 	 * @param {boolean} orientation 
-	 * @returns {void}
+	 * @returns {boolean}
 	 */
 	static hide(el, orientation = false) {
-		if (!GSDOM.isHTMLElement(el)) return;
-		const css = orientation ? 'gs-hide-orientation' : 'gs-hide';
-		el.classList.add(css);
+		return el?.classList?.add(orientation ? 'gs-hide-orientation' : 'gs-hide');
 	}
 
 	/**
 	 * Show html element
 	 * @param {HTMLElement} el 
 	 * @param {boolean} orientation 
-	 * @returns {booelan}
+	 * @returns {boolean}
 	 */
 	static show(el, orientation = false) {
-		if (!GSDOM.isHTMLElement(el)) return;
-		const css = orientation ? 'gs-hide-orientation' : 'gs-hide';
-		return el.classList.remove(css);
+		return el?.classList?.remove(orientation ? 'gs-hide-orientation' : 'gs-hide');
 	}
 
 	/**
@@ -221,8 +228,7 @@ export default class GSDOM {
 	 * @returns {boolean}
 	 */
 	static removeElement(el) {
-		const isOk = GSDOM.isHTMLElement(el) && el.parentNode;
-		return isOk ? el.parentNode.removeChild(el) : false;
+		return el?.parentNode?.removeChild(el);
 	}
 
 	/**
@@ -393,14 +399,13 @@ export default class GSDOM {
 	 * @returns {void}
 	 */
 	static setText(el, val = '') {
-		if (!GSDOM.isHTMLElement(el)) return false;
-		el.innerText = val;
+		if (GSDOM.isHTMLElement(el)) el.innerText = val;
 	}
 
 	/**
 	 * Safe way to toggle CSS class on element, multipel classes are supported in space separated string list
 	 * @param {HTMLElement} el 
-	 * @param {boolean} sts Ture to add, false to remove
+	 * @param {boolean} sts True to add, false to remove
 	 * @param {*} val list of css classes in spaec separated string
 	 * @returns {boolean}
 	 */
@@ -419,8 +424,7 @@ export default class GSDOM {
 	 * @returns {boolean}
 	 */
 	static hasClass(el, val = '') {
-		if (!GSDOM.isHTMLElement(el)) return false;
-		return el.classList.contains(val);
+		return el?.classList?.contains(val);
 	}
 
 	/**
@@ -463,11 +467,13 @@ export default class GSDOM {
 	static toObject(owner, qry = 'input, textarea, select', hidden = false) {
 		const root = GSDOM.unwrap(owner);
 		const params = {};
-		root.querySelectorAll(qry).forEach(el => {
-			if (!el.name) return;
-			if (!hidden && el.getAttribute('data-ignore') === 'true') return;
-			params[el.name] = GSDOM.toValue(el);
-		});
+		const list = root.querySelectorAll(qry);
+		Array.from(list)
+			.filter(el => el.name)
+			.forEach(el => {
+				if (!hidden && el.dataset.ignore === 'true') return;
+				params[el.name] = GSDOM.toValue(el);
+			});
 		return params;
 	}
 
@@ -481,10 +487,10 @@ export default class GSDOM {
 	static fromObject(owner, obj, qry = 'input, textarea, select') {
 		if (!obj) return;
 		const root = GSDOM.unwrap(owner);
-		root.querySelectorAll(qry).forEach(el => {
-			if (!el.name) return;
-			if (obj.hasOwnProperty(el.name)) el.value = obj[el.name];
-		});
+		const list = root.querySelectorAll(qry);
+		Array.from(list)
+			.filter(el => el.name && obj.hasOwnProperty(el.name))
+			.forEach(el => el.value = obj[el.name]);
 	}
 
 	/**
@@ -506,27 +512,25 @@ export default class GSDOM {
 	 * @returns {HTMLElement|shadowRoot}
 	 */
 	static unwrap(owner) {
-		if (!owner) return document;
-		//return GSDOM.isGSElement(owner) ? owner.shadowRoot : owner;
-		return owner.self || owner;
+		return owner ? owner.self || owner : document;
 	}
 
 	/**
 	 * Enable input on all input elements under provided owner
-	 * @param {string} qry Default to form
 	 * @param {HTMLElement} own 
+	 * @param {string} qry Default to form
 	 */
-	static enableInput(qry = 'form', own) {
-		GSDOM.queryAll(own, 'input, select, .btn').forEach(el => el.removeAttribute('disabled'));
+	static enableInput(own, qry = 'input, select, .btn') {
+		GSDOM.queryAll(own, qry).forEach(el => el.removeAttribute('disabled'));
 	}
 
 	/**
 	 * Disable input on all input elements under provided owner
-	 * @param {string} qry Default to form
 	 * @param {HTMLElement} own 
+	 * @param {string} qry Default to form
 	 */
-	static disableInput(qry = 'form', own) {
-		GSDOM.queryAll(el, 'input, select, .btn').forEach(el => el.setAttribute('disabled', true));
+	static disableInput(own, qry = 'input, select, .btn') {
+		GSDOM.queryAll(el, qry).forEach(el => el.setAttribute('disabled', true));
 	}
 
 	/**
@@ -610,7 +614,7 @@ export default class GSDOM {
 	 * @returns {Promise<boolean>}
 	 */
 	static async injectCSS(own, url) {
-		if (!own && own.shadowRoot instanceof ShadowRoot) return false;
+		if (!own?.shadowRoot instanceof ShadowRoot) return false;
 		let sts = true;
 		try {
 			const res = await fetch(url);

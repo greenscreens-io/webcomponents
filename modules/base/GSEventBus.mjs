@@ -19,6 +19,19 @@ export default class GSEventBus extends EventTarget {
     #listeners = new Set();
 
     /**
+     * Static event emiter. If named event does not exist, create a new one
+     * 
+     * @param {string} name EventBus name
+     * @param {string} type Event name
+     * @param {object} data Dat to send
+     * 
+     * @returns {boolean|object}
+     */
+    static send(name = '', type = '', data) {
+        return GSEventBus.register(name).emit(type, data);
+    }
+
+    /**
      * Check if named event bus already exists
      * 
      * @param {string} name 
@@ -73,7 +86,7 @@ export default class GSEventBus extends EventTarget {
         const me = this;
         if (!me.#isFunction(listener)) return;
         me.#listeners.add({type:type, listener : listener});
-        me.addEventListener(type, listener);
+        return me.addEventListener(type, listener);
     }
 
     /**
@@ -92,7 +105,7 @@ export default class GSEventBus extends EventTarget {
         wrap.type = type;
         wrap.listener = listener;
         me.#listeners.add(wrap);
-        this.addEventListener(type, wrap, { once: true });
+        return me.addEventListener(type, wrap, { once: true });
     }
 
     /**
@@ -103,22 +116,22 @@ export default class GSEventBus extends EventTarget {
      */    
     off(type = '', listener) {
         const me = this;
-        if (!me.#isFunction(listener)) return;
-        me.removeEventListener(type, listener);
+        if (!me.#isFunction(listener)) return false;
         Array.from(me.#listeners)
-            .filter(o => o.type === type && o.listener === listener)
-            .forEach(o => me.#listeners.delete(o));
+        .filter(o => o.type === type && o.listener === listener)
+        .forEach(o => me.#listeners.delete(o));
+        return me.removeEventListener(type, listener);
     }
 
     /**
      * Send event to listeners
      * 
      * @param {string} type Event name to be listened
-     * @param {Function} listener  Callback to be called on event trigger
+     * @param {object} data  Data to send 
      */        
     emit(type = '', data) {
         const evt = new CustomEvent(type, { detail: data });
-        this.dispatchEvent(evt);
+        return this.dispatchEvent(evt);
     }
 
 }
