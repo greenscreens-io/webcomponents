@@ -73,8 +73,8 @@ export default class GSNavLinkExt extends HTMLAnchorElement {
 
     static #onClick(e, own) {
         const me = own || this;
-        const accept = me.dataset.selectable === 'true';
-        if (!accept) return GSNavLinkExt.#trigger(e, me);
+        const accept = me.dataset.selectable === 'false';
+        if (accept) return GSNavLinkExt.#trigger(e, me);
         const nav = GSNavLinkExt.#nav(me);
         const list = GSNavLinkExt.#list(me);
         const panel = GSNavLinkExt.#panel(me);
