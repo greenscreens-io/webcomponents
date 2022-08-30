@@ -21,4 +21,5 @@ Base library is core of all GS WebComponents UI elements. Contains a set of non 
 14. [GSLoader](./GSLoader.md)
 15. [GSPopper](./GSPopper.md)
 16. [GSi18n](./GSi18n.md)
+17. [GSEventBus](./GSEventBus.md)
 

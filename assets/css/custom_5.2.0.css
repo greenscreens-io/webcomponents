@@ -3711,7 +3711,7 @@ textarea.form-control-lg {
 }
 
 .nav-tabs {
-  --bs-nav-tabs-border-width: 0;
+  --bs-nav-tabs-border-width: 1px;
   --bs-nav-tabs-border-color: rgba(67, 89, 113, 0.3);
   --bs-nav-tabs-border-radius: 0;
   --bs-nav-tabs-link-hover-border-color: rgba(67, 89, 113, 0.2) rgba(67, 89, 113, 0.2) rgba(67, 89, 113, 0.3);
@@ -11061,4 +11061,3 @@ input:invalid:not(:placeholder-shown):not(:focus) {
 }
 
 /*# sourceMappingURL=custom_5.2.0.css.map */
-

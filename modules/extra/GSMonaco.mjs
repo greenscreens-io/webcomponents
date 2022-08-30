@@ -81,6 +81,9 @@ export default class GSMonaco extends GSElement {
         return GSElement.observeAttributes(attrs);
     }
 
+    // prevent attaching shadow and dom internals
+    static get disabledFeatures() { return ['shadow', 'internals']; }
+
     constructor() {
         super();
         

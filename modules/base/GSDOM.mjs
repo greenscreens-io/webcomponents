@@ -91,7 +91,6 @@ export default class GSDOM {
 	 * @returns {boolean}
 	 */
 	static isTemplateElement(el) {
-		//return el instanceof HTMLTemplateElement && el.content && el.content.firstElementChild;
 		return el instanceof HTMLTemplateElement;
 	}
 
