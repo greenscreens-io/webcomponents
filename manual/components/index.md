@@ -32,7 +32,8 @@ Components library contains all WebComponents UI elements based on Bootstrap 5.2
     2. [GSDateFormat](./intl/GSDateFormat.md)
     3. [GSTimeFormat](./intl/GSTimeFormat.md)
     4. [GSYearFormat](./intl/GSYearFormat.md)
-21. [Extra](./ext/index.md)
+21. [Extended](./ext/index.md)
+22. [Extra](./extra/index.md)
 
 
 

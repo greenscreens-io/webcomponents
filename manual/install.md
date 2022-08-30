@@ -26,9 +26,11 @@ https://github.com/greenscreens-io/webcomponents.git
  
 GS WebComponents are written in ES2022 JavaScript as modules. Generally, building the source into a single JavaScript file is not required.  
  
-As source requires modern browsers, and as modern browsers use HTTPS/2 which, when a web server is configured properly, pushes resources through a single channel, requirements to build modules is not so important anymore. 
+As source requires modern browsers, and as modern browsers use HTTPS/2 which, when a web server is configured properly, pushes resources through a single channel, requirements to build modules is not so important anymore.
 
-However, we preapred Webpack configuration if tehre is a requirement to build a single library. Check inside [webpack.config.js](../webpack.config.js) for instructions.
+Another advantage of not "building" JavaScript Modules is [tree-shaking](https://en.wikipedia.org/wiki/Tree_shaking) support which allows loading only required modules on demand.
+
+However, we preapred Webpack configuration if there is a requirement to build a single library. Check inside [webpack.config.js](../webpack.config.js) for instructions.
  
 <br>
  
@@ -52,6 +54,8 @@ Even though there is a comprehensive manual for every UI component, one can gene
 ---
  
 To use provided GS WebComponents demos, simply copy the whole project to a web server root path and point to a **./webcomponents/demos** folder. There is no need for any other dependencies or building process.
+
+Also, live example are avaialble at Github pages at [https://greenscreens-io.github.io/webcomponents/demos/index.html](https://greenscreens-io.github.io/webcomponents/demos/index.html) or from project web page at [https://webcomponents.greenscreens.ltd](https://webcomponents.greenscreens.ltd)
  
 <br>
  
@@ -63,9 +67,9 @@ Copy **modules** directory to a web server along with Bootstrap 5.2.0.+ CSS and 
 ```html
 <html>
     <head>
-        <!-- If using templates, set template root path -->
+        <!-- If using templates from alternative location, set template root path -->
         <script type="text/javascript">
-            self.GS_TEMPLATE_URL = '/assets/templates';
+            self.GS_TEMPLATE_URL = '/webcomponents/assets/templates';
         </script>
        
         <!-- load library core - head,base,template libraries -->
@@ -75,7 +79,7 @@ Copy **modules** directory to a web server along with Bootstrap 5.2.0.+ CSS and 
         <script type="module" src="/webcomponents/modules/components/index.mjs"></script>
    
         <!-- load mandatory Bootstrap CSS -->
-        <gs-css global="true" src="/webcomponents/assets/css/custom_5.2.0.css" rel="stylesheet"></gs-css>  
+        <gs-css global="true" src="/webcomponents/assets/css/io.greenscreens.bootstrap_5.2.0.css" rel="stylesheet"></gs-css>  
         
         <!-- and optionally Bootstrap Icons -->
         <gs-css global="true" src="/webcomponents/assets/icons/bootstrap-icons.css" rel="stylesheet" notheme="true"></gs-css>        
@@ -92,14 +96,14 @@ When using library built with WebPack, use the following template.
     <head>
         <!-- If using templates, set template root path -->
         <script type="text/javascript">
-            self.GS_TEMPLATE_URL = '/assets/templates';
+            self.GS_TEMPLATE_URL = '/webcomponents/assets/templates';
         </script>
        
         <!-- load library core - head,base,template libraries -->
-        <script type="module" src="/release/io.greenscreens.components.all.js"></script>
+        <script type="module" src="/webcomponents/release/io.greenscreens.components.all.js"></script>
           
         <!-- load mandatory Bootstrap CSS-->
-        <gs-css global="true" url="/release/io.greenscreens.bootstrap_5.2.0.min.css" rel="stylesheet"></gs-css>  
+        <gs-css global="true" url="/webcomponents/release/io.greenscreens.bootstrap_5.2.0.min.css" rel="stylesheet"></gs-css>  
 
         <!-- and optionally Bootstrap Icons -->
         <gs-css global="true" src="/webcomponents/assets/icons/bootstrap-icons.css" rel="stylesheet" notheme="true"></gs-css>        

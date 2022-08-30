@@ -63,10 +63,11 @@ Global variables are framework flags that needs to be set in head of a documnet,
 
 ## Source Code Organization
 
-There are 2 main parts:
+There are 3 main parts:
 
-* Core - [Head](../modules/head/), [Templating](../modules/templating/), [Base](../modules/base/) libraries are core engine to build GS WebComponents and hable various browser "things"
+* Core - [Head](../modules/head/), [Templating](../modules/templating/), [Base](../modules/base/) libraries are core engine to build GS WebComponents and handle various browser "things"
 * UI - [Components](../modules/components/) library is a set of UI WebComponents based on Bootstrap 5.2.0+ CSS
+* Extra - [Extra](../modules/extra/) is set of UI elements which wraps around 2rd party libs to meke their usage easier. Ligs such as [ChratJS](https://www.chartjs.org/), [MS Monacco](https://microsoft.github.io/monaco-editor/) and [HLJS](https://highlightjs.org/). 
 
 ### UI Library
 
