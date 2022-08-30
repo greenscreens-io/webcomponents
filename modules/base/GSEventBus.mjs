@@ -52,7 +52,7 @@ export default class GSEventBus extends EventTarget {
     }
 
     #unbind() {
-        const me = tihs;
+        const me = this;
         Array.from(me.#listeners).forEach(o => {
             me.removeEventListener(o.type, o.listener);
         });
@@ -66,7 +66,7 @@ export default class GSEventBus extends EventTarget {
      * @param {Function} listener  Callback to be aleld on event trigger
      */
     on(type = '', listener) {
-        const me = tihs;
+        const me = this;
         me.#listeners.add({type:type, listener : listener});
         me.addEventListener(type, listener);
     }
@@ -88,7 +88,7 @@ export default class GSEventBus extends EventTarget {
      * @param {Function} listener  Callback to be aleld on event trigger
      */    
     off(type = '', listener) {
-        const me = tihs;
+        const me = this;
         me.removeEventListener(type, listener);
         Array.from(me.#listeners)
             .filter(o => o.type === type && o.listener === listener)
