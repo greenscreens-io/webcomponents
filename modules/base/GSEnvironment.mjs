@@ -18,7 +18,7 @@ export default class GSEnvironment {
      * Check if page is inside mobile device
      * @returns {boolean}
      */
-    static isMobile() {
+    static get isMobile() {
         if (navigator.userAgentData) return navigator.userAgentData.mobile;
         return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
     }
@@ -27,9 +27,13 @@ export default class GSEnvironment {
      * Check if page is inside desktop
      * @returns {boolean}
      */
-    static isDesktop() {
-        return !GSEnvironment.isMobile();
+    static get isDesktop() {
+        return !GSEnvironment.isMobile;
     }
+
+    static get isWebkit() {
+        return /webkit/.test( navigator.userAgent.toLowerCase() );
+    } 
 
     /**
      * Check if value match current browser type
@@ -64,11 +68,11 @@ export default class GSEnvironment {
         if (!val) return true
 
         if (val === 'desktop') {
-            return GSEnvironment.isDesktop();
+            return GSEnvironment.isDesktop;
         }
 
         if (val === 'mobile') {
-            return GSEnvironment.isMobile();
+            return GSEnvironment.isMobile;
         }
 
         return GSEnvironment.isDevice(val);

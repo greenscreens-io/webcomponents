@@ -183,7 +183,7 @@ export default class GSBase extends HTMLElement {
 	 * Check if env is mobile
 	 * @returns {boolean}
 	 */
-	isMobile() {
+	get isMobile() {
 		if (navigator.userAgentData) return navigator.userAgentData.mobile;
 		return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 	}
@@ -192,7 +192,7 @@ export default class GSBase extends HTMLElement {
 	 * Check if matching schema
 	 * @returns {boolean}
 	 */
-	isSchema() {
+	get isSchema() {
 		const schema = this.schema;
 		if (!schema) return true;
 		const protocol = location.protocol.replace(':', '');
@@ -205,7 +205,7 @@ export default class GSBase extends HTMLElement {
 	 * Check if running in mobile app
 	 * @returns {boolean}
 	 */
-	isAsset() {
+	get isAsset() {
 		return this.isTarget('GreenScreens');
 	}
 
@@ -242,9 +242,9 @@ export default class GSBase extends HTMLElement {
 
 		const me = this;
 
-		const isMobile = me.isMobile();
-		const isAsset = me.isAsset();
-		const isSchema = me.isSchema();
+		const isMobile = me.isMobile;
+		const isAsset = me.isAsset;
+		const isSchema = me.isSchema;
 		const target = me.target;
 		const env = me.env;
 
