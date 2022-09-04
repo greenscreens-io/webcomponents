@@ -448,13 +448,35 @@ export default class GSDOM {
 		if (!GSDOM.isHTMLElement(el)) return undefined;
 		let value = el.value;
 		if ('text' === el.type) {
-			const map = el.computedStyleMap().get('text-transform');
+			const map = GSDOM.styleValue(el, 'text-transform');
 			if (map) {
 				if ('lowercase' == map.value) value = el.value.toLowerCase();
 				if ('uppercase' == map.value) value = el.value.toUpperCase();
 			}
 		}
 		return value;
+	}
+
+	/**
+	 * Support for Firefox/Gecko to get element computedStyledMap item
+	 * @param {HTMLElement} el 
+	 * @returns {}
+	 */
+	static styleValue(el, name) {
+		const map = GSDOM.getComputedStyledMap(el);
+		if (typeof map.get === 'function') return map.get(name);
+		return map[name];
+	}
+
+	/**
+	 * Support for Firefox/Gecko to get element computedStyledMap
+	 * @param {HTMLElement} el 
+	 * @returns {}
+	 */
+	static getComputedStyledMap(el) {
+		if (el.computedStyleMap) return el.computedStyleMap();
+		if (window.getComputedStyle) return window.getComputedStyle(el);
+		return null;
 	}
 
 	/**

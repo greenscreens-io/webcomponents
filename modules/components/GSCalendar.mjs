@@ -242,7 +242,7 @@ export default class GSCalendar extends GSElement {
 
     #onDay(e) {
         const me = this;
-        const btn = e.path[0];
+        const btn = e.composedPath().shift();
         if (!GSDOM.hasClass(btn, 'day')) return;
         const day = GSUtil.asNum(btn.innerText.trim());
         requestAnimationFrame(() => {
@@ -257,7 +257,7 @@ export default class GSCalendar extends GSElement {
 
     #onArrow(e) {
         const me = this;
-        const btn = e.path[0];
+        const btn = e.composedPath().shift();
         if (!GSDOM.hasClass(btn, 'arrow')) return;
         btn.blur();
         const isPrev = GSDOM.hasClass(btn, 'prev');
