@@ -274,9 +274,7 @@ export default class GSDropdown extends GSElement {
         const val = li.offsetTop;
         sub.style.top = `${val}px`;
         sub.classList.add('show');
-        requestAnimationFrame(() => {
-          me.#updateSub(sub);
-        });
+        me.#updateSub(sub);
       }
     });
   }

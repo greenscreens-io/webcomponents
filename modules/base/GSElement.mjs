@@ -468,7 +468,7 @@ export default class GSElement extends HTMLElement {
 			GSComponents.store(me);
 		}
 		if (me.#ready) {
-			requestAnimationFrame(() => {
+			GSUtil.requestAnimationFrame(() => {
 				me.attributeCallback(name, oldValue, newValue);
 			});
 		}
@@ -502,7 +502,7 @@ export default class GSElement extends HTMLElement {
 	 */
 	#onOrientation(e) {
 		const me = this;
-		requestAnimationFrame(() => {
+		GSUtil.requestAnimationFrame(() => {
 			if (me.offline) return;
 			me.isValidOrientation ? me.show(true) : me.hide(true)
 		});
@@ -516,7 +516,7 @@ export default class GSElement extends HTMLElement {
 
 	#styleChange() {
 		const me = this;
-		requestAnimationFrame(() => {
+		GSUtil.requestAnimationFrame(() => {
 			me.updateUI();
 		});
 	}
@@ -670,7 +670,7 @@ export default class GSElement extends HTMLElement {
 		if (!me.#useTemplate) return;
 		if (!me.isFlat) me.attachEvent(this, document, 'gs-style', me.#styleChange.bind(me));
 		me.attachEvent(this, screen.orientation, 'change', me.#onOrientation.bind(me));
-		requestAnimationFrame(() => me.onReady());
+		GSUtil.requestAnimationFrame(() => me.onReady());
 	}
 
 }

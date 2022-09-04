@@ -15,6 +15,7 @@ import GSLog from "./GSLog.mjs";
  */
 export default class GSUtil {
 
+	static #animating = 0;
 	static FLAT = self.GS_FLAT == true;
 	static ALPHANUM = /^[a-zA-Z0-9-_]+$/;
 
@@ -185,9 +186,25 @@ export default class GSUtil {
 		});
 	}
 
+
+	static requestAnimationFrame(callback) {
+		if (typeof callback !== 'function') return;
+		if (GSUtil.#animating > 0) return callback();
+		GSUtil.#animating++;
+		return self.requestAnimationFrame(() => {
+			try {
+				callback();
+			} catch (e) {
+				console.log(e);
+			} finally {
+				GSUtil.#animating--;
+			}
+		});
+	}
+
 	static {
 		Object.seal(GSUtil);
-		window.GSUtil = GSUtil;
+		self.GSUtil = GSUtil;
 	}
 }
 
