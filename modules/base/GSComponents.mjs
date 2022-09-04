@@ -85,7 +85,7 @@ export default class GSComponents {
     static notifyFor(name = '', fn) {
         if (!GSFunction.isFunction(fn)) return false;
         const callback = (e) => {
-            const el = e.path[0];
+            const el = e.composedPath().shift();
             const ok = el.id === name || el.tagName === name;
             return ok ? fn(el, e) : undefined;
         };

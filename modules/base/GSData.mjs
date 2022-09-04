@@ -68,7 +68,8 @@ export default class GSData {
         return isSimple ? GSData.filterSimple(rec, filter, fields) : GSData.filterComplex(rec, filter);
     }
 
-    static filterSimple(rec, filter, fields) {
+    static filterSimple(rec, filter = '', fields) {
+        filter = filter.toLowerCase();
         fields = fields || Object.keys(rec);
         let value = null;
         for (let key of fields) {

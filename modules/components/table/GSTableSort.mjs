@@ -43,7 +43,7 @@ export default class GSTableSort extends HTMLTableRowElement {
 
     #onClick(e) {
         const me = this;
-        const el = e.path[0];
+        const el = e.composedPath().shift();
         if (el.tagName !== 'TH') return;
         if (!el.classList.contains('sorting')) return;
         requestAnimationFrame(() => me.#onColumnSort(el, e.shiftKey));

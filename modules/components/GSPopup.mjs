@@ -294,7 +294,7 @@ export default class GSPopup extends GSElement {
         me.#caller = e;
         if (e instanceof Event) {
             e.preventDefault();
-            me.#caller = e.path.filter(e => (!(e instanceof HTMLSlotElement)))[0];
+            me.#caller = e.composedPath().filter(e => (!(e instanceof HTMLSlotElement)))[0];
         }
 
         if (me.placement) {
