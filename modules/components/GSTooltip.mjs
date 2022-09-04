@@ -9,7 +9,6 @@
 
 import GSID from "../base/GSID.mjs";
 import GSDOMObserver from '../base/GSDOMObserver.mjs';
-import GSEvent from "../base/GSEvent.mjs";
 import GSElement from "../base/GSElement.mjs";
 import GSPopper from "../base/GSPopper.mjs";
 import GSAttr from "../base/GSAttr.mjs";
@@ -76,7 +75,7 @@ export default class GSTooltip extends GSElement {
     #popup() {
         const me = this;
         const arrowEl = me.querySelector('div.tooltip-arrow');
-        GSPopper.popupAbsolute(me.placement, me.firstElementChild, me.target, arrowEl);
+        GSPopper.popupFixed(me.placement, me.firstElementChild, me.target, arrowEl);
         return me.firstElementChild;
     }
 
