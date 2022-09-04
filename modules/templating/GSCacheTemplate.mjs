@@ -83,8 +83,7 @@ export default class GSCacheTemplate {
 	 * @returns {HTMLTemplateElement}
 	 */
 	static clone(template) {
-		if (!GSDOM.isTemplateElement(template)) return null;
-		return template.content.cloneNode(true);
+		return GSDOM.isTemplateElement(template) ? template.content.cloneNode(true) : null;
 	}
 
 	/**

@@ -161,7 +161,7 @@ export default class GSInputExt extends HTMLInputElement {
             clean = true;
         }
 
-        const obj = GSAttr.getData(opt);
+        const obj = opt.dataset;
 
         Object.entries(obj).forEach(p => {
             const val = clean ? '' : p[1];

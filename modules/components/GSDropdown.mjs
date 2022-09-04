@@ -245,7 +245,7 @@ export default class GSDropdown extends GSElement {
    */
   #attachItems() {
     const me = this;
-    me.#items.filter(btn => btn.hasAttribute('data-action'))
+    me.#items.filter(btn => btn.dataset.action)
       .forEach(btn => me.attachEvent(btn, 'click', me.#onClick.bind(me)));
   }
 

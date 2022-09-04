@@ -14,7 +14,7 @@ import GSAttachment from "./GSAttachment.mjs";
 
 /**
  * File box allows drag-n-drop fiels for upload
- * <gs-filebox id="other" flat="true" multiple="true" directory="true" elid="test"></gs-filebox>
+ * <gs-filebox id="other" multiple="true" directory="true" elid="test"></gs-filebox>
  * Use event listener to return false for file access filtering
  * @class
  * @extends {GSElement}
@@ -59,7 +59,7 @@ export default class GSFileBox extends GSElement {
 
     onReady() {
         const me = this;
-        const target = me.self; // me.isFlat ? me.query('div') : me;
+        const target = me.query('div'); // me.isFlat ? me.query('div') : me;
         me.attachEvent(target, 'click', me.#onClick.bind(me));
         me.attachEvent(target, 'dragenter', me.#onDragenter.bind(me));
         me.attachEvent(target, 'dragover', me.#onDragenter.bind(me));

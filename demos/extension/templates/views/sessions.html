@@ -3,10 +3,10 @@
 </gs-template>
 
 
-<div class="d-flex justify-content-between align-items-center bg-light border shadow-sm p-1">
+<div class="d-flex justify-content-between align-items-center bg-light border shadow-sm">
 
     <gs-table id="table-main" index=false class="flex-fill"
-        css="table table-light table-hover user-select-none m-0 border" css-select="table-active table-primary"
+        css="table table-light table-hover user-select-none m-0" css-select="table-active table-primary"
         css-header="user-select-none table-secondary">
         <gs-header>
             <gs-column title="Name" name="name"></gs-column>
@@ -41,7 +41,7 @@
          -->
     </gs-table>
 
-    <gs-modal id="modal-main" visible="false">
+    <gs-modal id="modal-main" visible="false" css-body="p-0">
         <h4 slot="title">Terminal Session</h4>
         <gs-template slot="body" href="//forms/session.html"></gs-template>
     </gs-modal>

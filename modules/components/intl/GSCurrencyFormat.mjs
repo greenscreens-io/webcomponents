@@ -36,8 +36,7 @@ export default class GSCurrencyFormat extends HTMLElement {
 
     get #options() {
         const me = this;
-        const obj = GSAttr.getData(me);
-        return Object.apply(obj, { style: 'currency', currency: me.currency});
+        return Object.apply(me.dataset, { style: 'currency', currency: me.currency});
     }
 
     get format() {

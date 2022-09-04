@@ -108,8 +108,8 @@ export default class GSAccordion extends GSElement {
   async #html(id, el) {
     const me = this;
     const itemid = GSID.id;
-    const title = await GSLoader.getTemplate(me.#getTitle(el));
-    const message = await GSLoader.getTemplate(me.#getMessage(el));
+    const title = me.#getTitle(el);
+    const message = me.#getMessage(el);
     const autoclose = me.#getAutoclose(el) ? `data-bs-parent=#${id}` : '';
     const isVisible = me.#isVisible(el);
     return `

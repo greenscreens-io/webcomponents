@@ -104,7 +104,7 @@ export default class GSBase extends HTMLElement {
 
 			if (el && !isPromise) {
 
-				el.setAttribute('data-hash', hash);
+				el.dataset.hash = hash;
 
 				if (me.isHead) {
 					document.head.appendChild(el);

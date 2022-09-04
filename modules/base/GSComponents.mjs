@@ -72,10 +72,8 @@ export default class GSComponents {
      */
     static waitFor(name = '', timeout = 0) {
         return new Promise((r, e) => {
-            let el = GSComponents.find(name);
-            if (!el) el = GSComponents.get(name);
-            if (el) return r(el);
-            GSComponents.#waitForInternal(name, timeout, r);
+            let el = GSComponents.find(name) || GSComponents.get(name);
+            return el ? r(el) : GSComponents.#waitForInternal(name, timeout, r);
         });
     }
 
@@ -89,11 +87,9 @@ export default class GSComponents {
         const callback = (e) => {
             const el = e.path[0];
             const ok = el.id === name || el.tagName === name;
-            if (!ok) return;
-            fn(el, e);
+            return ok ? fn(el, e) : undefined;
         };
-        let el = GSComponents.find(name);
-        if (!el) el = GSComponents.get(name);
+        const el = GSComponents.find(name) || GSComponents.get(name);
         if (el) return fn(el);
         GSEvent.listen(document.body, null, 'componentready', callback);
         return callback;
@@ -235,5 +231,3 @@ export default class GSComponents {
     }
 
 }
-
-

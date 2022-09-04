@@ -69,10 +69,10 @@ export default class GSItem extends HTMLElement {
 	 * @param {HTMLElement} el 
 	 * @returns {string}
 	 */
-	static getBody(el) {
+	static getBody(el, flat = false) {
 		let tpl = GSItem.getTemplate(el);
 		const cls = GSAttr.get(el, 'css-template', '');
-		if (tpl) return `<gs-template href="${tpl}" class="${cls}"></gs-template>`;
+		if (tpl) return `<gs-template flat="${flat}" href="${tpl}" class="${cls}"></gs-template>`;
 		tpl = el.querySelector('template');
 		return tpl ? tpl.innerHTML : '';
 	}
@@ -262,6 +262,10 @@ export default class GSItem extends HTMLElement {
 	/**
 	 * Convert JSON structure to DOM structure
 	 * 
+	 * const o = {....}
+	 * document.body.innerHTML = GSItem.toDom(o);
+	 * GSItem.toJson(document.body.firstElementChild);
+	 * 
 	 * @param {object} obj JSON Object to convert
 	 * @param {string} tag DOM tag name
 	 * @param {string} name DOM attribute name for object key
@@ -335,6 +339,10 @@ export default class GSItem extends HTMLElement {
 
 	/**
 	 * Convert DOM tree into a JSON structure
+	 * 
+	 * const o = {....}
+	 * document.body.innerHTML = GSItem.toDom(o);
+	 * GSItem.toJson(document.body.firstElementChild);
 	 * 
 	 * @param {HTMLElement} obj HTML element instance to convert
 	 * @param {string} name DOM attribute name for object key

@@ -254,7 +254,7 @@ export default class GSContext extends GSElement {
    */
   #attachOptions() {
     const me = this;
-    me.#items.filter(btn => btn.hasAttribute('data-action'))
+    me.#items.filter(btn => btn.dataset.action)
       .forEach(btn => me.attachEvent(btn, 'click', me.#onClick.bind(me)));
   }
 
@@ -262,7 +262,7 @@ export default class GSContext extends GSElement {
     const me = this;
     e.preventDefault();
     me.close();
-    const data = GSAttr.getData(e.target);
+    const data = e.target.dataset;
     const opt = { type: 'contextmenu', option: e.target, caller: me.#caller, data: data };
     GSEvent.send(me, 'action', opt, true, true, true); // notify self
   }

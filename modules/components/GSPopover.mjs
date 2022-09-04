@@ -147,7 +147,7 @@ export default class GSPopover extends GSElement {
 
     get placement() {
         const me = this;
-        return GSAttr.get(me, 'placement') || GSAttr.get(me.target, 'data-bs-placement', 'top');
+        return GSAttr.get(me, 'placement', me.target?.dataset?.bsPlacement || 'top');
     }
 
     set placement(val = '') {
@@ -156,7 +156,7 @@ export default class GSPopover extends GSElement {
 
     get content() {
         const me = this;
-        return GSAttr.get(me, 'content') || GSAttr.get(me.target, 'data-bs-content', '');
+        return GSAttr.get(me, 'content', me.target?.dataset?.bsContent ||'');
     }
 
     set content(val = '') {
@@ -165,7 +165,7 @@ export default class GSPopover extends GSElement {
 
     get trigger() {
         const me = this;
-        return GSAttr.get(me, 'trigger') || GSAttr.get(me.target, 'data-bs-trigger', 'hover focus');
+        return GSAttr.get(me, 'trigger', me.target?.dataset?.bsTrigger || 'hover focus');
     }
 
     set trigger(val = '') {
@@ -253,7 +253,7 @@ export default class GSPopover extends GSElement {
      * @returns {boolean}
      */
     static #hasPopover(el) {
-        return el && (el.firstElementChild instanceof GSPopover || el.nextElementSibling instanceof GSPopover);
+        return (el?.firstElementChild || el?.nextElementSibling ) instanceof GSPopover;
     }
 
     /**
@@ -262,7 +262,7 @@ export default class GSPopover extends GSElement {
      * @returns {boolean} 
      */
     static #isPopover(el) {
-        return el instanceof HTMLElement && el.hasAttribute('data-bs-content') && GSAttr.get(el, 'data-bs-toggle') === 'popover';
+        return el?.dataset?.bsContent && el?.dataset?.bsToggle === 'popover';
     }
 
 }

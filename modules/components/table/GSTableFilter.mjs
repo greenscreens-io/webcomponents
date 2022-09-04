@@ -32,7 +32,7 @@ export default class GSTableFilter extends HTMLTableRowElement {
      */
     connectedCallback() {
         const me = this;
-        if (!me.id) me.setAttribute('id', GSID.id);
+        me.id = me.id || GSID.id;
         me.#auto = GSDOM.query(me, 'input[auto="true"],select[auto="true"]') != null;
         me.#attachChangeListener();
         me.#attachDataListener();
@@ -54,13 +54,13 @@ export default class GSTableFilter extends HTMLTableRowElement {
 
     #attachChangeListener() {
         const me = this;
-        GSDOM.queryAll(me, 'input, select').forEach(el => GSEvent.attach(me, el, 'change', e => me.#onChange(e.target)));
+        GSDOM.queryAll(me, 'input, select')
+            .forEach(el => GSEvent.attach(me, el, 'change', e => me.#onChange(e.target)));
     }
 
     #attachDataListener() {
         const me = this;
-        if (!me.#auto) return;
-        GSEvent.attach(me, me.root, 'data', e => me.#onData(e.detail), false, true);
+        if (me.#auto) GSEvent.attach(me, me.root, 'data', e => me.#onData(e.detail), false, true);
     }
 
     #onChange(el) {
@@ -81,10 +81,8 @@ export default class GSTableFilter extends HTMLTableRowElement {
         const me = this;
         const listID = GSAttr.get(el, 'list');
         const list = me.root.getElementById(listID);
-        if (!list) return el.value;
-        const opt = list.querySelector(`option[value="${el.value}"]`);
-        if (!opt) return el.value;
-        return GSAttr.get(opt, 'data-value', el.value);
+        const opt = list?.querySelector(`option[value="${el.value}"]`);
+        return opt?.dataset?.value || el.value;
     }
 
 }

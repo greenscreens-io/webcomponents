@@ -96,13 +96,19 @@ export default class GSFormExt extends HTMLFormElement {
     static #onSubmit(e, own) {
         GSEvent.prevent(e);
         const me = own || this;
-        const isValid = me.checkValidity();
+        const isValid = me.checkValidity() && me.isValid;
         const obj = GSDOM.toObject(me);
         const type = isValid ? 'submit' : 'invalid';
         const data = { type: type, data: obj, source: e, valid: isValid };
         if (e.detail) e.detail.data = data;
         GSEvent.send(me, 'form', data, true, true);
         return me.reportValidity();
+    }
+
+    get isValid() {
+        return GSDOM.queryAll(this,'input,select,textarea')
+                    .map(el => el.checkValidity())
+                    .filter(v => v === false).length === 0;
     }
 
     get buttonOK() {

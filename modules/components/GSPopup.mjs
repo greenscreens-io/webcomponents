@@ -126,7 +126,7 @@ export default class GSPopup extends GSElement {
      */
     get placement() {
         const me = this;
-        return GSAttr.get(me, 'placement') || GSAttr.get(me.target, 'data-bs-placement');
+        return GSAttr.get(me, 'placement', me?.target?.datalist?.bsPlacement || '');
     }
 
     set placement(val = '') {

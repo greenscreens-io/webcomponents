@@ -71,7 +71,7 @@
  
          const id = GSAttr.get(el, 'id');
          const name = GSAttr.get(el, 'name');
-         const tpl = GSItem.getBody(el);
+         const tpl = GSItem.getBody(el, me.isFlat);
  
          const style = me.#style(el);
          const fixed = style.length > 10 ? true : false;

@@ -1,0 +1,58 @@
+<div class="row form-group m-1">
+    <label class="text-md-end control-label col-md-4 col-sm-4 col-xs-12" for="ext_status">Status</label>
+
+    <div class="col-md-4 col-sm-6 col-xs-11">
+        <select class="form-control "  id="ext_status" name="ext_status" selected="false">
+            <option value="false">Disabled</option>
+            <option value="true">Enabled</option>
+        </select>
+    </div>
+
+    <div class="col-sm-1 item ">
+        <i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
+        <gs-tooltip placement="right" title="Enable or disable extensions."></gs-tooltip>
+    </div>
+
+</div>
+
+<div class="row form-group m-1">
+    <label class="text-md-end control-label col-md-4 col-sm-4 col-xs-12" for="ext_ext">Extension</label>
+    <div class="col-md-4 col-sm-6 col-xs-11">
+        <input class="form-control  required"  id="ext_ext" name="ext_ext" type="text">
+    </div>
+
+    <div class="col-sm-1 item ">
+        <i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
+        <gs-tooltip placement="right" title="File extension to attach to extracted screen value."></gs-tooltip>
+    </div>
+
+</div>
+
+<div class="row form-group m-1">
+    <label class="text-md-end control-label col-md-4 col-sm-4 col-xs-12" for="ext_pgm">Program</label>
+    <div class="col-md-4 col-sm-6 col-xs-11">
+        <input class="form-control  required"  id="ext_pgm" name="ext_pgm" type="text">
+    </div>
+
+    <div class="col-sm-1 item ">
+        <i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
+        <gs-tooltip placement="right" title="Program to execute on extracted screen value."></gs-tooltip>
+    </div>
+</div>
+
+<div class="row form-group m-1">
+    <label class="text-md-end control-label col-md-4 col-sm-4 col-xs-12" for="ext_path">Path</label>
+    <div class="col-md-4 col-sm-6 col-xs-11">
+        <input class="form-control  required"  id="ext_path" name="ext_path" type="text">
+    </div>
+    <div class="col-sm-1 item ">
+        <i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
+        <gs-tooltip placement="right" title="Directory path where extensions are located."></gs-tooltip>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col text-center">
+        This feature requires Web2Desktop integration module (PCH) installed.
+    </div>
+</div>

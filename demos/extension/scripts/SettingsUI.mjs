@@ -8,7 +8,6 @@
  */
 
 import GSElement from "../../../modules/base/GSElement.mjs";
-import GSUtil from "../../../modules/base/GSUtil.mjs";
 
 /**
  * SettingsUI handles session template elements
@@ -34,13 +33,19 @@ class SettingsUI extends GSElement {
 
     onReady() {
         const me = this;
-        me.attachEvent(me, 'action', me.#onAction.bind(me));
+        me.attachEvent(me, 'form', me.#onForm.bind(me));
         super.onReady();
     }
 
-    #onAction(e) {
-        const action = e.detail.action;
-        if (GSUtil.isFunction(this[action])) this[action](e);
+    #onForm(e) {
+        const data = e.detail.data;
+        if (e.detail.valid) {
+            // TODO save data
+            console.log(data);
+            GSComponents.get('notification').warn('', 'Record updated!');
+        } else {
+            GSComponents.get('notification').danger('', 'Not all required fields valid!');
+        }
     }
 
 }
