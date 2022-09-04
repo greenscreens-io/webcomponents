@@ -25,7 +25,7 @@ import GSDOM from "../base/GSDOM.mjs";
 export default class GSTab extends GSElement {
 
   // TAB CONTENT
-  static CSS_PANE = 'p-4';
+  static CSS_PANE = '';
   //NAV BAR
   static CSS_NAV = '';
   // NAV ITEM WRAPER
@@ -118,7 +118,7 @@ export default class GSTab extends GSElement {
     //const contentTpl = me.rtl ? `${title} ${iconTpl}` : `${iconTpl} ${title}`;
     const contentTpl = `${iconTpl} ${title}`;
 
-    const actievCSS = el.active ? me.#activeTabCSS(el) : '';
+    const actievCSS = me.#activeTabCSS(el);
 
     return `${wrap}
           <a type="button" role="tab" is="gs-ext-navlink"
@@ -133,7 +133,12 @@ export default class GSTab extends GSElement {
 
   #renderPane(el) {
     const me = this;
-    const actievCSS = el.active ? me.#activePaneCSS(el) : '';
+    return me.isFlat ? me.#renderPaneFlat(el) : me.#renderPaneShadow(el);
+  }
+
+  #renderPaneShadow(el) {
+    const me = this;
+    const actievCSS = me.#activePaneCSS(el);
     const body = GSItem.getBody(el);
     const slot = GSDOM.parseWrapped(me, body);
     GSAttr.set(slot, 'slot', el.id);
@@ -147,11 +152,10 @@ export default class GSTab extends GSElement {
       `;
   }
 
-  /*
-  #renderPane(el) {
+  #renderPaneFlat(el) {
     const me = this;
-    const actievCSS = el.active ? me.#activePaneCSS(el) : '';
-    const body = GSItem.getBody(el);
+    const actievCSS = me.#activePaneCSS(el);
+    const body = GSItem.getBody(el, me.isFlat);
     return `
       <div  id="${el.id}-pane" aria-labelledby="${el.id}-tab" 
           class="tab-pane fade ${me.#cssPane(el)}  ${actievCSS}" 
@@ -160,7 +164,6 @@ export default class GSTab extends GSElement {
       </div>        
       `;
   }
-  */
 
   #active(el) {
     return GSAttr.getAsBool(el, 'active');

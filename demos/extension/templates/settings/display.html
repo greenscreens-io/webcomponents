@@ -1,1 +1,100 @@
-Display
+<div class="row form-group m-1 ">
+    <label class="text-md-end control-label col-md-4 col-sm-4 col-xs-12" for="enter_mode">Enter Key</label>
+
+    <div class="col-md-4 col-sm-6 col-xs-11">
+        <select class="form-control " data-toggle="tooltip" id="enter_mode" name="enter_mode" selected="false">
+            <option value="1">&lt;Field Exit&gt; = Enter, &lt;Enter&gt; = Right CTRL</option>
+            <option value="2">&lt;Field Exit> = Right CTRL, &lt;Enter> = Enter</option>
+        </select>
+    </div>
+
+    <div class="col-sm-1 item ">
+        <i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
+        <gs-tooltip placement="right" title="Select enter and field exit mode."></gs-tooltip>
+    </div>
+
+</div>
+
+<div class="row form-group m-1 ">
+    <label class="text-md-end control-label col-md-4 col-sm-4 col-xs-12" for="sound">Beep</label>
+
+    <div class="col-md-4 col-sm-6 col-xs-11">
+        <select class="form-control " data-toggle="tooltip" id="sound" name="sound" selected="true">
+            <option value="false">Disabled</option>
+            <option value="true">Enabled</option>
+        </select>
+    </div>
+
+    <div class="col-sm-1 item ">
+        <i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
+        <gs-tooltip placement="right" title="Enable or disable error signal"></gs-tooltip>
+    </div>
+
+</div>
+
+<div class="row form-group m-1 ">
+    <label class="text-md-end control-label col-md-4 col-sm-4 col-xs-12" for="legacy">Legacy Mode</label>
+
+    <div class="col-md-4 col-sm-6 col-xs-11">
+        <select class="form-control " data-toggle="tooltip" id="legacy" name="legacy" selected="false">
+            <option value="false">Disabled</option>
+            <option value="true">Enabled</option>
+        </select>
+    </div>
+
+    <div class="col-sm-1 item ">
+        <i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
+        <gs-tooltip placement="right" title="If enabled terminal will be rendered in 4:3 ratio."></gs-tooltip>
+    </div>
+
+</div>
+
+<div class="row form-group m-1 ">
+    <label class="text-md-end control-label col-md-4 col-sm-4 col-xs-12" for="crosshair">Crosshair</label>
+
+    <div class="col-md-4 col-sm-6 col-xs-11">
+        <select class="form-control " data-toggle="tooltip" id="crosshair" name="crosshair" selected="false">
+            <option value="">Disabled</option>
+            <option value="*">Vertical and Horizontal</option>
+            <option value="h">Horizontal</option>
+            <option value="v">Vertical</option>
+        </select>
+    </div>
+    <div class="col-sm-1 item ">
+        <i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
+        <gs-tooltip placement="right" title="Show crosshair on terminal."></gs-tooltip>
+    </div>
+
+</div>
+
+<div class="row form-group m-1 ">
+    <label class="text-md-end control-label col-md-4 col-sm-4 col-xs-12" for="protect">Close Control</label>
+
+    <div class="col-md-4 col-sm-6 col-xs-11">
+        <select class="form-control " data-toggle="tooltip" id="protect" name="protect" selected="false">
+            <option value="false">Disabled</option>
+            <option value="true">Enabled</option>
+        </select>
+    </div>
+    <div class="col-sm-1 item ">
+        <i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
+        <gs-tooltip placement="right" title="If enabled, waring will popup upon closing terminal tab."></gs-tooltip>
+    </div>
+
+</div>
+
+<div class="row form-group m-1 ">
+    <label class="text-md-end control-label col-md-4 col-sm-4 col-xs-12" for="tabmode">Window Mode</label>
+
+    <div class="col-md-4 col-sm-6 col-xs-11">
+        <select class="form-control " data-toggle="tooltip" id="tabmode" name="tabmode" selected="false">
+            <option value="false">Disabled</option>
+            <option value="true">Enabled</option>
+        </select>
+    </div>
+    <div class="col-sm-1 item ">
+        <i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
+        <gs-tooltip placement="right" title="If enabled, terminal will open in separate window."></gs-tooltip>
+    </div>
+
+</div>

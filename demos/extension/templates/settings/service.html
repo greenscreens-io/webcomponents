@@ -1,1 +1,21 @@
-Service
+<div class="row form-group m-1 ">
+	<label class="text-md-end control-label col-md-4 col-sm-4 col-xs-12" for="service">Service URL</label>
+	<div class="col-md-4 col-sm-6 col-xs-11">
+		<input class="form-control  required"  id="service" name="service" required="required" type="url">
+	</div>
+	<div class="col-sm-1 item ">
+		<i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
+		<gs-tooltip placement="right" title="Enter URL location for Green Screens Terminal Service."></gs-tooltip>
+	</div>
+</div>
+
+<div class="row form-group m-1 ">
+	<label class="text-md-end control-label col-md-4 col-sm-4 col-xs-12" for="confid">Configuration ID</label>
+	<div class="col-md-4 col-sm-6 col-xs-11">
+		<input class="form-control  upper"  id="confid" name="confid" pattern="[0-9]*" title="Numeric values only" type="text">
+	</div>
+	<div class="col-sm-1 item ">
+		<i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
+		<gs-tooltip placement="right" title="ID for server stored user configuration used by admin autoconfig."></gs-tooltip>		
+	</div>
+</div>

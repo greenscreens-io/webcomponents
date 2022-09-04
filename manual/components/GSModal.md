@@ -15,6 +15,12 @@ GSModal WebComponent is a renderer for Bootstrap Modal with support for external
 | button-cancel      | Title for CANCEL button                                      |
 | css-button-ok      | CSS classes for OK button                                    |
 | css-button-cancel  | CSS classes for CANCEL button                                |
+| css-modal          | CSS classes for modal background (default: transparent)      |
+| css-content        | CSS classes for modal frame                                  |
+| css-header         | CSS classes for modal header block                           |
+| css-title          | CSS classes for modal title block                            |
+| css-body           | CSS classes for modal body block                             |
+| css-footer         | CSS classes for modal footer block                           |
 | cancelable         | Is cancel button available (bool)                            |
 | closable           | Can user close modal                                         |
 | title              | Modal title message                                          |

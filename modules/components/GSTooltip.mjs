@@ -69,11 +69,11 @@ export default class GSTooltip extends GSElement {
     // https://javascript.info/mousemove-mouseover-mouseout-mouseenter-mouseleave
     #attachEvents() {
         const me = this;
-        GSEvent.attach(me, me.target, 'mouseenter', me.show.bind(me));
-        GSEvent.attach(me, me.target, 'mouseleave', me.hide.bind(me));
+        me.attachEvent(me.target, 'mouseenter', me.show.bind(me));
+        me.attachEvent(me.target, 'mouseleave', me.hide.bind(me));
     }
 
-    #render() {
+    #popup() {
         const me = this;
         const arrowEl = me.querySelector('div.tooltip-arrow');
         GSPopper.popupAbsolute(me.placement, me.firstElementChild, me.target, arrowEl);
@@ -140,7 +140,7 @@ export default class GSTooltip extends GSElement {
         requestAnimationFrame(() => {
             const el = GSDOM.parse(me.#html, true);
             me.insertAdjacentElement('afterbegin', el);
-            me.#render();
+            me.#popup();
             GSDOM.toggleClass(this.firstElementChild, true, 'show');
         });
     }
@@ -151,7 +151,8 @@ export default class GSTooltip extends GSElement {
     hide() {
         const me = this;
         setTimeout(() => {
-            me.innerHTML = '';
+           // me.innerHTML = '';
+           me.firstChild.remove();
         }, 250);
         return GSDOM.toggleClass(this.firstElementChild, false, 'show');
     }
@@ -161,7 +162,7 @@ export default class GSTooltip extends GSElement {
      */
     toggle() {
         const me = this;
-        me.innerHTML ? me.hide() : me.show();
+        me.childElementCount > 0 ? me.hide() : me.show();
     }
 
     /**

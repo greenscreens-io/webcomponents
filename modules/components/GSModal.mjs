@@ -322,22 +322,47 @@ export default class GSModal extends GSElement {
     return GSAttr.get(this, "css-button-cancel", "btn-secondary");
   }
 
+  get cssModal() {
+    return GSAttr.get(this, "css-modal", "");
+  }
+
+  get cssContent() {
+    return GSAttr.get(this, "css-content", "");
+  }
+
+  get cssHeader() {
+    return GSAttr.get(this, "css-header", "");
+  }
+
+  get cssTitle() {
+    return GSAttr.get(this, "css-title", "");
+  }
+
+  get cssBody() {
+    return GSAttr.get(this, "css-body", "");
+  }
+
+  get cssFooter() {
+    return GSAttr.get(this, "css-footer", "");
+  }
+
+  // css-modal, css-content css-header css-title css-body css-footer
   async getTemplate(val = '') {
     if (val) return super.getTemplate(val);
     const me = this;
     return `
-        <div class="modal d-none fade">
+        <div class="modal d-none fade ${me.cssModal}">
         <div class="modal-dialog modal-dialog-centered">
-          <div class="modal-content">
-            <div class="modal-header border-0">
-              <div class="modal-title">
+          <div class="modal-content ${me.cssContent}">
+            <div class="modal-header border-0 ${me.cssHeader}">
+              <div class="modal-title ${me.cssTitle}">
                 <slot name="title"></slot>
               </div>
             </div>
-            <div class="modal-body">
+            <div class="modal-body ${me.cssBody}">
               <slot name="body"></slot>
             </div>
-            <div class="modal-footer border-0 justify-content-${me.align}">
+            <div class="modal-footer border-0 justify-content-${me.align} ${me.cssFooter}">
               <button class="btn ${me.cssButtonCancel} modal-cancel" data-action="cancel">${me.buttonCancel}</button>
               <button class="btn ${me.cssButtonOk} modal-ok" data-action="ok">${me.buttonOk}</button>
             </div>

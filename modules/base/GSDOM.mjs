@@ -467,7 +467,7 @@ export default class GSDOM {
 	static toObject(owner, qry = 'input, textarea, select', hidden = false) {
 		const root = GSDOM.unwrap(owner);
 		const params = {};
-		const list = root.querySelectorAll(qry);
+		const list = GSDOM.queryAll(root, qry); // root.querySelectorAll(qry);
 		Array.from(list)
 			.filter(el => el.name)
 			.forEach(el => {
@@ -487,7 +487,7 @@ export default class GSDOM {
 	static fromObject(owner, obj, qry = 'input, textarea, select') {
 		if (!obj) return;
 		const root = GSDOM.unwrap(owner);
-		const list = root.querySelectorAll(qry);
+		const list = GSDOM.queryAll(root, qry); // root.querySelectorAll(qry);
 		Array.from(list)
 			.filter(el => el.name && obj.hasOwnProperty(el.name))
 			.forEach(el => el.value = obj[el.name]);

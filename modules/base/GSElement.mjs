@@ -575,9 +575,13 @@ export default class GSElement extends HTMLElement {
 
 			if (inject.target === me) {
 				if (me.isFlat) {
-					const tpl = GSDOM.parseWrapped(me, src, false);
-					me.#content = tpl;
-					GSDOM.insertAdjacent(inject.target, tpl, inject.anchor);
+					if (src) {
+						const tpl = GSDOM.parseWrapped(me, src, false);
+						me.#content = tpl;
+						GSDOM.insertAdjacent(inject.target, tpl, inject.anchor);
+					} else {
+						me.#content = me;
+					}
 				} else {
 					me.#content = me.#shadow;
 					me.#content.innerHTML = src;
