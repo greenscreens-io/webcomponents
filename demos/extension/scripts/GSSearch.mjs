@@ -11,11 +11,12 @@ import GSElement from "../../../modules/base/GSElement.mjs"
 import GSEvent from "../../../modules/base/GSEvent.mjs";
 
 /**
- * Search input box 
+ * Search input box WebComponent which emits searh event to upper tree.
+ * In this cse for GSTable filtering
  * @class
  * @extends {GSElement}
  */
-export default class GSSearch extends GSElement {
+class GSSearch extends GSElement {
 
     static {
         customElements.define('gs-search', GSSearch);
@@ -73,6 +74,10 @@ export default class GSSearch extends GSElement {
         return GSAttr.set(this, 'css-input', val);
     }
 
+     /**
+     * Input box info mesasge
+     * @returns {string}
+     */
     get placeholder() {
         return GSAttr.get(this, 'placeholder', 'search');
     }
@@ -81,6 +86,10 @@ export default class GSSearch extends GSElement {
         return GSAttr.set(this, 'placeholder', val);
     }
 
+    /**
+     * Input box name
+     * @returns {string}
+     */
     get name() {
         return GSAttr.get(this, 'name', 'search');
     }

@@ -41,7 +41,8 @@ class SessionsUI extends BaseUI {
     /**
      * Handle remote record create
      * @param {*} data 
-     * @returns {boolean|Error}
+     * @returns {boolean}
+     * @throws {Error}
      */
     async onCreate(data) {
         return true;
@@ -50,7 +51,8 @@ class SessionsUI extends BaseUI {
     /**
      * Handle remote record update
      * @param {*} data 
-     * @returns {boolean|Error}
+     * @returns {boolean}
+     * @throws {Error}
      */
     async onUpdate(data) {
         return true;
@@ -59,7 +61,8 @@ class SessionsUI extends BaseUI {
     /**
      * Handle remote record remove
      * @param {*} data 
-     * @returns {boolean|Error}
+     * @returns {boolean}
+     * @throws {Error}
      */
     async onRemove(data) {
         return true;

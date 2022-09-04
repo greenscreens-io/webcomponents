@@ -37,15 +37,16 @@ class SettingsUI extends GSElement {
         super.onReady();
     }
 
-    #onForm(e) {
+    async #onForm(e) {
         const data = e.detail.data;
         if (e.detail.valid) {
-            // TODO save data
-            console.log(data);
-            GSComponents.get('notification').warn('', 'Record updated!');
-        } else {
-            GSComponents.get('notification').danger('', 'Not all required fields valid!');
+            return GSComponents.get('notification').danger('', 'Not all required fields valid!');
         }
+
+        // TODO save data        
+        console.log(data);
+        
+        GSComponents.get('notification').warn('', 'Record updated!');
     }
 
 }
