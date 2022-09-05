@@ -11,7 +11,6 @@ import GSID from "./GSID.mjs";
 import GSUtil from "./GSUtil.mjs";
 import GSAttr from "./GSAttr.mjs";
 import GSLoader from "./GSLoader.mjs";
-import GSi18n from "./GSi18n.mjs";
 import GSEvent from "./GSEvent.mjs";
 import GSComponents from "./GSComponents.mjs";
 import GSCacheStyles from "../head/GSCacheStyles.mjs";
@@ -259,7 +258,7 @@ export default class GSElement extends HTMLElement {
 		const me = this;
 		if (!me.shadowRoot) return;
 		me.shadowRoot.adoptedStyleSheets = GSCacheStyles.styles;
-		if (GSi18n.isInitialized) GSi18n.isInitialized.translateDOM(me.shadowRoot);
+		GSEvent.send(document.body, 'i18n', me.shadowRoot);
 	}
 
 	/**
@@ -494,7 +493,7 @@ export default class GSElement extends HTMLElement {
 		me.#ready = true;
 		const fn = GSFunction.parseFunction(me.onready);
 		GSFunction.callFunction(fn);
-		GSEvent.send(me, 'componentready', me.id, true, true);
+		GSEvent.send(document.body, 'componentready', me);
 	}
 
 	/**

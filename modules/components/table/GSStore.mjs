@@ -396,7 +396,7 @@ export default class GSStore extends HTMLElement {
 
         const simple = GSUtil.isString(filter) && GSUtil.isStringNonEmpty(filter);
 
-        if (!simple && (me.remote || me.data.length == 0)) {
+        if (!simple && me.src && (me.remote || me.data.length == 0)) {
             const url = me.#toURL(me.src, skip, limit, filter, sort);
             data = await me.load(url);
         }

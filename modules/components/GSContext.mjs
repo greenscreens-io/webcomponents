@@ -221,7 +221,8 @@ export default class GSContext extends GSElement {
     }
     const me = this;
     me.#caller = e.target;
-    const rect = me.#menu.getBoundingClientRect();
+    const rect = me.#menu?.getBoundingClientRect();
+    if (!rect) return;
     let x = e.clientX, y = e.clientY;
     const overflowH = x + rect.width > window.innerWidth;
     const overflowV = y + rect.height > window.innerHeight;

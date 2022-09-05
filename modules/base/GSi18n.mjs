@@ -36,13 +36,16 @@ export default class GSi18n extends HTMLElement {
     static {
         customElements.define('gs-i18n', GSi18n);
         Object.seal(GSi18n);
+        document.body.addEventListener('i18n', (e) => {
+            if (GSi18n.default) GSi18n.default.translateDOM(e.detail);
+        });
     }
 
     static get observedAttributes() {
         return ['lang', 'auto'];
     }
 
-    static get isInitialized() {
+    static get default() {
         return GSi18n.#init;
     }
 

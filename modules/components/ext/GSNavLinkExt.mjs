@@ -92,7 +92,8 @@ export default class GSNavLinkExt extends HTMLAnchorElement {
 
     static #trigger(e, el) {
         const own = GSNavLinkExt.#owner(el);
-        GSEvent.send(own, 'action', { type: 'active', data: el.dataset, source: e }, true);
+        const obj = { type: 'active', data: el.dataset, source: e };
+        GSEvent.send(own, 'action', obj, true, true, true);
     }
 
     static #list(own) {

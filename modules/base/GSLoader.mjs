@@ -46,8 +46,10 @@ export default class GSLoader {
         url = url || '';
         let path = null;
         const isFile = location.pathname.split('/').pop(-1).indexOf('\.') > -1;
+        const isExt = url.indexOf('extension://')>-1;
+        const isUrl = url.startsWith('http');
 
-        if (url.startsWith('http')) {
+        if (isUrl || isExt) {
             path = url;
         } else if (url.startsWith('/')) {
             path = `${location.origin}/${url}`;
