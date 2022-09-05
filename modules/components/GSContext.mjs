@@ -117,6 +117,14 @@ export default class GSContext extends GSElement {
     return GSAttr.setAsBool(this, 'visible', val);
   }
 
+  get disabled() {
+    return GSAttr.getAsBool(this, 'disabled');
+  }
+
+  set disabled(val = '') {
+    return GSAttr.setAsBool(this, 'disabled', val);
+  }  
+
   get dark() {
     return GSAttr.getAsBool(this, 'dark');
   }
@@ -146,6 +154,7 @@ export default class GSContext extends GSElement {
    */
   popup(x = 0, y = 0) {
     const me = this;
+    if (me.disabled) return;
     const menu = me.#menu;
     if (!menu) return;
     requestAnimationFrame(() => {
@@ -215,10 +224,7 @@ export default class GSContext extends GSElement {
   }
 
   #onPopup(e) {
-    if (e instanceof Event) {
-      e.preventDefault();
-      //if (e.target instanceof GSContext) return;
-    }
+    GSEvent.prevent(e);
     const me = this;
     me.#caller = e.target;
     const rect = me.#menu?.getBoundingClientRect();

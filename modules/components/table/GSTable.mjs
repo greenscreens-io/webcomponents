@@ -97,7 +97,7 @@ export default class GSTable extends GSElement {
         }
 
         super.onReady();
-
+        if (me.contextMenu) me.contextMenu.disabled = true;
         me.attachEvent(me.self, 'sort', e => me.#onColumnSort(e.detail));
         me.attachEvent(me.self, 'filter', e => me.#onColumnFilter(e.detail));
         me.attachEvent(me.self, 'select', e => me.#onRowSelect(e.detail));
@@ -296,6 +296,7 @@ export default class GSTable extends GSElement {
             const rec = me.#data[i - 1];
             if (rec) me.#selected.push(rec);
         });
+        if (me.contextMenu) me.contextMenu.disabled = data.length === 0;
         GSEvent.send(me, 'selected', me.#selected);
     }
 
