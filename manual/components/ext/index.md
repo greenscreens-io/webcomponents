@@ -6,8 +6,9 @@ Also, this library contains replacement for Bootstrap Javascript support for **d
 
 ## Table of content
 
-1. [GSDataAttr](./GSDataAttr.md)
-2. [GSDataListExt](./GSDataListExt.md)
-3. [GSFormExt](./GSFormExt.md)
-4. [GSInputExt](./GSInputExt.md)
-5. [GSNavLinkExt](./GSNavLinkExt.md)
+1. [GSComboExt](./GSComboExt.md)
+2. [GSDataAttr](./GSDataAttr.md)
+3. [GSDataListExt](./GSDataListExt.md)
+4. [GSFormExt](./GSFormExt.md)
+5. [GSInputExt](./GSInputExt.md)
+6. [GSNavLinkExt](./GSNavLinkExt.md)

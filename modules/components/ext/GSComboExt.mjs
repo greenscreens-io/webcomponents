@@ -13,20 +13,19 @@ import GSLoader from "../../base/GSLoader.mjs";
 import GSDOM from "../../base/GSDOM.mjs";
 
 /**
- * Add JSON loader to datalist element
- * 
- * <datalist is="gs-ext-datalist" data="data.json">
+ * Add JSON loader to select element
+ * <select is="gs-ext-select" data="data.json">
  * 
  * [{text:'', value:'' selected:true}]
  * 
  * @class
- * @extends {HTMLDataListElement}
+ * @extends {HTMLSelectElement}
  */
-export default class GSDataListExt extends HTMLDataListElement {
+export default class GSComboExt extends HTMLSelectElement {
 
     static {
-        customElements.define('gs-ext-datalist', GSDataListExt, { extends: 'datalist' });
-        Object.seal(GSDataListExt);
+        customElements.define('gs-ext-select', GSDataListExt, { extends: 'select' });
+        Object.seal(GSComboExt);
     }
 
     constructor() {
