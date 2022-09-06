@@ -48,6 +48,13 @@ export default class BaseUI extends GSElement {
         return GSComponents.get('notification');
     }
 
+    /**
+     * Listener for lower componets "action" events
+     * wihch might come from table fitlering, table context menut etc.
+     * Used to handle context menu options. 
+     * Action from context menu is mapped to this class function.
+     * @param {Event} e 
+     */
     #onAction(e) {
         const action = e.detail.action;
         if (GSFunction.isFunction(this[action])) this[action](e);
@@ -55,7 +62,8 @@ export default class BaseUI extends GSElement {
 
     /**
      * Table record action - clone record
-     * @param {*} e 
+     * @param {Event} e 
+     * @returns {Promise}
      */
     async clone(e) {
 
@@ -84,7 +92,8 @@ export default class BaseUI extends GSElement {
 
     /**
      * Table record action - remove record
-     * @param {*} e 
+     * @param {Event} e 
+     * @returns {Promise}
      */
     async remove(e) {
 
@@ -111,9 +120,11 @@ export default class BaseUI extends GSElement {
 
     /**
      * Table record action - edit data
-     * @param {*} e 
+     * @param {Event} e 
+     * @returns {Promise}
      */
     async details(e) {
+
         const me = this;
         const data = e.detail.data.pop();
         if (!data) return;
@@ -142,7 +153,8 @@ export default class BaseUI extends GSElement {
 
     /**
      * Toolbar table action - create record
-     * @param {*} e 
+     * @param {Event} e 
+     * @returns {Promise}
      */
     async create(e) {
 
@@ -171,7 +183,7 @@ export default class BaseUI extends GSElement {
 
     /**
      * Toolbar table action - refresh data
-     * @param {*} e 
+     * @param {Event} e 
      */
     refresh(e) {
         // get data from extension and populate table;
@@ -182,20 +194,41 @@ export default class BaseUI extends GSElement {
 
     /**
      * Toolbar table action - filter records
-     * @param {*} val 
+     * @param {Event} val 
      */
     search(e) {
         this.#store.filter = e.detail.value;
     }
 
+    /**
+     * Generic function to be overriden by inherited class
+     * Used to handle new record received from popup form.
+     * @param {Object} data 
+     * @returns {boolean}
+     * @throws {Error}
+     */
     async onCreate(data) {
         return true;
     }
 
+    /**
+     * Generic function to be overriden by inherited class
+     * Used to handle existing record change received from popup form.
+     * @param {Object} data 
+     * @returns {boolean}
+     * @throws {Error}
+     */    
     async onUpdate(data) {
         return true;
     }
 
+    /**
+     * Generic function to be overriden by inherited class
+     * Used to handle record removeal received from table context menu option - remove.
+     * @param {Object} data 
+     * @returns {boolean}
+     * @throws {Error}
+     */    
     async onRemove(data) {
         return true;
     }
