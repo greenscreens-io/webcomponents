@@ -24,7 +24,7 @@ import GSDOM from "../../base/GSDOM.mjs";
 export default class GSComboExt extends HTMLSelectElement {
 
     static {
-        customElements.define('gs-ext-select', GSDataListExt, { extends: 'select' });
+        customElements.define('gs-ext-select', GSComboExt, { extends: 'select' });
         Object.seal(GSComboExt);
     }
 
@@ -91,8 +91,9 @@ export default class GSComboExt extends HTMLSelectElement {
             seg.push(`${key}="${val}"`);
         });
 
-        seg.push(o.text);
         seg.push('>')
+        seg.push(o.text);
+        seg.push('</option>')
 
         return seg.join(' ');
     }
