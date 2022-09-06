@@ -186,7 +186,12 @@ export default class GSUtil {
 		});
 	}
 
-
+	/**
+	 * Modified animationFrame to prevent consequtive chained calls.
+	 * 
+	 * @param {function} callback 
+	 * @returns {void}
+	 */
 	static requestAnimationFrame(callback) {
 		if (typeof callback !== 'function') return;
 		if (GSUtil.#animating > 0) return callback();
@@ -202,10 +207,32 @@ export default class GSUtil {
 		});
 	}
 
+	/**
+	 * Registration helper function, replacement for class static initializers
+	 * Mostly to support Safari browser.
+	 * 
+	 * GSUtil.register(null, GSUtil, null, true, false, true);
+	 * 
+	 * @param {string} name Custom element name
+	 * @param {HTMLElement} clazz Class extensing at leas HTMLElement
+	 * @param {string} ext If existing tag extended, this is tagName
+	 * @param {boolean} seal Should class be sealed
+	 * @param {boolean} freeze Should class be freezed
+	 * @param {boolean} expose Should class be exposed to "self"
+	 * 
+	 * @returns {void}
+	 */
+	 static register(name, clazz, ext, seal = true, freeze = false, expose = false) {
+		if (!HTMLElement.isPrototypeOf(clazz)) return;
+		if (customElements.get(name)) return;
+		customElements.define(name, clazz, {extends : ext?.toLowerCase()});
+		if (seal && !Object.isSealed(clazz)) Object.seal(clazz);		
+		if (freeze && !Object.isFrozen(clazz)) Object.freeze(clazz);
+		if (expose) self[clazz.name] = clazz;
+	}
+
 	static {
 		Object.seal(GSUtil);
 		self.GSUtil = GSUtil;
 	}
 }
-
-

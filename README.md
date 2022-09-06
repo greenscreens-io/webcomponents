@@ -2,9 +2,7 @@
  
 Green Screens WebComponents are small, no dependency Web UI components based on Bootstrap (5.2.0.+) CSS, built with vanilla JavaScript.
  
-NOTE: Code is made in ES2022. Even not required, build with Babel, WebPack, Rollup etc. are currently not supported until tools adds ES2022 static class initializers support.  
- 
-NOTE: Currently, we do not accept pull requests!!!!!
+NOTE: Code is made in ES2022 using static class initializers and other modern browser features. Current Safari browser v15.6 is not supported.
  
 Clone a repo and use the web server to point to the repo root directory, then access demos at http://localhost/demos to learn how to use components.
 
