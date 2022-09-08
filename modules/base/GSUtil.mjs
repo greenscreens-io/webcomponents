@@ -115,7 +115,6 @@ export default class GSUtil {
 		return new Function(...names, `return \`${tpl}\`;`)(...vals);
 	}
 
-
 	/**
 	 * Convert string pointer to object
 	 * @param {string} value 
