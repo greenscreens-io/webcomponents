@@ -90,15 +90,16 @@ export default class GSModal extends GSElement {
   #onClick(e) {
     const me = this;
     let sts = true;
+    let isOk = false;
     try {
       const el = e.composedPath().shift();
       const action = el?.dataset.action;
       if (GSModal.#actions.indexOf(action) < 0) return sts = false;
       GSEvent.prevent(e);
-      const isOk = action === 'ok';
+      isOk = action === 'ok';
       sts = GSEvent.send(me, 'action', { type: 'modal', ok: isOk, evt: e }, true, true, true);
     } finally {
-      if (sts) me.close();
+      if (sts) me.close(null, isOk);
     }
   }
 
@@ -174,10 +175,10 @@ export default class GSModal extends GSElement {
   /**
    * Hide modal panel
    */
-  close(e) {
+   close(e, ok = false) {
     GSEvent.prevent(e);
     const me = this;
-    const sts = GSEvent.send(me, 'close', { type: 'modal' }, true, true, true);
+    const sts = GSEvent.send(me, 'close', { type: 'modal', isOk : ok }, true, true, true);
     if (sts) me.visible = false;
   }
 

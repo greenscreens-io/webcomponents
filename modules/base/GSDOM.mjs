@@ -446,6 +446,7 @@ export default class GSDOM {
 	 */
 	static toValue(el) {
 		if (!GSDOM.isHTMLElement(el)) return undefined;
+		if ('checkbox' === el.type) return el.checked;
 		let value = el.value;
 		if ('text' === el.type) {
 			const map = GSDOM.styleValue(el, 'text-transform');
@@ -455,6 +456,21 @@ export default class GSDOM {
 			}
 		}
 		return value;
+	}
+
+	/**
+	 * Set element value, taking chekbox into consideration
+	 * @param {HTMLElement} el 
+	 * @param {string|boolean|number} val 
+	 * @returns 
+	 */
+	 static fromValue(el, val) {
+		if (!GSDOM.isHTMLElement(el)) return;
+		if (el.type === 'checkbox') {
+			el.checked = val == true;
+		} else {
+			el.value = val;
+		}
 	}
 
 	/**
@@ -512,7 +528,7 @@ export default class GSDOM {
 		const list = GSDOM.queryAll(root, qry); // root.querySelectorAll(qry);
 		Array.from(list)
 			.filter(el => el.name && obj.hasOwnProperty(el.name))
-			.forEach(el => el.value = obj[el.name]);
+			.forEach(el => GSDOM.fromValue(el, obj[el.name]));
 	}
 
 	/**
@@ -563,7 +579,7 @@ export default class GSDOM {
 	 */
 	static setValue(qry, val, own) {
 		const el = GSDOM.query(own, qry);
-		if (el) el.value = val;
+		GSDOM.fromValue(el, val);
 	}
 
 	/**

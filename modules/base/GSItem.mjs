@@ -48,33 +48,18 @@ export default class GSItem extends HTMLElement {
 	}
 
 	/**
-	* Retrieve gs-item template or internal content
-	* NOTE: If template set, item content is overriden
-	* 
-	* @async
-	* @param {HTMLElement} el 
-	* @returns {Promise<string>}
-	*/
-	static async getTemplate(el) {
-		let tpl = GSItem.getTemplate(el);
-		const cnt = tpl ? await GSLoader.getTemplate(tpl) : '';
-		if (cnt) return cnt;
-		tpl = el.querySelector('template');
-		return tpl ? tpl.innerHTML : '';
-	}
-
-	/**
-	 * Retuen content of HTMLTemplate child element
+	 * Return content of HTMLTemplate child element
 	 * 
 	 * @param {HTMLElement} el 
 	 * @returns {string}
 	 */
 	static getBody(el, flat = false) {
 		let tpl = GSItem.getTemplate(el);
+		const isFlat = GSItem.getFlat(el);
 		const cls = GSAttr.get(el, 'css-template', '');
-		if (tpl) return `<gs-template flat="${flat}" href="${tpl}" class="${cls}"></gs-template>`;
+		if (tpl) return `<gs-template flat="${isFlat || flat}" href="${tpl}" class="${cls}"></gs-template>`;
 		tpl = el.querySelector('template');
-		return tpl ? tpl.innerHTML : '';
+		return tpl?.innerHTML || '';
 	}
 
 	/**
@@ -183,6 +168,10 @@ export default class GSItem extends HTMLElement {
 		return GSAttr.getAsBool(el, 'selectable', true);
 	}
 
+	static getFlat(el) {
+		return GSAttr.getAsBool(el, 'flat', false);
+	}
+
 	static getName(el) {
 		return GSAttr.get(el, 'name', '');
 	}
@@ -237,6 +226,10 @@ export default class GSItem extends HTMLElement {
 
 	get selectable() {
 		return GSItem.getSelectable(this);
+	}
+
+	get flat() {
+		return GSItem.getFlat(this);
 	}
 
 	get name() {
