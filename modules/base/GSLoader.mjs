@@ -59,7 +59,9 @@ export default class GSLoader {
             path = `${location.origin}${location.pathname}/${url}`;
         }
 
-        const uri = new URL(path.replaceAll('//', '/'));
+        path = path.split('://').map(v => v.replaceAll(/\/{2,}/g, '/')).join('://');
+        const uri = new URL(path);
+
         // to handle caching
         if (!base && GSLoader.NO_CACHE) uri.searchParams.append('_dc', Date.now());
 
