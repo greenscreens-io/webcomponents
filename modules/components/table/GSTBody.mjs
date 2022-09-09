@@ -90,7 +90,7 @@ export default class GSTBody extends HTMLTableSectionElement {
             rows.push('</tr>');
         });
 
-        me.innerHTML = rows.join('');
+        GSDOM.setHTML(me, rows.join(''));
         GSDOM.queryAll(me, 'tr').forEach(el => { if (el.innerText.trim().length === 0) el.remove(); });
     }
 

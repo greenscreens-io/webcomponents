@@ -14,6 +14,7 @@ import GSItem from "../base/GSItem.mjs";
 import GSLoader from "../base/GSLoader.mjs";
 import GSEvent from "../base/GSEvent.mjs";
 import GSAttr from "../base/GSAttr.mjs";
+import GSDOM from "../base/GSDOM.mjs";
 
 /**
  * Renderer for nav bar/list
@@ -129,7 +130,8 @@ export default class GSNav extends GSElement {
         const data = await GSLoader.loadData(val);
         if (!GSUtil.isJsonType(data)) return;
         const me = this;
-        me.innerHTML = GSItem.generateItem(data);
+        const src = GSItem.generateItem(data);
+        GSDOM.setHTML(me, src);
         GSEvent.deattachListeners(me);
         me.connectedCallback();
     }

@@ -76,7 +76,7 @@ export default class GSDataListExt extends HTMLDataListElement {
                 list.push(me.#objToHTML(o));
             });
 
-            me.innerHTML = list.join('\n');
+            GSDOM.setHTML(me, list.join('\n'));
         });
         return true;
     }

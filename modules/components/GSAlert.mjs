@@ -56,7 +56,7 @@ export default class GSAlert extends GSElement {
         const me = this;
         const el = me.firstElementChild;
 
-        if (name == 'message') el.innerHTML = me.message;
+        if (name == 'message') GSDOM.setHTML(el, me.message);
 
         if (name == 'css') {
             GSDOM.toggleClass(el, false, oldValue);

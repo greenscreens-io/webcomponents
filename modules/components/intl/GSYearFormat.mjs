@@ -7,6 +7,7 @@
  * @module components/GSYearFormat
  */
 import GSAttr from '../../base/GSAttr.mjs'
+import GSDOM from '../../base/GSDOM.mjs'
 
 /**
  * Render Year value
@@ -27,7 +28,7 @@ export default class GSYearFormat extends HTMLElement {
     }
 
     #update() {
-        this.innerHTML = this.value;
+        GSDOM.setHTML(this, this.value);
     }
 
     get value() {

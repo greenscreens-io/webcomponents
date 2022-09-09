@@ -271,7 +271,8 @@ export default class GSTable extends GSElement {
         const me = this;
         if (!me.#hasHeaders) return;
         const html = me.querySelector('gs-header').render();
-        me.self.innerHTML = `<table class="${me.css}">${html}<tbody is="gs-tbody"></tbody></table><slot name="extra"></slot>`;
+        const src = `<table class="${me.css}">${html}<tbody is="gs-tbody"></tbody></table><slot name="extra"></slot>`;
+        GSDOM.setHTML(me.self, src);
     }
 
     /**

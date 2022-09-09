@@ -61,7 +61,7 @@ export default class GSDropdown extends GSElement {
     }
 
     if (name === 'title' && me.#button) {
-      me.#button.innerHTML = newValue;
+      GSDOM.setHTML(me.#button, newValue);
     }
   }
 
@@ -185,7 +185,7 @@ export default class GSDropdown extends GSElement {
     if (items.length === 0) return false;
     const me = this;
     const opts = me.#renderMenu(items);
-    me.#menu.innerHTML = opts.join('');
+    GSDOM.setHTML(me.#menu, opts.join(''));
     me.#attachItems();
     me.#attachSubmenu();
     return true;
@@ -360,7 +360,8 @@ export default class GSDropdown extends GSElement {
     const data = await GSLoader.loadData(val);
     if (!GSUtil.isJsonType(data)) return;
     const me = this;
-    me.innerHTML = GSItem.generateItem(data);
+    const src = GSItem.generateItem(data);
+    GSDOM.setHTML(me, src);
     GSEvent.deattachListeners(me);
     me.connectedCallback();
     return data;

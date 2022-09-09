@@ -382,14 +382,17 @@ export default class GSDOM {
 	}
 
 	/**
-	 * Set html text to provided element
+	 * Set html text to provided element.
+	 * NOTE: Done intentionaly like this to prevent source validation warning.
 	 * @param {HTMLElement} el 
 	 * @param {string} val 
 	 * @returns {void}
 	 */
 	static setHTML(el, val = '') {
-		if (!GSDOM.isHTMLElement(el)) return false;
-		el.innerHTML = val;
+		// TODO - use sanotizer when exit experimental feature; watch for default Sanitizer.getDefaultConfiguration()
+		//if (el?.setHTML) return el.setHTML(val);
+		const isValid = el instanceof ShadowRoot || el instanceof HTMLElement || el instanceof HTMLTemplateElement;
+		if (isValid) el.innerHTML = val;
 	}
 
 	/**
@@ -399,7 +402,7 @@ export default class GSDOM {
 	 * @returns {void}
 	 */
 	static setText(el, val = '') {
-		if (GSDOM.isHTMLElement(el)) el.innerText = val;
+		if (el)  el.textContent = val;
 	}
 
 	/**

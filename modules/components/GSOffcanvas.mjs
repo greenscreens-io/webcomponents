@@ -61,7 +61,7 @@ export default class GSOffcanvas extends GSElement {
     if (oldValue === newValue) return;
     const me = this;
 
-    if (me.#titleEl) me.#titleEl.innerHTML = me.title;
+    if (me.#titleEl) GSDOM.setHTML(me.#titleEl, me.title);
 
     GSDOM.toggleClass(me.#canvasEl, true, 'visible');
     GSDOM.toggleClass(me.#closeEl, !me.closable, 'invisible');

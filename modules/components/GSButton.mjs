@@ -73,7 +73,7 @@ export default class GSButton extends GSElement {
         const me = this;
         const el = me.firstElementChild;
 
-        if (name == 'title') return el.innerHTML = me.title;
+        if (name == 'title') return GSDOM.setHTML(el, me.title);
 
         if (name == 'css') {
             GSDOM.toggleClass(el, false, oldValue);

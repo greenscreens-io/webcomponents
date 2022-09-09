@@ -166,7 +166,8 @@
      const data = await GSLoader.loadData(val);
      if (!GSUtil.isJsonType(data)) return;
      const me = this;
-     me.innerHTML = GSItem.generateItem(data);
+     const src = GSItem.generateItem(data);
+     GSDOM.setHTML(me, src);
      GSEvent.deattachListeners(me);
      me.connectedCallback();
      return data;

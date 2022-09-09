@@ -228,7 +228,7 @@ export default class GSDataAttr {
 
         const html = isComp ? `<${inject}></${inject}>` : `<gs-template href="${inject}" class="${css}"></gs-template>`;
 
-        list.forEach(el => el.innerHTML = html);
+        list.forEach(el => GSDOM.setHTML(el, html));
     }
 
     /**

@@ -275,7 +275,7 @@ export default class GSCalendar extends GSElement {
             if (tgt.type === 'date') return tgt.valueAsDate = date;
             return tgt.value = me.formatted(date);
         }
-        tgt.innerHTML = me.formatted(date);
+        GSDOM.setHTML(tgt, me.formatted(date));
     }
 
     #update() {

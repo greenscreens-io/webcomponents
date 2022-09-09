@@ -178,7 +178,7 @@ export default class GSContext extends GSElement {
     if (items.length === 0) return false;
     const me = this;
     const opts = me.#renderMenu(items);
-    me.#menu.innerHTML = opts.join('');
+    GSDOM.setHTML(me.#menu, opts.join(''));
     me.#attachOptions();
     me.#attachSubmenu();
     return true;
@@ -377,7 +377,8 @@ export default class GSContext extends GSElement {
     const data = await GSLoader.loadData(val);
     if (!GSUtil.isJsonType(data)) return;
     const me = this;
-    me.innerHTML = GSItem.generateItem(data);
+    const src = GSItem.generateItem(data);
+    GSDOM.setHTML(me, src);
     GSEvent.deattachListeners(me);
     me.connectedCallback();
     return data;

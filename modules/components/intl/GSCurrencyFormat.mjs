@@ -11,6 +11,7 @@
  * @module components/GSCurrencyFormat
  */
 import GSAttr from '../../base/GSAttr.mjs'
+import GSDOM from '../../base/GSDOM.mjs';
 
 /**
  * Render Year value
@@ -31,7 +32,7 @@ export default class GSCurrencyFormat extends HTMLElement {
     }
 
     #update() {
-        this.innerHTML = this.format;
+        GSDOM.setHTML(this, this.format);
     }
 
     get #options() {

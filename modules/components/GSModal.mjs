@@ -251,7 +251,7 @@ export default class GSModal extends GSElement {
   }
 
   set title(val = '') {
-    this.title.innerHTML = val;
+    GSDOM.setHTML(this.title, val);
   }
 
   get body() {
@@ -259,7 +259,7 @@ export default class GSModal extends GSElement {
   }
 
   set body(val = '') {
-    this.body.innerHTML = val;
+    GSDOM.setHTML(this.body, val);
   }
 
   get visible() {

@@ -7,6 +7,7 @@
  * @module components/GSDateFormat
  */
 import GSAttr from '../../base/GSAttr.mjs'
+import GSDOM from '../../base/GSDOM.mjs';
 
 /**
  * Render Date value with international language support
@@ -51,7 +52,7 @@ export default class GSDateFormat extends HTMLElement {
     }
 
     #update() {
-        this.innerHTML = this.format;
+        GSDOM.setHTML(this, this.format);
     }
 
     get format() {

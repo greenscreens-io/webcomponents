@@ -210,7 +210,7 @@ class GSTemplate extends HTMLElement {
 				me.#content = me.insertAdjacentElement('afterend', body);
 			} else {
 				me.shadow.adoptedStyleSheets = GSCacheStyles.styles;
-				me.shadow.innerHTML = tpl.innerHTML;
+				GSDOM.setHTML(me.shadow, tpl.innerHTML);
 			}
 			GSEvent.sendSuspended(me, 'templateready', { id: me.id, href: me.href }, true, true);
 		});

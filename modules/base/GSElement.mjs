@@ -583,7 +583,7 @@ export default class GSElement extends HTMLElement {
 					}
 				} else {
 					me.#content = me.#shadow;
-					me.#content.innerHTML = src;
+					GSDOM.setHTML(me.#content, src);
 				}
 				return;
 			}
@@ -591,7 +591,7 @@ export default class GSElement extends HTMLElement {
 
 			if (inject.target === me.parentElement) {
 				me.#content = me.isFlat ? me : me.#shadow;
-				me.#content.innerHTML = src;
+				GSDOM.setHTML(me.#content, src);
 				return;
 			}
 			
