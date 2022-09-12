@@ -313,6 +313,7 @@ export default class GSDOM {
 	 * @returns {HTMLElement} 
 	 */
 	static getByID(el, id) {
+		if (typeof el === 'string') return GSDOM.getByID(document.body, qry);
 		if (!(el && qry)) return null;
 		const it = GSDOM.walk(el, true);
 		for (let o of it) {
@@ -328,6 +329,7 @@ export default class GSDOM {
 	 * @returns {HTMLElement} 
 	 */
 	static closest(el, qry) {
+		if (typeof el === 'string') return GSDOM.closest(document.body, qry);
 		if (!(el && qry)) return null;
 		const it = GSDOM.walk(el, true);
 		for (let o of it) {
@@ -344,6 +346,7 @@ export default class GSDOM {
 	 * @returns {HTMLElement} 
 	 */
 	static query(el, qry) {
+		if (typeof el === 'string') return GSDOM.query(document.body, qry);
 		if (!(el && qry)) return null;
 		if (GSDOM.matches(el, qry)) return el;
 		const it = GSDOM.walk(el, false, false);
@@ -372,6 +375,7 @@ export default class GSDOM {
 	 * @returns {Array<HTMLElement>}
 	 */
 	static queryAll(el, qry) {
+		if (typeof el === 'string') return GSDOM.queryAll(document.body, qry);
 		const res = [];
 		if (!(el && qry)) return res;
 		const it = GSDOM.walk(el, false, false);
@@ -389,7 +393,7 @@ export default class GSDOM {
 	 * @returns {void}
 	 */
 	static setHTML(el, val = '') {
-		// TODO - use sanotizer when exit experimental feature; watch for default Sanitizer.getDefaultConfiguration()
+		// TODO - use sanitizer when not any more experimental feature; watch for default Sanitizer.getDefaultConfiguration()
 		//if (el?.setHTML) return el.setHTML(val);
 		const isValid = el instanceof ShadowRoot || el instanceof HTMLElement || el instanceof HTMLTemplateElement;
 		if (isValid) el.innerHTML = val;
@@ -402,7 +406,7 @@ export default class GSDOM {
 	 * @returns {void}
 	 */
 	static setText(el, val = '') {
-		if (el)  el.textContent = val;
+		if (el) el.textContent = val;
 	}
 
 	/**
@@ -467,7 +471,7 @@ export default class GSDOM {
 	 * @param {string|boolean|number} val 
 	 * @returns 
 	 */
-	 static fromValue(el, val) {
+	static fromValue(el, val) {
 		if (!GSDOM.isHTMLElement(el)) return;
 		if (el.type === 'checkbox') {
 			el.checked = val == true;
@@ -502,17 +506,18 @@ export default class GSDOM {
 	 * Convert form elements into JSON object
 	 * @param {HTMLElement} owner 
 	 * @param {string} qry 
-	 * @param {boolean} hidden 
+	 * @param {boolean} invalid Should include invalid fields
 	 * @returns {object}
 	 */
-	static toObject(owner, qry = 'input, textarea, select', hidden = false) {
+	static toObject(owner, qry = 'input, textarea, select', invalid = true) {
 		const root = GSDOM.unwrap(owner);
 		const params = {};
 		const list = GSDOM.queryAll(root, qry); // root.querySelectorAll(qry);
 		Array.from(list)
 			.filter(el => el.name)
+			.filter(el => el.dataset.ignore !== 'true')
+			.filter(el => invalid ? true : el.checkValidity())
 			.forEach(el => {
-				if (!hidden && el.dataset.ignore === 'true') return;
 				params[el.name] = GSDOM.toValue(el);
 			});
 		return params;
