@@ -168,7 +168,7 @@ export default class GSStore extends HTMLElement {
     }
 
     /**
-     * Call for defiend mode
+     * Call for defined mode
      * - quark - JSON path to CRUD object; ie. io.greenscreens.CRUD
      * - rest - url rest format, ie. /${limit}/${skip}?sort=${sort}&filter=${filter}
      * - query - url format, ie. ?limit=${limit}&skip=${skip}&sort=${sort}&filter=${filter}

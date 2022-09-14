@@ -1,3 +1,12 @@
 # GSTBody WebComponent
 
-GSTBody WebComponent is a 
+GSTBody WebComponent is an internal component used by [GSTable](GSTable.md) for renderign table body with data records from [GSStore](GSStore.md). 
+
+Do not use this component directly.
+
+## Example
+---
+ 
+```html
+<tbody is="gs-tbody"></tbody>
+```

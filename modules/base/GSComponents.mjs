@@ -47,6 +47,7 @@ export default class GSComponents {
      * @returns {GSElement}
      */
     static get(id = '') {
+        if (!id) return null;
         const els = Array.from(this.#cache).filter(el => el.id === id);
         return els.length === 0 ? null : els[0];
     }
