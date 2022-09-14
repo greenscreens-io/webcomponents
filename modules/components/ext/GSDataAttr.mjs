@@ -17,7 +17,7 @@ import GSAttr from "../../base/GSAttr.mjs";
 
 /**
  * Process Bootstrap data-bs-* attributes
- * toggle="offcanvas|collapse|dropdown|button|tab|pill|popover|tooltip|modal|popup" 
+ * toggle="offcanvas|collapse|dropdown|button|tab|pill|popover|modal|popup" 
  * dismiss="offcanvas|modal|alert|popup"
  * 
  * TODO : trigger events to document.body
@@ -25,7 +25,7 @@ import GSAttr from "../../base/GSAttr.mjs";
  */
 export default class GSDataAttr {
 
-    static #toggleValues = "offcanvas|collapse|dropdown|button|tab|pill|popover|tooltip|modal|popup";
+    static #toggleValues = "offcanvas|collapse|dropdown|button|tab|pill|popover|modal|popup"; // tooltip|
     static #dismissValues = "offcanvas|modal|alert|popup";
 
     static {
@@ -124,6 +124,7 @@ export default class GSDataAttr {
             case "tab":
                 break;
             case "tooltip":
+                return { list: [], comps: [] };
                 break;
         }
 
