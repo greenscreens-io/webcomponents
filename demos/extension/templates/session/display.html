@@ -3,7 +3,7 @@
 		<label class="control-label " for="display">Display name</label>
 	</div>
 	<div class="col-md-6 col-sm-6 col-xs-11">
-		<input class="form-control  upper" id="display" name="display" type="text" maxlength="10" pattern="[a-zA-Z10-9]{0,10}" placeholder="Enter workstation name">
+		<input class="form-control  text-uppercase" id="display" name="display" type="text" maxlength="10" pattern="[a-zA-Z10-9]{0,10}" placeholder="Enter workstation name">
 	</div>
 	<div class="col-auto ">
 		<gs-tooltip placement="right" title="Display device name."></gs-tooltip>
@@ -147,7 +147,7 @@
 	</div>
 	<div class="col-md-6 col-sm-6 col-xs-11">
 		<input class="form-control" list="themes"  id="theme" name="theme" type="text" maxlength="20" pattern="[a-zA-Z10-9]{0,20}">
-		<datalist id="themes"></datalist>
+		<datalist id="themes" is="gs-ext-themelist"></datalist>
 	</div>
 	<div class="col-auto ">
 		<gs-tooltip placement="right" title="Theme name from theme configuration page."></gs-tooltip>
