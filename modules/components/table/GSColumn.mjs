@@ -134,7 +134,7 @@ export default class GSColumn extends HTMLElement {
     get list() {
         const me = this;
         const val = GSAttr.get(me, 'list', '').toLowerCase();
-        const isValid = ['fixed', 'flexi'].indexOf(val) > -1;
+        const isValid = ['fixed', 'flexi'].includes(val);
         if (!isValid && !me.auto) return 'flexi';
         return isValid ? val : '';
     }

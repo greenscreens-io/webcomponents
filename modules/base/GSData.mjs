@@ -54,7 +54,7 @@ export default class GSData {
      * @returns {Array}
      */
     static mergeArrays(first = [], second = []) {
-        return first.concat(second).filter((value, index, self) => self.indexOf(value) === index);
+        return first.concat(second).filter((value, index, arr) => arr.indexOf(value) === index);
     }
 
     static filterData(filter, data, fields) {
@@ -74,7 +74,7 @@ export default class GSData {
         let value = null;
         for (let key of fields) {
             value = rec[key];
-            if (value && value.toString().toLowerCase().indexOf(filter) > -1) return true;
+            if (value && value.toString().toLowerCase().includes(filter)) return true;
         }
         return false;
     }
@@ -82,7 +82,8 @@ export default class GSData {
     static filterComplex(rec, filter) {
         let found = true;
         for (let flt of filter) {
-            found = found && rec.hasOwnProperty(flt.name) && rec[flt.name].indexOf(flt.value) > -1;
+            
+            found = found && Object.hasOwn(rec, flt.name) && rec[flt.name].includes(flt.value);
             if (!found) break;
         }
 

@@ -16,7 +16,7 @@ import GSLog from "./GSLog.mjs";
 export default class GSUtil {
 
 	static #animating = 0;
-	static FLAT = self.GS_FLAT == true;
+	static FLAT = globalThis.GS_FLAT == true;
 	static ALPHANUM = /^[a-zA-Z0-9-_]+$/;
 
 	static isNumber = (n) => { return !isNaN(parseFloat(n)) && isFinite(n); };
@@ -46,7 +46,7 @@ export default class GSUtil {
 	 */
 	static isURL = (url = '') => /^(https?:\/\/|\/{1,2}|\.\/{1})(\S*\/*){1,}/i.test(url.trim());
 
-	static isHTML = (val = '') => val.indexOf('<') > -1 && val.indexOf('>') > 0;
+	static isHTML = (val = '') => val.includes('<') && val.includes('>');
 
 	/**
 	 * Get browser efautl locale
@@ -195,7 +195,7 @@ export default class GSUtil {
 		if (typeof callback !== 'function') return;
 		if (GSUtil.#animating > 0) return callback();
 		GSUtil.#animating++;
-		return self.requestAnimationFrame(() => {
+		return globalThis.requestAnimationFrame(() => {
 			try {
 				callback();
 			} catch (e) {
@@ -232,6 +232,6 @@ export default class GSUtil {
 
 	static {
 		Object.seal(GSUtil);
-		self.GSUtil = GSUtil;
+		globalThis.GSUtil = GSUtil;
 	}
 }

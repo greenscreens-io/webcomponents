@@ -4,9 +4,9 @@ const devMode = (process.env.NODE_ENV === 'development');
 console.log(`${devMode ? 'development' : 'production'} mode bundle`);
 
 function isExternal (id) {
-    const b1 = id.indexOf('/head') > -1;
-    const b2 = id.indexOf('/base') > -1;
-    const b3 = id.indexOf('/templating') > -1;
+    const b1 = id.includes('/head');
+    const b2 = id.includes('/base');
+    const b3 = id.includes('/templating');
     const flag = b1 || b2 || b3;
     // if (flag) console.log(`Skiping external import: ${id}`);
     return flag;

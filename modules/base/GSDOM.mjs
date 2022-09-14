@@ -535,7 +535,7 @@ export default class GSDOM {
 		const root = GSDOM.unwrap(owner);
 		const list = GSDOM.queryAll(root, qry); // root.querySelectorAll(qry);
 		Array.from(list)
-			.filter(el => el.name && obj.hasOwnProperty(el.name))
+			.filter(el => el.name && Object.hasOwn(obj, el.name))
 			.forEach(el => GSDOM.fromValue(el, obj[el.name]));
 	}
 
@@ -643,7 +643,7 @@ export default class GSDOM {
 	 */
 	static isAllowed(el, whiteList) {
 		if (Array.isArray(el)) return el.filter(el => GSDOM.isAllowed(el, whiteList)).length === 0;
-		return !(el instanceof Text || el instanceof Comment) && (whiteList.indexOf(el.tagName) === -1);
+		return !(el instanceof Text || el instanceof Comment) && (!whiteList.includes(el.tagName));
 	}
 
 	static toValidationError(own, whiteList) {

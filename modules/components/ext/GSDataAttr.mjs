@@ -157,7 +157,7 @@ export default class GSDataAttr {
     }
 
     static #getVisible(list, hidden) {
-        return list.filter(el => hidden.indexOf(el) == -1);
+        return list.filter(el => !hidden.includes(el));
     }
 
     static #isType(el, type) {
@@ -332,11 +332,11 @@ export default class GSDataAttr {
     }
 
     static #isDismiss(val) {
-        return val && GSDataAttr.#dismissValues.indexOf(val) > -1;
+        return val && GSDataAttr.#dismissValues.includes(val);
     }
 
     static #isToggle(val) {
-        return val && GSDataAttr.#toggleValues.indexOf(val) > -1;
+        return val && GSDataAttr.#toggleValues.includes(val);
     }
 
     /**

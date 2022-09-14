@@ -1,17 +1,23 @@
-<div class="d-flex justify-content-between align-items-center bg-light border shadow-sm">
+<div class="container mt-4 mb-4 pb-4">
 
-    <form is="gs-ext-form" id="form-settings" class="flex-fill" novalidate="">
-        <gs-tab css-nav="nav-tabs" css-pane="d-flex justify-content-center p-4 mt-1 flex-fill">
-            <gs-item title="Service" template="//settings/service.html" css-pane="flex-fill" active="true"></gs-item>
-            <gs-item title="Display" template="//settings/display.html" css-pane="flex-fill"></gs-item>
-            <gs-item title="Font"    template="//settings/font.html" css-pane="flex-fill"></gs-item>
-            <gs-item title="Link"    template="//settings/link.html" css-pane="flex-fill"></gs-item>
-            <gs-item title="Extension" template="//settings/extension.html" css-pane="flex-fill"></gs-item>
-        </gs-tab>
-        
-        <div class="d-flex justify-content-center align-items-center m-3">
-            <button type="submit" class="btn btn-primary me-1" data-action="submit">Save</button>            
-        </div>        
-    </form>
+    <div class="row d-flex justify-content-center align-items-center">
+        <div class="col-12 col-lg-8 overflow-hidden">
+            
+            <form is="gs-ext-form" id="form-settings" class="flex-fill mb-4 pb-4" novalidate="">
+                
+                <gs-template flat="true" href="//settings/service.html" css="flex-fill"></gs-template>
+                
+                <gs-template flat="true" href="//settings/display.html" css="flex-fill"></gs-template>
+                
+                <gs-template flat="true" href="//settings/font.html" css="flex-fill"></gs-template>
+                
+                <gs-template flat="true" href="//settings/link.html" css="flex-fill"></gs-template>
 
+                <gs-template flat="true" href="//settings/extension.html" css="flex-fill"></gs-template>
+                
+            </form>
+            
+        </div>
+    </div>
+    
 </div>

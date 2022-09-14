@@ -1,115 +1,15 @@
-<div class="row">
-	<div class="col-sm-5 d-none d-md-block">
-		<hr>
-	</div>
-	<div class="col-sm-1"><b class="badge text-bg-secondary">24 x 80</b></div>
-	<div class="col-sm-5 d-none d-md-block">
-		<hr>
-	</div>
-</div>
-<br>
+<div class="mt-4">
+	<h4>Terminal Fonts</h4>
+	<gs-accordion flat="true" css="shadow-sm border rounded-2" css-item="" css-head="fw-bold">
+		<gs-item flat="true" title="Fonts for 24x80" template="//settings/font80.html"></gs-item>
+	</gs-accordion>
 
-
-<div class="row form-group m-1 ">
-
-	<label class="text-md-end control-label col-md-4 col-sm-4 col-xs-12" for="font_status">Status</label>
-
-	<div class="col-md-4 col-sm-6 col-xs-11">
-		<select class="form-control "  id="font_status" name="font_status" required="">
-			<option value="false">Disabled</option>
-			<option value="true">Enabled</option>
-		</select>
-	</div>
-	<div class="col-auto ">
-		<i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
-		<gs-tooltip placement="right" title="Enable or disable font customization."></gs-tooltip>
-	</div>
-
+	<div class="m-1"></div>
+	
+	<gs-accordion flat="true" css="shadow-sm border rounded-2" css-item="" css-head="fw-bold">
+		<gs-item flat="true" title="Fonts for 27x132" template="//settings/font132.html"></gs-item>
+	</gs-accordion>	
 </div>
 
-<div class="row form-group m-1 ">
 
-	<label class="text-md-end control-label col-md-4 col-sm-4 col-xs-12" for="font_family">Font Type</label>
 
-	<div class="col-md-4 col-sm-6 col-xs-11">
-		<select class="form-control "  id="font_family" name="font_family" required="">
-			<option value="Courier New">Courier New</option>
-			<option value="Lucida Console">Lucida Console</option>
-			<option value="Tahoma">Tahoma</option>
-		</select>
-	</div>
-	<div class="col-auto ">
-		<gs-tooltip placement="right" title="Select font type."></gs-tooltip>
-		<i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
-	</div>
-</div>
-
-<div class="row form-group m-1 ">
-	<label class="text-md-end control-label col-md-4 col-sm-4 col-xs-12" for="font_size">Font size (%)</label>
-	<div class="col-md-4 col-sm-6 col-xs-11">
-		<input data="client" class="form-control "  id="font_size" name="font_size"
-			required="required" type="number" min="0" max="200" value="100">
-	</div>
-	<div class="col-auto ">
-		<gs-tooltip placement="right" title="Font size in percentage (default 100%)."></gs-tooltip>
-		<i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
-	</div>
-</div>
-
-<div class="row mt-3">
-	<div class="col-sm-5 d-none d-md-block">
-		<hr>
-	</div>
-	<div class="col-sm-1"><b class="badge text-bg-secondary">27 x 132</b></div>
-	<div class="col-sm-5 d-none d-md-block">
-		<hr>
-	</div>
-</div>
-<br>
-
-<div class="row form-group m-1 ">
-
-	<label class="text-md-end control-label col-md-4 col-sm-4 col-xs-12" for="font_status_wide">Status</label>
-
-	<div class="col-md-4 col-sm-6 col-xs-11">
-		<select class="form-control "  id="font_status_wide" name="font_status_wide" required="">
-			<option value="false">Disabled</option>
-			<option value="true">Enabled</option>
-		</select>
-	</div>
-
-	<div class="col-auto ">
-		<gs-tooltip placement="right" title="Enable or disable font customization."></gs-tooltip>
-		<i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
-	</div>
-
-</div>
-
-<div class="row form-group m-1 ">
-
-	<label class="text-md-end control-label col-md-4 col-sm-4 col-xs-12" for="font_family_wide">Font Type</label>
-
-	<div class="col-md-4 col-sm-6 col-xs-11">
-		<select class="form-control "  id="font_family_wide" name="font_family_wide" required="">
-			<option value="Courier New">Courier New</option>
-			<option value="Lucida Console">Lucida Console</option>
-			<option value="Tahoma">Tahoma</option>
-		</select>
-	</div>
-	<div class="col-auto ">
-		<gs-tooltip placement="right" title="Select font type."></gs-tooltip>
-		<i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
-	</div>
-</div>
-
-<div class="row form-group m-1 ">
-	<label class="text-md-end control-label col-md-4 col-sm-4 col-xs-12" for="font_size_wide">Font size (%)</label>
-	<div class="col-md-4 col-sm-6 col-xs-11">
-		<input data="client" class="form-control "  id="font_size_wide" name="font_size_wide"
-			required="required" type="number" min="0" max="200" value="100">
-	</div>
-	<div class="col-auto ">
-		<gs-tooltip placement="right" title="Font size in percentage (default 100%)."></gs-tooltip>
-		<i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
-	</div>
-</div>

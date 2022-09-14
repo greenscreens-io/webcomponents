@@ -157,12 +157,12 @@ export default class GSStore extends HTMLElement {
      */
     get mode() {
         const mode = GSAttr.get(this, 'mode', 'query');
-        const isok = GSStore.#MODES.indexOf(mode) > -1;
+        const isok = GSStore.#MODES.includes(mode);
         return isok ? mode : 'query';
     }
 
     set mode(val = 'query') {
-        const isok = GSStore.#MODES.indexOf(val) > -1;
+        const isok = GSStore.#MODES.includes(val);
         if (isok) return GSAttr.set(this, 'mode', val);
         console.log(`Invalid mode, allowed: ${GSStore.#MODES}`);
     }

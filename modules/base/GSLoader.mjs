@@ -18,19 +18,20 @@ import GSUtil from "./GSUtil.mjs";
  */
 export default class GSLoader {
 
-    static TEMPLATE_URL = self.GS_TEMPLATE_URL || location.origin;
+    static TEMPLATE_URL = globalThis.GS_TEMPLATE_URL || location.origin;
     static NO_CACHE = false;
 
     static {
-        if (!self.GS_TEMPLATE_URL) {
+        if (!globalThis.GS_TEMPLATE_URL) {
             const url = location.href.split('?').pop();
             let seg = url.split('/');
             GSLoader.TEMPLATE_URL = url.endsWith('/') ? url : seg.slice(0, -1).join('/');
-            self.GS_TEMPLATE_URL = GSLoader.TEMPLATE_URL;
+            globalThis.GS_TEMPLATE_URL = GSLoader.TEMPLATE_URL;
         }
 
-        if (self.hasOwnProperty('GS_NO_CACHE')) {
-            GSLoader.NO_CACHE = self.GS_NO_CACHE === true;
+        const hasKey = Object.hasOwn(self, 'GS_NO_CACHE');
+        if (hasKey) {
+            GSLoader.NO_CACHE = globalThis.GS_NO_CACHE === true;
             if (localStorage) localStorage.setItem('GS_NO_CACHE', GSLoader.NO_CACHE);
         }
         GSLoader.NO_CACHE = localStorage ? localStorage.getItem('GS_NO_CACHE') == 'true' : false;
@@ -45,8 +46,8 @@ export default class GSLoader {
 
         url = url || '';
         let path = null;
-        const isFile = location.pathname.split('/').pop(-1).indexOf('\.') > -1;
-        const isExt = url.indexOf('extension://')>-1;
+        const isFile = location.pathname.split('/').pop(-1).includes('\.');
+        const isExt = url.includes('extension://');
         const isUrl = url.startsWith('http');
 
         if (isUrl || isExt) {

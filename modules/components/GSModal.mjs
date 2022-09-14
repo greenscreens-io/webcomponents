@@ -94,7 +94,7 @@ export default class GSModal extends GSElement {
     try {
       const el = e.composedPath().shift();
       const action = el?.dataset.action;
-      if (GSModal.#actions.indexOf(action) < 0) return sts = false;
+      if (!GSModal.#actions.includes(action)) return sts = false;
       GSEvent.prevent(e);
       isOk = action === 'ok';
       sts = GSEvent.send(me, 'action', { type: 'modal', ok: isOk, evt: e }, true, true, true);

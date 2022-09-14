@@ -174,11 +174,11 @@ export default class GSPopover extends GSElement {
     }
 
     get isFocusTrigger() {
-        return this.trigger.indexOf('focus') > -1;
+        return this.trigger.includes('focus');
     }
 
     get isHoverTrigger() {
-        return this.trigger.indexOf('hover') > -1;
+        return this.trigger.includes('hover');
     }
 
     get visible() {

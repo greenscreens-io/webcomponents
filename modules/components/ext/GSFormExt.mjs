@@ -86,7 +86,7 @@ export default class GSFormExt extends HTMLFormElement {
     static #validateCaller(e, own, type, comp) {
         if (e.detail.type !== type) return false;
         const parent = GSComponents.getOwner(own, comp);
-        return parent == e.target || e.composedPath().indexOf(parent) > -1;
+        return parent == e.target || e.composedPath().includes(parent);
     }
 
     /**

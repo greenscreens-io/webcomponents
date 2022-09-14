@@ -38,7 +38,7 @@ export default class GSLink extends GSBase {
 		const me = this;
 		let rel = me.getAttribute('rel') || '';
 		if (!rel) {
-			if (me.url.indexOf('.css')) {
+			if (me.url.includes('.css')) {
 				rel = 'stylesheet';
 			}
 		}

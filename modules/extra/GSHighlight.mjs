@@ -23,7 +23,7 @@ import GSDOM from "../base/GSDOM.mjs";
  */
 export default class GSHighlight extends GSElement {
 
-    static URL_LIB = self.GS_URL_HLJS || 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0';
+    static URL_LIB = globalThis.GS_URL_HLJS || 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0';
 
     static {
         customElements.define('gs-highlight', GSHighlight);
@@ -186,10 +186,10 @@ export default class GSHighlight extends GSElement {
     get #worker() {
         const me = this;
         const langs = me.language ? me.language.split(',').map(v => `importScripts('${GSHighlight.URL_LIB}$/languages/{v.trim}.min.js');`).join('') : '';
-        return `self.onmessage = (event) => {
+        return `globalThis.onmessage = (event) => {
                 importScripts('${GSHighlight.URL_LIB}/highlight.min.js');
                 ${langs}
-                const result = self.hljs.highlightAuto(event.data.data);
+                const result = globalThis.hljs.highlightAuto(event.data.data);
                 postMessage({data:result.value, url:event.data.url});};`
     }
 
