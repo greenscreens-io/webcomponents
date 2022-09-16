@@ -14,6 +14,7 @@ import GSItem from "../base/GSItem.mjs";
 import GSLoader from "../base/GSLoader.mjs";
 import GSEvent from "../base/GSEvent.mjs";
 import GSAttr from "../base/GSAttr.mjs";
+import GSDOM from "../base/GSDOM.mjs";
 
 /**
  * Renderer for nav bar/list
@@ -81,16 +82,17 @@ export default class GSNav extends GSElement {
         const cssnav = me.#getCssNav(el);
         const cssactive = me.#getCssActiveTab(el);
         const title = me.#getTitle(el);
-        const icon = me.#getIcon(el);
+        const icon = GSItem.getIcon(el);
+        const href = GSItem.getHref(el);
+
         const iconTpl = icon ? `<i class="${icon}"></i>` : '';
         //const contentTpl = me.rtl ? `${title} ${iconTpl}` : `${iconTpl} ${title}`;
         const contentTpl = `${iconTpl} ${title}`;
+        const hreftgt = href && href !=='#' ? `target=${GSItem.getTarget(el)}` : '';
+        const attrs =GSItem.getAttrs(el);
 
-        return `<a type="button" role="nav" is="gs-ext-navlink" class="nav-link ${cssnav} ${cssactive}" id="${GSID.id}-nav"                
-                ${GSItem.getDismissAttr(el)} ${GSItem.getTargetAttr(el)} 
-                ${GSItem.getToggleAttr(el)} ${GSItem.getActionAttr(el)} 
-                ${GSItem.getInjectAttr(el)} ${GSItem.getCSSAttr(el)}
-                ${GSItem.getSelectableAttr(el)} ${dataAttrs}>${contentTpl}</a>`;
+        return `<a type="button" role="nav" is="gs-ext-navlink" class="nav-link ${cssnav} ${cssactive}" 
+                href="${href}" ${hreftgt} id="${GSID.id}-nav" ${attrs} ${dataAttrs}>${contentTpl}</a>`;
 
     }
 
@@ -114,9 +116,6 @@ export default class GSNav extends GSElement {
         return GSAttr.get(el, 'title');
     }
 
-    #getIcon(el) {
-        return GSAttr.get(el, 'icon');
-    }
 
     /**
      * Load data from various sources
@@ -129,7 +128,8 @@ export default class GSNav extends GSElement {
         const data = await GSLoader.loadData(val);
         if (!GSUtil.isJsonType(data)) return;
         const me = this;
-        me.innerHTML = GSItem.generateItem(data);
+        const src = GSItem.generateItem(data);
+        GSDOM.setHTML(me, src);
         GSEvent.deattachListeners(me);
         me.connectedCallback();
     }

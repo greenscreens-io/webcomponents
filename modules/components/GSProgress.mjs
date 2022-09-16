@@ -10,6 +10,7 @@
 import GSUtil from "../base/GSUtil.mjs";
 import GSElement from "../base/GSElement.mjs";
 import GSAttr from "../base/GSAttr.mjs";
+import GSDOM from "../base/GSDOM.mjs";
 
 /**
  * Process Bootstrap progress component
@@ -40,7 +41,7 @@ export default class GSProgress extends GSElement {
         if (!bar) return;
         GSAttr.set(bar, `aria-value${name}`, newValue);
         bar.style.width = `${me.percentage}%`;
-        if (me.label) bar.innerHTML = me.#fromLabel();
+        if (me.label) GSDOM.setHTML(bar, me.#fromLabel());
     }
 
     #fromLabel() {

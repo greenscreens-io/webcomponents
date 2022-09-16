@@ -72,7 +72,7 @@ export default class GSCacheTemplate {
 	 */
 	static create(template) {
 		const el = document.createElement('template');
-		el.innerHTML = template;
+		GSDOM.setHTML(el, template);
 		return el;
 	}
 

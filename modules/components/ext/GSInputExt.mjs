@@ -101,7 +101,7 @@ export default class GSInputExt extends HTMLInputElement {
         me.#masks = [];
 
         chars.forEach(v => {
-            if (GSInputExt.#special.indexOf(v) > -1) {
+            if (GSInputExt.#special.includes(v)) {
                 me.#masks.push(v);
                 masks.push(`\${v}`);
                 return;
@@ -132,7 +132,7 @@ export default class GSInputExt extends HTMLInputElement {
 
     #togleEl(el, key = '', value = '') {
         const data = GSAttr.get(el, `data-${key}`, '').split(/[,;;]/);
-        const isMatch = value.length > 0 && data.indexOf(value) > -1;
+        const isMatch = value.length > 0 && data.includes(value);
         isMatch ? GSDOM.show(el) : GSDOM.hide(el);
         GSDOM.queryAll(el, 'input,textarea,select').forEach(el => GSAttr.set(el, 'data-ignore', isMatch ? null : true));
     }

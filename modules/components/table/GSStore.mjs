@@ -157,18 +157,18 @@ export default class GSStore extends HTMLElement {
      */
     get mode() {
         const mode = GSAttr.get(this, 'mode', 'query');
-        const isok = GSStore.#MODES.indexOf(mode) > -1;
+        const isok = GSStore.#MODES.includes(mode);
         return isok ? mode : 'query';
     }
 
     set mode(val = 'query') {
-        const isok = GSStore.#MODES.indexOf(val) > -1;
+        const isok = GSStore.#MODES.includes(val);
         if (isok) return GSAttr.set(this, 'mode', val);
         console.log(`Invalid mode, allowed: ${GSStore.#MODES}`);
     }
 
     /**
-     * Call for defiend mode
+     * Call for defined mode
      * - quark - JSON path to CRUD object; ie. io.greenscreens.CRUD
      * - rest - url rest format, ie. /${limit}/${skip}?sort=${sort}&filter=${filter}
      * - query - url format, ie. ?limit=${limit}&skip=${skip}&sort=${sort}&filter=${filter}
@@ -396,7 +396,7 @@ export default class GSStore extends HTMLElement {
 
         const simple = GSUtil.isString(filter) && GSUtil.isStringNonEmpty(filter);
 
-        if (!simple && (me.remote || me.data.length == 0)) {
+        if (!simple && me.src && (me.remote || me.data.length == 0)) {
             const url = me.#toURL(me.src, skip, limit, filter, sort);
             data = await me.load(url);
         }

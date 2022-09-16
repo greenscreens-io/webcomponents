@@ -13,6 +13,7 @@ import GSEvent from "../base/GSEvent.mjs";
 import GSElement from "../base/GSElement.mjs";
 import GSPopper from "../base/GSPopper.mjs";
 import GSAttr from "../base/GSAttr.mjs";
+import GSDOM from "../base/GSDOM.mjs";
 
 /**
  * https://getbootstrap.com/docs/5.1/components/popovers/
@@ -173,11 +174,11 @@ export default class GSPopover extends GSElement {
     }
 
     get isFocusTrigger() {
-        return this.trigger.indexOf('focus') > -1;
+        return this.trigger.includes('focus');
     }
 
     get isHoverTrigger() {
-        return this.trigger.indexOf('hover') > -1;
+        return this.trigger.includes('hover');
     }
 
     get visible() {
@@ -217,7 +218,7 @@ export default class GSPopover extends GSElement {
         const me = this;
         if (me.#unfocus) return false;
         setTimeout(() => {
-            me.innerHTML = '';
+            GSDOM.setHTML(me, '');
         }, 250);
         return GSDOM.toggleClass(me.firstElementChild, false, 'show');
     }

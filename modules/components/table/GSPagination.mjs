@@ -10,6 +10,7 @@
 import GSElement from "../../base/GSElement.mjs";
 import GSAttr from "../../base/GSAttr.mjs";
 import GSDOM from "../../base/GSDOM.mjs";
+import GSComponents from "../../base/GSComponents.mjs";
 
 /**
  * Table pagination
@@ -100,8 +101,15 @@ export default class GSPagination extends GSElement {
         return GSDOM.closest(this, 'GS-TABLE');
     }
 
+    /**
+     * Either define store atrtibute with store id
+     * Or use automatic search for closest table.
+     * This allows to put pagination on non-default position
+     */
     get store() {
-        return this.table.store;
+        const me = this;
+        const tgt = GSAttr.get(me, 'store');
+        return tgt ? GSComponents.get(tgt) : me.table.store;
     }
 
     get nextprev() {

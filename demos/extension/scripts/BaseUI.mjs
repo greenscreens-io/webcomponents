@@ -19,7 +19,7 @@ export default class BaseUI extends GSElement {
 
     constructor() {
         super();
-        this.className = 'w-100';
+        this.className = 'd-flex flex-fill';
     }
 
     onReady() {

@@ -72,7 +72,7 @@ export default class GSLinkExt extends HTMLLinkElement {
 	 */
 	get isCSS() {
 		const me = this;
-		return me.rel === 'stylesheet' || me.href.indexOf('\.css') > 0;
+		return me.rel === 'stylesheet' || me.href.includes('.css');
 	}
 
 	/**

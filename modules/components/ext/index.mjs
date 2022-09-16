@@ -3,6 +3,7 @@
  */
 
 import "./GSDataListExt.mjs"
+import "./GSComboExt.mjs"
 import "./GSFormExt.mjs"
 import "./GSInputExt.mjs"
 import "./GSNavLinkExt.mjs"

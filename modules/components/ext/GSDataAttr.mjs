@@ -17,7 +17,7 @@ import GSAttr from "../../base/GSAttr.mjs";
 
 /**
  * Process Bootstrap data-bs-* attributes
- * toggle="offcanvas|collapse|dropdown|button|tab|pill|popover|tooltip|modal|popup" 
+ * toggle="offcanvas|collapse|dropdown|button|tab|pill|popover|modal|popup" 
  * dismiss="offcanvas|modal|alert|popup"
  * 
  * TODO : trigger events to document.body
@@ -25,7 +25,7 @@ import GSAttr from "../../base/GSAttr.mjs";
  */
 export default class GSDataAttr {
 
-    static #toggleValues = "offcanvas|collapse|dropdown|button|tab|pill|popover|tooltip|modal|popup";
+    static #toggleValues = "offcanvas|collapse|dropdown|button|tab|pill|popover|modal|popup"; // tooltip|
     static #dismissValues = "offcanvas|modal|alert|popup";
 
     static {
@@ -124,6 +124,7 @@ export default class GSDataAttr {
             case "tab":
                 break;
             case "tooltip":
+                return { list: [], comps: [] };
                 break;
         }
 
@@ -157,7 +158,7 @@ export default class GSDataAttr {
     }
 
     static #getVisible(list, hidden) {
-        return list.filter(el => hidden.indexOf(el) == -1);
+        return list.filter(el => !hidden.includes(el));
     }
 
     static #isType(el, type) {
@@ -228,7 +229,7 @@ export default class GSDataAttr {
 
         const html = isComp ? `<${inject}></${inject}>` : `<gs-template href="${inject}" class="${css}"></gs-template>`;
 
-        list.forEach(el => el.innerHTML = html);
+        list.forEach(el => GSDOM.setHTML(el, html));
     }
 
     /**
@@ -332,11 +333,11 @@ export default class GSDataAttr {
     }
 
     static #isDismiss(val) {
-        return val && GSDataAttr.#dismissValues.indexOf(val) > -1;
+        return val && GSDataAttr.#dismissValues.includes(val);
     }
 
     static #isToggle(val) {
-        return val && GSDataAttr.#toggleValues.indexOf(val) > -1;
+        return val && GSDataAttr.#toggleValues.includes(val);
     }
 
     /**

@@ -117,6 +117,14 @@ export default class GSContext extends GSElement {
     return GSAttr.setAsBool(this, 'visible', val);
   }
 
+  get disabled() {
+    return GSAttr.getAsBool(this, 'disabled');
+  }
+
+  set disabled(val = '') {
+    return GSAttr.setAsBool(this, 'disabled', val);
+  }  
+
   get dark() {
     return GSAttr.getAsBool(this, 'dark');
   }
@@ -146,6 +154,7 @@ export default class GSContext extends GSElement {
    */
   popup(x = 0, y = 0) {
     const me = this;
+    if (me.disabled) return;
     const menu = me.#menu;
     if (!menu) return;
     requestAnimationFrame(() => {
@@ -169,7 +178,7 @@ export default class GSContext extends GSElement {
     if (items.length === 0) return false;
     const me = this;
     const opts = me.#renderMenu(items);
-    me.#menu.innerHTML = opts.join('');
+    GSDOM.setHTML(me.#menu, opts.join(''));
     me.#attachOptions();
     me.#attachSubmenu();
     return true;
@@ -215,13 +224,11 @@ export default class GSContext extends GSElement {
   }
 
   #onPopup(e) {
-    if (e instanceof Event) {
-      e.preventDefault();
-      //if (e.target instanceof GSContext) return;
-    }
+    GSEvent.prevent(e);
     const me = this;
     me.#caller = e.target;
-    const rect = me.#menu.getBoundingClientRect();
+    const rect = me.#menu?.getBoundingClientRect();
+    if (!rect) return;
     let x = e.clientX, y = e.clientY;
     const overflowH = x + rect.width > window.innerWidth;
     const overflowV = y + rect.height > window.innerHeight;
@@ -370,7 +377,8 @@ export default class GSContext extends GSElement {
     const data = await GSLoader.loadData(val);
     if (!GSUtil.isJsonType(data)) return;
     const me = this;
-    me.innerHTML = GSItem.generateItem(data);
+    const src = GSItem.generateItem(data);
+    GSDOM.setHTML(me, src);
     GSEvent.deattachListeners(me);
     me.connectedCallback();
     return data;

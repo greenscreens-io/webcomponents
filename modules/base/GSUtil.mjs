@@ -15,7 +15,8 @@ import GSLog from "./GSLog.mjs";
  */
 export default class GSUtil {
 
-	static FLAT = self.GS_FLAT == true;
+	static #animating = 0;
+	static FLAT = globalThis.GS_FLAT == true;
 	static ALPHANUM = /^[a-zA-Z0-9-_]+$/;
 
 	static isNumber = (n) => { return !isNaN(parseFloat(n)) && isFinite(n); };
@@ -45,7 +46,7 @@ export default class GSUtil {
 	 */
 	static isURL = (url = '') => /^(https?:\/\/|\/{1,2}|\.\/{1})(\S*\/*){1,}/i.test(url.trim());
 
-	static isHTML = (val = '') => val.indexOf('<') > -1 && val.indexOf('>') > 0;
+	static isHTML = (val = '') => val.includes('<') && val.includes('>');
 
 	/**
 	 * Get browser efautl locale
@@ -95,7 +96,7 @@ export default class GSUtil {
 	 * @returns {string}
 	 */
 	static normalize(val, def = '') {
-		return GSUtil.isString(val) ? val.trim() : (val || def).toString();
+		return (val ?? def).toString().trim();
 	}
 
 	/**
@@ -113,7 +114,6 @@ export default class GSUtil {
 		const vals = Object.values(params);
 		return new Function(...names, `return \`${tpl}\`;`)(...vals);
 	}
-
 
 	/**
 	 * Convert string pointer to object
@@ -185,10 +185,53 @@ export default class GSUtil {
 		});
 	}
 
+	/**
+	 * Modified animationFrame to prevent consequtive chained calls.
+	 * 
+	 * @param {function} callback 
+	 * @returns {void}
+	 */
+	static requestAnimationFrame(callback) {
+		if (typeof callback !== 'function') return;
+		if (GSUtil.#animating > 0) return callback();
+		GSUtil.#animating++;
+		return globalThis.requestAnimationFrame(() => {
+			try {
+				callback();
+			} catch (e) {
+				console.log(e);
+			} finally {
+				GSUtil.#animating--;
+			}
+		});
+	}
+
+	/**
+	 * Registration helper function, replacement for class static initializers
+	 * Mostly to support Safari browser.
+	 * 
+	 * GSUtil.register(null, GSUtil, null, true, false, true);
+	 * 
+	 * @param {string} name Custom element name
+	 * @param {HTMLElement} clazz Class extensing at leas HTMLElement
+	 * @param {string} ext If existing tag extended, this is tagName
+	 * @param {boolean} seal Should class be sealed
+	 * @param {boolean} freeze Should class be freezed
+	 * @param {boolean} expose Should class be exposed to "self"
+	 * 
+	 * @returns {void}
+	 */
+	 static register(name, clazz, ext, seal = true, freeze = false, expose = false) {
+		if (!HTMLElement.isPrototypeOf(clazz)) return;
+		if (customElements.get(name)) return;
+		customElements.define(name, clazz, {extends : ext?.toLowerCase()});
+		if (seal && !Object.isSealed(clazz)) Object.seal(clazz);		
+		if (freeze && !Object.isFrozen(clazz)) Object.freeze(clazz);
+		if (expose) self[clazz.name] = clazz;
+	}
+
 	static {
 		Object.seal(GSUtil);
-		window.GSUtil = GSUtil;
+		globalThis.GSUtil = GSUtil;
 	}
 }
-
-

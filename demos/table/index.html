@@ -37,11 +37,13 @@
                     <gs-column name="Name" width="250px" filter="true"></gs-column>
                     <gs-column name="Position" width="350px" filter="true"></gs-column>
                     <gs-column name="Office" width="200px" filter="true" _list="fixed">
-                        <gs-item value="" default=true></gs-item>
-                        <gs-item value="Edinburgh" title="City"></gs-item>
-                        <gs-item value="London"></gs-item>
-                        <gs-item value="Tokyo"></gs-item>
-                        <gs-item value="Sydney"></gs-item>
+                        <gs-item filter="true">
+                            <gs-item value="" default=true></gs-item>
+                            <gs-item value="Edinburgh" map="City"></gs-item>
+                            <gs-item value="London"></gs-item>
+                            <gs-item value="Tokyo"></gs-item>
+                            <gs-item value="Sydney"></gs-item>
+                        </gs-item>
                     </gs-column>
                     <gs-column name="Age" width="75px" filter="true"></gs-column>
                     <gs-column name="Salary" format="$%s" width="120px"></gs-column>

@@ -30,9 +30,17 @@
     <script type="module" src="/webcomponents/modules/components/GSNav.mjs"></script>
     <script type="module" src="/webcomponents/modules/components/GSList.mjs"></script>
     <script type="module" src="/webcomponents/modules/components/GSDropdown.mjs"></script>
+    <script type="module" src="/webcomponents/modules/components/intl/GSYearFormat.mjs"></script>
 
     <gs-css url="/webcomponents/assets/css/io.greenscreens.bootstrap_5.2.0.css"></gs-css>
     <gs-css url="/webcomponents/assets/icons/bootstrap-icons.css" notheme="true"></gs-css>
+
+    <style is="gs-ext-style">
+    .offcanvas, .offcanvas-xxl, .offcanvas-xl, .offcanvas-lg, .offcanvas-md, .offcanvas-sm {
+        --bs-offcanvas-bg: #f4f8fb !important
+    }
+    </style>
+
 </head>
 
 <body>
@@ -68,46 +76,46 @@
             </template>
         </gs-item>
 
-        <gs-item>
-            <template>
-                <gs-layout type="horizontal">
-                    <gs-item css="p-3" id="content" v-pos="top" h-pos="center">centerd data</gs-item>
-                </gs-layout>
-            </template>
-        </gs-item>
-
+        <gs-item css="p-3" id="content" v-pos="top" h-pos="center">centerd data</gs-item>
+        
     </gs-layout>
 
-    <gs-offcanvas css="border-end shadow-sm text-bg-light mt-5" css-body="overflow-hidden" visible="true" closable="false" autoclose="true" min="65" max="260">
+    <div id="dialogs">
+        <!-- dialog placeholder -->
+    </div>
 
-        <!--
-        <div slot="header"><img src="/assets/img/icon.png" height="32"></div>
-        -->
+    <gs-offcanvas css="border-end shadow-sm" css-head="p-0 border-bottom" css-body="overflow-hidden" visible="true" closable="false" autoclose="true" min="65" max="260">
+
+        <div slot="header" class="flex-fill">
+            <a href="https://webcomponents.greenscreens.ltd" target="_blank" class="m-3 d-flex justify-content-start align-items-center fs-5">
+                <span><img src="/webcomponents/assets/img/icon.png" height="26"></span>
+                <span class="d-flex ms-4 overflow-hidden text-nowrap"><b>Admin Panel</b></span>
+            </a>
+        </div>        
 
         <gs-list slot="body" css="" selectable="false">
             <gs-item css="border-0 p-1">
                 <template>
                     <div class="d-flex w-100 justify-content-start align-items-center fs-5">
-                        <span class="bi-house fs-2 pe-4"></span>
-                        <span><b>Home</b></span>
+                        <span class="bi-house fs-3 pe-4"></span>
+                        <span>Home</span>
                     </div>
                 </template>
             </gs-item>
             <gs-item css="border-0 p-1">
                 <template>
                     <div class="d-flex w-100 justify-content-start align-items-center  fs-5">
-                        <span class="bi-person fs-2 pe-3"></span>
-                        <span><b>Contact</b></span>
+                        <span class="bi-person fs-3 pe-4"></span>
+                        <span>Contact</span>
                     </div>
                 </template>
             </gs-item>
         </gs-list>
 
-
     </gs-offcanvas>
 
     <div class="fixed-bottom d-flex justify-content-center align-items-center mt-1 p-2 text-muted">
-        <small>© Green Scereens Ltd. 2015. - 2022.</small>
+        <small>© Green Scereens Ltd. 2015. - <gs-year-format></gs-year-format>.</small>
     </div>
 
 </body>

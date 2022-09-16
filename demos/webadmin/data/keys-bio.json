@@ -1,0 +1,32 @@
+[
+    {
+        "uuid": "DEMO",
+        "host": "IBM2",
+        "user": "JOHN",
+        "clientID": "rbJHxW3uuIrWK9uHZverrXez52jFHnywFm5IuYub/FBcIy9Riw0UPH9elpEAoK6Wo8NYy6lu9O1RaoKLEOjv1w==",
+        "origin": "android:apk-key-hash:yoUMX3S8I5bN10EN6d_1MhsOQogTiFJcpHbSHLFWf4E",
+        "aaguid": "00000000-0000-0000-0000-000000000000",
+        "desc": null,
+        "created": 1560953642297
+    },
+    {
+        "uuid": "DEMO",
+        "host": "IBM2",
+        "user": "JOHN",
+        "clientID": "Bz4647Yy8TU5wo/Sg6T9OeVoTyXBW+wQn+xWN9/CkwM=",
+        "origin": "https://localhost",
+        "aaguid": "6028b017-b1d4-4c02-b4b3-afcdafc96bb2",
+        "desc": null,
+        "created": 1642168792126
+    },
+    {
+        "uuid": "DEMO",
+        "host": "IBM2",
+        "user": "JOHN",
+        "clientID": "AZNuNl+lcB7kpuVsWKqnYaf7dkNBDvXmBAjTTqZszpc4sLH1er+eLz1/Gpa3RlNwXWAN/MGxdiwJa8BBXbzlOG4=",
+        "origin": "android:apk-key-hash:yoUMX3S8I5bN10EN6d_1MhsOQogTiFJcpHbSHLFWf4E",
+        "aaguid": "b93fd961-f2e6-462f-b122-82002247de78",
+        "desc": null,
+        "created": 1561535663802
+    }
+]

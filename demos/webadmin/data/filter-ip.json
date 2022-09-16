@@ -1,0 +1,29 @@
+[
+    {
+        "id": 1636188607795,
+        "rule": 0,
+        "type": 0,
+        "value": "111.111.111.111",
+        "subval": null,
+        "active": true,
+        "timestamp": 1636188618574
+    },
+    {
+        "id": 1636188607795,
+        "rule": 0,
+        "type": 1,
+        "value": "192.168.0.0/12",
+        "subval": null,
+        "active": true,
+        "timestamp": 1636188618574
+    },
+    {
+        "id": 1636188607795,
+        "rule": 0,
+        "type": 2,
+        "value": "10.10.0.0-10.10.0.128",
+        "subval": null,
+        "active": true,
+        "timestamp": 1636188618574
+    }
+]

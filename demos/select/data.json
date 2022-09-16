@@ -1,0 +1,20 @@
+[
+    {
+        "text": "Code 39 - LOGMARS",
+        "value": "1",
+        "selected": true
+    },
+    {
+        "text": "Code 128 - Code128",
+        "value": "2"
+    },
+    {
+        "text": "Code 128 - NVE-18",
+        "value": "3",
+        "data-code": "NVE18"
+    },
+    {
+        "text": "EAN 8/13",
+        "value": "4"
+    }
+]

@@ -14,7 +14,11 @@ import GSDOM from "../../base/GSDOM.mjs";
 
 /**
  * Add JSON loader to datalist element
- * <datalist is="gs-ext-datalist">
+ * 
+ * <datalist is="gs-ext-datalist" data="data.json">
+ * 
+ * [{text:'', value:'' selected:true}]
+ * 
  * @class
  * @extends {HTMLDataListElement}
  */
@@ -72,7 +76,7 @@ export default class GSDataListExt extends HTMLDataListElement {
                 list.push(me.#objToHTML(o));
             });
 
-            me.innerHTML = list.join('\n');
+            GSDOM.setHTML(me, list.join('\n'));
         });
         return true;
     }

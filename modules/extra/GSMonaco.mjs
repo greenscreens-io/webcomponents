@@ -24,7 +24,7 @@ import GSEvent from "../base/GSEvent.mjs";
  */
 export default class GSMonaco extends GSElement {
 
-    static URL_LIB = self.GS_URL_MONACO || 'https://unpkg.com/monaco-editor@latest/min/';
+    static URL_LIB = globalThis.GS_URL_MONACO || 'https://unpkg.com/monaco-editor@latest/min/';
 
     static #initialized = false;
     #editor = null;
@@ -53,7 +53,7 @@ export default class GSMonaco extends GSElement {
             baseUrl: `${GSMonaco.URL_LIB}`,
             getWorkerUrl: (workerId, label) => {
                 return `data:text/javascript;charset=utf-8,${encodeURIComponent(`
-                self.MonacoEnvironment = {baseUrl: '${GSMonaco.URL_LIB}'};
+                globalThis.MonacoEnvironment = {baseUrl: '${GSMonaco.URL_LIB}'};
                 importScripts('${GSMonaco.URL_LIB}vs/base/worker/workerMain.js');`
                 )}`;
             }
@@ -66,7 +66,7 @@ export default class GSMonaco extends GSElement {
             return;
         }
         const id = setInterval(() => {
-            if (typeof self.require !== 'function') return;
+            if (typeof globalThis.require !== 'function') return;
             require.config({ paths: { 'vs': `${GSMonaco.URL_LIB}/vs` }});
             require(['vs/editor/editor.main'], () => {
                 clearInterval(id);

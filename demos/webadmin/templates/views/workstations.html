@@ -1,0 +1,110 @@
+<div class="container-fluid ms-4">
+    <div class="row border shadow-sm ms-4 ps-4 py-4 bg-light border shadow-sm  mb-4">
+        <div class="col">
+            <h4 class="text-muted">Live Terminal Sessions</h4>
+        </div>
+    </div>
+
+    <div class="row border shadow-sm ms-4 pb-4 bg-light border shadow-sm ">
+
+        <div class="col-12 border-bottom d-flex justify-content-end ">
+            <gs-button action="message-filter" select="false" css="text-bg-light"
+                icon="bi bi-chat fs-4 fw-bold"></gs-button>
+            <gs-tooltip title="Send message by filter"></gs-tooltip>
+            
+            <gs-button action="export-filter" select="false" css="text-bg-light"
+                icon="bi bi-download fs-4 fw-bold"></gs-button>
+            <gs-tooltip title="Export sessions by filter"></gs-tooltip>
+
+            <gs-button action="kill-filter" select="false" css="text-bg-light"
+                icon="bi bi-dash-circle fs-4 fw-bold"></gs-button>
+            <gs-tooltip title="Kill sessions by filter"></gs-tooltip>
+
+            <gs-button action="refresh" select="false" css="text-bg-light"
+                icon="bi bi-arrow-repeat fs-4 fw-bold"></gs-button>
+            <gs-tooltip title="Refresh data"></gs-tooltip>
+        </div>
+
+        <div class="col-12">
+
+            <gs-table id="table-main" index=false class="flex-fill"
+                css="table table-light table-hover user-select-none m-0" css-select="table-active table-primary"
+                css-header="user-select-none" css-columns="table-secondary">
+                <gs-header>
+                    <gs-column title="IP Address" name="ipAddress" filter="true"></gs-column>
+                    <gs-column title="Proxy" name="proxy" filter="true"></gs-column>
+                    <gs-column title="UUID" name="uuid" filter="true"></gs-column>
+                    <gs-column title="Host" name="host" filter="true"></gs-column>
+                    <gs-column title="Display" name="display" filter="true"></gs-column>
+                    <gs-column title="User" name="user" filter="true"></gs-column>
+                    <gs-column title="Device" name="deviceID" filter="true"></gs-column>
+                    <gs-column title="Device Type" name="deviceType" filter="true" list="fixed">
+                        <gs-item map="true" filter="true">
+                            <gs-item value="" map="All"></gs-item>
+                            <gs-item value="DSP" map="DISPLAY"></gs-item>
+                            <gs-item value="PRT" map="PRINTER"></gs-item>                         
+                        </gs-item>                        
+                    </gs-column>
+                    <gs-column title="Client Type" name="clientType" filter="true" list="fixed">
+                        <gs-item map="true" filter="true">
+                            <gs-item value="" map="All"></gs-item>
+                            <gs-item value="BROWSER"></gs-item>                         
+                            <gs-item value="MOBILE"></gs-item>
+                        </gs-item>                        
+                    </gs-column>
+                    <gs-column title="State" name="state" filter="true" list="fixed">
+                        <gs-item map="true" filter="true">
+                            <gs-item value="" map="All"></gs-item>
+                            <gs-item value="1" map="Active"></gs-item>
+                            <gs-item value="-1" map="Inactive"></gs-item>                         
+                        </gs-item>
+                    </gs-column>
+                    <gs-column title="Logging" name="logging">
+                        <gs-item map="true">
+                            <gs-item value="true" map="Active"></gs-item>
+                            <gs-item value="false" map="Inactive"></gs-item>   
+                        </gs-item>
+                    </gs-column>                    
+                </gs-header>
+                <gs-store src="data/workstations.json" id="sessions" limit=10>
+                    <gs-item name="sessionID"></gs-item>
+                    <gs-item name="sessionUUID"></gs-item>
+                    <gs-item name="ipAddress"></gs-item>
+                    <gs-item name="viewID"></gs-item>
+                    <gs-item name="deviceID"></gs-item>
+                    <gs-item name="deviceType"></gs-item>
+                    <gs-item name="uuid"></gs-item>
+                    <gs-item name="host"></gs-item>
+                    <gs-item name="token"></gs-item>
+                    <gs-item name="clientType"></gs-item>
+                    <gs-item name="agent"></gs-item>
+                    <gs-item name="display"></gs-item>
+                    <gs-item name="user"></gs-item>
+                    <gs-item name="message"></gs-item>
+                    <gs-item name="proxy"></gs-item>
+                    <gs-item name="created"></gs-item>
+                    <gs-item name="lastActivity"></gs-item>
+                    <gs-item name="printCount"></gs-item>
+                    <gs-item name="state"></gs-item>
+                    <gs-item name="certificate"></gs-item>
+                    <gs-item name="logging"></gs-item>
+                </gs-store>
+                <gs-context slot="extra" target="tbody tr">
+                    <gs-item name="Details" action="details"></gs-item>
+                    <gs-item name="Message" action="messade"></gs-item>
+                    <gs-item name="Logging" action="logging"></gs-item>
+                    <gs-item></gs-item>
+                    <gs-item name="Kill" action="kill"></gs-item>
+                </gs-context>
+                <gs-pager slot="extra" previous="&laquo;" next="&raquo;" firstlast="false" pages="0"></gs-pager>
+            </gs-table>
+
+            <gs-modal id="modal-main" visible="false" css-body="p-0">
+                <h4 slot="title">Terminal Session</h4>
+                <gs-template slot="body" href="//forms/configuration.html"></gs-template>
+            </gs-modal>
+
+        </div>
+
+    </div>
+</div>

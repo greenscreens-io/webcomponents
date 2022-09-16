@@ -1,0 +1,99 @@
+<div class="container-fluid ms-4">
+    <div class="row border shadow-sm ms-4 ps-4 py-4 bg-light border shadow-sm  mb-4">
+        <div class="col">
+            <h4 class="text-muted">User Configuration Records </h4>
+        </div>
+    </div>
+
+    <div class="row border shadow-sm ms-4 pb-4 bg-light border shadow-sm ">
+
+        <div class="col-12 border-bottom d-flex justify-content-end ">
+            <gs-button action="new" select="false" css="text-bg-light"
+                icon="bi bi-file-earmark fs-4 fw-bold"></gs-button>
+            <gs-tooltip title="Add new configuration"></gs-tooltip>
+
+            <gs-button action="commit" select="false" css="text-bg-light"
+                icon="bi bi-check-circle fs-4 fw-bold"></gs-button>
+            <gs-tooltip title="Commit all changes to database"></gs-tooltip>
+
+            <gs-button action="resync" select="false" css="text-bg-light"
+                icon="bi bi-bootstrap-reboot fs-4 fw-bold"></gs-button>
+            <gs-tooltip title="Resync from database"></gs-tooltip>
+
+            <gs-button action="refresh" select="false" css="text-bg-light"
+                icon="bi bi-arrow-repeat fs-4 fw-bold"></gs-button>
+            <gs-tooltip title="Refresh data"></gs-tooltip>                
+        </div>
+
+        <div class="col-12">
+
+            <gs-table id="table-main" index=false class="flex-fill"
+                css="table table-light table-hover user-select-none m-0" css-select="table-active table-primary"
+                css-header="user-select-none" css-columns="table-secondary">
+                <gs-header>
+                    <gs-column title="" name="confid" filter="true"></gs-column>
+                    <gs-column title="" name="devtype" filter="true" list="fixed">
+                        <gs-item map="true" filter="true">
+                            <gs-item value="0" map="Both"></gs-item>
+                            <gs-item value="1" map="Display"></gs-item>
+                            <gs-item value="2" map="Printer"></gs-item>
+                        </gs-item>
+                    </gs-column>
+                    <gs-column title="" name="uuid" filter="true"></gs-column>
+                    <gs-column title="" name="host" filter="true"></gs-column>
+                    <gs-column title="" name="user" filter="true"></gs-column>
+                    <gs-column title="" name="display" filter="true"></gs-column>
+                    <gs-column title="" name="outq" filter="true"></gs-column>
+                    <gs-column title="" name="driver" filter="true"  list="fixed">
+                        <gs-item map="true" filter="true">
+                            <gs-item value="" map=""></gs-item>
+                            <gs-item value="0" map="PDF"></gs-item>
+                            <gs-item value="1" map="HTML"></gs-item>
+                            <gs-item value="2" map="TEXT"></gs-item>
+                            <gs-item value="3" map="JSON"></gs-item>
+                            <gs-item value="4" map="RAW"></gs-item>
+                            <gs-item value="5" map="ETL"></gs-item>
+                            <gs-item value="6" map="JSX"></gs-item>
+                        </gs-item>
+                    </gs-column>
+                    <gs-column title="" name="printer" filter="true"></gs-column>
+                </gs-header>
+                <gs-store src="data/users.json" id="sessions" limit=10>
+                    <gs-item name="id"></gs-item>
+                    <gs-item name="confid"></gs-item>
+                    <gs-item name="uuid"></gs-item>
+                    <gs-item name="host"></gs-item>
+                    <gs-item name="user"></gs-item>
+                    <gs-item name="display"></gs-item>
+                    <gs-item name="outq"></gs-item>
+                    <gs-item name="enhanced"></gs-item>
+                    <gs-item name="drawer2"></gs-item>
+                    <gs-item name="drawer1"></gs-item>
+                    <gs-item name="driver"></gs-item>
+                    <gs-item name="devtype"></gs-item>
+                    <gs-item name="program"></gs-item>
+                    <gs-item name="menu"></gs-item>
+                    <gs-item name="program"></gs-item>
+                    <gs-item name="library"></gs-item>
+                    <gs-item name="$changed"></gs-item>
+                </gs-store>
+                <gs-context slot="extra" target="tbody tr">
+                    <gs-item name="Details" action="details"></gs-item>
+                    <gs-item name="Clone" action="clone"></gs-item>
+                    <gs-item name="Start" action="start"></gs-item>
+                    <gs-item></gs-item>
+                    <gs-item name="Remove" action="remove"></gs-item>
+                </gs-context>
+                <gs-pager slot="extra" previous="&laquo;" next="&raquo;" firstlast="false" pages="0"></gs-pager>
+            </gs-table>
+
+            <gs-modal id="modal-main" visible="false" css-body="p-0">
+                <h4 slot="title">Terminal Session</h4>
+                <gs-template slot="body" href="//forms/user.html"></gs-template>
+            </gs-modal>
+
+        </div>
+
+    </div>
+</div>
+

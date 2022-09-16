@@ -7,7 +7,6 @@
  * @module base/GSItem
  */
 
-import GSLoader from "./GSLoader.mjs";
 import GSUtil from "./GSUtil.mjs";
 import GSAttr from "./GSAttr.mjs";
 import GSDOM from "./GSDOM.mjs";
@@ -26,8 +25,6 @@ export default class GSItem extends HTMLElement {
 	static #action = 'data-action';
 
 	static #inject = 'data-inject';
-
-	static #css = 'data-css';
 
 	static #selectable = 'data-selectable';
 
@@ -48,33 +45,20 @@ export default class GSItem extends HTMLElement {
 	}
 
 	/**
-	* Retrieve gs-item template or internal content
-	* NOTE: If template set, item content is overriden
-	* 
-	* @async
-	* @param {HTMLElement} el 
-	* @returns {Promise<string>}
-	*/
-	static async getTemplate(el) {
-		let tpl = GSItem.getTemplate(el);
-		const cnt = tpl ? await GSLoader.getTemplate(tpl) : '';
-		if (cnt) return cnt;
-		tpl = el.querySelector('template');
-		return tpl ? tpl.innerHTML : '';
-	}
-
-	/**
-	 * Retuen content of HTMLTemplate child element
+	 * Return content of HTMLTemplate child element
 	 * 
 	 * @param {HTMLElement} el 
 	 * @returns {string}
 	 */
 	static getBody(el, flat = false) {
 		let tpl = GSItem.getTemplate(el);
+		const isFlat = GSItem.getFlat(el);
+		const anchor = GSItem.getAnchor(el);		
+		const acss = isFlat || flat ? `anchor="${anchor}" flat="true"` : '';
 		const cls = GSAttr.get(el, 'css-template', '');
-		if (tpl) return `<gs-template flat="${flat}" href="${tpl}" class="${cls}"></gs-template>`;
+		if (tpl) return `<gs-template ${acss} href="${tpl}" class="${cls}"></gs-template>`;
 		tpl = el.querySelector('template');
-		return tpl ? tpl.innerHTML : '';
+		return tpl?.innerHTML || '';
 	}
 
 	/**
@@ -84,7 +68,7 @@ export default class GSItem extends HTMLElement {
 	 */
 	static genericItems(root) {
 		if (!GSDOM.isHTMLElement(root)) return [];
-		return Array.from(root.childNodes).filter(el => el.tagName == 'GS-ITEM')
+		return Array.from(root.children).filter(el => el.tagName == 'GS-ITEM')
 	}
 
 	/**
@@ -120,6 +104,17 @@ export default class GSItem extends HTMLElement {
 			.map(kv => `${kv[0]}="${kv[1]}"`).join(' ');
 	}
 
+	/**
+	 * Hepler to joinf all base data-bs related attributes
+	 * @param {*} el 
+	 * @returns 
+	 */
+	static getAttrs(el) {
+		return [GSItem.getDismissAttr(el), GSItem.getTargetAttr(el),
+		GSItem.getToggleAttr(el), GSItem.getActionAttr(el), 
+		GSItem.getInjectAttr(el)].join(' ');
+	}
+
 	static getDismissAttr(el) {
 		const v = GSItem.getDismiss(el);
 		return v ? `${GSItem.#dismiss}="${v}"` : '';
@@ -143,11 +138,6 @@ export default class GSItem extends HTMLElement {
 	static getInjectAttr(el) {
 		const v = GSItem.getInject(el);
 		return v ? `${GSItem.#inject}="${v}"` : '';
-	}
-
-	static getCSSAttr(el) {
-		const v = GSItem.getCSS(el);
-		return v ? `${GSItem.#css}="${v}"` : '';
 	}
 
 	static getSelectableAttr(el) {
@@ -179,12 +169,28 @@ export default class GSItem extends HTMLElement {
 		return GSAttr.get(el, 'inject');
 	}
 
+	static getIcon(el) {
+		return GSAttr.get(el, 'icon');
+	}
+
 	static getSelectable(el) {
 		return GSAttr.getAsBool(el, 'selectable', true);
 	}
 
+	static getAnchor(el) {
+		return GSAttr.get(el, 'anchor', 'afterend@self');
+	}
+
+	static getFlat(el) {
+		return GSAttr.getAsBool(el, 'flat', false);
+	}
+
 	static getName(el) {
 		return GSAttr.get(el, 'name', '');
+	}
+
+	static getHref(el) {
+		return GSAttr.get(el, 'href', '#');
 	}
 
 	static getCSS(el) {
@@ -237,6 +243,10 @@ export default class GSItem extends HTMLElement {
 
 	get selectable() {
 		return GSItem.getSelectable(this);
+	}
+
+	get flat() {
+		return GSItem.getFlat(this);
 	}
 
 	get name() {

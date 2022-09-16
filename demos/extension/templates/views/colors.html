@@ -1,44 +1,46 @@
-<div class="container mt-4">
+<div class="container-fluid">
+    <div class="row border shadow-sm ms-4 ps-4 py-4 bg-light border shadow-sm ">
 
-    <div class="row d-flex justify-content-center align-items-center">
-        <div class="col-12 col-lg-8">
-            <h4>Color Themes</h4>
+        <div class="row">
+            <div class="col">
+                <h4 class="text-muted">Color Themes</h4>
+            </div>
         </div>
-    </div>
 
+        <div class="row">
+            <div class="col-12">
 
-    <div class="row d-flex justify-content-center align-items-center">
-        <div class="col-12 col-lg-8 bg-light border shadow-sm p-0 overflow-hidden">
+                <gs-template href="//shell/toolbar.html" id="toolbar"></gs-template>
 
-            <gs-template href="//shell/toolbar.html" id="toolbar"></gs-template>
+                <gs-table id="table-main" index=false class="flex-fill"
+                    css="table table-light table-hover user-select-none m-0 border" 
+                    css-select="table-active table-primary"
+                    css-header="user-select-none table-secondary">
+                    <gs-header>
+                        <gs-column title="Name" name="name" width="250px" filter="false"></gs-column>
+                        <gs-column title="Description" name="description" filter="false"></gs-column>
+                    </gs-header>
+                    <gs-store src="data/colors.json" id="colors" limit=10>
+                        <gs-item name="name"></gs-item>
+                        <gs-item name="description"></gs-item>
+                    </gs-store>
+                    <gs-context slot="extra" target="tbody tr">
+                        <gs-item name="Details" action="details"></gs-item>
+                        <gs-item name="Clone" action="clone"></gs-item>
+                        <gs-item name="Export to CSS" action="export"></gs-item>
+                        <gs-item></gs-item>
+                        <gs-item name="Remove" action="remove"></gs-item>
+                    </gs-context>
+                    <gs-pager slot="extra" previous="&laquo;" next="&raquo;" firstlast="false"></gs-pager>
+                </gs-table>
+    
+                <gs-modal id="modal-main" visible="false">
+                    <h4 slot="title">Theme Colors</h4>
+                    <gs-template slot="body" href="//forms/color.html"></gs-template>
+                </gs-modal>
 
-            <gs-table id="table-main" index=false class="flex-fill"
-                css="table table-light table-hover user-select-none m-0" 
-                css-select="table-active table-primary"
-                css-header="user-select-none table-secondary">
-                <gs-header>
-                    <gs-column title="Name" name="name" width="250px" filter="false"></gs-column>
-                    <gs-column title="Description" name="description" filter="false"></gs-column>
-                </gs-header>
-                <gs-store src="data/colors.json" id="colors" limit=10>
-                    <gs-item name="name"></gs-item>
-                    <gs-item name="description"></gs-item>
-                </gs-store>
-                <gs-context slot="extra" target="tbody tr">
-                    <gs-item name="Details" action="details"></gs-item>
-                    <gs-item name="Clone" action="clone"></gs-item>
-                    <gs-item name="Export to CSS" action="export"></gs-item>
-                    <gs-item></gs-item>
-                    <gs-item name="Remove" action="remove"></gs-item>
-                </gs-context>
-                <gs-pager slot="extra" previous="&laquo;" next="&raquo;" firstlast="false"></gs-pager>
-            </gs-table>
-
-            <gs-modal id="modal-main" visible="false">
-                <h4 slot="title">Theme Colors</h4>
-                <gs-template slot="body" href="//forms/color.html"></gs-template>
-            </gs-modal>
+            </div>
         </div>
-    </div>
 
+    </div>
 </div>

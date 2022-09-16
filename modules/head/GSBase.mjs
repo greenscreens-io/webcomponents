@@ -222,7 +222,7 @@ export default class GSBase extends HTMLElement {
 		if (navigator.userAgentData) {
 			let sts = false;
 			navigator.userAgentData.brands.forEach((v) => {
-				if (v.brand.toLowerCase().indexOf(strVal) > -1) {
+				if (v.brand.toLowerCase().includes(strVal)) {
 					sts = true;
 				}
 			});
@@ -413,9 +413,9 @@ export default class GSBase extends HTMLElement {
 	}
 
 	get #nocache() {
-		let no_cache = false;
-        if (self.hasOwnProperty('GS_NO_CACHE')) {
-            return self.GS_NO_CACHE;
+		const hasKey = Object.hasOwn(globalThis, 'GS_NO_CACHE');
+        if (hasKey) {
+            return globalThis.GS_NO_CACHE;
         }
         return localStorage ?  localStorage.getItem('GS_NO_CACHE') == 'true' : false;		
 	}

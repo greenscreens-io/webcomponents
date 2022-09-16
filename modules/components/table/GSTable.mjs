@@ -55,7 +55,7 @@ export default class GSTable extends GSElement {
     }
 
     static get observedAttributes() {
-        const attrs = ['src', 'select', 'multiselect', 'css', 'css-header', 'css-row', 'css-cell', 'css-select'];
+        const attrs = ['src', 'select', 'multiselect', 'css', 'css-header', 'css-filter', 'css-columns', 'css-row', 'css-cell', 'css-select'];
         return GSElement.observeAttributes(attrs);
     }
 
@@ -66,7 +66,7 @@ export default class GSTable extends GSElement {
 
     #validateAllowed() {
         const me = this;
-        let list = Array.from(me.childNodes).filter(el => el.slot && el.slot !== 'extra');
+        let list = Array.from(me.children).filter(el => el.slot && el.slot !== 'extra');
         if (list.length > 0) throw new Error(`Custom element injection must contain slot="extra" attribute! Element: ${me.tagName}, ID: ${me.id}`);
         list = Array.from(me.childNodes).filter(el => !el.slot);
         const allowed = GSDOM.isAllowed(list, GSTable.#tagList);
@@ -97,7 +97,7 @@ export default class GSTable extends GSElement {
         }
 
         super.onReady();
-
+        if (me.contextMenu) me.contextMenu.disabled = true;
         me.attachEvent(me.self, 'sort', e => me.#onColumnSort(e.detail));
         me.attachEvent(me.self, 'filter', e => me.#onColumnFilter(e.detail));
         me.attachEvent(me.self, 'select', e => me.#onRowSelect(e.detail));
@@ -174,6 +174,14 @@ export default class GSTable extends GSElement {
         return GSAttr.get(this, 'css-cell', this.#cellCSS);
     }
 
+    get cssFilter() {
+        return GSAttr.get(this, 'css-filter', '');
+    }
+
+    get cssColumns() {
+        return GSAttr.get(this, 'css-columns', '');
+    }
+
     set css(val = '') {
         GSAttr.set(this, 'css', val);
     }
@@ -184,6 +192,14 @@ export default class GSTable extends GSElement {
 
     set cssHeader(val = '') {
         GSAttr.set(this, 'css-header', val);
+    }
+
+    set cssFilter(val = '') {
+        GSAttr.set(this, 'css-filter', val);
+    }
+
+    set cssColumns(val = '') {
+        GSAttr.set(this, 'css-columns', val);
     }
 
     set cssRow(val = '') {
@@ -271,7 +287,8 @@ export default class GSTable extends GSElement {
         const me = this;
         if (!me.#hasHeaders) return;
         const html = me.querySelector('gs-header').render();
-        me.self.innerHTML = `<table class="${me.css}">${html}<tbody is="gs-tbody"></tbody></table><slot name="extra"></slot>`;
+        const src = `<table class="${me.css}">${html}<tbody is="gs-tbody"></tbody></table><slot name="extra"></slot>`;
+        GSDOM.setHTML(me.self, src);
     }
 
     /**
@@ -296,6 +313,7 @@ export default class GSTable extends GSElement {
             const rec = me.#data[i - 1];
             if (rec) me.#selected.push(rec);
         });
+        if (me.contextMenu) me.contextMenu.disabled = data.length === 0;
         GSEvent.send(me, 'selected', me.#selected);
     }
 

@@ -140,7 +140,7 @@ export default class GSTooltip extends GSElement {
             const el = GSDOM.parse(me.#html, true);
             me.insertAdjacentElement('afterbegin', el);
             me.#popup();
-            GSDOM.toggleClass(this.firstElementChild, true, 'show');
+            GSDOM.toggleClass(me.firstElementChild, true, 'show');
         });
     }
 
@@ -150,10 +150,11 @@ export default class GSTooltip extends GSElement {
     hide() {
         const me = this;
         setTimeout(() => {
-           // me.innerHTML = '';
-           me.firstChild.remove();
+           // GSDOM.setHTML(me, '');
+           // me.firstChild?.remove();
+           Array.from(me.childNodes).forEach(el => el.remove());
         }, 250);
-        return GSDOM.toggleClass(this.firstElementChild, false, 'show');
+        return GSDOM.toggleClass(me.firstElementChild, false, 'show');
     }
 
     /**

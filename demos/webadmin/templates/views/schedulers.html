@@ -1,0 +1,87 @@
+<div class="container-fluid ms-4">
+    <div class="row border shadow-sm ms-4 ps-4 py-4 bg-light border shadow-sm  mb-4">
+        <div class="col">
+            <h4 class="text-muted">Background Task Records</h4>
+        </div>
+    </div>
+
+    <div class="row border shadow-sm ms-4 pb-4 bg-light border shadow-sm ">
+
+        <div class="col-12 border-bottom d-flex justify-content-end ">
+            <gs-button action="new" select="false" comment="Add new configuration" css="text-bg-light"
+                icon="bi bi-file-earmark fs-4 fw-bold"></gs-button>
+            <gs-button action="refresh" select="false" comment="Refresh data" css="text-bg-light"
+                icon="bi bi-arrow-repeat fs-4 fw-bold"></gs-button>
+        </div>
+
+        <div class="col-12">
+
+            <gs-table id="table-main" index=false class="flex-fill"
+                css="table table-light table-hover user-select-none m-0" css-select="table-active table-primary"
+                css-header="user-select-none" css-columns="table-secondary">
+                <gs-header>
+                    <gs-column title="Type" name="type" filter="true" list="fixed">
+                        <gs-item map="true" filter="true">
+                            <gs-item value="" map="All"></gs-item>
+                            <gs-item value="0" map="Internal"></gs-item>
+                            <gs-item value="1" map="Service Event"></gs-item>    
+                            <gs-item value="2" map="Web Access On"></gs-item>
+                            <gs-item value="3" map="Web Access Off"></gs-item>    
+                            <gs-item value="4" map="Server Restart"></gs-item>   
+                            <gs-item value="5" map="Modernization Cache"></gs-item>   
+                            <gs-item value="6" map="Central Management"></gs-item>
+                        </gs-item>                        
+                    </gs-column>
+                    <gs-column title="Name" name="name"></gs-column>
+                    <gs-column title="Day" name="day">
+                        <gs-item map="true">
+                            <gs-item value="0" map="Every"></gs-item>
+                            <gs-item value="1" map="Monday"></gs-item>
+                            <gs-item value="2" map="Tuesday"></gs-item>
+                            <gs-item value="3" map="Wednesday"></gs-item>
+                            <gs-item value="4" map="Thursday"></gs-item>
+                            <gs-item value="5" map="Friday"></gs-item>
+                            <gs-item value="6" map="Saturday"></gs-item>
+                            <gs-item value="7" map="Sunday"></gs-item>
+                            <gs-item value="8" map="Work Days"></gs-item>
+                            <gs-item value="9" map="Weekends"></gs-item>
+                        </gs-item>
+                    </gs-column>
+                    <gs-column title="Time" name="time"></gs-column>
+                    <gs-column title="Status" name="status" filter="true" list="fixed">
+                        <gs-item map="true" filter="true">
+                            <gs-item value="" map="All"></gs-item>
+                            <gs-item value="true" map="Enabled"></gs-item>
+                            <gs-item value="false" map="Disabled"></gs-item>                         
+                        </gs-item>
+                    </gs-column>                    
+                </gs-header>
+                <gs-store src="data/schedulers.json" id="sessions" limit=10>
+                    <gs-item name="id"></gs-item>
+                    <gs-item name="status"></gs-item>
+                    <gs-item name="internal"></gs-item>
+                    <gs-item name="day"></gs-item>
+                    <gs-item name="data"></gs-item>
+                    <gs-item name="name"></gs-item>
+                    <gs-item name="type"></gs-item>
+                    <gs-item name="time"></gs-item>
+                </gs-store>
+                <gs-context slot="extra" target="tbody tr">
+                    <gs-item name="Details" action="details"></gs-item>
+                    <gs-item name="Refresh" action="refresh"></gs-item>
+                    <gs-item name="Remove" action="remove"></gs-item>
+                    <gs-item></gs-item>
+                    <gs-item name="Run Now" action="run"></gs-item>
+                </gs-context>
+                <gs-pager slot="extra" previous="&laquo;" next="&raquo;" firstlast="false" pages="0"></gs-pager>
+            </gs-table>
+
+            <gs-modal id="modal-main" visible="false" css-body="p-0">
+                <h4 slot="title">Terminal Session</h4>
+                <gs-template slot="body" href="//forms/scheduler.html"></gs-template>
+            </gs-modal>
+
+        </div>
+
+    </div>
+</div>

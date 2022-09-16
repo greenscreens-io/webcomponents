@@ -90,7 +90,7 @@ export default class GSTBody extends HTMLTableSectionElement {
             rows.push('</tr>');
         });
 
-        me.innerHTML = rows.join('');
+        GSDOM.setHTML(me, rows.join(''));
         GSDOM.queryAll(me, 'tr').forEach(el => { if (el.innerText.trim().length === 0) el.remove(); });
     }
 
@@ -118,7 +118,9 @@ export default class GSTBody extends HTMLTableSectionElement {
 
     #genRow(hdr, rec, idx) {
         const me = this;
-        const val = hdr.name === "#" ? idx : rec[hdr.name];
+        let val = hdr.name === "#" ? idx : rec[hdr.name];
+        const map = hdr.map?.filter(o => o[0] === '' + val);
+        val = map?.length > 0 ? map[0][1] || val : val;
         return `<td class="${me.cssCell}">${val || '&nbsp;'}</td>`;
     }
 

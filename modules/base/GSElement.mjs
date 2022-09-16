@@ -11,7 +11,6 @@ import GSID from "./GSID.mjs";
 import GSUtil from "./GSUtil.mjs";
 import GSAttr from "./GSAttr.mjs";
 import GSLoader from "./GSLoader.mjs";
-import GSi18n from "./GSi18n.mjs";
 import GSEvent from "./GSEvent.mjs";
 import GSComponents from "./GSComponents.mjs";
 import GSCacheStyles from "../head/GSCacheStyles.mjs";
@@ -235,7 +234,7 @@ export default class GSElement extends HTMLElement {
 	 * Where to position flat element
 	 * HTML insertAdjacent value or *(gs-block) or self(within)
 	 * Format position | position@target (self)
-	 * @returns {string}  Vlues parent|self|unwrap|[html insertion position]
+	 * @returns {string}  Values parent|self|unwrap|[html insertion position]
 	 */
 	get anchor() {
 		const me = this;
@@ -259,7 +258,7 @@ export default class GSElement extends HTMLElement {
 		const me = this;
 		if (!me.shadowRoot) return;
 		me.shadowRoot.adoptedStyleSheets = GSCacheStyles.styles;
-		if (GSi18n.isInitialized) GSi18n.isInitialized.translateDOM(me.shadowRoot);
+		GSEvent.send(document.body, 'i18n', me.shadowRoot);
 	}
 
 	/**
@@ -468,7 +467,7 @@ export default class GSElement extends HTMLElement {
 			GSComponents.store(me);
 		}
 		if (me.#ready) {
-			requestAnimationFrame(() => {
+			GSUtil.requestAnimationFrame(() => {
 				me.attributeCallback(name, oldValue, newValue);
 			});
 		}
@@ -494,7 +493,7 @@ export default class GSElement extends HTMLElement {
 		me.#ready = true;
 		const fn = GSFunction.parseFunction(me.onready);
 		GSFunction.callFunction(fn);
-		GSEvent.send(me, 'componentready', me.id, true, true);
+		GSEvent.send(document.body, 'componentready', me);
 	}
 
 	/**
@@ -502,7 +501,7 @@ export default class GSElement extends HTMLElement {
 	 */
 	#onOrientation(e) {
 		const me = this;
-		requestAnimationFrame(() => {
+		GSUtil.requestAnimationFrame(() => {
 			if (me.offline) return;
 			me.isValidOrientation ? me.show(true) : me.hide(true)
 		});
@@ -516,7 +515,7 @@ export default class GSElement extends HTMLElement {
 
 	#styleChange() {
 		const me = this;
-		requestAnimationFrame(() => {
+		GSUtil.requestAnimationFrame(() => {
 			me.updateUI();
 		});
 	}
@@ -584,7 +583,7 @@ export default class GSElement extends HTMLElement {
 					}
 				} else {
 					me.#content = me.#shadow;
-					me.#content.innerHTML = src;
+					GSDOM.setHTML(me.#content, src);
 				}
 				return;
 			}
@@ -592,7 +591,7 @@ export default class GSElement extends HTMLElement {
 
 			if (inject.target === me.parentElement) {
 				me.#content = me.isFlat ? me : me.#shadow;
-				me.#content.innerHTML = src;
+				GSDOM.setHTML(me.#content, src);
 				return;
 			}
 			
@@ -670,7 +669,7 @@ export default class GSElement extends HTMLElement {
 		if (!me.#useTemplate) return;
 		if (!me.isFlat) me.attachEvent(this, document, 'gs-style', me.#styleChange.bind(me));
 		me.attachEvent(this, screen.orientation, 'change', me.#onOrientation.bind(me));
-		requestAnimationFrame(() => me.onReady());
+		GSUtil.requestAnimationFrame(() => me.onReady());
 	}
 
 }

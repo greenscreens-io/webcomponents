@@ -46,7 +46,7 @@ export default class GSEnvironment {
         if (navigator.userAgentData) {
             let sts = false;
             navigator.userAgentData.brands.forEach((v) => {
-                if (v.brand.toLowerCase().indexOf(strVal) > -1) {
+                if (v.brand.toLowerCase().includes(strVal)) {
                     sts = true;
                 }
             });
@@ -112,11 +112,11 @@ export default class GSEnvironment {
 
         const otype = screen.orientation.type;
 
-        if (otype.indexOf('portrait') > -1) {
+        if (otype.includes('portrait')) {
             return val === 'portrait' || val === 'vertical';
         }
 
-        if (otype.indexOf('landscape') > -1) {
+        if (otype.includes('landscape')) {
             return val === 'landscape' || val === 'horizontal';
         }
 

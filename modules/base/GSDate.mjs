@@ -49,7 +49,7 @@ export default class GSDate extends Date {
     /**
      * Convert date to a given string format
      * 
-     *  For date formating, set global self.GS_FORMAT_DATE to a custom function 
+     *  For date formating, set global globalThis.GS_FORMAT_DATE to a custom function 
      *  
      * Use external libraries such as 
      *  https://day.js.org/en/
@@ -61,9 +61,9 @@ export default class GSDate extends Date {
      */
     toFormat(format = '', locale = 'en') {
         const me = this;
-        const valid = format && GSFunction.isFunction(self.GS_FORMAT_DATE);
+        const valid = format && GSFunction.isFunction(globalThis.GS_FORMAT_DATE);
         if (!valid) return me.toISOString();
-        return self.GS_FORMAT_DATE(me, format, locale);
+        return globalThis.GS_FORMAT_DATE(me, format, locale);
     }
 
     get year() {

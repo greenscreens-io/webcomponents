@@ -23,7 +23,7 @@ import GSDOM from "../base/GSDOM.mjs";
  */
 export default class GSHighlight extends GSElement {
 
-    static URL_LIB = self.GS_URL_HLJS || 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0';
+    static URL_LIB = globalThis.GS_URL_HLJS || 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0';
 
     static {
         customElements.define('gs-highlight', GSHighlight);
@@ -149,7 +149,7 @@ export default class GSHighlight extends GSElement {
     #onTarget() {
         const me = this;
         const el = me.target ? GSDOM.query(me.target) : null;
-        if (!el) return me.#code.innerHTML = `Element with id ${me.target} not found!`;
+        if (!el) return GSDOM.setHTML(me.#code, `Element with id ${me.target} not found!`);
         me.#onHighlight(el.innerHTML);
     }
 
@@ -159,7 +159,7 @@ export default class GSHighlight extends GSElement {
     async #onURL() {
         const me = this;
         const data = await GSLoader.load(me.url);
-        if (!data) return me.#code.innerHTML = `Code URL ${me.url} unreachable!`;
+        if (!data) return GSDOM.setHTML(me.#code, `Code URL ${me.url} unreachable!`);
         me.#onHighlight(data);
     }
 
@@ -169,12 +169,12 @@ export default class GSHighlight extends GSElement {
 
     #onMessage(e) {
         URL.revokeObjectURL(e.data.url);
-        this.#code.innerHTML = e.data.data;
+        GSDOM.setHTML(this.#code, e.data.data);
     }
 
     #onHighlight(data = '') {
         const me = this;
-        if (!data) return me.#code.innerHTML = 'No data!';
+        if (!data) return GSDOM.setHTML(me.#code, 'No data!');
         const response = me.#worker;
         const blob = new Blob([response], { type: 'application/javascript' });
         const blobURL = URL.createObjectURL(blob);
@@ -186,10 +186,10 @@ export default class GSHighlight extends GSElement {
     get #worker() {
         const me = this;
         const langs = me.language ? me.language.split(',').map(v => `importScripts('${GSHighlight.URL_LIB}$/languages/{v.trim}.min.js');`).join('') : '';
-        return `self.onmessage = (event) => {
+        return `globalThis.onmessage = (event) => {
                 importScripts('${GSHighlight.URL_LIB}/highlight.min.js');
                 ${langs}
-                const result = self.hljs.highlightAuto(event.data.data);
+                const result = globalThis.hljs.highlightAuto(event.data.data);
                 postMessage({data:result.value, url:event.data.url});};`
     }
 

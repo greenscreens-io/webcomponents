@@ -13,6 +13,7 @@ import GSItem from "../base/GSItem.mjs";
 import GSLoader from "../base/GSLoader.mjs";
 import GSEvent from "../base/GSEvent.mjs";
 import GSAttr from "../base/GSAttr.mjs";
+import GSDOM from "../base/GSDOM.mjs";
 
 /**
  * Renderer for bootstrap list group 
@@ -72,28 +73,25 @@ export default class GSList extends GSElement {
         const message = me.#title(el);
         //const tpl = await GSItem.getTemplate(el);
         const tpl = GSItem.getBody(el);
-        const css = me.#getCSS(el);
-        const href = me.#getHref(el);
-        const action = GSItem.getActionAttr(el);
-        const dissmis = GSItem.getDismissAttr(el);
-        const target = GSItem.getTargetAttr(el);
-        const toggle = GSItem.getToggleAttr(el);
+        const css = GSItem.getCSS(el);
+        const href = GSItem.getHref(el);
+
+        const dataAttrs = GSAttr.dataToString(el);
+        const dataBS = GSItem.getAttrs(el);
+        
+        const icon = GSItem.getIcon(el);        
+        const icoCSS = icon ? `<i class="${icon}"></i>` : ''
 
         const active = me.#getActive(el) ? 'active' : '';
         const select = me.selectable ? 'is="gs-ext-navlink"' : 'ignore';
+        const hreftgt = href && href !=='#' ? `target=${GSItem.getTarget(el)}` : '';
 
         return `<a  ${select} class="list-group-item list-group-item-action ${active} ${css}"
-                href="${href}" ${action} ${toggle} ${target} ${dissmis}>
-                ${tpl || message}
-                </a>`;
+                href="${href}" ${hreftgt} ${dataBS} ${dataAttrs}>${icoCSS} ${tpl || message}</a>`;
     }
 
     #title(el) {
         return GSAttr.get(el, 'title');
-    }
-
-    #getCSS(el) {
-        return GSAttr.get(el, 'css', '');
     }
 
     #getActive(el) {
@@ -102,10 +100,6 @@ export default class GSList extends GSElement {
 
     get selectable() {
         return GSAttr.getAsBool(this, 'selectable', true);
-    }
-
-    #getHref(el) {
-        return GSAttr.get(el, 'href', "#");
     }
 
     /**
@@ -119,7 +113,8 @@ export default class GSList extends GSElement {
         const data = await GSLoader.loadData(val);
         if (!GSUtil.isJsonType(data)) return;
         const me = this;
-        me.innerHTML = GSItem.generateItem(data);
+        const src = GSItem.generateItem(data);
+        GSDOM.setHTML(me, src);
         GSEvent.deattachListeners(me);
         me.connectedCallback();
         return data;

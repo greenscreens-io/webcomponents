@@ -32,11 +32,11 @@ export default class GSAttachment {
     }
 
     isImage() {
-        return ['image/gif', 'image/png', 'image/jpg', 'image/jpeg', 'image/svg+xml'].indexOf(this.file.type) > -1;
+        return ['image/gif', 'image/png', 'image/jpg', 'image/jpeg', 'image/svg+xml'].includes(this.file.type);
     }
 
     isVideo() {
-        return ['video/mp4', 'video/quicktime'].indexOf(this.file.type) > -1;
+        return ['video/mp4', 'video/quicktime'].includes(this.file.type);
     }
 
     static #transferredFiles(transfer, directory) {

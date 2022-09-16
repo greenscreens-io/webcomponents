@@ -28,66 +28,45 @@
 
     <gs-css url="/webcomponents/assets/css/io.greenscreens.bootstrap_5.2.0.css"></gs-css>
     <gs-css url="/webcomponents/assets/icons/bootstrap-icons.css" notheme="true"></gs-css>
+    <gs-css url="./style.css" notheme="true"></gs-css>
 
-    
-    <style is="gs-ext-style">
-        :root {
-            --bs-body-bg: #f7f7f7;
-            --bs-body-bg-rgb: 247, 247, 247;
-        }
-
-        .offcanvas {
-            --bs-offcanvas-bg: #f7f7f7;
-        }
-
-        .nav-link:hover,
-        .nav-link:focus {
-            background-color: rgb(67 89 113 / 13%) !important;
-        }
-
-        .zindex-10k {
-            z-index: 10000;
-        }
-    </style>
 </head>
 
-<body>
+<body class="overflow-hidden">
 
     <!-- Header info -->
-    <gs-template href="//shell/header.html" class="fixed-top zindex-10k"></gs-template>
+    <gs-template href="//shell/header.html" class="_fixed-top zindex-10k"></gs-template>
 
     <gs-layout type="horizontal">
 
         <!-- SIDEBAR - template contains clicable action with injection targets -->
-        <gs-item css="mt-4 border-end" css-template="flex-fill p-3" min="260" max="260" template="//shell/sidebar.html"></gs-item>
+        <gs-item css="border-end" css-template="flex-fill p-3" min="260" max="260" 
+            template="//shell/sidebar.html"></gs-item>
 
-        <gs-item css="mt-4" css-template="flex-fill p-3">
+        <gs-item css="" css-template="flex-fill p-3">
             <template>
-                <gs-layout type="vertical">
+                <gs-layout type="vertical" css="overflow-auto">
 
-                        <!-- CONTENT - target where to inject templates -->
-                        <gs-item css="p-3 overflow-auto"  name="content" v-pos="top" h-pos="center">
-                            <template>
-                                <!-- default page the same as sidebar selected item -->
-                                <gs-ext-settings></gs-ext-settings>
-                            </template>
-                        </gs-item>
-
-                        <!-- APP FOOTER WITH Copyright notice -->
-                        <gs-item css="p-2 text-center bg-body" name="footer" v-pos="bottom" h-pos="center" max="60">
-                            <template>
-                                <a href="https://www.greenscreens.ltd" target="_blank" class="text-muted">
-                                    &copy; Green Screens Ltd. 2015. - <gs-year-format></gs-year-format>.</a>
-                            </template>
-                        </gs-item>
+                    <!-- CONTENT - target where to inject templates -->
+                    <gs-item css="p-4" name="content" v-pos="top" h-pos="center">
+                        <template>
+                            <!-- default page the same as sidebar selected item -->
+                            <gs-ext-settings></gs-ext-settings>
+                        </template>
+                    </gs-item>
 
                 </gs-layout>
             </template>
         </gs-item>
-        
-    
+
     </gs-layout>
-    
+
+    <!-- APP FOOTER WITH Copyright notice -->
+    <div id="footer" class="fixed-bottom text-end">
+        <a href="https://www.greenscreens.ltd" target="_blank" class="text-muted">
+            &copy; Green Screens Ltd. 2015. - <gs-year-format></gs-year-format>.</a>
+    </div>
+
     <!-- Application toast notification -->
     <gs-notification id="notification"></gs-notification>
 

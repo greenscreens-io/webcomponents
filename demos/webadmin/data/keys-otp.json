@@ -1,0 +1,23 @@
+[
+    {
+        "uuid": "DEMO",
+        "host": "IBM1",
+        "user": "JOHN",
+        "key": "JV732S4ZWTAA4PMB",
+        "attempts": 0,
+        "verificationCode": 734256,
+        "scratchCodes": [
+            67424859,
+            17345631,
+            13456536,
+            93456529,
+            18567815
+        ],
+        "active": true,
+        "locked": false,
+        "url": "otpauth://totp/Green%20Screens%20Ltd.:JOHN@DEMO.IBM1.localhost?secret=JV732S4ZWTAA4PMB&issuer=Green+Screens+Ltd.&algorithm=SHA1&digits=6&period=30&uuid=0&host=SAFE&tk=25928&ts=1663305208",
+        "created": 1662974475681,
+        "userName": "JOHN@DEMO.IBM1.localhost",
+        "id": -1328577705
+    }
+]
