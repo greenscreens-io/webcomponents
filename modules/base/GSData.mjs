@@ -74,16 +74,19 @@ export default class GSData {
         let value = null;
         for (let key of fields) {
             value = rec[key];
-            if (value && value.toString().toLowerCase().includes(filter)) return true;
+            if (('' + value).toString().toLowerCase().includes(filter)) return true;
         }
         return false;
     }
 
     static filterComplex(rec, filter) {
         let found = true;
+        let match = null;
+
         for (let flt of filter) {
             
-            found = found && Object.hasOwn(rec, flt.name) && rec[flt.name].includes(flt.value);
+            match = flt?.value?.toLowerCase();
+            found = found && ('' + rec[flt.name]).toLocaleLowerCase().includes(match);
             if (!found) break;
         }
 

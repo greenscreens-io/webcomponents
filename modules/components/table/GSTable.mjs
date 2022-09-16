@@ -55,7 +55,7 @@ export default class GSTable extends GSElement {
     }
 
     static get observedAttributes() {
-        const attrs = ['src', 'select', 'multiselect', 'css', 'css-header', 'css-row', 'css-cell', 'css-select'];
+        const attrs = ['src', 'select', 'multiselect', 'css', 'css-header', 'css-filter', 'css-columns', 'css-row', 'css-cell', 'css-select'];
         return GSElement.observeAttributes(attrs);
     }
 
@@ -66,7 +66,7 @@ export default class GSTable extends GSElement {
 
     #validateAllowed() {
         const me = this;
-        let list = Array.from(me.childNodes).filter(el => el.slot && el.slot !== 'extra');
+        let list = Array.from(me.children).filter(el => el.slot && el.slot !== 'extra');
         if (list.length > 0) throw new Error(`Custom element injection must contain slot="extra" attribute! Element: ${me.tagName}, ID: ${me.id}`);
         list = Array.from(me.childNodes).filter(el => !el.slot);
         const allowed = GSDOM.isAllowed(list, GSTable.#tagList);
@@ -174,6 +174,14 @@ export default class GSTable extends GSElement {
         return GSAttr.get(this, 'css-cell', this.#cellCSS);
     }
 
+    get cssFilter() {
+        return GSAttr.get(this, 'css-filter', '');
+    }
+
+    get cssColumns() {
+        return GSAttr.get(this, 'css-columns', '');
+    }
+
     set css(val = '') {
         GSAttr.set(this, 'css', val);
     }
@@ -184,6 +192,14 @@ export default class GSTable extends GSElement {
 
     set cssHeader(val = '') {
         GSAttr.set(this, 'css-header', val);
+    }
+
+    set cssFilter(val = '') {
+        GSAttr.set(this, 'css-filter', val);
+    }
+
+    set cssColumns(val = '') {
+        GSAttr.set(this, 'css-columns', val);
     }
 
     set cssRow(val = '') {

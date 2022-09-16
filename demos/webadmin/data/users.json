@@ -1,0 +1,36 @@
+[
+    {
+        "confid": 12341234,
+        "uuid": "DEMO",
+        "host": "IBM1",
+        "user": "JOHN",
+        "display": "DSP0001",
+        "outq": "PRTDEMO",
+        "enhanced": 0,
+        "drawer2": -1,
+        "drawer1": -1,
+        "driver": 0,
+        "devtype": 0,
+        "program": "",
+        "printer": "Default",
+        "$changed": true,
+        "id": -2147483647
+    },
+    {
+        "confid": 99999,
+        "uuid": "DEMO",
+        "host": "IBM1",
+        "user": "JOHN",
+        "devtype": 0,
+        "driver": 0,
+        "drawer1": -1,
+        "drawer2": -1,
+        "enhanced": 0,
+        "display": "",
+        "outq": "",
+        "program": "",
+        "printer": "Default",
+        "$changed": true,
+        "id": -2147483646
+    }
+]

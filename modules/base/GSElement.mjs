@@ -234,7 +234,7 @@ export default class GSElement extends HTMLElement {
 	 * Where to position flat element
 	 * HTML insertAdjacent value or *(gs-block) or self(within)
 	 * Format position | position@target (self)
-	 * @returns {string}  Vlues parent|self|unwrap|[html insertion position]
+	 * @returns {string}  Values parent|self|unwrap|[html insertion position]
 	 */
 	get anchor() {
 		const me = this;

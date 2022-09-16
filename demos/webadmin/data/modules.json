@@ -1,0 +1,90 @@
+[
+    {
+        "name": "logins.war",
+        "active": true
+    },
+    {
+        "name": "assets.war",
+        "active": true
+    },
+    {
+        "name": "modernization.war",
+        "active": true
+    },
+    {
+        "name": "ROOT.war",
+        "active": true
+    },
+    {
+        "name": "doc.war",
+        "active": true
+    },
+    {
+        "name": "samples.war",
+        "active": true
+    },
+    {
+        "name": "i18n.war",
+        "active": true
+    },
+    {
+        "name": "service.update.war",
+        "active": true
+    },
+    {
+        "name": "templates.war",
+        "active": true
+    },
+    {
+        "name": "service.writer.war",
+        "active": true
+    },
+    {
+        "name": "office.war",
+        "active": true
+    },
+    {
+        "name": "otp.war",
+        "active": true
+    },
+    {
+        "name": "webauth.war",
+        "active": true
+    },
+    {
+        "name": "login.war",
+        "active": true
+    },
+    {
+        "name": "wtma.war",
+        "active": true
+    },
+    {
+        "name": "lite.war",
+        "active": true
+    },
+    {
+        "name": "service.printing.war",
+        "active": true
+    },
+    {
+        "name": "wl.war",
+        "active": true
+    },
+    {
+        "name": "barcode.war",
+        "active": true
+    },
+    {
+        "name": "terminal.war",
+        "active": true
+    },
+    {
+        "name": "resources.war",
+        "active": true
+    },
+    {
+        "name": "service.spooler.war",
+        "active": true
+    }
+]

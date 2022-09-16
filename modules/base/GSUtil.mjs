@@ -96,7 +96,7 @@ export default class GSUtil {
 	 * @returns {string}
 	 */
 	static normalize(val, def = '') {
-		return GSUtil.isString(val) ? val.trim() : (val || def).toString();
+		return (val ?? def).toString().trim();
 	}
 
 	/**

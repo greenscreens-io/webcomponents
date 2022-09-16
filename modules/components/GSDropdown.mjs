@@ -199,8 +199,13 @@ export default class GSDropdown extends GSElement {
       if (it === '-') return opts.push('<li><hr class="dropdown-divider"/></li>');
       const hasSubmenu = Array.isArray(it.menu);
       opts.push('<li>');
-      opts.push(`<a class="dropdown-item" href="#"`);
+      opts.push(`<a class="dropdown-item" href="#" `);
+      opts.push(GSItem.getAttrs(el));
+      /*
       if (it.action) opts.push(` data-action="${it.action}"`);
+      if (it.inject) opts.push(` data-inject="${it.inject}"`);
+      if (it.target) opts.push(` data-bs-target="${it.target}"`);
+      */
       opts.push('>');
 
       if (me.rtl) {
@@ -338,12 +343,11 @@ export default class GSDropdown extends GSElement {
 
   #renderChild(el) {
     const name = GSAttr.get(el, 'name');
-    const action = GSAttr.get(el, 'action');
     const header = GSAttr.get(el, 'header');
     if (header) return `<li><h6 class="dropdown-header"/>${header}</h6></li>`;
     if (!name) return `<li><hr class="dropdown-divider"/></li>`;
-    if (!action) return ``;
-    return `<li><a class="dropdown-item" href="#" data-action="${action}">${name}</a></li>`;
+    const attrs = GSItem.getAttrs(el).trim();
+    return attrs ? `<li><a class="dropdown-item" href="#" ${attrs} >${name}</a></li>` : '';
   }
 
   /**

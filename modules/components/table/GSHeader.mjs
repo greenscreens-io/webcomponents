@@ -44,12 +44,12 @@ export default class GSHeader extends HTMLElement {
         html.push(`<thead class="${table.cssHeader}">`);
 
         if (filters.length > 0) {
-            html.push('<tr is="gs-tablefilter">');
+            html.push(`<tr is="gs-tablefilter" class="${table.cssFilter}">`);
             columns.forEach(el => html.push(el.renderFilter()));
             html.push('</tr>');
         }
 
-        html.push('<tr is="gs-tablesort">');
+        html.push(`<tr is="gs-tablesort" class="${table.cssColumns}">`);
         columns.forEach(el => html.push(el.render()));
         html.push('</tr>');
 

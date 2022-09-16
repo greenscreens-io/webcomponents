@@ -240,14 +240,14 @@ export default class GSModal extends GSElement {
 	 */
 	#findSlotOrEl(name = '', qry = '') {
     const me = this;
-		const el = name ? me.self.querySelector(`[slot="${name}"]`) : null;
+		let el = name ? me.self.querySelector(`[slot="${name}"]`) : null;
 		if (!el) el = me.self.querySelector(qry);
     return el;
 	}
 
 
   get title() {
-    return this.#findSlotOrEl(this, 'title', '.modal-title');
+    return this.#findSlotOrEl('title', '.modal-title');
   }
 
   set title(val = '') {
@@ -255,7 +255,7 @@ export default class GSModal extends GSElement {
   }
 
   get body() {
-    return this.#findSlotOrEl(this, 'body', '.modal-body');
+    return this.#findSlotOrEl('body', '.modal-body');
   }
 
   set body(val = '') {

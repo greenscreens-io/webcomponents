@@ -76,10 +76,10 @@ export default class GSColumn extends HTMLElement {
     #renderOptions(isCombo = false) {
         const me = this;
         const list = [];
-        me.items.forEach(el => {
+        me.filters.forEach(el => {
             const def = GSAttr.getAsBool(el, 'default', false);
             const value = GSAttr.get(el, 'value', '');
-            const title = GSAttr.get(el, 'title', value);
+            const title = GSAttr.get(el, 'map', value);
             let html = '';
             if (isCombo) {
                 html = `<option value="${value}" ${def ? 'selected' : ''}>${title}</option>`;
@@ -96,7 +96,9 @@ export default class GSColumn extends HTMLElement {
     }
 
     get cssFilter() {
-        return GSAttr.get(this, 'css-filter', 'form-control');
+        const me = this;
+        const def = me.list ? 'form-select' : 'form-control';
+        return GSAttr.get(me, 'css-filter', def);
     }
 
     get filter() {
@@ -143,6 +145,14 @@ export default class GSColumn extends HTMLElement {
         return GSItem.genericItems(this);
     }
 
+    get filters() {
+        return GSItem.genericItems(this.querySelector('gs-item[filter="true"]'));
+    }
+
+    get maps() {
+        return GSItem.genericItems(this.querySelector('gs-item[map="true"]'));
+    }
+
     /**
      * Is auto populate list with data values
      */
@@ -152,8 +162,9 @@ export default class GSColumn extends HTMLElement {
 
     toJSON() {
         const me = this;
-        //const idx = [...me.parentElement.children].indexOf(me);
-        return { name: me.name, title: me.title, width: me.width, sortable: me.sortable, idx: me.index };
+        // [[val,map]]
+        const mapping = me.maps.map(el => [ GSAttr.get(el, 'value'), GSAttr.get(el, 'map') ])
+        return { name: me.name, title: me.title, width: me.width, sortable: me.sortable, idx: me.index, map :mapping };
     }
 }
 
