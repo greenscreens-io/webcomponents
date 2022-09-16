@@ -11,6 +11,7 @@ import GSID from "../../base/GSID.mjs";
 import GSEvent from "../../base/GSEvent.mjs";
 import GSAttr from "../../base/GSAttr.mjs";
 import GSDOM from "../../base/GSDOM.mjs";
+import GSDate from "../../base/GSDate.mjs";
 
 /**
  * Bootstrap table bod renderer
@@ -121,7 +122,35 @@ export default class GSTBody extends HTMLTableSectionElement {
         let val = hdr.name === "#" ? idx : rec[hdr.name];
         const map = hdr.map?.filter(o => o[0] === '' + val);
         val = map?.length > 0 ? map[0][1] || val : val;
+        val = me.#format(hdr, val);
+        // todo format data 
         return `<td class="${me.cssCell}">${val || '&nbsp;'}</td>`;
+    }
+
+    #format(hdr, val) {
+        if (!hdr.format) return val;
+
+        const type = this.#toType(hdr, val);
+        switch(type) {
+            case 'timestamp' : 
+            case 'date' : 
+                return new GSDate(val).format(hdr.format);
+            case 'string' : 
+            case 'boolean' : 
+            case 'number' : 
+            case 'currency' : 
+                break;
+        }
+        
+        return val;
+    }
+
+    #toType(hdr, val) {
+        if (hdr.type) return hdr.type;
+        if (val instanceof Date) return 'date';
+        if (val instanceof Number) return 'number';
+        if (val instanceof Boolean) return 'boolean';
+        return typeof val;
     }
 
     #onMenu(e) {

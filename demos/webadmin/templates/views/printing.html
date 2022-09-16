@@ -26,7 +26,22 @@
                     <gs-column title="Outq" name="outq" filter="true"></gs-column>
                     <gs-column title="Spool" name="spoolName" filter="true"></gs-column>
                     <gs-column title="User" name="userName" filter="true"></gs-column>
-                    <gs-column title="Driver" name="driver"></gs-column>
+                    <gs-column title="Driver" name="driver">
+                        <gs-item map="true">
+                            <gs-item value="" map="N/A"></gs-item>
+                            <gs-item value="0" map="PDF"></gs-item>
+                            <gs-item value="1" map="HTML"></gs-item>
+                            <gs-item value="2" map="TEXT"></gs-item>
+                            <gs-item value="3" map="JSON"></gs-item>
+                            <gs-item value="4" map="RAW"></gs-item>
+                            <gs-item value="5" map="ETL"></gs-item>
+                            <gs-item value="6" map="JSX"></gs-item>
+                            <gs-item value="7" map="HPT"></gs-item>
+                            <gs-item value="8" map="ZPL"></gs-item>
+                            <gs-item value="9" map="POS"></gs-item>
+                            <gs-item value="11" map="SVG"></gs-item>          
+                        </gs-item>
+                    </gs-column>
                     <gs-column title="Printer" name="printerName"></gs-column>
                     <gs-column title="Status" name="active"  filter="true" list="fixed">
                         <gs-item map="true" filter="true">

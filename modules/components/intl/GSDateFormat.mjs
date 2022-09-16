@@ -7,6 +7,7 @@
  * @module components/GSDateFormat
  */
 import GSAttr from '../../base/GSAttr.mjs'
+import GSDate from '../../base/GSDate.mjs';
 import GSDOM from '../../base/GSDOM.mjs';
 
 /**
@@ -55,14 +56,23 @@ export default class GSDateFormat extends HTMLElement {
         GSDOM.setHTML(this, this.format);
     }
 
-    get format() {
+    get result() {
         const me = this;
+        if (me.format) return me.value.format(me.format);
         return new Intl.DateTimeFormat(me.locale, me.dataset).format(me.value);
+    }
+
+    get format() {
+        return GSAttr.get(this, 'format');
+    }
+
+    set format(val = '') {
+        return GSAttr.set(this, 'format', val);
     }
 
     get value() {
         const o = Date.parse(GSAttr.get(this, 'value'));
-        return o || new Date();
+        return new GSDate(o);
     }
 
     set value(val = '') {

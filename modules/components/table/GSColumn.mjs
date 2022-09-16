@@ -130,6 +130,14 @@ export default class GSColumn extends HTMLElement {
         return GSAttr.getAsNum(this, 'index', -1);
     }
 
+    get format() {
+        return GSAttr.get(this, 'format');
+    }
+
+    get type() {
+        return GSAttr.get(this, 'type');
+    }
+
     /**
      * Will generate ComboBox or datalist
      */
@@ -164,7 +172,16 @@ export default class GSColumn extends HTMLElement {
         const me = this;
         // [[val,map]]
         const mapping = me.maps.map(el => [ GSAttr.get(el, 'value'), GSAttr.get(el, 'map') ])
-        return { name: me.name, title: me.title, width: me.width, sortable: me.sortable, idx: me.index, map :mapping };
+        return { 
+            name: me.name, 
+            title: me.title, 
+            width: me.width, 
+            sortable: me.sortable, 
+            idx: me.index, 
+            type: me.type, 
+            format: me.format, 
+            map :mapping 
+        };
     }
 }
 

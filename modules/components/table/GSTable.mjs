@@ -123,6 +123,10 @@ export default class GSTable extends GSElement {
         return me.#store;
     }
 
+    get header() {
+        return this.querySelector('gs-header');
+    }
+
     /**
      * Selected records
      */
@@ -245,7 +249,7 @@ export default class GSTable extends GSElement {
 
     #prepareHeaders() {
         const me = this;
-        const hdr = me.querySelector('gs-header');
+        const hdr = me.header;
         me.#headers = hdr ? hdr.toJSON() : [];
         if (me.#headers.length > 0) return;
         if (me.#data.length === 0) return;

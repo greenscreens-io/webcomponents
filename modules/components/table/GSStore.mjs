@@ -460,7 +460,9 @@ export default class GSStore extends HTMLElement {
     }
 
     #fields() {
-        return Array.from(this.querySelectorAll('gs-item')).map(o => o.name);
+        const me = this;
+        const fields = me.table?.header?.fields;
+        return fields ? fields : Array.from(me.querySelectorAll('gs-item')).map(o => o.name);
     }
 
 }
