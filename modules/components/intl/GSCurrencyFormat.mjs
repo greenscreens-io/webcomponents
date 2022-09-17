@@ -22,6 +22,8 @@ import GSDOM from '../../base/GSDOM.mjs';
 export default class GSCurrencyFormat extends HTMLElement {
 
     static observedAttributes = ['value', 'locale', 'currency'];
+    
+    #id = 0;
 
     connectedCallback() {
         this.#update();
@@ -32,7 +34,12 @@ export default class GSCurrencyFormat extends HTMLElement {
     }
 
     #update() {
-        GSDOM.setHTML(this, this.format);
+        const me = this;
+        if (me.#id > 0) return;
+        me.#id = setTimeout(() => {
+            GSDOM.setHTML(me, me.format);
+            me.#id = 0;
+        }, 50);
     }
 
     get #options() {

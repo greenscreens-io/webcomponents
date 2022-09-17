@@ -8,7 +8,7 @@
  */
 
 /**
- * Custom Date class to help handling calendar
+ * Custom Date class to help handling calendar and date formatting
  * 
  * @class
  */
@@ -19,8 +19,15 @@ export default class GSDate extends Date {
 
     #locale = navigator.locale;
 
-    format(val = GSDate.DEFAULT_FORMAT, locale = navigator.locale) {
-        const obj = this.toJSON(locale);
+    constructor(v, locale) {
+        v ? super(v) : super();
+        this.locale = locale;
+    }
+
+    format(val = GSDate.DEFAULT_FORMAT, locale) {
+        const me = this;
+        me.locale = locale;
+        const obj = me.asJSON();
         return val.replace(GSDate.REGEX_FORMAT, (match, val) => val || obj[match]);
     }
 
@@ -28,12 +35,12 @@ export default class GSDate extends Date {
      * Build array days/weeks for a month
      * @returns {Array<string>}
      */
-    build(locale = navigator.locale) {
+    build() {
         const me = this;
         const last = me.last.getDate();
         const first = me.first.getDay();
 
-        const mondayFirst = me.#isMondayFirst(locale);
+        const mondayFirst = me.#isMondayFirst();
 
         const shifter = mondayFirst ? -2 : -1;
         const days = first === 0 ? [] : ' '.repeat(first + shifter).split(' ');
@@ -48,6 +55,13 @@ export default class GSDate extends Date {
         return days;
     }
 
+    get locale() {
+        return this.#locale;
+    }
+
+    set locale(val) {
+        this.#locale = val || navigator.locale;
+    }
 
     get year() {
         return this.getFullYear();
@@ -102,7 +116,7 @@ export default class GSDate extends Date {
     }
 
     get MM() {
-        return this.#padStart(this.M, 2, '0');
+        return this.M.toString().padStart( 2, '0');
     }
 
     get MMM() {
@@ -114,11 +128,11 @@ export default class GSDate extends Date {
     }
 
     get D() {
-        return this.getDate();
+        return this.getDate().toString();
     }
 
     get DD() {
-        return this.#padStart(this.D, 2, '0');
+        return this.D.padStart( 2, '0');
     }
 
     get d() {
@@ -142,7 +156,7 @@ export default class GSDate extends Date {
     }
 
     get HH() {
-        return this.#padStart(this.H, 2, '0');
+        return this.H.padStart(2, '0');
     }
 
     get h() {
@@ -166,7 +180,7 @@ export default class GSDate extends Date {
     }
 
     get mm() {
-        return this.#padStart(this.m, 2, '0');
+        return this.m.padStart(2, '0');
     }
 
     get s() {
@@ -174,11 +188,11 @@ export default class GSDate extends Date {
     }
 
     get ss() {
-        return this.#padStart(this.s, 2, '0');
+        return this.s.padStart(2, '0');
     }
 
     get SSS() {
-        return this.#padStart(this.getMilliseconds(), 3, '0');
+        return this.getMilliseconds().toString().padStart(3, '0');
     }
 
     get Z() {
@@ -198,7 +212,7 @@ export default class GSDate extends Date {
     }
 
     get kk() {
-        return this.#padStart(this.k, 2, '0');
+        return this.k.padStart(2, '0');
     }
 
     get W() {
@@ -210,7 +224,7 @@ export default class GSDate extends Date {
     }
 
     get WW() {
-        return this.#padStart(this.W, 2, '0');
+        return this.W.toString().padStart(2, '0');
     }
 
     get x() {
@@ -221,9 +235,8 @@ export default class GSDate extends Date {
         return Math.floor(this.x / 1000);
     }
 
-    toJSON(locale = navigator.locale) {
+    asJSON() {
         const me = this;
-        me.#locale = locale;
         return {
             YY: me.YY,
             YYYY: me.YYYY,
@@ -262,7 +275,7 @@ export default class GSDate extends Date {
 
     static monthList(short = false, locale = navigator.locale, capitalize = true) {
         const tmp = new GSDate();
-        tmp.#locale = locale;
+        tmp.locale = locale;
         tmp.setMonth(0);
         const days = [];
         let val = null;
@@ -278,9 +291,9 @@ export default class GSDate extends Date {
 
     static dayList(short = false, locale = navigator.locale, capitalize = true) {
         const tmp = new GSDate();
-        const mondayFirst = tmp.#isMondayFirst(locale);
+        const mondayFirst = tmp.#isMondayFirst();
         const offset = mondayFirst ? 1 : 0;
-        tmp.#locale = locale;
+        tmp.locale = locale;
         tmp.setDate(tmp.getDate() - tmp.getDay() + offset);
         const days = [];
         let val = null;
@@ -294,8 +307,8 @@ export default class GSDate extends Date {
         return days;
     }
 
-    #isMondayFirst(locale = navigator.locale) {
-        return new Intl.Locale(locale).weekInfo.firstDay === 1;
+    #isMondayFirst() {
+        return new Intl.Locale(this.#locale).weekInfo.firstDay === 1;
     }
 
     #capitalize(val = '') {
@@ -307,20 +320,13 @@ export default class GSDate extends Date {
     }
 
     #formatHour(size) {
-        const me = this;
-        return me.#padStart(me.getHours() % 12 || 12, size, '0');
+        return (this.getHours() % 12 || 12).toString().padStart(size, '0');
     }
 
     #meridiem(isLowercase) {
         const opt = { hour: '2-digit', hour12: true };
         const val = this.#toLocale(opt).split(' ').pop(-1);
         return isLowercase ? val.toLowerCase() : val;
-    }
-
-    #padStart(string, length, pad) {
-        const s = String(string)
-        if (!s || s.length >= length) return string
-        return `${Array((length + 1) - s.length).join(pad)}${string}`
     }
 
     #zoneStr() {
@@ -331,11 +337,10 @@ export default class GSDate extends Date {
         const minuteOffset = minutes % 60;
 
         const seg1 = negMinutes <= 0 ? '+' : '-';
-        const seg2 = me.#padStart(hourOffset, 2, '0');
-        const seg3 = me.#padStart(minuteOffset, 2, '0');
+        const seg2 = hourOffset.toString().padStart(2, '0');
+        const seg3 = minuteOffset.toString().padStart(2, '0');
 
         return `${seg1}${seg2}:${seg3}`;
     }
-
 
 }

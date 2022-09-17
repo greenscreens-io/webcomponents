@@ -29,6 +29,11 @@ export default class GSCalendar extends GSElement {
         Object.seal(GSCalendar);
     }
 
+    static get observedAttributes() {
+        const attrs = ['format', 'locale', 'date'];
+        return GSElement.observeAttributes(attrs);
+    }
+
     constructor() {
         super();
         this.#date = new GSDate();
@@ -36,13 +41,16 @@ export default class GSCalendar extends GSElement {
 
     attributeChanged(name = '', oldVal = '', newVal = '') {
         const me = this;
+        if (name === 'locale') {
+            me.#date.locale = me.locale;
+        }
         if (name === 'date') {
-            me.#date = new GSDate(newVal);
-            me.#update();
+            me.#date = new GSDate(newVal, me.locale);
         }
         if (name === 'format') {
             me.#date.format = newVal;
         }
+        me.#update();
     }
 
     connectedCallback() {

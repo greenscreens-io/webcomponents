@@ -53,7 +53,7 @@ console.log(d.format('HH:mm:ss DD.MM.YYYY'));
 console.log(d.format('HH:mm:ss DD.MM.YYYY', 'hr-HR'));
 
 // convert all formats to JSON object
-console.log(d.toJSON());
+console.log(d.asJSON());
 
 // get day and month list in browser default locale
 console.log(GSDate.dayList());

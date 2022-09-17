@@ -42,7 +42,9 @@ import GSDOM from '../../base/GSDOM.mjs';
  */
 export default class GSDateFormat extends HTMLElement {
 
-    static observedAttributes = ['value', 'locale'];
+    static observedAttributes = ['value', 'locale', 'format'];
+
+    #id = 0;
 
     connectedCallback() {
         this.#update();
@@ -53,13 +55,19 @@ export default class GSDateFormat extends HTMLElement {
     }
 
     #update() {
-        GSDOM.setHTML(this, this.format);
+        const me = this;
+        if (me.#id > 0) return;
+        me.#id = setTimeout(() => {
+            GSDOM.setHTML(me, me.result);
+            me.#id = 0;
+        }, 50);
     }
 
     get result() {
         const me = this;
-        if (me.format) return me.value.format(me.format);
-        return new Intl.DateTimeFormat(me.locale, me.dataset).format(me.value);
+        const val = me.value;
+        if (me.format) return val.format(me.format);
+        return new Intl.DateTimeFormat(me.locale, me.dataset).format(val);
     }
 
     get format() {
@@ -71,8 +79,9 @@ export default class GSDateFormat extends HTMLElement {
     }
 
     get value() {
-        const o = Date.parse(GSAttr.get(this, 'value'));
-        return new GSDate(o);
+        const me = this;
+        const o = Date.parse(GSAttr.get(me, 'value'));
+        return new GSDate(o, me.locale);
     }
 
     set value(val = '') {
@@ -80,7 +89,7 @@ export default class GSDateFormat extends HTMLElement {
     }
 
     get locale() {
-        return GSAttr.get(this, 'locale', 'default');
+        return GSAttr.get(this, 'locale', navigator.locale);
     }
 
     set locale(val = '') {
