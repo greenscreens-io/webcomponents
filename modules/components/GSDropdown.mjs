@@ -50,9 +50,15 @@ export default class GSDropdown extends GSElement {
       const menu = me.#menu;
       if (!menu) return;
       GSDOM.toggleClass(menu, me.visible, 'show');
-      if (me.visible) requestAnimationFrame(() => {
-        me.#updatePos(menu);
-      });
+      requestAnimationFrame(() => {
+        if (me.visible) {
+            me.#updatePos(menu);
+        } else {
+          menu.style.left = '';
+          menu.style.top = '';
+        }
+      });        
+        
     }
 
     if (name === 'css') {

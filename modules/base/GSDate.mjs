@@ -2,30 +2,37 @@
  * Copyright (C) 2015, 2022 Green Screens Ltd.
  */
 
-import GSFunction from "./GSFunction.mjs";
-
 /**
  * A module loading GSDate class
  * @module base/GSDate
  */
 
 /**
- * Custom Date class to help handling calendar
+ * Custom Date class to help handling calendar and date formatting
  * 
  * @class
  */
 export default class GSDate extends Date {
 
-    static DAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-    static MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+    static DEFAULT_FORMAT = 'YYYY-MM-DDTHH:mm:ssZ';
+    static REGEX_FORMAT = /\[([^\]]+)]|Y{1,4}|M{1,4}|D{1,2}|d{1,4}|H{1,2}|h{1,2}|a|A|m{1,2}|s{1,2}|Z{1,2}|SSS/g
 
-    static DAYS_SHORT = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-    static MONTHS_SHORT = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    #locale = navigator.locale;
 
-    #monday_first = false;
+    constructor(v, locale) {
+        v ? super(v) : super();
+        this.locale = locale;
+    }
+
+    format(val = GSDate.DEFAULT_FORMAT, locale) {
+        const me = this;
+        me.locale = locale;
+        const obj = me.asJSON();
+        return val.replace(GSDate.REGEX_FORMAT, (match, val) => val || obj[match]);
+    }
 
     /**
-     * Build array days/weeks for a month, starts with Sunday
+     * Build array days/weeks for a month
      * @returns {Array<string>}
      */
     build() {
@@ -33,7 +40,9 @@ export default class GSDate extends Date {
         const last = me.last.getDate();
         const first = me.first.getDay();
 
-        const shifter = me.#monday_first ? -2 : -1;
+        const mondayFirst = me.#isMondayFirst();
+
+        const shifter = mondayFirst ? -2 : -1;
         const days = first === 0 ? [] : ' '.repeat(first + shifter).split(' ');
         let i = 1;
         while (i <= last) {
@@ -46,24 +55,12 @@ export default class GSDate extends Date {
         return days;
     }
 
-    /**
-     * Convert date to a given string format
-     * 
-     *  For date formating, set global globalThis.GS_FORMAT_DATE to a custom function 
-     *  
-     * Use external libraries such as 
-     *  https://day.js.org/en/
-     *  https://momentjs.com/
-     * 
-     * @param {string} format String mask to which to format date 
-     * @param {string} locale Locale support to convert date to
-     * @returns 
-     */
-    toFormat(format = '', locale = 'en') {
-        const me = this;
-        const valid = format && GSFunction.isFunction(globalThis.GS_FORMAT_DATE);
-        if (!valid) return me.toISOString();
-        return globalThis.GS_FORMAT_DATE(me, format, locale);
+    get locale() {
+        return this.#locale;
+    }
+
+    set locale(val) {
+        this.#locale = val || navigator.locale;
     }
 
     get year() {
@@ -106,38 +103,244 @@ export default class GSDate extends Date {
         return new GSDate(this.getFullYear(), this.getMonth() + 1, 0);
     }
 
-    get monthName() {
-        return GSDate.getMonthName(this);
+    get YY() {
+        return String(this.YYYY).slice(-2);
     }
 
-    get dayName() {
-        return GSDate.getDayName(this);
+    get YYYY() {
+        return this.getFullYear();
     }
 
-    get isMondayFirst() {
-        return this.#monday_first;
+    get M() {
+        return this.getMonth() + 1;
     }
 
-    set mondayFirst(val = false) {
-        return this.#monday_first = val === true;
+    get MM() {
+        return this.M.toString().padStart( 2, '0');
     }
 
-    static getMonthName(d) {
-        return GSDate.MONTHS[d.getMonth()];
+    get MMM() {
+        return this.#toLocale({ month: 'short' });
     }
 
-    static getDayName(d) {
-        return GSDate.weekDays(d.isMondayFirst)[d.getDay()];
+    get MMMM() {
+        return this.#toLocale({ month: 'long' });
     }
 
-    /**
-     * Returns list of a week names
-     * @param {*} rotate Should rotate Monday as first day of a week
-     * @returns {Array<string>} 
-     */
-    static weekDays(rotate = false, short = false) {
-        const list = short ? GSDate.DAYS_SHORT : GSDate.DAYS;
-        return rotate ? Array.from(list).slice(1).concat(list[0]) : list;
+    get D() {
+        return this.getDate().toString();
+    }
+
+    get DD() {
+        return this.D.padStart( 2, '0');
+    }
+
+    get d() {
+        return this.getDay().toString();
+    }
+
+    get dd() {
+        return this.ddd.slice(0, 2);
+    }
+
+    get ddd() {
+        return this.#toLocale({ weekday: 'short' });
+    }
+
+    get dddd() {
+        return this.#toLocale({ weekday: 'long' });
+    }
+
+    get H() {
+        return this.getHours().toString();
+    }
+
+    get HH() {
+        return this.H.padStart(2, '0');
+    }
+
+    get h() {
+        return this.#formatHour(1);
+    }
+
+    get hh() {
+        return this.#formatHour(2);
+    }
+
+    get a() {
+        return this.#meridiem(true);
+    }
+
+    get A() {
+        return this.#meridiem(false);
+    }
+
+    get m() {
+        return this.getMinutes().toString();
+    }
+
+    get mm() {
+        return this.m.padStart(2, '0');
+    }
+
+    get s() {
+        return this.getSeconds().toString();
+    }
+
+    get ss() {
+        return this.s.padStart(2, '0');
+    }
+
+    get SSS() {
+        return this.getMilliseconds().toString().padStart(3, '0');
+    }
+
+    get Z() {
+        return this.#zoneStr();
+    }
+
+    get ZZ() {
+        return this.Z.replace(':', '');
+    }
+
+    get Q() {
+        return Math.ceil(this.M / 3);
+    }
+
+    get k() {
+        return (this.getHours() + 1).toString();
+    }
+
+    get kk() {
+        return this.k.padStart(2, '0');
+    }
+
+    get W() {
+        const date = new Date(this.getTime());
+        date.setHours(0, 0, 0, 0);
+        date.setDate(date.getDate() + 3 - (date.getDay() + 6) % 7);
+        const week1 = new Date(date.getFullYear(), 0, 4);
+        return 1 + Math.round(((date.getTime() - week1.getTime()) / 86400000 - 3 + (week1.getDay() + 6) % 7) / 7);        
+    }
+
+    get WW() {
+        return this.W.toString().padStart(2, '0');
+    }
+
+    get x() {
+        return this.getTime();
+    }
+
+    get X() {
+        return Math.floor(this.x / 1000);
+    }
+
+    asJSON() {
+        const me = this;
+        return {
+            YY: me.YY,
+            YYYY: me.YYYY,
+            M: me.M,
+            MM: me.MM,
+            MMM: me.MMM,
+            MMMM: me.MMMM,
+            D: me.D,
+            DD: me.DD,
+            d: me.d,
+            dd: me.dd,
+            ddd: me.ddd,
+            dddd: me.dddd,
+            H: me.H,
+            HH: me.HH,
+            h: me.h,
+            hh: me.hh,
+            a: me.a,
+            A: me.A,
+            m: me.m,
+            mm: me.mm,
+            s: me.s,
+            ss: me.ss,
+            SSS: me.SSS,
+            Z: me.Z,
+            ZZ: me.ZZ,
+            Q: me.Q,
+            k: me.k,
+            kk: me.kk,
+            W: me.W,
+            WW: me.WW,
+            x: me.x,
+            X: me.X
+        }
+    }
+
+    static monthList(short = false, locale = navigator.locale, capitalize = true) {
+        const tmp = new GSDate();
+        tmp.locale = locale;
+        tmp.setMonth(0);
+        const days = [];
+        let val = null;
+        let d = 12;
+        while (d--) {
+            val = short ? tmp.MMM : tmp.MMMM;
+            val = capitalize ? tmp.#capitalize(val) : val;
+            days.push(val);
+            tmp.setMonth(tmp.getMonth() + 1);
+        }
+        return days;
+    }
+
+    static dayList(short = false, locale = navigator.locale, capitalize = true) {
+        const tmp = new GSDate();
+        const mondayFirst = tmp.#isMondayFirst();
+        const offset = mondayFirst ? 1 : 0;
+        tmp.locale = locale;
+        tmp.setDate(tmp.getDate() - tmp.getDay() + offset);
+        const days = [];
+        let val = null;
+        let d = 7;
+        while (d--) {
+            val = short ?  tmp.ddd : tmp.dddd;
+            val = capitalize ? tmp.#capitalize(val) : val;
+            days.push(val);
+            tmp.setDate(tmp.getDate() + 1);
+        }
+        return days;
+    }
+
+    #isMondayFirst() {
+        return new Intl.Locale(this.#locale).weekInfo.firstDay === 1;
+    }
+
+    #capitalize(val = '') {
+        return val.charAt(0).toUpperCase() + val.slice(1);
+    }
+
+    #toLocale(opt) {
+        return this.toLocaleString(this.#locale, opt);
+    }
+
+    #formatHour(size) {
+        return (this.getHours() % 12 || 12).toString().padStart(size, '0');
+    }
+
+    #meridiem(isLowercase) {
+        const opt = { hour: '2-digit', hour12: true };
+        const val = this.#toLocale(opt).split(' ').pop(-1);
+        return isLowercase ? val.toLowerCase() : val;
+    }
+
+    #zoneStr() {
+        const me = this;
+        const negMinutes = -1 * me.getTimezoneOffset();
+        const minutes = Math.abs(negMinutes)
+        const hourOffset = Math.floor(minutes / 60)
+        const minuteOffset = minutes % 60;
+
+        const seg1 = negMinutes <= 0 ? '+' : '-';
+        const seg2 = hourOffset.toString().padStart(2, '0');
+        const seg3 = minuteOffset.toString().padStart(2, '0');
+
+        return `${seg1}${seg2}:${seg3}`;
     }
 
 }

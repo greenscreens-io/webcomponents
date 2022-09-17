@@ -8,6 +8,7 @@
  */
 
 import GSDOM from "../../base/GSDOM.mjs";
+import GSAttr from "../../base/GSAttr.mjs";
 
 /**
  * Table header renderer for GSTable
@@ -59,16 +60,19 @@ export default class GSHeader extends HTMLElement {
 
     toJSON() {
         const me = this;
-        const heads = [];
         const cols = GSDOM.queryAll(me, 'gs-column');
-        cols.forEach((el, i) => {
-            heads.push(el.toJSON());
-        });
-        return heads;
+        return cols.map(el => el.toJSON());
     }
 
     get table() {
         return GSDOM.closest(this, 'GS-TABLE')
+    }
+
+    get fields() {
+        const me = this;
+        const cols = GSDOM.queryAll(me, 'gs-column');
+        return cols.map(el => GSAttr.get(el, 'name'));
+
     }
 }
 

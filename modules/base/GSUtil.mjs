@@ -207,6 +207,31 @@ export default class GSUtil {
 	}
 
 	/**
+	 * Download provided data
+	 * 
+	 * @async
+	 * @param {Array} data 
+	 * @param {string} name File name
+	 * @param {string} type Mime type, default octet/stream
+	 */
+	static async export(data, name, type = 'octet/stream') {
+
+		const blob = new Blob(data, { type: type });
+		const url = URL.createObjectURL(blob);
+		try {
+			const a = document.createElement("a");
+			a.href = url;
+			a.download = name;
+			a.click();
+	
+			await GSUtil.timeout(2000);
+
+		} finally {
+			URL.revokeObjectURL(url);
+		}
+	}
+
+	/**
 	 * Registration helper function, replacement for class static initializers
 	 * Mostly to support Safari browser.
 	 * 
@@ -221,11 +246,11 @@ export default class GSUtil {
 	 * 
 	 * @returns {void}
 	 */
-	 static register(name, clazz, ext, seal = true, freeze = false, expose = false) {
+	static register(name, clazz, ext, seal = true, freeze = false, expose = false) {
 		if (!HTMLElement.isPrototypeOf(clazz)) return;
 		if (customElements.get(name)) return;
-		customElements.define(name, clazz, {extends : ext?.toLowerCase()});
-		if (seal && !Object.isSealed(clazz)) Object.seal(clazz);		
+		customElements.define(name, clazz, { extends: ext?.toLowerCase() });
+		if (seal && !Object.isSealed(clazz)) Object.seal(clazz);
 		if (freeze && !Object.isFrozen(clazz)) Object.freeze(clazz);
 		if (expose) self[clazz.name] = clazz;
 	}

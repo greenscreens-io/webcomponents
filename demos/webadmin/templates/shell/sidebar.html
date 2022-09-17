@@ -75,13 +75,19 @@
         </gs-item>
 
         <gs-item css="border-0 p-1 d-flex align-items-center fs-5 text-nowrap" 
-                icon="bi-fan fs-4 pe-4" title="Services" 
-                inject="gs-admin-view-services" target="#content">
-        </gs-item>
-
-        <gs-item css="border-0 p-1 d-flex align-items-center fs-5 text-nowrap" 
                 icon="bi-people-fill fs-4 pe-4" title="Users" 
                 inject="gs-admin-view-users" target="#content">
+        </gs-item>
+                  
+    </gs-list>    
+
+    <hr slot="body">
+
+    <gs-list slot="body" css="" selectable="false">
+
+        <gs-item css="border-0 p-1 d-flex align-items-center fs-5 text-nowrap" 
+                icon="bi-fan fs-4 pe-4" title="Services" 
+                inject="gs-admin-view-services" target="#content">
         </gs-item>
         
         <gs-item css="border-0 p-1 d-flex align-items-center fs-5 text-nowrap" 
@@ -94,7 +100,7 @@
                 inject="gs-admin-view-webmodules" target="#content">
         </gs-item>
           
-    </gs-list>    
+    </gs-list>  
 
     <hr slot="body">
     

@@ -29,6 +29,11 @@ export default class GSCalendar extends GSElement {
         Object.seal(GSCalendar);
     }
 
+    static get observedAttributes() {
+        const attrs = ['format', 'locale', 'date'];
+        return GSElement.observeAttributes(attrs);
+    }
+
     constructor() {
         super();
         this.#date = new GSDate();
@@ -36,13 +41,16 @@ export default class GSCalendar extends GSElement {
 
     attributeChanged(name = '', oldVal = '', newVal = '') {
         const me = this;
+        if (name === 'locale') {
+            me.#date.locale = me.locale;
+        }
         if (name === 'date') {
-            me.#date = new GSDate(newVal);
-            me.#update();
+            me.#date = new GSDate(newVal, me.locale);
         }
         if (name === 'format') {
             me.#date.format = newVal;
         }
+        me.#update();
     }
 
     connectedCallback() {
@@ -225,7 +233,7 @@ export default class GSCalendar extends GSElement {
 
     formatted(date) {
         const me = this;
-        return (date || me.#date).toFormat(me.format, me.locale);
+        return (date || me.#date).format(me.format, me.locale);
     }
 
     #onYear(e) {
@@ -294,7 +302,7 @@ export default class GSCalendar extends GSElement {
     #daysHTML() {
         const me = this;
         const today = new GSDate();
-        const list = me.#date.build();
+        const list = me.#date.build(me.locale);
         const html = list
             .map(v => {
                 const d = v ? `<a href="#" class="btn ${me.#isToday(v, today) ? me.cssToday : ''} day">${v}</a>` : ''
@@ -313,7 +321,7 @@ export default class GSCalendar extends GSElement {
     #monthsHTML() {
         const me = this;
         const current = me.#date.monthName;
-        const list = GSDate.MONTHS.map((v, i) => {
+        const list = GSDate.monthList(false, me.locale).map((v, i) => {
             const sel = current == v ? 'selected' : '';
             return `<option value="${i}" ${sel}>${v}</option>`;
         }).join('\n');
@@ -330,7 +338,7 @@ export default class GSCalendar extends GSElement {
     #toHTML() {
         const me = this;
         const date = me.#date;
-        const week = GSDate.weekDays(date.isMondayFirst, true).map(v => `<div class="col">${v}</div>`).join('');
+        const week = GSDate.dayList(true, me.locale).map(v => `<div class="col">${v}</div>`).join('');
         const months = me.#monthsHTML();
         const year = me.#yearHTML();
 

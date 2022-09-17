@@ -9,6 +9,7 @@
 import GSDOM from "../../../../modules/base/GSDOM.mjs";
 import GSElement from "../../../../modules/base/GSElement.mjs";
 import GSFunction from "../../../../modules/base/GSFunction.mjs";
+import GSUtil from "../../../../modules/base/GSUtil.mjs";
 
 /**
  * BaseUI handles basic screen data view (used by other UI elements)
@@ -58,6 +59,16 @@ export default class BaseViewUI extends GSElement {
     #onAction(e) {
         const action = e.detail.action;
         if (GSFunction.isFunction(this[action])) this[action](e);
+    }
+
+    /**
+     * Export table data
+     */
+    async export() {
+        const me = this;
+        const name = me.tagName.toLowerCase();
+        const data = me.#store.data;
+        GSUtil.export([JSON.stringify(data)], `${name}.json`);
     }
 
     /**
