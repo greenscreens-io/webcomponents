@@ -128,18 +128,24 @@ export default class GSTBody extends HTMLTableSectionElement {
     }
 
     #format(hdr, val) {
+
         if (!hdr.format) return val;
 
         const type = this.#toType(hdr, val);
+        const locale = hdr.locale || navigator.locale;
+
         switch(type) {
             case 'timestamp' : 
             case 'date' : 
-                return new GSDate(val).format(hdr.format);
+                const fmt = hdr.format == 'true' ? undefined : hdr.format;
+                return new GSDate(val).format(fmt, locale);
             case 'string' : 
             case 'boolean' : 
             case 'number' : 
-            case 'currency' : 
                 break;
+            case 'currency' : 
+                const opt = { style: 'currency', currency: hdr.currency};
+                return new Intl.NumberFormat(locale, opt).format(val);
         }
         
         return val;

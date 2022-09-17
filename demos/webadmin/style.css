@@ -54,3 +54,14 @@
     background-size: 12rem;
     background-position: 50% 50%;
 }
+
+.btn-primary {
+    --bs-btn-bg: #f16000;
+    --bs-btn-border-color: #f16000;
+    --bs-btn-hover-bg: #ff6500;
+    --bs-btn-hover-border-color: #ff6500;
+    --bs-btn-active-bg: #ff6500;
+    --bs-btn-active-border-color: #ff6500;
+    --bs-btn-disabled-bg: #d37639;
+    --bs-btn-disabled-border-color: #d37639;
+}
