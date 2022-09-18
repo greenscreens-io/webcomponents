@@ -6,18 +6,26 @@
  * A module loading GSCertOpt class
  * @module dialogs/GSCertOpt
  */
- import GSModal from '../../../../modules/components/GSModal.mjs';
+import GSDialog from './GSDialog.mjs';
 
-export default class GSCertOpt extends GSModal {
+export default class GSCertOpt extends GSDialog {
 
     static {
         customElements.define('gs-admin-dialog-certopt', GSCertOpt);
         Object.seal(GSCertOpt);
     }
 
+    onReady() {
+        super.onReady();
+        this.large();
+    }
 
-    constructor() {
-        super();
-        this.visible = true;
-    }    
+    get dialogTemplate() {
+        return '//dialogs/certificates-options.html';
+    }
+    
+    get dialogTitle() {
+        return 'Certificate Options';
+    }
+
 }

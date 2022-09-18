@@ -6,18 +6,20 @@
  * A module loading GSNetwork class
  * @module dialogs/GSNetwork
  */
- import GSModal from '../../../../modules/components/GSModal.mjs';
+ import GSDialog from './GSDialog.mjs';
 
-export default class GSNetwork extends GSModal {
+export default class GSNetwork extends GSDialog {
 
     static {
         customElements.define('gs-admin-dialog-network', GSNetwork);
         Object.seal(GSNetwork);
     }
 
-    constructor() {
-        super();
-        this.visible = true;
+    get dialogTemplate() {
+        return '//dialogs/network.html';
     }
     
+    get dialogTitle() {
+        return 'Netowrk Options';
+    }
 }

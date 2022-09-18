@@ -6,19 +6,21 @@
  * A module loading GSLoginAdmin class
  * @module dialogs/GSLoginAdmin
  */
- import GSModal from '../../../../modules/components/GSModal.mjs';
+import GSDialog from './GSDialog.mjs';
 
-export default class GSLoginAdmin extends GSModal {
+export default class GSLoginAdmin extends GSDialog {
 
     static {
         customElements.define('gs-admin-dialog-loginadm', GSLoginAdmin);
         Object.seal(GSLoginAdmin);
     }
-
-    constructor() {
-        super();
-        this.visible = true;
+    
+    get dialogTemplate() {
+        return '//dialogs/login-admin.html';
     }
     
-    
+    get dialogTitle() {
+        return 'Admin Login';
+    }
+   
 }

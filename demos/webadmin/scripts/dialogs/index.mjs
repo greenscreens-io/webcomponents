@@ -1,4 +1,5 @@
 
+import './GSDialog.mjs';
 import './GSAbout.mjs';
 import './GSCertBlocked.mjs';
 import './GSCertOpt.mjs';

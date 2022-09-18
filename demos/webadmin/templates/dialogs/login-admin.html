@@ -1,0 +1,49 @@
+<form slot="body" is="gs-ext-form" id="form-main" class="flex-fill" novalidate="">
+
+    <div class="row form-group m-1">
+        <div class="col-md-4 col-sm-4 col-xs-12 text-md-end ">
+            <label class="control-label " for="password">Admin Password</label>
+        </div>
+        <div class="col-md-6 col-sm-6 col-xs-11">
+            <input class="form-control" id="password"  name="password" type="password" autocomplete="off" required>
+        </div>
+        <div class="col-auto ">
+            <gs-tooltip placement="right" title="Password to access this web admin console. Leave empty to keep current password."></gs-tooltip>
+            <i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
+        </div>
+    </div>
+    
+    
+    <div class="row form-group m-1">
+        <div class="col-md-4 col-sm-4 col-xs-12 text-md-end ">
+            <label class="control-label " for="password2">Repeat Password</label>
+        </div>
+        <div class="col-md-6 col-sm-6 col-xs-11">
+            <input class="form-control" id="password2"  name="password2" type="password" autocomplete="off" required>
+        </div>
+        <div class="col-auto ">
+            <gs-tooltip placement="right" title="Repeat password to confirm valid entry"></gs-tooltip>
+            <i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
+        </div>
+    </div>
+    
+    
+
+    <div class="row form-group m-1">
+        <div class="col-md-4 col-sm-4 col-xs-12 text-md-end ">
+            <label class="control-label " for="adminAccess">Admin Access</label>
+        </div>
+        <div class="col-md-6 col-sm-6 col-xs-11">
+            <select class="form-select" id="adminAccess" name="adminAccess" required>
+                <option value="0" selected>All networks</option>
+                <option value="1">Local network only</option>
+                <option value="2">Local computer only</option>
+            </select>
+        </div>
+        <div class="col-auto ">
+            <gs-tooltip placement="right" title="Enable access to this admin console from local network or all networks (from Internet)."></gs-tooltip>
+            <i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
+        </div>
+    </div>
+    
+</form>

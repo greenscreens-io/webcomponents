@@ -6,17 +6,20 @@
  * A module loading GSRegisterOtp class
  * @module dialogs/GSRegisterOtp
  */
- import GSModal from '../../../../modules/components/GSModal.mjs';
+ import GSDialog from './GSDialog.mjs';
 
-export default class GSRegisterOtp extends GSModal {
+export default class GSRegisterOtp extends GSDialog {
 
     static {
         customElements.define('gs-admin-dialog-otpreg', GSRegisterOtp);
         Object.seal(GSRegisterOtp);
     }
+
+    get dialogTemplate() {
+        return '//dialogs/register-otp.html';
+    }
     
-    constructor() {
-        super();
-        this.visible = true;
+    get dialogTitle() {
+        return 'Register OTP';
     }
 }

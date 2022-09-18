@@ -348,6 +348,30 @@ export default class GSModal extends GSElement {
     return GSAttr.get(this, "css-footer", "");
   }
 
+  set cssModal(val = '') {
+    return GSAttr.set(this, "css-modal", val);
+  }
+
+  set cssContent(val = '') {
+    return GSAttr.set(this, "css-content", val);
+  }
+
+  set cssHeader(val = '') {
+    return GSAttr.set(this, "css-header", val);
+  }
+
+  set cssTitle(val = '') {
+    return GSAttr.set(this, "css-title", val);
+  }
+
+  set cssBody(val = '') {
+    return GSAttr.set(this, "css-body", val);
+  }
+
+  set cssFooter(val = '') {
+    return GSAttr.set(this, "css-footer", val);
+  }
+
   // css-modal, css-content css-header css-title css-body css-footer
   async getTemplate(val = '') {
     if (val) return super.getTemplate(val);
