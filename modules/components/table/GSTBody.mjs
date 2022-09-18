@@ -79,7 +79,7 @@ export default class GSTBody extends HTMLTableSectionElement {
         let html = '';
 
         data.forEach((rec, idx) => {
-            rows.push(`<tr class="${me.cssRow}">`);
+            rows.push(`<tr class="${me.cssRow}" data-index=${idx}>`);
 
             if (Array.isArray(rec)) {
                 html = me.#arrayToHTML(headers, rec, idx, offset);
@@ -192,7 +192,7 @@ export default class GSTBody extends HTMLTableSectionElement {
         GSAttr.set(row, 'selected', isSelected ? null : true);
 
         const data = [];
-        GSDOM.queryAll(me, 'tr[selected=true]').forEach(el => data.push(el.rowIndex));
+        GSDOM.queryAll(me, 'tr[selected=true]').forEach(el => data.push(parseInt(el.dataset.index)));
         GSEvent.send(me, 'select', data, true);
     }
 

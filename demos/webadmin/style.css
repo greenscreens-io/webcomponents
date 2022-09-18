@@ -48,6 +48,10 @@
     z-index: 10000;
 }
 
+.dialog-title {
+    background-color: ghostwhite;
+}
+
 .logo {
     background-image: url(/webcomponents/assets/img/logo.png);
     background-repeat: no-repeat;

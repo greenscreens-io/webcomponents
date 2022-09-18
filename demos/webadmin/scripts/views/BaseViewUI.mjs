@@ -140,7 +140,7 @@ export default class BaseViewUI extends GSElement {
         const data = e.detail.data.pop();
         if (!data) return;
 
-        me.#form.reset();
+        me.#form?.reset();
         GSDOM.fromObject(me.#form, data);
         me.#modal.open();
         const result = await me.#modal.waitEvent('data');
@@ -171,7 +171,7 @@ export default class BaseViewUI extends GSElement {
 
         const me = this;
 
-        me.#form.reset();
+        me.#form?.reset();
         me.#modal.open();
         const result = await me.#modal.waitEvent('data');
 

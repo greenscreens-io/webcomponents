@@ -14,7 +14,8 @@ import './keys/GSBiometrics.mjs';
 
 import './others/GSPrinting.mjs';
 import './others/GSSchedulers.mjs';
-import './others/GSServices.mjs';
 import './others/GSUsers.mjs';
-import './others/GSWorkstations.mjs';
-import './others/GSWebmodules.mjs';
+
+import './system/GSServices.mjs';
+import './system/GSWorkstations.mjs';
+import './system/GSWebmodules.mjs';

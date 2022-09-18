@@ -6,17 +6,21 @@
  * A module loading GSCertBlocked class
  * @module dialogs/GSCertBlocked
  */
- import GSModal from '../../../../modules/components/GSModal.mjs';
+ import GSDialog from './GSDialog.mjs';
 
-export default class GSCertBlocked extends GSModal {
+export default class GSCertBlocked extends GSDialog {
 
     static {
         customElements.define('gs-admin-dialog-certblocked', GSCertBlocked);
         Object.seal(GSCertBlocked);
     }
 
-    constructor() {
-        super();
-        this.visible = true;
+    get dialogTemplate() {
+        return '//dialogs/blocked-certificates.html';
     }
+    
+    get dialogTitle() {
+        return 'Blocked Certificates';
+    }
+
 }

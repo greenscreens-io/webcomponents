@@ -6,18 +6,21 @@
  * A module loading GSRegisterBiometrics class
  * @module dialogs/GSRegisterBiometrics
  */
- import GSModal from '../../../../modules/components/GSModal.mjs';
+ import GSDialog from './GSDialog.mjs';
 
-export default class GSRegisterBiometrics extends GSModal {
+export default class GSRegisterBiometrics extends GSDialog {
 
     static {
         customElements.define('gs-admin-dialog-bioreg', GSRegisterBiometrics);
         Object.seal(GSRegisterBiometrics);
     }
 
-    constructor() {
-        super();
-        this.visible = true;
+    get dialogTemplate() {
+        return '//dialogs/biometric.html';
     }
+    
+    get dialogTitle() {
+        return 'Register Biometric';
+    }    
     
 }

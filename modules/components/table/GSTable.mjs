@@ -314,7 +314,7 @@ export default class GSTable extends GSElement {
         const me = this;
         me.#selected = [];
         data.forEach(i => {
-            const rec = me.#data[i - 1];
+            const rec = me.#data[i];
             if (rec) me.#selected.push(rec);
         });
         if (me.contextMenu) me.contextMenu.disabled = data.length === 0;
