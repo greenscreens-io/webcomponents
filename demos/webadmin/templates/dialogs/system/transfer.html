@@ -1,12 +1,29 @@
 <div class="row form-group m-1">
     <div class="col-md-4 col-sm-4 col-xs-12 text-md-end ">
-        <label class="control-label " for="display">Display name</label>
+        <label class="control-label " for="sharing">File Sharing</label>
     </div>
     <div class="col-md-6 col-sm-6 col-xs-11">
-        <input class="form-control  text-uppercase" id="display" name="display" type="text" maxlength="10" pattern="[a-zA-Z10-9]{0,10}" placeholder="Enter workstation name">
+        <select class="form-select" id="sharing" name="sharing" required="" selected="false">
+            <option value="false">Disabled</option>
+            <option value="true">Enabled</option>
+      </select>
     </div>
     <div class="col-auto ">
-        <gs-tooltip placement="right" title="Display device name."></gs-tooltip>
+        <gs-tooltip placement="right" title="Enable or disable File Sharing option between workstation operators."></gs-tooltip>
         <i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
     </div>
 </div>
+
+<div class="row form-group m-1">
+    <div class="col-md-4 col-sm-4 col-xs-12 text-md-end ">
+        <label class="control-label " for="sharingLimit">Size limit in MB</label>
+    </div>
+    <div class="col-md-6 col-sm-6 col-xs-11">
+        <input class="form-control" id="sharingLimit" name="sharingLimit" type="number" required>
+    </div>
+    <div class="col-auto ">
+        <gs-tooltip placement="right" title="File sharing size upload limit in MB. If set to 0, no limit. NOTE: Some servers have internal option to limit file upload size."></gs-tooltip>
+        <i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
+    </div>
+</div>
+

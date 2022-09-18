@@ -16,7 +16,7 @@ export default class GSLoginAdmin extends GSDialog {
     }
     
     get dialogTemplate() {
-        return '//dialogs/login.html';
+        return '//dialogs/login-admin.html';
     }
     
     get dialogTitle() {

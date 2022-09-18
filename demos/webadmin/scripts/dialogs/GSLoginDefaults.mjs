@@ -16,7 +16,7 @@ export default class GSLoginDefaults extends GSDialog {
     }
     
     get dialogTemplate() {
-        return '//dialogs/defaults.html';
+        return '//dialogs/login-defaults.html';
     }
     
     get dialogTitle() {

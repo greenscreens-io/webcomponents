@@ -1,12 +1,78 @@
 <div class="row form-group m-1">
     <div class="col-md-4 col-sm-4 col-xs-12 text-md-end ">
-        <label class="control-label " for="display">Display name</label>
+        <label class="control-label " for="session">Session Timeout (sec)</label>
     </div>
     <div class="col-md-6 col-sm-6 col-xs-11">
-        <input class="form-control  text-uppercase" id="display" name="display" type="text" maxlength="10" pattern="[a-zA-Z10-9]{0,10}" placeholder="Enter workstation name">
+        <input class="form-control" id="session" name="session" type="number" value="2" required>
     </div>
     <div class="col-auto ">
-        <gs-tooltip placement="right" title="Display device name."></gs-tooltip>
+        <gs-tooltip placement="right" title="Timeout will set for how long mobile session will be kept in a case of user inactivity. Minimum recommended value is 60sec.
+        NOTE: This will determine for how long mobile sessions are kept during network switch/reset. If mobile app is put to background, this might cause session loss."></gs-tooltip>
+        <i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
+    </div>
+</div>
+
+<div class="row form-group m-1">
+    <div class="col-md-4 col-sm-4 col-xs-12 text-md-end ">
+        <label class="control-label " for="timeout">Bypass timeout (sec)</label>
+    </div>
+    <div class="col-md-6 col-sm-6 col-xs-11">
+        <input class="form-control" id="timeout" name="timeout" type="number" value="2" required>
+    </div>
+    <div class="col-auto ">
+        <gs-tooltip placement="right" title="Timeout will set for how long generated access key is valid. If set to 0, timeout will not be checked. Recommended value is 2sec.
+        NOTE: This feature protects web terminal access when user and password are used for bypass sign-on."></gs-tooltip>
+        <i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
+    </div>
+</div>
+
+
+<div class="row form-group m-1">
+    <div class="col-md-4 col-sm-4 col-xs-12 text-md-end ">
+        <label class="control-label " for="cookieProtection">Cookie Protection</label>
+    </div>
+    <div class="col-md-6 col-sm-6 col-xs-11">
+        <select class="form-select" id="cookieProtection" name="cookieProtection" required="" >
+            <option value="false">Disabled</option>
+            <option value="true">Enabled</option>
+      </select>
+    </div>
+    <div class="col-auto ">
+        <gs-tooltip placement="right" title="When enabled, session cookie not available from JavaScript. NOTE: Server restart required!"></gs-tooltip>
+        <i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
+    </div>
+</div>
+
+
+<div class="row form-group m-1">
+    <div class="col-md-4 col-sm-4 col-xs-12 text-md-end ">
+        <label class="control-label " for="forcedSSL">Cookie Forced SSL</label>
+    </div>
+    <div class="col-md-6 col-sm-6 col-xs-11">
+        <select class="form-select" id="forcedSSL" name="forcedSSL" required="" >
+            <option value="false">Disabled</option>
+            <option value="true">Enabled</option>
+      </select>
+    </div>
+    <div class="col-auto ">
+        <gs-tooltip placement="right" title="When enabled, session cookie will be available only if SSL is used. NOTE: Server restart required!"></gs-tooltip>
+        <i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
+    </div>
+</div>
+
+
+<div class="row form-group m-1">
+    <div class="col-md-4 col-sm-4 col-xs-12 text-md-end ">
+        <label class="control-label " for="autoDiscovery">Discovery Service</label>
+    </div>
+    <div class="col-md-6 col-sm-6 col-xs-11">
+        <select class="form-select" id="autoDiscovery" name="autoDiscovery" required="" >
+            <option value="false">Disabled</option>
+            <option value="true">Enabled</option>
+      </select>
+    </div>
+    <div class="col-auto ">
+        <gs-tooltip placement="right" title="Used by mobile app to auto-detect server in local network. <br> Should be disabled in cloud environment."></gs-tooltip>
         <i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
     </div>
 </div>

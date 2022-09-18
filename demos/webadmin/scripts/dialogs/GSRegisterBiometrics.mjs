@@ -16,7 +16,7 @@ export default class GSRegisterBiometrics extends GSDialog {
     }
 
     get dialogTemplate() {
-        return '//dialogs/biometric.html';
+        return '//dialogs/register-bio.html';
     }
     
     get dialogTitle() {

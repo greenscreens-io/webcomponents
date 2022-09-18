@@ -16,7 +16,7 @@ export default class GSCertBlocked extends GSDialog {
     }
 
     get dialogTemplate() {
-        return '//dialogs/blocked-certificates.html';
+        return '//dialogs/certificates-blocked.html';
     }
     
     get dialogTitle() {

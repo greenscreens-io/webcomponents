@@ -21,7 +21,7 @@ export default class GSCertOpt extends GSDialog {
     }
 
     get dialogTemplate() {
-        return '//dialogs/certificate.html';
+        return '//dialogs/certificates-options.html';
     }
     
     get dialogTitle() {

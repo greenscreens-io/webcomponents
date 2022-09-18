@@ -16,7 +16,7 @@ export default class GSRegisterOtp extends GSDialog {
     }
 
     get dialogTemplate() {
-        return '//dialogs/otp.html';
+        return '//dialogs/register-otp.html';
     }
     
     get dialogTitle() {

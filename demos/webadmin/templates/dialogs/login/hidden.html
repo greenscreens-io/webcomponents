@@ -1,12 +1,31 @@
 <div class="row form-group m-1">
     <div class="col-md-4 col-sm-4 col-xs-12 text-md-end ">
-        <label class="control-label " for="display">Display name</label>
+        <label class="control-label " for="hiddenUUID">Hidden UUID</label>
     </div>
     <div class="col-md-6 col-sm-6 col-xs-11">
-        <input class="form-control  text-uppercase" id="display" name="display" type="text" maxlength="10" pattern="[a-zA-Z10-9]{0,10}" placeholder="Enter workstation name">
+        <select class="form-select" id="hiddenUUID" name="hiddenUUID" required>
+            <option value="false">False</option>
+            <option value="true">True</option>
+        </select>
     </div>
     <div class="col-auto ">
-        <gs-tooltip placement="right" title="Display device name."></gs-tooltip>
+        <gs-tooltip placement="right" title="Hide UUID field."></gs-tooltip>
+        <i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
+    </div>
+</div>
+
+<div class="row form-group m-1">
+    <div class="col-md-4 col-sm-4 col-xs-12 text-md-end ">
+        <label class="control-label " for="hiddenHost">Hidden Host</label>
+    </div>
+    <div class="col-md-6 col-sm-6 col-xs-11">
+        <select class="form-select"  id="hiddenHost" name="hiddenHost" required>
+            <option value="false">False</option>
+            <option value="true">True</option>
+        </select>
+    </div>
+    <div class="col-auto ">
+        <gs-tooltip placement="right" title="Hide Host field."></gs-tooltip>
         <i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
     </div>
 </div>

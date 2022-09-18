@@ -1,12 +1,32 @@
 <div class="row form-group m-1">
     <div class="col-md-4 col-sm-4 col-xs-12 text-md-end ">
-        <label class="control-label " for="display">Display name</label>
+        <label class="control-label " for="acmeStatus">ACME Status</label>
     </div>
     <div class="col-md-6 col-sm-6 col-xs-11">
-        <input class="form-control  text-uppercase" id="display" name="display" type="text" maxlength="10" pattern="[a-zA-Z10-9]{0,10}" placeholder="Enter workstation name">
+        <select class="form-select col-md-7 col-xs-12" id="acmeStatus" name="acmeStatus">
+            <option value="0">Disabled</option>
+            <option value="1">Enabled</option>
+            <option value="2">Reset</option>
+        </select>
     </div>
     <div class="col-auto ">
-        <gs-tooltip placement="right" title="Display device name."></gs-tooltip>
+        <gs-tooltip placement="right" title="Enable to activate auto registration. Reset will deactivate account and create a new one."></gs-tooltip>
+        <i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
+    </div>
+</div>
+
+<div class="row form-group m-1">
+    <div class="col-md-4 col-sm-4 col-xs-12 text-md-end ">
+        <label class="control-label " for="acmeRestart">Auto restart</label>
+    </div>
+    <div class="col-md-6 col-sm-6 col-xs-11">
+        <select class="form-select col-md-7 col-xs-12" id="acmeRestart" name="acmeRestart">
+            <option value="false">Disabled</option>
+            <option value="true">Enabled</option>
+        </select>
+    </div>
+    <div class="col-auto ">
+        <gs-tooltip placement="right" title="Enable to auto restart server after certificate renewal."></gs-tooltip>
         <i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
     </div>
 </div>
