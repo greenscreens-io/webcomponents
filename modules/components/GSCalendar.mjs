@@ -302,6 +302,7 @@ export default class GSCalendar extends GSElement {
     #daysHTML() {
         const me = this;
         const today = new GSDate();
+        today.locale = locale;
         const list = me.#date.build(me.locale);
         const html = list
             .map(v => {
@@ -337,7 +338,6 @@ export default class GSCalendar extends GSElement {
 
     #toHTML() {
         const me = this;
-        const date = me.#date;
         const week = GSDate.dayList(true, me.locale).map(v => `<div class="col">${v}</div>`).join('');
         const months = me.#monthsHTML();
         const year = me.#yearHTML();
