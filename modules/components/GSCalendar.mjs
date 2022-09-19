@@ -37,6 +37,7 @@ export default class GSCalendar extends GSElement {
     constructor() {
         super();
         this.#date = new GSDate();
+        this.#date.locale = this.locale;
     }
 
     attributeChanged(name = '', oldVal = '', newVal = '') {
@@ -45,7 +46,8 @@ export default class GSCalendar extends GSElement {
             me.#date.locale = me.locale;
         }
         if (name === 'date') {
-            me.#date = new GSDate(newVal, me.locale);
+            me.#date = new GSDate(newVal);
+            me.#date.locale = me.locale;
         }
         if (name === 'format') {
             me.#date.format = newVal;
@@ -302,7 +304,7 @@ export default class GSCalendar extends GSElement {
     #daysHTML() {
         const me = this;
         const today = new GSDate();
-        today.locale = locale;
+        today.locale = me.locale;
         const list = me.#date.build(me.locale);
         const html = list
             .map(v => {
