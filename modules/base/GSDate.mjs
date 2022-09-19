@@ -291,6 +291,7 @@ export default class GSDate extends Date {
 
     static dayList(short = false, locale = navigator.locale, capitalize = true) {
         const tmp = new GSDate();
+        tmp.locale = locale;
         const mondayFirst = tmp.#isMondayFirst();
         const offset = mondayFirst ? 1 : 0;
         tmp.locale = locale;
