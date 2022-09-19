@@ -81,7 +81,9 @@ export default class GSDateFormat extends HTMLElement {
     get value() {
         const me = this;
         const o = Date.parse(GSAttr.get(me, 'value'));
-        return new GSDate(o, me.locale);
+        const date =  new GSDate(o);
+        date.locale = me.locale;
+        return date;
     }
 
     set value(val = '') {
