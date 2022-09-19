@@ -294,7 +294,6 @@ export default class GSDate extends Date {
         tmp.locale = locale;
         const mondayFirst = tmp.#isMondayFirst();
         const offset = mondayFirst ? 1 : 0;
-        tmp.locale = locale;
         tmp.setDate(tmp.getDate() - tmp.getDay() + offset);
         const days = [];
         let val = null;
