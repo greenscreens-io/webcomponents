@@ -1,12 +1,38 @@
 <div class="row form-group m-1">
     <div class="col-md-4 col-sm-4 col-xs-12 text-md-end ">
-        <label class="control-label " for="display">Display name</label>
+        <label class="control-label " for="lparUsers">Partition limit</label>
     </div>
     <div class="col-md-6 col-sm-6 col-xs-11">
-        <input class="form-control  text-uppercase" id="display" name="display" type="text" maxlength="10" pattern="[a-zA-Z10-9]{0,10}" placeholder="Enter workstation name">
+        <input class="form-control  text-uppercase" id="lparUsers" name="lparUsers" type="number" min="0" value="0" required>
     </div>
     <div class="col-auto ">
-        <gs-tooltip placement="right" title="Display device name."></gs-tooltip>
+        <gs-tooltip placement="right" title="License concurrent user limit for partition. If partitions not used, set to 0 or to Usage Limit value."></gs-tooltip>
+        <i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
+    </div>
+</div>
+
+<div class="row form-group m-1">
+    <div class="col-md-4 col-sm-4 col-xs-12 text-md-end ">
+        <label class="control-label " for="user">User name</label>
+    </div>
+    <div class="col-md-6 col-sm-6 col-xs-11">
+        <input class="form-control  text-uppercase" id="user" name="user" type="text" maxlength="10" required>
+    </div>
+    <div class="col-auto ">
+        <gs-tooltip placement="right" title="User name to access AS/400 for licensing request. It is recommended that this profile is limited only to use as-svrmap, as-central, as-rmtcmd, as-signon services with limited permissions."></gs-tooltip>
+        <i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
+    </div>
+</div>
+
+<div class="row form-group m-1">
+    <div class="col-md-4 col-sm-4 col-xs-12 text-md-end ">
+        <label class="control-label " for="password">User password</label>
+    </div>
+    <div class="col-md-6 col-sm-6 col-xs-11">
+        <input class="form-control  text-uppercase" id="password" name="password" type="password" required maxlength="128">
+    </div>
+    <div class="col-auto ">
+        <gs-tooltip placement="right" title="Password for given user. Password are saved in encrypted form at server configuration file."></gs-tooltip>
         <i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
     </div>
 </div>

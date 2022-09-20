@@ -1,12 +1,148 @@
 <div class="row form-group m-1">
     <div class="col-md-4 col-sm-4 col-xs-12 text-md-end ">
-        <label class="control-label " for="display">Display name</label>
+        <label class="control-label " for="ipAddress">Server address</label>
     </div>
     <div class="col-md-6 col-sm-6 col-xs-11">
-        <input class="form-control  text-uppercase" id="display" name="display" type="text" maxlength="10" pattern="[a-zA-Z10-9]{0,10}" placeholder="Enter workstation name">
+        <input class="form-control  text-uppercase" id="ipAddress" name="ipAddress" type="text" pattern="^((25[0-5]|(2[0-4]|1\d|[1-9]|)\d)\.?\b){4}$" required>
     </div>
     <div class="col-auto ">
-        <gs-tooltip placement="right" title="Display device name."></gs-tooltip>
+        <gs-tooltip placement="right" title="Remote host to configure web access to terminal access."></gs-tooltip>
+        <i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
+    </div>
+</div>
+
+<div class="row form-group m-1">
+    <div class="col-md-4 col-sm-4 col-xs-12 text-md-end ">
+        <label class="control-label " for="port">Server port</label>
+    </div>
+    <div class="col-md-6 col-sm-6 col-xs-11">
+        <input class="form-control  text-uppercase" id="port" name="port" type="number" min="1" max="65535" value="23"
+            required>
+    </div>
+    <div class="col-auto ">
+        <gs-tooltip placement="right" title="Remote host port. Default is 23 or 922 for SSL."></gs-tooltip>
+        <i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
+    </div>
+</div>
+
+<div class="row form-group m-1">
+    <div class="col-md-4 col-sm-4 col-xs-12 text-md-end ">
+        <label class="control-label " for="proxyName">Proxy name</label>
+    </div>
+    <div class="col-md-6 col-sm-6 col-xs-11">
+        <input class="form-control  text-uppercase" id="proxyName" name="proxyName" type="text">
+    </div>
+    <div class="col-auto ">
+        <gs-tooltip placement="right" title="Reference to network tunnel configuration if tunneling used."></gs-tooltip>
+        <i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
+    </div>
+</div>
+
+<div class="row form-group m-1">
+    <div class="col-md-4 col-sm-4 col-xs-12 text-md-end ">
+        <label class="control-label " for="codePage">Code Page</label>
+    </div>
+    <div class="col-md-6 col-sm-6 col-xs-11">
+        <select class="form-select" id="codePage" name="codePage" required selected="037">
+            <option value="037" selected>Cp037 (US-Canada)</option>
+            <option value="256">Cp256 (Netherland)</option>
+            <option value="273">Cp273 (Germany)</option>
+            <option value="277">Cp277 (Denmark-Norway)</option>
+            <option value="278">Cp278 (Finland-Sweden)</option>
+            <option value="280">Cp280 (Italy)</option>
+            <option value="284">Cp284 (Spain)</option>
+            <option value="285">Cp285 (UK)</option>
+            <option value="290">Cp290 (Japanese Katakana-Kanji)</option>
+            <option value="297">Cp297 (France)</option>
+            <option value="420">Cp420 (Arabic)</option>
+            <option value="423">Cp423 (Greek)</option>
+            <option value="424">Cp424 (Hebrew)</option>
+            <option value="500">Cp500 (International)</option>
+            <option value="833">Cp833 (Korean)</option>
+            <option value="836">Cp836 (Simplified Chinese)</option>
+            <option value="838">Cp838 (Thai)</option>
+            <option value="870">Cp870 (Multilingual Latin-2)</option>
+            <option value="871">Cp871 (Icelandic)</option>
+            <option value="875">Cp875 (Greek Modern)</option>
+            <option value="880">Cp880 (Cyrilic Russian)</option>
+            <option value="905">Cp905 (Turkey)</option>
+            <option value="918">Cp918 (Urdu)</option>
+            <option value="924">Cp924 (Latin 9)</option>
+            <option value="1025">Cp1025 (Cyrillic Serbian-Bulgarian)</option>
+            <option value="1026">Cp1026 (Turkish Latin-5)</option>
+            <option value="1097">Cp1097 (Farsi)</option>
+            <option value="1140">Cp1140 (US-Canada-Euro)</option>
+            <option value="1141">Cp1141 (Germany-Euro)</option>
+            <option value="1142">Cp1142 (Denmark-Norway-Euro)</option>
+            <option value="1143">Cp1143 (Finland-Sweden-Euro)</option>
+            <option value="1144">Cp1144 (Italy-Euro)</option>
+            <option value="1145">Cp1145 (Spain-Euro)</option>
+            <option value="1146">Cp1146 (UK-Euro)</option>
+            <option value="1147">Cp1147 (France-Euro)</option>
+            <option value="1148">Cp1148 (International-Euro)</option>
+            <option value="1149">Cp1149 (Icelandic-Euro)</option>
+            <option value="1112">Cp1112 (Baltic)</option>
+            <option value="1122">Cp1122 (Estonia)</option>
+            <option value="1123">Cp1123 (Ukraine)</option>
+            <option value="1130">Cp1130 (Vietnamese)</option>
+            <option value="1132">Cp1132 (Lao)</option>
+            <option value="1137">Cp1137 (Devanagari)</option>
+            <option value="1153">Cp1153 (Multilingual Latin-2 Euro)</option>
+            <option value="1154">Cp1154 (Cyrillic Serbian-Bulgarian Euro)</option>
+            <option value="1155">Cp1155 (Turkish Latin-5 Euro)</option>
+            <option value="1156">Cp1156 (Baltic-Euro)</option>
+            <option value="1157">Cp1157 (Estonia-Euro)</option>
+            <option value="1158">Cp1158 (Ukraine-Euro)</option>
+            <option value="1160">Cp1160 (Thai-Euro)</option>
+            <option value="1164">Cp1164 (Vietnamese-Euro)</option>
+        </select>
+    </div>
+    <div class="col-auto ">
+        <gs-tooltip placement="right" title="Auto"></gs-tooltip>
+        <i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
+    </div>
+</div>
+
+<div class="row form-group m-1">
+    <div class="col-md-4 col-sm-4 col-xs-12 text-md-end ">
+        <label class="control-label " for="ssl">SSL type</label>
+    </div>
+    <div class="col-md-6 col-sm-6 col-xs-11">
+        <select class="form-select" id="ssl" name="ssl" required>
+            <option value="NONE" selected>None</option>
+            <option value="SSL">SSL</option>
+            <option value="SSLv2">SSLv2</option>
+            <option value="SSLv3">SSLv3</option>
+            <option value="TLSv1">TLS v1</option>
+            <option value="TLSv1.1">TLS v1.1</option>
+            <option value="TLSv1.2">TLS v1.2</option>
+        </select>
+    </div>
+    <div class="col-auto ">
+        <gs-tooltip placement="right"
+            title="Use NONE if SSL not supported. Encryption level version depends on as/400 support."></gs-tooltip>
+        <i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
+    </div>
+</div>
+
+<div class="row form-group m-1">
+    <div class="col-md-4 col-sm-4 col-xs-12 text-md-end ">
+        <label class="control-label " for="qpwdlvl">QPWDLVL</label>
+    </div>
+    <div class="col-md-6 col-sm-6 col-xs-11">
+        <select class="form-select" id="qpwdlvl" name="qpwdlvl" selected="0">
+            <option value="-1">N/A</option>
+            <option value="0">Level 0</option>
+            <option value="1">Level 1</option>
+            <option value="2">Level 2</option>
+            <option value="3">Level 3</option>
+            <option value="4">Level 4</option>
+        </select>
+    </div>
+    <div class="col-auto ">
+        <gs-tooltip placement="right" title="Value must be the same as shown with DSPSYSVAL QPWDLVL on remote host for successful bypass-signon.
+            If set to N/A, bypass sign-on will not use encryption. Password will be exchanged in clear text.">
+        </gs-tooltip>
         <i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
     </div>
 </div>

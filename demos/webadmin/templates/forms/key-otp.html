@@ -1,1 +1,42 @@
-otp dialog
+<form slot="body" is="gs-ext-form" id="form-main" class="flex-fill" novalidate="">
+
+    <div class="row form-group m-1">
+        <div class="col-md-4 col-sm-4 col-xs-12 text-md-end ">
+            <label class="control-label " for="issuer">Issuer</label>
+        </div>
+        <div class="col-md-6 col-sm-6 col-xs-11">
+            <input class="form-control" id="issuer"  name="issuer" type="text" autocomplete="off" required>
+        </div>
+        <div class="col-auto ">
+            <gs-tooltip placement="right" title="Rule"></gs-tooltip>
+            <i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
+        </div>
+    </div>    
+
+    <div class="row form-group m-1">
+        <div class="col-md-4 col-sm-4 col-xs-12 text-md-end ">
+            <label class="control-label " for="domain">Domain</label>
+        </div>
+        <div class="col-md-6 col-sm-6 col-xs-11">
+            <input class="form-control" id="domain"  name="domain" type="text" autocomplete="off" required>
+        </div>
+        <div class="col-auto ">
+            <gs-tooltip placement="right" title="Rule"></gs-tooltip>
+            <i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
+        </div>
+    </div>
+    
+    <div class="row form-group m-1">
+        <div class="col-md-4 col-sm-4 col-xs-12 text-md-end ">
+            <label class="control-label " for="limit">Limit</label>
+        </div>
+        <div class="col-md-6 col-sm-6 col-xs-11">
+            <input class="form-control" id="limit"  name="limit" type="number" min="0" max="10" autocomplete="off" required>
+        </div>
+        <div class="col-auto ">
+            <gs-tooltip placement="right" title="Invalid login attempts before disabling token"></gs-tooltip>
+            <i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
+        </div>
+    </div>    
+    
+</form>
