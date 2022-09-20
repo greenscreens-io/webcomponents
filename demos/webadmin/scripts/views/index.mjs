@@ -3,6 +3,7 @@ import './GSSearch.mjs';
 import './BaseViewUI.mjs';
 
 import './configs/GSConfiguration.mjs';
+import './configs/GSTunnel.mjs';
 import './configs/GSCustomization.mjs';
 
 import './filters/GSFilterIP.mjs';

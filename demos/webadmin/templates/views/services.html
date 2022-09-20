@@ -31,12 +31,12 @@
                     <gs-item name="value"></gs-item>
                 </gs-store>
                 <gs-context slot="extra" target="tbody tr">
-                    <gs-item name="Edit" action="edit"></gs-item>
+                    <gs-item name="Edit" action="details"></gs-item>
                 </gs-context>
                 <gs-pager slot="extra" previous="&laquo;" next="&raquo;" firstlast="false" pages="0"></gs-pager>
             </gs-table>
 
-            <gs-modal id="modal-main" visible="false" css-body="p-0" css-header = "p-3 dialog-title" css-title = "fs-5 fw-bold">
+            <gs-modal id="modal-main" visible="false" css-body="p-0" css-header="p-3 dialog-title" css-title="fs-5 fw-bold">
                 <h4 slot="title">Service Module Property</h4>
                 <gs-template slot="body" href="//forms/service.html"></gs-template>
             </gs-modal>

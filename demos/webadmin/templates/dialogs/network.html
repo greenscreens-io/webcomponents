@@ -35,7 +35,7 @@
             <label class="control-label " for="intf">Interface</label>
         </div>
         <div class="col-md-6 col-sm-6 col-xs-11">
-            <input class="form-control" id="intf"  name="intf" type="text" autocomplete="off" required>
+            <input class="form-control" id="intf"  name="intf" type="text" autocomplete="off" pattern="^((25[0-5]|(2[0-4]|1\d|[1-9]|)\d)\.?\b){4}$" required>
         </div>
         <div class="col-auto ">
             <gs-tooltip placement="right" title="Enter IP address on which server will listen for connections."></gs-tooltip>

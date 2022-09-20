@@ -1,1 +1,79 @@
-fiter mobile dialog
+<form slot="body" is="gs-ext-form" id="form-main" class="flex-fill" novalidate="">
+    
+    <input class="d-none" id="id"  name="id" type="text" readonly>
+
+    <div class="row form-group m-1">
+        <div class="col-md-4 col-sm-4 col-xs-12 text-md-end ">
+            <label class="control-label " for="active">Status</label>
+        </div>
+        <div class="col-md-6 col-sm-6 col-xs-11">
+            <select class="form-select" id="active" name="active" required>
+                <option value="true">Enabled</option>
+                <option value="false">Disabled</option>
+            </select>
+        </div>
+        <div class="col-auto ">
+            <gs-tooltip placement="right" title="Enable or disable this rule."></gs-tooltip>
+            <i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
+        </div>
+    </div>
+
+    <div class="row form-group m-1">
+        <div class="col-md-4 col-sm-4 col-xs-12 text-md-end ">
+            <label class="control-label " for="rule">Rule</label>
+        </div>
+        <div class="col-md-6 col-sm-6 col-xs-11">
+            <select class="form-select" id="rule" name="rule" required>
+                <option value="0">Allow</option>
+                <option value="1">Deny</option>
+            </select>
+        </div>
+        <div class="col-auto ">
+            <gs-tooltip placement="right" title="Allow or deny network access based on matched criteria."></gs-tooltip>
+            <i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
+        </div>
+    </div>
+
+    <div class="row form-group m-1">
+        <div class="col-md-4 col-sm-4 col-xs-12 text-md-end ">
+            <label class="control-label " for="deviceID">Application UUID</label>
+        </div>
+        <div class="col-md-6 col-sm-6 col-xs-11">
+            <input class="form-control" id="deviceID" name="deviceID" type="text" autocomplete="off" 
+            data-inputmask="'mask' : '********-****-****-****-************'" 
+            required>
+        </div>
+        <div class="col-auto ">
+            <gs-tooltip placement="right" title="Mobile phone owner"></gs-tooltip>
+            <i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
+        </div>
+    </div>    
+    
+    <div class="row form-group m-1">
+        <div class="col-md-4 col-sm-4 col-xs-12 text-md-end ">
+            <label class="control-label " for="mobile">Mobile number</label>
+        </div>
+        <div class="col-md-6 col-sm-6 col-xs-11">
+            <input class="form-control" id="mobile"  name="mobile" type="text" autocomplete="off">
+        </div>
+        <div class="col-auto ">
+            <gs-tooltip placement="right" title="Mobile phone number"></gs-tooltip>
+            <i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
+        </div>
+    </div>    
+
+    <div class="row form-group m-1">
+        <div class="col-md-4 col-sm-4 col-xs-12 text-md-end ">
+            <label class="control-label " for="fullname">Owner name</label>
+        </div>
+        <div class="col-md-6 col-sm-6 col-xs-11">
+            <input class="form-control" id="fullname"  name="fullname" type="text" autocomplete="off">
+        </div>
+        <div class="col-auto ">
+            <gs-tooltip placement="right" title="Mobile phone owner"></gs-tooltip>
+            <i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
+        </div>
+    </div>    
+
+    
+</form>

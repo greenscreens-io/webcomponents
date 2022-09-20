@@ -1,0 +1,54 @@
+[
+    {
+        "name": "SERVER_SSH2",
+        "localPort": 1080,
+        "unix": false,
+        "enabled": false,
+        "active": false,
+        "type": 2,
+        "connections": 0,
+        "timestamp": 0,
+        "port": 2222,
+        "id": 967939410,
+        "ip": "127.0.0.1"
+    },
+    {
+        "name": "SERVER",
+        "localPort": 1080,
+        "unix": false,
+        "enabled": false,
+        "active": true,
+        "type": 0,
+        "connections": 0,
+        "timestamp": 0,
+        "port": 52520,
+        "id": 2370849079,
+        "ip": "127.0.0.1"
+    },
+    {
+        "name": "SERVER_UNIX_SSH",
+        "localPort": 1080,
+        "unix": true,
+        "enabled": true,
+        "active": false,
+        "type": 2,
+        "connections": 0,
+        "timestamp": 0,
+        "port": 2222,
+        "id": 4238251193,
+        "ip": "127.0.0.1"
+    },
+    {
+        "name": "SERVER_SSH",
+        "localPort": 1080,
+        "unix": false,
+        "enabled": false,
+        "active": false,
+        "type": 2,
+        "connections": 0,
+        "timestamp": 0,
+        "port": 2222,
+        "id": 1832339168,
+        "ip": "127.0.0.1"
+    }
+]
