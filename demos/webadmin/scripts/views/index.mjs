@@ -6,6 +6,7 @@ import './configs/GSConfiguration.mjs';
 import './configs/GSTunnel.mjs';
 import './configs/GSCustomization.mjs';
 
+import './filters/GSFilterFido.mjs';
 import './filters/GSFilterIP.mjs';
 import './filters/GSFilterMobile.mjs';
 
