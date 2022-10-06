@@ -124,7 +124,7 @@ export default class GSTBody extends HTMLTableSectionElement {
         val = map?.length > 0 ? map[0][1] || val : val;
         val = me.#format(hdr, val);
         // todo format data 
-        return `<td class="${me.cssCell}">${val || '&nbsp;'}</td>`;
+        return `<td class="${me.cssCell} ${hdr.css}">${val || '&nbsp;'}</td>`;
     }
 
     #format(hdr, val) {

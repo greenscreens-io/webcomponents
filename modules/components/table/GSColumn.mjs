@@ -110,6 +110,10 @@ export default class GSColumn extends HTMLElement {
         return me.name && !me.counter ? GSAttr.getAsBool(me, 'sortable', true) : false;
     }
 
+    get css() {
+        return GSAttr.get(this, 'css', '');
+    }
+
     get width() {
         return GSAttr.get(this, 'width');
     }
@@ -180,7 +184,8 @@ export default class GSColumn extends HTMLElement {
             idx: me.index, 
             type: me.type, 
             format: me.format, 
-            map :mapping 
+            css : me.css,
+            map :mapping
         };
     }
 }
