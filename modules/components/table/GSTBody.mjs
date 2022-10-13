@@ -138,7 +138,7 @@ export default class GSTBody extends HTMLTableSectionElement {
             case 'timestamp' : 
             case 'date' : 
                 const fmt = hdr.format == 'true' ? undefined : hdr.format;
-                return new GSDate(val).format(fmt, locale);
+                return val && val > 0 ? new GSDate(val).format(fmt, locale) : val;
             case 'string' : 
             case 'boolean' : 
             case 'number' : 
