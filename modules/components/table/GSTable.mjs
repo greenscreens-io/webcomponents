@@ -322,11 +322,15 @@ export default class GSTable extends GSElement {
     }
 
     #onColumnSort(data) {
-        this.store.sort = data || [];
+        const me = this;
+        me.store.sort = data || [];
+        GSEvent.send(me, 'sort', me.store.sort);
     }
 
     #onColumnFilter(data) {
-        this.store.filter = data || [];
+        const me = this;
+        me.store.filter = data || [];
+        GSEvent.send(me, 'filter', me.store.filter);
     }
 }
 

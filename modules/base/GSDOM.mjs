@@ -313,9 +313,9 @@ export default class GSDOM {
 	 * @returns {HTMLElement} 
 	 */
 	static getByID(el, id) {
-		if (typeof el === 'string') return GSDOM.getByID(document.body, qry);
-		if (!(el && qry)) return null;
-		const it = GSDOM.walk(el, true);
+		if (typeof el === 'string') return GSDOM.getByID(document.body, id);
+		if (!(el && id)) return null;
+		const it = GSDOM.walk(el, false);
 		for (let o of it) {
 			if (o.id === id) return o;
 		}

@@ -70,7 +70,7 @@ export default class GSColumn extends HTMLElement {
 
     #renderField(list = '') {
         const me = this;
-        return `<input auto="${me.auto}" name="${me.name}" title="${me.title || me.name}" class="${me.cssFilter}" list="${list}">`;
+        return `<input auto="${me.auto}" name="${me.name}" title="${me.title || me.name}" class="${me.cssFilter}" placeholder="${me.title || me.name}" list="${list}">`;
     }
 
     #renderOptions(isCombo = false) {

@@ -9,6 +9,7 @@
 
 import GSDOM from "../../base/GSDOM.mjs";
 import GSAttr from "../../base/GSAttr.mjs";
+import GSUtil from "../../base/GSUtil.mjs";
 
 /**
  * Table header renderer for GSTable
@@ -34,19 +35,27 @@ export default class GSHeader extends HTMLElement {
     }
     */
 
+    get #filtered() {
+        return GSDOM.queryAll(this, 'gs-column[filter=true]');
+    }
+
+    get #available() {
+        return GSDOM.queryAll(this, 'gs-column').filter(el => GSAttr.get(el, 'hidden', 'false') === 'false');
+    }
+
     render() {
         const me = this;
 
         const table = me.table;
-        const filters = GSDOM.queryAll(me, 'gs-column[filter=true]');
-        const columns = GSDOM.queryAll(me, 'gs-column');
+        const filters = me.#filtered;
+        const columns = me.#available;
 
         const html = [];
         html.push(`<thead class="${table.cssHeader}">`);
 
         if (filters.length > 0) {
             html.push(`<tr is="gs-tablefilter" class="${table.cssFilter}">`);
-            columns.forEach(el => html.push(el.renderFilter()));
+            filters.forEach(el => html.push(el.renderFilter()));
             html.push('</tr>');
         }
 
@@ -60,7 +69,7 @@ export default class GSHeader extends HTMLElement {
 
     toJSON() {
         const me = this;
-        const cols = GSDOM.queryAll(me, 'gs-column');
+        const cols = me.#available;
         return cols.map(el => el.toJSON());
     }
 
@@ -70,7 +79,7 @@ export default class GSHeader extends HTMLElement {
 
     get fields() {
         const me = this;
-        const cols = GSDOM.queryAll(me, 'gs-column');
+        const cols = me.#available;
         return cols.map(el => GSAttr.get(el, 'name'));
 
     }
