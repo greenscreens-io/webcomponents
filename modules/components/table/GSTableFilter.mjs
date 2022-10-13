@@ -37,6 +37,7 @@ export default class GSTableFilter extends HTMLTableRowElement {
         me.#attachChangeListener();
         me.#attachDataListener();
         GSComponents.store(me);
+        requestAnimationFrame(() => me.#onChange());
     }
 
     /*
