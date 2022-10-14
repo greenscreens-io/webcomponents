@@ -8,6 +8,7 @@
  */
 
 import GSAttr from "../base/GSAttr.mjs";
+import GSComponents from "../base/GSComponents.mjs";
 import GSDOM from "../base/GSDOM.mjs";
 import GSElement from "../base/GSElement.mjs";
 import GSEvent from "../base/GSEvent.mjs";
@@ -77,7 +78,7 @@ export default class GSModal extends GSElement {
 
   #validateCaller(e, own, type, comp) {
     if (e.detail.type !== type) return false;
-    const parent = GSDOM.closest(own, comp);
+    const parent = GSComponents.getOwner(own, comp);
     return parent == this;
   }
 

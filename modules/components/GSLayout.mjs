@@ -50,7 +50,8 @@
          const el = me.closest('gs-layout');
          if (el && el !== me) return true;
  
-         const style = window.getComputedStyle(me.parentElement);
+         const parent = GSComponents.getOwner(me); // me.parentElement
+         const style = window.getComputedStyle(parent);
          return style.display === 'flex' && style.flexGrow !== '0';
      }
  

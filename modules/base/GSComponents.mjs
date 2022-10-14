@@ -125,24 +125,6 @@ export default class GSComponents {
     }
 
     /**
-     * Is element gs-* type
-     * @param {string} name A GSElement tag name
-     * @returns {boolean}
-     */
-    static isElement(name = '') {
-        return GSDOM.isGSElement(name) || GSDOM.isGSElement(name.prototype);
-    }
-
-    /**
-     * If standard element has "is"=gs-* attribute
-     * @param {string} name 
-     * @returns {boolean}
-     */
-    static isExtra(name = '') {
-        return GSDOM.isGSExtra(name) || GSDOM.isGSExtra(name.prototype)
-    }
-
-    /**
     * Returns owner of this shadowRoot element
     * @param {HTMLElement} el An instance of HTMLElement
     * @param {string} type A tag name of searched element

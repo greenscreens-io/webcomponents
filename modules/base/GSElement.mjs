@@ -57,6 +57,13 @@ export default class GSElement extends HTMLElement {
 	}
 
 	/**
+	 * Get this class name
+	 */
+	get clazzName() {
+		return this.constructor.name;
+	}
+	
+	/**
 	 * Template used to render component. Might be various types
 	 * 1. URL to load template from
 	 * 2. function to be called to receive template

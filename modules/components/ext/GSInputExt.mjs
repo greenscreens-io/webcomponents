@@ -24,10 +24,10 @@ export default class GSInputExt extends HTMLInputElement {
     static #special = ".^$*+-?()[]{}\|—/";
     static #maskType = {
         y: '[0-9]', m: '[0-9]', d: '[0-9]',
-        Y: '[0-9]', M: '[0-9]', D: '[0-9]',
-        9: '[0-9]', '#': '[0-9]',
-        x: '[a-zA-Z]', X: '[a-zA-Z]',
-        _: '[0-9]'
+        Y: '[0-9]', M: '[0-9]', D: '[0-9]}',
+        9: '[0-9]', '#': '[0-9a-fA-F]',
+        x: '[a-z]', X: '[A-Z]',
+        _: '[0-9a-zA-Z]'
     };
 
     #masks = [];

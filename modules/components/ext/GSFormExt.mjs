@@ -63,7 +63,9 @@ export default class GSFormExt extends HTMLFormElement {
 
     static #attachEvents(me) {
         GSEvent.attach(me, me, 'submit', GSFormExt.#onSubmit.bind(me));
-        GSEvent.attach(me, document.body, 'action', GSFormExt.#onAction.bind(me));
+        GSEvent.attach(me, me, 'action', GSFormExt.#onAction.bind(me));
+        GSEvent.attach(me, me.modal, 'action', GSFormExt.#onAction.bind(me));
+        
     }
 
     /**
@@ -74,7 +76,7 @@ export default class GSFormExt extends HTMLFormElement {
     static #onAction(e, own) {
         const me = own || this;
         const sts = GSFormExt.#validateCaller(e, me, 'modal', 'GS-MODAL');
-        if (!sts) return;
+        if (!sts) return GSEvent.prevent(e);
 
         if (e.detail.ok) return GSFormExt.#onSubmit(e, me);
 
@@ -103,6 +105,10 @@ export default class GSFormExt extends HTMLFormElement {
         if (e.detail) e.detail.data = data;
         GSEvent.send(me, 'form', data, true, true);
         return me.reportValidity();
+    }
+
+    get modal() {
+        return GSComponents.getOwner(this, 'GS-MODAL');
     }
 
     get isValid() {
