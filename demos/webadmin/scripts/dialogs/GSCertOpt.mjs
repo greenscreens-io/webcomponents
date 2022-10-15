@@ -23,9 +23,24 @@ export default class GSCertOpt extends GSDialog {
     get dialogTemplate() {
         return '//dialogs/certificates-options.html';
     }
-    
+
     get dialogTitle() {
         return 'Certificate Options';
     }
+
+    async onOpen() {
+        const me = this;
+        const o = {success: true, data : {}};
+        if (!o.success) return me.inform(false, o.msg);
+
+        return o.data;
+    }
+
+    async onData(data) {
+        const me = this;
+        const o = {success: true, data : {}};
+        me.inform(o.success, o.success ? 'Data saved!' : o.msg);
+        return o.success;
+    }     
 
 }

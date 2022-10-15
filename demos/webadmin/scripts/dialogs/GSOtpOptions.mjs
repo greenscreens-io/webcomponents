@@ -6,7 +6,7 @@
  * A module loading GSOtpOptions class
  * @module dialogs/GSOtpOptions
  */
- import GSDialog from './GSDialog.mjs';
+import GSDialog from './GSDialog.mjs';
 
 export default class GSOtpOptions extends GSDialog {
 
@@ -18,8 +18,23 @@ export default class GSOtpOptions extends GSDialog {
     get dialogTemplate() {
         return '//dialogs/otp-options.html';
     }
-    
+
     get dialogTitle() {
         return 'OTP Options';
-    }    
+    }
+
+    async onOpen() {
+        const me = this;
+        const o = {success: true, data : {}};
+        if (!o.success) return me.inform(false, o.msg);
+        return o.data;
+    }
+
+    async onData(data) {
+        const me = this;
+        const o = {success: true, data : {}};
+        me.inform(o.success, o.success ? 'Data saved!' : o.msg);
+        return o.success;
+    }   
+
 }

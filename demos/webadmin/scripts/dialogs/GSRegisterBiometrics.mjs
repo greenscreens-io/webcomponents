@@ -6,7 +6,7 @@
  * A module loading GSRegisterBiometrics class
  * @module dialogs/GSRegisterBiometrics
  */
- import GSDialog from './GSDialog.mjs';
+import GSDialog from './GSDialog.mjs';
 
 export default class GSRegisterBiometrics extends GSDialog {
 
@@ -18,9 +18,16 @@ export default class GSRegisterBiometrics extends GSDialog {
     get dialogTemplate() {
         return '//dialogs/register-bio.html';
     }
-    
+
     get dialogTitle() {
         return 'Register Biometric';
+    }
+
+    async onData(data) {
+        const me = this;
+        // TODO save data; if ok return true
+        
+        return true;
     }    
-    
+
 }

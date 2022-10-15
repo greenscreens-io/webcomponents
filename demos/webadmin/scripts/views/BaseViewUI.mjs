@@ -25,27 +25,56 @@ export default class BaseViewUI extends GSElement {
 
     onReady() {
         const me = this;
-        me.attachEvent(me, 'action', me.#onAction.bind(me));
         super.onReady();
+        me.attachEvent(me, 'action', me.#onAction.bind(me));
+        me.attachEvent(me.#table, 'filter', e => me.refresh());
+        requestAnimationFrame(() => me.refresh());
+
     }
 
-    get #store() {
-        return this.#table.store;
+    /**
+     * Record key field
+     */
+    get recID() {
+        return 'id';
+    }
+
+    /**
+     * Table data filter
+     */
+    get filter() {
+        const flt = this.#table?.store.filter || [];
+        const obj = {};
+        flt.forEach(o => obj[o.name] = o.value);
+        return obj;
+    }
+
+    /**
+     * Table data store
+     */
+    get store() {
+        return this.#table?.store;
     }
 
     get #table() {
         return this.query('#table-main');
     }
 
-    get #modal() {
-        return this.query('#modal-main');
-    }
-
     get #form() {
         return GSDOM.query(document.body, '#form-main');
     }
 
-    get #notify() {
+    /**
+     * Record popup
+     */
+    get modal() {
+        return this.query('#modal-main');
+    }
+
+    /**
+     * UI Notificator
+     */
+    get notify() {
         return GSComponents.get('notification');
     }
 
@@ -67,7 +96,7 @@ export default class BaseViewUI extends GSElement {
     async export() {
         const me = this;
         const name = me.tagName.toLowerCase();
-        const data = me.#store.data;
+        const data = me.store.data;
         GSUtil.export([JSON.stringify(data)], `${name}.json`);
     }
 
@@ -91,12 +120,12 @@ export default class BaseViewUI extends GSElement {
             if (!sts) throw new Error('Record not cloned!');
 
             // update locally to refresh ui
-            me.#store.setData(rec, true);
-            me.#notify.secondary('', 'Record cloned!');
+            me.store.setData(rec, true);
+            me.notify.secondary('', 'Record cloned!');
 
         } catch (e) {
             console.log(e);
-            me.#notify.danger('', e.message || e.toString())
+            me.notify.danger('', e.message || e.toString())
         }
 
     }
@@ -118,13 +147,13 @@ export default class BaseViewUI extends GSElement {
             if (!sts) throw new Error('Record not removed!');
 
             // update locally to refresh ui
-            const subset = me.#store.data.filter(o => o.name !== data.name);
-            me.#store.setData(subset);
-            me.#notify.danger('', 'Record removed!');
+            const subset = me.store.data.filter(o => o[me.recID] !== data[me.recID]);
+            me.store.setData(subset);
+            me.notify.danger('', 'Record removed!');
 
         } catch (e) {
             console.log(e);
-            me.#notify.danger('', e.message || e.toString())
+            me.notify.danger('', e.message || e.toString())
         }
 
     }
@@ -142,8 +171,8 @@ export default class BaseViewUI extends GSElement {
 
         me.#form?.reset();
         GSDOM.fromObject(me.#form, data);
-        me.#modal.open();
-        const result = await me.#modal.waitEvent('data');
+        me.modal.open();
+        const result = await me.modal.waitEvent('data');
 
         try {
 
@@ -152,12 +181,12 @@ export default class BaseViewUI extends GSElement {
 
             // update locally to refresh ui
             Object.assign(data, result.data);
-            me.#store.reload();
-            me.#notify.warn('', 'Record updated!');
+            me.store.reload();
+            me.notify.warn('', 'Record updated!');
 
         } catch (e) {
             console.log(e);
-            me.#notify.danger('', e.message || e.toString())
+            me.notify.danger('', e.message || e.toString())
         }
 
     }
@@ -172,8 +201,8 @@ export default class BaseViewUI extends GSElement {
         const me = this;
 
         me.#form?.reset();
-        me.#modal.open();
-        const result = await me.#modal.waitEvent('data');
+        me.modal.open();
+        const result = await me.modal.waitEvent('data');
 
         try {
 
@@ -181,13 +210,13 @@ export default class BaseViewUI extends GSElement {
             if (!sts) throw new Error('Record not created!');
 
             // update locally to refresh ui
-            me.#store.data.push(result.data);
-            me.#store.reload();
-            me.#notify.primary('', 'Record created!');
+            me.store.data.push(result.data);
+            me.store.reload();
+            me.notify.primary('', 'Record created!');
 
         } catch (e) {
             console.log(e);
-            me.#notify.danger('', e.message || e.toString())
+            me.notify.danger('', e.message || e.toString())
         }
 
     }
@@ -196,11 +225,25 @@ export default class BaseViewUI extends GSElement {
      * Toolbar table action - refresh data
      * @param {Event} e 
      */
-    refresh(e) {
+    async refresh(e) {
         // get data from extension and populate table;
         const me = this;
-        me.#store.clear();
-        me.#store.reload();
+
+        const data = await me.onLoad(e);
+
+        if (!me.store) return;
+
+        requestAnimationFrame(() => {
+            me.store.clear();
+            if (data) {
+                me.store.setData(data);
+                me.store.firstPage();
+            } else {
+                // demo data
+                me.store.reload();
+            }
+        });
+
     }
 
     /**
@@ -208,7 +251,7 @@ export default class BaseViewUI extends GSElement {
      * @param {Event} val 
      */
     search(e) {
-        this.#store.filter = e.detail.value;
+        this.store.filter = e.detail.value;
     }
 
     /**
@@ -228,20 +271,29 @@ export default class BaseViewUI extends GSElement {
      * @param {Object} data 
      * @returns {boolean}
      * @throws {Error}
-     */    
+     */
     async onUpdate(data) {
         return true;
     }
 
     /**
      * Generic function to be overriden by inherited class
-     * Used to handle record removeal received from table context menu option - remove.
+     * Used to handle record removal received from table context menu option - remove.
      * @param {Object} data 
      * @returns {boolean}
      * @throws {Error}
-     */    
+     */
     async onRemove(data) {
         return true;
+    }
+
+    /**
+     * Called to load view data
+     * @returns {Array<Object>}
+     * @throws {Error}
+     */
+    async onLoad(e) {
+        return false;
     }
 }
 

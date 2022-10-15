@@ -6,16 +6,21 @@
  * A module loading GSScheduler class
  * @module views/GSScheduler
  */
- import BaseViewUI from '../BaseViewUI.mjs';
+import BaseViewUI from '../BaseViewUI.mjs';
 
- export default class GSScheduler extends BaseViewUI {
- 
-     static {
-         customElements.define('gs-admin-view-scheduler', GSScheduler);
-         Object.seal(GSScheduler);
-     }
- 
-     async getTemplate() {
+export default class GSScheduler extends BaseViewUI {
+
+    static {
+        customElements.define('gs-admin-view-scheduler', GSScheduler);
+        Object.seal(GSScheduler);
+    }
+
+    async getTemplate() {
         return super.getTemplate('//views/schedulers.html');
     }
- }
+
+    async onLoad() {
+        const o = {success: false};
+        return o.success ? o.data : false;
+    }
+}

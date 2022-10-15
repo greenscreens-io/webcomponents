@@ -19,4 +19,8 @@ export default class GSUsers extends BaseViewUI {
         return super.getTemplate('//views/users.html');
     }
 
+    async onLoad() {
+        const o = {success: false};
+        return o.success ? o.data : false;
+    }
 }

@@ -39,9 +39,10 @@
             <label class="control-label " for="aaguid">AAGUID</label>
         </div>
         <div class="col-md-6 col-sm-6 col-xs-11">
-            <input class="form-control" id="aaguid" name="aaguid" type="text" autocomplete="off" 
-            data-inputmask="'mask' : '********-****-****-****-************'" 
-            required>
+            <input class="form-control" id="aaguid" name="aaguid" type="text" autocomplete="off" maxlength="36"
+            required is="gs-ext-input"
+            pattern="^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+            mask="########-####-####-####-############">
         </div>
         <div class="col-auto ">
             <gs-tooltip placement="right" title="FIDO Key ID"></gs-tooltip>

@@ -19,15 +19,15 @@
                 css="table table-light table-hover user-select-none m-0" css-select="table-active table-primary"
                 css-header="user-select-none" css-columns="table-secondary">
                 <gs-header>
-                    <gs-column title="UUID" name="uuid" filter="true"></gs-column>
-                    <gs-column title="Host" name="host" filter="true"></gs-column>
-                    <gs-column title="User" name="user" filter="true"></gs-column>
-                    <gs-column title="Origin" name="origin" filter="true"></gs-column>
+                    <gs-column title="UUID" name="uuid" filter="true" hidden="true"></gs-column>
+                    <gs-column title="Host" name="host" filter="true" hidden="true"></gs-column>
+                    <gs-column title="User" name="user" filter="true" hidden="true"></gs-column>
+                    <gs-column title="Origin" name="origin" filter="true" hidden="true"></gs-column>
                     <gs-column title="AAGUID" name="aaguid"></gs-column>
                     <gs-column title="Description" name="desc"></gs-column>
                     <gs-column title="Created" name="created" type="timestamp" format="HH:mm:ss DD.MM.YYYY"></gs-column>
                 </gs-header>
-                <gs-store src="data/keys-bio.json" id="sessions" limit=10>
+                <gs-store src="data/keys-bio.json" id="sessions" limit=15>
                     <gs-item name="uuid"></gs-item>
                     <gs-item name="host"></gs-item>
                     <gs-item name="user"></gs-item>

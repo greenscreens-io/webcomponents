@@ -30,7 +30,6 @@
                 <gs-header>
                     <gs-column title="Rule" name="rule" filter="true" list="fixed">
                         <gs-item map="true" filter="true">
-                            <gs-item value="" map="All"></gs-item>
                             <gs-item value="0" map="Allow"></gs-item>
                             <gs-item value="1" map="Deny"></gs-item>   
                         </gs-item>
@@ -49,7 +48,7 @@
                         </gs-item>
                     </gs-column>
                 </gs-header>
-                <gs-store src="data/filter-fido.json" id="data" limit=10>
+                <gs-store src="data/filter-fido.json" id="data" limit=15>
                     <gs-item name="id"></gs-item>
                     <gs-item name="rule"></gs-item>
                     <gs-item name="type"></gs-item>
@@ -60,7 +59,6 @@
                 </gs-store>
                 <gs-context slot="extra" target="tbody tr">
                     <gs-item name="Details" action="details"></gs-item>
-                    <gs-item name="Refresh" action="refresh"></gs-item>
                     <gs-item></gs-item>
                     <gs-item name="Remove" action="remove"></gs-item>
                 </gs-context>

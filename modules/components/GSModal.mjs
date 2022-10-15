@@ -52,34 +52,18 @@ export default class GSModal extends GSElement {
   onReady() {
     const me = this;
     me.attachEvent(me, 'click', me.#onClick.bind(me));
+    me.attachEvent(me, 'action', me.#onClick.bind(me));
     me.attachEvent(me, 'form', me.#onForm.bind(me));
-    me.attachEvent(me, 'modal', me.#onModal.bind(me));
     me.attachEvent(document, 'keyup', me.#onEscape.bind(me));
     super.onReady();
     if (me.visible) me.open();
   }
 
-  #onModal(e) {
-    const me = this;
-    const sts = me.#validateCaller(e, e.target, 'close', 'GS-MODAL');
-    if (!sts) return;
-    GSEvent.prevent(e);
-    me.close();
-  }
-
   #onForm(e) {
     const me = this;
-    let sts = me.#validateCaller(e, e.target, 'submit', 'GS-MODAL');
-    if (!sts) return;
     GSEvent.prevent(e);
-    sts = GSEvent.send(me, 'data', { type: 'modal', data: e.detail.data, evt: e }, true, true, true);
+    const sts = GSEvent.send(me, 'data', { type: 'modal', data: e.detail.data, evt: e }, true, true, true);
     if (sts) me.close();
-  }
-
-  #validateCaller(e, own, type, comp) {
-    if (e.detail.type !== type) return false;
-    const parent = GSComponents.getOwner(own, comp);
-    return parent == this;
   }
 
   #onEscape(e) {
@@ -89,19 +73,59 @@ export default class GSModal extends GSElement {
   }
 
   #onClick(e) {
+
     const me = this;
+    const action = me.#isAcceptedAction(e);
+    if (!action) return;
+
+    const isOk = action === 'ok';
+    const forms = GSDOM.queryAll(me, 'form');
+    const processForms = isOk && forms.length > 0;
+
+    if (processForms) {
+      const invalid = forms.filter(form => form.checkValidity() == false);
+      invalid.forEach(form => me.#reportForm(form));
+      if (invalid.length === 0) forms.forEach(form => me.#submitForm(form) );
+      
+      const els = invalid.map(form => GSDOM.queryAll(form, 'textarea, input, select').filter(el => el.checkValidity() == false));
+      if (els.length > 0) GSEvent.send(me, 'error', { type: 'modal', data: els }, true, true, true);
+      return;
+    }
+
     let sts = true;
-    let isOk = false;
     try {
-      const el = e.composedPath().shift();
-      const action = el?.dataset.action;
-      if (!GSModal.#actions.includes(action)) return sts = false;
-      GSEvent.prevent(e);
-      isOk = action === 'ok';
       sts = GSEvent.send(me, 'action', { type: 'modal', ok: isOk, evt: e }, true, true, true);
     } finally {
       if (sts) me.close(null, isOk);
     }
+  }
+
+  #submitForm(form) {
+    try {
+      GSEvent.send(form, 'action', { action: 'submit'});
+    } catch(e) {
+      console.log(e);
+    }
+  }
+
+  #reportForm(form) {
+    try {
+      form.reportValidity();
+    } catch(e) {
+      console.log(e);
+    }
+  }
+
+  #getAction(e) {
+    const el = e.composedPath().shift();
+    return el?.dataset.action || e.detail.action || el?.type;
+  }
+
+  #isAcceptedAction(e) {
+    const action = this.#getAction(e);
+    const isOk = GSModal.#actions.includes(action);
+    if (isOk) GSEvent.prevent(e);
+    return isOk ? action : null;
   }
 
   #setSize(size = '') {
@@ -176,10 +200,10 @@ export default class GSModal extends GSElement {
   /**
    * Hide modal panel
    */
-   close(e, ok = false) {
+  close(e, ok = false) {
     GSEvent.prevent(e);
     const me = this;
-    const sts = GSEvent.send(me, 'close', { type: 'modal', isOk : ok }, true, true, true);
+    const sts = GSEvent.send(me, 'close', { type: 'modal', isOk: ok }, true, true, true);
     if (sts) me.visible = false;
   }
 
@@ -232,19 +256,19 @@ export default class GSModal extends GSElement {
     const footer = me.query('.modal-footer');
     GSDOM.toggleClass(footer, true, css);
   }
-  
-	/**
-	 * Search for named slot tag or css selector 
-	 * @param {string} name Tagged slot  name
-	 * @param {*} qry CSS selector
-	 * @returns {HTMLElement|Array<HTMLElement>}
-	 */
-	#findSlotOrEl(name = '', qry = '') {
+
+  /**
+   * Search for named slot tag or css selector 
+   * @param {string} name Tagged slot  name
+   * @param {*} qry CSS selector
+   * @returns {HTMLElement|Array<HTMLElement>}
+   */
+  #findSlotOrEl(name = '', qry = '') {
     const me = this;
-		let el = name ? me.self.querySelector(`[slot="${name}"]`) : null;
-		if (!el) el = me.self.querySelector(qry);
+    let el = name ? me.self.querySelector(`[slot="${name}"]`) : null;
+    if (!el) el = me.self.querySelector(qry);
     return el;
-	}
+  }
 
 
   get title() {
@@ -378,26 +402,26 @@ export default class GSModal extends GSElement {
     if (val) return super.getTemplate(val);
     const me = this;
     return `
-        <div class="modal d-none fade ${me.cssModal}">
-        <div class="modal-dialog modal-dialog-centered">
-          <div class="modal-content ${me.cssContent}">
-            <div class="modal-header border-0 ${me.cssHeader}">
-              <div class="modal-title ${me.cssTitle}">
-                <slot name="title"></slot>
-              </div>
-            </div>
-            <div class="modal-body ${me.cssBody}">
-              <slot name="body"></slot>
-            </div>
-            <div class="modal-footer border-0 justify-content-${me.align} ${me.cssFooter}">
-              <button class="btn ${me.cssButtonCancel} modal-cancel" data-action="cancel">${me.buttonCancel}</button>
-              <button class="btn ${me.cssButtonOk} modal-ok" data-action="ok">${me.buttonOk}</button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="modal-backdrop d-none fade "></div>    
-    `
+         <div class="modal d-none fade ${me.cssModal}">
+         <div class="modal-dialog modal-dialog-centered">
+           <div class="modal-content ${me.cssContent}">
+             <div class="modal-header border-0 ${me.cssHeader}">
+               <div class="modal-title ${me.cssTitle}">
+                 <slot name="title"></slot>
+               </div>
+             </div>
+             <div class="modal-body ${me.cssBody}">
+               <slot name="body"></slot>
+             </div>
+             <div class="modal-footer border-0 justify-content-${me.align} ${me.cssFooter}">
+               <button class="btn ${me.cssButtonCancel} modal-cancel" data-action="cancel">${me.buttonCancel}</button>
+               <button class="btn ${me.cssButtonOk} modal-ok" data-action="ok">${me.buttonOk}</button>
+             </div>
+           </div>
+         </div>
+       </div>
+       <div class="modal-backdrop d-none fade "></div>    
+     `
   }
 }
 

@@ -19,4 +19,9 @@ export default class GSWorkstations extends BaseViewUI {
         return super.getTemplate('//views/services.html');
     }
 
+    async onLoad() {
+        const o = {success: false};
+        return o.success ? o.data : false;
+    }
+
 }

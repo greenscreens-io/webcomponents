@@ -3,7 +3,7 @@
         <label class="control-label " for="ipAddress">Server address</label>
     </div>
     <div class="col-md-6 col-sm-6 col-xs-11">
-        <input class="form-control  text-uppercase" id="ipAddress" name="ipAddress" type="text" pattern="^((25[0-5]|(2[0-4]|1\d|[1-9]|)\d)\.?\b){4}$" required>
+        <input class="form-control  text-uppercase" id="ipAddress" name="ipAddress" type="text" _pattern="^((25[0-5]|(2[0-4]|1\d|[1-9]|)\d)\.?\b){4}$" required>
     </div>
     <div class="col-auto ">
         <gs-tooltip placement="right" title="Remote host to configure web access to terminal access."></gs-tooltip>
@@ -27,7 +27,7 @@
 
 <div class="row form-group m-1">
     <div class="col-md-4 col-sm-4 col-xs-12 text-md-end ">
-        <label class="control-label " for="proxyName">Proxy name</label>
+        <label class="control-label " for="proxyName">Tunnel name</label>
     </div>
     <div class="col-md-6 col-sm-6 col-xs-11">
         <input class="form-control  text-uppercase" id="proxyName" name="proxyName" type="text">
@@ -40,7 +40,7 @@
 
 <div class="row form-group m-1">
     <div class="col-md-4 col-sm-4 col-xs-12 text-md-end ">
-        <label class="control-label " for="codePage">Code Page</label>
+        <label class="control-label " for="codePage">Code page</label>
     </div>
     <div class="col-md-6 col-sm-6 col-xs-11">
         <select class="form-select" id="codePage" name="codePage" required selected="037">
