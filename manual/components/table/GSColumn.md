@@ -15,6 +15,9 @@ GSColumn WebComponent is an UI element to define [GSTable](GSTable.md) data colu
 | format             | Visual data formating, supported for dates and numbers   | 
 | sortable           | Is column sorting enabled. (bool)                        | 
 | width              | Optional column width (CSS)                              | 
+| css                | Data column CSS                                          | 
+| css-filter         | Filter column CSS                                        | 
+| css-header         | Header column CSS                                        | 
 
 <br>
 

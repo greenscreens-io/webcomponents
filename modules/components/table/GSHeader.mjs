@@ -55,7 +55,7 @@ export default class GSHeader extends HTMLElement {
 
         if (filters.length > 0) {
             html.push(`<tr is="gs-tablefilter" class="${table.cssFilter}">`);
-            filters.forEach(el => html.push(el.renderFilter()));
+            columns.forEach(el => html.push(el.renderFilter()));
             html.push('</tr>');
         }
 
