@@ -25,12 +25,27 @@ export default class GSAttr {
 	}
 
 	/**
+ 	* Generic function to change elment node attribute
+ 	* 
+ 	* @param {HTMLElement} el Target to receive attribute value
+ 	* @param {string} name Attribite name
+ 	* @param {boolean} val Attribute value
+ 	*/
+	static toggle(el, name, val = false) {
+		if (!GSAttr.isHTMLElement(el)) return;
+		if (val) {
+			el.setAttribute(name, '');
+		} else {
+			el.removeAttribute(name);
+		}
+	}
+
+	/**
 	 * Generic function to change elment node attribute
 	 * 
 	 * @param {HTMLElement} el Target to receive attribute value
 	 * @param {string} name Attribite name
 	 * @param {string} val Attribute value
-	 * @returns {void}
 	 */
 	static set(el, name, val) {
 		if (!GSAttr.isHTMLElement(el)) return;

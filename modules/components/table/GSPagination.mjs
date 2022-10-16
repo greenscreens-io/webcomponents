@@ -41,24 +41,24 @@ export default class GSPagination extends GSElement {
         const html = [];
         html.push('<nav><ul class="pagination justify-content-center m-3">');
 
-        if (firstlast) html.push(me.#getHtml(me.first, 'first'));
-        if (nextprev) html.push(me.#getHtml(me.previous, 'previous'));
+        if (firstlast) html.push(me.#getHtml(me.first, 'first', 'First page'));
+        if (nextprev) html.push(me.#getHtml(me.previous, 'previous', 'Previous page'));
 
         let i = 1;
         while (i <= pages) {
-            html.push(me.#getHtml(i, '', i == store.page));
+            html.push(me.#getHtml(i, '', '', i == store.page));
             i++;
         }
 
-        if (nextprev) html.push(me.#getHtml(me.next, 'next'));
-        if (firstlast) html.push(me.#getHtml(me.last, 'last'));
+        if (nextprev) html.push(me.#getHtml(me.next, 'next', 'Next page'));
+        if (firstlast) html.push(me.#getHtml(me.last, 'last', 'Last page'));
 
         html.push('</ul></nav>');
         return html.join('');
     }
 
-    #getHtml(title = '', name = '', active = false) {
-        return `<li class="page-item ${GSPagination.CSS_ITEM} ${active ? 'active' : ''}"><a class="page-link" name="${name}" href="#" >${title}</a></li>`;
+    #getHtml(text = '', name = '', title = '', active = false) {
+        return `<li class="page-item ${GSPagination.CSS_ITEM} ${active ? 'active' : ''}"><a class="page-link" name="${name}" title="${title}" href="#" >${text}</a></li>`;
     }
 
     #onStore(e) {
@@ -125,19 +125,19 @@ export default class GSPagination extends GSElement {
     }
 
     get first() {
-        return GSAttr.get(this, 'first', 'First');
+        return GSAttr.get(this, 'first', '&laquo;');
     }
 
     get last() {
-        return GSAttr.get(this, 'last', 'Last');
+        return GSAttr.get(this, 'last', '&raquo;');
     }
 
     get next() {
-        return GSAttr.get(this, 'next', 'Next');
+        return GSAttr.get(this, 'next', '&rsaquo;');
     }
 
     get previous() {
-        return GSAttr.get(this, 'previous', 'Previous');
+        return GSAttr.get(this, 'previous', '&lsaquo;');
     }
 }
 
