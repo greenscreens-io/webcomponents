@@ -94,7 +94,7 @@ export default class GSButton extends GSElement {
         const dissmis = GSItem.getDismissAttr(me);
         const target = GSItem.getTargetAttr(me);
         const toggle = GSItem.getToggleAttr(me);
-        return `<button class="btn ${me.css}" ${action} ${toggle} ${target} ${dissmis} ${disabled} title="${me.comment}" role="tooltip">${content}</button>`;
+        return `<button type="${me.type}" class="btn ${me.css}" ${action} ${toggle} ${target} ${dissmis} ${disabled} title="${me.comment}" role="tooltip">${content}</button>`;
     }
 
     get css() {
@@ -185,6 +185,14 @@ export default class GSButton extends GSElement {
 
     set select(val = '') {
         return GSAttr.setAsBool(this, 'select', val);
+    }
+
+    get type() {
+        return GSAttr.get(this, 'type', 'button');
+    }
+
+    set type(val = '') {
+        return GSAttr.set(this, 'type', val);
     }
 
     toggle() {

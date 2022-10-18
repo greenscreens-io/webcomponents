@@ -21,6 +21,8 @@ export default class GSUtil {
 
 	static isNumber = (n) => { return !isNaN(parseFloat(n)) && isFinite(n); };
 
+	static isBool = (v) => {return typeof v === 'boolean' || v instanceof Boolean};
+
 	static isString = value => typeof value === 'string';
 
 	static isNull = value => value === null || value === undefined;
