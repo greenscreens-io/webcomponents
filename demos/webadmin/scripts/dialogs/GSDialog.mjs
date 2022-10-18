@@ -65,6 +65,10 @@ export default class GSDialog extends GSModal {
         return GSComponents.get('notification');
     }
 
+    get form() {
+        return GSDOM.query(this, 'form');
+    }    
+
     /**
      * Used by inherited dialogs to load data into dialog forms
      * @returns {*}

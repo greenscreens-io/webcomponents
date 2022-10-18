@@ -381,11 +381,11 @@ export default class GSDOM {
 	 * @param {string} qry CSS query
 	 * @returns {HTMLElement} 
 	 */
-	static query(el, qry) {
+	static query(el, qry, all = false) {
 		if (typeof el === 'string') return GSDOM.query(document.body, qry);
 		if (!(el && qry)) return null;
 		if (GSDOM.matches(el, qry)) return el;
-		const it = GSDOM.walk(el, false, false);
+		const it = GSDOM.walk(el, false, all);
 		for (let o of it) {
 			if (GSDOM.matches(o, qry)) return o;
 		}
@@ -410,11 +410,11 @@ export default class GSDOM {
 	 * @param {string} qry CSS query
 	 * @returns {Array<HTMLElement>}
 	 */
-	static queryAll(el, qry) {
+	static queryAll(el, qry, all = false) {
 		if (typeof el === 'string') return GSDOM.queryAll(document.body, qry);
 		const res = [];
 		if (!(el && qry)) return res;
-		const it = GSDOM.walk(el, false, false);
+		const it = GSDOM.walk(el, false, all);
 		for (let o of it) {
 			if (GSDOM.matches(o, qry)) res.push(o);
 		}

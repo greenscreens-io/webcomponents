@@ -300,8 +300,8 @@ export default class GSElement extends HTMLElement {
 	 * @param {string} name 
 	 * @returns {HTMLElement}
 	 */
-	query(query = '') {
-		return GSDOM.query(this.self, query);
+	query(query = '', all = false) {
+		return GSDOM.query(this.self, query, all);
 	}
 
 	/**
@@ -309,8 +309,8 @@ export default class GSElement extends HTMLElement {
 	 * @param {string} query 
 	 * @returns {Array<HTMLElement>}
 	 */
-	queryAll(query = '') {
-		return GSDOM.queryAll(this.self, query);
+	queryAll(query = '', all = false) {
+		return GSDOM.queryAll(this.self, query, all);
 	}
 
 	/**
