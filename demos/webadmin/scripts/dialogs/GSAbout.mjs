@@ -11,7 +11,7 @@ import GSModal from '../../../../modules/components/GSModal.mjs';
 export default class GSAbout extends GSModal {
 
     static #version = '6.0.0.';
-    static #build = '15.09.2022. 15:00:00';
+    static #build = '20.10.2022. 15:00:00';
 
     static {
         customElements.define('gs-admin-dialog-about', GSAbout);

@@ -175,7 +175,7 @@ export default class BaseViewUI extends GSElement {
             if (!sts) throw new Error('Record not removed!');
 
             // update locally to refresh ui
-            const subset = me.store.data.filter(o => o[me.recID] !== data[me.recID]);
+            const subset = me.store.data.filter(o => !o.hasOwnProperty(me.recID) || (o[me.recID] !== data[me.recID]));
             me.store.setData(subset);
             me.notify.danger('', 'Record removed!');
 
