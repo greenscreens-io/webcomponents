@@ -35,6 +35,8 @@ export default class GSUtil {
 
 	static capitalize = (word) => word[0].toUpperCase() + word.slice(1).toLowerCase();
 
+	static capitalizeAll = (word, split = ' ') => word.split(split).map((v, i) => GSUtil.capitalize(v)).join(split);
+
 	static capitalizeAttr = (word) => word.split('-').map((v, i) => i ? GSUtil.capitalize(v) : v).join('');
 
 	static initerror = () => { throw new Error('This class cannot be instantiated') };

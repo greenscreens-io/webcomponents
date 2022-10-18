@@ -118,7 +118,7 @@ export default class GSModal extends GSElement {
 
   #getAction(e) {
     const el = e.composedPath().shift();
-    return el?.dataset.action || e.detail.action || el?.type;
+    return el?.dataset?.action || e.detail.action || el?.type;
   }
 
   #isAcceptedAction(e) {
