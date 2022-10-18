@@ -8,6 +8,7 @@
  */
 
 import GSLog from "./GSLog.mjs";
+import GSUtil from "./GSUtil.mjs";
 
 /**
  * A generic set of static functions to handle DOM tree and DOM elements
@@ -88,15 +89,28 @@ export default class GSDOM {
 	  * Check if given element is of given type 
 	  * 
 	  * @param {HTMLElement} el
-	  * @param {string|class} type
+	  * @param {string|class} type Tag Name, class name or Class
 	  * @returns {boolean}
 	  */
 	static isElement(el, type) {
-		if (type && el) {
-			if (typeof type === 'string') {
-				if (type.toUpperCase() === el.tagName) return el;
-			} else if (el instanceof type) return el;
+		
+		const isArgs = type && el;
+		if (!isArgs) return false;
+
+		const isStr =  GSUtil.isString(type);
+		
+		if (!isStr) return el instanceof type;
+
+		const ownClazz = customElements.get(type.toLowerCase());
+		if (ownClazz && el instanceof ownClazz) return el;
+
+		const it = GSDOM.inheritance(el);
+		for (let pel of it) {
+			if (pel?.constructor?.name === type) return el;
 		}
+
+		if (type.toUpperCase() === el.tagName) return el;	
+
 		return false;
 	}
 
@@ -144,7 +158,14 @@ export default class GSDOM {
 	 * Check if given element is of type GSElement
 	 */
 	static isGSElement(el) {
-		return el?.tagName?.indexOf('GS-') === 0;
+		if (!el?.clazzName) return false;
+		//if (el?.tagName?.indexOf('GS-') === 0) return true;
+		const it = GSDOM.inheritance(el);
+        for (let v of it) {
+			if (!v) break;
+            if (v?.clazzName === 'GSElement') return true;
+		}
+		return false;
 	}
 
 	/**
@@ -290,6 +311,21 @@ export default class GSDOM {
 	}
 
 	/**
+	 * Element prototype iterator
+	 * @param {HTMLElement} el 
+	 * @returns {HTMLElement}
+	 * @iterator
+	 */
+	static *inheritance(el) {
+		let e = el.__proto__;
+		while (e) {
+			yield e;
+			e = e.__proto__;
+		}
+		if (e) return yield e;
+	}
+
+	/**
 	 * Get root element whch might be shadow root, GSElement, any parent element
 	 * @param {HTMLElement} el 
 	 * @returns {HTMLElement|ShadowRoot}
@@ -313,9 +349,9 @@ export default class GSDOM {
 	 * @returns {HTMLElement} 
 	 */
 	static getByID(el, id) {
-		if (typeof el === 'string') return GSDOM.getByID(document.body, qry);
-		if (!(el && qry)) return null;
-		const it = GSDOM.walk(el, true);
+		if (typeof el === 'string') return GSDOM.getByID(document.body, id);
+		if (!(el && id)) return null;
+		const it = GSDOM.walk(el, false);
 		for (let o of it) {
 			if (o.id === id) return o;
 		}

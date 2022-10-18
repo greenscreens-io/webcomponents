@@ -1,0 +1,34 @@
+<form slot="body" is="gs-ext-form" id="form-main" class="flex-fill" novalidate="">
+    
+    <div class="row form-group m-1">
+        <div class="col-md-4 col-sm-4 col-xs-12 text-md-end ">
+            <label class="control-label " for="uuid">UUID</label>
+        </div>
+        <div class="col-md-6 col-sm-6 col-xs-11">
+            <input class="form-control" id="uuid"  name="uuid" type="text" autocomplete="off" readonly disabled>
+        </div>
+    </div>
+
+    <div class="row form-group m-1">
+        <div class="col-md-4 col-sm-4 col-xs-12 text-md-end ">
+            <label class="control-label " for="host">Host</label>
+        </div>
+        <div class="col-md-6 col-sm-6 col-xs-11">
+            <input class="form-control" id="host"  name="host" type="text" autocomplete="off" readonly disabled>
+        </div>
+    </div>
+    
+    <div class="row form-group m-1">
+        <div class="col-md-4 col-sm-4 col-xs-12 text-md-end ">
+            <label class="control-label " for="printer">Printer</label>
+        </div>
+        <div class="col-md-6 col-sm-6 col-xs-11">
+            <input class="form-control" id="printer" name="printer" type="text" autocomplete="off" maxlength="10" required>
+        </div>
+        <div class="col-auto ">
+            <gs-tooltip placement="right" title="Virtual printer name."></gs-tooltip>
+            <i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
+        </div>
+    </div>    
+    
+</form>

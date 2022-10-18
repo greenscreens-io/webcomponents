@@ -15,7 +15,17 @@ export default class GSApiKeys extends BaseViewUI {
         Object.seal(GSApiKeys);
     }
 
+    onReady() {
+        super.onReady();
+        this.modal.large();
+    }
+
     async getTemplate() {
         return super.getTemplate('//views/keys-api.html');
+    }
+
+    async onLoad() {
+        const o = {success: false};
+        return o.success ? o.data : false;
     }
 }

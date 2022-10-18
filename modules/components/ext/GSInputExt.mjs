@@ -12,6 +12,7 @@ import GSEvent from "../../base/GSEvent.mjs";
 import GSComponents from "../../base/GSComponents.mjs";
 import GSAttr from "../../base/GSAttr.mjs";
 import GSDOM from "../../base/GSDOM.mjs";
+import GSUtil from "../../base/GSUtil.mjs";
 
 /**
  * Add custom field processing
@@ -21,13 +22,17 @@ import GSDOM from "../../base/GSDOM.mjs";
  */
 export default class GSInputExt extends HTMLInputElement {
 
-    static #special = ".^$*+-?()[]{}\|—/";
+    static #special = '.^$*+?()[]{}\|';
+
     static #maskType = {
-        y: '[0-9]', m: '[0-9]', d: '[0-9]',
-        Y: '[0-9]', M: '[0-9]', D: '[0-9]',
-        9: '[0-9]', '#': '[0-9]',
-        x: '[a-zA-Z]', X: '[a-zA-Z]',
-        _: '[0-9]'
+        n: /[0-9]/g,
+        x: /[0-9a-fA-F]/g,
+        y: /[0-9]/g,
+        m: /[0-9]/g,
+        d: /[0-9]/g,
+        '#': /[a-zA-Z]/g,
+        '*': /[0-9a-zA-Z]/g,
+        '_': /./g
     };
 
     #masks = [];
@@ -42,7 +47,7 @@ export default class GSInputExt extends HTMLInputElement {
     }
 
     static get observedAttributes() {
-        return ['mask'];
+        return ['mask', 'pattern'];
     }
 
     connectedCallback() {
@@ -63,8 +68,7 @@ export default class GSInputExt extends HTMLInputElement {
     }
 
     attributeChangedCallback(name, oldValue, newValue) {
-        //console.log(`name:${name}, oldValue:${oldValue}, newValue:${newValue}`);
-        if (name === 'mask') this.#toPattern();
+        if (name === 'mask' || name === 'pattern') this.#toPattern();
     }
 
     get owner() {
@@ -92,35 +96,66 @@ export default class GSInputExt extends HTMLInputElement {
         return GSAttr.get(this, 'strict', '');
     }
 
+    get optimized() {
+        const me = this;
+        const chars = me.mask.split('');
+
+        const masks = [];
+        let cnt = 0;
+        chars.forEach((v, i) => {
+            if (masks[masks.length - 1] === v) return cnt++;
+            if (cnt > 0) masks.push(`{${++cnt}}`);
+            cnt = 0;
+            if (GSInputExt.#special.indexOf(v) > -1) masks.push('\\');
+            masks.push(v);
+        });
+        if (cnt > 0) masks.push(`{${++cnt}}`);
+
+        return masks.join('');
+    }
+
     #toPattern() {
         const me = this;
+        if (me.pattern.length > 0) return;
         if (me.mask.length === 0) return;
+
         const chars = me.mask.split('');
-        const masks = [];
+        const masks = ['^'];
 
-        me.#masks = [];
-
-        chars.forEach(v => {
-            if (GSInputExt.#special.includes(v)) {
-                me.#masks.push(v);
-                masks.push(`\${v}`);
-                return;
+        let cnt = 0;
+        chars.forEach((v, i) => {
+            const m = GSInputExt.#maskType[v.toLowerCase()];
+            if (!m) {
+                if (cnt > 0) masks.push(`{${++cnt}}`);
+                cnt = 0;
+                if (GSInputExt.#special.indexOf(v) > -1) masks.push('\\');
+                return masks.push(v);
             }
 
-            const m = GSInputExt.#maskType[v];
-            if (m) {
-                me.#masks.push(new RegExp(m, 'g'));
-                masks.push(m);
-                return;
-            }
+            chars[i] = new RegExp(m, 'g');
+
+            if (masks.length === 0) return masks.push(m.source);
+
+            if (masks[masks.length - 1] === m.source) return cnt++;
+
+            if (cnt > 0) masks.push(`{${++cnt}}`);
+            cnt = 0;
+            masks.push(m.source);
         });
+        if (cnt > 0) masks.push(`{${++cnt}}`);
+        masks.push('$');
 
+        me.#masks = chars;
         me.pattern = masks.join('');
+        me.maxLength = me.mask.length;
     }
 
     #attachEvents() {
         const me = this;
+        GSEvent.attach(me, me, 'keydown', me.#onKeyDown.bind(me));
+        GSEvent.attach(me, me, 'keypress', me.#onKeyPress.bind(me));
         GSEvent.attach(me, me, 'input', me.#onInput.bind(me));
+        GSEvent.attach(me, me, 'paste', me.#onPaste.bind(me));
         GSEvent.attach(me, me, 'blur', me.#onBlur.bind(me));
         requestAnimationFrame(() => {
             const list = me.list;
@@ -192,14 +227,103 @@ export default class GSInputExt extends HTMLInputElement {
 
     #onBlur(e) {
         const me = this;
-        me.reportValidity();
+        if (me.required) me.reportValidity();
         if (!me.isInList()) GSEvent.send(me, 'strict', { ok: false, source: e });
+    }
+
+    #onPaste(e) {
+        GSEvent.prevent(e);
+        const val = e.clipboardData.getData('text');
+        const me = this;
+        me.value = me.formatMask(val);
+    }
+
+    #onKeyDown(e) {
+        const me = this;
+        if (!me.mask) return;
+        
+        const tmp = me.value.split('');
+        let pos1 = me.selectionStart;
+        let pos2 = me.selectionEnd;
+
+        let handle = false;
+        let pos = pos1;
+
+        if (e.key === 'Delete') {
+            handle = true;
+            tmp[pos] = me.mask[pos];
+        }
+
+        if (e.key === 'Backspace') {
+            handle = true;
+            if (pos1 === pos2) {
+                tmp[pos-1] = me.mask[pos-1];
+                pos = pos1-1;
+            } else {
+                pos = pos1;
+            }
+        }
+
+        
+        if (pos1 !== pos2 && e.key.length === 1) {
+            handle = true;
+            while (pos1 < pos2) {
+                tmp[pos1] = me.mask[pos1];
+                pos1++;
+            }
+        }
+        
+        if (!handle) return;
+
+        me.value = me.formatMask(tmp.join(''));
+        me.setSelectionRange(pos, pos);
+        return GSEvent.prevent(e);
+
+    }
+
+    #onKeyPress(e) {
+        const me = this;
+        if (!me.mask) return;
+        
+        const tmp = me.value.split('');
+        let pos = me.selectionStart;
+        let masks = me.#masks.slice(pos);
+        let canceled = true;
+
+        masks.every(mask => {
+            if (mask instanceof RegExp) {
+                if (mask.test(e.key)) {
+                    tmp[pos] = e.key;
+                    canceled = false;
+                } 
+                GSEvent.prevent(e);
+                return false;
+            } else {
+                tmp[pos] = mask;
+            }
+            pos++;
+            return true;
+        });
+
+        if (canceled) return;
+
+        masks = me.#masks.slice(pos+1);
+        masks.every(mask => {
+            if (mask instanceof RegExp) return false;
+            pos++;
+            return true;
+        });
+
+
+        me.value = me.formatMask(tmp.join(''));
+        me.setSelectionRange(pos+1, pos+1);
+        GSEvent.prevent(e);
     }
 
     #onInput(e) {
         const me = this;
         if (me.type === 'number') return me.#onNumberInput(e);
-        if (me.mask) return me.#onMaskInput(e);
+        if (me.mask) return; //  me.#onMaskInput(me.value);
         if (me.type === 'text') return me.#onTextInput(e);
     }
 
@@ -213,29 +337,56 @@ export default class GSInputExt extends HTMLInputElement {
     #onTextInput(e) {
         const me = this;
 
+        me.value = me.#updateText(me.value);
+
         if (!me.checkValidity()) {
             me.reportValidity();
-            // if (me.pattern) me.value = me.#regexExtract(me.pattern, me.value);
         }
     }
 
-    #onMaskInput(e) {
+    formatMask(value = '') {
         const me = this;
-        const chars = me.value.split('').slice(0, me.#masks.length);
+        const chars = value.split('');
 
-        chars.forEach((v, i) => {
+        const tmp = [];
+
+        let pos = 0;
+        let valid = false;
+
+        me.mask.split('').every((v, i) => {
             const vld = me.#masks[i];
-            if (typeof vld === 'string') return chars[i] = vld;
+
+            if (GSUtil.isString(vld)) {
+                tmp.push(vld);
+                if (chars[0] === vld) chars.shift();
+                if (valid) pos++;
+            }
+
             if (vld instanceof RegExp) {
                 vld.lastIndex = 0;
-                if (!vld.test(v)) chars[i] = '';
-                return;
+                const c = chars.shift();
+                valid = c && vld.test(c);
+                tmp.push(valid ? c : v);
+                if (valid) pos++;
             }
-            chars[i] = '';
-        });
-        me.value = chars.join('');
 
+            return true;
+        });
+
+        return me.#updateText(tmp.join(''));
     }
 
+    #updateText(value = '') {
+        const me = this;
+        const fmt = me.computedStyleMap().get('text-transform').value;
+        switch (fmt) {
+            case 'lowercase':
+                return value.toLocaleLowerCase();
+            case 'uppercase':
+                return value.toLocaleUpperCase();
+            case 'capitalize':
+                return GSUtil.capitalizeAll(value);
+        }
+        return value;
+    }
 }
-

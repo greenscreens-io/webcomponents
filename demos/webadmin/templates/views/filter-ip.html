@@ -22,7 +22,7 @@
                 icon="bi bi-arrow-repeat fs-4 fw-bold"></gs-button>
         </div>
 
-        <div class="col-12">
+        <div class="col-12 p-0">
 
             <gs-table id="table-main" index=false class="flex-fill"
                 css="table table-light table-hover user-select-none m-0" css-select="table-active table-primary"
@@ -30,7 +30,6 @@
                 <gs-header>
                     <gs-column title="Rule" name="rule" filter="true" list="fixed">
                         <gs-item map="true" filter="true">
-                            <gs-item value="" map="All"></gs-item>
                             <gs-item value="0" map="Allow"></gs-item>
                             <gs-item value="1" map="Deny"></gs-item>   
                         </gs-item>
@@ -56,7 +55,7 @@
                         </gs-item>
                     </gs-column>
                 </gs-header>
-                <gs-store src="data/filter-ip.json" id="sessions" limit=10>
+                <gs-store src="data/filter-ip.json" id="sessions" limit=15>
                     <gs-item name="id"></gs-item>
                     <gs-item name="rule"></gs-item>
                     <gs-item name="type"></gs-item>
@@ -67,7 +66,6 @@
                 </gs-store>
                 <gs-context slot="extra" target="tbody tr">
                     <gs-item name="Details" action="details"></gs-item>
-                    <gs-item name="Refresh" action="refresh"></gs-item>
                     <gs-item></gs-item>
                     <gs-item name="Remove" action="remove"></gs-item>
                 </gs-context>

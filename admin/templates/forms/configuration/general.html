@@ -1,0 +1,57 @@
+<div class="row form-group m-1">
+    <div class="col-md-4 col-sm-4 col-xs-12 text-md-end ">
+        <label class="control-label " for="uuid">UUID</label>
+    </div>
+    <div class="col-md-6 col-sm-6 col-xs-11">
+        <input class="form-control  text-uppercase" id="uuid" name="uuid" type="text" maxlength="64" pattern="[a-zA-Z10-9_]{1,10}" required>
+    </div>
+    <div class="col-auto ">
+        <gs-tooltip placement="right" title="Configuration group. Used on login form along with virtual host name."></gs-tooltip>
+        <i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
+    </div>
+</div>
+
+<div class="row form-group m-1">
+    <div class="col-md-4 col-sm-4 col-xs-12 text-md-end ">
+        <label class="control-label " for="name">Host</label>
+    </div>
+    <div class="col-md-6 col-sm-6 col-xs-11">
+        <input class="form-control  text-uppercase" id="name" name="name" type="text" maxlength="64" pattern="[a-zA-Z10-9_]{1,64}" required>
+    </div>
+    <div class="col-auto ">
+        <gs-tooltip placement="right" title="Virtual server name used on login screen. It is an alias for server IP address."></gs-tooltip>
+        <i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
+    </div>
+</div>
+
+<div class="row form-group m-1">
+    <div class="col-md-4 col-sm-4 col-xs-12 text-md-end ">
+        <label class="control-label " for="controller">Virtual Controller</label>
+    </div>
+    <div class="col-md-6 col-sm-6 col-xs-11">
+        <input class="form-control  text-uppercase" id="controller" name="controller" type="text" maxlength="10" pattern="[a-zA-Z10-9]{1,10}" placeholder="QPACTL01" required>
+    </div>
+    <div class="col-auto ">
+        <gs-tooltip placement="right" title="Printer or Display virtual controller. For pre 6.1 releases default is QVIRCD0001 or any QVIRCDxxxx and for newer releases it is QPACTL01 or any QPACTLxx."></gs-tooltip>
+        <i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
+    </div>
+</div>
+
+
+<div class="row form-group m-1">
+    <div class="col-md-4 col-sm-4 col-xs-12 text-md-end ">
+        <label class="control-label " for="transfer">File transfers</label>
+    </div>
+    <div class="col-md-6 col-sm-6 col-xs-11">
+        <select class="form-select" id="transfer" name="transfer" required>
+            <option value="0">None</option>
+            <option value="1">Both</option>
+            <option value="2">Download</option>
+            <option value="3">Upload</option>
+        </select>
+    </div>
+    <div class="col-auto ">
+        <gs-tooltip placement="right" title="Select which transfer types are allowed. Only download, or only upload or both can be enabled. Default is NONE"></gs-tooltip>
+        <i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
+    </div>
+</div>

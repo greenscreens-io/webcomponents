@@ -1,0 +1,34 @@
+<gs-layout type="vertical" css="">
+
+    <!-- header - topbar -->
+    <gs-item v-pos="center" h-pos="end" min="5" css="p-1 border-bottom shadow-sm text-bg-light logo"
+        css-template="flex-fill">
+        <template>
+            <gs-admin-shell-header></gs-admin-shell-header>
+        </template>
+    </gs-item>
+
+    <!-- center content location -->
+    <gs-item v-pos="top" h-pos="center" css="p-3">
+        <template>
+            <div id="content" class="d-flex flex-fill">
+                <gs-admin-view-configuration></gs-admin-view-configuration>
+            </div>
+        </template>
+    </gs-item>
+</gs-layout>
+
+<div id="dialogs">
+    <!-- dialog placeholder -->
+</div>
+
+<!-- Application sidebar -->
+<gs-admin-shell-sidebar></gs-admin-shell-sidebar>
+
+<!-- Application toast notification -->
+<gs-notification id="notification"></gs-notification>
+
+<!-- fixed footer -->
+<div class="fixed-bottom d-flex justify-content-center align-items-center mt-1 p-2 text-muted">
+    <small>&copy; Green Scereens Ltd. 2015. - <gs-year-format></gs-year-format>.</small>
+</div>

@@ -33,7 +33,7 @@ export default class GSColumn extends HTMLElement {
 
         const clssort = me.sortable ? 'sorting' : '';
         const style = me.width ? `style="width:${me.width};"` : '';
-        return `<th scope="col" name="${me.name}" class="${clssort}" ${style}>${me.title || me.name}</th>`;
+        return `<th scope="col" name="${me.name}" class="${clssort} ${me.cssHeader}" ${style}>${me.title || me.name}</th>`;
     }
 
     renderFilter() {
@@ -50,13 +50,13 @@ export default class GSColumn extends HTMLElement {
             default:
                 html = me.#renderField();
         }
-        return `<th>${html}</th>`;
+        return `<th css="${me.cssFilter}">${html}</th>`;
     }
 
     #renderFixed() {
         const me = this;
         const opts = me.#renderOptions(true);
-        return `<select auto="${me.auto}" name="${me.name}" title="${me.title || me.name}" class="${me.cssFilter}" >${opts}</select>`;
+        return `<select auto="${me.auto}" name="${me.name}" title="${me.title || me.name}" class="${me.cssField}" >${opts}</select>`;
     }
 
     #renderFlexi() {
@@ -70,7 +70,7 @@ export default class GSColumn extends HTMLElement {
 
     #renderField(list = '') {
         const me = this;
-        return `<input auto="${me.auto}" name="${me.name}" title="${me.title || me.name}" class="${me.cssFilter}" list="${list}">`;
+        return `<input auto="${me.auto}" name="${me.name}" title="${me.title || me.name}" class="${me.cssField}" placeholder="${me.title || me.name}" list="${list}">`;
     }
 
     #renderOptions(isCombo = false) {
@@ -95,10 +95,10 @@ export default class GSColumn extends HTMLElement {
         return GSDOM.closest(this, 'GS-TABLE');
     }
 
-    get cssFilter() {
+    get cssField() {
         const me = this;
         const def = me.list ? 'form-select' : 'form-control';
-        return GSAttr.get(me, 'css-filter', def);
+        return GSAttr.get(me, 'css-field', def);
     }
 
     get filter() {
@@ -108,6 +108,14 @@ export default class GSColumn extends HTMLElement {
     get sortable() {
         const me = this;
         return me.name && !me.counter ? GSAttr.getAsBool(me, 'sortable', true) : false;
+    }
+
+    get cssFilter() {
+        return GSAttr.get(this, 'css-filter', '');
+    }
+
+    get cssHeader() {
+        return GSAttr.get(this, 'css-header', 'border-end');
     }
 
     get css() {

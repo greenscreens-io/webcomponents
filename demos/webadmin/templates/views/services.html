@@ -12,7 +12,7 @@
             <gs-template href="//shell/toolbar2.html" id="toolbar"></gs-template>
         </div>
 
-        <div class="col-12 mt-2">
+        <div class="col-12 mt-2 p-0">
 
             <gs-table id="table-main" index=false class="flex-fill"
                 css="table table-light table-hover user-select-none m-0" css-select="table-active table-primary"
@@ -23,7 +23,7 @@
                     <gs-column title="Value" name="value"></gs-column>
                     <gs-column title="Description" name="desc"></gs-column>
                 </gs-header>
-                <gs-store src="data/services.json" id="sessions" limit=10>
+                <gs-store src="data/services.json" id="sessions" limit=15>
                     <gs-item name="module"></gs-item>
                     <gs-item name="desc"></gs-item>
                     <gs-item name="type"></gs-item>

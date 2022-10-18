@@ -91,8 +91,17 @@ export default class GSTBody extends HTMLTableSectionElement {
             rows.push('</tr>');
         });
 
+        if (data.length === 0 && me.table.noDataText) {
+            rows.push(me.#emptyRow(headers.length));
+        }
+        
+
         GSDOM.setHTML(me, rows.join(''));
         GSDOM.queryAll(me, 'tr').forEach(el => { if (el.innerText.trim().length === 0) el.remove(); });
+    }
+
+    #emptyRow(cols) {
+        return `<tr data-ignore="true"><td colspan="${cols}" class="text-center fw-bold text-muted">${this.table.noDataText}</td></tr>`;
     }
 
     #arrayToHTML(headers, rec, idx, offset) {
@@ -124,7 +133,7 @@ export default class GSTBody extends HTMLTableSectionElement {
         val = map?.length > 0 ? map[0][1] || val : val;
         val = me.#format(hdr, val);
         // todo format data 
-        return `<td class="${me.cssCell} ${hdr.css}">${val || '&nbsp;'}</td>`;
+        return `<td class="${me.cssCell} ${hdr.css}">${val?.toString() || '&nbsp;'}</td>`;
     }
 
     #format(hdr, val) {
@@ -138,7 +147,7 @@ export default class GSTBody extends HTMLTableSectionElement {
             case 'timestamp' : 
             case 'date' : 
                 const fmt = hdr.format == 'true' ? undefined : hdr.format;
-                return new GSDate(val).format(fmt, locale);
+                return val && val > 0 ? new GSDate(val).format(fmt, locale) : val;
             case 'string' : 
             case 'boolean' : 
             case 'number' : 
@@ -172,12 +181,12 @@ export default class GSTBody extends HTMLTableSectionElement {
         if (!me.select) return;
 
         requestAnimationFrame(() => {
-            me.#onRowSelect(el.closest('tr'), isAppend);
+            me.#onRowSelect(el.closest('tr'), isAppend, e);
         });
 
     }
 
-    #onRowSelect(row, append = false) {
+    #onRowSelect(row, append = false, evt) {
 
         const me = this;
         const isSelected = GSAttr.getAsBool(row, 'selected');
@@ -188,12 +197,14 @@ export default class GSTBody extends HTMLTableSectionElement {
                 GSAttr.set(el, 'selected', null);
             });
 
+        if (row.dataset.ignore === 'true') return;
+
         GSAttr.set(row, 'class', isSelected ? null : me.cssSelect);
         GSAttr.set(row, 'selected', isSelected ? null : true);
 
         const data = [];
         GSDOM.queryAll(me, 'tr[selected=true]').forEach(el => data.push(parseInt(el.dataset.index)));
-        GSEvent.send(me, 'select', data, true);
+        GSEvent.send(me, 'select', { data:data, evt : evt}, true);
     }
 
 }

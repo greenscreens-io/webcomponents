@@ -18,4 +18,9 @@ export default class GSWebmodules extends BaseViewUI {
     async getTemplate() {
         return super.getTemplate('//views/modules.html');
     }
+
+    async onLoad() {
+        const o = {success: false};
+        return o.success ? o.data : false;
+    }
 }

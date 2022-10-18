@@ -1,0 +1,15 @@
+[
+    {
+        "id": 1621083513526,
+        "uuid": "DEMO",
+        "host": "IBM1",
+        "library": "QUSRSYS",
+        "outq": "PRTDEMO",
+        "userName": "DEMOUSER",
+        "spoolName": "PRINT1",
+        "driver": 11,
+        "printerName": "Text Only Printer",
+        "active": true,
+        "timestamp": 0
+    }
+]

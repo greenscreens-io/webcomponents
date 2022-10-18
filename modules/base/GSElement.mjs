@@ -19,6 +19,7 @@ import GSFunction from "./GSFunction.mjs";
 import GSData from "./GSData.mjs";
 import GSEnvironment from "./GSEnvironment.mjs";
 import GSDOM from "./GSDOM.mjs";
+import GSDOMObserver from './GSDOMObserver.mjs';
 
 /**
  * Base element inherited by all other registered GS-Elements
@@ -56,6 +57,13 @@ export default class GSElement extends HTMLElement {
 		return ['orientation', 'id'];
 	}
 
+	/**
+	 * Get this class name
+	 */
+	get clazzName() {
+		return this.constructor.name;
+	}
+	
 	/**
 	 * Template used to render component. Might be various types
 	 * 1. URL to load template from
@@ -667,8 +675,8 @@ export default class GSElement extends HTMLElement {
 		await me.#aplyTemplate();
 		if (me.offline) return;
 		if (!me.#useTemplate) return;
-		if (!me.isFlat) me.attachEvent(this, document, 'gs-style', me.#styleChange.bind(me));
-		me.attachEvent(this, screen.orientation, 'change', me.#onOrientation.bind(me));
+		if (!me.isFlat) me.attachEvent(document, 'gs-style', me.#styleChange.bind(me));
+		me.attachEvent(screen.orientation, 'change', me.#onOrientation.bind(me));
 		GSUtil.requestAnimationFrame(() => me.onReady());
 	}
 

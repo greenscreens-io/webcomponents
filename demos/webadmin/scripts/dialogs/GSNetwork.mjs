@@ -6,7 +6,7 @@
  * A module loading GSNetwork class
  * @module dialogs/GSNetwork
  */
- import GSDialog from './GSDialog.mjs';
+import GSDialog from './GSDialog.mjs';
 
 export default class GSNetwork extends GSDialog {
 
@@ -18,8 +18,23 @@ export default class GSNetwork extends GSDialog {
     get dialogTemplate() {
         return '//dialogs/network.html';
     }
-    
+
     get dialogTitle() {
         return 'Netowrk Options';
     }
+
+    async onOpen() {
+        const me = this;
+        const o = {success: true, data : {}};
+        if (!o.success) return me.inform(false, o.msg);
+        return o.data;
+    }
+
+    async onData(data) {
+        const me = this;
+        const o = {success: true, data : {}};
+        me.inform(o.success, o.success ? 'Data saved!' : o.msg);
+        return o.success;
+    }     
+
 }

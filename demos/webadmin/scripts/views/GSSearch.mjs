@@ -80,10 +80,10 @@ class GSSearch extends GSElement {
         return GSAttr.set(this, 'css-input', val);
     }
 
-     /**
-     * Input box info mesasge
-     * @returns {string}
-     */
+    /**
+    * Input box info mesasge
+    * @returns {string}
+    */
     get placeholder() {
         return GSAttr.get(this, 'placeholder', 'search');
     }

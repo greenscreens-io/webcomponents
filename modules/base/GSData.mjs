@@ -118,9 +118,9 @@ export default class GSData {
 
     static compare(v1, v2, order, sts) {
         const me = this;
-        if (GSUtil.isNumber(v1)) {
+        if (GSUtil.isNumber(v1) && GSUtil.isNumber(v2)) {
             return sts || GSData.compareNum(v1, v2, order);
-        } else if (typeof v1 === 'string') {
+        } else if (GSUtil.isString(v1) || GSUtil.isString(v2)) {
             return sts || GSData.compareString(v1, v2, order);
         }
         return sts;
@@ -134,7 +134,9 @@ export default class GSData {
      * @returns {number} -1, 1, 0
      */
     static compareString(v1, v2, ord) {
-        return ord < 0 ? v2.localeCompare(v1) : v1.localeCompare(v2);
+        const s1 = (v1 || '').toString();
+        const s2 = (v2 || '').toString();
+        return ord < 0 ? s2.localeCompare(s1) : s1.localeCompare(s2);
     }
 
     /**
