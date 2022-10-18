@@ -12,3 +12,7 @@ import './GSRegisterBiometrics.mjs';
 import './GSRegisterOtp.mjs';
 import './GSNetwork.mjs';
 import './GSSystem.mjs';
+
+import './GSService.mjs';
+import './GSPrinterReset.mjs';
+import './GSPrinterSetup.mjs';

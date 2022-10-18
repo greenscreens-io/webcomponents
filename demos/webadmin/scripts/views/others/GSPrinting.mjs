@@ -20,7 +20,36 @@ export default class GSPrinting extends BaseViewUI {
     }
 
     async onLoad() {
-        const o = {success: false};
-        return o.success ? o.data : false;
+        const me = this;
+        const filter = me.filter;
+        const o = DEMO ? DEMO : await io.greenscreens.Printers.list(me.store.page-1, me.store.limit, filter);
+        if (!o.success) return me.inform(o.success, o.msg);
+        return o.data;
+    }
+
+    async onCreate(data) {
+        this.#prepare(data);
+        const o = DEMO ? DEMO : await io.greenscreens.Printers.set(data);
+        return o.success;
+    }
+
+    async onUpdate(data) {
+        this.#prepare(data);
+        const o = DEMO ? DEMO : await io.greenscreens.Printers.set(data);
+        return o.success;
+    }
+
+    async onRemove(data) {
+        const o = DEMO ? DEMO : await io.greenscreens.Printers.remove(data.id);
+        return o.success;
+    }
+
+    #prepare(json) {
+        json.uuid = json.uuid.toUpperCase();
+        json.host = json.host.toUpperCase();
+        json.outq = (json.outq || '').toUpperCase();
+        json.library = (json.library || '').toUpperCase();
+        json.userName = (json.userName || '').toUpperCase();
+        json.spoolName = (json.spoolName || '').toUpperCase();
     }
 }

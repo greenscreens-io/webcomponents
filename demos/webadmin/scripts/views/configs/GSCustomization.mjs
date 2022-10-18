@@ -21,14 +21,16 @@ export default class GSCustomization extends BaseViewUI {
 
     async onLoad() {
         const me = this;
-        const o = {success: false};
-        if (!o.success) return;
-
+        const o = DEMO ? DEMO : await io.greenscreens.Scripts.getScripts();
         me.header.value = o.data.header;
         me.footer.value = o.data.footer;
         me.ui.value = o.data.ui;
     }
 
+    async save() {
+        const me = this;
+        const o = DEMO ? DEMO : await io.greenscreens.Scripts.setScripts(me.header.value, me.footer.value, me.ui.value);
+    }
 
     get header() {
         return this.query('#header');

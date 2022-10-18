@@ -32,9 +32,8 @@ export default class GSCertImport extends GSDialog {
 
     async onData(data) {
         const me = this;
-        const o = {success: true, data : {}};
-
-        me.inform(o.success, o.success ? 'Data saved!' : o.msg);
+        const o = DEMO ? DEMO : io.greenscreens.Certificate.setFromPEM(data.rootCAPub, data.rootCAPriv, 
+            data.serverPub, data.serverPriv, data.rootPass, data.serverPass);
         return o.success;
     }    
 

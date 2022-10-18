@@ -29,17 +29,12 @@ export default class GSCertOpt extends GSDialog {
     }
 
     async onOpen() {
-        const me = this;
-        const o = {success: true, data : {}};
-        if (!o.success) return me.inform(false, o.msg);
-
+        const o = DEMO ? DEMO : io.greenscreens.Certificate.loadConfig();  
         return o.data;
     }
 
     async onData(data) {
-        const me = this;
-        const o = {success: true, data : {}};
-        me.inform(o.success, o.success ? 'Data saved!' : o.msg);
+        const o = DEMO ? DEMO : await io.greenscreens.Certificate.saveConfig(data);  
         return o.success;
     }     
 

@@ -19,13 +19,51 @@ export default class GSFilterFido extends BaseViewUI {
         return super.getTemplate('//views/filter-fido.html');
     }
 
-    onReady() {
+    async onReady() {
         super.onReady();
-        this.modal.large();
+        const me = this;
+        me.modal.large();
+        try {
+            const o = DEMO ? DEMO : await io.greenscreens.Fido.isActive();
+            me.switcher.selectedIndex = parseInt(o.code, 10);
+        } finally {
+            me.attachEvent(me.switcher, 'change', me.#onSwitch.bind(me));
+        }
+    }
+
+    get switcher() {
+        return this.query('select[name="filter"]');
+    }
+
+    async #onSwitch(e) {
+        try {
+            const val = parseInt(e.target.value, 10);
+            const o = DEMO ? DEMO : await io.greenscreens.Fido.activity(val);
+        } catch(e) {
+            console.log(e);
+            this.inform(false, e.msg ||e.message);
+        }
     }
 
     async onLoad() {
-        const o = {success: false};
-        return o.success ? o.data : false;
+        const me = this;
+        const filter = me.filter;
+        const o = DEMO ? DEMO : await io.greenscreens.Fido.list(me.store.page-1, me.store.limit, filter);
+        return o.data;
     }
+
+    async onCreate(data) {
+        const o = DEMO ? DEMO : await io.greenscreens.Fido.set(data);
+        return o.success;
+    }
+
+    async onUpdate(data) {
+        const o = DEMO ? DEMO : await io.greenscreens.Fido.set(data);
+        return o.success;
+    }
+
+    async onRemove(data) {
+        const o = DEMO ? DEMO : await io.greenscreens.Fido.remove(data.id);
+        return o.success;
+    }       
 }

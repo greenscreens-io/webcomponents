@@ -2,8 +2,8 @@
  * Copyright (C) 2015, 2022 Green Screens Ltd.
  */
 
-import GSFunction from "../../modules/base/GSFunction.mjs";
-import GSUtil from "../../modules/base/GSUtil.mjs";
+import GSFunction from "../../../modules/base/GSFunction.mjs";
+import GSUtil from "../../../modules/base/GSUtil.mjs";
 
 /**
  * A module loading Utils class

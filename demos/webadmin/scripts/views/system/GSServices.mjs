@@ -20,8 +20,10 @@ export default class GSWorkstations extends BaseViewUI {
     }
 
     async onLoad() {
-        const o = {success: false};
-        return o.success ? o.data : false;
+        const me = this;
+        const o = DEMO ? DEMO : await io.greenscreens.Tweaks.list();
+        if (!o.success) return me.inform(o.success, o.msg);
+        return o.data;
     }
 
 }

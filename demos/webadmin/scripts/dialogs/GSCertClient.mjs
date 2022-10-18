@@ -24,9 +24,12 @@ export default class GSCertClient extends GSDialog {
     }
 
     async onData(data) {
-        const me = this;
-        const o = {success: true, data : {}};
-        me.inform(o.success, o.success ? 'Certificate saved!' : o.msg);
+
+        const o = DEMO ? DEMO : io.greenscreens.Certificate.generateClient(data);
+
+        const arr = Utils.fromHex(o.msg);
+        const raw = new Uint8Array(arr);
+        Utils.download(o.code, raw);	   
 
         return o.success;
     }    

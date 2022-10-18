@@ -9,6 +9,8 @@
 
 import GSFunction from "../../../../modules/base/GSFunction.mjs";
 import GSElement from "../../../../modules/base/GSElement.mjs";
+import GSUtil from "../../../../modules/base/GSUtil.mjs";
+import Utils from "../Utils.mjs";
 
 /**
  * Class representing UI shell sidebar
@@ -34,15 +36,23 @@ export default class HeaderUI extends GSElement {
         me.queryAll('gs-dropdown').forEach(el => me.attachEvent(el, 'action', me.#onAction.bind(me)));
     }
 
-    #onAction(e) {
+    async #onAction(e) {
         const me = this;
-        const action = e?.detail?.action || e?.detail?.source?.target?.dataset?.action;
-        const fnName = action.split('-').map((v, i) => i === 0 ? v : me.#capitalize(v)).join('');
-        if (GSFunction.isFunction(me[fnName])) me[fnName](e);
-    }
-
-    #capitalize(string) {
-        return string.charAt(0).toUpperCase() + string.slice(1);
+        try {
+            const fnName = e?.detail?.action || e?.detail?.source?.target?.dataset?.action;
+            const action = GSUtil.capitalizeAttr(fnName);
+            const fn = me[action];
+            if (GSFunction.isFunction(fn)) {
+                if (GSFunction.isFunctionAsync(fn)) {
+                    await me[action](e);
+                } else {
+                    me[action](e);
+                }
+            } 
+        } catch (e) {
+            console.log(e);
+            me.inform(false, e.msg || e.message);
+        }        
     }
 
     /**
@@ -52,77 +62,70 @@ export default class HeaderUI extends GSElement {
         return GSComponents.get('notification');
     }
 
-    async logout() {        
-        this.notify.info('Info', 'Close admin console');
+    inform(sts, msg) {
+        if (!msg) return;
+        if (sts) return this.notify.info('Info', msg);
+        this.notify.danger('Error', msg);
     }
 
-    explorer() {
-        
+    async logout() {        
+        const o = DEMO ? DEMO : await io.greenscreens.Session.closeSession();
+        const el = document.querySelector('gs-admin-shell');
+        if (el) el.remove();
     }
 
     async restart() {
-        const me = this;
-        me.notify.info('Info','Restart server requested');
-        const o = {success: true};
-        if (o.success) {
-            me.notify.info('Info','Server is restarting! <br>Wait about 1min. then refresh browser.');
-        } else {
-            me.notify.danger('Info', o.msg);
-        }
+        const o = DEMO ? DEMO : await io.greenscreens.Server.restart();
+        this.inform(o.success, 'Server is restarting! <br>Wait about 1min. then refresh browser.');
     }
 
     // toggle client verification
     async certClientVerify() { 
-        const me = this;
-        const o = {success: true};
-        if (!o.success) return me.notify.danger('Error', o.msg);
+        const o = DEMO ? DEMO : await io.greenscreens.Certificate.verifySSLClient(2);
         const msg = o.msg || 'Client SSL verification changed.';
-        me.notify.info('Info',  msg + '<br>Restart server to apply changes.');
+        this.inform(true,  msg + '<br>Restart server to apply changes.');
     }
 
     // regenerate session keys
     async certGenTerm() {
-        const me = this;
-        const o = {success: true};
-        if (o.success && o.code === 'RSA') return me.notify.info('Info', 'New encryption keys generated');
-        me.notify.danger('Error', o.msg);
+        const o = DEMO ? DEMO : await io.greenscreens.Server.regenerate();
+        if (o.code === 'RSA') this.inform(true, 'New encryption keys generated');
     }
 
     // generate server cert request
     async certGenReq() {
-        const me = this;
-        const o = {success: true};
-        if (!o.success) return me.notify.danger('Error', o.data.msg || 'Certificate not generated');	
-
+        const o = DEMO ? DEMO : await io.greenscreens.Certificate.request(true);
+        Utils.download("server_request.txt", o.data.requestPem);
+        Utils.download("server_private.txt", o.data.privatePem);
+        //Utils.download("server_public.txt", data.publicPem);
     }
 
     // generate server cert
     async certGenSvr() {
         const sts = confirm('Are you sure? Action will overwrite existnig certificate.');
         if (!sts) return;
-        const o = {success: true};
-        if (o.success) {
-            this.notify.info('Info', 'New server certificate generated! <br> Please, restart server for changes to apply.');
-        } else {
-            this.notify.danger(res.msg);
-        }
-
+        const o = DEMO ? DEMO : await io.greenscreens.Certificate.generate(true);
+        this.inform(true,  'New server certificate generated! <br> Please, restart server for changes to apply.');
     }
 
     certExport() {
-        
+        Utils.openInNewTab(`${location.origin}/services/certificate`);
+    }
+    
+    explorer() {
+        Utils.openInNewTab(`${location.origin}/admin/explorer2.jsp`, 'toolbar=no,scrollbars=yes,resizable=yes');
     }
 
     downloadSavf() {
-        
+        Utils.openInNewTab(`${location.origin}/services/admintransfer?type=savf`);
     }
 
     downloadConfig() {
-        
+        Utils.openInNewTab(`${location.origin}/services/admintransfer?type=conf`);
     }
 
     downloadLogs() {
-        
+        Utils.openInNewTab(`${location.origin}/services/admintransfer?type=log`);
     }
     
 }
