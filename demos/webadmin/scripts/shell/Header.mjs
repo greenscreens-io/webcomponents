@@ -19,7 +19,6 @@ import Utils from "../Utils.mjs";
  */
 export default class HeaderUI extends GSElement {
 
-
     static {
         customElements.define('gs-admin-shell-header', HeaderUI);
         Object.seal(HeaderUI);
@@ -48,27 +47,21 @@ export default class HeaderUI extends GSElement {
                 } else {
                     me[action](e);
                 }
-            }
+            } 
         } catch (e) {
-            console.log(e);
-            me.inform(false, e.msg || e.message);
-        }
+            Utils.handleError(e);
+        }        
     }
 
     /**
      * UI Notificator
      */
-    get notify() {
+     get notify() {
         return GSComponents.get('notification');
     }
-
-    inform(sts, msg) {
-        if (!msg) return;
-        if (sts) return this.notify.info('Info', msg);
-        this.notify.danger('Error', msg);
-    }
-
-    async logout() {
+    
+    // logout and replace with login tag
+    async logout() {        
         setTimeout(() => {
             Utils.unsetUI('gs-admin-shell-login');
             Utils.unsetUI('gs-admin-shell');
@@ -78,22 +71,23 @@ export default class HeaderUI extends GSElement {
         return o.success;
     }
 
+    // restart server
     async restart() {
         const o = DEMO ? DEMO : await io.greenscreens.Server.restart();
-        this.inform(o.success, 'Server is restarting! <br>Wait about 1min. then refresh browser.');
+        Utils.inform(o.success, 'Server is restarting! <br>Wait about 1min. then refresh browser.');
     }
 
     // toggle client verification
-    async certClientVerify() {
+    async certClientVerify() { 
         const o = DEMO ? DEMO : await io.greenscreens.Certificate.verifySSLClient(2);
         const msg = o.msg || 'Client SSL verification changed.';
-        this.inform(true, msg + '<br>Restart server to apply changes.');
+        Utils.inform(true,  msg + '<br>Restart server to apply changes.');
     }
 
     // regenerate session keys
     async certGenTerm() {
         const o = DEMO ? DEMO : await io.greenscreens.Server.regenerate();
-        if (o.code === 'RSA') this.inform(true, 'New encryption keys generated');
+        if (o.code === 'RSA') Utils.inform(true, 'New encryption keys generated');
     }
 
     // generate server cert request
@@ -109,13 +103,13 @@ export default class HeaderUI extends GSElement {
         const sts = confirm('Are you sure? Action will overwrite existnig certificate.');
         if (!sts) return;
         const o = DEMO ? DEMO : await io.greenscreens.Certificate.generate(true);
-        this.inform(true, 'New server certificate generated! <br> Please, restart server for changes to apply.');
+        Utils.inform(true,  'New server certificate generated! <br> Please, restart server for changes to apply.');
     }
 
     certExport() {
         Utils.openInNewTab(`${location.origin}/services/certificate`);
     }
-
+    
     explorer() {
         Utils.openInNewTab(`${location.origin}/admin/explorer2.jsp`, 'toolbar=no,scrollbars=yes,resizable=yes');
     }
@@ -131,5 +125,5 @@ export default class HeaderUI extends GSElement {
     downloadLogs() {
         Utils.openInNewTab(`${location.origin}/services/admintransfer?type=log`);
     }
-
+    
 }

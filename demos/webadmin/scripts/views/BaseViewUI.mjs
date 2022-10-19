@@ -10,6 +10,7 @@ import GSDOM from "../../../../modules/base/GSDOM.mjs";
 import GSElement from "../../../../modules/base/GSElement.mjs";
 import GSFunction from "../../../../modules/base/GSFunction.mjs";
 import GSUtil from "../../../../modules/base/GSUtil.mjs";
+import Utils from "../Utils.mjs";
 
 /**
  * BaseUI handles basic screen data view (used by other UI elements)
@@ -84,17 +85,13 @@ export default class BaseViewUI extends GSElement {
     inform(sts, msg) {
         if (!msg) return;
         const me = this;
+        if (!me.notify) return;
         if (sts) {
             me.notify.info('Info', msg);
         } else {
             me.notify.danger('Error', msg);
         }
         return sts;
-    }
-
-    #handleError(e) {
-        console.log(e);
-        this.inform(false, e.data?.error || e.msg || e.message || e.toString());
     }
 
     /**
@@ -116,9 +113,9 @@ export default class BaseViewUI extends GSElement {
                 } else {
                     me[action](e);
                 }
-            }
+            } 
         } catch (e) {
-            me.#handleError(e);
+            Utils.handleError(e);
         }
     }
 
@@ -155,7 +152,7 @@ export default class BaseViewUI extends GSElement {
             me.notify.secondary('', 'Record cloned!');
             me.refresh();
         } catch (e) {
-            me.#handleError(e);
+            Utils.handleError(e);
         }
 
     }
@@ -182,7 +179,7 @@ export default class BaseViewUI extends GSElement {
             me.notify.danger('', 'Record removed!');
 
         } catch (e) {
-            me.#handleError(e);
+            Utils.handleError(e);
         }
 
     }
@@ -204,7 +201,6 @@ export default class BaseViewUI extends GSElement {
         const result = await me.modal.waitEvent('data');
 
         try {
-
             const sts = await me.onUpdate(result.data);
             if (!sts) throw new Error('Record not updated!');
 
@@ -214,7 +210,7 @@ export default class BaseViewUI extends GSElement {
             me.notify.warn('', 'Record updated!');
 
         } catch (e) {
-            me.#handleError(e);
+            Utils.handleError(e);
         }
 
     }
@@ -233,7 +229,6 @@ export default class BaseViewUI extends GSElement {
         const result = await me.modal.waitEvent('data');
 
         try {
-
             const sts = await me.onCreate(result.data);
             if (!sts) throw new Error('Record not created!');
 
@@ -243,7 +238,7 @@ export default class BaseViewUI extends GSElement {
             me.refresh();
 
         } catch (e) {
-            me.#handleError(e);
+            Utils.handleError(e);
         }
 
     }
@@ -308,7 +303,7 @@ export default class BaseViewUI extends GSElement {
      * @returns {boolean}
      * @throws {Error}
      */
-    async onClone(data) {
+     async onClone(data) {
         return true;
     }
 

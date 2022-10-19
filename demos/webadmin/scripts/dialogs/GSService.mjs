@@ -7,7 +7,6 @@
  * @module dialogs/GSService
  */
 import GSAttr from '../../../../modules/base/GSAttr.mjs';
-import GSDOM from '../../../../modules/base/GSDOM.mjs';
 import GSUtil from '../../../../modules/base/GSUtil.mjs';
 import GSDialog from './GSDialog.mjs';
 
@@ -32,7 +31,7 @@ export default class GSService extends GSDialog {
     }
 
     get valueField() {
-        return GSDOM.query(this, 'input[name=value]');
+        return this.query('input[name=value]');
     }
 
     async onOpen(data) {
@@ -40,7 +39,7 @@ export default class GSService extends GSDialog {
         me.valueField.type = 'text';
         me.valueField.classList.value = 'form-control';
         me.valueField.parentElement.classList.value = '';
-
+        
         if (GSUtil.isNumber(data.value)) {
             me.valueField.type = 'number';
         }
@@ -56,7 +55,7 @@ export default class GSService extends GSDialog {
 
     async onData(data) {
         const me = this;
-
+        
         const type = GSAttr.get(me.valueField, 'type');
 
         if (type === 'checkbox') {
@@ -70,6 +69,6 @@ export default class GSService extends GSDialog {
         const o = DEMO ? DEMO : await io.greenscreens.Tweaks.set(data.module, data.property, data.value);
 
         return o.success;
-    }
+    }   
 
 }

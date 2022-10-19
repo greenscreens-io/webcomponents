@@ -26,8 +26,8 @@ export default class GSRegisterBiometrics extends GSDialog {
     async onData(data) {
         const me = this;
         // TODO save data; if ok return true
-
+        
         return true;
-    }
+    }    
 
 }

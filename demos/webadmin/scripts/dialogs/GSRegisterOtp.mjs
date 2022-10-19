@@ -6,10 +6,9 @@
  * A module loading GSRegisterOtp class
  * @module dialogs/GSRegisterOtp
  */
-import Utils from '../../../../admin/scripts/Utils.mjs';
-import GSDOM from '../../../../modules/base/GSDOM.mjs';
 import GSDialog from './GSDialog.mjs';
-
+import Utils from '../Utils.mjs';
+import GSDOM from '../../../../modules/base/GSDOM.mjs';
 
 export default class GSRegisterOtp extends GSDialog {
 
@@ -54,7 +53,7 @@ export default class GSRegisterOtp extends GSDialog {
 
     async onOpen() {
         const me = this;
-        if (DEMO) return me.inform(false, 'Nota available in DEMO!');
+        if (DEMO) return Utils.inform(false, 'Nota available in DEMO!');
         const o = await io.greenscreens.OAuth.register();
         me.#download(o.data);
         me.#update(o.data);

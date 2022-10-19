@@ -25,11 +25,11 @@ export default class GSCertBlocked extends GSDialog {
 
     async onOpen() {
         const o = DEMO ? DEMO : await io.greenscreens.Server.getBlocked();
-        return { list: o.msg };
+        return { list : o.msg};
     }
 
     async onData(data) {
         const o = DEMO ? DEMO : await io.greenscreens.Server.setBlocked(data.list);
         return o.success;
-    }
+    }    
 }

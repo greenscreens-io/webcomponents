@@ -44,13 +44,13 @@ export default class GSPrinterReset extends GSDialog {
             me.visible = false;
             const o = DEMO ? DEMO : await io.greenscreens.Printer.reset(data);
             success = o.success;
-        } catch (e) {
+        } catch(e) {
             me.visible = true;
-            throw e;
+            throw e;            
         } finally {
             me.waiter.close();
         }
         return success;
-    }
+    }    
 
 }

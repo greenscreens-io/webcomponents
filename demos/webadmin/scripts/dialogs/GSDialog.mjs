@@ -13,7 +13,7 @@ import GSEvent from '../../../../modules/base/GSEvent.mjs';
 import GSFunction from '../../../../modules/base/GSFunction.mjs';
 import GSLoader from '../../../../modules/base/GSLoader.mjs';
 import GSModal from '../../../../modules/components/GSModal.mjs';
-
+import Utils from '../Utils.mjs';
 
 export default class GSDialog extends GSModal {
 
@@ -34,8 +34,10 @@ export default class GSDialog extends GSModal {
     }
 
     async onReady() {
+    
         super.onReady();
         const me = this;
+
         me.on('data', me.#onData.bind(me));
         me.on('action', me.#onAction.bind(me));
         me.on('error', me.#onError.bind(me));
@@ -48,6 +50,9 @@ export default class GSDialog extends GSModal {
         });
     }
 
+    /**
+     * Should auto open
+     */
     get auto() {
         return GSAttr.getAsBool(this, 'auto', true);
     }
@@ -62,10 +67,13 @@ export default class GSDialog extends GSModal {
     /**
      * UI Notificator
      */
-    get notify() {
+     get notify() {
         return GSComponents.get('notification');
     }
 
+    /**
+     * Dialog form
+     */
     get form() {
         return GSDOM.query(this, 'form');
     }
@@ -74,7 +82,7 @@ export default class GSDialog extends GSModal {
      * Used by inherited dialogs to load data into dialog forms
      * @returns {*}
      */
-    async onOpen(data) {
+     async onOpen(data) {
         return data;
     }
 
@@ -86,29 +94,10 @@ export default class GSDialog extends GSModal {
     }
 
     /**
-     * Used by inherited dialogs to show notification on remote data fetch
-     * 
-     * @param {boolean} success Status message info/danger
-     * @param {string} msg Message t oshow
-     * @returns {boolean}
+     * Override GSModal open method, adds data
+     * @param {*} data 
+     * @returns 
      */
-    inform(success = false, msg) {
-        const me = this;
-        if (!me.notify) return;
-        if (success) return me.notify.info('Info', msg);
-        me.notify.danger('Error', msg);
-        return success;
-    }
-
-    #handleError(e) {
-        console.log(e);
-        this.inform(false, e.data?.error || e.msg || e.message || e.toString());
-    }
-
-    #onError(e) {
-        this.inform(false, 'Some fields are invalid!');
-    }
-
     async open(data) {
         const me = this;
         me.form?.reset();
@@ -116,6 +105,10 @@ export default class GSDialog extends GSModal {
         if (data === false) return;
         super.open();
         setTimeout(() => me.#update(data), 50);
+    }
+
+    #onError(e) {
+        Utils.inform(false, 'Some fields are invalid!');
     }
 
     #update(data) {
@@ -128,8 +121,8 @@ export default class GSDialog extends GSModal {
         try {
             const sts = await me.onData(e.detail.data);
             if (sts) me.close();
-        } catch (e) {
-            me.#handleError(e);
+        } catch(e) {
+            Utils.handleError(e);
         }
     }
 
@@ -145,9 +138,9 @@ export default class GSDialog extends GSModal {
                 } else {
                     me[action](e);
                 }
-            }
+            } 
         } catch (e) {
-            me.#handleError(e);
+            Utils.handleError(e);
         }
     }
 

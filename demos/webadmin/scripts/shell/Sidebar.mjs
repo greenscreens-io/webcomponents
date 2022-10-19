@@ -7,15 +7,14 @@
  * @module shell
  */
 import GSElement from "../../../../modules/base/GSElement.mjs";
-
-/**
- * Class representing UI shell sidebar
- * @class
- * @extends {GSElement}
- */
-export default class SidebarUI extends GSElement {
-
-
+ 
+ /**
+  * Class representing UI shell sidebar
+  * @class
+  * @extends {GSElement}
+  */
+ export default class SidebarUI extends GSElement {
+ 
     static {
         customElements.define('gs-admin-shell-sidebar', SidebarUI);
         Object.seal(SidebarUI);
@@ -31,3 +30,4 @@ export default class SidebarUI extends GSElement {
     }
 
 }
+ 

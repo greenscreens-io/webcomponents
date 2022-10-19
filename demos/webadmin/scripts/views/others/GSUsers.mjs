@@ -6,6 +6,7 @@
  * A module loading GSUsers class
  * @module views/GSUsers
  */
+import Utils from '../../Utils.mjs';
 import BaseViewUI from '../BaseViewUI.mjs';
 
 export default class GSUsers extends BaseViewUI {
@@ -22,8 +23,7 @@ export default class GSUsers extends BaseViewUI {
     async onLoad() {
         const me = this;
         const filter = me.filter;
-        const o = DEMO ? DEMO : await io.greenscreens.Users.list(me.store.page - 1, me.store.limit, filter);
-        if (!o.success) return me.inform(o.success, o.msg);
+        const o = DEMO ? DEMO : await io.greenscreens.Users.list(me.store.page-1, me.store.limit, filter);
         return o.data;
     }
 
@@ -55,7 +55,7 @@ export default class GSUsers extends BaseViewUI {
         me.waiter.open()
         try {
             const o = DEMO ? DEMO : await io.greenscreens.Users.commit();
-            me.inform(o.success, 'Sync with database ok!');
+            Utils.inform(o.success, 'Sync with database ok!');
         } finally {
             me.waiter.close();
         }
@@ -66,10 +66,10 @@ export default class GSUsers extends BaseViewUI {
         me.waiter.open()
         try {
             const o = DEMO ? DEMO : await io.greenscreens.Users.resync();
-            me.inform(o.success, 'Sync from storage started!');
+            Utils.inform(o.success, 'Sync from storage started!');
         } finally {
             me.waiter.close();
-        }
+        }        
     }
 
 
@@ -86,7 +86,7 @@ export default class GSUsers extends BaseViewUI {
         json.display = (json.display || '').toUpperCase();
         json.outq = (json.outq || '').toUpperCase();
         json.program = (json.program || '').toUpperCase();
-        json.printer = (json.printer || 'Default');
+        json.printer = (json.printer || 'Default');        
     }
 
 }

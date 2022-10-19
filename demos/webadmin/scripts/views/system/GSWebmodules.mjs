@@ -6,6 +6,7 @@
  * A module loading GSWebmodules class
  * @module views/GSWebmodules
  */
+import Utils from '../../Utils.mjs';
 import BaseViewUI from '../BaseViewUI.mjs';
 
 export default class GSWebmodules extends BaseViewUI {
@@ -20,9 +21,7 @@ export default class GSWebmodules extends BaseViewUI {
     }
 
     async onLoad() {
-        const me = this;
         const o = DEMO ? DEMO : await io.greenscreens.WebModules.list();
-        if (!o.success) return me.inform(o.success, o.msg);
         return o.data;
     }
 
@@ -30,7 +29,7 @@ export default class GSWebmodules extends BaseViewUI {
         const me = this;
         const data = e.detail.data[0];
         const o = DEMO ? DEMO : await io.greenscreens.WebModules.start(data.name);
-        me.inform(o.success, 'Module started!');
+        Utils.inform(o.success, 'Module started!');
         me.refresh();
     }
 
@@ -38,7 +37,7 @@ export default class GSWebmodules extends BaseViewUI {
         const me = this;
         const data = e.detail.data[0];
         const o = DEMO ? DEMO : await io.greenscreens.WebModules.stop(data.name);
-        me.inform(o.success, 'Module stopped!');
+        Utils.inform(o.success, 'Module stopped!');
         me.refresh();
     }
 
@@ -46,7 +45,7 @@ export default class GSWebmodules extends BaseViewUI {
         const me = this;
         const data = e.detail.data[0];
         const o = DEMO ? DEMO : io.greenscreens.WebModules.restart(data.name);
-        me.inform(o.success, 'Module restarted!');
+        Utils.inform(o.success, 'Module restarted!');
         me.refresh();
     }
 }

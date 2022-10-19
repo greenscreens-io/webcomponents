@@ -6,6 +6,7 @@
  * A module loading GSCustomization class
  * @module views/GSCustomization
  */
+import Utils from '../../Utils.mjs';
 import BaseViewUI from '../BaseViewUI.mjs';
 
 export default class GSCustomization extends BaseViewUI {
@@ -31,10 +32,9 @@ export default class GSCustomization extends BaseViewUI {
         const me = this;
         try {
             const o = DEMO ? DEMO : await io.greenscreens.Scripts.setScripts(me.header.value, me.footer.value, me.ui.value);
-            me.inform(o.success, 'Data saved!');
-        } catch (e) {
-            console.log(e);
-            me.inform(false, e.msg || e.message);
+            Utils.inform(o.success, 'Data saved!');
+        } catch(e) {
+            Utils.handleError(e);
         }
     }
 

@@ -29,13 +29,13 @@ export default class GSCertOpt extends GSDialog {
     }
 
     async onOpen() {
-        const o = DEMO ? DEMO : io.greenscreens.Certificate.loadConfig();
+        const o = DEMO ? DEMO : io.greenscreens.Certificate.loadConfig();  
         return o.data;
     }
 
     async onData(data) {
-        const o = DEMO ? DEMO : await io.greenscreens.Certificate.saveConfig(data);
+        const o = DEMO ? DEMO : await io.greenscreens.Certificate.saveConfig(data);  
         return o.success;
-    }
+    }     
 
 }
