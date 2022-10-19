@@ -62,7 +62,7 @@ export default class GSDialog extends GSModal {
     /**
      * UI Notificator
      */
-     get notify() {
+    get notify() {
         return GSComponents.get('notification');
     }
 
@@ -74,7 +74,7 @@ export default class GSDialog extends GSModal {
      * Used by inherited dialogs to load data into dialog forms
      * @returns {*}
      */
-     async onOpen(data) {
+    async onOpen(data) {
         return data;
     }
 
@@ -98,8 +98,8 @@ export default class GSDialog extends GSModal {
         if (success) return me.notify.info('Info', msg);
         me.notify.danger('Error', msg);
         return success;
-    }    
-        
+    }
+
     #handleError(e) {
         console.log(e);
         this.inform(false, e.data?.error || e.msg || e.message || e.toString());
@@ -128,7 +128,7 @@ export default class GSDialog extends GSModal {
         try {
             const sts = await me.onData(e.detail.data);
             if (sts) me.close();
-        } catch(e) {
+        } catch (e) {
             me.#handleError(e);
         }
     }
@@ -145,7 +145,7 @@ export default class GSDialog extends GSModal {
                 } else {
                     me[action](e);
                 }
-            } 
+            }
         } catch (e) {
             me.#handleError(e);
         }

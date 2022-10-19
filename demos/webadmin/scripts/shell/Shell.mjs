@@ -6,15 +6,15 @@
  * A module loading BaseUI class
  * @module shell
  */
- import GSElement from "../../../../modules/base/GSElement.mjs";
-  
- /**
-  * Class representing UI Shell
-  * @class
-  * @extends {GSElement}
-  */
- export default class ShellUI extends GSElement {
- 
+import GSElement from "../../../../modules/base/GSElement.mjs";
+
+/**
+ * Class representing UI Shell
+ * @class
+ * @extends {GSElement}
+ */
+export default class ShellUI extends GSElement {
+
 
     static {
         customElements.define('gs-admin-shell', ShellUI);
@@ -31,4 +31,3 @@
     }
 
 }
- 

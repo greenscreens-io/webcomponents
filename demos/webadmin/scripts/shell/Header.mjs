@@ -48,17 +48,17 @@ export default class HeaderUI extends GSElement {
                 } else {
                     me[action](e);
                 }
-            } 
+            }
         } catch (e) {
             console.log(e);
             me.inform(false, e.msg || e.message);
-        }        
+        }
     }
 
     /**
      * UI Notificator
      */
-     get notify() {
+    get notify() {
         return GSComponents.get('notification');
     }
 
@@ -68,7 +68,7 @@ export default class HeaderUI extends GSElement {
         this.notify.danger('Error', msg);
     }
 
-    async logout() {        
+    async logout() {
         setTimeout(() => {
             Utils.unsetUI('gs-admin-shell-login');
             Utils.unsetUI('gs-admin-shell');
@@ -84,10 +84,10 @@ export default class HeaderUI extends GSElement {
     }
 
     // toggle client verification
-    async certClientVerify() { 
+    async certClientVerify() {
         const o = DEMO ? DEMO : await io.greenscreens.Certificate.verifySSLClient(2);
         const msg = o.msg || 'Client SSL verification changed.';
-        this.inform(true,  msg + '<br>Restart server to apply changes.');
+        this.inform(true, msg + '<br>Restart server to apply changes.');
     }
 
     // regenerate session keys
@@ -109,13 +109,13 @@ export default class HeaderUI extends GSElement {
         const sts = confirm('Are you sure? Action will overwrite existnig certificate.');
         if (!sts) return;
         const o = DEMO ? DEMO : await io.greenscreens.Certificate.generate(true);
-        this.inform(true,  'New server certificate generated! <br> Please, restart server for changes to apply.');
+        this.inform(true, 'New server certificate generated! <br> Please, restart server for changes to apply.');
     }
 
     certExport() {
         Utils.openInNewTab(`${location.origin}/services/certificate`);
     }
-    
+
     explorer() {
         Utils.openInNewTab(`${location.origin}/admin/explorer2.jsp`, 'toolbar=no,scrollbars=yes,resizable=yes');
     }
@@ -131,5 +131,5 @@ export default class HeaderUI extends GSElement {
     downloadLogs() {
         Utils.openInNewTab(`${location.origin}/services/admintransfer?type=log`);
     }
-    
+
 }

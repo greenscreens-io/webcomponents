@@ -37,7 +37,7 @@ export default class GSSystem extends GSDialog {
         const o = DEMO ? DEMO : await io.greenscreens.Server.setConfig(data);
         return o.success;
     }
-    
+
     async reloadKerberos() {
         const o = DEMO ? DEMO : await io.greenscreens.Server.reloadKerberors();
         return o.success;

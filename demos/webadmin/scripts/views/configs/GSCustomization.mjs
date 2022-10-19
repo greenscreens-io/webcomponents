@@ -32,9 +32,9 @@ export default class GSCustomization extends BaseViewUI {
         try {
             const o = DEMO ? DEMO : await io.greenscreens.Scripts.setScripts(me.header.value, me.footer.value, me.ui.value);
             me.inform(o.success, 'Data saved!');
-        } catch(e) {
+        } catch (e) {
             console.log(e);
-            me.inform(false, e.msg ||e.message);
+            me.inform(false, e.msg || e.message);
         }
     }
 

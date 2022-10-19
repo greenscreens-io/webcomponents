@@ -22,7 +22,7 @@ export default class GSUsers extends BaseViewUI {
     async onLoad() {
         const me = this;
         const filter = me.filter;
-        const o = DEMO ? DEMO : await io.greenscreens.Users.list(me.store.page-1, me.store.limit, filter);
+        const o = DEMO ? DEMO : await io.greenscreens.Users.list(me.store.page - 1, me.store.limit, filter);
         if (!o.success) return me.inform(o.success, o.msg);
         return o.data;
     }
@@ -69,7 +69,7 @@ export default class GSUsers extends BaseViewUI {
             me.inform(o.success, 'Sync from storage started!');
         } finally {
             me.waiter.close();
-        }        
+        }
     }
 
 
@@ -86,7 +86,7 @@ export default class GSUsers extends BaseViewUI {
         json.display = (json.display || '').toUpperCase();
         json.outq = (json.outq || '').toUpperCase();
         json.program = (json.program || '').toUpperCase();
-        json.printer = (json.printer || 'Default');        
+        json.printer = (json.printer || 'Default');
     }
 
 }

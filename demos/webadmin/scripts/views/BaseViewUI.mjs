@@ -29,7 +29,6 @@ export default class BaseViewUI extends GSElement {
         me.attachEvent(me, 'action', me.#onAction.bind(me));
         me.attachEvent(me.#table, 'filter', e => me.refresh());
         requestAnimationFrame(() => me.refresh());
-
     }
 
     /**
@@ -93,6 +92,11 @@ export default class BaseViewUI extends GSElement {
         return sts;
     }
 
+    #handleError(e) {
+        console.log(e);
+        this.inform(false, e.data?.error || e.msg || e.message || e.toString());
+    }
+
     /**
      * Listener for lower componets "action" events
      * wihch might come from table fitlering, table context menut etc.
@@ -112,10 +116,9 @@ export default class BaseViewUI extends GSElement {
                 } else {
                     me[action](e);
                 }
-            } 
+            }
         } catch (e) {
-            console.log(e);
-            me.inform(false, e.msg || e.message);
+            me.#handleError(e);
         }
     }
 
@@ -152,8 +155,7 @@ export default class BaseViewUI extends GSElement {
             me.notify.secondary('', 'Record cloned!');
             me.refresh();
         } catch (e) {
-            console.log(e);
-            me.notify.danger('', e.message || e.toString())
+            me.#handleError(e);
         }
 
     }
@@ -180,8 +182,7 @@ export default class BaseViewUI extends GSElement {
             me.notify.danger('', 'Record removed!');
 
         } catch (e) {
-            console.log(e);
-            me.notify.danger('', e.message || e.toString())
+            me.#handleError(e);
         }
 
     }
@@ -213,8 +214,7 @@ export default class BaseViewUI extends GSElement {
             me.notify.warn('', 'Record updated!');
 
         } catch (e) {
-            console.log(e);
-            me.notify.danger('', e.message || e.toString())
+            me.#handleError(e);
         }
 
     }
@@ -243,8 +243,7 @@ export default class BaseViewUI extends GSElement {
             me.refresh();
 
         } catch (e) {
-            console.log(e);
-            me.notify.danger('', e.message || e.toString())
+            me.#handleError(e);
         }
 
     }
@@ -309,7 +308,7 @@ export default class BaseViewUI extends GSElement {
      * @returns {boolean}
      * @throws {Error}
      */
-     async onClone(data) {
+    async onClone(data) {
         return true;
     }
 

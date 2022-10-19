@@ -25,7 +25,7 @@ export default class GSNetwork extends GSDialog {
 
     async onOpen() {
         const o = DEMO ? DEMO : await io.greenscreens.Server.getInterface();
-        o.data.restart = o.data.restart ? '1': '0';
+        o.data.restart = o.data.restart ? '1' : '0';
         return o.data;
     }
 
@@ -37,6 +37,6 @@ export default class GSNetwork extends GSDialog {
 
         const o = DEMO ? DEMO : await io.greenscreens.Server.setInterface(data);
         return o.success;
-    }     
+    }
 
 }

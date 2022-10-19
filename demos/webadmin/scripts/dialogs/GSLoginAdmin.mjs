@@ -32,6 +32,6 @@ export default class GSLoginAdmin extends GSDialog {
     async onData(data) {
         const o = DEMO ? DEMO : await io.greenscreens.Session.newAuth(data);
         return o.success;
-    }    
+    }
 
 }

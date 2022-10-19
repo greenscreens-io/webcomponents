@@ -33,8 +33,8 @@ export default class GSPrinterSetup extends GSDialog {
 
     onReady() {
         super.onReady();
-        const me =  this;
-        requestAnimationFrame(async () =>{
+        const me = this;
+        requestAnimationFrame(async () => {
             await GSUtil.timeout(250);
             me.attachEvent(me.hpt, 'change', me.#onHPT.bind(me));
         });
@@ -62,16 +62,16 @@ export default class GSPrinterSetup extends GSDialog {
         try {
             me.visible = false;
             data.hostTransform = parseInt(data.hostTransform) === 1;
-            const o = DEMO ? DEMO :  await io.greenscreens.Printer.setup(data);
+            const o = DEMO ? DEMO : await io.greenscreens.Printer.setup(data);
             success = o.success;
-        } catch(e) {
+        } catch (e) {
             me.visible = true;
             throw e;
         } finally {
             me.waiter.close();
         }
         return success;
-    }    
+    }
 
     #onHPT(e) {
         this.#update(e.target.value !== '1');

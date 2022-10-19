@@ -27,7 +27,7 @@ export default class GSOtp extends BaseViewUI {
     async onLoad() {
         const me = this;
         const filter = me.filter;
-        const o = DEMO ? DEMO : await io.greenscreens.OAuth.list(me.store.page-1, me.store.limit, filter);
+        const o = DEMO ? DEMO : await io.greenscreens.OAuth.list(me.store.page - 1, me.store.limit, filter);
         return o.data;
     }
 
@@ -39,7 +39,7 @@ export default class GSOtp extends BaseViewUI {
     async onRemove(data) {
         const o = DEMO ? DEMO : await io.greenscreens.OAuth.remove(data.id);
         return o.success;
-    }    
+    }
 
     toggle(e) {
         const data = e.detail.data[0];

@@ -39,16 +39,16 @@ export default class GSFilterFido extends BaseViewUI {
         try {
             const val = parseInt(e.target.value, 10);
             const o = DEMO ? DEMO : await io.greenscreens.Fido.activity(val);
-        } catch(e) {
+        } catch (e) {
             console.log(e);
-            this.inform(false, e.msg ||e.message);
+            this.inform(false, e.msg || e.message);
         }
     }
 
     async onLoad() {
         const me = this;
         const filter = me.filter;
-        const o = DEMO ? DEMO : await io.greenscreens.Fido.list(me.store.page-1, me.store.limit, filter);
+        const o = DEMO ? DEMO : await io.greenscreens.Fido.list(me.store.page - 1, me.store.limit, filter);
         return o.data;
     }
 
@@ -65,5 +65,5 @@ export default class GSFilterFido extends BaseViewUI {
     async onRemove(data) {
         const o = DEMO ? DEMO : await io.greenscreens.Fido.remove(data.id);
         return o.success;
-    }       
+    }
 }

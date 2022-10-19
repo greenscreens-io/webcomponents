@@ -13,7 +13,7 @@ import GSDialog from '../dialogs/GSDialog.mjs';
 import Utils from '../Utils.mjs';
 
 globalThis.Tn5250 = {
-	version: '6.0.0.300',
+    version: '6.0.0.300',
     build: '15.10.2022.',
     release: 20221015
 };
@@ -25,12 +25,12 @@ export default class Login extends GSDialog {
         Object.seal(Login);
     }
 
-    static #cred = {uuid:'ADMIN', host: 'ADMIN', user:'ADMIN'};
+    static #cred = { uuid: 'ADMIN', host: 'ADMIN', user: 'ADMIN' };
     static #api1 = `${location.origin}/services/api?q=/rpc`;
     static #svc1 = `${location.origin}/services/rpc`;
 
     static #api2 = `${location.origin}/services/api?q=/wsadmin`;
-    static #svc2 = `${location.origin}/services/wsadmin`.replace('http','ws');
+    static #svc2 = `${location.origin}/services/wsadmin`.replace('http', 'ws');
 
     static #auth = `${location.origin}/services/auth`;
 
@@ -90,7 +90,7 @@ export default class Login extends GSDialog {
         me.#shell();
         return true;
     }
-    
+
     #enable() {
         GSDOM.queryAll(this, 'input').forEach(el => GSAttr.toggle(el, 'disabled', false));
     }
@@ -98,18 +98,18 @@ export default class Login extends GSDialog {
     async #initAuth() {
         delete globalThis.io;
         const res = await fetch(Login.#auth);
-        if (!res.ok) return false;       
+        if (!res.ok) return false;
         globalThis.Tn5250.opt = await res.json();
     }
 
     async #engineLogin() {
         delete globalThis.io;
-        return Engine.init({api: Login.#api1, service: Login.#svc1});
+        return Engine.init({ api: Login.#api1, service: Login.#svc1 });
     }
 
     async #engineShell() {
         delete globalThis.io;
-        return Engine.init({api: Login.#api2, service: Login.#svc2});
+        return Engine.init({ api: Login.#api2, service: Login.#svc2 });
     }
 
     #login() {
@@ -122,7 +122,7 @@ export default class Login extends GSDialog {
         Utils.setUI('gs-admin-shell');
     }
 
-    #clear() {        
+    #clear() {
         Utils.unsetUI('gs-admin-shell-login');
         Utils.unsetUI('gs-admin-shell');
     }
