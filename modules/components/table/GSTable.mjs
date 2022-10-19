@@ -222,6 +222,10 @@ export default class GSTable extends GSElement {
         return GSAttr.set(this, 'no-data', val);
     }
 
+    get isFilterable() {
+        return this.#headers.filter(o => o.filter).length > 0;
+    }
+
     #setCSS(qry, val) {
         if (!qry) return;
         this.findAll(qry, true).forEach(el => {
@@ -230,11 +234,11 @@ export default class GSTable extends GSElement {
     }
 
     #onData(e) {
-        e.preventDefault();
+        GSEvent.prevent(e);
         const me = this;
         if (!me.self) return;
         me.#processData(e.detail);
-        setTimeout(() => GSEvent.send(me.self, 'data', e.detail), 10);
+        GSEvent.sendDelayed(10, me.self, 'data', e.detail);
     }
 
     #processData(data) {

@@ -378,7 +378,12 @@ export default class GSStore extends HTMLElement {
             records = [data];
         }
 
-        me.#data = append ? me.#data.concat(records) : records;
+        if (append) {
+            me.#data = me.#data.concat(records);
+        } else {
+            me.#page = 1;
+            me.#data = records;
+        }
         if (me.#total < me.#data.length) me.#total = me.#data.length;
     }
 
@@ -427,11 +432,8 @@ export default class GSStore extends HTMLElement {
         return src + GSUtil.fromLiteral(me.action, opt);
     }
 
-    async #notify(name = 'data', data) {
-        const me = this;
-        setTimeout(() => {
-            GSEvent.send(me, name, data, true);
-        }, 1);
+    #notify(name = 'data', data) {
+        GSEvent.sendDelayed(1, this, name, data, true);
     }
 
     #formatFilter(val) {

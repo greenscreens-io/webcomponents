@@ -11,6 +11,8 @@ import BaseViewUI from '../BaseViewUI.mjs';
 
 export default class GSScheduler extends BaseViewUI {
 
+    #mapState = {"" : 0, "true" : 1, "false":2};
+
     static {
         customElements.define('gs-admin-view-scheduler', GSScheduler);
         Object.seal(GSScheduler);
@@ -23,9 +25,9 @@ export default class GSScheduler extends BaseViewUI {
     async onLoad() {
         const me = this;
         const filter = me.filter;
-        filter.type = filter.type ? parseInt(filter.type, 10) : 0;
-        filter.status = filter.status ? parseInt(filter.status, 10) : 0; 
-        const o = DEMO ? DEMO : await io.greenscreens.Scheduler.list(me.store.page-1, me.store.limit, filter.type, filter.status);
+        const type = filter.type ? parseInt(filter.type, 10) : 0;
+        const status = me.#mapState[filter.status] || 0;
+        const o = DEMO ? DEMO : await io.greenscreens.Scheduler.list(me.store.page-1, me.store.limit, type, status);
         return o.data;
     }
 

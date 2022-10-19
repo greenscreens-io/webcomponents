@@ -165,7 +165,7 @@ export default class GSEvent {
 	 * Generic event disaptcher in suspended rendering
 	 * 
 	 * @param {HTMLElement} sender element that send event
-	 * @param {string} name  Event name oto trigger
+	 * @param {string} name  Event name to trigger
 	 * @param {object} obj Data object to send 
 	 * @param {boolean} bubbles Send event to parent
 	 * @param {boolean} composed Send event across shadowDom
@@ -173,10 +173,25 @@ export default class GSEvent {
 	 * @returns {void} 
 	 */
 	static sendSuspended(sender = document, name, obj = '', bubbles = false, composed = false, cancelable = false) {
-		if (!name) return;
 		requestAnimationFrame(() => {
 			GSEvent.send(sender, name, obj, bubbles, composed, cancelable);
 		});
+	}
+
+	/** 
+	 * Generic event disaptcher delayed in miliseconds
+	 * 
+	 * @param {number} timeout Time to delay event
+	 * @param {HTMLElement} sender element that send event
+	 * @param {string} name  Event name to trigger
+	 * @param {object} obj Data object to send 
+	 * @param {boolean} bubbles Send event to parent
+	 * @param {boolean} composed Send event across shadowDom
+	 * @param {boolean} cancelable Event is cancelable
+	 * @returns {void} 
+	 */
+	static sendDelayed(timeout = 1, sender = document, name, obj = '', bubbles = false, composed = false, cancelable = false) {
+		setTimeout(() => GSEvent.send(sender, name, obj, bubbles, composed, cancelable), timeout);
 	}
 
 	/**

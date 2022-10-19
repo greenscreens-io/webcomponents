@@ -17,7 +17,7 @@ import Utils from "../Utils.mjs";
  * @class
  * @extends {GSElement}
  */
-export default class BaseViewUI extends GSElement {
+ export default class BaseViewUI extends GSElement {
 
     constructor() {
         super();
@@ -29,7 +29,7 @@ export default class BaseViewUI extends GSElement {
         super.onReady();
         me.attachEvent(me, 'action', me.#onAction.bind(me));
         me.attachEvent(me.#table, 'filter', e => me.refresh());
-        requestAnimationFrame(() => me.refresh());
+        me.refresh();
     }
 
     /**
@@ -73,25 +73,6 @@ export default class BaseViewUI extends GSElement {
      */
     get modal() {
         return this.query('#modal-main');
-    }
-
-    /**
-     * UI Notificator
-     */
-    get notify() {
-        return GSComponents.get('notification');
-    }
-
-    inform(sts, msg) {
-        if (!msg) return;
-        const me = this;
-        if (!me.notify) return;
-        if (sts) {
-            me.notify.info('Info', msg);
-        } else {
-            me.notify.danger('Error', msg);
-        }
-        return sts;
     }
 
     /**
@@ -149,7 +130,7 @@ export default class BaseViewUI extends GSElement {
 
             // update locally to refresh ui
             me.store.setData(rec, true);
-            me.notify.secondary('', 'Record cloned!');
+            Utils.notify.secondary('', 'Record cloned!');
             me.refresh();
         } catch (e) {
             Utils.handleError(e);
@@ -176,7 +157,7 @@ export default class BaseViewUI extends GSElement {
             // update locally to refresh ui
             const subset = me.store.data.filter(o => !o.hasOwnProperty(me.recID) || (o[me.recID] !== data[me.recID]));
             me.store.setData(subset);
-            me.notify.danger('', 'Record removed!');
+            Utils.notify.danger('', 'Record removed!');
 
         } catch (e) {
             Utils.handleError(e);
@@ -207,7 +188,7 @@ export default class BaseViewUI extends GSElement {
             // update locally to refresh ui
             Object.assign(data, result.data);
             me.store.reload();
-            me.notify.warn('', 'Record updated!');
+            Utils.notify.warn('', 'Record updated!');
 
         } catch (e) {
             Utils.handleError(e);
@@ -233,7 +214,7 @@ export default class BaseViewUI extends GSElement {
             if (!sts) throw new Error('Record not created!');
 
             // update locally to refresh ui
-            me.notify.primary('', 'Record created!');
+            Utils.notify.primary('', 'Record created!');
 
             me.refresh();
 
@@ -256,13 +237,15 @@ export default class BaseViewUI extends GSElement {
         if (!me.store) return;
 
         requestAnimationFrame(() => {
-            me.store.clear();
-            if (data) {
-                me.store.setData(data);
-                me.store.firstPage();
-            } else {
-                // demo data
-                me.store.reload();
+            try{
+                if (data) {
+                    me.store.setData(data);
+                    // me.store.firstPage();
+                } else {
+                    me.store.reload();
+                }
+            } catch(e) {
+                console.log(e);
             }
         });
 
@@ -338,4 +321,3 @@ export default class BaseViewUI extends GSElement {
         return false;
     }
 }
-

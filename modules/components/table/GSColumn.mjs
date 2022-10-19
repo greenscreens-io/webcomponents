@@ -189,6 +189,7 @@ export default class GSColumn extends HTMLElement {
             title: me.title, 
             width: me.width, 
             sortable: me.sortable, 
+            filter: me.filter,
             idx: me.index, 
             type: me.type, 
             format: me.format, 

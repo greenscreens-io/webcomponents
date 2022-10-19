@@ -183,7 +183,7 @@ export default class GSFileBox extends GSElement {
     #onDragenter(e) {
         const me = this;
         if (me.#dragging) clearTimeout(me.#dragging);
-        me.#dragging = window.setTimeout(() => me.removeAttribute('hover'), 200);
+        me.#dragging = setTimeout(() => me.removeAttribute('hover'), 200);
         const transfer = e.dataTransfer;
         if (!transfer || !me.#hasFile(transfer)) return;
         transfer.dropEffect = 'copy';

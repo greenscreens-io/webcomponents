@@ -47,7 +47,7 @@ export default class Login extends GSDialog {
     }
 
     get dialogTitle() {
-        return '<img src="../../assets/img/logo.png" alt="..." height="30" width="180">'; // 'Admin Login';
+        return '<img src="../assets/img/logo.png" alt="..." height="30" width="180">'; // 'Admin Login';
     }
 
     async onOpen() {
@@ -55,12 +55,12 @@ export default class Login extends GSDialog {
         const me = this;
         if (!globalThis.hasOwnProperty('DEMO')) globalThis.DEMO = false;
         Utils.unsetUI('gs-admin-shell');
-        if (DEMO) return me.#enable();
+        if (DEMO) return me.#toggle(false);
         setTimeout(async () => {
             me.#initAuth();
             await me.#engineLogin();
             // TODO hide/show OTP field; request WebAuth if available
-            me.#enable();
+            me.#toggle(false);
         }, 5);
         return true;
     }
@@ -73,8 +73,14 @@ export default class Login extends GSDialog {
             return true;
         }
 
-        const cred = Object.assign(data, Login.#cred);
-        await io.greenscreens.AdminController.login(cred);
+        try {
+            me.#toggle(true);
+            const cred = Object.assign(data, Login.#cred);
+            await io.greenscreens.AdminController.login(cred);
+        } catch(e) {
+            me.onOpen();
+            throw e;
+        }
 
         console.clear();
 
@@ -90,8 +96,9 @@ export default class Login extends GSDialog {
         return true;
     }
     
-    #enable() {
-        GSDOM.queryAll(this, 'input').forEach(el => GSAttr.toggle(el, 'disabled', false));
+    #toggle(sts = false) {
+        GSDOM.queryAll(this, 'input, button').forEach(el => GSAttr.toggle(el, 'disabled', sts));
+        GSDOM.query(this, 'input').focus();
     }
 
     async #initAuth() {
