@@ -1,0 +1,18 @@
+<form slot="body" is="gs-ext-form" id="form-main" class="flex-fill mt-4" novalidate="">
+
+    <div class="row form-group m-1">
+        <div class="col-3"></div>
+        <div class="col-6">
+            <input class="form-control" id="password"  name="password" type="password" autocomplete="off" placeholder="...enter password" required disabled>
+        </div>
+    </div>
+    
+    <div class="row form-group m-1">
+        <div class="col-3"></div>
+        <div class="col-6">
+            <input class="form-control" id="otp" name="otp" type="number" autocomplete="off" maxlength="10" min="100000" max="999999"  disabled placeholder="...enter OTP">
+        </div>
+    </div>
+        
+    <gs-notification id="notification"></gs-notification>
+</form>

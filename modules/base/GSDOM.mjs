@@ -411,7 +411,7 @@ export default class GSDOM {
 	 * @returns {Array<HTMLElement>}
 	 */
 	static queryAll(el, qry, all = false) {
-		if (typeof el === 'string') return GSDOM.queryAll(document.body, qry);
+		if (typeof el === 'string') return GSDOM.queryAll(document.body, el);
 		const res = [];
 		if (!(el && qry)) return res;
 		const it = GSDOM.walk(el, false, all);

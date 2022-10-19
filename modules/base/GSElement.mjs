@@ -442,7 +442,7 @@ export default class GSElement extends HTMLElement {
 		me.#opts = me.#injection();
 		me.#proxied = me.#opts.ref;
 		GSComponents.store(me);
-		me.#render();
+		requestAnimationFrame(() => me.#render());
 	}
 
 	/**

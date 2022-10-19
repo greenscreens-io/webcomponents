@@ -16,6 +16,16 @@ import GSUtil from "../../../modules/base/GSUtil.mjs";
  */
 export default class Utils {
 
+    static setUI(value) {
+        const el = document.createElement(value);
+        document.body.insertAdjacentElement('beforeend', el); 
+    }
+
+    static unsetUI(value) {
+        const list = GSDOM.queryAll(value);
+        list.forEach(el => el.remove());
+    }
+    
     /**
      * Convert hex string to Uint8Array
      * @param {string} data 

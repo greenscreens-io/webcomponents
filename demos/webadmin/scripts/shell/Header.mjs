@@ -69,9 +69,13 @@ export default class HeaderUI extends GSElement {
     }
 
     async logout() {        
+        setTimeout(() => {
+            Utils.unsetUI('gs-admin-shell-login');
+            Utils.unsetUI('gs-admin-shell');
+            Utils.setUI('gs-admin-shell-login');
+        }, 100);
         const o = DEMO ? DEMO : await io.greenscreens.Session.closeSession();
-        const el = document.querySelector('gs-admin-shell');
-        if (el) el.remove();
+        return o.success;
     }
 
     async restart() {

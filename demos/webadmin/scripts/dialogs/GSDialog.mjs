@@ -14,10 +14,11 @@ import GSFunction from '../../../../modules/base/GSFunction.mjs';
 import GSLoader from '../../../../modules/base/GSLoader.mjs';
 import GSModal from '../../../../modules/components/GSModal.mjs';
 
+
 export default class GSDialog extends GSModal {
 
-    constructor() {
-        super();
+    connectedCallback() {
+        super.connectedCallback();
         const me = this;
         me.cssHeader = 'p-3 dialog-title';
         me.cssTitle = 'fs-5 fw-bold';
@@ -67,7 +68,7 @@ export default class GSDialog extends GSModal {
 
     get form() {
         return GSDOM.query(this, 'form');
-    }    
+    }
 
     /**
      * Used by inherited dialogs to load data into dialog forms
@@ -93,17 +94,24 @@ export default class GSDialog extends GSModal {
      */
     inform(success = false, msg) {
         const me = this;
+        if (!me.notify) return;
         if (success) return me.notify.info('Info', msg);
         me.notify.danger('Error', msg);
         return success;
     }    
+        
+    #handleError(e) {
+        console.log(e);
+        this.inform(false, e.data?.error || e.msg || e.message || e.toString());
+    }
 
     #onError(e) {
-        this.notify.danger('Error', 'Some fields are invalid!');
+        this.inform(false, 'Some fields are invalid!');
     }
 
     async open(data) {
         const me = this;
+        me.form?.reset();
         data = await me.onOpen(data);
         if (data === false) return;
         super.open();
@@ -121,8 +129,7 @@ export default class GSDialog extends GSModal {
             const sts = await me.onData(e.detail.data);
             if (sts) me.close();
         } catch(e) {
-            console.log(e);
-            me.notify.danger('Error', e.msg || e.message || 'Error handling dialog data!');
+            me.#handleError(e);
         }
     }
 
@@ -140,8 +147,7 @@ export default class GSDialog extends GSModal {
                 }
             } 
         } catch (e) {
-            console.log(e);
-            me.inform(false, e.msg || e.message);
+            me.#handleError(e);
         }
     }
 
