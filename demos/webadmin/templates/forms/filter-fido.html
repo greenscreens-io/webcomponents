@@ -3,8 +3,8 @@
     <input class="d-none" id="id"  name="id" type="text" readonly>
 
     <div class="row form-group m-1">
-        <div class="col-md-4 col-sm-4 col-xs-12 text-md-end ">
-            <label class="control-label " for="active">Status</label>
+        <div class="col-md-4 col-sm-4 col-xs-12 text-md-end">
+            <label class="control-label" for="active">Status</label>
         </div>
         <div class="col-md-6 col-sm-6 col-xs-11">
             <select class="form-select" id="active" name="active" required>
@@ -12,15 +12,15 @@
                 <option value="false">Disabled</option>
             </select>
         </div>
-        <div class="col-auto ">
+        <div class="col-auto">
             <gs-tooltip placement="right" title="Enable or disable this rule."></gs-tooltip>
             <i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
         </div>
     </div>
 
     <div class="row form-group m-1">
-        <div class="col-md-4 col-sm-4 col-xs-12 text-md-end ">
-            <label class="control-label " for="rule">Rule</label>
+        <div class="col-md-4 col-sm-4 col-xs-12 text-md-end">
+            <label class="control-label" for="rule">Rule</label>
         </div>
         <div class="col-md-6 col-sm-6 col-xs-11">
             <select class="form-select" id="rule" name="rule" required>
@@ -28,15 +28,15 @@
                 <option value="1">Deny</option>
             </select>
         </div>
-        <div class="col-auto ">
+        <div class="col-auto">
             <gs-tooltip placement="right" title="Allow or deny access based on matched criteria."></gs-tooltip>
             <i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
         </div>
     </div>
 
     <div class="row form-group m-1">
-        <div class="col-md-4 col-sm-4 col-xs-12 text-md-end ">
-            <label class="control-label " for="aaguid">AAGUID</label>
+        <div class="col-md-4 col-sm-4 col-xs-12 text-md-end">
+            <label class="control-label" for="aaguid">AAGUID</label>
         </div>
         <div class="col-md-6 col-sm-6 col-xs-11">
             <input class="form-control" id="aaguid" name="aaguid" type="text" autocomplete="off" maxlength="36"
@@ -44,20 +44,20 @@
             pattern="^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
             mask="########-####-####-####-############">
         </div>
-        <div class="col-auto ">
+        <div class="col-auto">
             <gs-tooltip placement="right" title="FIDO Key ID"></gs-tooltip>
             <i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
         </div>
     </div>    
     
     <div class="row form-group m-1">
-        <div class="col-md-4 col-sm-4 col-xs-12 text-md-end ">
-            <label class="control-label " for="description">Description</label>
+        <div class="col-md-4 col-sm-4 col-xs-12 text-md-end">
+            <label class="control-label" for="description">Description</label>
         </div>
         <div class="col-md-6 col-sm-6 col-xs-11">
             <input class="form-control" id="description" name="description" type="text" autocomplete="off">
         </div>
-        <div class="col-auto ">
+        <div class="col-auto">
             <gs-tooltip placement="right" title="Device description, usually token type and version"></gs-tooltip>
             <i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
         </div>

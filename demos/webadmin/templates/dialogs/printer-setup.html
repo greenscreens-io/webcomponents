@@ -1,8 +1,8 @@
 <form slot="body" is="gs-ext-form" id="form-main" class="flex-fill" novalidate="">
 
     <div class="row form-group m-1">
-        <div class="col-md-4 col-sm-4 col-xs-12 text-md-end ">
-            <label class="control-label " for="uuid">UUID</label>
+        <div class="col-md-4 col-sm-4 col-xs-12 text-md-end">
+            <label class="control-label" for="uuid">UUID</label>
         </div>
         <div class="col-md-6 col-sm-6 col-xs-11">
             <input class="form-control text-uppercase" id="uuid" name="uuid" type="text"  disabled>
@@ -10,7 +10,7 @@
     </div>
     
     <div class="row form-group m-1">
-        <div class="col-md-4 col-sm-4 col-xs-12 text-md-end ">
+        <div class="col-md-4 col-sm-4 col-xs-12 text-md-end">
             <label class="control-label" for="host">Host</label>
         </div>
         <div class="col-md-6 col-sm-6 col-xs-11">
@@ -19,13 +19,13 @@
     </div>
 
     <div class="row form-group m-1">
-        <div class="col-md-4 col-sm-4 col-xs-12 text-md-end ">
+        <div class="col-md-4 col-sm-4 col-xs-12 text-md-end">
             <label class="control-label" for="printerName">Printer</label>
         </div>
         <div class="col-md-6 col-sm-6 col-xs-11">
             <input class="form-control text-uppercase" id="printerName" name="printerName" type="text" maxlength="10" pattern="[0-9a-zA-Z_]+" required>
         </div>
-        <div class="col-auto ">
+        <div class="col-auto">
             <gs-tooltip placement="right" title="Virtual Printer Name."></gs-tooltip>
             <i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
         </div>
@@ -34,8 +34,8 @@
     <hr>
 
     <div class="row form-group m-1">
-        <div class="col-md-4 col-sm-4 col-xs-12 text-md-end ">
-            <label class="control-label " for="hostTransform">Host Transform</label>
+        <div class="col-md-4 col-sm-4 col-xs-12 text-md-end">
+            <label class="control-label" for="hostTransform">Host Transform</label>
         </div>
         <div class="col-md-6 col-sm-6 col-xs-11">
             <select class="form-select" id="hostTransform" name="hostTransform">
@@ -43,7 +43,7 @@
                 <option value="1">Enabled</option>
             </select>
         </div>
-        <div class="col-auto ">
+        <div class="col-auto">
             <gs-tooltip placement="right" title="Transform SCS spool on IBM I server. If enabled, WSCST object must be defined."></gs-tooltip>
             <i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
         </div>
@@ -52,34 +52,34 @@
     <hr>
     
     <div class="row form-group m-1">
-        <div class="col-md-4 col-sm-4 col-xs-12 text-md-end ">
+        <div class="col-md-4 col-sm-4 col-xs-12 text-md-end">
             <label class="control-label" for="sourceCodePag">CHRID (EBCDIC)</label>
         </div>
         <div class="col-md-6 col-sm-6 col-xs-11">
             <input data-hpt="true" class="form-control text-uppercase" id="sourceCodePag" name="sourceCodePag" type="text" maxlength="10" pattern="[0-9a-zA-Z]+" disabled>
         </div>
-        <div class="col-auto ">
+        <div class="col-auto">
             <gs-tooltip placement="right" title="EBCIDIC code page to convert from."></gs-tooltip>
             <i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
         </div>
     </div>
 
     <div class="row form-group m-1">
-        <div class="col-md-4 col-sm-4 col-xs-12 text-md-end ">
+        <div class="col-md-4 col-sm-4 col-xs-12 text-md-end">
             <label class="control-label" for="targetCodePage">CHRID (ANSI/ASCII)</label>
         </div>
         <div class="col-md-6 col-sm-6 col-xs-11">
             <input data-hpt="true" class="form-control text-uppercase" id="targetCodePage" name="targetCodePage" type="text" maxlength="10" pattern="[0-9a-zA-Z]+" disabled>
         </div>
-        <div class="col-auto ">
+        <div class="col-auto">
             <gs-tooltip placement="right" title="ANSI or ASCII code page to convert to."></gs-tooltip>
             <i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
         </div>
     </div>
 
     <div class="row form-group m-1">
-        <div class="col-md-4 col-sm-4 col-xs-12 text-md-end ">
-            <label class="control-label " for="wscstObject">Host Transform</label>
+        <div class="col-md-4 col-sm-4 col-xs-12 text-md-end">
+            <label class="control-label" for="wscstObject">Host Transform</label>
         </div>
         <div class="col-md-6 col-sm-6 col-xs-11">
             <input type="text"  data-hpt="true" list="wscsts" value="*NONE" class="form-control" id="wscstObject" name="wscstObject" maxlength="10" disabled>
@@ -90,15 +90,15 @@
                 <option value="EMPTYBDO"></option>
               </datalist>
         </div>
-        <div class="col-auto ">
+        <div class="col-auto">
             <gs-tooltip placement="right" title="WSCST object name."></gs-tooltip>
             <i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
         </div>
     </div>
 
     <div class="row form-group m-1">
-        <div class="col-md-4 col-sm-4 col-xs-12 text-md-end ">
-            <label class="control-label " for="wscstLib">WSCST Library</label>
+        <div class="col-md-4 col-sm-4 col-xs-12 text-md-end">
+            <label class="control-label" for="wscstLib">WSCST Library</label>
         </div>
         <div class="col-md-6 col-sm-6 col-xs-11">
             <input type="text"  data-hpt="true" list="libs" value="*LIBL" class="form-control" id="wscstLib" name="wscstLib" maxlength="10" disabled>
@@ -109,15 +109,15 @@
                 <option value="GRNSCREENS"></option>
               </datalist>
         </div>
-        <div class="col-auto ">
+        <div class="col-auto">
             <gs-tooltip placement="right" title="Library for WSCST object."></gs-tooltip>
             <i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
         </div>
     </div>
 
     <div class="row form-group m-1">
-        <div class="col-md-4 col-sm-4 col-xs-12 text-md-end ">
-            <label class="control-label " for="printerModel">Printer Model</label>
+        <div class="col-md-4 col-sm-4 col-xs-12 text-md-end">
+            <label class="control-label" for="printerModel">Printer Model</label>
         </div>
         <div class="col-md-6 col-sm-6 col-xs-11">
             <input type="text"  data-hpt="true" value="*SAME" list="models" class="form-control" id="printerModel" name="printerModel" maxlength="10" disabled>
@@ -143,15 +143,15 @@
                 <option value="*WSCSTNONE" ></option>					    
               </datalist>	
         </div>
-        <div class="col-auto ">
+        <div class="col-auto">
             <gs-tooltip placement="right" title="Use printer model for SCS data transform."></gs-tooltip>
             <i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
         </div>
     </div>    
 
     <div class="row form-group m-1">
-        <div class="col-md-4 col-sm-4 col-xs-12 text-md-end ">
-            <label class="control-label " for="drawer1">Drawer 1</label>
+        <div class="col-md-4 col-sm-4 col-xs-12 text-md-end">
+            <label class="control-label" for="drawer1">Drawer 1</label>
         </div>
         <div class="col-md-6 col-sm-6 col-xs-11">
             <select data-hpt="true" class="form-select" id="drawer1" name="drawer1" disabled>
@@ -171,15 +171,15 @@
                 <option value="*LEDGER">*LEDGER</option>      
             </select>
         </div>
-        <div class="col-auto ">
+        <div class="col-auto">
             <gs-tooltip placement="right" title="Printer drawer paper size."></gs-tooltip>
             <i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
         </div>
     </div>
 
     <div class="row form-group m-1">
-        <div class="col-md-4 col-sm-4 col-xs-12 text-md-end ">
-            <label class="control-label " for="drawer2">Drawer 2</label>
+        <div class="col-md-4 col-sm-4 col-xs-12 text-md-end">
+            <label class="control-label" for="drawer2">Drawer 2</label>
         </div>
         <div class="col-md-6 col-sm-6 col-xs-11">
             <select data-hpt="true" class="form-select" id="drawer2" name="drawer2" disabled>
@@ -199,15 +199,15 @@
                 <option value="*LEDGER">*LEDGER</option>      
             </select>
         </div>
-        <div class="col-auto ">
+        <div class="col-auto">
             <gs-tooltip placement="right" title="Printer drawer paper size."></gs-tooltip>
             <i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
         </div>
     </div>    
 
     <div class="row form-group m-1">
-        <div class="col-md-4 col-sm-4 col-xs-12 text-md-end ">
-            <label class="control-label " for="envelope">Envelope</label>
+        <div class="col-md-4 col-sm-4 col-xs-12 text-md-end">
+            <label class="control-label" for="envelope">Envelope</label>
         </div>
         <div class="col-md-6 col-sm-6 col-xs-11">
             <select data-hpt="true" class="form-select" id="envelope" name="envelope" disabled>
@@ -222,7 +222,7 @@
                 <option value="*DL">*DL</option>  
             </select>
         </div>
-        <div class="col-auto ">
+        <div class="col-auto">
             <gs-tooltip placement="right" title="Printer drawer paper size."></gs-tooltip>
             <i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
         </div>
