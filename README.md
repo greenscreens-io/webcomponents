@@ -1,4 +1,4 @@
-# [WebComponents - Pre-Release](https://webcomponents.greenscreens.ltd/).
+# [WebComponents](https://webcomponents.greenscreens.ltd/).
  
 Green Screens WebComponents are small, no dependency Web UI components based on Bootstrap (5.2.0.+) CSS, built with vanilla JavaScript.
  
