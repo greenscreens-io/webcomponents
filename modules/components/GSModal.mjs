@@ -8,7 +8,6 @@
  */
 
 import GSAttr from "../base/GSAttr.mjs";
-import GSComponents from "../base/GSComponents.mjs";
 import GSDOM from "../base/GSDOM.mjs";
 import GSElement from "../base/GSElement.mjs";
 import GSEvent from "../base/GSEvent.mjs";
