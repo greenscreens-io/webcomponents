@@ -302,10 +302,9 @@ export default class GSElement extends HTMLElement {
 	 */
 	query(query = '', all = false) {
 		const me = this;
-		let el = GSDOM.query(me.self, query, all, true);
-		if (me.isProxy) return el;
-		if (!el && me.el !== me.self) el = GSDOM.query(me, query, all, false);
-		return el;
+		const el = GSDOM.query(me.self, query, all, true);
+		if (me.isProxy || el) return el;
+		return GSDOM.query(me, query, all, false);
 	}
 
 	/**
@@ -315,10 +314,9 @@ export default class GSElement extends HTMLElement {
 	 */
 	queryAll(query = '', all = false) {
 		const me = this;
-		let list = GSDOM.queryAll(me.self, query, all, true);
-		if (me.isProxy) return list;
-		if (!el && me.el !== me.self) list = GSDOM.queryAll(me, query, all, false);
-		return list;
+		const list = GSDOM.queryAll(me.self, query, all, true);
+		if (me.isProxy || list.length > 0) return list;
+		return GSDOM.queryAll(me, query, all, false);
 	}
 
 	/**
