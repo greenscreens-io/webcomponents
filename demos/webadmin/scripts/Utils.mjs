@@ -46,7 +46,9 @@ export default class Utils {
 
     static handleError(e) {
         console.log(e);
-        Utils.inform(false, e.data?.error || e.msg || e.message || e.toString());
+        const msg = e.data?.error || e.msg || e.message || e.toString();
+        Utils.inform(false, msg);
+        return msg;
     }
 
     /**

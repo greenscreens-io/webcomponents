@@ -17,7 +17,7 @@ import Utils from "../Utils.mjs";
  * @class
  * @extends {GSElement}
  */
- export default class BaseViewUI extends GSElement {
+export default class BaseViewUI extends GSElement {
 
     constructor() {
         super();
@@ -29,7 +29,7 @@ import Utils from "../Utils.mjs";
         super.onReady();
         me.attachEvent(me, 'action', me.#onAction.bind(me));
         me.attachEvent(me.#table, 'filter', e => me.refresh());
-        me.refresh();
+        requestAnimationFrame(() => me.refresh());
     }
 
     /**
@@ -321,3 +321,4 @@ import Utils from "../Utils.mjs";
         return false;
     }
 }
+

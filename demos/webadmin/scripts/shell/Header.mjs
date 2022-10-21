@@ -62,13 +62,14 @@ export default class HeaderUI extends GSElement {
     
     // logout and replace with login tag
     async logout() {        
-        setTimeout(() => {
+        try {
             Utils.unsetUI('gs-admin-shell-login');
             Utils.unsetUI('gs-admin-shell');
-            Utils.setUI('gs-admin-shell-login');
-        }, 100);
-        const o = DEMO ? DEMO : await io.greenscreens.Session.closeSession();
-        return o.success;
+            const o = DEMO ? DEMO : await io.greenscreens.Session.closeSession();
+            return o.success;
+        } finally {
+            location.reload();
+        }
     }
 
     // restart server
