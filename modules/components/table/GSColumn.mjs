@@ -34,7 +34,8 @@ export default class GSColumn extends HTMLElement {
         const clssort = me.sortable ? 'sorting' : '';
         const style = me.width ? `style="width:${me.width};"` : '';
         const cspan = me.colspan ? `colspan="${me.colspan}"` : '';
-        return `<th scope="col" name="${me.name}" ${cspan} class="${clssort} ${me.cssHeader}" ${style}>${me.title || me.name}</th>`;
+
+        return `<th scope="col" data-sortable="${me.sortable}" data-order="${me.#orderID}" name="${me.name}" ${cspan} class="${clssort} ${me.cssHeader}" ${style}>${me.title || me.name}</th>`;
     }
 
     renderFilter() {
@@ -92,6 +93,12 @@ export default class GSColumn extends HTMLElement {
         return list.join('');
     }
 
+    get #orderID() {
+        const me = this;
+        if(me.sortable && me.direction) return me.direction === 'asc' ? 1 : -1;
+        return 0;
+    }
+
     get table() {
         return GSDOM.closest(this, 'GS-TABLE');
     }
@@ -109,6 +116,11 @@ export default class GSColumn extends HTMLElement {
     get sortable() {
         const me = this;
         return me.name && !me.counter ? GSAttr.getAsBool(me, 'sortable', true) : false;
+    }
+
+    get direction() {
+        const me = this;
+        return GSAttr.get(me, 'direction', '');
     }
 
     get cssFilter() {

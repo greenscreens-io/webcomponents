@@ -22,19 +22,6 @@ export default class GSHeader extends HTMLElement {
         customElements.define('gs-header', GSHeader);
     }
 
-    /*
-    connectedCallback() {
-        const me = this;
-        if (!me.id) me.setAttribute('id', GSID.id);
-        GSComponents.store(me);
-    }
-
-    disconnectedCallback() {
-        const me = this;
-        GSComponents.remove(me);
-    }
-    */
-
     get #columns() {
         return GSDOM.queryAll(this, 'gs-column');
     }
