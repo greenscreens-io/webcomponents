@@ -33,7 +33,8 @@ export default class GSColumn extends HTMLElement {
 
         const clssort = me.sortable ? 'sorting' : '';
         const style = me.width ? `style="width:${me.width};"` : '';
-        return `<th scope="col" name="${me.name}" class="${clssort} ${me.cssHeader}" ${style}>${me.title || me.name}</th>`;
+        const cspan = me.colspan ? `colspan="${me.colspan}"` : '';
+        return `<th scope="col" name="${me.name}" ${cspan} class="${clssort} ${me.cssHeader}" ${style}>${me.title || me.name}</th>`;
     }
 
     renderFilter() {
@@ -150,6 +151,10 @@ export default class GSColumn extends HTMLElement {
         return GSAttr.get(this, 'type');
     }
 
+    get colspan() {
+        return GSAttr.get(this, 'colspan', '');
+    }
+
     /**
      * Will generate ComboBox or datalist
      */
@@ -194,6 +199,7 @@ export default class GSColumn extends HTMLElement {
             type: me.type, 
             format: me.format, 
             css : me.css,
+            colspan : me.colspan,
             map :mapping
         };
     }

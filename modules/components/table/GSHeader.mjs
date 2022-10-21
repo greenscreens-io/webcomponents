@@ -35,6 +35,10 @@ export default class GSHeader extends HTMLElement {
     }
     */
 
+    get #columns() {
+        return GSDOM.queryAll(this, 'gs-column');
+    }
+
     get #filtered() {
         return GSDOM.queryAll(this, 'gs-column[filter=true]');
     }
@@ -55,7 +59,7 @@ export default class GSHeader extends HTMLElement {
 
         if (filters.length > 0) {
             html.push(`<tr is="gs-tablefilter" class="${table.cssFilter}">`);
-            columns.forEach(el => html.push(el.renderFilter()));
+            me.#columns.forEach(el => html.push(el.renderFilter()));
             html.push('</tr>');
         }
 
