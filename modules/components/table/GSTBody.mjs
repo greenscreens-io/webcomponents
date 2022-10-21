@@ -92,7 +92,8 @@ export default class GSTBody extends HTMLTableSectionElement {
         });
 
         if (data.length === 0 && me.table.noDataText) {
-            rows.push(me.#emptyRow(headers.length));
+            const cspan = headers.map( o => o.colspan ? parseInt(o.colspan) | 1 : 1).reduce((a,b) => a+b,0 );
+            rows.push(me.#emptyRow(cspan));
         }
         
 
