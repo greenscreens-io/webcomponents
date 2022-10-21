@@ -219,7 +219,7 @@ export default class GSOffcanvas extends GSElement {
 
   get backdrop() {
     const me = this;
-    return GSAttr.getAsBool(me, 'backdrop',  me.target?.dataset?.bsBackdrop || 'false');
+    return GSAttr.getAsBool(me, 'backdrop', me.target?.dataset?.bsBackdrop || 'false');
   }
 
   set backdrop(val = '') {

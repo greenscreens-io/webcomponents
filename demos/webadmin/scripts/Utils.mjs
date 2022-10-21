@@ -18,7 +18,7 @@ export default class Utils {
 
     static setUI(value) {
         const el = document.createElement(value);
-        document.body.insertAdjacentElement('beforeend', el); 
+        document.body.insertAdjacentElement('beforeend', el);
     }
 
     static unsetUI(value) {
@@ -37,12 +37,12 @@ export default class Utils {
      * @param {string} msg Message t oshow
      * @returns {boolean}
      */
-     static inform(success = false, msg) {
+    static inform(success = false, msg) {
         if (!Utils.notify) return;
         if (success) return Utils.notify.info('Info', msg);
         Utils.notify.danger('Error', msg);
         return success;
-    }    
+    }
 
     static handleError(e) {
         console.log(e);
@@ -58,19 +58,19 @@ export default class Utils {
      */
     static fromHex(data) {
         let a = [];
-        for (let i = 0, len = data.length; i < len; i+=2) {
-          a.push(parseInt(data.substring(i,2),16));
+        for (let i = 0, len = data.length; i < len; i += 2) {
+            a.push(parseInt(data.substring(i, 2), 16));
         }
-        
-        return new Uint8Array(a);        
+
+        return new Uint8Array(a);
     }
 
-	/**
-	 * Detect data and convert to Uint8Array
-	 * 
-	 * @param {variant}
-	 *            str
-	 */
+    /**
+     * Detect data and convert to Uint8Array
+     * 
+     * @param {variant}
+     *            str
+     */
     static #validateData(src) {
         var data = null;
         if (src instanceof Array) {
@@ -95,23 +95,23 @@ export default class Utils {
      * @param {String} val 
      * @return {Blob}
      */
-     static stringToBlob(val) {
-         return new Blob([val], {
-             encoding: "UTF-8",
-             type: "text/plain;charset=UTF-8"
-         });
-    }    
+    static stringToBlob(val) {
+        return new Blob([val], {
+            encoding: "UTF-8",
+            type: "text/plain;charset=UTF-8"
+        });
+    }
 
     /**
      * Convert Binary to blob object
      * 
      * @param {String} val 
      * @return {Blob}
-     */    
+     */
     static binaryToBlob(val) {
-    	const data = Utils.#validateData(val);
-    	return new Blob([data], {type: 'application/octet-stream'});
-    } 
+        const data = Utils.#validateData(val);
+        return new Blob([data], { type: 'application/octet-stream' });
+    }
 
     /**
      * Download raw data 
@@ -128,7 +128,7 @@ export default class Utils {
             a.href = link;
             a.click();
         } finally {
-            setTimeout(()=> URL.revokeObjectURL(link), 250);
+            setTimeout(() => URL.revokeObjectURL(link), 250);
         }
         return true;
     }
@@ -147,7 +147,7 @@ export default class Utils {
             Utils.revokeObjectURL(url);
             return null;
         });
-        
+
         return win;
     }
 }

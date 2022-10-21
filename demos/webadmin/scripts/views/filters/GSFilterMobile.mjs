@@ -36,7 +36,7 @@ export default class GSFilterMobile extends BaseViewUI {
         try {
             const val = parseInt(e.target.value, 10);
             const o = DEMO ? DEMO : await io.greenscreens.Mobile.activity(val);
-        } catch(e) {
+        } catch (e) {
             Utils.handleError(e);
         }
     }
@@ -48,7 +48,7 @@ export default class GSFilterMobile extends BaseViewUI {
     async onLoad() {
         const me = this;
         const filter = me.filter;
-        const o = DEMO ? DEMO : await io.greenscreens.Mobile.list(me.store.page-1, me.store.limit, filter);
+        const o = DEMO ? DEMO : await io.greenscreens.Mobile.list(me.store.page - 1, me.store.limit, filter);
         return o.data;
     }
 
@@ -65,5 +65,5 @@ export default class GSFilterMobile extends BaseViewUI {
     async onRemove(data) {
         const o = DEMO ? DEMO : await io.greenscreens.Mobile.remove(data.id);
         return o.success;
-    }    
+    }
 }

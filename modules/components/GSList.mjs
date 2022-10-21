@@ -78,13 +78,13 @@ export default class GSList extends GSElement {
 
         const dataAttrs = GSAttr.dataToString(el);
         const dataBS = GSItem.getAttrs(el);
-        
-        const icon = GSItem.getIcon(el);        
+
+        const icon = GSItem.getIcon(el);
         const icoCSS = icon ? `<i class="${icon}"></i>` : ''
 
         const active = me.#getActive(el) ? 'active' : '';
         const select = me.selectable ? 'is="gs-ext-navlink"' : 'ignore';
-        const hreftgt = href && href !=='#' ? `target=${GSItem.getTarget(el)}` : '';
+        const hreftgt = href && href !== '#' ? `target=${GSItem.getTarget(el)}` : '';
 
         return `<a  ${select} class="list-group-item list-group-item-action ${active} ${css}"
                 href="${href}" ${hreftgt} ${dataBS} ${dataAttrs}>${icoCSS} ${tpl || message}</a>`;

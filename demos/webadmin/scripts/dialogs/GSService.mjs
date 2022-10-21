@@ -39,7 +39,7 @@ export default class GSService extends GSDialog {
         me.valueField.type = 'text';
         me.valueField.classList.value = 'form-control';
         me.valueField.parentElement.classList.value = '';
-        
+
         if (GSUtil.isNumber(data.value)) {
             me.valueField.type = 'number';
         }
@@ -55,7 +55,7 @@ export default class GSService extends GSDialog {
 
     async onData(data) {
         const me = this;
-        
+
         const type = GSAttr.get(me.valueField, 'type');
 
         if (type === 'checkbox') {
@@ -69,6 +69,6 @@ export default class GSService extends GSDialog {
         const o = DEMO ? DEMO : await io.greenscreens.Tweaks.set(data.module, data.property, data.value);
 
         return o.success;
-    }   
+    }
 
 }

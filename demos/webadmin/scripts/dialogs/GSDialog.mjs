@@ -34,7 +34,7 @@ export default class GSDialog extends GSModal {
     }
 
     async onReady() {
-    
+
         super.onReady();
         const me = this;
 
@@ -67,7 +67,7 @@ export default class GSDialog extends GSModal {
     /**
      * UI Notificator
      */
-     get notify() {
+    get notify() {
         return GSComponents.get('notification');
     }
 
@@ -82,7 +82,7 @@ export default class GSDialog extends GSModal {
      * Used by inherited dialogs to load data into dialog forms
      * @returns {*}
      */
-     async onOpen(data) {
+    async onOpen(data) {
         return data;
     }
 
@@ -121,7 +121,7 @@ export default class GSDialog extends GSModal {
         try {
             const sts = await me.onData(e.detail.data);
             if (sts) me.close();
-        } catch(e) {
+        } catch (e) {
             Utils.handleError(e);
         }
     }
@@ -138,7 +138,7 @@ export default class GSDialog extends GSModal {
                 } else {
                     me[action](e);
                 }
-            } 
+            }
         } catch (e) {
             Utils.handleError(e);
         }

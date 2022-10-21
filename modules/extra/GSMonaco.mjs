@@ -67,7 +67,7 @@ export default class GSMonaco extends GSElement {
         }
         const id = setInterval(() => {
             if (typeof globalThis.require !== 'function') return;
-            require.config({ paths: { 'vs': `${GSMonaco.URL_LIB}/vs` }});
+            require.config({ paths: { 'vs': `${GSMonaco.URL_LIB}/vs` } });
             require(['vs/editor/editor.main'], () => {
                 clearInterval(id);
                 GSMonaco.#initialized = true;
@@ -86,7 +86,7 @@ export default class GSMonaco extends GSElement {
 
     constructor() {
         super();
-        
+
     }
 
     attributeCallback(name = '', oldValue = '', newValue = '') {
@@ -126,7 +126,7 @@ export default class GSMonaco extends GSElement {
         const me = this;
         if (me.#editor) me.#editor.setValue(data);
     }
-    
+
     /**
      * Must be flat, as Monaco is loading and injecting CSS on its own
      */
@@ -138,7 +138,7 @@ export default class GSMonaco extends GSElement {
         const me = this;
         me.once('monaco-ready', me.#onMonacoReady.bind(this));
         GSMonaco.#initMonaco(this);
-    }    
+    }
 
     /**
      * URL location from where to load data
@@ -204,15 +204,15 @@ export default class GSMonaco extends GSElement {
 
     #onLanguage(language) {
         const me = this;
-        if(monaco && language) {
+        if (monaco && language) {
             const models = monaco.editor.getModels();
             monaco.editor.setModelLanguage(models[0], language);
-        } 
+        }
     }
 
     async #onTheme(theme) {
         const me = this;
-        if(monaco && theme) monaco.editor.setTheme(theme);
+        if (monaco && theme) monaco.editor.setTheme(theme);
     }
 
     /**
@@ -233,7 +233,7 @@ export default class GSMonaco extends GSElement {
         const me = this;
         const data = url ? await GSLoader.load(url) : null;
         if (!data) return me.code = `Code URL ${url} unreachable!`;
-        me.code = '';        
+        me.code = '';
         me.#onLanguage(me.language);
         me.code = data;
     }
@@ -243,9 +243,9 @@ export default class GSMonaco extends GSElement {
     }
 
     #onMonacoReady() {
-        
+
         const me = this;
-        
+
         const opt = {
             value: ``,
             language: me.language,
@@ -254,23 +254,23 @@ export default class GSMonaco extends GSElement {
         };
 
         me.#editor = monaco.editor.create(me.#container, opt);
-        
+
         me.attachEvent(self, 'resize', me.#onResize.bind(me));
- 
+
         super.onReady();
 
         if (me.url) return me.#onURL(me.url);
         if (me.target) return me.#onTarget(me.target);
-    }   
+    }
 
     #onResize(e) {
         const me = this;
         me.#editor.layout({ width: 0, height: 0 });
 
         window.requestAnimationFrame(() => {
-          const rect = me.owner.getBoundingClientRect();
-          me.#editor.layout({ width: rect.width, height: rect.height });
-        })        
+            const rect = me.owner.getBoundingClientRect();
+            me.#editor.layout({ width: rect.width, height: rect.height });
+        })
     }
 
 }

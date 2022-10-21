@@ -110,7 +110,7 @@ export default class Login extends GSDialog {
             const o = await WebAuthn.authenticate(cred);
             if (o.success) document.cookie = 'X-Authorization=' + o.srl + '; path=/services/wsadmin';
             me.#postLogin();
-        } catch(e) {
+        } catch (e) {
             Utils.handleError(e);
             location.reload();
         }

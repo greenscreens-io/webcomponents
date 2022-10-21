@@ -50,40 +50,40 @@ export default class GSTunnel extends BaseViewUI {
     }
 
     async start(e) {
-        const me  = this;
+        const me = this;
         const data = e.detail.data[0];
         const o = DEMO ? DEMO : await io.greenscreens.Proxy.start(data.id);
         Utils.inform(o.success, 'Tunnel started');
     }
 
     async stop(e) {
-        const me  = this;
+        const me = this;
         const data = e.detail.data[0];
         const o = DEMO ? DEMO : await io.greenscreens.Proxy.stop(data.id);
         Utils.inform(o.success, 'Tunnel stopped');
     }
 
     async restart(e) {
-        const me  = this;
+        const me = this;
         const data = e.detail.data[0];
         const o = DEMO ? DEMO : await io.greenscreens.Proxy.restart(data.id);
         Utils.inform(o.success, 'Tunnel restarted');
     }
 
     async download(e) {
-        const me  = this;
+        const me = this;
         const data = e.detail.data[0];
         const o = DEMO ? DEMO : await io.greenscreens.Proxy.download(data.id);
 
         const conf = [
             'auto: true',
-            'mode: cloud', 
-            'cloud: ' + location.origin, 
+            'mode: cloud',
+            'cloud: ' + location.origin,
             'token: ' + o.code,
             'tls: 1',
             'tlsVerify: true'
-            ];
+        ];
         Utils.download(data.name + '.bin', Utils.fromHex(o.msg));
-        Utils.download('server.config', conf.join('\n'));        
+        Utils.download('server.config', conf.join('\n'));
     }
 }

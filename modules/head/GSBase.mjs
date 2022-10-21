@@ -414,10 +414,10 @@ export default class GSBase extends HTMLElement {
 
 	get #nocache() {
 		const hasKey = Object.hasOwn(globalThis, 'GS_NO_CACHE');
-        if (hasKey) {
-            return globalThis.GS_NO_CACHE;
-        }
-        return localStorage ?  localStorage.getItem('GS_NO_CACHE') == 'true' : false;		
+		if (hasKey) {
+			return globalThis.GS_NO_CACHE;
+		}
+		return localStorage ? localStorage.getItem('GS_NO_CACHE') == 'true' : false;
 	}
 
 	static {

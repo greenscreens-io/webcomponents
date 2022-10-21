@@ -94,7 +94,7 @@ export default class BaseViewUI extends GSElement {
                 } else {
                     me[action](e);
                 }
-            } 
+            }
         } catch (e) {
             Utils.handleError(e);
         }
@@ -237,14 +237,14 @@ export default class BaseViewUI extends GSElement {
         if (!me.store) return;
 
         requestAnimationFrame(() => {
-            try{
+            try {
                 if (data) {
                     me.store.setData(data);
                     // me.store.firstPage();
                 } else {
                     me.store.reload();
                 }
-            } catch(e) {
+            } catch (e) {
                 console.log(e);
             }
         });
@@ -286,7 +286,7 @@ export default class BaseViewUI extends GSElement {
      * @returns {boolean}
      * @throws {Error}
      */
-     async onClone(data) {
+    async onClone(data) {
         return true;
     }
 

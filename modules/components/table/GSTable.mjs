@@ -330,7 +330,7 @@ export default class GSTable extends GSElement {
             if (rec) me.#selected.push(rec);
         });
         if (me.contextMenu) me.contextMenu.disabled = data.data?.length === 0;
-        GSEvent.send(me, 'selected', { data : me.#selected, evt : data.evt});
+        GSEvent.send(me, 'selected', { data: me.#selected, evt: data.evt });
     }
 
     #onColumnSort(data) {

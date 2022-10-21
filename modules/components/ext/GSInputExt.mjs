@@ -241,7 +241,7 @@ export default class GSInputExt extends HTMLInputElement {
     #onKeyDown(e) {
         const me = this;
         if (!me.mask) return;
-        
+
         const tmp = me.value.split('');
         let pos1 = me.selectionStart;
         let pos2 = me.selectionEnd;
@@ -257,14 +257,14 @@ export default class GSInputExt extends HTMLInputElement {
         if (e.key === 'Backspace') {
             handle = true;
             if (pos1 === pos2) {
-                tmp[pos-1] = me.mask[pos-1];
-                pos = pos1-1;
+                tmp[pos - 1] = me.mask[pos - 1];
+                pos = pos1 - 1;
             } else {
                 pos = pos1;
             }
         }
 
-        
+
         if (pos1 !== pos2 && e.key.length === 1) {
             handle = true;
             while (pos1 < pos2) {
@@ -272,7 +272,7 @@ export default class GSInputExt extends HTMLInputElement {
                 pos1++;
             }
         }
-        
+
         if (!handle) return;
 
         me.value = me.formatMask(tmp.join(''));
@@ -284,7 +284,7 @@ export default class GSInputExt extends HTMLInputElement {
     #onKeyPress(e) {
         const me = this;
         if (!me.mask) return;
-        
+
         const tmp = me.value.split('');
         let pos = me.selectionStart;
         let masks = me.#masks.slice(pos);
@@ -295,7 +295,7 @@ export default class GSInputExt extends HTMLInputElement {
                 if (mask.test(e.key)) {
                     tmp[pos] = e.key;
                     canceled = false;
-                } 
+                }
                 GSEvent.prevent(e);
                 return false;
             } else {
@@ -307,7 +307,7 @@ export default class GSInputExt extends HTMLInputElement {
 
         if (canceled) return;
 
-        masks = me.#masks.slice(pos+1);
+        masks = me.#masks.slice(pos + 1);
         masks.every(mask => {
             if (mask instanceof RegExp) return false;
             pos++;
@@ -316,7 +316,7 @@ export default class GSInputExt extends HTMLInputElement {
 
 
         me.value = me.formatMask(tmp.join(''));
-        me.setSelectionRange(pos+1, pos+1);
+        me.setSelectionRange(pos + 1, pos + 1);
         GSEvent.prevent(e);
     }
 

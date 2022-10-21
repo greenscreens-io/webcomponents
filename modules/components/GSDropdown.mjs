@@ -52,13 +52,13 @@ export default class GSDropdown extends GSElement {
       GSDOM.toggleClass(menu, 'show', me.visible);
       requestAnimationFrame(() => {
         if (me.visible) {
-            me.#updatePos(menu);
+          me.#updatePos(menu);
         } else {
           menu.style.left = '';
           menu.style.top = '';
         }
-      });        
-        
+      });
+
     }
 
     if (name === 'css') {

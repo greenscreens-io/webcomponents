@@ -67,7 +67,7 @@ export default class GSPopup extends GSElement {
         const state = me.visible ? '' : 'invisible';
 
         if (tpl) {
-            requestAnimationFrame(()=>{
+            requestAnimationFrame(() => {
                 const slot = GSDOM.parse(tpl);
                 for (let el of slot.body.children) {
                     GSDOM.appendChild(me, el);

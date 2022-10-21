@@ -55,17 +55,17 @@ export default class GSConfiguration extends BaseViewUI {
         const o = DEMO ? DEMO : await io.greenscreens.Hosts.cloneConfig(data);
         return o.success;
     }
-        
+
     resetPrinter(e) {
         const data = e.detail.data[0];
         this.printerReset.open(data);
     }
-    
+
     setupPrinter(e) {
         const data = e.detail.data[0];
         this.printerSetup.open(data);
     }
-    
+
     async validateServer(e) {
         const me = this;
         me.waiter.open();

@@ -188,19 +188,19 @@ export default class GSColumn extends HTMLElement {
     toJSON() {
         const me = this;
         // [[val,map]]
-        const mapping = me.maps.map(el => [ GSAttr.get(el, 'value'), GSAttr.get(el, 'map') ])
-        return { 
-            name: me.name, 
-            title: me.title, 
-            width: me.width, 
-            sortable: me.sortable, 
+        const mapping = me.maps.map(el => [GSAttr.get(el, 'value'), GSAttr.get(el, 'map')])
+        return {
+            name: me.name,
+            title: me.title,
+            width: me.width,
+            sortable: me.sortable,
             filter: me.filter,
-            idx: me.index, 
-            type: me.type, 
-            format: me.format, 
-            css : me.css,
-            colspan : me.colspan,
-            map :mapping
+            idx: me.index,
+            type: me.type,
+            format: me.format,
+            css: me.css,
+            colspan: me.colspan,
+            map: mapping
         };
     }
 }

@@ -32,6 +32,6 @@ export default class GSLoginDefaults extends GSDialog {
     async onData(data) {
         const o = DEMO ? DEMO : await io.greenscreens.Server.saveDefaults(data);
         return o.success;
-    }     
+    }
 
 }

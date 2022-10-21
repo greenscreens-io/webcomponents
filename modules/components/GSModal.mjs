@@ -84,8 +84,8 @@ export default class GSModal extends GSElement {
     if (processForms) {
       const invalid = forms.filter(form => form.checkValidity() == false);
       invalid.forEach(form => me.#reportForm(form));
-      if (invalid.length === 0) forms.forEach(form => me.#submitForm(form) );
-      
+      if (invalid.length === 0) forms.forEach(form => me.#submitForm(form));
+
       const els = invalid.map(form => GSDOM.queryAll(form, 'textarea, input, select').filter(el => el.checkValidity() == false));
       if (els.length > 0) GSEvent.send(me, 'error', { type: 'modal', data: els }, true, true, true);
       return;
@@ -101,8 +101,8 @@ export default class GSModal extends GSElement {
 
   #submitForm(form) {
     try {
-      GSEvent.send(form, 'action', { action: 'submit'});
-    } catch(e) {
+      GSEvent.send(form, 'action', { action: 'submit' });
+    } catch (e) {
       console.log(e);
     }
   }
@@ -110,7 +110,7 @@ export default class GSModal extends GSElement {
   #reportForm(form) {
     try {
       form.reportValidity();
-    } catch(e) {
+    } catch (e) {
       console.log(e);
     }
   }

@@ -157,7 +157,7 @@ export default class GSPopover extends GSElement {
 
     get content() {
         const me = this;
-        return GSAttr.get(me, 'content', me.target?.dataset?.bsContent ||'');
+        return GSAttr.get(me, 'content', me.target?.dataset?.bsContent || '');
     }
 
     set content(val = '') {
@@ -254,7 +254,7 @@ export default class GSPopover extends GSElement {
      * @returns {boolean}
      */
     static #hasPopover(el) {
-        return (el?.firstElementChild || el?.nextElementSibling ) instanceof GSPopover;
+        return (el?.firstElementChild || el?.nextElementSibling) instanceof GSPopover;
     }
 
     /**

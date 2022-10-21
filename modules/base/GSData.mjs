@@ -84,7 +84,7 @@ export default class GSData {
         let match = null;
 
         for (let flt of filter) {
-            
+
             match = flt?.value?.toLowerCase();
             found = found && ('' + rec[flt.name]).toLocaleLowerCase().includes(match);
             if (!found) break;

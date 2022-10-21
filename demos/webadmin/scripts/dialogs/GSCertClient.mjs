@@ -29,10 +29,10 @@ export default class GSCertClient extends GSDialog {
 
         const arr = Utils.fromHex(o.msg);
         const raw = new Uint8Array(arr);
-        Utils.download(o.code, raw);	   
+        Utils.download(o.code, raw);
 
         return o.success;
-    }    
-  
+    }
+
 }
 

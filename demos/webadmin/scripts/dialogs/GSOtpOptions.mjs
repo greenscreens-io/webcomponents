@@ -31,6 +31,6 @@ export default class GSOtpOptions extends GSDialog {
     async onData(data) {
         const o = DEMO ? DEMO : await io.greenscreens.Server.saveOTP(data);
         return o.success;
-    }   
+    }
 
 }

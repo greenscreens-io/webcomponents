@@ -32,8 +32,8 @@ export default class GSEnvironment {
     }
 
     static get isWebkit() {
-        return /webkit/.test( navigator.userAgent.toLowerCase() );
-    } 
+        return /webkit/.test(navigator.userAgent.toLowerCase());
+    }
 
     /**
      * Check if value match current browser type

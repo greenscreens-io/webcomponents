@@ -45,7 +45,7 @@ export default class GSHighlight extends GSElement {
         switch (name) {
             case 'language':
                 me.#onLanguage(oldValue, newValue);
-                break;                
+                break;
             case 'theme':
                 me.#onTheme();
                 break;
@@ -123,7 +123,7 @@ export default class GSHighlight extends GSElement {
      * 
      * @returns {string}
      */
-     get language() {
+    get language() {
         return GSAttr.get(this, 'language', '');
     }
 
@@ -133,8 +133,8 @@ export default class GSHighlight extends GSElement {
 
     #onLanguage(oldValue, newValue) {
         const me = this;
-        if(oldValue) me.#code.remove(`language-${oldValue}`);
-        if(newValue) me.#code.add(`language-${newValue}`);
+        if (oldValue) me.#code.remove(`language-${oldValue}`);
+        if (newValue) me.#code.add(`language-${newValue}`);
     }
 
     async #onTheme() {

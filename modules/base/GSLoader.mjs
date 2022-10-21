@@ -90,7 +90,7 @@ export default class GSLoader {
     static async getTemplate(def = '') {
 
         if (!def) return def;
-        
+
         const isRef = def.startsWith('#');
         if (isRef) {
             const el = GSDOM.query(document.documentElement, def);

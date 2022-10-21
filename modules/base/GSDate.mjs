@@ -111,7 +111,7 @@ export default class GSDate extends Date {
     }
 
     get MM() {
-        return this.M.toString().padStart( 2, '0');
+        return this.M.toString().padStart(2, '0');
     }
 
     get MMM() {
@@ -127,7 +127,7 @@ export default class GSDate extends Date {
     }
 
     get DD() {
-        return this.D.padStart( 2, '0');
+        return this.D.padStart(2, '0');
     }
 
     get d() {
@@ -215,7 +215,7 @@ export default class GSDate extends Date {
         date.setHours(0, 0, 0, 0);
         date.setDate(date.getDate() + 3 - (date.getDay() + 6) % 7);
         const week1 = new Date(date.getFullYear(), 0, 4);
-        return 1 + Math.round(((date.getTime() - week1.getTime()) / 86400000 - 3 + (week1.getDay() + 6) % 7) / 7);        
+        return 1 + Math.round(((date.getTime() - week1.getTime()) / 86400000 - 3 + (week1.getDay() + 6) % 7) / 7);
     }
 
     get WW() {
@@ -294,7 +294,7 @@ export default class GSDate extends Date {
         let val = null;
         let d = 7;
         while (d--) {
-            val = short ?  tmp.ddd : tmp.dddd;
+            val = short ? tmp.ddd : tmp.dddd;
             val = capitalize ? tmp.#capitalize(val) : val;
             days.push(val);
             tmp.setDate(tmp.getDate() + 1);

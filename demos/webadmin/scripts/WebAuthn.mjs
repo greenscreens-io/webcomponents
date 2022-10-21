@@ -11,7 +11,7 @@ export default class WebAuthn {
 
     static #api = `${location.origin}/services/api?q=/wsauth`;
     static #svc = `${location.origin}/services/rpc`;
-    static #headers = {'x-type' : 'admin'};
+    static #headers = { 'x-type': 'admin' };
 
     static {
         Object.freeze(WebAuthn);
@@ -32,22 +32,22 @@ export default class WebAuthn {
     }
 
     static get #cfg() {
-        return {api: WebAuthn.#api, service: WebAuthn.#svc, headers : WebAuthn.#headers};
+        return { api: WebAuthn.#api, service: WebAuthn.#svc, headers: WebAuthn.#headers };
     }
 
     static async #engine() {
         if (!io?.greenscreens?.WebAuthnController) return Engine.init(WebAuthn.#cfg);
     }
 
-	static async #callRemote(action, finish = false, data) {
+    static async #callRemote(action, finish = false, data) {
         await WebAuthn.#engine();
-		return await io.greenscreens.WebAuthnController[action](data, finish);
-	}
+        return await io.greenscreens.WebAuthnController[action](data, finish);
+    }
 
     static async #doRegister(data) {
 
         const resp = await WebAuthn.#callRemote('register', false, data);
-		const o = resp.data;
+        const o = resp.data;
         const challenge = WebAuthn.#fromBinary(o.challenge);
         const uid = WebAuthn.#fromBinary(o.uid);
 
@@ -124,7 +124,7 @@ export default class WebAuthn {
     static async #doAuthenticate(action, data) {
 
         const resp = await WebAuthn.#callRemote(action, false, data);
-		const o = resp.data;        
+        const o = resp.data;
         const challenge = WebAuthn.#fromBinary(o.challenge);
         const creds = [];
 

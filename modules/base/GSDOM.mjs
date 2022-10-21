@@ -93,12 +93,12 @@ export default class GSDOM {
 	  * @returns {boolean}
 	  */
 	static isElement(el, type) {
-		
+
 		const isArgs = type && el;
 		if (!isArgs) return false;
 
-		const isStr =  GSUtil.isString(type);
-		
+		const isStr = GSUtil.isString(type);
+
 		if (!isStr) return el instanceof type;
 
 		const ownClazz = customElements.get(type.toLowerCase());
@@ -109,7 +109,7 @@ export default class GSDOM {
 			if (pel?.constructor?.name === type) return el;
 		}
 
-		if (type.toUpperCase() === el.tagName) return el;	
+		if (type.toUpperCase() === el.tagName) return el;
 
 		return false;
 	}
@@ -161,9 +161,9 @@ export default class GSDOM {
 		if (!el?.clazzName) return false;
 		//if (el?.tagName?.indexOf('GS-') === 0) return true;
 		const it = GSDOM.inheritance(el);
-        for (let v of it) {
+		for (let v of it) {
 			if (!v) break;
-            if (v?.clazzName === 'GSElement') return true;
+			if (v?.clazzName === 'GSElement') return true;
 		}
 		return false;
 	}

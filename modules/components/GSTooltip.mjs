@@ -150,9 +150,9 @@ export default class GSTooltip extends GSElement {
     hide() {
         const me = this;
         setTimeout(() => {
-           // GSDOM.setHTML(me, '');
-           // me.firstChild?.remove();
-           Array.from(me.childNodes).forEach(el => el.remove());
+            // GSDOM.setHTML(me, '');
+            // me.firstChild?.remove();
+            Array.from(me.childNodes).forEach(el => el.remove());
         }, 250);
         return GSDOM.toggleClass(me.firstElementChild, 'show', false);
     }

@@ -63,7 +63,7 @@ export default class GSElement extends HTMLElement {
 	get clazzName() {
 		return this.constructor.name;
 	}
-	
+
 	/**
 	 * Template used to render component. Might be various types
 	 * 1. URL to load template from
@@ -501,7 +501,7 @@ export default class GSElement extends HTMLElement {
 	 * Called when element fully rendered
 	 * @returns {void}
 	 */
-	 onReady() {
+	onReady() {
 		const me = this;
 		if (me.offline) return;
 		me.#ready = true;
@@ -538,7 +538,7 @@ export default class GSElement extends HTMLElement {
 	 * Get element shadowRoot, autocreate if does not exist
 	 * @returns {ShadowRoot} 
 	 */
-	 get #shadow() {
+	get #shadow() {
 		const me = this;
 		if (!me.shadowRoot) {
 			me.attachShadow({ mode: 'open' });
@@ -608,11 +608,11 @@ export default class GSElement extends HTMLElement {
 				GSDOM.setHTML(me.#content, src);
 				return;
 			}
-			
+
 			me.#content = GSDOM.parseWrapped(me, src, true);
 			GSDOM.link(me, me.#content);
 			GSDOM.insertAdjacent(inject.target, me.#content, inject.anchor);
-			
+
 		});
 		me.updateUI();
 	}

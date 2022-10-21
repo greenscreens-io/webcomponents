@@ -21,7 +21,7 @@ export default class GSUtil {
 
 	static isNumber = (n) => { return !isNaN(parseFloat(n)) && isFinite(n); };
 
-	static isBool = (v) => {return typeof v === 'boolean' || v instanceof Boolean};
+	static isBool = (v) => { return typeof v === 'boolean' || v instanceof Boolean };
 
 	static isString = value => typeof value === 'string';
 
@@ -227,7 +227,7 @@ export default class GSUtil {
 			a.href = url;
 			a.download = name;
 			a.click();
-	
+
 			await GSUtil.timeout(2000);
 
 		} finally {
