@@ -448,16 +448,26 @@ export default class GSDOM {
 	/**
 	 * Safe way to toggle CSS class on element, multipel classes are supported in space separated string list
 	 * @param {HTMLElement} el 
+	 * @param {*} val list of css classes in space separated string
 	 * @param {boolean} sts True to add, false to remove
-	 * @param {*} val list of css classes in spaec separated string
 	 * @returns {boolean}
 	 */
-	static toggleClass(el, sts = true, val = 'd-none') {
+	static toggleClass(el, val, sts = true) {
 		if (!GSDOM.isHTMLElement(el)) return false;
 		if (!val || val.trim().length == 0) return false;
 		val = val.split(' ').filter(v => v && v.trim().length > 0);
 		if (sts === null) return val.forEach(v => el.classList.toggle(v));
 		sts ? el.classList.add.apply(el.classList, val) : el.classList.remove.apply(el.classList, val);
+		return true;
+	}
+
+	/**
+	 * Toggle element visibility
+	 * @param {HTMLElement} el 
+	 * @param {boolean} sts 
+	 */
+	static toggle(el, sts = true) {
+		return GSDOM.toggleClass(el, 'd-none', sts);
 	}
 
 	/**

@@ -58,20 +58,20 @@ export default class GSTableSort extends HTMLTableRowElement {
 
         if (append) {
             me.#sc = GSAttr.getAsNum(el, 'idx', me.#sc + 1);
-            GSDOM.toggleClass(el, false, 'sorting_desc sorting_asc table-active');
+            GSDOM.toggleClass(el, 'sorting_desc sorting_asc table-active', false);
         } else {
             me.#sc = 1;
             GSDOM.queryAll(me, 'thead th').forEach(el => {
                 GSAttr.set(el, 'idx', null);
                 GSAttr.set(el, 'order', null);
-                GSDOM.toggleClass(el, false, 'sorting_desc sorting_asc table-active');
+                GSDOM.toggleClass(el, 'sorting_desc sorting_asc table-active', false);
             });
         }
 
         el.classList.add(ord > 0 ? 'sorting_asc' : 'sorting_desc');
         GSAttr.set(el, 'idx', me.#sc);
         GSAttr.set(el, 'order', ord);
-        GSDOM.toggleClass(el, true, 'table-active');
+        GSDOM.toggleClass(el, 'table-active', true);
 
 
         let sort = [];

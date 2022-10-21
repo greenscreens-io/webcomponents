@@ -30,7 +30,7 @@ export default class GSFileBox extends GSElement {
         super();
         const me = this;
         //me.style.setProperty('border-style', 'dashed', 'important');
-        //GSDOM.toggleClass(me, true, GSFileBox.CSS);
+        //GSDOM.toggleClass(me, GSFileBox.CSS, true);
     }
 
     async getTemplate(val = '') {

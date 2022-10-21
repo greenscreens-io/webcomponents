@@ -44,7 +44,7 @@ export default class GSPopup extends GSElement {
 
         if (name === 'visible') {
             me.#resize();
-            GSDOM.toggleClass(me.#panel, !me.visible, 'invisible');
+            GSDOM.toggleClass(me.#panel, 'invisible', !me.visible);
         }
     }
 

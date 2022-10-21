@@ -80,11 +80,11 @@ export default class GSNavLinkExt extends HTMLAnchorElement {
         const panel = GSNavLinkExt.#panel(me);
         const panelItem = GSNavLinkExt.#panelItem(me);
         requestAnimationFrame(() => {
-            if (list) list.querySelectorAll('.list-group-item').forEach(el => GSDOM.toggleClass(el, false, 'active'));
-            if (nav) nav.querySelectorAll('.nav-link').forEach(el => GSDOM.toggleClass(el, false, 'active'));
-            if (panel) panel.querySelectorAll('.tab-pane').forEach(el => GSDOM.toggleClass(el, false, 'active show'));
-            GSDOM.toggleClass(me, true, 'active');
-            GSDOM.toggleClass(panelItem, true, 'active show');
+            if (list) list.querySelectorAll('.list-group-item').forEach(el => GSDOM.toggleClass(el, 'active', false));
+            if (nav) nav.querySelectorAll('.nav-link').forEach(el => GSDOM.toggleClass(el, 'active', false));
+            if (panel) panel.querySelectorAll('.tab-pane').forEach(el => GSDOM.toggleClass(el, 'active show', false));
+            GSDOM.toggleClass(me, 'active', true);
+            GSDOM.toggleClass(panelItem, 'active show', true);
             GSNavLinkExt.#trigger(e, me);
         });
 

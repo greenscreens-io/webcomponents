@@ -206,7 +206,7 @@ export default class GSPopover extends GSElement {
         me.insertAdjacentElement('afterbegin', el);
         requestAnimationFrame(() => {
             me.#render(el);
-            GSDOM.toggleClass(el, true, 'show');
+            GSDOM.toggleClass(el, 'show', true);
         });
     }
 
@@ -220,7 +220,7 @@ export default class GSPopover extends GSElement {
         setTimeout(() => {
             GSDOM.setHTML(me, '');
         }, 250);
-        return GSDOM.toggleClass(me.firstElementChild, false, 'show');
+        return GSDOM.toggleClass(me.firstElementChild, 'show', false);
     }
 
     /**

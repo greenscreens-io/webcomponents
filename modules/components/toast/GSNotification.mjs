@@ -49,9 +49,9 @@ export default class GSNotification extends GSElement {
     oldVal = me.#fromPosition(oldVal);
     newVal = me.#fromPosition(newVal);
 
-    const wrapEl = me.query('div');
-    GSDOM.toggleClass(wrapEl, false, oldVal);
-    GSDOM.toggleClass(wrapEl, true, newVal);
+    const el = me.query('div');    
+    GSDOM.toggleClass(el, oldVal, false);
+    GSDOM.toggleClass(el, newVal, true);
   }
 
   #fromPosition(val) {

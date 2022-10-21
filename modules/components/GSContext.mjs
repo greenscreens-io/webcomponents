@@ -53,7 +53,7 @@ export default class GSContext extends GSElement {
     if (name === 'visible') {
       me.#submenus.forEach(el => el.classList.remove('show'));
       const menu = me.#menu;
-      if (menu) GSDOM.toggleClass(menu, me.visible, 'show');
+      if (menu) GSDOM.toggleClass(menu, 'show', me.visible);
     }
   }
 

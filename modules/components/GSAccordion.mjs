@@ -61,8 +61,8 @@
  
      if (css) {
        me.queryAll(css).forEach(el => {
-         GSDOM.toggleClass(el, false, oldValue);
-         GSDOM.toggleClass(el, true, newValue);
+         GSDOM.toggleClass(el, oldValue, false);
+         GSDOM.toggleClass(el, newValue, true);
        });
      }
    }
