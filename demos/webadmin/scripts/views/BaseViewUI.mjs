@@ -238,7 +238,7 @@ export default class BaseViewUI extends GSElement {
 
         requestAnimationFrame(() => {
             try {
-                if (data) {
+                if (Array.isArray(data) && data.length > 0) {
                     me.store.setData(data);
                     // me.store.firstPage();
                 } else {

@@ -80,7 +80,7 @@ export default class GSAttr {
 	 */
 	static getAsBool(el, name = '', val = 'false') {
 		const attr = GSAttr.get(el, name, val);
-		return GSUtil.asBool(attr);
+		return GSUtil.asBool(attr, val);
 	}
 
 	/**
@@ -93,7 +93,7 @@ export default class GSAttr {
 	 */
 	static getAsNum(el, name = '', val = '0') {
 		const attr = GSAttr.get(el, name, val);
-		return GSUtil.asNum(attr);
+		return GSUtil.asNum(attr, val);
 	}
 
 	/**

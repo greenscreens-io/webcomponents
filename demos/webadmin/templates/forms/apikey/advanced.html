@@ -1,40 +1,11 @@
-<div class="row form-group m-1">
-    <div class="row form-group m-1">
-        <div class="col-md-4 col-sm-4 col-xs-12 text-md-end">
-            <label class="control-label" for="user">User</label>
-        </div>
-        <div class="col-md-6 col-sm-6 col-xs-11">
-            <input class="form-control" id="user" name="user" type="text">
-        </div>
-        <div class="col-auto">
-            <gs-tooltip placement="right" title="IBM i server user name."></gs-tooltip>
-            <i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
-        </div>        
-    </div>    
+<gs-form-group flat="true" css="m-1" name="user" label="User" 
+    description="IBM i server user name.">
+</gs-form-group>
 
-    <div class="row form-group m-1">
-        <div class="col-md-4 col-sm-4 col-xs-12 text-md-end">
-            <label class="control-label" for="password">Password</label>
-        </div>
-        <div class="col-md-6 col-sm-6 col-xs-11">
-            <input class="form-control" id="password" name="password" type="password">
-        </div>
-        <div class="col-auto">
-            <gs-tooltip placement="right" title="IBM i server user name password."></gs-tooltip>
-            <i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
-        </div>        
-    </div>  
-    
-    <div class="row form-group m-1">
-        <div class="col-md-4 col-sm-4 col-xs-12 text-md-end">
-            <label class="control-label" for="service">Services</label>
-        </div>
-        <div class="col-md-6 col-sm-6 col-xs-11">
-            <input class="form-control" id="service" name="service" type="text">
-        </div>
-        <div class="col-auto">
-            <gs-tooltip placement="right" title="Service names (web modules). If not set, all services allowed."></gs-tooltip>
-            <i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
-        </div>        
-    </div>  
-</div>
+<gs-form-group flat="true" css="m-1" name="password" label="Password" 
+    description="IBM i server user password.">
+</gs-form-group>
+
+<gs-form-group flat="true" css="m-1" name="service" label="Service"
+    description="Service names (web modules). If not set, all services allowed.">
+</gs-form-group>

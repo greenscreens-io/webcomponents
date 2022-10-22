@@ -11,6 +11,7 @@ import "./GSButton.mjs";
 import "./GSCenter.mjs";
 import "./GSContext.mjs";
 import "./GSDropdown.mjs";
+import "./GSFormGroup.mjs";
 import "./GSLayout.mjs";
 import "./GSList.mjs";
 import "./GSModal.mjs";

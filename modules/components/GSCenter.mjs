@@ -38,7 +38,7 @@ export default class GSCenter extends GSElement {
    }
 
    async getTemplate() {
-      return `<div class="position-absolute top-50 start-50 translate-middle ${this.css}" style="${this.getStyle()}"><slot></slot></div>`
+      return `<div class="position-absolute top-50 start-50 translate-middle ${this.css}" style="${this.getStyle()}"><slot></slot></div>`;
    }
 
    get css() {

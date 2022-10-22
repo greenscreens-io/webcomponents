@@ -155,6 +155,7 @@ export default class GSInputExt extends HTMLInputElement {
         GSEvent.attach(me, me, 'keydown', me.#onKeyDown.bind(me));
         GSEvent.attach(me, me, 'keypress', me.#onKeyPress.bind(me));
         GSEvent.attach(me, me, 'input', me.#onInput.bind(me));
+        GSEvent.attach(me, me, 'change', me.#onChange.bind(me));
         GSEvent.attach(me, me, 'paste', me.#onPaste.bind(me));
         GSEvent.attach(me, me, 'blur', me.#onBlur.bind(me));
         requestAnimationFrame(() => {
@@ -318,6 +319,12 @@ export default class GSInputExt extends HTMLInputElement {
         me.value = me.formatMask(tmp.join(''));
         me.setSelectionRange(pos + 1, pos + 1);
         GSEvent.prevent(e);
+    }
+
+    #onChange(e) {
+        const me = this;
+        if (me.type !== 'range') return;
+        me.title = me.value;
     }
 
     #onInput(e) {
