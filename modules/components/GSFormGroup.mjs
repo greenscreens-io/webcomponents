@@ -60,6 +60,7 @@ export default class GSFormGroup extends GSElement {
       if (tpl) return tpl.innerHTML;
       return `<input is="gs-ext-input" class="${me.#cssField} ${me.cssField}" 
                id="${me.name}" name="${me.name}" type="${me.#type}" ${me.#placeholder}
+               ${me.#autocopy} ${me.#autoselect}
                ${me.#autocomplete} ${me.#autocapitalize} ${me.#multiple} ${me.#checked}
                ${me.#mask} ${me.#pattern} ${me.#value} ${me.#list} ${me.#accept}
                ${me.#step} ${me.#min} ${me.#max} ${me.#value} 
@@ -119,6 +120,14 @@ export default class GSFormGroup extends GSElement {
          ${me.#icon}
       </div>      
       `;
+   }
+
+   get #autocopy() {
+      return this.autocopy ? `autocopy` : '';
+   }
+
+   get #autoselect() {
+      return this.autoselect ? `autocopy` : '';
    }
 
    get #icon() {
@@ -440,6 +449,14 @@ export default class GSFormGroup extends GSElement {
       return GSAttr.set(this, 'accept', val);
    }
 
+   get autocopy() {
+      return this.hasAttribute('autocopy');
+  }
+
+  get autoselect() {
+      return this.hasAttribute('autoselect');
+  }
+     
    get autocapitalize() {
       return GSAttr.get(this, 'autocapitalize', '');
    }

@@ -1,86 +1,40 @@
 <form slot="body" is="gs-ext-form" id="form-main" class="flex-fill" novalidate="">
 
-    <div class="row form-group m-1">
-        <div class="col-md-4 col-sm-4 col-xs-12 text-md-end">
-            <label class="control-label" for="friendlyName">Friendly Name</label>
-        </div>
-        <div class="col-md-6 col-sm-6 col-xs-11">
-            <input class="form-control" id="friendlyName" name="friendlyName" type="text" autocomplete="off" required>
-        </div>
-        <div class="col-auto">
-            <gs-tooltip placement="right" title="Client First and last name."></gs-tooltip>
-            <i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
-        </div>
-    </div>
+    <gs-form-group css="m-1" name="friendlyName" label="Friendly Name" required
+        autocomplete="off"
+        description="Client First and last name.">
+    </gs-form-group> 
 
-    <div class="row form-group m-1">
-        <div class="col-md-4 col-sm-4 col-xs-12 text-md-end">
-            <label class="control-label" for="commonNameClient">Common Name</label>
-        </div>
-        <div class="col-md-6 col-sm-6 col-xs-11">
-            <input class="form-control" id="commonNameClient" name="commonNameClient" type="text" autocomplete="off" required>
-        </div>
-        <div class="col-auto">
-            <gs-tooltip placement="right" title="user@uuid:host format or user First and Last name."></gs-tooltip>
-            <i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
-        </div>
-    </div>
+    <gs-form-group css="m-1" name="commonNameClient" label="Common Name" required
+        autocomplete="off"
+        description="user@uuid:host format or user First and Last name.">
+    </gs-form-group> 
 
-    <div class="row form-group m-1">
-        <div class="col-md-4 col-sm-4 col-xs-12 text-md-end">
-            <label class="control-label" for="organizationUnitClient">Organization Unit</label>
-        </div>
-        <div class="col-md-6 col-sm-6 col-xs-11">
-            <input class="form-control" id="organizationUnitClient" name="organizationUnitClient" type="text" autocomplete="off" required>
-        </div>
-        <div class="col-auto">
-            <gs-tooltip placement="right" title="Group to which user belongs. Usually branch or department."></gs-tooltip>
-            <i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
-        </div>
-    </div>
+    <gs-form-group css="m-1" name="organizationUnitClient" label="Organization Unit" required
+        autocomplete="off"
+        description="Group to which user belongs. Usually branch or department.">
+    </gs-form-group> 
     
-    <div class="row form-group m-1">
-        <div class="col-md-4 col-sm-4 col-xs-12 text-md-end">
-            <label class="control-label" for="emailClient">Email</label>
-        </div>
-        <div class="col-md-6 col-sm-6 col-xs-11">
-            <input class="form-control" id="emailClient" name="emailClient" type="email" autocomplete="off" required>
-        </div>
-        <div class="col-auto">
-            <gs-tooltip placement="right" title="Client email address."></gs-tooltip>
-            <i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
-        </div>
-    </div>
+    <gs-form-group css="m-1" name="emailClient" label="Email" required
+        type="email" autocomplete="off"
+        description="Client email address.">
+    </gs-form-group> 
 
-    <div class="row form-group m-1">
-        <div class="col-md-4 col-sm-4 col-xs-12 text-md-end">
-            <label class="control-label" for="expire">Expiration</label>
-        </div>
-        <div class="col-md-6 col-sm-6 col-xs-11">
-            <input class="form-control" id="expire" name="expire" type="number" min="1" autocomplete="off" value="1" required>
-        </div>
-        <div class="col-auto">
-            <gs-tooltip placement="right" title="When certificate will expire."></gs-tooltip>
-            <i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
-        </div>
-    </div>
+    <gs-form-group css="m-1" name="expire" label="Expiration" required
+        type="number" min="1" autocomplete="off" value="1"
+        description="When certificate will expire.">
+    </gs-form-group> 
 
-    <div class="row form-group m-1">
-        <div class="col-md-4 col-sm-4 col-xs-12 text-md-end">
-            <label class="control-label" for="expirationType">Expiration</label>
-        </div>
-        <div class="col-md-6 col-sm-6 col-xs-11">
+    <gs-form-group css="m-1" name="expirationType" label="Expiration Type" required
+        description="Expiration value type.">
+        <template>
             <select class="form-select" id="expirationType" name="expirationType" selected="3" value="3" required>
                 <option value="0">Hours</option>
                 <option value="1">Days</option>
                 <option value="2">Months</option>
                 <option value="3" selected>Years</option>
-              </select>            
-        </div>
-        <div class="col-auto">
-            <gs-tooltip placement="right" title="Expiration value type."></gs-tooltip>
-            <i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
-        </div>
-    </div>
+              </select> 
+        </template>
+    </gs-form-group> 
 
 </form>

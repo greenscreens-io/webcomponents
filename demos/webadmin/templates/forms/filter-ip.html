@@ -2,70 +2,44 @@
     
     <input class="d-none" id="id"  name="id" type="text" readonly>
 
-    <div class="row form-group m-1">
-        <div class="col-md-4 col-sm-4 col-xs-12 text-md-end">
-            <label class="control-label" for="active">Status</label>
-        </div>
-        <div class="col-md-6 col-sm-6 col-xs-11">
+    <gs-form-group css="m-1" name="active" label="Active"
+        description="Enable or disable this rule.">
+        <template>
             <select class="form-select" id="active" name="active" required>
                 <option value="true">Enabled</option>
                 <option value="false">Disabled</option>
-            </select>
-        </div>
-        <div class="col-auto">
-            <gs-tooltip placement="right" title="Enable or disable this rule."></gs-tooltip>
-            <i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
-        </div>
-    </div>
+            </select>            
+        </template>
+    </gs-form-group>
 
-    <div class="row form-group m-1">
-        <div class="col-md-4 col-sm-4 col-xs-12 text-md-end">
-            <label class="control-label" for="rule">Rule</label>
-        </div>
-        <div class="col-md-6 col-sm-6 col-xs-11">
+    <gs-form-group css="m-1" name="rule" label="Rule"
+        description="Allow or deny network access based on matched criteria.">
+        <template>
             <select class="form-select" id="rule" name="rule" required>
                 <option value="0">Allow</option>
                 <option value="1">Deny</option>
-            </select>
-        </div>
-        <div class="col-auto">
-            <gs-tooltip placement="right" title="Allow or deny network access based on matched criteria."></gs-tooltip>
-            <i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
-        </div>
-    </div>
+            </select>            
+        </template>
+    </gs-form-group>
 
-    <div class="row form-group m-1">
-        <div class="col-md-4 col-sm-4 col-xs-12 text-md-end">
-            <label class="control-label" for="type">Type</label>
-        </div>
-        <div class="col-md-6 col-sm-6 col-xs-11">
-            <select class="form-select" id="type" name="type" required data-pattern-ip="^((25[0-5]|(2[0-4]|1\d|[1-9]|)\d)\.?\b){4}$">
-            <option selected value="0">IP</option>
-            <option value="1">Mask</option>
-            <option value="2">Expression</option>
-            </select>
-        </div>
-        <div class="col-auto">
-            <gs-tooltip placement="right" title="Select filter type.
-             IP: Single IP address to match.
-             MASK: CIDR format of IP range.
-             EXPR: Expression for more complex ranges such as * or 10.*.*.10-30 or 192.168.1.* etc.."></gs-tooltip>
-            <i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
-        </div>
-    </div>
+    <gs-form-group css="m-1" name="type" label="Type"
+        description="Select filter type.
+        IP: Single IP address to match.
+        MASK: CIDR format of IP range.
+        EXPR: Expression for more complex ranges such as * or 10.*.*.10-30 or 192.168.1.* etc.">
+        <template>
+            <select class="form-select" id="type" name="type">
+                <option selected value="0">IP</option>
+                <option value="1">Mask</option>
+                <option value="2">Expression</option>
+            </select>            
+        </template>
+    </gs-form-group>
 
-    <div class="row form-group m-1">
-        <div class="col-md-4 col-sm-4 col-xs-12 text-md-end">
-            <label class="control-label" for="value">Value</label>
-        </div>
-        <div class="col-md-6 col-sm-6 col-xs-11">
-            <input class="form-control" id="value"  name="value" type="text" autocomplete="off" required>
-        </div>
-        <div class="col-auto">
-            <gs-tooltip placement="right" title="Rule value to match IP address"></gs-tooltip>
-            <i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
-        </div>
-    </div>    
+    <gs-form-group css="m-1" name="value" label="Value"
+        _pattern="^((25[0-5]|(2[0-4]|1\d|[1-9]|)\d)\.?\b){4}$"
+        autocomplete="off" required
+        description="Rule value to match IP address.">
+    </gs-form-group>
 
-    
 </form>

@@ -2,60 +2,36 @@
 
     <input type="text" class="form-control d-none" id="id" name="id" readonly>
 
-    <div class="row form-group m-1">
-        <div class="col-md-4 col-sm-4 col-xs-12 text-md-end">
-            <label class="control-label" for="status">Status</label>
-        </div>
-        <div class="col-md-6 col-sm-6 col-xs-11">
+    <gs-form-group css="m-1" name="status" label="Status" required     
+        description="Enable or disable this task.">
+        <template>
             <select class="form-select" id="status" name="status" required>
                 <option selected value="true">Enabled</option>
                 <option value="false">Disabled</option>
-            </select>
-        </div>
-        <div class="col-auto">
-            <gs-tooltip placement="right" title="Enable or disable this task."></gs-tooltip>
-            <i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
-        </div>
-    </div>
+            </select>            
+        </template>
+    </gs-form-group>
 
-
-    <div class="row form-group m-1">
-        <div class="col-md-4 col-sm-4 col-xs-12 text-md-end">
-            <label class="control-label" for="type">Type</label>
-        </div>
-        <div class="col-md-6 col-sm-6 col-xs-11">
+    <gs-form-group css="m-1" name="type" label="Type" required     
+        description="Task type.">
+        <template>
             <select class="form-select" id="type" name="type">
                 <option value="1">Service Event</option>
                 <option value="2">Web Access On</option>
                 <option value="3">Web Access Off</option>
                 <option value="4">Server Restart</option>
                 <option value="6">Central Management</option>
-            </select>
-        </div>
-        <div class="col-auto">
-            <gs-tooltip placement="right" title="Task type."></gs-tooltip>
-            <i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
-        </div>
-    </div>
+            </select>            
+        </template>
+    </gs-form-group>
 
-    <div class="row form-group m-1">
-        <div class="col-md-4 col-sm-4 col-xs-12 text-md-end">
-            <label class="control-label" for="name">Name</label>
-        </div>
-        <div class="col-md-6 col-sm-6 col-xs-11">
-            <input type="text" class="form-control" id="name" name="name" required>
-        </div>
-        <div class="col-auto">
-            <gs-tooltip placement="right" title="Task name"></gs-tooltip>
-            <i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
-        </div>
-    </div>
+    <gs-form-group css="m-1" name="name" label="Name" required     
+        description="Task name">
+    </gs-form-group>   
 
-    <div class="row form-group m-1">
-        <div class="col-md-4 col-sm-4 col-xs-12 text-md-end">
-            <label class="control-label" for="day">Day</label>
-        </div>
-        <div class="col-md-6 col-sm-6 col-xs-11">
+    <gs-form-group css="m-1" name="day" label="Day" required     
+        description="Trigger day.">
+        <template>
             <select class="form-select" id="day" name="day" required>
                 <option value="0">Every</option>
                 <option value="1">Monday</option>
@@ -67,38 +43,16 @@
                 <option value="7">Sunday</option>
                 <option value="8">Work days</option>
                 <option value="9">Weekends</option>
-            </select>
-        </div>
-        <div class="col-auto">
-            <gs-tooltip placement="right" title="Trigger day."></gs-tooltip>
-            <i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
-        </div>
-    </div>
+            </select>            
+        </template>
+    </gs-form-group>    
 
-    <div class="row form-group m-1">
-        <div class="col-md-4 col-sm-4 col-xs-12 text-md-end">
-            <label class="control-label" for="time">Time</label>
-        </div>
-        <div class="col-md-6 col-sm-6 col-xs-11">
-            <input type="time" class="form-control" id="time" name="time" >
-        </div>
-        <div class="col-auto">
-            <gs-tooltip placement="right" title="Trigger time."></gs-tooltip>
-            <i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
-        </div>
-    </div>
+    <gs-form-group css="m-1" name="time" label="Time" type="time" required     
+        description="Trigger time.">
+    </gs-form-group>    
 
-    <div class="row form-group m-1">
-        <div class="col-md-4 col-sm-4 col-xs-12 text-md-end">
-            <label class="control-label" for="data">Data</label>
-        </div>
-        <div class="col-md-6 col-sm-6 col-xs-11">
-            <input type="text" class="form-control" id="data" name="data">
-        </div>
-        <div class="col-auto">
-            <gs-tooltip placement="right" title="Extra data to send to service."></gs-tooltip>
-            <i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
-        </div>
-    </div>
+    <gs-form-group css="m-1" name="data" label="Data"     
+        description="Extra data to send to service.">
+    </gs-form-group>    
 
 </form>

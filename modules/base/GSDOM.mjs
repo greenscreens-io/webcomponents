@@ -382,7 +382,7 @@ export default class GSDOM {
 	 * @returns {HTMLElement} 
 	 */
 	static query(el, qry, all = false, shadow = true) {
-		if (typeof el === 'string') return GSDOM.query(document.body, qry, all, shadow);
+		if (typeof el === 'string') return GSDOM.query(document.body, el, all, shadow);
 		if (!(el && qry)) return null;
 		if (GSDOM.matches(el, qry)) return el;
 		const it = GSDOM.walk(el, false, all, shadow);

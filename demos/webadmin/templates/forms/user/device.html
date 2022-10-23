@@ -1,64 +1,31 @@
-<div class="row form-group m-1">
-    <div class="col-md-4 col-sm-4 col-xs-12 text-md-end">
-        <label class="control-label" for="devtype">Device type</label>
-    </div>
-    <div class="col-md-6 col-sm-6 col-xs-11">
+<gs-form-group css="m-1" name="devtype" label="Device type"
+    description="Type of device configuration.">
+    <template>
         <select class="form-select" id="devtype" name="devtype" required>
             <option selected value="0">0 - Both</option>
             <option value="1">1 - Display</option>
             <option value="2">2 - Printer</option>
         </select>
-    </div>
-    <div class="col-auto">
-        <gs-tooltip placement="right" title="Type of device configuration."></gs-tooltip>
-        <i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
-    </div>
-</div>
+    </template>
+</gs-form-group>
 
-<div class="row form-group m-1">
-    <div class="col-md-4 col-sm-4 col-xs-12 text-md-end">
-        <label class="control-label" for="display">Display name</label>
-    </div>
-    <div class="col-md-6 col-sm-6 col-xs-11">
-        <input class="form-control  text-uppercase" id="display" name="display" type="text">
-    </div>
-    <div class="col-auto">
-        <gs-tooltip placement="right" title="Display name for terminal session (optional)."></gs-tooltip>
-        <i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
-    </div>
-</div>
+<gs-form-group css="m-1" name="display" label="Display name"
+    css-field="text-uppercase"
+    description="Display name for terminal session (optional).">
+</gs-form-group>
 
-<div class="row form-group m-1">
-    <div class="col-md-4 col-sm-4 col-xs-12 text-md-end">
-        <label class="control-label" for="outq">OUTQ</label>
-    </div>
-    <div class="col-md-6 col-sm-6 col-xs-11">
-        <input class="form-control  text-uppercase" id="outq" name="outq" type="text" maxlength="10">
-    </div>
-    <div class="col-auto">
-        <gs-tooltip placement="right" title="Spool output QUEUE for terminal session (optional)."></gs-tooltip>
-        <i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
-    </div>
-</div>
+<gs-form-group css="m-1" name="outq" label="OUTQ"
+    css-field="text-uppercase" maxlength="10"
+    description="Spool output QUEUE for terminal session (optional).Spool output QUEUE for terminal session (optional).">
+</gs-form-group>
 
-<div class="row form-group m-1">
-    <div class="col-md-4 col-sm-4 col-xs-12 text-md-end">
-        <label class="control-label" for="printer">Printer</label>
-    </div>
-    <div class="col-md-6 col-sm-6 col-xs-11">
-        <input class="form-control  text-uppercase" id="printer" name="printer" type="text">
-    </div>
-    <div class="col-auto">
-        <gs-tooltip placement="right" title="Local printer name."></gs-tooltip>
-        <i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
-    </div>
-</div>
+<gs-form-group css="m-1" name="printer" label="Printer" css-field="text-uppercase"
+    description="Local printer name.">
+</gs-form-group>
 
-<div class="row form-group m-1">
-    <div class="col-md-4 col-sm-4 col-xs-12 text-md-end">
-        <label class="control-label" for="driver">Driver</label>
-    </div>
-    <div class="col-md-6 col-sm-6 col-xs-11">
+<gs-form-group css="m-1" name="driver" label="Driver"
+    description="Printer driver (optional).">
+    <template>
         <select class="form-select" id="driver" name="driver" required>
             <option selected value="0">0 - PDF</option>
             <option value="1">1 - HTML</option>
@@ -68,20 +35,12 @@
             <option value="5">5 - ETL</option>
             <option value="6">6 - JSX</option>
             <option value="9">99 - EXT</option>
-        </select>
-    </div>
-    <div class="col-auto">
-        <gs-tooltip placement="right" title="Printer driver (optional)."></gs-tooltip>
-        <i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
-    </div>
-</div>
+        </select>        
+    </template>
+</gs-form-group>
 
-
-<div class="row form-group m-1">
-    <div class="col-md-4 col-sm-4 col-xs-12 text-md-end">
-        <label class="control-label" for="drawer1">Dawer 1</label>
-    </div>
-    <div class="col-md-6 col-sm-6 col-xs-11">
+<gs-form-group css="m-1" name="drawer1" label="Drawer 1"
+    description="Default paper size for printer sessions for drawer 1. When user select DEFAULT, this option will be used.">    <template>
         <select class="form-select" id="drawer1" name="drawer1" required>
             <option value="-1" selected>Drawer 1 (Default)</option>
             <option value="1">LETTER</option>
@@ -94,19 +53,13 @@
             <option value="10">A3</option>
             <option value="11">B4</option>
             <option value="12">NONE</option>
-        </select>
-    </div>
-    <div class="col-auto">
-        <gs-tooltip placement="right" title="Default paper size for printer sessions for drawer 2. When user select DEFAULT, this option will be used."></gs-tooltip>
-        <i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
-    </div>
-</div>
+        </select>        
+    </template>
+</gs-form-group>
 
-<div class="row form-group m-1">
-    <div class="col-md-4 col-sm-4 col-xs-12 text-md-end">
-        <label class="control-label" for="drawer2">Dawer 2</label>
-    </div>
-    <div class="col-md-6 col-sm-6 col-xs-11">
+<gs-form-group css="m-1" name="drawer2" label="Drawer 2"
+    description="Default paper size for printer sessions for drawer 2. When user select DEFAULT, this option will be used.">
+    <template>
         <select class="form-select" id="drawer2" name="drawer2" required>
             <option value="-1" selected>Drawer 2 (Default)</option>
             <option value="1">LETTER</option>
@@ -119,26 +72,16 @@
             <option value="10">A3</option>
             <option value="11">B4</option>
             <option value="12">NONE</option>
-        </select>
-    </div>
-    <div class="col-auto">
-        <gs-tooltip placement="right" title="Default paper size for printer sessions for drawer 2. When user select DEFAULT, this option will be used."></gs-tooltip>
-        <i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
-    </div>
-</div>
+        </select>        
+    </template>
+</gs-form-group>
 
-<div class="row form-group m-1">
-    <div class="col-md-4 col-sm-4 col-xs-12 text-md-end">
-        <label class="control-label" for="enhanced">Enhanced</label>
-    </div>
-    <div class="col-md-6 col-sm-6 col-xs-11">
+<gs-form-group css="m-1" name="enhanced" label="Enhanced"
+    description="Enable only if PDF driver has script processing. Might decrease processing performance if enabled.">
+    <template>
         <select class="form-select" id="enhanced" name="enhanced" required>
             <option value="0">FALSE</option>
             <option selected value="1">TRUE</option>
-        </select>
-    </div>
-    <div class="col-auto">
-        <gs-tooltip placement="right" title="Enable only if PDF driver has script processing. Might decrease processing performance if enabled."></gs-tooltip>
-        <i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
-    </div>
-</div>
+        </select>        
+    </template>
+</gs-form-group>

@@ -1,160 +1,94 @@
 <form slot="body" is="gs-ext-form" id="form-main" class="flex-fill" novalidate="">
 
-    <div class="row form-group m-1">
-        <div class="col-md-4 col-sm-4 col-xs-12 text-md-end">
-            <label class="control-label" for="uuid">UUID</label>
-        </div>
-        <div class="col-md-6 col-sm-6 col-xs-11">
-            <input class="form-control text-uppercase" id="uuid" name="uuid" type="text"  disabled>
-        </div>
-    </div>
+    <gs-form-group css="m-1" name="uuid" label="UUID" readonly disabled>
+    </gs-form-group>
     
-    <div class="row form-group m-1">
-        <div class="col-md-4 col-sm-4 col-xs-12 text-md-end">
-            <label class="control-label" for="host">Host</label>
-        </div>
-        <div class="col-md-6 col-sm-6 col-xs-11">
-            <input class="form-control text-uppercase" id="host" name="host" type="text" disabled>
-        </div>
-    </div>
+    <gs-form-group css="m-1" name="host" label="Host" readonly disabled>
+    </gs-form-group>
 
-    <div class="row form-group m-1">
-        <div class="col-md-4 col-sm-4 col-xs-12 text-md-end">
-            <label class="control-label" for="printerName">Printer</label>
-        </div>
-        <div class="col-md-6 col-sm-6 col-xs-11">
-            <input class="form-control text-uppercase" id="printerName" name="printerName" type="text" maxlength="10" pattern="[0-9a-zA-Z_]+" required>
-        </div>
-        <div class="col-auto">
-            <gs-tooltip placement="right" title="Virtual Printer Name."></gs-tooltip>
-            <i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
-        </div>
-    </div>
+    <gs-form-group css="m-1" name="printerName" label="Printer Name" required
+        maxlength="10" pattern="[0-9a-zA-Z_]+"
+        description="Virtual Printer Name.">
+    </gs-form-group>
     
     <hr>
 
-    <div class="row form-group m-1">
-        <div class="col-md-4 col-sm-4 col-xs-12 text-md-end">
-            <label class="control-label" for="hostTransform">Host Transform</label>
-        </div>
-        <div class="col-md-6 col-sm-6 col-xs-11">
+    <gs-form-group css="m-1" name="hostTransform" label="Host Transform"
+        description="Transform SCS spool on IBM I server. If enabled, WSCST object must be defined.">
+        <template>
             <select class="form-select" id="hostTransform" name="hostTransform">
                 <option value="0" selected>Disabled</option>
                 <option value="1">Enabled</option>
-            </select>
-        </div>
-        <div class="col-auto">
-            <gs-tooltip placement="right" title="Transform SCS spool on IBM I server. If enabled, WSCST object must be defined."></gs-tooltip>
-            <i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
-        </div>
-    </div>
+            </select>            
+        </template>
+    </gs-form-group>
 
     <hr>
     
-    <div class="row form-group m-1">
-        <div class="col-md-4 col-sm-4 col-xs-12 text-md-end">
-            <label class="control-label" for="sourceCodePag">CHRID (EBCDIC)</label>
-        </div>
-        <div class="col-md-6 col-sm-6 col-xs-11">
-            <input data-hpt="true" class="form-control text-uppercase" id="sourceCodePag" name="sourceCodePag" type="text" maxlength="10" pattern="[0-9a-zA-Z]+" disabled>
-        </div>
-        <div class="col-auto">
-            <gs-tooltip placement="right" title="EBCIDIC code page to convert from."></gs-tooltip>
-            <i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
-        </div>
-    </div>
+    <gs-form-group css="m-1" data-group="true" name="sourceCodePag" label="CHRID (EBCDIC)" disabled
+        maxlength="10" pattern="[0-9a-zA-Z]+"
+        description="EBCIDIC code page to convert from.">
+    </gs-form-group>
 
-    <div class="row form-group m-1">
-        <div class="col-md-4 col-sm-4 col-xs-12 text-md-end">
-            <label class="control-label" for="targetCodePage">CHRID (ANSI/ASCII)</label>
-        </div>
-        <div class="col-md-6 col-sm-6 col-xs-11">
-            <input data-hpt="true" class="form-control text-uppercase" id="targetCodePage" name="targetCodePage" type="text" maxlength="10" pattern="[0-9a-zA-Z]+" disabled>
-        </div>
-        <div class="col-auto">
-            <gs-tooltip placement="right" title="ANSI or ASCII code page to convert to."></gs-tooltip>
-            <i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
-        </div>
-    </div>
+    <gs-form-group css="m-1" data-group="true" name="targetCodePage" label="CHRID (ANSI/ASCII)" disabled
+        maxlength="10" pattern="[0-9a-zA-Z]+"
+        description="ANSI or ASCII code page to convert to.">
+    </gs-form-group>
 
-    <div class="row form-group m-1">
-        <div class="col-md-4 col-sm-4 col-xs-12 text-md-end">
-            <label class="control-label" for="wscstObject">Host Transform</label>
-        </div>
-        <div class="col-md-6 col-sm-6 col-xs-11">
-            <input type="text"  data-hpt="true" list="wscsts" value="*NONE" class="form-control" id="wscstObject" name="wscstObject" maxlength="10" disabled>
-            <datalist id="wscsts">
-                <option value="*NONE"></option>
-                <option value="*SAME"></option>
-                <option value="EMPTY"></option>
-                <option value="EMPTYBDO"></option>
-              </datalist>
-        </div>
-        <div class="col-auto">
-            <gs-tooltip placement="right" title="WSCST object name."></gs-tooltip>
-            <i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
-        </div>
-    </div>
+    <gs-form-group css="m-1" data-group="true" name="wscstObject" label="Host Transform" disabled
+        list="wscsts" value="*NONE"  maxlength="10"
+        description="WSCST object name.">
+    </gs-form-group>
 
-    <div class="row form-group m-1">
-        <div class="col-md-4 col-sm-4 col-xs-12 text-md-end">
-            <label class="control-label" for="wscstLib">WSCST Library</label>
-        </div>
-        <div class="col-md-6 col-sm-6 col-xs-11">
-            <input type="text"  data-hpt="true" list="libs" value="*LIBL" class="form-control" id="wscstLib" name="wscstLib" maxlength="10" disabled>
-            <datalist id="libs">
-                <option value="*LIBL"></option>
-                <option value="*CURLIB"></option>
-                <option value="QGPL"></option>
-                <option value="GRNSCREENS"></option>
-              </datalist>
-        </div>
-        <div class="col-auto">
-            <gs-tooltip placement="right" title="Library for WSCST object."></gs-tooltip>
-            <i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
-        </div>
-    </div>
+    <datalist id="wscsts">
+        <option value="*NONE"></option>
+        <option value="*SAME"></option>
+        <option value="EMPTY"></option>
+        <option value="EMPTYBDO"></option>
+    </datalist>
 
-    <div class="row form-group m-1">
-        <div class="col-md-4 col-sm-4 col-xs-12 text-md-end">
-            <label class="control-label" for="printerModel">Printer Model</label>
-        </div>
-        <div class="col-md-6 col-sm-6 col-xs-11">
-            <input type="text"  data-hpt="true" value="*SAME" list="models" class="form-control" id="printerModel" name="printerModel" maxlength="10" disabled>
-            <datalist id="models">
-                <option value="*SAME" ></option>
-                <option value="*HP4" ></option>
-                <option value="*HP5" ></option>
-                <option value="*HP6" ></option>
-                <option value="*NONE" ></option>
-                <option value="*PDF" ></option>
-                <option value="*WSCST" ></option>
-                <option value="*WSCSTA3" ></option>
-                <option value="*WSCSTA4" ></option>
-                <option value="*WSCSTA5" ></option>
-                <option value="*WSCSTB4" ></option>
-                <option value="*WSCSTB5" ></option>
-                <option value="*WSCSTCONT132" ></option>
-                <option value="*WSCSTCONT80" ></option>
-                <option value="*WSCSTEXECUTIVE" ></option>
-                <option value="*WSCSTLEDGER" ></option>
-                <option value="*WSCSTLEGAL" ></option>
-                <option value="*WSCSTLETTER" ></option>
-                <option value="*WSCSTNONE" ></option>					    
-              </datalist>	
-        </div>
-        <div class="col-auto">
-            <gs-tooltip placement="right" title="Use printer model for SCS data transform."></gs-tooltip>
-            <i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
-        </div>
-    </div>    
+    <gs-form-group css="m-1" data-group="true" name="wscstLib" label="WSCST Library" disabled
+        maxlength="10" list="libs" value="*LIBL"
+        description="Library for WSCST object.">
+    </gs-form-group>
 
-    <div class="row form-group m-1">
-        <div class="col-md-4 col-sm-4 col-xs-12 text-md-end">
-            <label class="control-label" for="drawer1">Drawer 1</label>
-        </div>
-        <div class="col-md-6 col-sm-6 col-xs-11">
-            <select data-hpt="true" class="form-select" id="drawer1" name="drawer1" disabled>
+    <datalist id="libs">
+        <option value="*LIBL"></option>
+        <option value="*CURLIB"></option>
+        <option value="QGPL"></option>
+        <option value="GRNSCREENS"></option>
+      </datalist>
+
+    <gs-form-group css="m-1" data-group="true" name="printerModel" label="Printer Model" list="models" disabled
+        description="Use printer model for SCS data transform.">
+    </gs-form-group>
+
+    <datalist id="models">
+        <option value="*SAME" ></option>
+        <option value="*HP4" ></option>
+        <option value="*HP5" ></option>
+        <option value="*HP6" ></option>
+        <option value="*NONE" ></option>
+        <option value="*PDF" ></option>
+        <option value="*WSCST" ></option>
+        <option value="*WSCSTA3" ></option>
+        <option value="*WSCSTA4" ></option>
+        <option value="*WSCSTA5" ></option>
+        <option value="*WSCSTB4" ></option>
+        <option value="*WSCSTB5" ></option>
+        <option value="*WSCSTCONT132" ></option>
+        <option value="*WSCSTCONT80" ></option>
+        <option value="*WSCSTEXECUTIVE" ></option>
+        <option value="*WSCSTLEDGER" ></option>
+        <option value="*WSCSTLEGAL" ></option>
+        <option value="*WSCSTLETTER" ></option>
+        <option value="*WSCSTNONE" ></option>					    
+    </datalist>	
+
+    <gs-form-group css="m-1" data-group="true" name="drawer1" label="Drawer 1" disabled
+        description="Printer drawer paper size.">
+        <template>
+            <select class="form-select" id="drawer2" name="drawer2" disabled>
                 <option value="*SAME" selected>*SAME</option>
                 <option value="*NONE">*NONE</option>
                 <option value="*MFRTYPMDL">*MFRTYPMDL</option>
@@ -170,19 +104,13 @@
                 <option value="*B4">*B4</option>
                 <option value="*LEDGER">*LEDGER</option>      
             </select>
-        </div>
-        <div class="col-auto">
-            <gs-tooltip placement="right" title="Printer drawer paper size."></gs-tooltip>
-            <i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
-        </div>
-    </div>
+        </template>
+    </gs-form-group>
 
-    <div class="row form-group m-1">
-        <div class="col-md-4 col-sm-4 col-xs-12 text-md-end">
-            <label class="control-label" for="drawer2">Drawer 2</label>
-        </div>
-        <div class="col-md-6 col-sm-6 col-xs-11">
-            <select data-hpt="true" class="form-select" id="drawer2" name="drawer2" disabled>
+    <gs-form-group css="m-1" data-group="true" name="drawer2" label="Drawer 2" disabled
+        description="Printer drawer paper size.">
+        <template>
+            <select class="form-select" id="drawer2" name="drawer2" disabled>
                 <option value="*SAME" selected>*SAME</option>
                 <option value="*NONE">*NONE</option>
                 <option value="*MFRTYPMDL">*MFRTYPMDL</option>
@@ -198,19 +126,13 @@
                 <option value="*B4">*B4</option>
                 <option value="*LEDGER">*LEDGER</option>      
             </select>
-        </div>
-        <div class="col-auto">
-            <gs-tooltip placement="right" title="Printer drawer paper size."></gs-tooltip>
-            <i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
-        </div>
-    </div>    
+        </template>
+    </gs-form-group>
 
-    <div class="row form-group m-1">
-        <div class="col-md-4 col-sm-4 col-xs-12 text-md-end">
-            <label class="control-label" for="envelope">Envelope</label>
-        </div>
-        <div class="col-md-6 col-sm-6 col-xs-11">
-            <select data-hpt="true" class="form-select" id="envelope" name="envelope" disabled>
+    <gs-form-group css="m-1" data-group="true" name="envelope" label="Envelope" disabled
+        description="Printer drawer paper size.">
+        <template>
+            <select class="form-select" id="envelope" name="envelope" disabled>
                 <option value="*SAME" selected>*SAME</option>
                 <option value="*NONE">*NONE</option>
                 <option value="*MFRTYPMDL">*MFRTYPMDL</option>
@@ -220,12 +142,8 @@
                 <option value="*NUMBER10">*NUMBER10</option>
                 <option value="*C5">*C5</option>
                 <option value="*DL">*DL</option>  
-            </select>
-        </div>
-        <div class="col-auto">
-            <gs-tooltip placement="right" title="Printer drawer paper size."></gs-tooltip>
-            <i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
-        </div>
-    </div>        
+            </select>                    
+        </template>        
+    </gs-form-group>
 
 </form>

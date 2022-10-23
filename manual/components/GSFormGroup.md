@@ -12,6 +12,8 @@ Except all standard ```<input>``` [tag attributes](https://developer.mozilla.org
  
 | Name               | Description                                              |
 |--------------------|----------------------------------------------------------|
+| autocopy           | Copy all text on click into a field                      |
+| autoselect         | Select all tect on click into a field                    |
 | css                | CSS classes for main content                             |
 | css-label          | CSS classes for field label                              |
 | css-field          | CSS classes for field element                            |

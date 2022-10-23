@@ -127,6 +127,14 @@ export default class GSModal extends GSElement {
     return isOk ? action : null;
   }
 
+  get #size() {
+    switch (this.size) {
+      case 'extra' : return 'modal-xl';
+      case 'large' : return 'modal-lg';
+    }
+    return '';
+  }
+
   #setSize(size = '') {
     const me = this;
     const dlg = me.query('.modal-dialog');
@@ -270,6 +278,14 @@ export default class GSModal extends GSElement {
   }
 
 
+  get size() {
+    return GSAttr.get(this, 'size', '');
+  }
+
+  set size(val = '') {
+    GSAttr.set(this, 'size', val);
+  }
+
   get title() {
     return this.#findSlotOrEl('title', '.modal-title');
   }
@@ -402,7 +418,7 @@ export default class GSModal extends GSElement {
     const me = this;
     return `
          <div class="modal d-none fade ${me.cssModal}">
-         <div class="modal-dialog modal-dialog-centered">
+         <div class="modal-dialog modal-dialog-centered ${me.#size}">
            <div class="modal-content ${me.cssContent}">
              <div class="modal-header border-0 ${me.cssHeader}">
                <div class="modal-title ${me.cssTitle}">

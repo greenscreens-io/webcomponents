@@ -1,44 +1,23 @@
-<div class="row form-group m-1">
-    <div class="col-md-4 col-sm-4 col-xs-12 text-md-end">
-        <label class="control-label" for="sslUserVerification">SSL User Verification</label>
-    </div>
-    <div class="col-md-6 col-sm-6 col-xs-11">
+<gs-form-group css="m-1" name="sslUserVerification" label="SSL User Verification"
+    description="If enabled, verifies that client SSL Certificate CN contains sign-on user name.">
+    <template>
         <select class="form-select" id="sslUserVerification" name="sslUserVerification">
             <option selected value="false">Disabled</option>
             <option value="true">Enabled</option>
-        </select>
-    </div>
-    <div class="col-auto">
-        <gs-tooltip placement="right" title="If enabled, verifies that client SSL Certificate CN contains sign-on user name."></gs-tooltip>
-        <i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
-    </div>
-</div>
+        </select>        
+    </template>
+</gs-form-group>
 
-<div class="row form-group m-1">
-    <div class="col-md-4 col-sm-4 col-xs-12 text-md-end">
-        <label class="control-label" for="sslVerification">SSL Verification</label>
-    </div>
-    <div class="col-md-6 col-sm-6 col-xs-11">
+<gs-form-group css="m-1" name="sslVerification" label="SSL Verification"
+    description="If enabled, verifies that client SSL Certificate CN contains UUID and optionally HOST. CN should be in user@uuid.host format.">
+    <template>
         <select class="form-select" id="sslVerification" name="sslVerification">
             <option selected value="false">Disabled</option>
             <option value="true">Enabled</option>
-        </select>
-    </div>
-    <div class="col-auto">
-        <gs-tooltip placement="right" title="If enabled, verifies that client SSL Certificate CN contains UUID and optionally HOST. CN should be in user@uuid.host format."></gs-tooltip>
-        <i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
-    </div>
-</div>
+        </select>        
+    </template>
+</gs-form-group>
 
-<div class="row form-group m-1">
-    <div class="col-md-4 col-sm-4 col-xs-12 text-md-end">
-        <label class="control-label" for="sslAlternate">Alternate names</label>
-    </div>
-    <div class="col-md-6 col-sm-6 col-xs-11">
-        <input class="form-control  text-uppercase" id="sslAlternate" name="sslAlternate" type="text">
-    </div>
-    <div class="col-auto">
-        <gs-tooltip placement="right" title="Alternate properties to validate. This rules override default validation. All alternate rules must match. Example: C=HR,OU=Branch1."></gs-tooltip>
-        <i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
-    </div>
-</div>
+<gs-form-group css="m-1" name="sslAlternate" label="Alternate names"
+    description="Alternate properties to validate. This rules override default validation. All alternate rules must match. Example: C=HR,OU=Branch1.">
+</gs-form-group>

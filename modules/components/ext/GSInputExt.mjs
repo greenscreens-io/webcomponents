@@ -114,6 +114,14 @@ export default class GSInputExt extends HTMLInputElement {
         return masks.join('');
     }
 
+    get autocopy() {
+        return this.hasAttribute('autocopy');
+    }
+
+    get autoselect() {
+        return this.hasAttribute('autoselect');
+    }
+
     #toPattern() {
         const me = this;
         if (me.pattern.length > 0) return;
@@ -158,6 +166,7 @@ export default class GSInputExt extends HTMLInputElement {
         GSEvent.attach(me, me, 'change', me.#onChange.bind(me));
         GSEvent.attach(me, me, 'paste', me.#onPaste.bind(me));
         GSEvent.attach(me, me, 'blur', me.#onBlur.bind(me));
+        GSEvent.attach(me, me, 'click', me.#onClick.bind(me));
         requestAnimationFrame(() => {
             const list = me.list;
             if (!list) return;
@@ -224,6 +233,12 @@ export default class GSInputExt extends HTMLInputElement {
         GSDOM.queryAll(list, 'option').forEach(el => GSAttr.set(el, 'disabled', true));
         const filter = dataGroup ? `option[data-group="${dataGroup}"]` : `option[data-id="${e.target.value}"]`;
         GSDOM.queryAll(list, filter).forEach(el => GSAttr.set(el, 'disabled'));
+    }
+
+    #onClick(e) {
+        const me = this;
+        if (me.autocopy) navigator.clipboard.writeText(me.value);
+        if (me.autoselect) me.select();
     }
 
     #onBlur(e) {
@@ -336,7 +351,7 @@ export default class GSInputExt extends HTMLInputElement {
 
     #onNumberInput(e) {
         const me = this;
-        if (me.value.length > me.maxLength) {
+        if (me.maxLength > 0 && me.value.length > me.maxLength) {
             me.value = me.value.substring(0, me.maxLength);
         }
     }

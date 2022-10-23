@@ -1,16 +1,18 @@
-<gs-form-group flat="true" css="m-1" name="key" label="API Key" disabled readonly
+<gs-form-group css="m-1" name="key" label="API Key" autocopy autoselect readonly
     description="IBM i server virtual group name as defined in host configurations.">
 </gs-form-group>
 
-<gs-form-group flat="true" css="m-1" name="uuid" label="UUID"
+<gs-form-group css="m-1" name="uuid" label="UUID" required
+    maxlength="64" pattern="[a-zA-Z0-9-_]+" 
     description="IBM i server virtual name as defined in host configurations.">
 </gs-form-group>
 
-<gs-form-group flat="true" css="m-1" name="host" label="Host"
+<gs-form-group css="m-1" name="host" label="Host" required
+    maxlength="64" pattern="[a-zA-Z0-9-_]+" 
     description="IBM i server virtual name as defined in host configurations.">
 </gs-form-group>
 
-<gs-form-group flat="true" css="m-1" name="ip" label="IP" pattern="^((25[0-5]|(2[0-4]|1\d|[1-9]|)\d)\.?\b){4}$"
+<gs-form-group css="m-1" name="ip" label="IP" pattern="^((25[0-5]|(2[0-4]|1\d|[1-9]|)\d)\.?\b){4}$"
     description="Remote client IP. Standard IP, CIDR format and wildcard IP mask are supported.">
 </gs-form-group>
 

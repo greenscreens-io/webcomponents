@@ -78,7 +78,8 @@ export default class GSPrinterSetup extends GSDialog {
     }
 
     #update(sts) {
-        GSDOM.queryAll(this, '[data-hpt="true"]').forEach(el => GSAttr.toggle(el, 'disabled', sts));
+        const qry = '[data-group="true"] input, [data-group="true"] select';
+        this.queryAll(qry).forEach(el => GSAttr.toggle(el, 'disabled', sts));
     }
 
 }

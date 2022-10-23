@@ -1,38 +1,14 @@
-<div class="row form-group m-1">
-    <div class="col-md-4 col-sm-4 col-xs-12 text-md-end">
-        <label class="control-label" for="commonNameServer">Common Name</label>
-    </div>
-    <div class="col-md-6 col-sm-6 col-xs-11">
-        <input class="form-control" id="commonNameServer" name="commonNameServer" type="text" autocomplete="off">
-    </div>
-    <div class="col-auto">
-        <gs-tooltip placement="right" title="Enter server domain name used to access from browser."></gs-tooltip>
-        <i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
-    </div>
-</div>
+<gs-form-group css="m-1" name="commonNameServer" label="Common Name" autocomplete="off" 
+    description="Enter server domain name used to access from browser.">
+</gs-form-group>
 
-<div class="row form-group m-1">
-    <div class="col-md-4 col-sm-4 col-xs-12 text-md-end">
-        <label class="control-label" for="organizationUnitServer">Display name</label>
-    </div>
-    <div class="col-md-6 col-sm-6 col-xs-11">
-        <input class="form-control" id="organizationUnitServer" name="organizationUnitServer" type="text" autocomplete="off">
-    </div>
-    <div class="col-auto">
-        <gs-tooltip placement="right" title="Enter company branch or department for example."></gs-tooltip>
-        <i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
-    </div>
-</div>
+<gs-form-group css="m-1" name="organizationUnitServer" label="Display name" autocomplete="off" 
+    description="Enter company branch or department for example.">
+</gs-form-group>
 
-<div class="row form-group m-1">
-    <div class="col-md-4 col-sm-4 col-xs-12 text-md-end">
-        <label class="control-label" for="alternativeNames">Alternative Names</label>
-    </div>
-    <div class="col-md-6 col-sm-6 col-xs-11">
-        <textarea class="form-control" id="alternativeNames" rows="6" name="alternativeNames" type="text" autocomplete="off"></textarea>
-    </div>
-    <div class="col-auto">
-        <gs-tooltip placement="right" title="Enter alternative domain names or IP addresses. Each in new line."></gs-tooltip>
-        <i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
-    </div>
-</div>
+<gs-form-group css="m-1" name="alternativeNames" label="Alternative Names" autocomplete="off" 
+    description="Enter alternative domain names or IP addresses. Each in new line.">
+    <template>
+        <textarea clasS="form-control" rows="5" name="alternativeNames" id="alternativeNames"></textarea>
+    </template>
+</gs-form-group>

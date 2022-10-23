@@ -1,34 +1,14 @@
 <form slot="body" is="gs-ext-form" id="form-main" class="flex-fill" novalidate="">
 
-    <div class="row form-group m-1">
-        <div class="col-md-4 col-sm-4 col-xs-12 text-md-end">
-            <label class="control-label" for="uuid">UUID</label>
-        </div>
-        <div class="col-md-6 col-sm-6 col-xs-11">
-            <input class="form-control text-uppercase" id="uuid" name="uuid" type="text"  disabled>
-        </div>
-    </div>
-    
-    <div class="row form-group m-1">
-        <div class="col-md-4 col-sm-4 col-xs-12 text-md-end">
-            <label class="control-label" for="host">Host</label>
-        </div>
-        <div class="col-md-6 col-sm-6 col-xs-11">
-            <input class="form-control text-uppercase" id="host" name="host" type="text" disabled>
-        </div>
-    </div>
+    <gs-form-group css="m-1" name="uuid" label="UUID" readonly disabled>
+    </gs-form-group>
 
-    <div class="row form-group m-1">
-        <div class="col-md-4 col-sm-4 col-xs-12 text-md-end">
-            <label class="control-label" for="printerName">Printer</label>
-        </div>
-        <div class="col-md-6 col-sm-6 col-xs-11">
-            <input class="form-control text-uppercase" id="printerName" name="printerName" type="text" maxlength="10" pattern="[0-9a-zA-Z_]+" required>
-        </div>
-        <div class="col-auto">
-            <gs-tooltip placement="right" title="Virtual Printer Name."></gs-tooltip>
-            <i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
-        </div>
-    </div>    
+    <gs-form-group css="m-1" name="host" label="Host" readonly disabled>
+    </gs-form-group>    
+
+    <gs-form-group css="m-1" name="printerName" label="Printer" required
+        maxlength="10" pattern="[0-9a-zA-Z_]+"
+        description="Virtual Printer Name">
+    </gs-form-group>    
     
 </form>
