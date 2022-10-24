@@ -11,10 +11,10 @@ This is browser native version t oBootstrap Modal. If ```<dialog>``` si not supp
  
 | Name               | Description                                                  |
 |--------------------|--------------------------------------------------------------|
-| align              | Align modal buttons (start, end, center)                     |
 | body               | Modal body text or html                                      |
-| button-ok          | Title for OK button                                          |
+| button-align       | Align modal buttons (start, end, center)                     |
 | button-cancel      | Title for CANCEL button                                      |
+| button-ok          | Title for OK button                                          |
 | css-button-ok      | CSS classes for OK button                                    |
 | css-button-cancel  | CSS classes for CANCEL button                                |
 | css                | CSS classes for modal background (default: transparent)      |

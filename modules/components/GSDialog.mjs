@@ -288,11 +288,11 @@ export default class GSDialog extends GSElement {
    * Align buttons start | end | center
    */
   get align() {
-    return GSAttr.get(this, 'align', 'end');
+    return GSAttr.get(this, 'button-align', 'end');
   }
 
   set align(val = 'end') {
-    GSAttr.set(this, 'align', val);
+    GSAttr.set(this, 'button-align', val);
     this.#update();
   }
 

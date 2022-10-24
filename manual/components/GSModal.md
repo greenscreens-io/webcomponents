@@ -9,10 +9,10 @@ GSModal WebComponent is a renderer for Bootstrap Modal with support for external
  
 | Name               | Description                                                  |
 |--------------------|--------------------------------------------------------------|
-| align              | Align modal buttons (start, end, center)                     |
 | body               | Modal body text or html                                      |
-| button-ok          | Title for OK button                                          |
+| button-align       | Align modal buttons (start, end, center)                     |
 | button-cancel      | Title for CANCEL button                                      |
+| button-ok          | Title for OK button                                          |
 | css-button-ok      | CSS classes for OK button                                    |
 | css-button-cancel  | CSS classes for CANCEL button                                |
 | css-modal          | CSS classes for modal background (default: transparent)      |

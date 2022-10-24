@@ -4,11 +4,13 @@
         <gs-alert css="alert-danger" css-active="fade" message="Server restart is required for a change to take effect!" dismissable="false"></gs-alert>
     </div>
 
-    <gs-form-group css="m-1" name="port" label="Http Port" type="number" required
+    <gs-form-group css="m-1" name="port" label="Http Port" required
+        type="number" min="1" max="65535"
         description="Unsecured network port on which server will listen.">
     </gs-form-group> 
 
-    <gs-form-group css="m-1" name="sslPort" label="Https Port" type="number" required
+    <gs-form-group css="m-1" name="sslPort" label="Https Port" required
+        type="number" min="1" max="65535"
         description="Secure network port on which server will listen.">
     </gs-form-group> 
     
