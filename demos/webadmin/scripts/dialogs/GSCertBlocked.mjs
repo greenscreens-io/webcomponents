@@ -6,9 +6,9 @@
  * A module loading GSCertBlocked class
  * @module dialogs/GSCertBlocked
  */
-import GSDialog from './GSDialog.mjs';
+import GSAdminDialog from './GSAdminDialog.mjs';
 
-export default class GSCertBlocked extends GSDialog {
+export default class GSCertBlocked extends GSAdminDialog {
 
     static {
         customElements.define('gs-admin-dialog-certblocked', GSCertBlocked);

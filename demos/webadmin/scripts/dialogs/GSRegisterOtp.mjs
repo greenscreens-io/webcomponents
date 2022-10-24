@@ -6,11 +6,11 @@
  * A module loading GSRegisterOtp class
  * @module dialogs/GSRegisterOtp
  */
-import GSDialog from './GSDialog.mjs';
+import GSAdminDialog from './GSAdminDialog.mjs';
 import Utils from '../Utils.mjs';
 import GSDOM from '../../../../modules/base/GSDOM.mjs';
 
-export default class GSRegisterOtp extends GSDialog {
+export default class GSRegisterOtp extends GSAdminDialog {
 
     static #URL = '/barcode/generator?group=Two%20Dimensional&type=QR&composite=&zoom=4&format=png&eci=-1&attGS1=0&attQR1=&attQR2=3&b64=';
 

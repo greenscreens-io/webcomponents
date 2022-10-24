@@ -6,9 +6,9 @@
  * A module loading GSCertOpt class
  * @module dialogs/GSCertOpt
  */
-import GSDialog from './GSDialog.mjs';
+import GSAdminDialog from './GSAdminDialog.mjs';
 
-export default class GSCertOpt extends GSDialog {
+export default class GSCertOpt extends GSAdminDialog {
 
     static {
         customElements.define('gs-admin-dialog-certopt', GSCertOpt);
@@ -17,7 +17,7 @@ export default class GSCertOpt extends GSDialog {
 
     onReady() {
         super.onReady();
-        this.large();
+        if (this.large) this.large();
     }
 
     get dialogTemplate() {

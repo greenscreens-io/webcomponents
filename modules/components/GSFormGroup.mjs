@@ -46,9 +46,45 @@ export default class GSFormGroup extends GSElement {
 
    async getTemplate() {
       const me = this;
+      switch (me.layout) {
+         case 'floating': return me.#getFloating();
+         case 'vertical': return me.#getVertical();
+         default: return me.#getHorizontal();
+      }
+   }
+
+   #getFloating() {
+      const me = this;
+      return `
+      <div class="row ${me.css}">
+         <div class="form-floating ${me.#cssCheck} ${me.cellField}">
+            ${me.#input}
+            ${me.#label}
+         </div>
+         ${me.#info}
+      </div>`;
+   }
+
+   #getVertical() {
+      const me = this;
+      return `
+      <div class="row ${me.css}">
+        <div class="col-12">
+            ${me.#label}
+        </div>
+         <div class="${me.#cssCheck} ${me.cellField}">
+            ${me.#input}
+         </div>
+         ${me.#info}   
+      </div>      
+      `;
+   }
+
+   #getHorizontal() {
+      const me = this;
       return `
       <div class="row form-group ${me.css}">
-         ${me.#label}
+         ${me.#labelWrap}
          ${me.#field}
          ${me.#info}
       </div>`;
@@ -71,11 +107,12 @@ export default class GSFormGroup extends GSElement {
 
    get #label() {
       const me = this;
-      return `
-      <div class="${me.cellLabel}">
-          <label class="${me.#cssLabel} ${me.cssLabel}" for="${me.name}">${me.label}</label>
-      </div>
-      `;
+      return `<label class="${me.#cssLabel} ${me.cssLabel} user-select-none" for="${me.name}">${me.label}</label>`;
+   }
+
+   get #labelWrap() {
+      const me = this;
+      return `<div class="${me.cellLabel}">${me.#label}</label></div>`;
    }
 
    get #cssField() {
@@ -88,6 +125,7 @@ export default class GSFormGroup extends GSElement {
    get #cssLabel() {
       const me = this;
       if (me.#isCheckable) return 'form-check-label';
+      if (me.layout === 'floating') return 'ms-2';
       return me.#isVertical ? 'form-label' : '';
    }
 
@@ -106,20 +144,19 @@ export default class GSFormGroup extends GSElement {
          <slot name="body">
          ${me.#input}         
          </slot>
-      </div>      
-      `;
+      </div>`;
    }
 
    get #info() {
       const me = this;
       if (!me.#hasTooltip) return '';
       if (!me.#tooltip) return '';
-      return `
+      if (me.hasIcon) return `
       <div class="col-auto">
          ${me.#tooltip}
          ${me.#icon}
-      </div>      
-      `;
+      </div>`;
+      return me.#tooltip;
    }
 
    get #autocopy() {
@@ -130,9 +167,13 @@ export default class GSFormGroup extends GSElement {
       return this.autoselect ? `autocopy` : '';
    }
 
+   get hasIcon() {
+      return GSAttr.get(this, 'icon') !== 'false';
+   }
+
    get #icon() {
       const me = this;
-      return me.icon.trim() ? `<i class="${me.icon}"></i>` : '';
+      return me.hasIcon ? `<i class="${me.icon}"></i>` : '';
    }
 
    get #type() {
@@ -151,7 +192,8 @@ export default class GSFormGroup extends GSElement {
 
    get #tooltip() {
       const me = this;
-      return me.description.trim() ? `<gs-tooltip placement="${me.placement}" title="${me.description}"></gs-tooltip>` : '';
+      const tgt = me.hasIcon ? '' : `target="${me.name}"`;
+      return me.description.trim() ? `<gs-tooltip placement="${me.placement}" title="${me.description}" ${tgt}></gs-tooltip>` : '';
    }
 
    get #placeholder() {
@@ -177,9 +219,8 @@ export default class GSFormGroup extends GSElement {
       return me.#isCheckable && me.checked ? `checked` : '';
    }
 
-   // TODO
    get #isVertical() {
-      return false;
+      return this.layout === 'vertical';
    }
 
    get #isChecked() {
@@ -198,6 +239,10 @@ export default class GSFormGroup extends GSElement {
       return this.type === 'number';
    }
 
+   get #isRange() {
+      return this.type === 'range';
+   }
+
    get #isText() {
       return this.type === 'text';
    }
@@ -210,8 +255,8 @@ export default class GSFormGroup extends GSElement {
       return this.type === 'email';
    }
 
-   get #isRange() {
-      return this.type === 'range';
+   get #isURL() {
+      return this.type === 'url';
    }
 
    get #isFile() {
@@ -293,7 +338,9 @@ export default class GSFormGroup extends GSElement {
    }
 
    get cellField() {
-      return GSAttr.get(this, 'cell-field', 'col-md-6 col-sm-6 col-xs1');
+      const me = this;
+      const val = (me.layout === 'horizontal') ? '6' : '11';
+      return GSAttr.get(me, 'cell-field', `col-md-${val} col-sm-${val} col-xs11`);
    }
 
    set cellField(val = '') {
@@ -338,7 +385,9 @@ export default class GSFormGroup extends GSElement {
    }
 
    get placement() {
-      return GSAttr.get(this, 'placement', 'right');
+      const me = this;
+      const dft = me.hasIcon ? 'right' : 'top';
+      return GSAttr.get(this, 'placement', dft);
    }
 
    set placement(val = '') {

@@ -87,7 +87,7 @@ export default class GSTab extends GSElement {
 
   #renderTabsVertical(tabs) {
     return `
-      <div class="nav flex-column ${GSTab.CSS_NAV} ${this.#cssnav}" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+      <div class="nav flex-column user-select-none ${GSTab.CSS_NAV} ${this.#cssnav}" id="v-pills-tab" role="tablist" aria-orientation="vertical">
         ${tabs}
       </div>
     `;
@@ -95,7 +95,7 @@ export default class GSTab extends GSElement {
 
   #renderTabsHorizontal(tabs) {
     return `
-      <ul class="nav ${GSTab.CSS_NAV} ${this.#cssnav}" "role="tablist">
+      <ul class="nav user-select-none ${GSTab.CSS_NAV} ${this.#cssnav}" "role="tablist">
         ${tabs}
       </ul>      
       `;

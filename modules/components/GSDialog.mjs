@@ -3,8 +3,8 @@
  */
 
 /**
- * A module loading GSModal class
- * @module components/GSModal
+ * A module loading GSDialog class
+ * @module components/GSDialog
  */
 
 import GSAttr from "../base/GSAttr.mjs";
@@ -13,17 +13,21 @@ import GSElement from "../base/GSElement.mjs";
 import GSEvent from "../base/GSEvent.mjs";
 
 /**
- * Bootstrap modal dialog support
+ * Native dialog with Bootstrap support
  * @class
  * @extends {GSElement}
  */
-export default class GSModal extends GSElement {
+export default class GSDialog extends GSElement {
+
+  static CSS = 'rounded shadow-sm';
+  static HEADER_CSS = 'p-3';
+  static TITLE_CSS = 'fs-5 fw-bold text-muted';
 
   static #actions = ['ok', 'cancel'];
 
   static {
-    customElements.define('gs-modal', GSModal);
-    Object.seal(GSModal);
+    customElements.define('gs-dialog', GSDialog);
+    Object.seal(GSDialog);
   }
 
   static get observedAttributes() {
@@ -36,15 +40,12 @@ export default class GSModal extends GSElement {
     me.#update();
     if (name === 'visible') {
       if (me.visible) {
-        me.#showEL('.modal');
-        me.#showEL('.modal-backdrop');
+        me.#dialog.showModal();
         me.focusable().focus();
       } else {
-        me.#hideEL('.modal');
-        me.#hideEL('.modal-backdrop');
-        me.normal();
+        me.#dialog.close();
       }
-      GSEvent.send(me, 'visible', { type: 'modal', ok: me.visible }, true, true);
+      GSEvent.send(me, 'visible', { type: 'dialog', ok: me.visible }, true, true);
     }
   }
 
@@ -53,7 +54,7 @@ export default class GSModal extends GSElement {
     me.attachEvent(me, 'click', me.#onClick.bind(me));
     me.attachEvent(me, 'action', me.#onClick.bind(me));
     me.attachEvent(me, 'form', me.#onForm.bind(me));
-    me.attachEvent(document, 'keyup', me.#onEscape.bind(me));
+    me.attachEvent(me.#dialog, 'keydown', me.#onEscape.bind(me));
     super.onReady();
     if (me.visible) me.open();
   }
@@ -61,14 +62,13 @@ export default class GSModal extends GSElement {
   #onForm(e) {
     const me = this;
     GSEvent.prevent(e);
-    const sts = GSEvent.send(me, 'data', { type: 'modal', data: e.detail.data, evt: e }, true, true, true);
+    const sts = GSEvent.send(me, 'data', { type: 'dialog', data: e.detail.data, evt: e }, true, true, true);
     if (sts) me.close();
   }
 
   #onEscape(e) {
     const me = this;
-    if (!me.cancelable) return;
-    if (e.key === 'Escape') me.close();
+    if (!me.cancelable && e.key === 'Escape') return GSEvent.prevent(e);
   }
 
   #onClick(e) {
@@ -87,13 +87,13 @@ export default class GSModal extends GSElement {
       if (invalid.length === 0) forms.forEach(form => me.#submitForm(form));
 
       const els = invalid.map(form => GSDOM.queryAll(form, 'textarea, input, select').filter(el => el.checkValidity() == false));
-      if (els.length > 0) GSEvent.send(me, 'error', { type: 'modal', data: els }, true, true, true);
+      if (els.length > 0) GSEvent.send(me, 'error', { type: 'dialog', data: els }, true, true, true);
       return;
     }
 
     let sts = true;
     try {
-      sts = GSEvent.send(me, 'action', { type: 'modal', ok: isOk, evt: e }, true, true, true);
+      sts = GSEvent.send(me, 'action', { type: 'dialog', ok: isOk, evt: e }, true, true, true);
     } finally {
       if (sts) me.close(null, isOk);
     }
@@ -122,48 +122,9 @@ export default class GSModal extends GSElement {
 
   #isAcceptedAction(e) {
     const action = this.#getAction(e);
-    const isOk = GSModal.#actions.includes(action);
+    const isOk = GSDialog.#actions.includes(action);
     if (isOk) GSEvent.prevent(e);
     return isOk ? action : null;
-  }
-
-  get #size() {
-    switch (this.size) {
-      case 'extra' : return 'modal-xl';
-      case 'large' : return 'modal-lg';
-    }
-    return '';
-  }
-
-  #setSize(size = '') {
-    const me = this;
-    const dlg = me.query('.modal-dialog');
-    if (!dlg) return;
-    requestAnimationFrame(() => {
-      dlg.classList.remove('modal-xl', 'modal-lg');
-      if (size) dlg.classList.add(size);
-    });
-  }
-
-  /**
-   * Change size of modal window to "large"
-   */
-  large() {
-    this.#setSize('modal-lg');
-  }
-
-  /**
-   * Change size of modal window to "extra large"
-   */
-  extra() {
-    this.#setSize('modal-xl');
-  }
-
-  /**
-   * Change size of modal window to "default"
-   */
-  normal() {
-    this.#setSize();
   }
 
   /**
@@ -200,7 +161,7 @@ export default class GSModal extends GSElement {
   open(e) {
     GSEvent.prevent(e);
     const me = this;
-    const sts = GSEvent.send(me, 'open', { type: 'modal' }, true, true, true);
+    const sts = GSEvent.send(me, 'open', { type: 'dialog' }, true, true, true);
     if (sts) me.visible = true;
   }
 
@@ -210,7 +171,7 @@ export default class GSModal extends GSElement {
   close(e, ok = false) {
     GSEvent.prevent(e);
     const me = this;
-    const sts = GSEvent.send(me, 'close', { type: 'modal', isOk: ok }, true, true, true);
+    const sts = GSEvent.send(me, 'close', { type: 'dialog', isOk: ok }, true, true, true);
     if (sts) me.visible = false;
   }
 
@@ -234,25 +195,11 @@ export default class GSModal extends GSElement {
   }
 
   get #buttonOkEl() {
-    return this.query('.modal-ok');
+    return this.query('.dialog-ok');
   }
 
   get #buttonCancelEl() {
-    return this.query('.modal-cancel');
-  }
-
-  #showEL(name) {
-    const el = this.query(name);
-    if (!el) return;
-    el.classList.remove('d-none');
-    el.classList.add('show', 'd-block');
-  }
-
-  #hideEL(name) {
-    const el = this.query(name);
-    if (!el) return;
-    el.classList.add('d-none');
-    el.classList.remove('show', 'd-block');
+    return this.query('.dialog-cancel');
   }
 
   #update() {
@@ -260,7 +207,7 @@ export default class GSModal extends GSElement {
     GSDOM.toggle(me.#buttonOkEl, !me.closable);
     GSDOM.toggle(me.#buttonCancelEl, !me.cancelable);
     const css = `justify-content-${me.align}`;
-    const footer = me.query('.modal-footer');
+    const footer = me.query('.card-footer');
     GSDOM.toggleClass(footer, css, true);
   }
 
@@ -277,17 +224,26 @@ export default class GSModal extends GSElement {
     return el;
   }
 
+  /**
+   * N/A - compatibiltiy with gs-modal
+   */
+  large() {
 
-  get size() {
-    return GSAttr.get(this, 'size', '');
   }
 
-  set size(val = '') {
-    GSAttr.set(this, 'size', val);
+  /**
+   * N/A - compatibiltiy with gs-modal
+   */  
+  extra() {
+    
+  }
+
+  get #dialog() {
+    return this.query('dialog');
   }
 
   get title() {
-    return this.#findSlotOrEl('title', '.modal-title');
+    return this.#findSlotOrEl('title', '.card-title');
   }
 
   set title(val = '') {
@@ -295,7 +251,7 @@ export default class GSModal extends GSElement {
   }
 
   get body() {
-    return this.#findSlotOrEl('body', '.modal-body');
+    return this.#findSlotOrEl('body', '.card-body');
   }
 
   set body(val = '') {
@@ -364,8 +320,8 @@ export default class GSModal extends GSElement {
     return GSAttr.get(this, "css-button-cancel", "btn-secondary");
   }
 
-  get cssModal() {
-    return GSAttr.get(this, "css-modal", "");
+  get css() {
+    return GSAttr.get(this, "css", GSDialog.CSS);
   }
 
   get cssContent() {
@@ -373,11 +329,11 @@ export default class GSModal extends GSElement {
   }
 
   get cssHeader() {
-    return GSAttr.get(this, "css-header", "");
+    return GSAttr.get(this, "css-header", GSDialog.HEADER_CSS);
   }
 
   get cssTitle() {
-    return GSAttr.get(this, "css-title", "");
+    return GSAttr.get(this, "css-title", GSDialog.TITLE_CSS);
   }
 
   get cssBody() {
@@ -388,8 +344,8 @@ export default class GSModal extends GSElement {
     return GSAttr.get(this, "css-footer", "");
   }
 
-  set cssModal(val = '') {
-    return GSAttr.set(this, "css-modal", val);
+  set css(val = '') {
+    return GSAttr.set(this, "css", val);
   }
 
   set cssContent(val = '') {
@@ -412,30 +368,28 @@ export default class GSModal extends GSElement {
     return GSAttr.set(this, "css-footer", val);
   }
 
-  // css-modal, css-content css-header css-title css-body css-footer
+  // css, css-content css-header css-title css-body css-footer
   async getTemplate(val = '') {
     if (val) return super.getTemplate(val);
     const me = this;
     return `
-         <div class="modal d-none fade ${me.cssModal}">
-         <div class="modal-dialog modal-dialog-centered ${me.#size}">
-           <div class="modal-content ${me.cssContent}">
-             <div class="modal-header border-0 user-select-none ${me.cssHeader}">
-               <div class="modal-title ${me.cssTitle}">
-                 <slot name="title"></slot>
-               </div>
-             </div>
-             <div class="modal-body ${me.cssBody}">
-               <slot name="body"></slot>
-             </div>
-             <div class="modal-footer border-0 user-select-none justify-content-${me.align} ${me.cssFooter}">
-               <button class="btn ${me.cssButtonCancel} modal-cancel" data-action="cancel">${me.buttonCancel}</button>
-               <button class="btn ${me.cssButtonOk} modal-ok" data-action="ok">${me.buttonOk}</button>
-             </div>
-           </div>
-         </div>
-       </div>
-       <div class="modal-backdrop d-none fade "></div>    
+        <dialog class="p-0 border-0 ${me.css}">
+        <div class="card">
+            <div class="card-header user-select-none ${me.cssHeader}">
+              <div class="card-title ${me.cssTitle}">
+                <slot name="title"></slot>
+              </div>
+            </div>
+            <div class="card-body p-0 ${me.cssBody}">
+              <slot name="body"></slot>
+              <div class="card-footer d-flex user-select-none justify-content-${me.align} ${me.cssFooter}">
+                <button class="btn ${me.cssButtonCancel} dialog-cancel" data-action="cancel">${me.buttonCancel}</button>
+                &nbsp;
+                <button class="btn ${me.cssButtonOk} dialog-ok" data-action="ok">${me.buttonOk}</button>
+              </div>
+            </div>
+        </div>
+        </dialog>
      `
   }
 }

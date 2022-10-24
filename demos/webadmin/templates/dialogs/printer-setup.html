@@ -1,4 +1,4 @@
-<form slot="body" is="gs-ext-form" id="form-main" class="flex-fill" novalidate="">
+<form slot="body" is="gs-ext-form" id="form-main" class="flex-fill m-4" novalidate="">
 
     <gs-form-group css="m-1" name="uuid" label="UUID" readonly disabled>
     </gs-form-group>
@@ -11,7 +11,9 @@
         description="Virtual Printer Name.">
     </gs-form-group>
     
-    <hr>
+    <div class="d-flex flex-column align-items-center">
+        <hr class="w-75">
+    </div>
 
     <gs-form-group css="m-1" name="hostTransform" label="Host Transform"
         description="Transform SCS spool on IBM I server. If enabled, WSCST object must be defined.">
@@ -23,7 +25,9 @@
         </template>
     </gs-form-group>
 
-    <hr>
+    <div class="d-flex flex-column align-items-center">
+        <hr class="w-75">
+    </div>
     
     <gs-form-group css="m-1" data-group="true" name="sourceCodePag" label="CHRID (EBCDIC)" disabled
         maxlength="10" pattern="[0-9a-zA-Z]+"

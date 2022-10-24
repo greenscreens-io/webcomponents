@@ -6,9 +6,9 @@
  * A module loading GSCertClient class
  * @module dialogs/GSCertClient
  */
-import GSDialog from './GSDialog.mjs';
+import GSAdminDialog from './GSAdminDialog.mjs';
 
-export default class GSCertClient extends GSDialog {
+export default class GSCertClient extends GSAdminDialog {
 
     static {
         customElements.define('gs-admin-dialog-certclient', GSCertClient);

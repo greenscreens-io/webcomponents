@@ -6,9 +6,9 @@
  * A module loading GSPrinterReset class
  * @module dialogs/GSPrinterReset
  */
-import GSDialog from './GSDialog.mjs';
+import GSAdminDialog from './GSAdminDialog.mjs';
 
-export default class GSPrinterReset extends GSDialog {
+export default class GSPrinterReset extends GSAdminDialog {
 
     static {
         customElements.define('gs-admin-dialog-printer-reset', GSPrinterReset);

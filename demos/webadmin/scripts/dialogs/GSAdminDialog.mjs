@@ -12,16 +12,16 @@ import GSDOM from '../../../../modules/base/GSDOM.mjs';
 import GSEvent from '../../../../modules/base/GSEvent.mjs';
 import GSFunction from '../../../../modules/base/GSFunction.mjs';
 import GSLoader from '../../../../modules/base/GSLoader.mjs';
-import GSModal from '../../../../modules/components/GSModal.mjs';
+import GSDialog from '../../../../modules/components/GSDialog.mjs';
 import Utils from '../Utils.mjs';
 
-export default class GSDialog extends GSModal {
+export default class GSAdminDialog extends GSDialog {
 
     connectedCallback() {
         super.connectedCallback();
         const me = this;
         me.cssHeader = 'p-3 dialog-title';
-        me.cssTitle = 'fs-5 fw-bold';
+        //me.cssTitle = 'fs-5 fw-bold text-muted';
         me.cssBody = 'p-0';
     }
 
@@ -91,6 +91,7 @@ export default class GSDialog extends GSModal {
      * @param {*} data 
      */
     async onData(data) {
+        return true;
     }
 
     /**

@@ -35,30 +35,119 @@
     <gs-template href="/webcomponents/demos/header.tpl"></gs-template>
 
     <div class="m-4 p-1 bg-light border shadow-sm row">
-        Simplified HTML with composite GSFormGroup        
+        Horizontal layout
     </div>
     
     <form>
-        <gs-form-group css="mt-2" name="date" mask="DD-MM-YYYY" label="Date" description="Masked date input"></gs-form-group>
-        <gs-form-group css="mt-2" name="hexa" mask="XXXXXXXXXXXXXXXX" label="Hexadecimal input with" description="Masked hexadecimal input"></gs-form-group>
+        <div class="container justify-content-center w-50 border p-4 shadow-sm bg-light">
+            <gs-form-group css="mt-2" name="date" mask="DD-MM-YYYY" label="Date" description="Masked date input"></gs-form-group>
+            <gs-form-group css="mt-2" name="hexa" mask="XXXXXXXXXXXXXXXX" label="Hexadecimal input with" description="Masked hexadecimal input"></gs-form-group>
 
-        <gs-form-group css="mt-2" name="user" placeholder="...enter user name" label="Date" description="Login user"></gs-form-group>
+            <gs-form-group css="mt-2" name="user" placeholder="...enter user name" label="User" description="Login user"></gs-form-group>
 
-        <gs-form-group css="mt-2" name="field1" label="Check box"    type="checkbox" checked></gs-form-group>
-        <gs-form-group css="mt-2" name="field2" label="Radio button" type="radio" checked></gs-form-group>
-        <gs-form-group css="mt-2" name="field3" label="Switch box"   type="switch" checked></gs-form-group>
-        <gs-form-group css="mt-2" name="field4" label="Range"        type="range" min="0" max="100" step="2"></gs-form-group>
+            <gs-form-group css="mt-2" name="field1" label="Check box"    type="checkbox" checked></gs-form-group>
+            <gs-form-group css="mt-2" name="field2" label="Radio button" type="radio" checked></gs-form-group>
+            <gs-form-group css="mt-2" name="field3" label="Switch box"   type="switch" checked></gs-form-group>
+            <gs-form-group css="mt-2" name="field4" label="Range"        type="range" min="0" max="100" step="2"></gs-form-group>
 
-        <gs-form-group css="mt-2" name="active" label="Status" description="test">
-            <template>
-                <select class="form-select" id="active" name="active" required>
-                    <option value="true">Enabled</option>
-                    <option value="false">Disabled</option>
-                </select>
-            </template>
-        </gs-form-group>        
+            <gs-form-group css="mt-2" name="active" label="Status" description="test">
+                <template>
+                    <select class="form-select" id="active" name="active" required>
+                        <option value="true">Enabled</option>
+                        <option value="false">Disabled</option>
+                    </select>
+                </template>
+            </gs-form-group>
+        </div>        
     </form>
 
+    <div class="m-4 p-1 bg-light border shadow-sm row">
+        Vertical layout
+    </div>
+    
+    <form>
+        <div class="container justify-content-center w-50 border p-4 shadow-sm bg-light">
+
+            <gs-form-group css="mt-2" layout="vertical" name="date" mask="DD-MM-YYYY" label="Date" description="Masked date input"></gs-form-group>
+            <gs-form-group css="mt-2" layout="vertical" name="hexa" mask="XXXXXXXXXXXXXXXX" label="Hexadecimal input with" description="Masked hexadecimal input"></gs-form-group>
+
+            <gs-form-group css="mt-2" layout="vertical" name="fieldv" placeholder="...enter user name" label="Field vertical" description="Login user"></gs-form-group>
+            
+            <gs-form-group css="mt-2" layout="vertical" name="field1" label="Check box"    type="checkbox" checked></gs-form-group>
+            <gs-form-group css="mt-2" layout="vertical" name="field2" label="Radio button" type="radio" checked></gs-form-group>
+            <gs-form-group css="mt-2" layout="vertical" name="field3" label="Switch box"   type="switch" checked></gs-form-group>
+            <gs-form-group css="mt-2" layout="vertical" name="field4" label="Range"        type="range" min="0" max="100" step="2"></gs-form-group>
+
+            <gs-form-group css="mt-2" layout="vertical" name="active" label="Status" description="test">
+                <template>
+                    <select class="form-select" id="active" name="active" required>
+                        <option value="true">Enabled</option>
+                        <option value="false">Disabled</option>
+                    </select>
+                </template>
+            </gs-form-group>
+
+        </div>       
+    </form>
+
+    <div class="m-4 p-1 bg-light border shadow-sm row">
+        Floating layout
+    </div>
+    
+    <form>
+        <div class="container justify-content-center w-50 border p-4 shadow-sm bg-light">
+
+            <gs-form-group css="mt-2" layout="floating" css-label="fw-bold text-muted" name="date" mask="DD-MM-YYYY" label="Date" description="Masked date input"></gs-form-group>
+            <gs-form-group css="mt-2" layout="floating" css-label="fw-bold text-muted" name="hexa" mask="XXXXXXXXXXXXXXXX" label="Hexadecimal input with" description="Masked hexadecimal input"></gs-form-group>
+            
+            <gs-form-group css="mt-2" layout="floating" css-label="fw-bold text-muted" name="fieldv" placeholder="...enter user name" label="Field vertical" description="Login user"></gs-form-group>
+            
+            <gs-form-group css="mt-2" layout="vertical" name="field1" label="Check box"    type="checkbox" checked></gs-form-group>
+            <gs-form-group css="mt-2" layout="vertical" name="field2" label="Radio button" type="radio" checked></gs-form-group>
+            <gs-form-group css="mt-2" layout="vertical" name="field3" label="Switch box"   type="switch" checked></gs-form-group>
+            <gs-form-group css="mt-2" layout="vertical" name="field4" label="Range"        type="range" min="0" max="100" step="2"></gs-form-group>
+            
+            <gs-form-group css="mt-2" layout="vertical" name="active" label="Status" description="test">
+                <template>
+                    <select class="form-select" id="active" name="active" required>
+                        <option value="true">Enabled</option>
+                        <option value="false">Disabled</option>
+                    </select>
+                </template>
+            </gs-form-group>
+
+        </div>
+    </form>
+
+    <div class="m-4 p-1 bg-light border shadow-sm row">
+        Tooltip without icon
+    </div>
+    
+    <form>
+        <div class="container justify-content-center w-50 border p-4 shadow-sm bg-light">
+
+            <gs-form-group css="mt-2" layout="horizontal" css-label="fw-bold text-muted" name="date" mask="DD-MM-YYYY" label="Date" description="Masked date input" icon="false"></gs-form-group>
+            <gs-form-group css="mt-2" layout="vertical" css-label="fw-bold text-muted" name="hexa" mask="XXXXXXXXXXXXXXXX" label="Hexadecimal input with" description="Masked hexadecimal input"  icon="false"></gs-form-group>            
+            <gs-form-group css="mt-2" layout="floating" css-label="fw-bold text-muted" name="fieldv" placeholder="...enter user name" label="Field vertical" description="Login user"  icon="false"></gs-form-group>
+            
+            <gs-form-group css="mt-2" layout="vertical" name="field1" label="Check box"    type="checkbox" checked  icon="false" description="Test tooltip"></gs-form-group>
+            <gs-form-group css="mt-2" layout="vertical" name="field2" label="Radio button" type="radio" checked icon="false" description="Test tooltip"></gs-form-group>
+            <gs-form-group css="mt-2" layout="vertical" name="field3" label="Switch box"   type="switch" checked icon="false" description="Test tooltip"></gs-form-group>
+            <gs-form-group css="mt-2" layout="vertical" name="field4" label="Range"        type="range" min="0" max="100" step="2" icon="false" description="Test tooltip"></gs-form-group>
+            
+            <gs-form-group css="mt-2" layout="vertical" name="active" label="Status" description="test" icon="false">
+                <template>
+                    <select class="form-select" id="active" name="active" required>
+                        <option value="true">Enabled</option>
+                        <option value="false">Disabled</option>
+                    </select>
+                </template>
+            </gs-form-group>
+
+        </div>
+    </form>
+
+    <br><br><br><br><br><br><br><br><br><br>
 </body>
 
 </html>

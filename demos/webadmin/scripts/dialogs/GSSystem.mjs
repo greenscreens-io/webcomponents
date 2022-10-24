@@ -6,9 +6,9 @@
  * A module loading GSSystem class
  * @module dialogs/GSSystem
  */
-import GSDialog from './GSDialog.mjs';
+import GSAdminDialog from './GSAdminDialog.mjs';
 
-export default class GSSystem extends GSDialog {
+export default class GSSystem extends GSAdminDialog {
 
     static {
         customElements.define('gs-admin-dialog-system', GSSystem);
@@ -17,7 +17,7 @@ export default class GSSystem extends GSDialog {
 
     onReady() {
         super.onReady();
-        this.large();
+        if (this.large) this.large();
     }
 
     get dialogTemplate() {

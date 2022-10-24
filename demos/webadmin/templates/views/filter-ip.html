@@ -2,7 +2,7 @@
 
     <div class="row border shadow-sm ms-4 ps-4 py-4 bg-light border shadow-sm  mb-4">
         <div class="col">
-            <h4 class="text-muted">Netowrk IP Filter Records</h4>
+            <h4 class="text-muted user-select-none">Netowrk IP Filter Records</h4>
         </div>
         <div class="col-2">
             <select auto="false" name="filter" title="Filter status" class="form-select">
@@ -73,10 +73,7 @@
                 <gs-pager slot="extra" previous="&laquo;" next="&raquo;" firstlast="false" pages="0"></gs-pager>
             </gs-table>
 
-            <gs-modal id="modal-main" visible="false" css-body="p-0" css-header = "p-3 dialog-title" css-title = "fs-5 fw-bold">
-                <h4 slot="title">IP Filter</h4>
-                <gs-template slot="body" href="//forms/filter-ip.html"></gs-template>
-            </gs-modal>
+            <gs-admin-dialog-filter id="modal-main" auto="false"></gs-admin-dialog-filter>
 
         </div>
 

@@ -10,7 +10,7 @@ import GSAttr from '../../../../modules/base/GSAttr.mjs';
 import GSDOM from '../../../../modules/base/GSDOM.mjs';
 import GSUtil from '../../../../modules/base/GSUtil.mjs';
 
-import GSDialog from '../dialogs/GSDialog.mjs';
+import GSAdminDialog from '../dialogs/GSAdminDialog.mjs';
 import Utils from '../Utils.mjs';
 import WebAuthn from '../WebAuthn.mjs';
 
@@ -20,7 +20,7 @@ globalThis.Tn5250 = {
     release: 20221015
 };
 
-export default class Login extends GSDialog {
+export default class Login extends GSAdminDialog {
 
     static {
         customElements.define('gs-admin-shell-login', Login);

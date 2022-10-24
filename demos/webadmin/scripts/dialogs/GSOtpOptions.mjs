@@ -6,9 +6,9 @@
  * A module loading GSOtpOptions class
  * @module dialogs/GSOtpOptions
  */
-import GSDialog from './GSDialog.mjs';
+import GSAdminDialog from './GSAdminDialog.mjs';
 
-export default class GSOtpOptions extends GSDialog {
+export default class GSOtpOptions extends GSAdminDialog {
 
     static {
         customElements.define('gs-admin-dialog-otpopt', GSOtpOptions);

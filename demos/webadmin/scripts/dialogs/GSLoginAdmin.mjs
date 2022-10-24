@@ -6,9 +6,9 @@
  * A module loading GSLoginAdmin class
  * @module dialogs/GSLoginAdmin
  */
-import GSDialog from './GSDialog.mjs';
+import GSAdminDialog from './GSAdminDialog.mjs';
 
-export default class GSLoginAdmin extends GSDialog {
+export default class GSLoginAdmin extends GSAdminDialog {
 
     static {
         customElements.define('gs-admin-dialog-loginadm', GSLoginAdmin);

@@ -25,8 +25,8 @@ import GSAttr from "../../base/GSAttr.mjs";
  */
 export default class GSDataAttr {
 
-    static #toggleValues = "offcanvas|collapse|dropdown|button|tab|pill|popover|modal|popup"; // tooltip|
-    static #dismissValues = "offcanvas|modal|alert|popup";
+    static #toggleValues = "offcanvas|collapse|dropdown|button|tab|pill|popover|modal|dialog|popup"; // tooltip|
+    static #dismissValues = "offcanvas|modal|alert|popup|dialog";
 
     static {
         GSDOMObserver.registerFilter(GSDataAttr.#onMonitorFilter, GSDataAttr.#onMonitorResult);
@@ -113,6 +113,8 @@ export default class GSDataAttr {
                 break;
             case "modal":
                 break;
+            case "dialog":
+                break;                
             case "offcanvas":
                 break;
             case "pill":
@@ -284,6 +286,8 @@ export default class GSDataAttr {
                 break;
             case "modal":
                 break;
+            case "dialog":
+                break;                
             case "offcanvas":
                 break;
             case "pill":

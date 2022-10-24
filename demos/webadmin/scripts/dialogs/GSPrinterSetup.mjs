@@ -8,9 +8,9 @@
  */
 import GSAttr from '../../../../modules/base/GSAttr.mjs';
 import GSUtil from '../../../../modules/base/GSUtil.mjs';
-import GSDialog from './GSDialog.mjs';
+import GSAdminDialog from './GSAdminDialog.mjs';
 
-export default class GSPrinterSetup extends GSDialog {
+export default class GSPrinterSetup extends GSAdminDialog {
 
     static {
         customElements.define('gs-admin-dialog-printer-setup', GSPrinterSetup);
