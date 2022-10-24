@@ -19,6 +19,10 @@ import GSUtil from "../base/GSUtil.mjs";
  */
 export default class GSFormGroup extends GSElement {
 
+   static CSS_LABEL_CELL = 'col-md-4 col-sm-4 col-xs2 text-md-end';
+   static CSS_LABEL = 'user-select-none fw-small fw-light text-secondary';
+   static CSS_ICON = 'bi bi-info-circle-fill text-primary me-2 fs-5';
+
    static {
       customElements.define('gs-form-group', GSFormGroup);
       Object.seal(GSFormGroup);
@@ -330,7 +334,7 @@ export default class GSFormGroup extends GSElement {
    }
 
    get cellLabel() {
-      return GSAttr.get(this, 'cell-label', 'col-md-4 col-sm-4 col-xs2 text-md-end');
+      return GSAttr.get(this, 'cell-label', GSFormGroup.CSS_LABEL_CELL);
    }
 
    set cellLabel(val = '') {
@@ -348,7 +352,7 @@ export default class GSFormGroup extends GSElement {
    }
 
    get cssLabel() {
-      return GSAttr.get(this, 'css-label', '');
+      return GSAttr.get(this, 'css-label', GSFormGroup.CSS_LABEL);
    }
 
    set cssLabel(val = '') {
@@ -395,7 +399,7 @@ export default class GSFormGroup extends GSElement {
    }
 
    get icon() {
-      return GSAttr.get(this, 'icon', 'bi bi-info-circle-fill text-primary me-2 fs-5');
+      return GSAttr.get(this, 'icon', GSFormGroup.CSS_ICON);
    }
 
    set icon(val = '') {
