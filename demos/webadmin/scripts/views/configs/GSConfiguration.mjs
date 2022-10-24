@@ -19,35 +19,63 @@ export default class GSConfiguration extends BaseViewUI {
         return super.getTemplate('//views/configurations.html');
     }
 
+    get printerReset() {
+        return GSComponents.get('modal-reset');
+    }
+
+    get printerSetup() {
+        return GSComponents.get('modal-setup');
+    }
+
+    get validate() {
+        return GSComponents.get('modal-validate');
+    }
+
     async onLoad(e) {
-        const o = {success: false};
-        return o.success ? o.data : false;
+        const o = DEMO ? DEMO : await io.greenscreens.Hosts.list(false);
+        return o.data;
     }
 
     async onCreate(data) {
-        return true;
+        const o = DEMO ? DEMO : await io.greenscreens.Hosts.setHost(data);
+        return o.success;
     }
 
     async onUpdate(data) {
-        return true;
+        const o = DEMO ? DEMO : await io.greenscreens.Hosts.setHost(data);
+        return o.success;
     }
 
     async onRemove(data) {
-        return true;
+        const o = DEMO ? DEMO : await io.greenscreens.Hosts.unsetHost(data);
+        return o.success;
+    }
+
+    async onClone(data) {
+        const o = DEMO ? DEMO : await io.greenscreens.Hosts.cloneConfig(data);
+        return o.success;
     }
 
     resetPrinter(e) {
-        const data = e.detail.data;
-        console.log('resetPrinter');
+        const data = e.detail.data[0];
+        this.printerReset.open(data);
     }
-    
+
     setupPrinter(e) {
-        const data = e.detail.data;
-        console.log('setupPrinter');
+        const data = e.detail.data[0];
+        this.printerSetup.open(data);
     }
-    
-    validateServer(e) {
-        const data = e.detail.data;
-        console.log('validateServer');
+
+    async validateServer(e) {
+        const me = this;
+        me.waiter.open();
+        try {
+            const data = e.detail.data[0];
+            const o = DEMO ? DEMO : await io.greenscreens.Hosts.validate(data);
+            const body = `<pre>${o.msg}</pre>`;
+            me.validate.confirm('Validate', body);
+        } finally {
+            me.waiter.close();
+        }
     }
 }

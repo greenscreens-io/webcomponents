@@ -1,46 +1,22 @@
 <form slot="body" is="gs-ext-form" id="form-main" class="flex-fill" novalidate="">
     
-    <div class="row form-group m-1">
-        <div class="col-md-4 col-sm-4 col-xs-12 text-md-end ">
-            <label class="control-label " for="uuid">UUID</label>
-        </div>
-        <div class="col-md-6 col-sm-6 col-xs-11">
-            <input class="form-control" id="uuid"  name="uuid" type="text" readonly>
-        </div>
-    </div>    
+    <gs-form-group css="m-1" name="uuid" label="UUID" readonly disabled>
+    </gs-form-group>
 
-    <div class="row form-group m-1">
-        <div class="col-md-4 col-sm-4 col-xs-12 text-md-end ">
-            <label class="control-label " for="host">Host</label>
-        </div>
-        <div class="col-md-6 col-sm-6 col-xs-11">
-            <input class="form-control" id="host"  name="host" type="text" readonly>
-        </div>
-    </div>  
+    <gs-form-group css="m-1" name="host" label="Host" readonly disabled>
+    </gs-form-group>
     
-    <div class="row form-group m-1">
-        <div class="col-md-4 col-sm-4 col-xs-12 text-md-end ">
-            <label class="control-label " for="user">User</label>
-        </div>
-        <div class="col-md-6 col-sm-6 col-xs-11">
-            <input class="form-control" id="user"  name="user" type="text" readonly>
-        </div>
-    </div>      
-
-    <div class="row form-group m-1">
-        <div class="col-md-4 col-sm-4 col-xs-12 text-md-end ">
-            <label class="control-label " for="active">Status</label>
-        </div>
-        <div class="col-md-6 col-sm-6 col-xs-11">
+    <gs-form-group css="m-1" name="user" label="User" readonly disabled>
+    </gs-form-group>
+    
+    <gs-form-group css="m-1" name="active" label="Status" required
+        description="Enable or disable this account.">
+        <template>
             <select class="form-select" id="active" name="active" required>
                 <option value="true">Enabled</option>
                 <option value="false">Disabled</option>
-            </select>
-        </div>
-        <div class="col-auto ">
-            <gs-tooltip placement="right" title="Enable or disable this account."></gs-tooltip>
-            <i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
-        </div>
-    </div>
+            </select>            
+        </template>
+    </gs-form-group>
    
 </form>

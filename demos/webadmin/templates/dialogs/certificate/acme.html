@@ -1,32 +1,20 @@
-<div class="row form-group m-1">
-    <div class="col-md-4 col-sm-4 col-xs-12 text-md-end ">
-        <label class="control-label " for="acmeStatus">ACME Status</label>
-    </div>
-    <div class="col-md-6 col-sm-6 col-xs-11">
-        <select class="form-select col-md-7 col-xs-12" id="acmeStatus" name="acmeStatus">
+<gs-form-group css="m-1" name="acmeStatus" label="ACME Status"
+    description="Enable to activate auto registration. Reset will deactivate account and create a new one.">
+    <template>
+        <select class="form-select" id="acmeStatus" name="acmeStatus">
             <option value="0">Disabled</option>
             <option value="1">Enabled</option>
             <option value="2">Reset</option>
         </select>
-    </div>
-    <div class="col-auto ">
-        <gs-tooltip placement="right" title="Enable to activate auto registration. Reset will deactivate account and create a new one."></gs-tooltip>
-        <i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
-    </div>
-</div>
+    </template>
+</gs-form-group>
 
-<div class="row form-group m-1">
-    <div class="col-md-4 col-sm-4 col-xs-12 text-md-end ">
-        <label class="control-label " for="acmeRestart">Auto restart</label>
-    </div>
-    <div class="col-md-6 col-sm-6 col-xs-11">
+<gs-form-group css="m-1" name="acmeRestart" label="Auto restart"
+    description="Enable to auto restart server after certificate renewal.">
+    <template>
         <select class="form-select col-md-7 col-xs-12" id="acmeRestart" name="acmeRestart">
             <option value="false">Disabled</option>
             <option value="true">Enabled</option>
         </select>
-    </div>
-    <div class="col-auto ">
-        <gs-tooltip placement="right" title="Enable to auto restart server after certificate renewal."></gs-tooltip>
-        <i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
-    </div>
-</div>
+    </template>
+</gs-form-group>

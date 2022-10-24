@@ -50,5 +50,5 @@ export default class GSYearFormat extends HTMLElement {
     static {
         customElements.define('gs-year-format', GSYearFormat);
         Object.seal(GSYearFormat);
-    }    
+    }
 }

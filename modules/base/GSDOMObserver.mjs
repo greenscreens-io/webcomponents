@@ -155,7 +155,7 @@ export default class GSDOMObserver extends MutationObserver {
     static registerFilter(filter, callback, forRemove = false) {
 
         if (!GSDOMObserver.#isFunctions(filter, callback)) return false;
-        
+
         GSDOMObserver.#getFilter(forRemove).set(filter, callback);
 
         // initially loaded does not trigger 

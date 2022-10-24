@@ -104,9 +104,9 @@ export default class GSComponents {
      * @returns {Array<GSElement>}
      */
     static findAll(name = '', flat = true, shadow = true) {
-        
+
         let result = Array.from(GSComponents.#cache);
-        if (name) result = result.filter(el => el && GSDOM.matches(el, name));       
+        if (name) result = result.filter(el => el && GSDOM.matches(el, name));
         if (!flat) result = result.filter(el => el.shadowRoot);
         if (!shadow) result = result.filter(el => !el.shadowRoot);
 

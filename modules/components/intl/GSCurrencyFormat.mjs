@@ -22,7 +22,7 @@ import GSDOM from '../../base/GSDOM.mjs';
 export default class GSCurrencyFormat extends HTMLElement {
 
     static observedAttributes = ['value', 'locale', 'currency'];
-    
+
     #id = 0;
 
     connectedCallback() {
@@ -44,7 +44,7 @@ export default class GSCurrencyFormat extends HTMLElement {
 
     get #options() {
         const me = this;
-        return Object.apply(me.dataset, { style: 'currency', currency: me.currency});
+        return Object.apply(me.dataset, { style: 'currency', currency: me.currency });
     }
 
     get format() {
@@ -79,5 +79,5 @@ export default class GSCurrencyFormat extends HTMLElement {
     static {
         customElements.define('gs-currency-format', GSCurrencyFormat);
         Object.seal(GSCurrencyFormat);
-    }    
+    }
 }

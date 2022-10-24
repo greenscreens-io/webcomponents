@@ -93,12 +93,12 @@ export default class GSDOM {
 	  * @returns {boolean}
 	  */
 	static isElement(el, type) {
-		
+
 		const isArgs = type && el;
 		if (!isArgs) return false;
 
-		const isStr =  GSUtil.isString(type);
-		
+		const isStr = GSUtil.isString(type);
+
 		if (!isStr) return el instanceof type;
 
 		const ownClazz = customElements.get(type.toLowerCase());
@@ -109,7 +109,7 @@ export default class GSDOM {
 			if (pel?.constructor?.name === type) return el;
 		}
 
-		if (type.toUpperCase() === el.tagName) return el;	
+		if (type.toUpperCase() === el.tagName) return el;
 
 		return false;
 	}
@@ -161,9 +161,9 @@ export default class GSDOM {
 		if (!el?.clazzName) return false;
 		//if (el?.tagName?.indexOf('GS-') === 0) return true;
 		const it = GSDOM.inheritance(el);
-        for (let v of it) {
+		for (let v of it) {
 			if (!v) break;
-            if (v?.clazzName === 'GSElement') return true;
+			if (v?.clazzName === 'GSElement') return true;
 		}
 		return false;
 	}
@@ -381,11 +381,11 @@ export default class GSDOM {
 	 * @param {string} qry CSS query
 	 * @returns {HTMLElement} 
 	 */
-	static query(el, qry) {
-		if (typeof el === 'string') return GSDOM.query(document.body, qry);
+	static query(el, qry, all = false, shadow = true) {
+		if (typeof el === 'string') return GSDOM.query(document.body, el, all, shadow);
 		if (!(el && qry)) return null;
 		if (GSDOM.matches(el, qry)) return el;
-		const it = GSDOM.walk(el, false, false);
+		const it = GSDOM.walk(el, false, all, shadow);
 		for (let o of it) {
 			if (GSDOM.matches(o, qry)) return o;
 		}
@@ -410,11 +410,11 @@ export default class GSDOM {
 	 * @param {string} qry CSS query
 	 * @returns {Array<HTMLElement>}
 	 */
-	static queryAll(el, qry) {
-		if (typeof el === 'string') return GSDOM.queryAll(document.body, qry);
+	static queryAll(el, qry, all = false, shadow = true) {
+		if (typeof el === 'string') return GSDOM.queryAll(document.body, el, all, shadow);
 		const res = [];
 		if (!(el && qry)) return res;
-		const it = GSDOM.walk(el, false, false);
+		const it = GSDOM.walk(el, false, all, shadow);
 		for (let o of it) {
 			if (GSDOM.matches(o, qry)) res.push(o);
 		}
@@ -448,16 +448,26 @@ export default class GSDOM {
 	/**
 	 * Safe way to toggle CSS class on element, multipel classes are supported in space separated string list
 	 * @param {HTMLElement} el 
+	 * @param {*} val list of css classes in space separated string
 	 * @param {boolean} sts True to add, false to remove
-	 * @param {*} val list of css classes in spaec separated string
 	 * @returns {boolean}
 	 */
-	static toggleClass(el, sts = true, val = 'd-none') {
+	static toggleClass(el, val, sts = true) {
 		if (!GSDOM.isHTMLElement(el)) return false;
 		if (!val || val.trim().length == 0) return false;
 		val = val.split(' ').filter(v => v && v.trim().length > 0);
 		if (sts === null) return val.forEach(v => el.classList.toggle(v));
 		sts ? el.classList.add.apply(el.classList, val) : el.classList.remove.apply(el.classList, val);
+		return true;
+	}
+
+	/**
+	 * Toggle element visibility
+	 * @param {HTMLElement} el 
+	 * @param {boolean} sts 
+	 */
+	static toggle(el, sts = true) {
+		return GSDOM.toggleClass(el, 'd-none', sts);
 	}
 
 	/**

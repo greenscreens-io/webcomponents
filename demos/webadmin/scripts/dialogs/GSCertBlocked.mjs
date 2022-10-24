@@ -6,9 +6,9 @@
  * A module loading GSCertBlocked class
  * @module dialogs/GSCertBlocked
  */
-import GSDialog from './GSDialog.mjs';
+import GSAdminDialog from './GSAdminDialog.mjs';
 
-export default class GSCertBlocked extends GSDialog {
+export default class GSCertBlocked extends GSAdminDialog {
 
     static {
         customElements.define('gs-admin-dialog-certblocked', GSCertBlocked);
@@ -24,16 +24,12 @@ export default class GSCertBlocked extends GSDialog {
     }
 
     async onOpen() {
-        const me = this;
-        const o = {success: true, data : {}};
-        if (!o.success) return me.inform(false, o.msg);
-        return { list : o.msg};
+        const o = DEMO ? DEMO : await io.greenscreens.Server.getBlocked();
+        return { list: o.msg };
     }
 
     async onData(data) {
-        const me = this;
-        const o = {success: true, data : {}};
-        me.inform(o.success, o.success ? 'Data saved!' : o.msg);
+        const o = DEMO ? DEMO : await io.greenscreens.Server.setBlocked(data.list);
         return o.success;
-    }    
+    }
 }

@@ -1,7 +1,7 @@
 <div class="container-fluid ms-4">
     <div class="row border shadow-sm ms-4 ps-4 py-4 bg-light border shadow-sm  mb-4">
         <div class="col">
-            <h4 class="text-muted">Live Terminal Sessions</h4>
+            <h4 class="text-muted user-select-none">Live Terminal Sessions</h4>
         </div>
     </div>
 
@@ -91,7 +91,7 @@
                 </gs-store>
                 <gs-context slot="extra" target="tbody tr">
                     <gs-item name="Details" action="details"></gs-item>
-                    <gs-item name="Message" action="messade"></gs-item>
+                    <gs-item name="Message" action="message"></gs-item>
                     <gs-item name="Logging" action="logging"></gs-item>
                     <gs-item></gs-item>
                     <gs-item name="Kill" action="kill"></gs-item>
@@ -99,10 +99,10 @@
                 <gs-pager slot="extra" previous="&laquo;" next="&raquo;" firstlast="false" pages="0"></gs-pager>
             </gs-table>
 
-            <gs-modal id="modal-main" visible="false" css-body="p-0" css-header = "p-3 dialog-title" css-title = "fs-5 fw-bold">
+            <gs-dialog id="modal-main" visible="false" css-body="p-0" css-header="p-3 dialog-title" closable="false" button-cancel="Close" button-align="center">
                 <h4 slot="title">Terminal Session</h4>
                 <gs-template slot="body" href="//forms/workstation.html"></gs-template>
-            </gs-modal>
+            </gs-dialog>
 
         </div>
 

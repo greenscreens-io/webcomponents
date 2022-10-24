@@ -6,9 +6,9 @@
  * A module loading GSCertImport class
  * @module dialogs/GSCertImport
  */
-import GSDialog from './GSDialog.mjs';
+import GSAdminDialog from './GSAdminDialog.mjs';
 
-export default class GSCertImport extends GSDialog {
+export default class GSCertImport extends GSAdminDialog {
 
     static {
         customElements.define('gs-admin-dialog-certimport', GSCertImport);
@@ -17,9 +17,7 @@ export default class GSCertImport extends GSDialog {
 
     onReady() {
         super.onReady();
-        const me = this;
-        me.large();
-
+        if (this.large) this.large();
     }
 
     get dialogTemplate() {
@@ -31,11 +29,9 @@ export default class GSCertImport extends GSDialog {
     }
 
     async onData(data) {
-        const me = this;
-        const o = {success: true, data : {}};
-
-        me.inform(o.success, o.success ? 'Data saved!' : o.msg);
+        const o = DEMO ? DEMO : io.greenscreens.Certificate.setFromPEM(data.rootCAPub, data.rootCAPriv,
+            data.serverPub, data.serverPriv, data.rootPass, data.serverPass);
         return o.success;
-    }    
+    }
 
 }

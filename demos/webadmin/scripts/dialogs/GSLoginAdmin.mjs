@@ -6,9 +6,9 @@
  * A module loading GSLoginAdmin class
  * @module dialogs/GSLoginAdmin
  */
-import GSDialog from './GSDialog.mjs';
+import GSAdminDialog from './GSAdminDialog.mjs';
 
-export default class GSLoginAdmin extends GSDialog {
+export default class GSLoginAdmin extends GSAdminDialog {
 
     static {
         customElements.define('gs-admin-dialog-loginadm', GSLoginAdmin);
@@ -24,18 +24,14 @@ export default class GSLoginAdmin extends GSDialog {
     }
 
     async onOpen() {
-        const me = this;
-        const o = {success: true, data : {}};
-        if (!o.success) return me.inform(false, o.msg);
-
+        const o = DEMO ? DEMO : await io.greenscreens.Server.getConfig();
+        delete o.data.password;
         return o.data;
     }
 
     async onData(data) {
-        const me = this;
-        const o = {success: true, data : {}};
-        me.inform(o.success, o.success ? 'Data saved!' : o.msg);
+        const o = DEMO ? DEMO : await io.greenscreens.Session.newAuth(data);
         return o.success;
-    }    
+    }
 
 }

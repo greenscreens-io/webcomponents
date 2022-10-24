@@ -25,8 +25,25 @@ export default class GSOtp extends BaseViewUI {
     }
 
     async onLoad() {
-        const o = {success: false};
-        return o.success ? o.data : false;
+        const me = this;
+        const filter = me.filter;
+        const o = DEMO ? DEMO : await io.greenscreens.OAuth.list(me.store.page - 1, me.store.limit, filter);
+        return o.data;
     }
 
+    async onUpdate(data) {
+        const o = DEMO ? DEMO : await io.greenscreens.OAuth.update(data.id, data.active);
+        return o.success;
+    }
+
+    async onRemove(data) {
+        const o = DEMO ? DEMO : await io.greenscreens.OAuth.remove(data.id);
+        return o.success;
+    }
+
+    toggle(e) {
+        const data = e.detail.data[0];
+        data.active = !data.active;
+        this.onUpdate(data);
+    }
 }

@@ -1,5 +1,5 @@
 
-import './GSDialog.mjs';
+import './GSAdminDialog.mjs';
 import './GSAbout.mjs';
 import './GSCertBlocked.mjs';
 import './GSCertClient.mjs';
@@ -12,3 +12,8 @@ import './GSRegisterBiometrics.mjs';
 import './GSRegisterOtp.mjs';
 import './GSNetwork.mjs';
 import './GSSystem.mjs';
+
+import './GSFilter.mjs';
+import './GSService.mjs';
+import './GSPrinterReset.mjs';
+import './GSPrinterSetup.mjs';

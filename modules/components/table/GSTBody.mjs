@@ -92,9 +92,10 @@ export default class GSTBody extends HTMLTableSectionElement {
         });
 
         if (data.length === 0 && me.table.noDataText) {
-            rows.push(me.#emptyRow(headers.length));
+            const cspan = headers.map(o => o.colspan ? parseInt(o.colspan) | 1 : 1).reduce((a, b) => a + b, 0);
+            rows.push(me.#emptyRow(cspan));
         }
-        
+
 
         GSDOM.setHTML(me, rows.join(''));
         GSDOM.queryAll(me, 'tr').forEach(el => { if (el.innerText.trim().length === 0) el.remove(); });
@@ -132,8 +133,9 @@ export default class GSTBody extends HTMLTableSectionElement {
         const map = hdr.map?.filter(o => o[0] === '' + val);
         val = map?.length > 0 ? map[0][1] || val : val;
         val = me.#format(hdr, val);
+        const cspan = hdr.colspan ? `colspan="${hdr.colspan}"` : '';
         // todo format data 
-        return `<td class="${me.cssCell} ${hdr.css}">${val?.toString() || '&nbsp;'}</td>`;
+        return `<td class="${me.cssCell} ${hdr.css}" ${cspan}>${val?.toString() || '&nbsp;'}</td>`;
     }
 
     #format(hdr, val) {
@@ -143,20 +145,20 @@ export default class GSTBody extends HTMLTableSectionElement {
         const type = this.#toType(hdr, val);
         const locale = hdr.locale || navigator.locale;
 
-        switch(type) {
-            case 'timestamp' : 
-            case 'date' : 
+        switch (type) {
+            case 'timestamp':
+            case 'date':
                 const fmt = hdr.format == 'true' ? undefined : hdr.format;
                 return val && val > 0 ? new GSDate(val).format(fmt, locale) : val;
-            case 'string' : 
-            case 'boolean' : 
-            case 'number' : 
+            case 'string':
+            case 'boolean':
+            case 'number':
                 break;
-            case 'currency' : 
-                const opt = { style: 'currency', currency: hdr.currency};
+            case 'currency':
+                const opt = { style: 'currency', currency: hdr.currency };
                 return new Intl.NumberFormat(locale, opt).format(val);
         }
-        
+
         return val;
     }
 
@@ -204,7 +206,7 @@ export default class GSTBody extends HTMLTableSectionElement {
 
         const data = [];
         GSDOM.queryAll(me, 'tr[selected=true]').forEach(el => data.push(parseInt(el.dataset.index)));
-        GSEvent.send(me, 'select', { data:data, evt : evt}, true);
+        GSEvent.send(me, 'select', { data: data, evt: evt }, true);
     }
 
 }

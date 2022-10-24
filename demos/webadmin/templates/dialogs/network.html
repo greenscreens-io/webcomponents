@@ -4,59 +4,29 @@
         <gs-alert css="alert-danger" css-active="fade" message="Server restart is required for a change to take effect!" dismissable="false"></gs-alert>
     </div>
 
-    <div class="row form-group m-1">
-        <div class="col-md-4 col-sm-4 col-xs-12 text-md-end ">
-            <label class="control-label " for="port">Http Port</label>
-        </div>
-        <div class="col-md-6 col-sm-6 col-xs-11">
-            <input class="form-control" id="port"  name="port" type="text" autocomplete="off" required>
-        </div>
-        <div class="col-auto ">
-            <gs-tooltip placement="right" title="Unsecured network port on which server will listen."></gs-tooltip>
-            <i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
-        </div>
-    </div>
+    <gs-form-group css="m-1" name="port" label="Http Port" required
+        type="number" min="1" max="65535"
+        description="Unsecured network port on which server will listen.">
+    </gs-form-group> 
 
-    <div class="row form-group m-1">
-        <div class="col-md-4 col-sm-4 col-xs-12 text-md-end ">
-            <label class="control-label " for="sslPort">Https Port</label>
-        </div>
-        <div class="col-md-6 col-sm-6 col-xs-11">
-            <input class="form-control" id="sslPort"  name="sslPort" type="text" autocomplete="off" required>
-        </div>
-        <div class="col-auto ">
-            <gs-tooltip placement="right" title="Secure network port on which server will listen."></gs-tooltip>
-            <i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
-        </div>
-    </div>
+    <gs-form-group css="m-1" name="sslPort" label="Https Port" required
+        type="number" min="1" max="65535"
+        description="Secure network port on which server will listen.">
+    </gs-form-group> 
     
-    <div class="row form-group m-1">
-        <div class="col-md-4 col-sm-4 col-xs-12 text-md-end ">
-            <label class="control-label " for="intf">Interface</label>
-        </div>
-        <div class="col-md-6 col-sm-6 col-xs-11">
-            <input class="form-control" id="intf"  name="intf" type="text" autocomplete="off" pattern="^((25[0-5]|(2[0-4]|1\d|[1-9]|)\d)\.?\b){4}$" required>
-        </div>
-        <div class="col-auto ">
-            <gs-tooltip placement="right" title="Enter IP address on which server will listen for connections."></gs-tooltip>
-            <i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
-        </div>
-    </div>    
+    <gs-form-group css="m-1" name="intf" label="Interface" autocomplete="off" required
+        pattern="^((25[0-5]|(2[0-4]|1\d|[1-9]|)\d)\.?\b){4}$"
+        description="Enter IP address on which server will listen for connections.">
+    </gs-form-group> 
 
-    <div class="row form-group m-1">
-        <div class="col-md-4 col-sm-4 col-xs-12 text-md-end ">
-            <label class="control-label " for="restart">Restart Server</label>
-        </div>
-        <div class="col-md-6 col-sm-6 col-xs-11">
+    <gs-form-group css="m-1" name="restart" label="Restart Server" autocomplete="off" required
+        description="Restart server immediately. If restart selected, session will logout. Active web terminal sessions will be terminated.">
+        <template>
             <select class="form-select" id="restart" name="restart" required>
                 <option selected value="0">No</option>
                 <option value="1">Yes</option>
             </select>
-        </div>
-        <div class="col-auto ">
-            <gs-tooltip placement="right" title="Restart server immediately. If restart selected, session will logout. Active web terminal sessions will be terminated."></gs-tooltip>
-            <i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
-        </div>
-    </div>
+        </template>
+    </gs-form-group> 
     
 </form>

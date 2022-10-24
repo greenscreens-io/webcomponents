@@ -21,13 +21,15 @@ export default class GSUtil {
 
 	static isNumber = (n) => { return !isNaN(parseFloat(n)) && isFinite(n); };
 
+	static isBool = (v) => { return typeof v === 'boolean' || v instanceof Boolean };
+
 	static isString = value => typeof value === 'string';
 
 	static isNull = value => value === null || value === undefined;
 
 	static toBinary = (value = 0) => value.toString(2);
 
-	static asNum = (val = 0) => GSUtil.isNumber(val) ? parseFloat(val) : 0;
+	static asNum = (val = 0, dft = 0) => GSUtil.isNumber(val) ? parseFloat(val) : dft;
 
 	static asBool = (val = false) => val.toString().trim().toLowerCase() === 'true';
 
@@ -225,7 +227,7 @@ export default class GSUtil {
 			a.href = url;
 			a.download = name;
 			a.click();
-	
+
 			await GSUtil.timeout(2000);
 
 		} finally {

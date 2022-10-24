@@ -1,42 +1,16 @@
 <form slot="body" is="gs-ext-form" id="form-main" class="flex-fill" novalidate="">
-    
-    <div class="row form-group m-1">
-        <div class="col-md-4 col-sm-4 col-xs-12 text-md-end ">
-            <label class="control-label " for="module">Module</label>
-        </div>
-        <div class="col-md-6 col-sm-6 col-xs-11">
-            <input type="text" class="form-select" id="module" name="module" readonly>
-        </div>
-        <div class="col-auto ">
-            <gs-tooltip placement="right" title="Service module"></gs-tooltip>
-            <i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
-        </div>
-    </div>
 
-    <div class="row form-group m-1">
-        <div class="col-md-4 col-sm-4 col-xs-12 text-md-end ">
-            <label class="control-label " for="property">Property</label>
-        </div>
-        <div class="col-md-6 col-sm-6 col-xs-11">
-            <input type="text" class="form-select" id="property" name="property" readonly>
-        </div>
-        <div class="col-auto ">
-            <gs-tooltip placement="right" title="Service property"></gs-tooltip>
-            <i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
-        </div>
-    </div>
-    
-    <div class="row form-group m-1">
-        <div class="col-md-4 col-sm-4 col-xs-12 text-md-end ">
-            <label class="control-label " for="value">Value</label>
-        </div>
-        <div class="col-md-6 col-sm-6 col-xs-11">
-            <input type="number" class="form-select" id="value" name="value"  min="0" max="10000000" >
-        </div>
-        <div class="col-auto ">
-            <gs-tooltip placement="right" title="Service value"></gs-tooltip>
-            <i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
-        </div>
-    </div>    
+    <gs-form-group css="m-1" name="module" label="Module" readonly
+        description="Service module">
+    </gs-form-group>
 
-    </form>
+    <gs-form-group css="m-1" name="property" label="Property" readonly
+        description="Service property">
+    </gs-form-group>
+    
+    <gs-form-group css="m-1" name="value" label="Value"
+        type="number" min="0" max="10000000" 
+        description="Service value">
+    </gs-form-group>
+
+</form>

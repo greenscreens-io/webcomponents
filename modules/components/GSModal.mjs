@@ -8,7 +8,6 @@
  */
 
 import GSAttr from "../base/GSAttr.mjs";
-import GSComponents from "../base/GSComponents.mjs";
 import GSDOM from "../base/GSDOM.mjs";
 import GSElement from "../base/GSElement.mjs";
 import GSEvent from "../base/GSEvent.mjs";
@@ -85,8 +84,8 @@ export default class GSModal extends GSElement {
     if (processForms) {
       const invalid = forms.filter(form => form.checkValidity() == false);
       invalid.forEach(form => me.#reportForm(form));
-      if (invalid.length === 0) forms.forEach(form => me.#submitForm(form) );
-      
+      if (invalid.length === 0) forms.forEach(form => me.#submitForm(form));
+
       const els = invalid.map(form => GSDOM.queryAll(form, 'textarea, input, select').filter(el => el.checkValidity() == false));
       if (els.length > 0) GSEvent.send(me, 'error', { type: 'modal', data: els }, true, true, true);
       return;
@@ -102,8 +101,8 @@ export default class GSModal extends GSElement {
 
   #submitForm(form) {
     try {
-      GSEvent.send(form, 'action', { action: 'submit'});
-    } catch(e) {
+      GSEvent.send(form, 'action', { action: 'submit' });
+    } catch (e) {
       console.log(e);
     }
   }
@@ -111,7 +110,7 @@ export default class GSModal extends GSElement {
   #reportForm(form) {
     try {
       form.reportValidity();
-    } catch(e) {
+    } catch (e) {
       console.log(e);
     }
   }
@@ -126,6 +125,14 @@ export default class GSModal extends GSElement {
     const isOk = GSModal.#actions.includes(action);
     if (isOk) GSEvent.prevent(e);
     return isOk ? action : null;
+  }
+
+  get #size() {
+    switch (this.size) {
+      case 'extra' : return 'modal-xl';
+      case 'large' : return 'modal-lg';
+    }
+    return '';
   }
 
   #setSize(size = '') {
@@ -250,11 +257,11 @@ export default class GSModal extends GSElement {
 
   #update() {
     const me = this;
-    GSDOM.toggleClass(me.#buttonOkEl, !me.closable);
-    GSDOM.toggleClass(me.#buttonCancelEl, !me.cancelable);
+    GSDOM.toggle(me.#buttonOkEl, !me.closable);
+    GSDOM.toggle(me.#buttonCancelEl, !me.cancelable);
     const css = `justify-content-${me.align}`;
     const footer = me.query('.modal-footer');
-    GSDOM.toggleClass(footer, true, css);
+    GSDOM.toggleClass(footer, css, true);
   }
 
   /**
@@ -270,6 +277,14 @@ export default class GSModal extends GSElement {
     return el;
   }
 
+
+  get size() {
+    return GSAttr.get(this, 'size', '');
+  }
+
+  set size(val = '') {
+    GSAttr.set(this, 'size', val);
+  }
 
   get title() {
     return this.#findSlotOrEl('title', '.modal-title');
@@ -317,11 +332,11 @@ export default class GSModal extends GSElement {
    * Align buttons start | end | center
    */
   get align() {
-    return GSAttr.get(this, 'align', 'end');
+    return GSAttr.get(this, 'button-align', 'end');
   }
 
   set align(val = 'end') {
-    GSAttr.set(this, 'align', val);
+    GSAttr.set(this, 'button-align', val);
     this.#update();
   }
 
@@ -403,9 +418,9 @@ export default class GSModal extends GSElement {
     const me = this;
     return `
          <div class="modal d-none fade ${me.cssModal}">
-         <div class="modal-dialog modal-dialog-centered">
+         <div class="modal-dialog modal-dialog-centered ${me.#size}">
            <div class="modal-content ${me.cssContent}">
-             <div class="modal-header border-0 ${me.cssHeader}">
+             <div class="modal-header border-0 user-select-none ${me.cssHeader}">
                <div class="modal-title ${me.cssTitle}">
                  <slot name="title"></slot>
                </div>
@@ -413,7 +428,7 @@ export default class GSModal extends GSElement {
              <div class="modal-body ${me.cssBody}">
                <slot name="body"></slot>
              </div>
-             <div class="modal-footer border-0 justify-content-${me.align} ${me.cssFooter}">
+             <div class="modal-footer border-0 user-select-none justify-content-${me.align} ${me.cssFooter}">
                <button class="btn ${me.cssButtonCancel} modal-cancel" data-action="cancel">${me.buttonCancel}</button>
                <button class="btn ${me.cssButtonOk} modal-ok" data-action="ok">${me.buttonOk}</button>
              </div>
@@ -424,5 +439,3 @@ export default class GSModal extends GSElement {
      `
   }
 }
-
-

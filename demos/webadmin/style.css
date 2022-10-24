@@ -3,6 +3,23 @@
     --bs-body-bg-rgb: 247, 247, 247;
 }
 
+dialog {
+    min-width: 470px;
+}
+
+dialog::backdrop {
+    backdrop-filter: blur(4px);
+    /*
+    background: repeating-linear-gradient(
+      45deg,
+      rgba(0, 0, 0, 0.2),
+      rgba(0, 0, 0, 0.2) 1px,
+      rgba(0, 0, 0, 0.3) 1px,
+      rgba(0, 0, 0, 0.3) 20px
+    );
+    */
+}
+
 .offcanvas,
 .offcanvas-xxl,
 .offcanvas-xl,

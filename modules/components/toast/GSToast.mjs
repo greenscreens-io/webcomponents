@@ -34,8 +34,8 @@ export default class GSToast extends GSElement {
     const me = this;
     if (name === 'css') {
       const el = me.query('.toast');
-      GSDOM.toggleClass(el, false, oldValue);
-      GSDOM.toggleClass(el, true, newValue);
+      GSDOM.toggleClass(el, oldValue, false);
+      GSDOM.toggleClass(el, newValue, true);
     }
 
   }
@@ -77,7 +77,7 @@ export default class GSToast extends GSElement {
   open() {
     const me = this;
     requestAnimationFrame(async () => {
-      GSDOM.toggleClass(this.#toast, true, 'show');
+      GSDOM.toggleClass(this.#toast, 'show', true);
       if (me.timeout <= 0) return;
       await GSUtil.timeout(me.timeout * 1000);
       me.close();
@@ -93,7 +93,7 @@ export default class GSToast extends GSElement {
   }
 
   async #dismiss() {
-    GSDOM.toggleClass(this.#toast, false, 'show');
+    GSDOM.toggleClass(this.#toast, 'show', false);
     await GSUtil.timeout(GSDOM.SPEED);
     return this.remove();
   }

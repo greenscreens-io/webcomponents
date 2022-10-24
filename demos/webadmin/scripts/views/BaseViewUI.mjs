@@ -10,6 +10,7 @@ import GSDOM from "../../../../modules/base/GSDOM.mjs";
 import GSElement from "../../../../modules/base/GSElement.mjs";
 import GSFunction from "../../../../modules/base/GSFunction.mjs";
 import GSUtil from "../../../../modules/base/GSUtil.mjs";
+import Utils from "../Utils.mjs";
 
 /**
  * BaseUI handles basic screen data view (used by other UI elements)
@@ -29,7 +30,6 @@ export default class BaseViewUI extends GSElement {
         me.attachEvent(me, 'action', me.#onAction.bind(me));
         me.attachEvent(me.#table, 'filter', e => me.refresh());
         requestAnimationFrame(() => me.refresh());
-
     }
 
     /**
@@ -60,8 +60,12 @@ export default class BaseViewUI extends GSElement {
         return this.query('#table-main');
     }
 
-    get #form() {
-        return GSDOM.query(document.body, '#form-main');
+    get form() {
+        return GSDOM.query(this.modal, '#form-main');
+    }
+
+    get waiter() {
+        return GSComponents.get('modal-waiter');
     }
 
     /**
@@ -72,22 +76,28 @@ export default class BaseViewUI extends GSElement {
     }
 
     /**
-     * UI Notificator
-     */
-    get notify() {
-        return GSComponents.get('notification');
-    }
-
-    /**
      * Listener for lower componets "action" events
      * wihch might come from table fitlering, table context menut etc.
      * Used to handle context menu options. 
      * Action from context menu is mapped to this class function.
      * @param {Event} e 
      */
-    #onAction(e) {
-        const action = e.detail.action;
-        if (GSFunction.isFunction(this[action])) this[action](e);
+    async #onAction(e) {
+        const me = this;
+        if (!e.detail.action) return;
+        try {
+            const action = GSUtil.capitalizeAttr(e.detail.action);
+            const fn = me[action];
+            if (GSFunction.isFunction(fn)) {
+                if (GSFunction.isFunctionAsync(fn)) {
+                    await me[action](e);
+                } else {
+                    me[action](e);
+                }
+            }
+        } catch (e) {
+            Utils.handleError(e);
+        }
     }
 
     /**
@@ -108,24 +118,22 @@ export default class BaseViewUI extends GSElement {
     async clone(e) {
 
         const me = this;
-        const data = e.detail.data.pop();
+        const data = e.detail.data[0];
         if (!data) return;
 
         const rec = Object.assign({}, data);
-        rec.name = `${data.name} - ${Date.now()}`;
 
         try {
 
-            const sts = await me.onCreate(rec);
+            const sts = await me.onClone(rec);
             if (!sts) throw new Error('Record not cloned!');
 
             // update locally to refresh ui
             me.store.setData(rec, true);
-            me.notify.secondary('', 'Record cloned!');
-
+            Utils.notify.secondary('', 'Record cloned!');
+            me.refresh();
         } catch (e) {
-            console.log(e);
-            me.notify.danger('', e.message || e.toString())
+            Utils.handleError(e);
         }
 
     }
@@ -138,7 +146,7 @@ export default class BaseViewUI extends GSElement {
     async remove(e) {
 
         const me = this;
-        const data = e.detail.data.pop();
+        const data = e.detail.data[0];
         if (!data) return;
 
         try {
@@ -147,13 +155,12 @@ export default class BaseViewUI extends GSElement {
             if (!sts) throw new Error('Record not removed!');
 
             // update locally to refresh ui
-            const subset = me.store.data.filter(o => o[me.recID] !== data[me.recID]);
+            const subset = me.store.data.filter(o => !o.hasOwnProperty(me.recID) || (o[me.recID] !== data[me.recID]));
             me.store.setData(subset);
-            me.notify.danger('', 'Record removed!');
+            Utils.notify.danger('', 'Record removed!');
 
         } catch (e) {
-            console.log(e);
-            me.notify.danger('', e.message || e.toString())
+            Utils.handleError(e);
         }
 
     }
@@ -166,27 +173,25 @@ export default class BaseViewUI extends GSElement {
     async details(e) {
 
         const me = this;
-        const data = e.detail.data.pop();
+        const data = await me.onDetails(e.detail.data[0]);
         if (!data) return;
 
-        me.#form?.reset();
-        GSDOM.fromObject(me.#form, data);
-        me.modal.open();
+        me.form?.reset();
+        GSDOM.fromObject(me.form, data);
+        me.modal.open(data);
         const result = await me.modal.waitEvent('data');
 
         try {
-
             const sts = await me.onUpdate(result.data);
             if (!sts) throw new Error('Record not updated!');
 
             // update locally to refresh ui
             Object.assign(data, result.data);
             me.store.reload();
-            me.notify.warn('', 'Record updated!');
+            Utils.notify.warn('', 'Record updated!');
 
         } catch (e) {
-            console.log(e);
-            me.notify.danger('', e.message || e.toString())
+            Utils.handleError(e);
         }
 
     }
@@ -200,23 +205,21 @@ export default class BaseViewUI extends GSElement {
 
         const me = this;
 
-        me.#form?.reset();
+        me.form?.reset();
         me.modal.open();
         const result = await me.modal.waitEvent('data');
 
         try {
-
             const sts = await me.onCreate(result.data);
             if (!sts) throw new Error('Record not created!');
 
             // update locally to refresh ui
-            me.store.data.push(result.data);
-            me.store.reload();
-            me.notify.primary('', 'Record created!');
+            Utils.notify.primary('', 'Record created!');
+
+            me.refresh();
 
         } catch (e) {
-            console.log(e);
-            me.notify.danger('', e.message || e.toString())
+            Utils.handleError(e);
         }
 
     }
@@ -234,13 +237,15 @@ export default class BaseViewUI extends GSElement {
         if (!me.store) return;
 
         requestAnimationFrame(() => {
-            me.store.clear();
-            if (data) {
-                me.store.setData(data);
-                me.store.firstPage();
-            } else {
-                // demo data
-                me.store.reload();
+            try {
+                if (Array.isArray(data) && data.length > 0) {
+                    me.store.setData(data);
+                    // me.store.firstPage();
+                } else {
+                    me.store.reload();
+                }
+            } catch (e) {
+                console.log(e);
             }
         });
 
@@ -255,6 +260,15 @@ export default class BaseViewUI extends GSElement {
     }
 
     /**
+     * Handle data befoer opening the modal form
+     * @param {*} data 
+     * @returns 
+     */
+    async onDetails(data) {
+        return data;
+    }
+
+    /**
      * Generic function to be overriden by inherited class
      * Used to handle new record received from popup form.
      * @param {Object} data 
@@ -262,6 +276,17 @@ export default class BaseViewUI extends GSElement {
      * @throws {Error}
      */
     async onCreate(data) {
+        return true;
+    }
+
+    /**
+     * Generic function to be overriden by inherited class
+     * Used to handle new record cloned from existing one.
+     * @param {Object} data 
+     * @returns {boolean}
+     * @throws {Error}
+     */
+    async onClone(data) {
         return true;
     }
 

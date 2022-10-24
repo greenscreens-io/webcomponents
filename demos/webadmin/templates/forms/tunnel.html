@@ -1,91 +1,49 @@
 <form slot="body" is="gs-ext-form" id="form-main" class="flex-fill" novalidate="">
     
-    <div class="row form-group m-1">
-        <div class="col-md-4 col-sm-4 col-xs-12 text-md-end ">
-            <label class="control-label " for="enabled">Status</label>
-        </div>
-        <div class="col-md-6 col-sm-6 col-xs-11">
+    <gs-form-group css="m-1" name="enabled" label="Status" required     
+        description="Enable or disable network tunnel.">
+        <template>
             <select class="form-select" id="enabled" name="enabled" required>
                 <option value="true">Enabled</option>
                 <option value="false">Disabled</option>
-            </select>
-        </div>
-        <div class="col-auto ">
-            <gs-tooltip placement="right" title="Enable or disable network tunnel"></gs-tooltip>
-            <i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
-        </div>
-    </div>
+            </select>            
+        </template>
+    </gs-form-group>
 
-    <div class="row form-group m-1">
-        <div class="col-md-4 col-sm-4 col-xs-12 text-md-end ">
-            <label class="control-label " for="type">Type</label>
-        </div>
-        <div class="col-md-6 col-sm-6 col-xs-11">
+    <gs-form-group css="m-1" name="type" label="Type" required     
+        description="Select network tunnel type.">
+        <template>
             <select class="form-select" id="type" name="type" required>
                 <option value="0">SOCK5</option>
                 <option selected value="2">SSH</option>
                 <option value="1">VPN</option>
-            </select>
-        </div>
-        <div class="col-auto ">
-            <gs-tooltip placement="right" title="Select network tunnel type."></gs-tooltip>
-            <i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
-        </div>
-    </div>
+            </select>            
+        </template>
+    </gs-form-group>
     
-    <div class="row form-group m-1">
-        <div class="col-md-4 col-sm-4 col-xs-12 text-md-end ">
-            <label class="control-label " for="unix">Protocol</label>
-        </div>
-        <div class="col-md-6 col-sm-6 col-xs-11">
+    <gs-form-group css="m-1" name="unix" label="Protocol" required     
+        description="Select network connection type.">
+        <template>
             <select class="form-select" id="unix" name="unix" required>
                 <option selected value="false">AF_TCP</option>
                 <option value="true">AF_UNIX</option>
-            </select>
-        </div>
-        <div class="col-auto ">
-            <gs-tooltip placement="right" title="Select network connection type."></gs-tooltip>
-            <i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
-        </div>
-    </div>    
+            </select>            
+        </template>
+    </gs-form-group>  
     
-    <div class="row form-group m-1">
-        <div class="col-md-4 col-sm-4 col-xs-12 text-md-end ">
-            <label class="control-label " for="name">Name</label>
-        </div>
-        <div class="col-md-6 col-sm-6 col-xs-11">
-            <input class="form-control" id="name"  name="name" type="text" required>
-        </div>
-        <div class="col-auto ">
-            <gs-tooltip placement="right" title="Configuration name. Used it inside host settings as a reference."></gs-tooltip>
-            <i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
-        </div>        
-    </div>  
+    <gs-form-group css="m-1" name="name" label="Name" required     
+        description="Configuration name. Used it inside host settings as a reference.">
+    </gs-form-group>    
     
-    <div class="row form-group m-1">
-        <div class="col-md-4 col-sm-4 col-xs-12 text-md-end ">
-            <label class="control-label " for="ip">IP Address</label>
-        </div>
-        <div class="col-md-6 col-sm-6 col-xs-11">
-            <input class="form-control" id="ip"  name="ip" type="text" pattern="^((25[0-5]|(2[0-4]|1\d|[1-9]|)\d)\.?\b){4}$" required >
-        </div>
-        <div class="col-auto ">
-            <gs-tooltip placement="right" title="Remote tunnel address."></gs-tooltip>
-            <i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
-        </div>        
-    </div>      
+    <gs-form-group css="m-1" name="ip" label="IP Address" required    
+        pattern="^((25[0-5]|(2[0-4]|1\d|[1-9]|)\d)\.?\b){4}$" 
+        _mask="NNN.NNN.NNN.NNN"
+        description="Remote tunnel address.">
+    </gs-form-group>
+    
+    <gs-form-group css="m-1" name="port" label="Port" required  
+        type="number" min="1" max="65535" 
+        description="Remote tunnel port.">
+    </gs-form-group>
 
-    <div class="row form-group m-1">
-        <div class="col-md-4 col-sm-4 col-xs-12 text-md-end ">
-            <label class="control-label " for="port">Port</label>
-        </div>
-        <div class="col-md-6 col-sm-6 col-xs-11">
-            <input class="form-control" id="port"  name="port" type="number" min="1" max="65535" required>
-        </div>
-        <div class="col-auto ">
-            <gs-tooltip placement="right" title="Remote tunnel port."></gs-tooltip>
-            <i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
-        </div>        
-    </div>  
-   
 </form>

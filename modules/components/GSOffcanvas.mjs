@@ -63,9 +63,9 @@ export default class GSOffcanvas extends GSElement {
 
     if (me.#titleEl) GSDOM.setHTML(me.#titleEl, me.title);
 
-    GSDOM.toggleClass(me.#canvasEl, true, 'visible');
-    GSDOM.toggleClass(me.#closeEl, !me.closable, 'invisible');
-    GSDOM.toggleClass(me.#backdropEl, me.backdrop && me.visible, 'show');
+    GSDOM.toggleClass(me.#canvasEl, 'visible', true);
+    GSDOM.toggleClass(me.#closeEl, 'invisible', !me.closable);
+    GSDOM.toggleClass(me.#backdropEl, 'show', me.backdrop && me.visible);
 
     me.#updateAnim();
     me.#updateShow();
@@ -92,31 +92,31 @@ export default class GSOffcanvas extends GSElement {
 
   #updateShow() {
     const me = this;
-    if (me.min === 0 && me.visible) return GSDOM.toggleClass(me.#canvasEl, me.visible, 'show');
+    if (me.min === 0 && me.visible) return GSDOM.toggleClass(me.#canvasEl, 'show', me.visible);
     setTimeout(() => {
-      GSDOM.toggleClass(me.#canvasEl, me.min === 0 ? me.visible : true, 'show');
+      GSDOM.toggleClass(me.#canvasEl, me.min === 0 ? me.visible : 'show', true);
     }, GSDOM.SPEED);
   }
 
   #updateBackdrop() {
     const me = this;
     setTimeout(() => {
-      GSDOM.toggleClass(me.#backdropEl, !(me.backdrop && me.visible), 'invisible');
+      GSDOM.toggleClass(me.#backdropEl, 'invisible', !(me.backdrop && me.visible));
     }, GSDOM.SPEED);
   }
 
   #updatePlacement(name = '', oldValue = '', newValue = '') {
     if (name !== 'placement') return;
     const me = this;
-    GSDOM.toggleClass(me.#canvasEl, false, `offcanvas-${oldValue}`);
-    GSDOM.toggleClass(me.#canvasEl, true, `offcanvas-${newValue}`);
+    GSDOM.toggleClass(me.#canvasEl, `offcanvas-${oldValue}`, false);
+    GSDOM.toggleClass(me.#canvasEl, `offcanvas-${newValue}`, true);
   }
 
   #updateCSS(name = '', oldValue = '', newValue = '') {
     if (name !== 'css') return;
     const me = this;
-    GSDOM.toggleClass(me.#canvasEl, false, oldValue);
-    GSDOM.toggleClass(me.#canvasEl, true, newValue);
+    GSDOM.toggleClass(me.#canvasEl, oldValue, false);
+    GSDOM.toggleClass(me.#canvasEl, newValue, true);
   }
 
   get isVertical() {
@@ -219,7 +219,7 @@ export default class GSOffcanvas extends GSElement {
 
   get backdrop() {
     const me = this;
-    return GSAttr.getAsBool(me, 'backdrop',  me.target?.dataset?.bsBackdrop || 'false');
+    return GSAttr.getAsBool(me, 'backdrop', me.target?.dataset?.bsBackdrop || 'false');
   }
 
   set backdrop(val = '') {

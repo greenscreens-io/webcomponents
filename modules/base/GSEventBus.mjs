@@ -85,7 +85,7 @@ export default class GSEventBus extends EventTarget {
     on(type = '', listener) {
         const me = this;
         if (!me.#isFunction(listener)) return;
-        me.#listeners.add({type:type, listener : listener});
+        me.#listeners.add({ type: type, listener: listener });
         return me.addEventListener(type, listener);
     }
 
@@ -94,7 +94,7 @@ export default class GSEventBus extends EventTarget {
      * 
      * @param {string} type Event name to be listened
      * @param {Function} listener  Callback to be called on event trigger
-     */    
+     */
     once(type, listener) {
         const me = this;
         if (!me.#isFunction(listener)) return;
@@ -113,13 +113,13 @@ export default class GSEventBus extends EventTarget {
      * 
      * @param {string} type Event name to be listened
      * @param {Function} listener  Callback to be called on event trigger
-     */    
+     */
     off(type = '', listener) {
         const me = this;
         if (!me.#isFunction(listener)) return false;
         Array.from(me.#listeners)
-        .filter(o => o.type === type && o.listener === listener)
-        .forEach(o => me.#listeners.delete(o));
+            .filter(o => o.type === type && o.listener === listener)
+            .forEach(o => me.#listeners.delete(o));
         return me.removeEventListener(type, listener);
     }
 
@@ -128,7 +128,7 @@ export default class GSEventBus extends EventTarget {
      * 
      * @param {string} type Event name to be listened
      * @param {object} data  Data to send 
-     */        
+     */
     emit(type = '', data) {
         const evt = new CustomEvent(type, { detail: data });
         return this.dispatchEvent(evt);

@@ -157,7 +157,7 @@ export default class GSPopover extends GSElement {
 
     get content() {
         const me = this;
-        return GSAttr.get(me, 'content', me.target?.dataset?.bsContent ||'');
+        return GSAttr.get(me, 'content', me.target?.dataset?.bsContent || '');
     }
 
     set content(val = '') {
@@ -206,7 +206,7 @@ export default class GSPopover extends GSElement {
         me.insertAdjacentElement('afterbegin', el);
         requestAnimationFrame(() => {
             me.#render(el);
-            GSDOM.toggleClass(el, true, 'show');
+            GSDOM.toggleClass(el, 'show', true);
         });
     }
 
@@ -220,7 +220,7 @@ export default class GSPopover extends GSElement {
         setTimeout(() => {
             GSDOM.setHTML(me, '');
         }, 250);
-        return GSDOM.toggleClass(me.firstElementChild, false, 'show');
+        return GSDOM.toggleClass(me.firstElementChild, 'show', false);
     }
 
     /**
@@ -254,7 +254,7 @@ export default class GSPopover extends GSElement {
      * @returns {boolean}
      */
     static #hasPopover(el) {
-        return (el?.firstElementChild || el?.nextElementSibling ) instanceof GSPopover;
+        return (el?.firstElementChild || el?.nextElementSibling) instanceof GSPopover;
     }
 
     /**

@@ -114,6 +114,14 @@ export default class GSInputExt extends HTMLInputElement {
         return masks.join('');
     }
 
+    get autocopy() {
+        return this.hasAttribute('autocopy');
+    }
+
+    get autoselect() {
+        return this.hasAttribute('autoselect');
+    }
+
     #toPattern() {
         const me = this;
         if (me.pattern.length > 0) return;
@@ -155,8 +163,10 @@ export default class GSInputExt extends HTMLInputElement {
         GSEvent.attach(me, me, 'keydown', me.#onKeyDown.bind(me));
         GSEvent.attach(me, me, 'keypress', me.#onKeyPress.bind(me));
         GSEvent.attach(me, me, 'input', me.#onInput.bind(me));
+        GSEvent.attach(me, me, 'change', me.#onChange.bind(me));
         GSEvent.attach(me, me, 'paste', me.#onPaste.bind(me));
         GSEvent.attach(me, me, 'blur', me.#onBlur.bind(me));
+        GSEvent.attach(me, me, 'click', me.#onClick.bind(me));
         requestAnimationFrame(() => {
             const list = me.list;
             if (!list) return;
@@ -225,6 +235,12 @@ export default class GSInputExt extends HTMLInputElement {
         GSDOM.queryAll(list, filter).forEach(el => GSAttr.set(el, 'disabled'));
     }
 
+    #onClick(e) {
+        const me = this;
+        if (me.autocopy) navigator.clipboard.writeText(me.value);
+        if (me.autoselect) me.select();
+    }
+
     #onBlur(e) {
         const me = this;
         if (me.required) me.reportValidity();
@@ -241,7 +257,7 @@ export default class GSInputExt extends HTMLInputElement {
     #onKeyDown(e) {
         const me = this;
         if (!me.mask) return;
-        
+
         const tmp = me.value.split('');
         let pos1 = me.selectionStart;
         let pos2 = me.selectionEnd;
@@ -257,14 +273,14 @@ export default class GSInputExt extends HTMLInputElement {
         if (e.key === 'Backspace') {
             handle = true;
             if (pos1 === pos2) {
-                tmp[pos-1] = me.mask[pos-1];
-                pos = pos1-1;
+                tmp[pos - 1] = me.mask[pos - 1];
+                pos = pos1 - 1;
             } else {
                 pos = pos1;
             }
         }
 
-        
+
         if (pos1 !== pos2 && e.key.length === 1) {
             handle = true;
             while (pos1 < pos2) {
@@ -272,7 +288,7 @@ export default class GSInputExt extends HTMLInputElement {
                 pos1++;
             }
         }
-        
+
         if (!handle) return;
 
         me.value = me.formatMask(tmp.join(''));
@@ -284,7 +300,7 @@ export default class GSInputExt extends HTMLInputElement {
     #onKeyPress(e) {
         const me = this;
         if (!me.mask) return;
-        
+
         const tmp = me.value.split('');
         let pos = me.selectionStart;
         let masks = me.#masks.slice(pos);
@@ -295,7 +311,7 @@ export default class GSInputExt extends HTMLInputElement {
                 if (mask.test(e.key)) {
                     tmp[pos] = e.key;
                     canceled = false;
-                } 
+                }
                 GSEvent.prevent(e);
                 return false;
             } else {
@@ -307,7 +323,7 @@ export default class GSInputExt extends HTMLInputElement {
 
         if (canceled) return;
 
-        masks = me.#masks.slice(pos+1);
+        masks = me.#masks.slice(pos + 1);
         masks.every(mask => {
             if (mask instanceof RegExp) return false;
             pos++;
@@ -316,8 +332,14 @@ export default class GSInputExt extends HTMLInputElement {
 
 
         me.value = me.formatMask(tmp.join(''));
-        me.setSelectionRange(pos+1, pos+1);
+        me.setSelectionRange(pos + 1, pos + 1);
         GSEvent.prevent(e);
+    }
+
+    #onChange(e) {
+        const me = this;
+        if (me.type !== 'range') return;
+        me.title = me.value;
     }
 
     #onInput(e) {
@@ -329,7 +351,7 @@ export default class GSInputExt extends HTMLInputElement {
 
     #onNumberInput(e) {
         const me = this;
-        if (me.value.length > me.maxLength) {
+        if (me.maxLength > 0 && me.value.length > me.maxLength) {
             me.value = me.value.substring(0, me.maxLength);
         }
     }

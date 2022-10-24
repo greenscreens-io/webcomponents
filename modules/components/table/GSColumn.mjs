@@ -33,7 +33,9 @@ export default class GSColumn extends HTMLElement {
 
         const clssort = me.sortable ? 'sorting' : '';
         const style = me.width ? `style="width:${me.width};"` : '';
-        return `<th scope="col" name="${me.name}" class="${clssort} ${me.cssHeader}" ${style}>${me.title || me.name}</th>`;
+        const cspan = me.colspan ? `colspan="${me.colspan}"` : '';
+
+        return `<th scope="col" data-sortable="${me.sortable}" data-order="${me.#orderID}" name="${me.name}" ${cspan} class="${clssort} ${me.cssHeader}" ${style}>${me.title || me.name}</th>`;
     }
 
     renderFilter() {
@@ -91,6 +93,12 @@ export default class GSColumn extends HTMLElement {
         return list.join('');
     }
 
+    get #orderID() {
+        const me = this;
+        if(me.sortable && me.direction) return me.direction === 'asc' ? 1 : -1;
+        return 0;
+    }
+
     get table() {
         return GSDOM.closest(this, 'GS-TABLE');
     }
@@ -108,6 +116,11 @@ export default class GSColumn extends HTMLElement {
     get sortable() {
         const me = this;
         return me.name && !me.counter ? GSAttr.getAsBool(me, 'sortable', true) : false;
+    }
+
+    get direction() {
+        const me = this;
+        return GSAttr.get(me, 'direction', '');
     }
 
     get cssFilter() {
@@ -150,6 +163,10 @@ export default class GSColumn extends HTMLElement {
         return GSAttr.get(this, 'type');
     }
 
+    get colspan() {
+        return GSAttr.get(this, 'colspan', '');
+    }
+
     /**
      * Will generate ComboBox or datalist
      */
@@ -183,17 +200,19 @@ export default class GSColumn extends HTMLElement {
     toJSON() {
         const me = this;
         // [[val,map]]
-        const mapping = me.maps.map(el => [ GSAttr.get(el, 'value'), GSAttr.get(el, 'map') ])
-        return { 
-            name: me.name, 
-            title: me.title, 
-            width: me.width, 
-            sortable: me.sortable, 
-            idx: me.index, 
-            type: me.type, 
-            format: me.format, 
-            css : me.css,
-            map :mapping
+        const mapping = me.maps.map(el => [GSAttr.get(el, 'value'), GSAttr.get(el, 'map')])
+        return {
+            name: me.name,
+            title: me.title,
+            width: me.width,
+            sortable: me.sortable,
+            filter: me.filter,
+            idx: me.index,
+            type: me.type,
+            format: me.format,
+            css: me.css,
+            colspan: me.colspan,
+            map: mapping
         };
     }
 }

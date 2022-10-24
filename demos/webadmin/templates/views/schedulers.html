@@ -1,7 +1,7 @@
 <div class="container-fluid ms-4">
     <div class="row border shadow-sm ms-4 ps-4 py-4 bg-light border shadow-sm  mb-4">
         <div class="col">
-            <h4 class="text-muted">Background Task Records</h4>
+            <h4 class="text-muted user-select-none">Background Task Records</h4>
         </div>
     </div>
 
@@ -49,7 +49,7 @@
                     </gs-column>
                     <gs-column title="Time" name="time"></gs-column>
                     <gs-column title="Status" name="status" filter="true" list="fixed">
-                        <gs-item map="true" filter="true">
+                        <gs-item map="true" filter="true" local="false">
                             <gs-item value="" map="All"></gs-item>
                             <gs-item value="true" map="Enabled"></gs-item>
                             <gs-item value="false" map="Disabled"></gs-item>                         
@@ -75,10 +75,10 @@
                 <gs-pager slot="extra" previous="&laquo;" next="&raquo;" firstlast="false" pages="0"></gs-pager>
             </gs-table>
 
-            <gs-modal id="modal-main" visible="false" css-body="p-0" css-header = "p-3 dialog-title" css-title = "fs-5 fw-bold">
+            <gs-dialog id="modal-main" visible="false" css-body="p-0" css-header="p-3 dialog-title" >
                 <h4 slot="title">Scheduler Task</h4>
                 <gs-template slot="body" href="//forms/scheduler.html"></gs-template>
-            </gs-modal>
+            </gs-dialog>
 
         </div>
 

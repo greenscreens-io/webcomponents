@@ -49,21 +49,21 @@ export default class GSDropdown extends GSElement {
       me.#submenus.forEach(el => el.classList.remove('show'));
       const menu = me.#menu;
       if (!menu) return;
-      GSDOM.toggleClass(menu, me.visible, 'show');
+      GSDOM.toggleClass(menu, 'show', me.visible);
       requestAnimationFrame(() => {
         if (me.visible) {
-            me.#updatePos(menu);
+          me.#updatePos(menu);
         } else {
           menu.style.left = '';
           menu.style.top = '';
         }
-      });        
-        
+      });
+
     }
 
     if (name === 'css') {
-      GSDOM.toggleClass(me.#button, false, oldValue);
-      GSDOM.toggleClass(me.#button, true, newValue);
+      GSDOM.toggleClass(me.#button, oldValue, false);
+      GSDOM.toggleClass(me.#button, newValue, true);
     }
 
     if (name === 'title' && me.#button) {

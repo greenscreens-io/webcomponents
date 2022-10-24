@@ -63,7 +63,7 @@ export default class GSElement extends HTMLElement {
 	get clazzName() {
 		return this.constructor.name;
 	}
-	
+
 	/**
 	 * Template used to render component. Might be various types
 	 * 1. URL to load template from
@@ -300,8 +300,11 @@ export default class GSElement extends HTMLElement {
 	 * @param {string} name 
 	 * @returns {HTMLElement}
 	 */
-	query(query = '') {
-		return GSDOM.query(this.self, query);
+	query(query = '', all = false) {
+		const me = this;
+		const el = GSDOM.query(me.self, query, all, true);
+		if (me.isProxy || el) return el;
+		return GSDOM.query(me, query, all, false);
 	}
 
 	/**
@@ -309,8 +312,11 @@ export default class GSElement extends HTMLElement {
 	 * @param {string} query 
 	 * @returns {Array<HTMLElement>}
 	 */
-	queryAll(query = '') {
-		return GSDOM.queryAll(this.self, query);
+	queryAll(query = '', all = false) {
+		const me = this;
+		const list = GSDOM.queryAll(me.self, query, all, true);
+		if (me.isProxy || list.length > 0) return list;
+		return GSDOM.queryAll(me, query, all, false);
 	}
 
 	/**
@@ -442,7 +448,7 @@ export default class GSElement extends HTMLElement {
 		me.#opts = me.#injection();
 		me.#proxied = me.#opts.ref;
 		GSComponents.store(me);
-		me.#render();
+		requestAnimationFrame(() => me.#render());
 	}
 
 	/**
@@ -495,7 +501,7 @@ export default class GSElement extends HTMLElement {
 	 * Called when element fully rendered
 	 * @returns {void}
 	 */
-	 onReady() {
+	onReady() {
 		const me = this;
 		if (me.offline) return;
 		me.#ready = true;
@@ -532,7 +538,7 @@ export default class GSElement extends HTMLElement {
 	 * Get element shadowRoot, autocreate if does not exist
 	 * @returns {ShadowRoot} 
 	 */
-	 get #shadow() {
+	get #shadow() {
 		const me = this;
 		if (!me.shadowRoot) {
 			me.attachShadow({ mode: 'open' });
@@ -602,11 +608,11 @@ export default class GSElement extends HTMLElement {
 				GSDOM.setHTML(me.#content, src);
 				return;
 			}
-			
+
 			me.#content = GSDOM.parseWrapped(me, src, true);
 			GSDOM.link(me, me.#content);
 			GSDOM.insertAdjacent(inject.target, me.#content, inject.anchor);
-			
+
 		});
 		me.updateUI();
 	}

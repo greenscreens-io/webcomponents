@@ -64,7 +64,7 @@ export default class GSPagination extends GSElement {
     #onStore(e) {
         const me = this;
         requestAnimationFrame(() => {
-            let page = Math.floor((me.store.page - 1) / me.pages) * me.pages + 1;
+            let page = me.pages === 0 ? 0 : (Math.floor((me.store.page - 1) / me.pages) * me.pages + 1);
             me.queryAll('a[name=""]').forEach(el => {
                 el.parentElement.classList.remove('active', 'disabled', 'd-none');
                 if (page == me.store.page) el.parentElement.classList.add('active');

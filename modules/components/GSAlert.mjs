@@ -59,11 +59,11 @@ export default class GSAlert extends GSElement {
         if (name == 'message') GSDOM.setHTML(el, me.message);
 
         if (name == 'css') {
-            GSDOM.toggleClass(el, false, oldValue);
-            GSDOM.toggleClass(el, true, newValue);
+            GSDOM.toggleClass(el, oldValue, false);
+            GSDOM.toggleClass(el, newValue, true);
         }
 
-        if (name == 'active') GSDOM.toggleClass(el, !me.#state, activeCSS);
+        if (name == 'active') GSDOM.toggleClass(el, activeCSS, !me.#state);
     }
 
     get template() {
@@ -110,7 +110,7 @@ export default class GSAlert extends GSElement {
 
     async #dismiss() {
         const me = this;
-        GSDOM.toggleClass(me.query('.alert'), false, 'show');
+        GSDOM.toggleClass(me.query('.alert'), 'show', false);
         await GSUtil.timeout(GSDOM.SPEED);
         return me.remove();
     }

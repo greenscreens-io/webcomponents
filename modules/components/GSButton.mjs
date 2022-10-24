@@ -46,7 +46,7 @@ export default class GSButton extends GSElement {
         GSEvent.send(me, 'action', { type: 'button', action: me.action, source: e }, true, true, true);
         if (me.active) {
             me.#state = !me.#state;
-            GSDOM.toggleClass(me.firstElementChild, me.#state, 'active');
+            GSDOM.toggleClass(me.firstElementChild, 'active', me.#state);
         }
         if (!me.select) me.#button.blur();
     }
@@ -76,12 +76,12 @@ export default class GSButton extends GSElement {
         if (name == 'title') return GSDOM.setHTML(el, me.title);
 
         if (name == 'css') {
-            GSDOM.toggleClass(el, false, oldValue);
-            GSDOM.toggleClass(el, true, newValue);
+            GSDOM.toggleClass(el, oldValue, false);
+            GSDOM.toggleClass(el, newValue, true);
         }
 
-        if (name == 'active') return GSDOM.toggleClass(el, me.#state, 'active');
-        if (name == 'disable') return GSAttr.set(this.firstElementChild, 'disabled', GSUtil.asBool(newValue) ? newValue : null);
+        if (name == 'active') return GSDOM.toggleClass(el, 'active', me.#state);
+        if (name == 'disable') return GSAttr.set(me.firstElementChild, 'disabled', GSUtil.asBool(newValue) ? newValue : null);
     }
 
     get template() {
@@ -94,7 +94,7 @@ export default class GSButton extends GSElement {
         const dissmis = GSItem.getDismissAttr(me);
         const target = GSItem.getTargetAttr(me);
         const toggle = GSItem.getToggleAttr(me);
-        return `<button class="btn ${me.css}" ${action} ${toggle} ${target} ${dissmis} ${disabled} title="${me.comment}" role="tooltip">${content}</button>`;
+        return `<button type="${me.type}" class="btn ${me.css}" ${action} ${toggle} ${target} ${dissmis} ${disabled} title="${me.comment}" role="tooltip">${content}</button>`;
     }
 
     get css() {
@@ -185,6 +185,14 @@ export default class GSButton extends GSElement {
 
     set select(val = '') {
         return GSAttr.setAsBool(this, 'select', val);
+    }
+
+    get type() {
+        return GSAttr.get(this, 'type', 'button');
+    }
+
+    set type(val = '') {
+        return GSAttr.set(this, 'type', val);
     }
 
     toggle() {

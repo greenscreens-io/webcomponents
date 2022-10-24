@@ -25,8 +25,8 @@ import GSAttr from "../../base/GSAttr.mjs";
  */
 export default class GSDataAttr {
 
-    static #toggleValues = "offcanvas|collapse|dropdown|button|tab|pill|popover|modal|popup"; // tooltip|
-    static #dismissValues = "offcanvas|modal|alert|popup";
+    static #toggleValues = "offcanvas|collapse|dropdown|button|tab|pill|popover|modal|dialog|popup"; // tooltip|
+    static #dismissValues = "offcanvas|modal|alert|popup|dialog";
 
     static {
         GSDOMObserver.registerFilter(GSDataAttr.#onMonitorFilter, GSDataAttr.#onMonitorResult);
@@ -113,6 +113,8 @@ export default class GSDataAttr {
                 break;
             case "modal":
                 break;
+            case "dialog":
+                break;                
             case "offcanvas":
                 break;
             case "pill":
@@ -178,8 +180,8 @@ export default class GSDataAttr {
     }
 
     static #switch(el, pos, neg) {
-        GSDOM.toggleClass(el, true, pos);
-        GSDOM.toggleClass(el, false, neg);
+        GSDOM.toggleClass(el, pos, true);
+        GSDOM.toggleClass(el, neg, false);
     }
 
     static #hide(el) {
@@ -204,7 +206,7 @@ export default class GSDataAttr {
     }
 
     static async #removeEl(el) {
-        GSDOM.toggleClass(el, false, 'show');
+        GSDOM.toggleClass(el, 'show', false);
         if (GSDataAttr.#faded(el)) await GSUtil.timeout(GSDOM.SPEED);
         el.remove();
     }
@@ -268,10 +270,10 @@ export default class GSDataAttr {
                     obj.list.filter(el => el.classList.contains('accordion-collapse')).forEach(el => {
                         Array.from(el.closest('.accordion').querySelectorAll('.accordion-collapse'))
                             .filter(itm => itm != el && GSAttr.get(itm, 'data-bs-parent'))
-                            .forEach(itm => GSDOM.toggleClass(itm, false, 'show'));
+                            .forEach(itm => GSDOM.toggleClass(itm, 'show', false));
                     });
                 } else {
-                    GSDOM.toggleClass(source, null, 'collapsed');
+                    GSDOM.toggleClass(source, 'collapsed', null);
                 }
                 break;
             case "dropdown":
@@ -284,6 +286,8 @@ export default class GSDataAttr {
                 break;
             case "modal":
                 break;
+            case "dialog":
+                break;                
             case "offcanvas":
                 break;
             case "pill":

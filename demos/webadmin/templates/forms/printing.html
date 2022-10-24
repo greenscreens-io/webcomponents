@@ -1,105 +1,49 @@
 <form slot="body" is="gs-ext-form" id="form-main" class="flex-fill" novalidate="">
 
-    <div class="row form-group m-1">
-        <div class="col-md-4 col-sm-4 col-xs-12 text-md-end ">
-            <label class="control-label " for="active">Status</label>
-        </div>
-        <div class="col-md-6 col-sm-6 col-xs-11">
+    <gs-form-group css="m-1" name="active" label="Status" required 
+        description="Enable or disable this printer.">
+        <template>
             <select class="form-select" id="active" name="active" required>
                 <option selected value="true">Enabled</option>
                 <option value="false">Disabled</option>
-            </select>
-        </div>
-        <div class="col-auto ">
-            <gs-tooltip placement="right" title="Enable or disable this printer."></gs-tooltip>
-            <i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
-        </div>
-    </div>
-
-    <div class="row form-group m-1">
-        <div class="col-md-4 col-sm-4 col-xs-12 text-md-end ">
-            <label class="control-label " for="uuid">UUID</label>
-        </div>
-        <div class="col-md-6 col-sm-6 col-xs-11">
-            <input class="form-control  text-uppercase" id="uuid" name="uuid" type="text" maxlength="64" pattern="[a-zA-Z0-9-_]+" required>
-        </div>
-        <div class="col-auto ">
-            <gs-tooltip placement="right" title="Configuration group. Used on login form along with virtual host name."></gs-tooltip>
-            <i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
-        </div>
-    </div>
-
-    <div class="row form-group m-1">
-        <div class="col-md-4 col-sm-4 col-xs-12 text-md-end ">
-            <label class="control-label " for="host">Host</label>
-        </div>
-        <div class="col-md-6 col-sm-6 col-xs-11">
-            <input class="form-control  text-uppercase" id="host" name="host" type="text" maxlength="64" pattern="[a-zA-Z0-9-_]+" required>
-        </div>
-        <div class="col-auto ">
-            <gs-tooltip placement="right" title="Virtual server name used on login screen. It is an alias for server IP address."></gs-tooltip>
-            <i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
-        </div>
-    </div>  
+            </select>            
+        </template>
+    </gs-form-group>
     
-    <div class="row form-group m-1">
-        <div class="col-md-4 col-sm-4 col-xs-12 text-md-end ">
-            <label class="control-label " for="library">Library</label>
-        </div>
-        <div class="col-md-6 col-sm-6 col-xs-11">
-            <input class="form-control  text-uppercase" id="library" name="library" type="text" maxlength="10" pattern="[a-zA-Z0-9-_]+">
-        </div>
-        <div class="col-auto ">
-            <gs-tooltip placement="right" title="Spool OUTQ library."></gs-tooltip>
-            <i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
-        </div>
-    </div>    
+    <gs-form-group css="m-1" name="uuid" label="UUID" required 
+        maxlength="64" pattern="[a-zA-Z0-9-_]+" 
+        description="Configuration group. Used on login form along with virtual host name.">
+    </gs-form-group>
+
+    <gs-form-group css="m-1" name="host" label="Host" required 
+        maxlength="64" pattern="[a-zA-Z0-9-_]+" 
+        description="Virtual server name used on login screen. It is an alias for server IP address.">
+    </gs-form-group>
     
-    <div class="row form-group m-1">
-        <div class="col-md-4 col-sm-4 col-xs-12 text-md-end ">
-            <label class="control-label " for="outq">Outq</label>
-        </div>
-        <div class="col-md-6 col-sm-6 col-xs-11">
-            <input class="form-control  text-uppercase" id="outq" name="outq" type="text" maxlength="10" pattern="[a-zA-Z0-9-_]+">
-        </div>
-        <div class="col-auto ">
-            <gs-tooltip placement="right" title="Spool OUTQ source."></gs-tooltip>
-            <i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
-        </div>
-    </div>    
+    <gs-form-group css="m-1" name="library" label="Library" 
+        maxlength="10" pattern="[a-zA-Z0-9-_]+"
+        description="Spool OUTQ library.">
+    </gs-form-group>
 
-    <div class="row form-group m-1">
-        <div class="col-md-4 col-sm-4 col-xs-12 text-md-end ">
-            <label class="control-label " for="spoolName">Spool</label>
-        </div>
-        <div class="col-md-6 col-sm-6 col-xs-11">
-            <input class="form-control  text-uppercase" id="spoolName" name="spoolName" type="text" maxlength="10" pattern="[a-zA-Z0-9-_]+">
-        </div>
-        <div class="col-auto ">
-            <gs-tooltip placement="right" title="Spool name."></gs-tooltip>
-            <i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
-        </div>
-    </div>    
+    <gs-form-group css="m-1" name="outq" label="Outq"  
+        maxlength="10" pattern="[a-zA-Z0-9-_]+"
+        description="Spool OUTQ source.">
+    </gs-form-group>
 
-    <div class="row form-group m-1">
-        <div class="col-md-4 col-sm-4 col-xs-12 text-md-end ">
-            <label class="control-label " for="userName">User</label>
-        </div>
-        <div class="col-md-6 col-sm-6 col-xs-11">
-            <input class="form-control  text-uppercase" id="userName" name="userName" type="text" maxlength="10" pattern="[a-zA-Z0-9-_]+">
-        </div>
-        <div class="col-auto ">
-            <gs-tooltip placement="right" title="Spool user name."></gs-tooltip>
-            <i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
-        </div>
-    </div>    
+    <gs-form-group css="m-1" name="spoolName" label="Spool" 
+        maxlength="10" pattern="[a-zA-Z0-9-_]+"
+        description="Spool name.">
+    </gs-form-group> 
 
-    <div class="row form-group m-1">
-        <div class="col-md-4 col-sm-4 col-xs-12 text-md-end ">
-            <label class="control-label " for="driver">Driver</label>
-        </div>
-        <div class="col-md-6 col-sm-6 col-xs-11">
-            <select class="form-select" id="driver" name="driver" required>
+    <gs-form-group css="m-1" name="userName" label="User" 
+        maxlength="10" pattern="[a-zA-Z0-9-_]+"
+        description="Spool user name.">
+    </gs-form-group>
+
+    <gs-form-group css="m-1" name="driver" label="Driver" 
+        description="Spool driver.">
+        <template>
+            <select class="form-select" id="driver" name="driver">
                 <option selected value="0">PDF</option>
                 <option value="1">HTML</option>
                 <option value="2">TEXT</option>
@@ -112,24 +56,11 @@
                 <option value="9">POS</option>
                 <option value="11">SVG</option>
             </select>
-        </div>
-        <div class="col-auto ">
-            <gs-tooltip placement="right" title="Spool driver."></gs-tooltip>
-            <i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
-        </div>
-    </div>
-
-    <div class="row form-group m-1">
-        <div class="col-md-4 col-sm-4 col-xs-12 text-md-end ">
-            <label class="control-label " for="printerName">Printer</label>
-        </div>
-        <div class="col-md-6 col-sm-6 col-xs-11">
-            <input class="form-control" id="printerName" name="printerName" type="text" >
-        </div>
-        <div class="col-auto ">
-            <gs-tooltip placement="right" title="Local printer name."></gs-tooltip>
-            <i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
-        </div>
-    </div>   
+        </template>
+    </gs-form-group>    
+    
+    <gs-form-group css="m-1" name="printerName" label="Printer" 
+        description="Local printer name.">
+    </gs-form-group>
 
 </form>

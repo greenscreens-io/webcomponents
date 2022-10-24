@@ -53,7 +53,7 @@ export default class GSItem extends HTMLElement {
 	static getBody(el, flat = false) {
 		let tpl = GSItem.getTemplate(el);
 		const isFlat = GSItem.getFlat(el);
-		const anchor = GSItem.getAnchor(el);		
+		const anchor = GSItem.getAnchor(el);
 		const acss = isFlat || flat ? `anchor="${anchor}" flat="true"` : '';
 		const cls = GSAttr.get(el, 'css-template', '');
 		if (tpl) return `<gs-template ${acss} href="${tpl}" class="${cls}"></gs-template>`;
@@ -111,7 +111,7 @@ export default class GSItem extends HTMLElement {
 	 */
 	static getAttrs(el) {
 		return [GSItem.getDismissAttr(el), GSItem.getTargetAttr(el),
-		GSItem.getToggleAttr(el), GSItem.getActionAttr(el), 
+		GSItem.getToggleAttr(el), GSItem.getActionAttr(el),
 		GSItem.getInjectAttr(el)].join(' ');
 	}
 
@@ -283,7 +283,7 @@ export default class GSItem extends HTMLElement {
 	 * @param {string} type DOM attribute name for object type
 	 * @returns {string}
 	 */
-	 static toDom(obj, tag = 'gs-item', name = 'name', value = 'value', type = 'type', child = false) {
+	static toDom(obj, tag = 'gs-item', name = 'name', value = 'value', type = 'type', child = false) {
 
 		const tmp = [];
 
@@ -298,7 +298,7 @@ export default class GSItem extends HTMLElement {
 
 				if (isObj || isArray) {
 					tmp.push(`<${tag} ${type}="object">`);
-					tmp.push(GSItem.toDom(o, tag, name, value, type, true ));				
+					tmp.push(GSItem.toDom(o, tag, name, value, type, true));
 				} else {
 					tmp.push(`<${tag} ${value}="${o}" ${type}="${ptyp}">`);
 				}
@@ -309,21 +309,21 @@ export default class GSItem extends HTMLElement {
 			});
 		} else {
 			Object.entries(obj).forEach(kv => {
-	
+
 				const pname = kv[0];
 				const pobj = kv[1];
 				const ptyp = typeof pobj;
-	
+
 				const isArray = Array.isArray(pobj);
 				const isObj = !isArray && ptyp === 'object';
 				let isSimple = false;
-	
+
 				if (isArray && pobj.length > 0) {
 					const elIsArray = Array.isArray(pobj[0]);
 					const elIsObj = typeof pobj[0] === 'object';
 					isSimple = !(elIsArray || elIsObj);
 				}
-	
+
 				if (isSimple) {
 					tmp.push(`<${tag} ${name}="${pname}" ${type}="array">`);
 					tmp.push(GSItem.toDom(pobj, tag, name, value, type, true));
@@ -336,9 +336,9 @@ export default class GSItem extends HTMLElement {
 				} else {
 					tmp.push(`<${tag} ${name}="${pname}" ${value}="${pobj}" ${type}="${ptyp}">`);
 				}
-	
+
 				tmp.push(`</${tag}>`);
-	
+
 			});
 		}
 
@@ -361,10 +361,10 @@ export default class GSItem extends HTMLElement {
 	 * @returns {object}
 	 */
 	static toJson(el, name = 'name', value = 'value', type = 'type') {
-		
-		
+
+
 		if (!(el instanceof HTMLElement)) return {};
-		
+
 		const nameV = el.getAttribute(name);
 		const valV = el.getAttribute(value);
 		const typeV = el.getAttribute(type);
@@ -381,7 +381,7 @@ export default class GSItem extends HTMLElement {
 			default:
 				return GSItem.#toType(valV, typeV);
 		}
-		
+
 		const childs = Array.from(el.children);
 		const isArray = typeV === 'array';
 		const isObject = typeV === 'object';
@@ -390,7 +390,7 @@ export default class GSItem extends HTMLElement {
 			const _nam = el.getAttribute(name);
 			if (isArray) {
 				obj.push(GSItem.toJson(el, name, value, type));
-			} else if(isObject) {
+			} else if (isObject) {
 				const tmp = GSItem.toJson(el, name, value, type);
 				obj[_nam] = tmp;
 			} else {
@@ -405,9 +405,9 @@ export default class GSItem extends HTMLElement {
 
 	static #toType(val, type) {
 		switch (type) {
-			case 'boolean' : return val === 'true';
-			case 'number' : return  parseFloat(val);
+			case 'boolean': return val === 'true';
+			case 'number': return parseFloat(val);
 			default: return val
 		}
-	}	
+	}
 }

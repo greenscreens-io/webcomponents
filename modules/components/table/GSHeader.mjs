@@ -22,18 +22,9 @@ export default class GSHeader extends HTMLElement {
         customElements.define('gs-header', GSHeader);
     }
 
-    /*
-    connectedCallback() {
-        const me = this;
-        if (!me.id) me.setAttribute('id', GSID.id);
-        GSComponents.store(me);
+    get #columns() {
+        return GSDOM.queryAll(this, 'gs-column');
     }
-
-    disconnectedCallback() {
-        const me = this;
-        GSComponents.remove(me);
-    }
-    */
 
     get #filtered() {
         return GSDOM.queryAll(this, 'gs-column[filter=true]');
@@ -55,7 +46,7 @@ export default class GSHeader extends HTMLElement {
 
         if (filters.length > 0) {
             html.push(`<tr is="gs-tablefilter" class="${table.cssFilter}">`);
-            columns.forEach(el => html.push(el.renderFilter()));
+            me.#columns.forEach(el => html.push(el.renderFilter()));
             html.push('</tr>');
         }
 

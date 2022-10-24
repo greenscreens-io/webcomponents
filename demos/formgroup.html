@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Inputmask Test</title>
+    <meta charset="utf-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="viewport"
+        content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+
+    <meta name="subject" content="Green Scereens Ltd.">
+    <meta name="author" content="www.greenscreens.ltd">
+    <meta name="keywords" content="JavaScript,WebComponents">
+    <meta name="robots" content="index, follow">
+    <meta name="revisit-after" content="3 month">
+    <meta name="description" content="WebComponents UI library based on Bootstrap.">
+
+    <script type="module" src="/webcomponents/modules/index.mjs"></script>
+    <script type="module" src="/webcomponents/modules/components/ext/GSInputExt.mjs"></script>
+    <script type="module" src="/webcomponents/modules/components/GSFormGroup.mjs"></script>
+
+    <!-- disable to hide right side help icon -->
+    <script type="module" src="/webcomponents/modules/components/GSToolTip.mjs"></script>
+
+    <gs-css url="/webcomponents/assets/css/io.greenscreens.bootstrap_5.2.0.css"></gs-css>
+    <gs-css url="/webcomponents/assets/icons/bootstrap-icons.css" notheme="true"></gs-css>
+
+</head>
+
+<body>
+
+    <gs-template href="/webcomponents/demos/header.tpl"></gs-template>
+
+    <div class="m-4 p-1 bg-light border shadow-sm row">
+        Horizontal layout
+    </div>
+    
+    <form>
+        <div class="container justify-content-center w-50 border p-4 shadow-sm bg-light">
+            <gs-form-group css="mt-2" name="date" mask="DD-MM-YYYY" label="Date" description="Masked date input"></gs-form-group>
+            <gs-form-group css="mt-2" name="hexa" mask="XXXXXXXXXXXXXXXX" label="Hexadecimal input with" description="Masked hexadecimal input"></gs-form-group>
+
+            <gs-form-group css="mt-2" name="user" placeholder="...enter user name" label="User" description="Login user"></gs-form-group>
+
+            <gs-form-group css="mt-2" name="field1" label="Check box"    type="checkbox" checked></gs-form-group>
+            <gs-form-group css="mt-2" name="field2" label="Radio button" type="radio" checked></gs-form-group>
+            <gs-form-group css="mt-2" name="field3" label="Switch box"   type="switch" checked></gs-form-group>
+            <gs-form-group css="mt-2" name="field4" label="Range"        type="range" min="0" max="100" step="2"></gs-form-group>
+
+            <gs-form-group css="mt-2" name="active" label="Status" description="test">
+                <template>
+                    <select class="form-select" id="active" name="active" required>
+                        <option value="true">Enabled</option>
+                        <option value="false">Disabled</option>
+                    </select>
+                </template>
+            </gs-form-group>
+        </div>        
+    </form>
+
+    <div class="m-4 p-1 bg-light border shadow-sm row">
+        Vertical layout
+    </div>
+    
+    <form>
+        <div class="container justify-content-center w-50 border p-4 shadow-sm bg-light">
+
+            <gs-form-group css="mt-2" layout="vertical" name="date" mask="DD-MM-YYYY" label="Date" description="Masked date input"></gs-form-group>
+            <gs-form-group css="mt-2" layout="vertical" name="hexa" mask="XXXXXXXXXXXXXXXX" label="Hexadecimal input with" description="Masked hexadecimal input"></gs-form-group>
+
+            <gs-form-group css="mt-2" layout="vertical" name="fieldv" placeholder="...enter user name" label="Field vertical" description="Login user"></gs-form-group>
+            
+            <gs-form-group css="mt-2" layout="vertical" name="field1" label="Check box"    type="checkbox" checked></gs-form-group>
+            <gs-form-group css="mt-2" layout="vertical" name="field2" label="Radio button" type="radio" checked></gs-form-group>
+            <gs-form-group css="mt-2" layout="vertical" name="field3" label="Switch box"   type="switch" checked></gs-form-group>
+            <gs-form-group css="mt-2" layout="vertical" name="field4" label="Range"        type="range" min="0" max="100" step="2"></gs-form-group>
+
+            <gs-form-group css="mt-2" layout="vertical" name="active" label="Status" description="test">
+                <template>
+                    <select class="form-select" id="active" name="active" required>
+                        <option value="true">Enabled</option>
+                        <option value="false">Disabled</option>
+                    </select>
+                </template>
+            </gs-form-group>
+
+        </div>       
+    </form>
+
+    <div class="m-4 p-1 bg-light border shadow-sm row">
+        Floating layout
+    </div>
+    
+    <form>
+        <div class="container justify-content-center w-50 border p-4 shadow-sm bg-light">
+
+            <gs-form-group css="mt-2" layout="floating" css-label="fw-bold text-muted" name="date" mask="DD-MM-YYYY" label="Date" description="Masked date input"></gs-form-group>
+            <gs-form-group css="mt-2" layout="floating" css-label="fw-bold text-muted" name="hexa" mask="XXXXXXXXXXXXXXXX" label="Hexadecimal input with" description="Masked hexadecimal input"></gs-form-group>
+            
+            <gs-form-group css="mt-2" layout="floating" css-label="fw-bold text-muted" name="fieldv" placeholder="...enter user name" label="Field vertical" description="Login user"></gs-form-group>
+            
+            <gs-form-group css="mt-2" layout="vertical" name="field1" label="Check box"    type="checkbox" checked></gs-form-group>
+            <gs-form-group css="mt-2" layout="vertical" name="field2" label="Radio button" type="radio" checked></gs-form-group>
+            <gs-form-group css="mt-2" layout="vertical" name="field3" label="Switch box"   type="switch" checked></gs-form-group>
+            <gs-form-group css="mt-2" layout="vertical" name="field4" label="Range"        type="range" min="0" max="100" step="2"></gs-form-group>
+            
+            <gs-form-group css="mt-2" layout="vertical" name="active" label="Status" description="test">
+                <template>
+                    <select class="form-select" id="active" name="active" required>
+                        <option value="true">Enabled</option>
+                        <option value="false">Disabled</option>
+                    </select>
+                </template>
+            </gs-form-group>
+
+        </div>
+    </form>
+
+    <div class="m-4 p-1 bg-light border shadow-sm row">
+        Tooltip without icon
+    </div>
+    
+    <form>
+        <div class="container justify-content-center w-50 border p-4 shadow-sm bg-light">
+
+            <gs-form-group css="mt-2" layout="horizontal" css-label="fw-bold text-muted" name="date" mask="DD-MM-YYYY" label="Date" description="Masked date input" icon="false"></gs-form-group>
+            <gs-form-group css="mt-2" layout="vertical" css-label="fw-bold text-muted" name="hexa" mask="XXXXXXXXXXXXXXXX" label="Hexadecimal input with" description="Masked hexadecimal input"  icon="false"></gs-form-group>            
+            <gs-form-group css="mt-2" layout="floating" css-label="fw-bold text-muted" name="fieldv" placeholder="...enter user name" label="Field vertical" description="Login user"  icon="false"></gs-form-group>
+            
+            <gs-form-group css="mt-2" layout="vertical" name="field1" label="Check box"    type="checkbox" checked  icon="false" description="Test tooltip"></gs-form-group>
+            <gs-form-group css="mt-2" layout="vertical" name="field2" label="Radio button" type="radio" checked icon="false" description="Test tooltip"></gs-form-group>
+            <gs-form-group css="mt-2" layout="vertical" name="field3" label="Switch box"   type="switch" checked icon="false" description="Test tooltip"></gs-form-group>
+            <gs-form-group css="mt-2" layout="vertical" name="field4" label="Range"        type="range" min="0" max="100" step="2" icon="false" description="Test tooltip"></gs-form-group>
+            
+            <gs-form-group css="mt-2" layout="vertical" name="active" label="Status" description="test" icon="false">
+                <template>
+                    <select class="form-select" id="active" name="active" required>
+                        <option value="true">Enabled</option>
+                        <option value="false">Disabled</option>
+                    </select>
+                </template>
+            </gs-form-group>
+
+        </div>
+    </form>
+
+    <br><br><br><br><br><br><br><br><br><br>
+</body>
+
+</html>

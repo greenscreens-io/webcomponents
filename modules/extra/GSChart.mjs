@@ -151,7 +151,7 @@ export default class GSChart extends GSElement {
     resize(x, y) {
         const me = this;
         if (me.#chart) {
-            requestAnimationFrame(() =>{
+            requestAnimationFrame(() => {
                 const div = me.query('div');
                 if (div) {
                     div.style.width = `${x}px`;
@@ -170,13 +170,13 @@ export default class GSChart extends GSElement {
     // internal functions to render JSON from gs-items elements
 
     async #render() {
-        
+
         const me = this;
-        
+
         const options = await GSLoader.loadSafe(me.options, 'GET', null, true, {});
         const data = await GSLoader.loadSafe(me.data, 'GET', null, true, []);
-        
-        const el = me.querySelector('gs-item[group="options"]');        
+
+        const el = me.querySelector('gs-item[group="options"]');
         const opt = Object.assign(options, GSItem.toJson(el));
 
         const sets = opt.data.datasets;

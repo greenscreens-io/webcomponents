@@ -32,13 +32,13 @@ export default class GSCenter extends GSElement {
       const me = this;
       if (name === 'css') {
          const el = me.query('div');
-         GSDOM.toggleClass(el, false, oldValue);
-         GSDOM.toggleClass(el, true, newValue);
+         GSDOM.toggleClass(el, oldValue, false);
+         GSDOM.toggleClass(el, newValue, true);
       }
    }
 
    async getTemplate() {
-      return `<div class="position-absolute top-50 start-50 translate-middle ${this.css}" style="${this.getStyle()}"><slot></slot></div>`
+      return `<div class="position-absolute top-50 start-50 translate-middle ${this.css}" style="${this.getStyle()}"><slot></slot></div>`;
    }
 
    get css() {

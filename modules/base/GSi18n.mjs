@@ -78,11 +78,11 @@ export default class GSi18n extends HTMLElement {
     attributeChangedCallback(name = '', oldVal = '', newVal = '') {
         this.#attributeChanged(name, oldVal, newVal);
     }
-    
+
     async #attributeChanged(name = '', oldVal = '', newVal = '') {
 
         const me = this;
-        
+
         if (name === 'lang') {
             if (!me.#languages.has(newVal)) {
                 await me.#load(newVal);
@@ -104,7 +104,7 @@ export default class GSi18n extends HTMLElement {
     }
 
     #onFilter(el) {
-        
+
         const me = this;
         const isText = el instanceof Text;
 
@@ -133,17 +133,17 @@ export default class GSi18n extends HTMLElement {
                     me.#cache.delete(el);
                     me.#doTranslate(el);
                 });
-            } catch(e) {
+            } catch (e) {
                 console.log(e);
             }
         });
     }
-    
+
     #doTranslate(el) {
         const me = this;
         if (me.#loading > 0) return me.#cache.add(el);
         if (el === document.documentElement) {
-           me.translateDOM(el, me.auto);
+            me.translateDOM(el, me.auto);
         } else {
             const isText = (el instanceof Text);
             isText ? me.#doTranslateText(el) : me.#doTranslateAttrs(el);
@@ -201,10 +201,10 @@ export default class GSi18n extends HTMLElement {
         } finally {
             me.#loading--;
         }
-        
+
         if (!me.auto) me.#onInterval();
 
-        return true; 
+        return true;
     }
 
     /**
@@ -248,7 +248,7 @@ export default class GSi18n extends HTMLElement {
         } else {
             GSDOMObserver.unregisterFilter(me.#filter, me.#callback);
             clearInterval(me.#interval);
-        }        
+        }
     }
 
     /**
@@ -266,7 +266,7 @@ export default class GSi18n extends HTMLElement {
             .filter(el => me.#onFilter(el))
             .forEach(el => el.childNodes.length == 0 ? me.#cache.add(el) : me.translateDOM(el, true));
 
-        if (!auto) me.#onInterval();    
+        if (!auto) me.#onInterval();
     }
 
     /**

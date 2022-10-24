@@ -6,9 +6,9 @@
  * A module loading GSNetwork class
  * @module dialogs/GSNetwork
  */
-import GSDialog from './GSDialog.mjs';
+import GSAdminDialog from './GSAdminDialog.mjs';
 
-export default class GSNetwork extends GSDialog {
+export default class GSNetwork extends GSAdminDialog {
 
     static {
         customElements.define('gs-admin-dialog-network', GSNetwork);
@@ -24,17 +24,19 @@ export default class GSNetwork extends GSDialog {
     }
 
     async onOpen() {
-        const me = this;
-        const o = {success: true, data : {}};
-        if (!o.success) return me.inform(false, o.msg);
+        const o = DEMO ? DEMO : await io.greenscreens.Server.getInterface();
+        o.data.restart = o.data.restart ? '1' : '0';
         return o.data;
     }
 
     async onData(data) {
-        const me = this;
-        const o = {success: true, data : {}};
-        me.inform(o.success, o.success ? 'Data saved!' : o.msg);
+
+        data.restart = parseInt(data.restart) === 1;
+        data.redirect = parseInt(data.redirect) === 1;
+        data.nodes = parseInt(data.nodes) === 1;
+
+        const o = DEMO ? DEMO : await io.greenscreens.Server.setInterface(data);
         return o.success;
-    }     
+    }
 
 }
