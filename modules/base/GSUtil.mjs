@@ -53,7 +53,15 @@ export default class GSUtil {
 	static isHTML = (val = '') => val.includes('<') && val.includes('>');
 
 	/**
-	 * Get browser efautl locale
+	 * Generate random set of characters
+	 * @param {*} pattern 
+	 * @param {*} charset 
+	 * @returns 
+	 */
+	static generateUUID = (pattern = "xxxx-xxxx-xxxx-xxxx-xxxx", charset = "abcdef0123456789") => pattern.replace(/[x]/g, () => charset[Math.floor(Math.random() * charset.length)]);
+
+	/**
+	 * Get browser default locale
 	 * @returns {string}
 	 */
 	static get locale() {

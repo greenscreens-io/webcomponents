@@ -11,8 +11,8 @@ import GSDOM from '../../../../modules/base/GSDOM.mjs';
 import GSUtil from '../../../../modules/base/GSUtil.mjs';
 
 import GSAdminDialog from '../dialogs/GSAdminDialog.mjs';
-import Utils from '../Utils.mjs';
-import WebAuthn from '../WebAuthn.mjs';
+import Utils from '../utils/Utils.mjs';
+import WebAuthn from '../utils/WebAuthn.mjs';
 
 globalThis.Tn5250 = {
     version: '6.0.0.300',

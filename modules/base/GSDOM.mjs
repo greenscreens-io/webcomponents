@@ -581,7 +581,8 @@ export default class GSDOM {
 		const root = GSDOM.unwrap(owner);
 		const list = GSDOM.queryAll(root, qry); // root.querySelectorAll(qry);
 		Array.from(list)
-			.filter(el => el.name && Object.hasOwn(obj, el.name))
+			//.filter(el => el.name && Object.hasOwn(obj, el.name))
+			.filter(el => el.name && el.name in obj)
 			.forEach(el => GSDOM.fromValue(el, obj[el.name]));
 	}
 

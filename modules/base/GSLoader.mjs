@@ -29,7 +29,8 @@ export default class GSLoader {
             globalThis.GS_TEMPLATE_URL = GSLoader.TEMPLATE_URL;
         }
 
-        const hasKey = Object.hasOwn(self, 'GS_NO_CACHE');
+        //const hasKey = Object.hasOwn(self, 'GS_NO_CACHE');
+        const hasKey = 'GS_NO_CACHE' in self;
         if (hasKey) {
             GSLoader.NO_CACHE = globalThis.GS_NO_CACHE === true;
             if (localStorage) localStorage.setItem('GS_NO_CACHE', GSLoader.NO_CACHE);
