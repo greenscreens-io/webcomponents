@@ -7,7 +7,7 @@
  * @module views/GSWorkstations
  */
 import BaseViewUI from '../BaseViewUI.mjs';
-import Utils from '../../Utils.mjs';
+import Utils from '../../utils/Utils.mjs';
 import GSFunction from '../../../../../modules/base/GSFunction.mjs';
 
 export default class GSWorkstations extends BaseViewUI {

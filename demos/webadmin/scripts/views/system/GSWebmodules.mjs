@@ -6,7 +6,7 @@
  * A module loading GSWebmodules class
  * @module views/GSWebmodules
  */
-import Utils from '../../Utils.mjs';
+ import Utils from '../../utils/Utils.mjs';
 import BaseViewUI from '../BaseViewUI.mjs';
 
 export default class GSWebmodules extends BaseViewUI {

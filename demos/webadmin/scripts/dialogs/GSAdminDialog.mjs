@@ -13,7 +13,7 @@ import GSEvent from '../../../../modules/base/GSEvent.mjs';
 import GSFunction from '../../../../modules/base/GSFunction.mjs';
 import GSLoader from '../../../../modules/base/GSLoader.mjs';
 import GSDialog from '../../../../modules/components/GSDialog.mjs';
-import Utils from '../Utils.mjs';
+import Utils from '../utils/Utils.mjs';
 
 export default class GSAdminDialog extends GSDialog {
 

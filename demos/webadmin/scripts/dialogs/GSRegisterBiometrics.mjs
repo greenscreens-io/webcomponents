@@ -7,8 +7,8 @@
  * @module dialogs/GSRegisterBiometrics
  */
 import GSAdminDialog from './GSAdminDialog.mjs';
-import WebAuthn from '../WebAuthn.mjs';
-import Utils from '../Utils.mjs';
+import WebAuthn from '../utils/WebAuthn.mjs';
+import Utils from '../utils/Utils.mjs';
 
 export default class GSRegisterBiometrics extends GSAdminDialog {
 
