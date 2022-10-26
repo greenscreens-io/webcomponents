@@ -10,7 +10,7 @@
 import GSFunction from "../../../../modules/base/GSFunction.mjs";
 import GSElement from "../../../../modules/base/GSElement.mjs";
 import GSUtil from "../../../../modules/base/GSUtil.mjs";
-import Utils from "../Utils.mjs";
+import Utils from '../utils/Utils.mjs';
 
 /**
  * Class representing UI shell sidebar

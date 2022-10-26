@@ -6,7 +6,7 @@
  * A module loading GSFilterIP class
  * @module views/GSFilterIP
  */
-import Utils from '../../Utils.mjs';
+ import Utils from '../../utils/Utils.mjs';
 import BaseViewUI from '../BaseViewUI.mjs';
 
 export default class GSFilterIP extends BaseViewUI {

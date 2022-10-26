@@ -6,7 +6,7 @@
  * A module loading GSScheduler class
  * @module views/GSScheduler
  */
-import Utils from '../../Utils.mjs';
+ import Utils from '../../utils/Utils.mjs';
 import BaseViewUI from '../BaseViewUI.mjs';
 
 export default class GSScheduler extends BaseViewUI {

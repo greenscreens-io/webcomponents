@@ -47,6 +47,7 @@
 .selectable {
 	user-select: all;
 }
+
 @keyframes spin {
   from {
     transform: rotate(0deg);

@@ -7,7 +7,7 @@
  * @module views/GSConfiguration
  */
 import BaseViewUI from '../BaseViewUI.mjs';
-import Utils from '../../Utils.mjs';
+import Utils from '../../utils/Utils.mjs';
 
 export default class GSTunnel extends BaseViewUI {
 
