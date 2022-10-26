@@ -59,6 +59,9 @@ export default class GSInputExt extends HTMLInputElement {
         me.#toPattern();
         me.#attachEvents();
         GSComponents.store(me);
+        setTimeout(() => {
+            me.#onDataChange();
+        }, 250);
     }
 
     disconnectedCallback() {
@@ -202,12 +205,11 @@ export default class GSInputExt extends HTMLInputElement {
         let opt = GSDOM.query(me.list, `option[value="${me.value}"]`);
         let clean = false;
         if (!opt) {
-            opt = me.list.querySelector('option');
+            opt = me.list?.querySelector('option');
             clean = true;
         }
 
-        const obj = opt.dataset;
-
+        const obj = opt?.dataset ||{};
         Object.entries(obj).forEach(p => {
             const val = clean ? '' : p[1];
             const key = p[0];
