@@ -146,7 +146,7 @@ export default class GSComponents {
             if (GSDOM.isElement(v, type)) return v;
         }
 
-        return type ? null : GSDOM.parent(el);
+        return type ? null : document.body; //  GSDOM.parent(el);
     }
 
     /**
