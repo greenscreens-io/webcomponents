@@ -99,7 +99,7 @@ export default class GSCacheStyles {
 	static {
 		Object.freeze(GSCacheStyles);
 		window.GSCacheStyles = GSCacheStyles;
-		const style = '.gs-hide{display:none;}.gs-hide-orientation,.gs-render{display:none !important;}gs-item{display:none !important;}';
+		const style = '.gs-hide{display:none !important;}.gs-hide-orientation,.gs-render{display:none !important;}gs-item{display:none !important;}';
 		GSCacheStyles.injectStyle(style);
 	}
 }

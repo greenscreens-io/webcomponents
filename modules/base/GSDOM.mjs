@@ -86,6 +86,15 @@ export default class GSDOM {
 	}
 
 	/**
+	 * Check if given value is part of HTMLFormElement
+	 * @param {string | HTMLElement} el 
+	 * @returns {boolean}
+	 */
+	static isFormElement(el) {
+		const name = GSUtil.isString(el) ? el : el?.tagName;
+		return ['INPUT','SELECT','TEXTAREA', 'BUTTON'].indexOf(name) > -1;
+	}
+	/**
 	  * Check if given element is of given type 
 	  * 
 	  * @param {HTMLElement} el

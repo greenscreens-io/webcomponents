@@ -181,7 +181,12 @@ export default class GSInputExt extends HTMLInputElement {
     #togleEl(el, key = '', value = '') {
         const data = GSAttr.get(el, `data-${key}`, '').split(/[,;;]/);
         const isMatch = value.length > 0 && data.includes(value);
-        isMatch ? GSDOM.show(el) : GSDOM.hide(el);
+        const frmel = GSDOM.isFormElement(el.tagName);
+        if (frmel) {
+            GSAttr.toggle(el, 'disabled', !isMatch);
+        } else {
+            isMatch ? GSDOM.show(el) : GSDOM.hide(el);
+        }
         GSDOM.queryAll(el, 'input,textarea,select').forEach(el => GSAttr.set(el, 'data-ignore', isMatch ? null : true));
     }
 
@@ -219,7 +224,9 @@ export default class GSInputExt extends HTMLInputElement {
             const filter = `[data-${key}]:not([data-${key}=""]`;
             const els = Array.from(GSDOM.queryAll(own, filter));
             els.filter(el => el.tagName !== 'OPTION')
-                .filter(el => GSAttr.get(el, 'list', null).length === 0).forEach(el => me.#togleEl(el, key, val))
+                .filter(el => el !== me)
+                .filter(el => GSAttr.get(el, 'list').length === 0)
+                .forEach(el => me.#togleEl(el, key, val))
         });
     }
 
