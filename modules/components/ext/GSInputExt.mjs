@@ -217,7 +217,7 @@ export default class GSInputExt extends HTMLInputElement {
             const filter = `[data-${key}]:not([data-${key}=""]`;
             const els = Array.from(GSDOM.queryAll(own, filter));
             els.filter(el => el.tagName !== 'OPTION')
-                .filter(el => GSAttr.get(el, 'list', null) == null).forEach(el => me.#togleEl(el, key, val))
+                .filter(el => GSAttr.get(el, 'list', null).length === 0).forEach(el => me.#togleEl(el, key, val))
         });
     }
 
