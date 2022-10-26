@@ -9,7 +9,6 @@
 
 import GSDOM from "../../base/GSDOM.mjs";
 import GSAttr from "../../base/GSAttr.mjs";
-import GSUtil from "../../base/GSUtil.mjs";
 
 /**
  * Table header renderer for GSTable
