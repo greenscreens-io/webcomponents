@@ -6,7 +6,7 @@
  * A module loading GSFilterFido class
  * @module views/GSFilterFido
  */
- import Utils from '../../utils/Utils.mjs';
+import Utils from "../../utils/Utils.mjs";
 import BaseViewUI from '../BaseViewUI.mjs';
 
 export default class GSFilterFido extends BaseViewUI {

@@ -6,7 +6,7 @@
  * A module loading GSCustomization class
  * @module views/GSCustomization
  */
- import Utils from '../../utils/Utils.mjs';
+import Utils from "../../utils/Utils.mjs";
 import BaseViewUI from '../BaseViewUI.mjs';
 
 export default class GSCustomization extends BaseViewUI {

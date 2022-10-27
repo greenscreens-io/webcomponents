@@ -8,7 +8,7 @@
  */
 import GSAdminDialog from './GSAdminDialog.mjs';
 import Utils from '../utils/Utils.mjs';
-import GSDOM from '../../../../modules/base/GSDOM.mjs';
+import GSDOM from '../../../../modules//base/GSDOM.mjs';
 
 export default class GSRegisterOtp extends GSAdminDialog {
 

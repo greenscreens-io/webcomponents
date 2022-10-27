@@ -17,3 +17,7 @@ import './GSFilter.mjs';
 import './GSService.mjs';
 import './GSPrinterReset.mjs';
 import './GSPrinterSetup.mjs';
+
+import './GSActivate.mjs';
+import './GSInstall.mjs';
+import './GSLicense.mjs';

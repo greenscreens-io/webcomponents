@@ -25,7 +25,7 @@ export default class GSCertClient extends GSAdminDialog {
 
     async onData(data) {
 
-        const o = DEMO ? DEMO : io.greenscreens.Certificate.generateClient(data);
+        const o = DEMO ? DEMO : await io.greenscreens.Certificate.generateClient(data);
 
         const arr = Utils.fromHex(o.msg);
         const raw = new Uint8Array(arr);

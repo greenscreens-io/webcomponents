@@ -5,7 +5,7 @@
 import '../../../modules/index.mjs';
 import '../../../modules/components/index.mjs';
 
-import './utils/Utils.mjs';
+import './utils/Fingerprint.mjs';
 import './utils/Utils.mjs';
 import './utils/WebAuthn.mjs';
 

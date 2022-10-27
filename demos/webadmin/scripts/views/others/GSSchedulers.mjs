@@ -6,7 +6,7 @@
  * A module loading GSScheduler class
  * @module views/GSScheduler
  */
- import Utils from '../../utils/Utils.mjs';
+import Utils from "../../utils/Utils.mjs";
 import BaseViewUI from '../BaseViewUI.mjs';
 
 export default class GSScheduler extends BaseViewUI {
@@ -25,7 +25,7 @@ export default class GSScheduler extends BaseViewUI {
     async onLoad() {
         const me = this;
         const filter = me.filter;
-        const type = filter.type ? parseInt(filter.type, 10) : 0;
+        const type = filter.type ? parseInt(filter.type, 10) : null;
         const status = me.#mapState[filter.status] || 0;
         const o = DEMO ? DEMO : await io.greenscreens.Scheduler.list(me.store.page - 1, me.store.limit, type, status);
         return o.data;

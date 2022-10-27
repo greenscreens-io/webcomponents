@@ -2,11 +2,12 @@
  * Copyright (C) 2015, 2022 Green Screens Ltd.
  */
 
+import GSElement from "../../../../modules/base/GSElement.mjs";
+
 /**
  * A module loading Shell Sidebar class
  * @module shell
  */
-import GSElement from "../../../../modules/base/GSElement.mjs";
 
 /**
  * Class representing UI shell sidebar

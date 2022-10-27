@@ -29,7 +29,7 @@ export default class GSCertOpt extends GSAdminDialog {
     }
 
     async onOpen() {
-        const o = DEMO ? DEMO : io.greenscreens.Certificate.loadConfig();
+        const o = DEMO ? DEMO : await io.greenscreens.Certificate.loadConfig();
         return o.data;
     }
 

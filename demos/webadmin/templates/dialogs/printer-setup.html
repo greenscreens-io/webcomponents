@@ -7,7 +7,7 @@
     </gs-form-group>
 
     <gs-form-group css="m-1" name="printerName" label="Printer Name" required
-        maxlength="10" pattern="[0-9a-zA-Z_]+"
+        maxlength="10" pattern="[0-9a-zA-Z_]+" css-field="text-uppercase"
         description="Virtual Printer Name.">
     </gs-form-group>
     
@@ -64,6 +64,7 @@
       </datalist>
 
     <gs-form-group css="m-1" data-group="true" name="printerModel" label="Printer Model" list="models" disabled
+        css-field="text-uppercase" maxlength="10" pattern="[0-9a-zA-Z]+"
         description="Use printer model for SCS data transform.">
     </gs-form-group>
 

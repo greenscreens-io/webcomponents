@@ -6,13 +6,13 @@
  * A module loading GSLoginAdmin class
  * @module dialogs/GSLoginAdmin
  */
-import GSAttr from '../../../../modules/base/GSAttr.mjs';
-import GSComponents from '../../../../modules/base/GSComponents.mjs';
-import GSDOM from '../../../../modules/base/GSDOM.mjs';
-import GSEvent from '../../../../modules/base/GSEvent.mjs';
-import GSFunction from '../../../../modules/base/GSFunction.mjs';
-import GSLoader from '../../../../modules/base/GSLoader.mjs';
-import GSDialog from '../../../../modules/components/GSDialog.mjs';
+import GSAttr from '../../../../modules//base/GSAttr.mjs';
+import GSComponents from '../../../../modules//base/GSComponents.mjs';
+import GSDOM from '../../../../modules//base/GSDOM.mjs';
+import GSEvent from '../../../../modules//base/GSEvent.mjs';
+import GSFunction from '../../../../modules//base/GSFunction.mjs';
+import GSLoader from '../../../../modules//base/GSLoader.mjs';
+import GSDialog from '../../../../modules//components/GSDialog.mjs';
 import Utils from '../utils/Utils.mjs';
 
 export default class GSAdminDialog extends GSDialog {
@@ -105,7 +105,10 @@ export default class GSAdminDialog extends GSDialog {
         data = await me.onOpen(data);
         if (data === false) return;
         super.open();
-        setTimeout(() => me.#update(data), 50);
+        requestAnimationFrame(async () => {
+            await GSUtil.timeout(200);
+            me.#update(data);
+        });
     }
 
     #onError(e) {
@@ -113,7 +116,7 @@ export default class GSAdminDialog extends GSDialog {
     }
 
     #update(data) {
-        GSDOM.queryAll(this, 'form').forEach(form => GSDOM.fromObject(form, data))
+        if (typeof data == 'object') GSDOM.queryAll(this, 'form').forEach(form => GSDOM.fromObject(form, data))
     }
 
     async #onData(e) {

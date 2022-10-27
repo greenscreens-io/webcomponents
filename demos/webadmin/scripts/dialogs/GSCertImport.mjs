@@ -29,7 +29,7 @@ export default class GSCertImport extends GSAdminDialog {
     }
 
     async onData(data) {
-        const o = DEMO ? DEMO : io.greenscreens.Certificate.setFromPEM(data.rootCAPub, data.rootCAPriv,
+        const o = DEMO ? DEMO : await io.greenscreens.Certificate.setFromPEM(data.rootCAPub, data.rootCAPriv,
             data.serverPub, data.serverPriv, data.rootPass, data.serverPass);
         return o.success;
     }

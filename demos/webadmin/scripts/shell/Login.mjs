@@ -60,6 +60,10 @@ export default class Login extends GSAdminDialog {
         return this.query('input[name="otp"]');
     }
 
+    get #password() {
+        return this.query('input[name="password"]');
+    }
+
     async onOpen() {
 
         console.clear();
@@ -76,7 +80,6 @@ export default class Login extends GSAdminDialog {
         me.#engine = await me.#engineLogin();
 
         me.#doWebAuth();
-        me.#toggle(false);
 
         return true;
     }
@@ -103,7 +106,7 @@ export default class Login extends GSAdminDialog {
 
     async #doWebAuth() {
         const me = this;
-        if (!me.#webauthOnnly) return;
+        if (!me.#isWebauth) return;
         const data = { appID: 0, ipAddress: Tn5250.opt.ip };
         const cred = Object.assign(data, Login.#cred);
         try {
@@ -112,7 +115,7 @@ export default class Login extends GSAdminDialog {
             me.#postLogin();
         } catch (e) {
             Utils.handleError(e);
-            location.reload();
+            if (me.#webauthOnly) location.reload();
         }
     }
 
@@ -135,12 +138,21 @@ export default class Login extends GSAdminDialog {
         return true;
     }
 
-    get #webauthOnnly() {
-        return Tn5250?.opt?.sso && !Tn5250?.opt?.otp;
+    get #isWebauth() {
+        return Tn5250?.opt?.sso;
+    }
+
+    get #isOtp() {
+        return Tn5250?.opt?.otp;
+    }
+
+    get #webauthOnly() {
+        return this.#isWebauth && !this.#isOtp;
     }
 
     #initDemo() {
-        if (globalThis.hasOwnProperty('DEMO')) return;
+        //if (globalThis.hasOwnProperty('DEMO')) return;
+        if ('DEMO' in globalThis) return;
         globalThis.DEMO = typeof Engine !== 'function';
     }
 
@@ -156,11 +168,12 @@ export default class Login extends GSAdminDialog {
         const opt = globalThis.Tn5250.opt = await res.json();
         globalThis.Tn5250.opt = opt;
         const me = this;
-        GSAttr.toggle(me.#otp, 'required', opt.otp);
+        GSAttr.toggle(me.#otp, 'disabled', !opt.otp);
+        GSAttr.toggle(me.#password, 'disabled', !opt.otp);
         GSDOM.toggleClass(me.#otp, 'd-none', !opt.otp);
-        if (me.#webauthOnnly) {
+        if (me.#webauthOnly) {
             me.closable = false;
-            me.body = '<h5 class="mt-3">Use security key to access Web Admin console.</h5>';
+            me.body.parentElement.innerHTML = '<div class="m-3 text-center fs-5">Use security key to access Web Admin console.</div>';
         }
     }
 

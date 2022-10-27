@@ -10,7 +10,7 @@ import GSDOM from "../../../../modules/base/GSDOM.mjs";
 import GSElement from "../../../../modules/base/GSElement.mjs";
 import GSFunction from "../../../../modules/base/GSFunction.mjs";
 import GSUtil from "../../../../modules/base/GSUtil.mjs";
-import Utils from '../utils/Utils.mjs';
+import Utils from "../utils/Utils.mjs";
 
 /**
  * BaseUI handles basic screen data view (used by other UI elements)

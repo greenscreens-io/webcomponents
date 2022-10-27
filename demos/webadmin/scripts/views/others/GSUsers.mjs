@@ -6,7 +6,7 @@
  * A module loading GSUsers class
  * @module views/GSUsers
  */
- import Utils from '../../utils/Utils.mjs';
+import Utils from "../../utils/Utils.mjs";
 import BaseViewUI from '../BaseViewUI.mjs';
 
 export default class GSUsers extends BaseViewUI {

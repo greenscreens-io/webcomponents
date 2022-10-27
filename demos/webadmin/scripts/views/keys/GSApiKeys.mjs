@@ -37,7 +37,7 @@ export default class GSApiKeys extends BaseViewUI {
     }
 
     async onUpdate(data) {
-        const o = DEMO ? DEMO : await io.greenscreens.ApiKeys.update(data);
+        const o = DEMO ? DEMO : await io.greenscreens.ApiKeys.update(data.id, data);
         return o.success;
     }
 
@@ -48,7 +48,10 @@ export default class GSApiKeys extends BaseViewUI {
 
     toggle(e) {
         const data = e.detail.data[0];
+        if (!data) return Utils.inform(false, 'Record not selected!');
         data.active = !data.active;
-        this.onUpdate(data);
+        const me = this;
+        me.onUpdate(data);
+        me.refresh();
     }
 }

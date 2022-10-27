@@ -24,7 +24,12 @@
                     <gs-column title="User Name" name="userName"></gs-column>
                     <gs-column title="Created" name="created" type="timestamp" format="HH:mm:ss DD.MM.YYYY"></gs-column>
                     <gs-column title="Invalid Logins" name="attempts"></gs-column>
-                    <gs-column title="Status" name="locked"></gs-column>
+                    <gs-column title="Status" name="locked">
+                        <gs-item map="true">
+                            <gs-item value="true" map="Locked"></gs-item>
+                            <gs-item value="false" map="Unlocked"></gs-item>
+                        </gs-item>                          
+                    </gs-column>
                     <gs-column title="Activity" name="active">
                         <gs-item map="true">
                             <gs-item value="true" map="Enabled"></gs-item>

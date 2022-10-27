@@ -1,3 +1,4 @@
+
 /*
 * Copyright (C) 2015, 2022 Green Screens Ltd.
 */
@@ -6,6 +7,7 @@
  * A module loading GSOtp class
  * @module views/GSOtp
  */
+import Utils from '../../utils/Utils.mjs';
 import BaseViewUI from '../BaseViewUI.mjs';
 
 export default class GSOtp extends BaseViewUI {
@@ -43,7 +45,10 @@ export default class GSOtp extends BaseViewUI {
 
     toggle(e) {
         const data = e.detail.data[0];
+        if (!data) return Utils.inform(false, 'Record not selected!');
         data.active = !data.active;
-        this.onUpdate(data);
+        const me = this;
+        me.onUpdate(data);
+        me.refresh();
     }
 }

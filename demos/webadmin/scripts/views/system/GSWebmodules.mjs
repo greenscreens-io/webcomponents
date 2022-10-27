@@ -6,7 +6,7 @@
  * A module loading GSWebmodules class
  * @module views/GSWebmodules
  */
- import Utils from '../../utils/Utils.mjs';
+import Utils from "../../utils/Utils.mjs";
 import BaseViewUI from '../BaseViewUI.mjs';
 
 export default class GSWebmodules extends BaseViewUI {
@@ -44,7 +44,7 @@ export default class GSWebmodules extends BaseViewUI {
     async restart(e) {
         const me = this;
         const data = e.detail.data[0];
-        const o = DEMO ? DEMO : io.greenscreens.WebModules.restart(data.name);
+        const o = DEMO ? DEMO : await io.greenscreens.WebModules.restart(data.name);
         Utils.inform(o.success, 'Module restarted!');
         me.refresh();
     }
