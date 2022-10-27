@@ -384,6 +384,11 @@ export default class GSStore extends HTMLElement {
             me.#page = 1;
             me.#data = records;
         }
+
+        const fields = me.#fields();
+        me.#data = GSData.filterData(me.#filter, me.#data, fields);
+        me.#data = GSData.sortData(me.#sort, data);
+
         if (me.#total < me.#data.length) me.#total = me.#data.length;
     }
 

@@ -323,6 +323,7 @@ export default class GSTable extends GSElement {
     }
 
     #onRowSelect(data) {
+        if (!data) return;
         const me = this;
         me.#selected = [];
         data.data?.forEach(i => {
