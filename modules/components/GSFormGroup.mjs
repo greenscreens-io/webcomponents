@@ -361,7 +361,7 @@ export default class GSFormGroup extends GSElement {
 
    get cssField() {
       const me = this;
-      const mono = me.mask?.trim().length > 0 ? 'font-monospace' : '';
+      const mono = me.mask?.trim().length > 0 ? ' font-monospace ' : '';
       return mono + GSAttr.get(this, 'css-field', '');
    }
 
