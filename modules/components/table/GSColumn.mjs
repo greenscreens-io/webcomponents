@@ -229,7 +229,7 @@ export default class GSColumn extends HTMLElement {
     get #mapping() {
         const me = this;
         if (me.src) return me.#map;
-        if (!me.#map) me.#map =  me.maps.map(el => [GSAttr.get(el, 'value'), GSAttr.get(el, 'map')]);
+        if (me.#map.length === 0) me.#map =  me.maps.map(el => [GSAttr.get(el, 'value'), GSAttr.get(el, 'map')]);
         return me.#map;
     }
 
