@@ -41,7 +41,7 @@ export default class GSDialog extends GSElement {
     if (name === 'visible') {
       if (me.visible) {
         me.#dialog.showModal();
-        me.focusable().focus();
+        me.focusable()?.focus();
       } else {
         me.#dialog.close();
       }
@@ -219,7 +219,7 @@ export default class GSDialog extends GSElement {
    */
   #findSlotOrEl(name = '', qry = '') {
     const me = this;
-    let el = name ? me.self.querySelector(`[slot="${name}"]`) : null;
+    let el = name ? me.self.querySelector(`slot[name="${name}"]`) : null;
     if (!el) el = me.self.querySelector(qry);
     return el;
   }
@@ -382,11 +382,11 @@ export default class GSDialog extends GSElement {
             </div>
             <div class="card-body p-0 ${me.cssBody}">
               <slot name="body"></slot>
-              <div class="card-footer d-flex user-select-none justify-content-${me.align} ${me.cssFooter}">
-                <button class="btn ${me.cssButtonCancel} dialog-cancel" data-action="cancel">${me.buttonCancel}</button>
-                &nbsp;
-                <button class="btn ${me.cssButtonOk} dialog-ok" data-action="ok">${me.buttonOk}</button>
-              </div>
+            </div>
+            <div class="card-footer d-flex user-select-none justify-content-${me.align} ${me.cssFooter}">
+              <button class="btn ${me.cssButtonCancel} dialog-cancel" data-action="cancel">${me.buttonCancel}</button>
+              &nbsp;
+              <button class="btn ${me.cssButtonOk} dialog-ok" data-action="ok">${me.buttonOk}</button>
             </div>
         </div>
         </dialog>

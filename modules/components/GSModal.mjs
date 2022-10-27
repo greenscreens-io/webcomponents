@@ -272,7 +272,7 @@ export default class GSModal extends GSElement {
    */
   #findSlotOrEl(name = '', qry = '') {
     const me = this;
-    let el = name ? me.self.querySelector(`[slot="${name}"]`) : null;
+    let el = name ? me.self.querySelector(`slot[name="${name}"]`) : null;
     if (!el) el = me.self.querySelector(qry);
     return el;
   }

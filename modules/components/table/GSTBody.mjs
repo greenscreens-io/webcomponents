@@ -130,7 +130,8 @@ export default class GSTBody extends HTMLTableSectionElement {
     #genRow(hdr, rec, idx) {
         const me = this;
         let val = hdr.name === "#" ? idx : rec[hdr.name];
-        const map = hdr.map?.filter(o => o[0] === '' + val);
+        let ref = hdr.ref ? rec[hdr.ref] : val;
+        const map = hdr.map?.filter(o => o[0] === '' + ref);
         val = map?.length > 0 ? map[0][1] || val : val;
         val = me.#format(hdr, val);
         const cspan = hdr.colspan ? `colspan="${hdr.colspan}"` : '';

@@ -11,6 +11,7 @@ import GSAttr from "../../base/GSAttr.mjs";
 import GSDOM from "../../base/GSDOM.mjs";
 import GSID from "../../base/GSID.mjs";
 import GSItem from "../../base/GSItem.mjs";
+import GSLoader from "../../base/GSLoader.mjs";
 
 /**
  * Table column renderer for GSTable
@@ -23,9 +24,21 @@ export default class GSColumn extends HTMLElement {
         customElements.define('gs-column', GSColumn);
     }
 
+    #map = [];
+
     constructor() {
         super();
         GSItem.validate(this, this.tagName);
+    }
+
+    connectedCallback() {
+        this.#loadMap();
+    }
+
+    async #loadMap() {
+        const me = this;
+        const data = await GSLoader.loadSafe(me.src, 'GET', null, true);
+        me.#map = Array.isArray(data) ? data : Object.entries(data);
     }
 
     render() {
@@ -182,12 +195,28 @@ export default class GSColumn extends HTMLElement {
         return GSItem.genericItems(this);
     }
 
+    get filterDef() {
+        return this.querySelector('gs-item[filter="true"]');
+    }
+
+    get mapDef() {
+        return this.querySelector('gs-item[map="true"]');
+    }
+
+    get ref() {
+        return GSAttr.get(this.mapDef, 'ref');
+    }
+
+    get src() {
+        return GSAttr.get(this.mapDef, 'src');
+    }
+
     get filters() {
-        return GSItem.genericItems(this.querySelector('gs-item[filter="true"]'));
+        return GSItem.genericItems(this.filterDef);
     }
 
     get maps() {
-        return GSItem.genericItems(this.querySelector('gs-item[map="true"]'));
+        return GSItem.genericItems(this.mapDef);
     }
 
     /**
@@ -197,11 +226,18 @@ export default class GSColumn extends HTMLElement {
         return this.childElementCount === 0;
     }
 
+    get #mapping() {
+        const me = this;
+        if (me.src) return me.#map;
+        if (!me.#map) me.#map =  me.maps.map(el => [GSAttr.get(el, 'value'), GSAttr.get(el, 'map')]);
+        return me.#map;
+    }
+
     toJSON() {
         const me = this;
         // [[val,map]]
-        const mapping = me.maps.map(el => [GSAttr.get(el, 'value'), GSAttr.get(el, 'map')])
         return {
+            ref : me.ref,
             name: me.name,
             title: me.title,
             width: me.width,
@@ -212,7 +248,7 @@ export default class GSColumn extends HTMLElement {
             format: me.format,
             css: me.css,
             colspan: me.colspan,
-            map: mapping
+            map: me.#mapping
         };
     }
 }

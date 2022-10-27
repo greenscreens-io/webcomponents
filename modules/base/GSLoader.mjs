@@ -175,6 +175,7 @@ export default class GSLoader {
      * @async
      * @param {string} url Full or partial url path
      * @param {string} method http method GET|POST|PUT
+     * @param {object} headers return json or string
      * @param {boolean} asjson return json or string
      * @param {object} dft default value
      * @returns {Promise<object|string>}
