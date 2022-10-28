@@ -12,6 +12,7 @@ import './GSRegisterBiometrics.mjs';
 import './GSRegisterOtp.mjs';
 import './GSNetwork.mjs';
 import './GSSystem.mjs';
+import './GSWorkstation.mjs';
 
 import './GSFilter.mjs';
 import './GSService.mjs';

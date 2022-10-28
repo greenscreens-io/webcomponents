@@ -22,7 +22,7 @@ export default class GSAdminDialog extends GSDialog {
         const me = this;
         me.cssHeader = 'p-3 dialog-title';
         //me.cssTitle = 'fs-5 fw-bold text-muted';
-        me.cssBody = 'p-0';
+        //me.cssBody = 'p-0';
     }
 
     get dialogTemplate() {

@@ -337,7 +337,7 @@ export default class GSDialog extends GSElement {
   }
 
   get cssBody() {
-    return GSAttr.get(this, "css-body", "");
+    return GSAttr.get(this, "css-body", "p-0");
   }
 
   get cssFooter() {
@@ -380,7 +380,7 @@ export default class GSDialog extends GSElement {
                 <slot name="title"></slot>
               </div>
             </div>
-            <div class="card-body p-0 ${me.cssBody}">
+            <div class="card-body ${me.cssBody}">
               <slot name="body"></slot>
             </div>
             <div class="card-footer d-flex user-select-none justify-content-${me.align} ${me.cssFooter}">
