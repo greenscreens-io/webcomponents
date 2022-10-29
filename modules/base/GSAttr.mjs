@@ -135,6 +135,7 @@ export default class GSAttr {
 
 	static {
 		Object.seal(GSAttr);
+		globalThis.GSAttr = GSAttr;
 	}
 }
 
