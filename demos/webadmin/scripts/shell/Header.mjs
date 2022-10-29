@@ -112,7 +112,7 @@ export default class HeaderUI extends GSElement {
     }
 
     explorer() {
-        Utils.openInNewTab(`${location.origin}/admin/explorer2.jsp`, 'toolbar=no,scrollbars=yes,resizable=yes');
+        Utils.openInNewTab(`${location.origin}/admin/explorer`, 'toolbar=no,scrollbars=yes,resizable=yes');
     }
 
     downloadSavf() {

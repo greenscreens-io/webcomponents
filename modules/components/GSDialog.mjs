@@ -40,7 +40,7 @@ export default class GSDialog extends GSElement {
     me.#update();
     if (name === 'visible') {
       if (me.visible) {
-        me.#dialog.showModal();
+        if (!me.#dialog.open) me.#dialog.showModal();
         me.focusable()?.focus();
       } else {
         me.#dialog.close();
@@ -243,7 +243,8 @@ export default class GSDialog extends GSElement {
   }
 
   get title() {
-    return this.#findSlotOrEl('title', '.card-title');
+    //return this.#findSlotOrEl('title', '.card-title');
+    return this.query('.card-title');
   }
 
   set title(val = '') {
@@ -251,7 +252,8 @@ export default class GSDialog extends GSElement {
   }
 
   get body() {
-    return this.#findSlotOrEl('body', '.card-body');
+    //return this.#findSlotOrEl('body', '.card-body');
+    return this.query('.card-body');
   }
 
   set body(val = '') {

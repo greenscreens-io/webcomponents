@@ -299,7 +299,7 @@ export default class GSPopper {
 
 	static {
 		Object.seal(GSPopper);
-		window.GSPopper = GSPopper;
+		globalThis.GSPopper = GSPopper;
 	}
 }
 

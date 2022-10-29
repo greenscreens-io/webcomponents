@@ -181,9 +181,9 @@ export default class GSDOMObserver extends MutationObserver {
      */
     static {
         Object.freeze(GSDOMObserver);
-        window.GSDOMObserver = GSDOMObserver;
+        globalThis.GSDOMObserver = GSDOMObserver;
         const observer = GSDOMObserver.create(document.documentElement);
-        window.addEventListener('unload', () => { observer.disconnect() });
+        globalThis.addEventListener('unload', () => { observer.disconnect() });
     }
 
 }

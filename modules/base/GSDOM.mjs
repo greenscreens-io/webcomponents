@@ -734,7 +734,7 @@ export default class GSDOM {
 
 	static {
 		Object.seal(GSDOM);
-		window.GSDOM = GSDOM;
+		globalThis.GSDOM = GSDOM;
 	}
 }
 

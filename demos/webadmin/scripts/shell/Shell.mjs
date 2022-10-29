@@ -27,7 +27,16 @@ export default class ShellUI extends GSElement {
 
     onReady() {
         super.onReady();
+        const me = this;
+        if (me.GSC?.company && me.company) me.company.innerHTML = me.GSC.company;
+    }
 
+    get company() {
+        return this.getByID('company');
+    }
+
+    get GSC() {
+        return globalThis.GSC;
     }
 
 }

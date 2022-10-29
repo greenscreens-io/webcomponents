@@ -287,7 +287,8 @@ export default class GSModal extends GSElement {
   }
 
   get title() {
-    return this.#findSlotOrEl('title', '.modal-title');
+    //return this.#findSlotOrEl('title', '.modal-title');
+    return this.query('.modal-title');
   }
 
   set title(val = '') {
@@ -295,7 +296,8 @@ export default class GSModal extends GSElement {
   }
 
   get body() {
-    return this.#findSlotOrEl('body', '.modal-body');
+    // return this.#findSlotOrEl('body', '.modal-body');
+    return this.query('.modal-body');
   }
 
   set body(val = '') {

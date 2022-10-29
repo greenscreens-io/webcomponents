@@ -53,7 +53,8 @@ export default class Login extends GSAdminDialog {
     }
 
     get dialogTitle() {
-        return '<img src="../assets/img/logo.png" alt="..." height="30" width="180">'; // 'Admin Login';
+        const url = globalThis.GSC?.logoUrl || '../assets/img/logo.png';
+        return `<img src="${url}" alt="..." height="30" width="180">`; // 'Admin Login';
     }
 
     get #otp() {
@@ -139,7 +140,7 @@ export default class Login extends GSAdminDialog {
     }
 
     get #isWebauth() {
-        return Tn5250?.opt?.sso;
+        return Tn5250?.opt?.fido;
     }
 
     get #isOtp() {

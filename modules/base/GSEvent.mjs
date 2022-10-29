@@ -28,7 +28,7 @@ export default class GSEvent {
 	 * Disable browser console and default context menu
 	 */
 	static protect() {
-		window.addEventListener('contextmenu', (e) => {
+		globalThis.addEventListener('contextmenu', (e) => {
 			GSEvent.prevent(e);
 		});
 
@@ -158,7 +158,7 @@ export default class GSEvent {
 	 */
 	static send(sender = document, name, obj = '', bubbles = false, composed = false, cancelable = false) {
 		const event = new CustomEvent(name, { detail: obj, bubbles: bubbles, composed: composed, cancelable: cancelable });
-		return sender.dispatchEvent(event);
+		return sender?.dispatchEvent(event);
 	}
 
 	/** 
@@ -349,6 +349,7 @@ export default class GSEvent {
 
 	static {
 		Object.freeze(GSEvent);
+		globalThis.GSEvent = GSEvent;
 	}
 }
 

@@ -210,7 +210,7 @@ export default class GSComponents {
     static {
         Object.freeze(GSComponents);
         GSComponents.listenStyles();
-        window.GSComponents = GSComponents;
+        globalThis.GSComponents = GSComponents;
     }
 
 }
