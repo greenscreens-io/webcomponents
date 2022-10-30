@@ -366,13 +366,11 @@ export default class GSStore extends HTMLElement {
     #update(data = [], append = false) {
 
         const me = this;
-        const isRaw = Array.isArray(data);
-
-        let records = data;
-        if (isRaw) {
-            me.#total = records.length;
+        
+        let records = [];
+        if (Array.isArray(data)) {
+            records = data;
         } else if (Array.isArray(data.data)) {
-            me.#total = data.total;
             records = data.data;
         } else {
             records = [data];
@@ -384,18 +382,14 @@ export default class GSStore extends HTMLElement {
             me.#page = 1;
             me.#data = records;
         }
-
-        const fields = me.#fields();
-        me.#data = GSData.filterData(me.#filter, me.#data, fields);
-        me.#data = GSData.sortData(me.#sort, data);
-
-        if (me.#total < me.#data.length) me.#total = me.#data.length;
+        
+        me.#total = me.#data.length;
     }
 
     setData(data = [], append = false) {
         const me = this;
         me.#update(data, append);
-        me.#notify('data', me.#data);
+        me.getData(me.skip, me.limit, me.#filter, me.#sort);
     }
 
     async getData(skip = 0, limit = 0, filter, sort) {
