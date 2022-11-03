@@ -48,7 +48,7 @@ export default class GSButton extends GSElement {
             me.#state = !me.#state;
             GSDOM.toggleClass(me.firstElementChild, 'active', me.#state);
         }
-        if (!me.select) me.#button.blur();
+        if (!me.select) me.#button?.blur();
     }
 
     onReady() {

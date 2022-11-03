@@ -138,13 +138,26 @@ export default class GSElement extends HTMLElement {
 	 * chrome, edge, ie, firefox, ...
 	 * @returns {string} 
 	 */
-	get browser() {
+	 get browser() {
 		return GSAttr.get(this, 'browser', '');
 	}
 
 	set browser(val) {
 		GSAttr.set(this, 'browser', val);
 	}
+
+	/**
+	 * Browser type, if not matched do not render
+	 * chrome, edge, ie, firefox, ...
+	 * @returns {string} 
+	 */
+	 get scheme() {
+		return GSAttr.get(this, 'scheme', '');
+	}
+
+	set scheme(val) {
+		GSAttr.set(this, 'scheme', val);
+	}	
 
 	/**
 	 * Orientation where to render component
@@ -205,6 +218,14 @@ export default class GSElement extends HTMLElement {
 	 */
 	get isValidBrowser() {
 		return GSEnvironment.isValidBrowser(this.browser);
+	}
+
+	/**
+	 * Returns if browser matched, used to determine rendering/removal
+	 * @returns {boolean} 
+	 */
+	 get isValidScheme() {
+		return GSEnvironment.isValidScheme(this.scheme);
 	}
 
 	/**
@@ -433,6 +454,14 @@ export default class GSElement extends HTMLElement {
 	}
 
 	/**
+	 * Check if element is allowed to be rendered
+	 */
+	get isAllowRender() {
+		const me = this;
+		return me.isValidEnvironment && me.isValidBrowser && me.isValidOS && me.isValidScheme;
+	}
+
+	/**
 	 * Called when element injected to parent DOM node
 	 */
 	connectedCallback() {
@@ -440,7 +469,7 @@ export default class GSElement extends HTMLElement {
 
 		if (me.#isConfig()) return;
 
-		if (!(me.isValidEnvironment && me.isValidBrowser && me.isValidOS)) {
+		if (!me.isAllowRender) {
 			return me.remove();
 		}
 

@@ -36,6 +36,15 @@ export default class GSEnvironment {
     }
 
     /**
+     * Check if value match current URL scheme
+     * @param {*} val 
+     */
+    static isValidScheme(val = '') {
+        if (!val) return true;
+        return location.protocol.slice(0, -1) === val;
+    }
+
+    /**
      * Check if value match current browser type
      * @param {string} val 
      * @returns {boolean}
