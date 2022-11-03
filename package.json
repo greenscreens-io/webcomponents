@@ -9,6 +9,8 @@
         "doc": "npm run doc1 && npm run doc2 && npm run doc3"
     },
     "devDependencies": {
+        "rollup-plugin-sourcemaps": "^0.6.3",
+        "rollup-plugin-terser": "^7.0.2",
         "terser-webpack-plugin": "^5.3.6"
     }
 }

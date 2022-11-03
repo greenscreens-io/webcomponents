@@ -458,7 +458,7 @@ export default class GSElement extends HTMLElement {
 	 */
 	get isAllowRender() {
 		const me = this;
-		return me.isValidEnvironment && me.isValidBrowser && me.isValidOS && me.isValidScheme;
+		return me.isValidEnvironment && me.isValidBrowser && me.isValidOS && me.isValidProtocol;
 	}
 
 	/**
