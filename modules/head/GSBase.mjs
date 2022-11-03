@@ -189,11 +189,11 @@ export default class GSBase extends HTMLElement {
 	}
 
 	/**
-	 * Check if matching schema
+	 * Check if matching protocol
 	 * @returns {boolean}
 	 */
-	get isSchema() {
-		const schema = this.schema;
+	get isProtocol() {
+		const schema = this.protocol;
 		if (!schema) return true;
 		const protocol = location.protocol.replace(':', '');
 		if ('http' === schema && protocol === schema) return true;
@@ -244,11 +244,11 @@ export default class GSBase extends HTMLElement {
 
 		const isMobile = me.isMobile;
 		const isAsset = me.isAsset;
-		const isSchema = me.isSchema;
+		const isProtocol = me.isProtocol;
 		const target = me.target;
 		const env = me.env;
 
-		if (!isSchema) return false;
+		if (!isProtocol) return false;
 
 		if (env === 'assets' && isAsset === false) {
 			return false;
@@ -370,12 +370,12 @@ export default class GSBase extends HTMLElement {
 	}
 
 	/**
-	 * Retrieve https or https schema. 
-	 * Used to filter under which schema loader element is applied
+	 * Retrieve https or https protocol. 
+	 * Used to filter under which protocol loader element is applied
 	 * @returns {string}
 	 */
-	get schema() {
-		return this.getAttribute('schema') || '';
+	get protocol() {
+		return this.getAttribute('protocol') || '';
 	}
 
 	/**

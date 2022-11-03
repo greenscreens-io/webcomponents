@@ -151,12 +151,12 @@ export default class GSElement extends HTMLElement {
 	 * chrome, edge, ie, firefox, ...
 	 * @returns {string} 
 	 */
-	 get scheme() {
-		return GSAttr.get(this, 'scheme', '');
+	 get protocol() {
+		return GSAttr.get(this, 'protocol', '');
 	}
 
-	set scheme(val) {
-		GSAttr.set(this, 'scheme', val);
+	set protocol(val) {
+		GSAttr.set(this, 'protocol', val);
 	}	
 
 	/**
@@ -224,8 +224,8 @@ export default class GSElement extends HTMLElement {
 	 * Returns if browser matched, used to determine rendering/removal
 	 * @returns {boolean} 
 	 */
-	 get isValidScheme() {
-		return GSEnvironment.isValidScheme(this.scheme);
+	 get isValidProtocol() {
+		return GSEnvironment.isValidProtocol(this.protocol);
 	}
 
 	/**
