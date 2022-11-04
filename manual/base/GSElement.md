@@ -19,6 +19,7 @@ NOTE: Please see [Install](../install.md) document for instructions on how to ge
 | onready            | Function to be called afre render                             |
 | orientation        | Element will render only under specified orientation          |
 | os                 | Element will render only under specified OS (window, linux)   |
+| protocol           | Element will render only URL protocol matched (http, https)   |
 | template           | Element external template                                     |
  
 <br>

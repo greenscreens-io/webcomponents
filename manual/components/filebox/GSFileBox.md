@@ -12,6 +12,7 @@ GSFileBox is a drag&drop file selector element.
 | css-input | CSS class for input field (d-none)      |
 | css-label | CSS class for component info            |
 | css-list  | CSS class for a list of selected files  |
+| accept    | The same as input accept attribute      |
 | directory | Select directory or of file/s (boolean) |
 | filter    | Regex to filter file mime type          |
 | multiple  | Allow multiple file selection (boolean) |
