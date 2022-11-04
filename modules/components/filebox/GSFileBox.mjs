@@ -21,7 +21,7 @@ import GSAttachment from "./GSAttachment.mjs";
  */
 export default class GSFileBox extends GSElement {
 
-    static TITLE = 'Drop files here or click to select';
+    static TITLE = 'Drop file/s here or click to select';
     static CSS = 'border-2 p-4 d-block text-center dash';
 
     #dragging = null;
@@ -51,7 +51,7 @@ export default class GSFileBox extends GSElement {
         </style>
         <div part="border" class="${me.css}">
             <label part="label" class="${me.cssLabel}" for="${me.name}">${me.title}</label>
-            <input part="input" class="${me.cssInput}" type="file" id="${me.name}" name="${me.name}" ${me.multiple ? "multiple" : ""} ${me.directory ? "directory webkitdirectory" : ""} >
+            <input part="input" class="${me.cssInput}" type="file" accept="${me.accept}" id="${me.name}" name="${me.name}" ${me.multiple ? "multiple" : ""} ${me.directory ? "directory webkitdirectory" : ""} >
             <pre part="list" class="${me.cssList}"></pre>
         </div>
         `
@@ -153,6 +153,14 @@ export default class GSFileBox extends GSElement {
 
     set name(val = '') {
         return GSAttr.set(this, 'name', '');
+    }
+
+    get accept() {
+        return GSAttr.get(this, 'accept', '');
+    }
+
+    set accept(val = '') {
+        return GSAttr.set(this, 'accept');
     }
 
     /**
