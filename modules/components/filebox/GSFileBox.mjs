@@ -232,7 +232,7 @@ export default class GSFileBox extends GSElement {
         const files = input.files;
         if (!files || files.length === 0) return;
         me.#attach(files);
-        input.value = '';
+        // input.value = '';
     }
 
     #hasFile(transfer) {
