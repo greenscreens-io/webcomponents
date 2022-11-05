@@ -12,6 +12,11 @@ import GSAttr from "../base/GSAttr.mjs";
 import GSLoader from '../base/GSLoader.mjs';
 import GSItem from '../base/GSItem.mjs';
 
+const origin = globalThis.CHART_URL || globalThis.location?.origin || '/webcomponents';
+const url = `${origin}/assets/chart/chart.mjs`;
+const { Chart, registerables } = await import(url);
+Chart.register(...registerables);
+
 /**
  * Code editor based on ChartJS Library
  * https://www.chartjs.org/docs/latest/
@@ -27,8 +32,8 @@ export default class GSChart extends GSElement {
 
     static async #init() {
         //const { Chart, registerables } = await import('/assets/chart/chart.mjs');
-        const module = await import('/assets/chart/chart.mjs');
-        module.Chart.register(...module.registerables);
+        //const module = await import('/assets/chart/chart.mjs');
+        //module.Chart.register(...module.registerables);
     }
 
     static {
