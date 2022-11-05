@@ -94,8 +94,8 @@ const all_esm = {
 const extra = {
     input: 'modules/extra/index.mjs',
     output: [
-        //{ file: 'release/esm/io.greenscreens.extra.min.js', format: 'esm' }
-        { file: 'release/esm/io.greenscreens.extra.min.js', format: 'esm', sourcemap: true, plugins: [minesm, sourcemaps] }
+        //{ file: 'release/vanilla/io.greenscreens.extra.min.js', format: 'esm' }
+        { file: 'release/vanilla/io.greenscreens.extra.min.js', format: 'esm', sourcemap: true, plugins: [minesm, sourcemaps] }
     ],
     plugins: [gsExtern()]
 };
