@@ -22,11 +22,15 @@
         globalThis.GS_TEMPLATE_URL = './templates';
         globalThis.GS_NO_CACHE = true;
         globalThis.DEMO = {success: true, code:'0', data:[], msg:''};
+        globalThis.GSC = {
+            company : 'Green Screens Ltd.'
+        };
     </script>
 
-    <script type="module" src="/webcomponents/modules/index.mjs"></script>
-    <script type="module" src="/webcomponents/modules/components/index.mjs"></script>
-    <script type="module" src="./scripts/index.mjs"></script>
+    <!-- 
+    <script type="module" src="/webcomponents/release/esm/io.greenscreens.components.all.esm.js"></script>
+    -->
+    <script type="module" src="./release/io.greenscreens.admin.min.js"></script>
 
     <gs-css url="/webcomponents/assets/css/io.greenscreens.bootstrap_5.2.0.css"></gs-css>
     <gs-css url="/webcomponents/assets/icons/bootstrap-icons.css" notheme="true"></gs-css>

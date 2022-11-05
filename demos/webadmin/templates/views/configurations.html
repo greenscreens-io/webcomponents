@@ -135,6 +135,10 @@
                     <gs-item name="Clone" action="clone"></gs-item>
                     <gs-item name="Remove" action="remove"></gs-item>
                     <gs-item></gs-item>
+                    <gs-item name="Activate" action="activate"></gs-item>
+                    <gs-item name="Install" action="install"></gs-item>
+                    <gs-item name="License" action="license"></gs-item>
+                    <gs-item></gs-item>
                     <gs-item name="Reset Printer" action="resetPrinter"></gs-item>
                     <gs-item name="Setup Printer" action="setupPrinter"></gs-item>
                     <gs-item name="Validate Server" action="validateServer"></gs-item>                    
@@ -147,12 +151,16 @@
                 <gs-template slot="body" href="//forms/configuration.html"></gs-template>
             </gs-dialog>
 
-            <gs-dialog id="modal-validate" visible="false" button-align="center" cancelable="false" css-modal="modal-lg" css-body="text-start p-2 m-1 border" css-header="p-3 dialog-title" >
+            <gs-dialog id="modal-validate" visible="false" button-align="center" closable="true" cancelable="false" css-modal="modal-lg" css-body="text-start p-2 m-1 border" css-header="p-3 dialog-title" >
                 <h4 slot="title">Validation</h4>
             </gs-dialog>
             
             <gs-admin-dialog-printer-setup auto="false" id="modal-setup"></gs-admin-dialog-printer-setup>
             <gs-admin-dialog-printer-reset auto="false" id="modal-reset"></gs-admin-dialog-printer-reset>
+            
+            <gs-admin-dialog-activate auto="false" id="modal-activate"></gs-admin-dialog-activate>
+            <gs-admin-dialog-install auto="false" id="modal-install"></gs-admin-dialog-install>
+            <gs-admin-dialog-license auto="false" id="modal-license"></gs-admin-dialog-license>
 
         </div>
 

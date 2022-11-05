@@ -1,0 +1,14 @@
+<form slot="body" is="gs-ext-form" id="form-main" class="flex-fill" novalidate="">
+
+    <gs-form-group css="m-1" name="password" label="Password" type="password" autocomplete="off" 
+        description="Certificate store password.">
+    </gs-form-group>                
+    <div class="row form-group m-1">
+        <div class="col-12">
+            <gs-filebox multiple="false" elid="file" name="file" 
+            accept="application/pkcs12,application/x-pkcs12,.p12,.pfx"
+            css="" css-input="" css-label="mb-2 text-secondary" css-list="text-info"></gs-filebox>
+        </div>
+    </div>
+    
+</form>

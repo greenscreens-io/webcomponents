@@ -45,15 +45,10 @@
                     </gs-column>
                     <gs-column title="Value" name="value"></gs-column>
                     <gs-column title="Status" name="active" filter="true" list="fixed">
-                        <gs-item filter="true">
-                            <gs-item value="" map="All"></gs-item>
+                        <gs-item filter="true" map="true">
                             <gs-item value="true" map="Active"></gs-item>
                             <gs-item value="false" map="Inactive"></gs-item>                           
                         </gs-item>                        
-                        <gs-item map="true">
-                            <gs-item value="true" map="YES"></gs-item>
-                            <gs-item value="false" map="NO"></gs-item>                           
-                        </gs-item>
                     </gs-column>
                 </gs-header>
                 <gs-store src="data/filter-ip.json" id="sessions" limit=15>

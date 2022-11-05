@@ -7,7 +7,7 @@
  * @module SettingsUI
  */
 
-import GSElement from "../../../modules/base/GSElement.mjs";
+import {GSElement} from "/webcomponents/release/esm/io.greenscreens.components.all.esm.min.js";
 
 /**
  * SettingsUI handles session template elements

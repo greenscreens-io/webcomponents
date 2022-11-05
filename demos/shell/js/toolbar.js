@@ -1,6 +1,4 @@
-import GSElement from "../../../modules/base/GSElement.mjs";
-import GSEvent from "../../../modules/base/GSEvent.mjs";
-import GSAttr from "../../../modules/base/GSAttr.mjs";
+import {GSEvent, GSAttr, GSElement} from "/webcomponents/release/esm/io.greenscreens.components.all.esm.min.js";
 
 class GSToolbar extends GSElement {
 

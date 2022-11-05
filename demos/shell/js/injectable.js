@@ -1,7 +1,4 @@
-import GSElement from "../../../modules/base/GSElement.mjs";
-import GSLoader from "../../../modules/base/GSLoader.mjs";
-import GSLog from "../../../modules/base/GSLog.mjs";
-import GSDOM from "../../../modules/base/GSDOM.mjs";
+import { GSDOM, GSLog, GSLoader, GSElement } from "/webcomponents/release/esm/io.greenscreens.components.all.esm.min.js";
 
 class GSInjectable extends GSElement {
 

@@ -1,0 +1,21 @@
+<form slot="body" is="gs-ext-form" id="form-main" class="flex-fill" novalidate="">
+
+    <gs-form-group css="m-1" name="license" label="License key" required
+        pattern="^(okey|lkey|ckey){1}(://){1}[\S]+$"
+        description="License key for IBM server.">
+    </gs-form-group>
+
+    <hr class="text-secondary ms-4 me-4">
+
+    <gs-form-group css="m-1" name="ipAddress" label="Remote location" readonly disabled>
+    </gs-form-group>
+
+    <gs-form-group css="m-1" name="user" label="User name" css-field="text-uppercase" maxlength="10" required autofocus
+        description="High permission user name to access AS/400 for license and product installation. This user and password are not saved.">
+    </gs-form-group>
+
+    <gs-form-group css="m-1" name="password" label="Password" required type="password" maxlength="64"
+        description="Password for given user. Password and user are not saved.">
+    </gs-form-group>
+
+</form>

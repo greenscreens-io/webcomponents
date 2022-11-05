@@ -1,4 +1,4 @@
-import GSDOM from "../../../modules/base/GSDOM.mjs";
+import {GSDOM} from "/webcomponents/release/esm/io.greenscreens.components.all.esm.min.js";
 
 class GSColorCombo extends HTMLSelectElement {
 
