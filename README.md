@@ -9,6 +9,8 @@ Clone a repo and use the web server to point to the repo root directory, then ac
 Or try live version on Github at https://greenscreens-io.github.io/webcomponents/demos/
  
 Project web page [here](https://webcomponents.greenscreens.ltd/).
+
+To compile, use "rollup -c" or "webpack" from command line.
  
 &copy; Green Screens Ltd. 2016 - 2022
  

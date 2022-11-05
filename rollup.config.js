@@ -1,3 +1,13 @@
+/**
+ * Install tools
+ * npm install rollup -g
+ * npm install terser -g
+ * npm install rollup-plugin-sourcemaps --save-dev
+ * npm install rollup-plugin-terser --save-dev
+ * 
+ * then call "webpack" from command line
+ */
+
 import { terser } from 'rollup-plugin-terser';
 import { sourcemaps } from 'rollup-plugin-sourcemaps';
 
