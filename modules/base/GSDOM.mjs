@@ -749,8 +749,10 @@ export default class GSDOM {
 	static {
 		Object.seal(GSDOM);
 		globalThis.GSDOM = GSDOM;
-		customElements._define = customElements.define;
-		customElements.define = GSDOM.define;
+		if (!customElements._define) {
+			customElements._define = customElements.define;
+			customElements.define = GSDOM.define;
+		}
 	}
 }
 
