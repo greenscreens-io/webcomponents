@@ -7,9 +7,6 @@
  * @module components/GSChart
  */
 
-import { Chart, registerables } from '../../assets/chart/chart.mjs';
-Chart.register(...registerables);
-
 import GSElement from "../base/GSElement.mjs";
 import GSAttr from "../base/GSAttr.mjs";
 import GSLoader from '../base/GSLoader.mjs';
@@ -28,9 +25,16 @@ export default class GSChart extends GSElement {
 
     #chart = null;
 
+    static async #init() {
+        //const { Chart, registerables } = await import('/assets/chart/chart.mjs');
+        const module = await import('/assets/chart/chart.mjs');
+        module.Chart.register(...module.registerables);
+    }
+
     static {
         customElements.define('gs-chart', GSChart);
         Object.seal(GSChart);
+        GSChart.#init();        
     }
 
     static get observedAttributes() {

@@ -1,4 +1,7 @@
+/*
+ * Copyright (C) 2015, 2022 Green Screens Ltd.
+ */
 
-export * from './GSChart.mjs';
-export * from './GSHighlight.mjs';
-export * from './GSMonaco.mjs';
+export { default as GSChart } from './GSChart.mjs';
+export { default as GSHighlight } from './GSHighlight.mjs';
+export { default as GSMonaco } from './GSMonaco.mjs';

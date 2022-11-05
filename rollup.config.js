@@ -10,6 +10,7 @@
 
 import { terser } from 'rollup-plugin-terser';
 import { sourcemaps } from 'rollup-plugin-sourcemaps';
+import gsExtern from './rollup-plugin-gs-extern.js'
 
 const devMode = (process.env.NODE_ENV === 'development');
 console.log(`${devMode ? 'development' : 'production'} mode bundle`);
@@ -90,4 +91,24 @@ const all_esm = {
     ]
 };
 
-export default [core, core_esm, all, all_esm]; 
+const extra = {
+    input: 'modules/extra/index.mjs',
+    output: [
+        //{ file: 'release/esm/io.greenscreens.extra.min.js', format: 'esm' }
+        { file: 'release/esm/io.greenscreens.extra.min.js', format: 'esm', sourcemap: true, plugins: [minesm, sourcemaps] }
+    ],
+    plugins: [gsExtern()]
+};
+
+const extra_esm = {
+    input: 'modules/extra/index.esm.mjs',
+    output: [
+        //{ file: 'release/esm/io.greenscreens.extra.esm.min.js', format: 'esm'}
+        { file: 'release/esm/io.greenscreens.extra.esm.min.js', format: 'esm', sourcemap: true, plugins: [minesm, sourcemaps] }
+    ],
+    plugins: [gsExtern()]
+};
+
+
+export default [core, core_esm, all, all_esm, extra, extra_esm]; 
+
