@@ -6,7 +6,7 @@
  * A module loading GSWorkstation class
  * @module dialogs/GSWorkstation
  */
-import GSLoader from '../../../../modules/base/GSLoader.mjs';
+import {GSLoader} from '/webcomponents/release/esm/io.greenscreens.components.all.esm.min.js';
 import GSAdminDialog from './GSAdminDialog.mjs';
 
 export default class GSWorkstation extends GSAdminDialog {

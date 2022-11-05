@@ -6,7 +6,7 @@
  * A module loading GSAbout class
  * @module dialogs/GSAbout
  */
-import GSModal from '../../../../modules/components/GSModal.mjs';
+import { GSModal } from '/webcomponents/release/esm/io.greenscreens.components.all.esm.min.js';
 
 export default class GSAbout extends GSModal {
 

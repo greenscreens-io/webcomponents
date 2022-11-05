@@ -1,5 +1,3 @@
-import GSBase from "./GSBase.mjs";
-
 /*
  * Copyright (C) 2015, 2022  Green Screens Ltd.
  */

@@ -6,8 +6,7 @@
  * A module loading GSService class
  * @module dialogs/GSService
  */
-import GSAttr from '../../../../modules/base/GSAttr.mjs';
-import GSUtil from '../../../../modules/base/GSUtil.mjs';
+import {GSAttr,GSUtil} from '/webcomponents/release/esm/io.greenscreens.components.all.esm.min.js';
 import GSAdminDialog from './GSAdminDialog.mjs';
 
 export default class GSService extends GSAdminDialog {

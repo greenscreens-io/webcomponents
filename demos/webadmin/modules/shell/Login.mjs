@@ -6,9 +6,7 @@
  * A module loading Login class
  * @module dialogs/Login
  */
-import GSAttr from '../../../../modules/base/GSAttr.mjs';
-import GSDOM from '../../../../modules/base/GSDOM.mjs';
-import GSUtil from '../../../../modules/base/GSUtil.mjs';
+import {GSAttr,GSDOM,GSUtil} from '/webcomponents/release/esm/io.greenscreens.components.all.esm.min.js';
 
 import GSAdminDialog from '../dialogs/GSAdminDialog.mjs';
 import Utils from '../utils/Utils.mjs';

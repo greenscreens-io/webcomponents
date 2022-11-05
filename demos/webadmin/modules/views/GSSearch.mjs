@@ -6,10 +6,8 @@
  * A module loading GSSearch class
  * @module GSSearch
  */
-import GSAttr from "../../../../modules/base/GSAttr.mjs";
-import GSElement from "../../../../modules/base/GSElement.mjs"
-import GSEnvironment from "../../../../modules/base/GSEnvironment.mjs";
-import GSEvent from "../../../../modules/base/GSEvent.mjs";
+
+import { GSAttr, GSEvent, GSElement, GSEnvironment } from '/webcomponents/release/esm/io.greenscreens.components.all.esm.min.js';
 
 /**
  * Search input box WebComponent which emits searh event to upper tree.

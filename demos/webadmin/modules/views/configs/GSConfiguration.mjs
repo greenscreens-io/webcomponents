@@ -6,7 +6,7 @@
  * A module loading GSConfiguration class
  * @module views/GSConfiguration
  */
-import GSUtil from '../../../../../modules/base/GSUtil.mjs';
+import { GSComponents, GSUtil } from '/webcomponents/release/esm/io.greenscreens.components.all.esm.min.js';
 import BaseViewUI from '../BaseViewUI.mjs';
 
 export default class GSConfiguration extends BaseViewUI {

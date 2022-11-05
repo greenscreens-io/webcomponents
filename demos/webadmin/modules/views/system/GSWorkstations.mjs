@@ -8,7 +8,7 @@
  */
 import BaseViewUI from '../BaseViewUI.mjs';
 import Utils from '../../utils/Utils.mjs';
-import GSFunction from '../../../../../modules/base/GSFunction.mjs';
+import {GSFunction} from '/webcomponents/release/esm/io.greenscreens.components.all.esm.min.js';
 
 export default class GSWorkstations extends BaseViewUI {
 

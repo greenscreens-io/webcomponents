@@ -2,8 +2,7 @@
  * Copyright (C) 2015, 2022 Green Screens Ltd.
  */
 
-import GSFunction from "../../../../modules/base/GSFunction.mjs";
-import GSUtil from "../../../../modules/base/GSUtil.mjs";
+import {GSComponents,GSDOM,GSFunction,GSUtil} from '/webcomponents/release/esm/io.greenscreens.components.all.esm.min.js';
 
 /**
  * A module loading Utils class

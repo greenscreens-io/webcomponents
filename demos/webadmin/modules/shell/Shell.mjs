@@ -7,7 +7,8 @@
  * A module loading BaseUI class
  * @module shell
  */
-import GSElement from "../../../../modules/base/GSElement.mjs";
+
+import {GSElement} from '/webcomponents/release/esm/io.greenscreens.components.all.esm.min.js';
 
 /**
  * Class representing UI Shell

@@ -2,7 +2,7 @@
  * Copyright (C) 2015, 2022 Green Screens Ltd.
  */
 
-import GSElement from "../../../../modules/base/GSElement.mjs";
+import {GSElement } from '/webcomponents/release/esm/io.greenscreens.components.all.esm.min.js';
 
 /**
  * A module loading Shell Sidebar class

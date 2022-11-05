@@ -2,8 +2,6 @@
  * Copyright (C) 2015, 2022 Green Screens Ltd.
  */
 
-import GSAttr from "./GSAttr.mjs";
-
 export { default as GSLog } from "./GSLog.mjs";
 export { default as GSID } from "./GSID.mjs";
 export { default as GSEvent } from "./GSEvent.mjs";

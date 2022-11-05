@@ -7,9 +7,7 @@
  * @module shell
  */
 
-import GSFunction from "../../../../modules/base/GSFunction.mjs";
-import GSElement from "../../../../modules/base/GSElement.mjs";
-import GSUtil from "../../../../modules/base/GSUtil.mjs";
+import { GSComponents, GSFunction, GSElement, GSUtil } from '/webcomponents/release/esm/io.greenscreens.components.all.esm.min.js';
 import Utils from "../utils/Utils.mjs";
 
 /**
