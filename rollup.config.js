@@ -49,8 +49,8 @@ const minesm = terser({
 const core = {
     input: 'modules/index.mjs',
     output: [
-        { file: 'release/io.greenscreens.components.core.js', format: 'esm' },
-        { file: 'release/io.greenscreens.components.core.min.js', format: 'esm', sourcemap: true, plugins: [minesm, sourcemaps] }
+        { file: 'release/vanilla/io.greenscreens.components.core.js', format: 'esm' },
+        { file: 'release/vanilla/io.greenscreens.components.core.min.js', format: 'esm', sourcemap: true, plugins: [minesm, sourcemaps] }
     ],
     plugins: [
 
@@ -60,8 +60,8 @@ const core = {
 const core_esm = {
     input: 'modules/index.esm.mjs',
     output: [
-        { file: 'release/io.greenscreens.components.core.esm.js', format: 'esm' },
-        { file: 'release/io.greenscreens.components.core.esm.min.js', format: 'esm', sourcemap: true, plugins: [minesm, sourcemaps] }
+        { file: 'release/esm/io.greenscreens.components.core.esm.js', format: 'esm' },
+        { file: 'release/esm/io.greenscreens.components.core.esm.min.js', format: 'esm', sourcemap: true, plugins: [minesm, sourcemaps] }
     ],
     plugins: [
 
@@ -71,8 +71,8 @@ const core_esm = {
 const all = {
     input: 'modules/components/index.mjs',
     output: [
-        { file: 'release/io.greenscreens.components.all.js', format: 'esm' },
-        { file: 'release/io.greenscreens.components.all.min.js', format: 'esm', sourcemap: true, plugins: [minesm, sourcemaps] }
+        { file: 'release/vanilla/io.greenscreens.components.all.js', format: 'esm' },
+        { file: 'release/vanilla/io.greenscreens.components.all.min.js', format: 'esm', sourcemap: true, plugins: [minesm, sourcemaps] }
     ],
     plugins: [
 
@@ -82,8 +82,8 @@ const all = {
 const all_esm = {
     input: 'modules/components/index.esm.mjs',
     output: [
-        { file: 'release/io.greenscreens.components.all.esm.js', format: 'esm' },
-        { file: 'release/io.greenscreens.components.all.esm.min.js', format: 'esm', sourcemap: true, plugins: [minesm, sourcemaps] }
+        { file: 'release/esm/io.greenscreens.components.all.esm.js', format: 'esm' },
+        { file: 'release/esm/io.greenscreens.components.all.esm.min.js', format: 'esm', sourcemap: true, plugins: [minesm, sourcemaps] }
     ],
     plugins: [
 
