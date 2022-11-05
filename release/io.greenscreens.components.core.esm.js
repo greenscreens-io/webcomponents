@@ -978,68 +978,6 @@ class GSLog {
  */
 
 /**
- * A module loading GSID class
- * @module base/GSID
- */
-
-/**
- * Generic unique ID generator for element
- * @class
- */
-class GSID {
-
-	static #id = 0;
-
-	/**
-	 * Reset ID counter to 0
-	 */
-	static reset() {
-		this.#id = 0;
-	}
-
-	/**
-	 * Get next unique generated ID
-	 * @param {*} prefx Value to prepend to ID counter
-	 * @returns {string} A generated ID
-	 */
-	static next(prefx = 'GSId-') {
-		return `${prefx}${this.#id++}`;
-	}
-
-	/**
-	 * Auto generate next ID
-	 * @returns {string} A generated ID
-	 */
-	static get id() {
-		return this.next();
-	}
-
-	/**
-	 * Calculate hashcode from string (Java compatible)
-	 * @param {*} s A text fro mwhich hashcode is calculated 
-	 * @returns {Number} Generated numeric hashcode
-	 */
-	static hashCode(s) {
-		const l = (s || '').length;
-		let h = 0, i = 0;
-		if (l === 0) return h;
-		while (i < l) {
-			h = (h << 5) - h + s.charCodeAt(i++) | 0;
-		}
-		return h;
-	};
-
-	static {
-		Object.freeze(GSID);
-	}
-
-}
-
-/*
- * Copyright (C) 2015, 2022 Green Screens Ltd.
- */
-
-/**
  * A generic set of static functions used across GS WebComponents framework
  * @class
  */
@@ -1323,113 +1261,6 @@ class GSUtil {
  */
 
 /**
- * A set of static functions used for processing functions
- * @class
- */
-class GSFunction {
-
-    /**
-     * Check if object is of type function
-     * 
-     * @param {function} fn 
-     * @returns {boolean}
-     */
-    static isFunction = (fn) => typeof fn === 'function';
-
-    /**
-     * Check if object has function
-     * 
-     * @param {object} o 
-     * @param {function} fn 
-     * @returns {boolean}
-     */
-    static hasFunction(o, fn) {
-        return o && GSFunction.isFunction(o[fn]);
-    }
-
-    /**
-     * Check if object is of type async function
-     * 
-     * @param {function} fn 
-     * @returns  {boolean}
-     */
-    static isFunctionAsync(fn) {
-        if (!GSFunction.isFunction(fn)) return false;
-        const AsyncFunction = GSFunction.callFunctionAsync.constructor;
-        let isValid = fn instanceof AsyncFunction;
-        if (!isValid) isValid = fn[Symbol.toStringTag] == "AsyncFunction";
-        return isValid;
-    }
-
-    /**
-     * Generic asynchronous function caller
-     * 
-     * @async
-     * @param {function} fn 
-     * @param {object} owner 
-     * @returns  {Promise}
-     * @throws {Error} 
-     */
-    static async callFunctionAsync(fn, owner) {
-        try {
-            return await fn(owner);
-        } catch (e) {
-            return e;
-        }
-    }
-
-    /**
-     * Generic synchronous function caller
-     * 
-     * @param {function} fn 
-     * @param {object} owner 
-     * @returns {object}
-     * @throws {Error}
-     */
-    static callFunctionSync(fn, owner) {
-        try {
-            return fn(owner);
-        } catch (e) {
-            return e;
-        }
-    }
-
-    /**
-     * Generic function caller
-     * 
-     * @param {function} fn 
-     * @param {object} owner 
-     * @returns {object}
-     */
-    static callFunction(fn, owner) {
-        if (!GSFunction.isFunction(fn)) return;
-        if (GSFunction.isFunctionAsync(fn)) {
-            return GSFunction.callFunctionAsync(fn, owner);
-        }
-        return GSFunction.callFunctionSync(fn, owner);
-    }
-
-    /**
-     * Convert string pointer to function call
-     * 
-     * @param {string} value 
-     * @returns  {function}
-     */
-    static parseFunction(value) {
-        const fn = GSUtil.parseValue(value);
-        return GSFunction.isFunction(fn) ? fn : null;
-    }
-
-    static {
-        Object.seal(GSFunction);
-    }
-}
-
-/*
- * Copyright (C) 2015, 2022 Green Screens Ltd.
- */
-
-/**
  * A module loading GSAttr class
  * @module base/GSDOM
  */
@@ -1562,6 +1393,175 @@ class GSAttr {
 		Object.seal(GSAttr);
 		globalThis.GSAttr = GSAttr;
 	}
+}
+
+/*
+ * Copyright (C) 2015, 2022 Green Screens Ltd.
+ */
+
+/**
+ * A module loading GSID class
+ * @module base/GSID
+ */
+
+/**
+ * Generic unique ID generator for element
+ * @class
+ */
+class GSID {
+
+	static #id = 0;
+
+	/**
+	 * Reset ID counter to 0
+	 */
+	static reset() {
+		this.#id = 0;
+	}
+
+	/**
+	 * Get next unique generated ID
+	 * @param {*} prefx Value to prepend to ID counter
+	 * @returns {string} A generated ID
+	 */
+	static next(prefx = 'GSId-') {
+		return `${prefx}${this.#id++}`;
+	}
+
+	/**
+	 * Auto generate next ID
+	 * @returns {string} A generated ID
+	 */
+	static get id() {
+		return this.next();
+	}
+
+	/**
+	 * Calculate hashcode from string (Java compatible)
+	 * @param {*} s A text fro mwhich hashcode is calculated 
+	 * @returns {Number} Generated numeric hashcode
+	 */
+	static hashCode(s) {
+		const l = (s || '').length;
+		let h = 0, i = 0;
+		if (l === 0) return h;
+		while (i < l) {
+			h = (h << 5) - h + s.charCodeAt(i++) | 0;
+		}
+		return h;
+	};
+
+	static {
+		Object.freeze(GSID);
+	}
+
+}
+
+/*
+ * Copyright (C) 2015, 2022 Green Screens Ltd.
+ */
+
+/**
+ * A set of static functions used for processing functions
+ * @class
+ */
+class GSFunction {
+
+    /**
+     * Check if object is of type function
+     * 
+     * @param {function} fn 
+     * @returns {boolean}
+     */
+    static isFunction = (fn) => typeof fn === 'function';
+
+    /**
+     * Check if object has function
+     * 
+     * @param {object} o 
+     * @param {function} fn 
+     * @returns {boolean}
+     */
+    static hasFunction(o, fn) {
+        return o && GSFunction.isFunction(o[fn]);
+    }
+
+    /**
+     * Check if object is of type async function
+     * 
+     * @param {function} fn 
+     * @returns  {boolean}
+     */
+    static isFunctionAsync(fn) {
+        if (!GSFunction.isFunction(fn)) return false;
+        const AsyncFunction = GSFunction.callFunctionAsync.constructor;
+        let isValid = fn instanceof AsyncFunction;
+        if (!isValid) isValid = fn[Symbol.toStringTag] == "AsyncFunction";
+        return isValid;
+    }
+
+    /**
+     * Generic asynchronous function caller
+     * 
+     * @async
+     * @param {function} fn 
+     * @param {object} owner 
+     * @returns  {Promise}
+     * @throws {Error} 
+     */
+    static async callFunctionAsync(fn, owner) {
+        try {
+            return await fn(owner);
+        } catch (e) {
+            return e;
+        }
+    }
+
+    /**
+     * Generic synchronous function caller
+     * 
+     * @param {function} fn 
+     * @param {object} owner 
+     * @returns {object}
+     * @throws {Error}
+     */
+    static callFunctionSync(fn, owner) {
+        try {
+            return fn(owner);
+        } catch (e) {
+            return e;
+        }
+    }
+
+    /**
+     * Generic function caller
+     * 
+     * @param {function} fn 
+     * @param {object} owner 
+     * @returns {object}
+     */
+    static callFunction(fn, owner) {
+        if (!GSFunction.isFunction(fn)) return;
+        if (GSFunction.isFunctionAsync(fn)) {
+            return GSFunction.callFunctionAsync(fn, owner);
+        }
+        return GSFunction.callFunctionSync(fn, owner);
+    }
+
+    /**
+     * Convert string pointer to function call
+     * 
+     * @param {string} value 
+     * @returns  {function}
+     */
+    static parseFunction(value) {
+        const fn = GSUtil.parseValue(value);
+        return GSFunction.isFunction(fn) ? fn : null;
+    }
+
+    static {
+        Object.seal(GSFunction);
+    }
 }
 
 /*
@@ -2643,6 +2643,144 @@ class GSEvent {
  */
 
 /**
+ * A module loading GSEventBus class
+ * @module base/GSEventBus
+ */
+
+
+/**
+ * Class for handling shared events among components
+ * @Class
+ */
+class GSEventBus extends EventTarget {
+
+    static #registry = new Map();
+
+    #listeners = new Set();
+
+    /**
+     * Static event emiter. If named event does not exist, create a new one
+     * 
+     * @param {string} name EventBus name
+     * @param {string} type Event name
+     * @param {object} data Dat to send
+     * 
+     * @returns {boolean|object}
+     */
+    static send(name = '', type = '', data) {
+        return GSEventBus.register(name).emit(type, data);
+    }
+
+    /**
+     * Check if named event bus already exists
+     * 
+     * @param {string} name 
+     * @returns {boolean}
+     */
+    static exist(name = '') {
+        return name && GSEventBus.#registry.has(name);
+    }
+
+    /**
+     * Register a named event bus. If already exists, will return existsing instance.
+     * @param {string} name unique bus name
+     * @returns {GSEventBus}
+     */
+    static register(name = '') {
+        if (!GSEventBus.exist(name)) {
+            GSEventBus.#registry.set(name, new GSEventBus());
+        }
+        return GSEventBus.#registry.get(name);
+    }
+
+    /**
+     * Unregister named event bus from registry.
+     * @param {string} name unique buss name
+     * @returns {boolean} State of removal.
+     */
+    static unregister(name = '') {
+        const bus = GSEventBus.#registry.get(name);
+        if (bus) bus.#unbind();
+        return GSEventBus.#registry.delete(name);
+    }
+
+    #unbind() {
+        const me = this;
+        Array.from(me.#listeners).forEach(o => {
+            me.removeEventListener(o.type, o.listener);
+        });
+        me.#listeners.clear();
+    }
+
+    #isFunction(fn) {
+        return typeof fn === 'function';
+    }
+
+    /**
+     * Listen for events
+     * 
+     * @param {string} type Event name to be listened
+     * @param {Function} listener  Callback to be called on event trigger
+     */
+    on(type = '', listener) {
+        const me = this;
+        if (!me.#isFunction(listener)) return;
+        me.#listeners.add({ type: type, listener: listener });
+        return me.addEventListener(type, listener);
+    }
+
+    /**
+     * Listen for events only once
+     * 
+     * @param {string} type Event name to be listened
+     * @param {Function} listener  Callback to be called on event trigger
+     */
+    once(type, listener) {
+        const me = this;
+        if (!me.#isFunction(listener)) return;
+        const wrap = (e) => {
+            listener(e);
+            me.#listeners.delete(wrap);
+        };
+        wrap.type = type;
+        wrap.listener = listener;
+        me.#listeners.add(wrap);
+        return me.addEventListener(type, wrap, { once: true });
+    }
+
+    /**
+     * Stop listening for events
+     * 
+     * @param {string} type Event name to be listened
+     * @param {Function} listener  Callback to be called on event trigger
+     */
+    off(type = '', listener) {
+        const me = this;
+        if (!me.#isFunction(listener)) return false;
+        Array.from(me.#listeners)
+            .filter(o => o.type === type && o.listener === listener)
+            .forEach(o => me.#listeners.delete(o));
+        return me.removeEventListener(type, listener);
+    }
+
+    /**
+     * Send event to listeners
+     * 
+     * @param {string} type Event name to be listened
+     * @param {object} data  Data to send 
+     */
+    emit(type = '', data) {
+        const evt = new CustomEvent(type, { detail: data });
+        return this.dispatchEvent(evt);
+    }
+
+}
+
+/*
+ * Copyright (C) 2015, 2022 Green Screens Ltd.
+ */
+
+/**
  * A module loading GSEnvironment class
  * @module base/GSEnvironment
  */
@@ -3549,6 +3687,349 @@ class GSData {
     static {
         Object.seal(GSData);
     }
+}
+
+/*
+ * Copyright (C) 2015, 2022 Green Screens Ltd.
+ */
+
+/**
+ * A module loading GSDate class
+ * @module base/GSDate
+ */
+
+/**
+ * Custom Date class to help handling calendar and date formatting
+ * 
+ * @class
+ */
+class GSDate extends Date {
+
+    static DEFAULT_FORMAT = 'YYYY-MM-DDTHH:mm:ssZ';
+    static REGEX_FORMAT = /\[([^\]]+)]|Y{1,4}|M{1,4}|D{1,2}|d{1,4}|H{1,2}|h{1,2}|a|A|m{1,2}|s{1,2}|Z{1,2}|SSS/g
+
+    #locale = navigator.locale;
+
+    format(val = GSDate.DEFAULT_FORMAT, locale) {
+        const me = this;
+        me.locale = locale;
+        const obj = me.asJSON();
+        return val.replace(GSDate.REGEX_FORMAT, (match, val) => val || obj[match]);
+    }
+
+    /**
+     * Build array days/weeks for a month
+     * @returns {Array<string>}
+     */
+    build() {
+        const me = this;
+        const last = me.last.getDate();
+        const first = me.first.getDay();
+
+        const mondayFirst = me.#isMondayFirst();
+
+        const shifter = mondayFirst ? -2 : -1;
+        const days = first === 0 ? [] : ' '.repeat(first + shifter).split(' ');
+        let i = 1;
+        while (i <= last) {
+            days.push(i.toString());
+            i++;
+        }
+
+        while (days.length % 7 != 0) days.push('');
+
+        return days;
+    }
+
+    get locale() {
+        return this.#locale;
+    }
+
+    set locale(val) {
+        this.#locale = val || navigator.language;
+    }
+
+    get year() {
+        return this.getFullYear();
+    }
+
+    set year(val = 0) {
+        this.setFullYear(val);
+    }
+
+    get month() {
+        return this.getMonth();
+    }
+
+    set month(val = 0) {
+        this.setMonth(val);
+    }
+
+    get day() {
+        return this.getDate();
+    }
+
+    set day(val = 0) {
+        this.setDate(val);
+    }
+
+    /**
+     * First date of the month
+     * @returns {Date}
+     */
+    get first() {
+        return new GSDate(this.getFullYear(), this.getMonth(), 1);
+    }
+
+    /**
+     * Last date of the month
+     * @returns {Date}
+     */
+    get last() {
+        return new GSDate(this.getFullYear(), this.getMonth() + 1, 0);
+    }
+
+    get YY() {
+        return String(this.YYYY).slice(-2);
+    }
+
+    get YYYY() {
+        return this.getFullYear();
+    }
+
+    get M() {
+        return this.getMonth() + 1;
+    }
+
+    get MM() {
+        return this.M.toString().padStart(2, '0');
+    }
+
+    get MMM() {
+        return this.#toLocale({ month: 'short' });
+    }
+
+    get MMMM() {
+        return this.#toLocale({ month: 'long' });
+    }
+
+    get D() {
+        return this.getDate().toString();
+    }
+
+    get DD() {
+        return this.D.padStart(2, '0');
+    }
+
+    get d() {
+        return this.getDay().toString();
+    }
+
+    get dd() {
+        return this.ddd.slice(0, 2);
+    }
+
+    get ddd() {
+        return this.#toLocale({ weekday: 'short' });
+    }
+
+    get dddd() {
+        return this.#toLocale({ weekday: 'long' });
+    }
+
+    get H() {
+        return this.getHours().toString();
+    }
+
+    get HH() {
+        return this.H.padStart(2, '0');
+    }
+
+    get h() {
+        return this.#formatHour(1);
+    }
+
+    get hh() {
+        return this.#formatHour(2);
+    }
+
+    get a() {
+        return this.#meridiem(true);
+    }
+
+    get A() {
+        return this.#meridiem(false);
+    }
+
+    get m() {
+        return this.getMinutes().toString();
+    }
+
+    get mm() {
+        return this.m.padStart(2, '0');
+    }
+
+    get s() {
+        return this.getSeconds().toString();
+    }
+
+    get ss() {
+        return this.s.padStart(2, '0');
+    }
+
+    get SSS() {
+        return this.getMilliseconds().toString().padStart(3, '0');
+    }
+
+    get Z() {
+        return this.#zoneStr();
+    }
+
+    get ZZ() {
+        return this.Z.replace(':', '');
+    }
+
+    get Q() {
+        return Math.ceil(this.M / 3);
+    }
+
+    get k() {
+        return (this.getHours() + 1).toString();
+    }
+
+    get kk() {
+        return this.k.padStart(2, '0');
+    }
+
+    get W() {
+        const date = new Date(this.getTime());
+        date.setHours(0, 0, 0, 0);
+        date.setDate(date.getDate() + 3 - (date.getDay() + 6) % 7);
+        const week1 = new Date(date.getFullYear(), 0, 4);
+        return 1 + Math.round(((date.getTime() - week1.getTime()) / 86400000 - 3 + (week1.getDay() + 6) % 7) / 7);
+    }
+
+    get WW() {
+        return this.W.toString().padStart(2, '0');
+    }
+
+    get x() {
+        return this.getTime();
+    }
+
+    get X() {
+        return Math.floor(this.x / 1000);
+    }
+
+    asJSON() {
+        const me = this;
+        return {
+            YY: me.YY,
+            YYYY: me.YYYY,
+            M: me.M,
+            MM: me.MM,
+            MMM: me.MMM,
+            MMMM: me.MMMM,
+            D: me.D,
+            DD: me.DD,
+            d: me.d,
+            dd: me.dd,
+            ddd: me.ddd,
+            dddd: me.dddd,
+            H: me.H,
+            HH: me.HH,
+            h: me.h,
+            hh: me.hh,
+            a: me.a,
+            A: me.A,
+            m: me.m,
+            mm: me.mm,
+            s: me.s,
+            ss: me.ss,
+            SSS: me.SSS,
+            Z: me.Z,
+            ZZ: me.ZZ,
+            Q: me.Q,
+            k: me.k,
+            kk: me.kk,
+            W: me.W,
+            WW: me.WW,
+            x: me.x,
+            X: me.X
+        }
+    }
+
+    static monthList(short = false, locale = navigator.locale, capitalize = true) {
+        const tmp = new GSDate();
+        tmp.locale = locale;
+        tmp.setMonth(0);
+        const days = [];
+        let val = null;
+        let d = 12;
+        while (d--) {
+            val = short ? tmp.MMM : tmp.MMMM;
+            val = capitalize ? tmp.#capitalize(val) : val;
+            days.push(val);
+            tmp.setMonth(tmp.getMonth() + 1);
+        }
+        return days;
+    }
+
+    static dayList(short = false, locale = navigator.locale, capitalize = true) {
+        const tmp = new GSDate();
+        tmp.locale = locale;
+        const mondayFirst = tmp.#isMondayFirst();
+        const offset = mondayFirst ? 1 : 0;
+        tmp.setDate(tmp.getDate() - tmp.getDay() + offset);
+        const days = [];
+        let val = null;
+        let d = 7;
+        while (d--) {
+            val = short ? tmp.ddd : tmp.dddd;
+            val = capitalize ? tmp.#capitalize(val) : val;
+            days.push(val);
+            tmp.setDate(tmp.getDate() + 1);
+        }
+        return days;
+    }
+
+    #isMondayFirst() {
+        // TODO Firefox does not support it
+        return new Intl.Locale(this.#locale)?.weekInfo?.firstDay === 1;
+    }
+
+    #capitalize(val = '') {
+        return val.charAt(0).toUpperCase() + val.slice(1);
+    }
+
+    #toLocale(opt) {
+        return this.toLocaleString(this.#locale, opt);
+    }
+
+    #formatHour(size) {
+        return (this.getHours() % 12 || 12).toString().padStart(size, '0');
+    }
+
+    #meridiem(isLowercase) {
+        const opt = { hour: '2-digit', hour12: true };
+        const val = this.#toLocale(opt).split(' ').pop(-1);
+        return isLowercase ? val.toLowerCase() : val;
+    }
+
+    #zoneStr() {
+        const me = this;
+        const negMinutes = -1 * me.getTimezoneOffset();
+        const minutes = Math.abs(negMinutes);
+        const hourOffset = Math.floor(minutes / 60);
+        const minuteOffset = minutes % 60;
+
+        const seg1 = negMinutes <= 0 ? '+' : '-';
+        const seg2 = hourOffset.toString().padStart(2, '0');
+        const seg3 = minuteOffset.toString().padStart(2, '0');
+
+        return `${seg1}${seg2}:${seg3}`;
+    }
+
 }
 
 /*
@@ -5841,3 +6322,5 @@ class GSTemplate extends HTMLElement {
 	}
 
 }
+
+export { GSAttr, GSBase, GSBlock, GSCSS, GSCacheStyles, GSCacheTemplate, GSComponents, GSDOM, GSDOMObserver, GSData, GSDate, GSElement, GSEnvironment, GSEvent, GSEventBus, GSFunction, GSID, GSItem, GSLink, GSLinkExt, GSLoader, GSLog, GSPopper, GSScript, GSStyleExt, GSTemplate, GSUtil, GSi18n };

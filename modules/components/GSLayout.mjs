@@ -31,7 +31,7 @@ export default class GSLayout extends GSElement {
 
     async getTemplate(val = '') {
         const me = this;
-        const list = GSItem.genericItems(me).map(el => me.#html(el));
+        const list = GSItem.genericItems(me).map(el => me.#generateHtml(el));
         const html = await Promise.all(list);
         const type = me.isVertical ? 'flex-column' : 'flex-row';
         const top = me.isFlat ? '' : 'vh-100';
@@ -66,7 +66,7 @@ export default class GSLayout extends GSElement {
      * @param {HTMLElement} el 
      * @returns {Promise<string>}
      */
-    async #html(el) {
+    async #generateHtml(el) {
         const me = this;
         const res = me.#resizable(el);
 
@@ -74,9 +74,9 @@ export default class GSLayout extends GSElement {
         const name = GSAttr.get(el, 'name');
         const tpl = GSItem.getBody(el, me.isFlat);
 
-        const style = me.#style(el);
+        const style = me.#generateStyle(el);
         const fixed = style.length > 10 ? true : false;
-        const cls = me.#class(el, fixed);
+        const cls = me.#generateClass(el, fixed);
 
         const child = `<div class="${cls}" id="${name || GSID.next()}" ${style}>${tpl}</div>`;
 
@@ -101,7 +101,7 @@ export default class GSLayout extends GSElement {
      * @param {HTMLElement} el 
      * @returns {string}
      */
-    #style(el) {
+    #generateStyle(el) {
         const me = this;
         const sfx = me.isVertical ? 'height' : 'width';
         const max = GSAttr.getAsNum(el, 'max', 0);
@@ -116,7 +116,7 @@ export default class GSLayout extends GSElement {
     * @param {HTMLElement} el 
     * @returns {string}
     */
-    #class(el, fixed = false) {
+    #generateClass(el, fixed = false) {
         const me = this;
         const res = me.#resizable(el);
 

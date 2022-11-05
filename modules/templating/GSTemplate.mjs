@@ -24,7 +24,7 @@ import GSDOM from "../base/GSDOM.mjs";
  * @class
  * @extends {HTMLElement}
  */
-class GSTemplate extends HTMLElement {
+export default class GSTemplate extends HTMLElement {
 
 	#connected = false;
 	#content = null;

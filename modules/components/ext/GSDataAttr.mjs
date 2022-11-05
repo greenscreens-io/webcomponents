@@ -179,19 +179,19 @@ export default class GSDataAttr {
         return el.classList.contains('fade');
     }
 
-    static #switch(el, pos, neg) {
+    static #flip(el, pos, neg) {
         GSDOM.toggleClass(el, pos, true);
         GSDOM.toggleClass(el, neg, false);
     }
 
     static #hide(el) {
         const css = GSDataAttr.#isCollapsible(el) ? '' : 'fade';
-        GSDataAttr.#switch(el, css, 'show');
+        GSDataAttr.#flip(el, css, 'show');
     }
 
     static #show(el) {
         const css = GSDataAttr.#isCollapsible(el) ? 'gsanim' : 'fade';
-        GSDataAttr.#switch(el, 'show', css);
+        GSDataAttr.#flip(el, 'show', css);
     }
 
     static #toggle(obj, type) {

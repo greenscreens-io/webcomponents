@@ -1,4 +1,5 @@
 import { terser } from 'rollup-plugin-terser';
+import { sourcemaps } from 'rollup-plugin-sourcemaps';
 
 const devMode = (process.env.NODE_ENV === 'development');
 console.log(`${devMode ? 'development' : 'production'} mode bundle`);
@@ -38,8 +39,8 @@ const minesm = terser({
 const core = {
     input: 'modules/index.mjs',
     output: [
-        { file: 'release/io.greenscreens.components.js', format: 'esm' },
-        { file: 'release/io.greenscreens.components.min.js', format: 'esm', plugins: [minesm] }
+        { file: 'release/io.greenscreens.components.core.js', format: 'esm' },
+        { file: 'release/io.greenscreens.components.core.min.js', format: 'esm', sourcemap: true, plugins: [minesm, sourcemaps] }
     ],
     plugins: [
 
@@ -49,28 +50,36 @@ const core = {
 const core_esm = {
     input: 'modules/index.esm.mjs',
     output: [
-        { file: 'release/io.greenscreens.components.esm.js', format: 'esm' },
-        { file: 'release/io.greenscreens.components.esm.min.js', format: 'esm', plugins: [minesm] }
+        { file: 'release/io.greenscreens.components.core.esm.js', format: 'esm' },
+        { file: 'release/io.greenscreens.components.core.esm.min.js', format: 'esm', sourcemap: true, plugins: [minesm, sourcemaps] }
     ],
     plugins: [
 
     ]
 };
 
-// all modules - core + ui
-const ui = {
-    input: 'modules/interface/index.mjs',
+const all = {
+    input: 'modules/components/index.mjs',
     output: [
-        { file: 'release/io.greenscreens.ui.all.js', format: 'esm' },
-        { file: 'release/io.greenscreens.ui.all.min.js', format: 'esm', plugins: [minesm] }
+        { file: 'release/io.greenscreens.components.all.js', format: 'esm' },
+        { file: 'release/io.greenscreens.components.all.min.js', format: 'esm', sourcemap: true, plugins: [minesm, sourcemaps] }
     ],
     plugins: [
 
     ]
 };
-// external : isExternal
 
+const all_esm = {
+    input: 'modules/components/index.esm.mjs',
+    output: [
+        { file: 'release/io.greenscreens.components.all.esm.js', format: 'esm' },
+        { file: 'release/io.greenscreens.components.all.esm.min.js', format: 'esm', sourcemap: true, plugins: [minesm, sourcemaps] }
+    ],
+    plugins: [
 
-export default [core, core_esm, ui]; 
-// export default [ui]; 
+    ]
+};
+
+export default [core, core_esm, all, all_esm]; 
+
 

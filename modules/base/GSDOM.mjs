@@ -20,6 +20,20 @@ export default class GSDOM {
 	static SPEED = 300;
 
 	/**
+	 * Generic safe component define
+	 * @param {*} name 
+	 * @param {*} clazz 
+	 * @param {*} opt 
+	 * @returns 
+	 */
+	static define(name, clazz, opt) {
+		if (customElements.get(name)) return;
+		
+		if (customElements._define) return customElements._define(name, clazz, opt);
+		return customElements.define(name, clazz, opt);
+	}
+
+	/**
 	* Parse string into html DOM
 	*
 	* @param {string} html Source to parse
@@ -735,6 +749,8 @@ export default class GSDOM {
 	static {
 		Object.seal(GSDOM);
 		globalThis.GSDOM = GSDOM;
+		customElements._define = customElements.define;
+		customElements.define = GSDOM.define;
 	}
 }
 

@@ -267,6 +267,22 @@ export default class GSUtil {
 		if (expose) self[clazz.name] = clazz;
 	}
 
+	/**
+	 * Inport and initialize source in JavaScript modules
+	 * Standard eval or new Function can not be used
+	 * @param {*} src 
+	 * @returns 
+	 */
+	static async importSource(src) {
+		const blob = new Blob([src], { type: "text/javascript" });
+		const url = URL.createObjectURL(blob);
+		try {
+			return await import(url);
+		} finally {
+			URL.revokeObjectURL(url);
+		}
+	}
+
 	static {
 		Object.seal(GSUtil);
 		globalThis.GSUtil = GSUtil;
