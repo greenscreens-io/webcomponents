@@ -8,6 +8,7 @@ export * from "./intl/index.esm.mjs";
 export { default as GSAccordion } from "./GSAccordion.mjs";
 export { default as GSAlert } from "./GSAlert.mjs";
 export { default as GSButton } from "./GSButton.mjs";
+export { default as GSCalendar } from "./GSCalendar.mjs";
 export { default as GSCenter } from "./GSCenter.mjs";
 export { default as GSContext } from "./GSContext.mjs";
 export { default as GSDialog } from "./GSDialog.mjs";

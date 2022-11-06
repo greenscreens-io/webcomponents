@@ -8,6 +8,7 @@ import "./intl/index.mjs";
 import "./GSAccordion.mjs";
 import "./GSAlert.mjs";
 import "./GSButton.mjs";
+import "./GSCalendar.mjs";
 import "./GSCenter.mjs";
 import "./GSContext.mjs";
 import "./GSDialog.mjs";
