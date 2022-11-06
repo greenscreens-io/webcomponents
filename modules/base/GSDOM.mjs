@@ -28,8 +28,7 @@ export default class GSDOM {
 	 */
 	static define(name, clazz, opt) {
 		if (customElements.get(name)) return;
-		
-		if (customElements._define) return customElements._define(name, clazz, opt);
+		if (customElements.GSDefine) return customElements.GSDefine(name, clazz, opt);
 		return customElements.define(name, clazz, opt);
 	}
 
@@ -749,10 +748,9 @@ export default class GSDOM {
 	static {
 		Object.seal(GSDOM);
 		globalThis.GSDOM = GSDOM;
-		if (!customElements._define) {
-			customElements._define = customElements.define;
-			customElements.define = GSDOM.define;
-		}
+		customElements.GSDefine = customElements.define;
+		customElements.define = GSDOM.define;
+		Object.freeze(customElements);
 	}
 }
 
