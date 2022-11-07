@@ -102,7 +102,7 @@ export default class GSElement extends HTMLElement {
 	 * @returns {string|boolean} Return proxy component id or false if not referenced
 	 */
 	get proxy() {
-		return GSAttr.get(this, 'proxy', false);
+		return GSAttr.get(this, 'proxy');
 	}
 
 	/**
@@ -347,7 +347,9 @@ export default class GSElement extends HTMLElement {
 	 * @returns {Promisa<string>}
 	 */
 	async getTemplate(def = '') {
-		return GSLoader.getTemplate(def);
+		if (def) return GSLoader.getTemplate(def);
+		const el = this.query('template');
+		return el ? el.innerHTML : '';
 	}
 
 	/**
