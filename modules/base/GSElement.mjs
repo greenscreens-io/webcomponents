@@ -538,6 +538,7 @@ export default class GSElement extends HTMLElement {
 		me.#ready = true;
 		const fn = GSFunction.parseFunction(me.onready);
 		GSFunction.callFunction(fn);
+		GSEvent.send(me, 'ready', {});
 		GSEvent.send(document.body, 'componentready', me);
 	}
 
@@ -710,11 +711,14 @@ export default class GSElement extends HTMLElement {
 		const me = this;
 		// await GSEvent.waitPageLoad();
 		await me.#aplyTemplate();
-		if (me.offline) return;
-		if (!me.#useTemplate) return;
-		if (!me.isFlat) me.attachEvent(document, 'gs-style', me.#styleChange.bind(me));
-		me.attachEvent(screen.orientation, 'change', me.#onOrientation.bind(me));
-		GSUtil.requestAnimationFrame(() => me.onReady());
+		try {
+			if (me.offline) return;
+			if (!me.#useTemplate) return;
+			if (!me.isFlat) me.attachEvent(document, 'gs-style', me.#styleChange.bind(me));
+			me.attachEvent(screen.orientation, 'change', me.#onOrientation.bind(me));
+		} finally {
+			GSUtil.requestAnimationFrame(() => me.onReady());
+		}
 	}
 
 }

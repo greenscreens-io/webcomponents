@@ -15,17 +15,8 @@ import gsExtern from './rollup-plugin-gs-extern.js'
 const devMode = (process.env.NODE_ENV === 'development');
 console.log(`${devMode ? 'development' : 'production'} mode bundle`);
 
-function isExternal (id) {
-    const b1 = id.includes('/head');
-    const b2 = id.includes('/base');
-    const b3 = id.includes('/templating');
-    const flag = b1 || b2 || b3;
-    // if (flag) console.log(`Skiping external import: ${id}`);
-    return flag;
-}
-
 const minesm = terser({
-    ecma: 2020,
+    ecma: 2022,
     keep_classnames: false,
     keep_fnames: false,
     module: true,
