@@ -256,7 +256,8 @@ export default class GSDialog extends GSElement {
 
   get title() {
     //return this.#findSlotOrEl('title', '.card-title');
-    return this.query('.card-title');
+    //return this.query('.card-title');
+    return this.query('slot[name="title"]');
   }
 
   set title(val = '') {

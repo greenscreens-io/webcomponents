@@ -98,8 +98,9 @@ export default class GSFormGroup extends GSElement {
       const me = this;
       const tpl = me.query('template');
       if (tpl) return tpl.innerHTML;
+      const idattr = me.autoid ? `id="${me.name}"` : '';
       return `<input is="gs-ext-input" class="${me.#cssField} ${me.cssField}" 
-               id="${me.name}" name="${me.name}" type="${me.#type}" ${me.#placeholder}
+               ${idattr} name="${me.name}" type="${me.#type}" ${me.#placeholder}
                ${me.#autocopy} ${me.#autoselect}
                ${me.#autocomplete} ${me.#autocapitalize} ${me.#multiple} ${me.#checked}
                ${me.#mask} ${me.#pattern} ${me.#value} ${me.#list} ${me.#accept}
@@ -581,5 +582,9 @@ export default class GSFormGroup extends GSElement {
    set step(val = '') {
       return GSAttr.setAsNum(this, 'step', val);
    }
+
+   get autoid() {
+      return this.hasAttribute('autoid');
+   }   
 }
 
