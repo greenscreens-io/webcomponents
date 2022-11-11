@@ -15,6 +15,7 @@ import GSFunction from "../../base/GSFunction.mjs";
 import GSDOM from "../../base/GSDOM.mjs";
 import GSAttr from "../../base/GSAttr.mjs";
 import GSElement from "../../base/GSElement.mjs";
+import GSData from "../../base/GSData.mjs";
 
 /**
  * Process Bootstrap data-bs-* attributes
@@ -144,7 +145,7 @@ export default class GSDataAttr {
         }
 
         const allComps = GSDOM.queryAll(document.documentElement, css);
-        gs = allComps.filter(el => el instanceof GSElement).concat(gs);
+        gs = GSData.mergeArrays(allComps.filter(el => el instanceof GSElement), gs);
         
 
         // all not descendants of component
