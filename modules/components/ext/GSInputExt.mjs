@@ -377,6 +377,8 @@ export default class GSInputExt extends HTMLInputElement {
 
     formatMask(value = '') {
         const me = this;
+        if (!me.mask) return value;
+        
         const chars = value.split('');
 
         const tmp = [];

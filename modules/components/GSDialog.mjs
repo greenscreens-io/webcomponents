@@ -55,6 +55,8 @@ export default class GSDialog extends GSElement {
     me.attachEvent(me, 'action', me.#onClick.bind(me));
     me.attachEvent(me, 'form', me.#onForm.bind(me));
     me.attachEvent(me.#dialog, 'keydown', me.#onEscape.bind(me));
+    me.attachEvent(me.#dialog, 'close', me.#onClose.bind(me));
+    me.attachEvent(me.#dialog, 'cancel', me.#onCancel.bind(me));
     super.onReady();
     if (me.visible) me.open();
   }
@@ -69,6 +71,16 @@ export default class GSDialog extends GSElement {
   #onEscape(e) {
     const me = this;
     if (!me.cancelable && e.key === 'Escape') return GSEvent.prevent(e);
+  }
+
+  #onClose(e) {
+    const me = this;
+    me.visible = false;
+  }
+
+  #onCancel(e) {
+    const me = this;
+    me.visible = false;
   }
 
   #onClick(e) {
@@ -375,7 +387,7 @@ export default class GSDialog extends GSElement {
     if (val) return super.getTemplate(val);
     const me = this;
     return `
-        <dialog class="p-0 border-0 ${me.css}">
+        <dialog class="dialog p-0 border-0 ${me.css}">
         <div class="card">
             <div class="card-header user-select-none ${me.cssHeader}">
               <div class="card-title ${me.cssTitle}">
