@@ -269,6 +269,10 @@ export default class GSItem extends HTMLElement {
 		return GSItem.getBody(el);
 	}
 
+	get href() {
+		return GSItem.getHref(el);
+	}
+
 	/**
 	 * Convert JSON structure to DOM structure
 	 * 
