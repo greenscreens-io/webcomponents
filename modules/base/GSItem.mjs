@@ -266,11 +266,11 @@ export default class GSItem extends HTMLElement {
 	}
 
 	get body() {
-		return GSItem.getBody(el);
+		return GSItem.getBody(this);
 	}
 
 	get href() {
-		return GSItem.getHref(el);
+		return GSItem.getHref(this);
 	}
 
 	/**
