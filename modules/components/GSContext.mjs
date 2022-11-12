@@ -368,6 +368,7 @@ export default class GSContext extends GSElement {
     if (el.action) return `<li><a class="dropdown-item" href="#" data-action="${el.action}">${el.name}</a></li>`;
     if (el.toggle) return `<li><a class="dropdown-item" href="#" data-bs-toggle="${el.toggle}" data-bs-target="${el.target}">${el.name}</a></li>`;
     if (el.inject) return `<li><a class="dropdown-item" href="#" data-inject="${el.inject}" data-bs-target="${el.target}">${el.name}</a></li>`;
+    if (el.href) return `<li><a class="dropdown-item" href="${me.href}" target="${el.target}">${el.name}</a></li>`;
     return ``;
   }
 
