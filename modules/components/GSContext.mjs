@@ -118,11 +118,11 @@ export default class GSContext extends GSElement {
   }
 
   get disabled() {
-    return GSAttr.getAsBool(this, 'disabled');
+    return this.hasAttribute('disabled');
   }
 
-  set disabled(val = '') {
-    return GSAttr.setAsBool(this, 'disabled', val);
+  set disabled(val) {
+    return GSAttr.toggle(this, 'disabled', GSUtil.asBool(val));
   }
 
   get dark() {
