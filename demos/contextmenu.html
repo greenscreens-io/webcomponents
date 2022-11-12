@@ -17,12 +17,13 @@
 <meta name="description" content="WebComponents UI library based on Bootstrap.">
 
 <script type="module" src="/webcomponents/modules/index.mjs"></script>
+<script type="module" src="/webcomponents/modules/components/ext/GSDataAttr.mjs"></script>
 <script type="module" src="/webcomponents/modules/components/GSContext.mjs"></script>
 
 <gs-css url="/webcomponents/assets/css/io.greenscreens.bootstrap_5.2.0.css"></gs-css>
 <gs-css url="/webcomponents/assets/icons/bootstrap-icons.css" notheme="true"></gs-css>
 
-<body clasS="vh-100 p-0 m-0">
+<body clasS="vh-100 p-0 m-0" id="body">
 
     <gs-template href="/webcomponents/demos/header.tpl" ></gs-template>
 
@@ -45,7 +46,11 @@
                 <gs-item name="Submenu 2.3.2" action="sub_2_3_2"></gs-item>
             </gs-item>
         </gs-item>
+        <gs-item name="Help" inject="gs-notification" target="#content"></gs-item>
+        <gs-item name="About" toggle="dialog" target="#dlgAbout"></gs-item>
     </gs-context>
+
+    <div id="content"></div>
 
     <script defer="true" type="module">
         const tbl = GSComponents.find('gs-context');

@@ -362,13 +362,13 @@ export default class GSContext extends GSElement {
   }
 
   #renderChild(el) {
-    const name = GSAttr.get(el, 'name');
-    const action = GSAttr.get(el, 'action');
     const header = GSAttr.get(el, 'header');
     if (header) return `<li><h6 class="dropdown-header"/>${header}</h6></li>`;
-    if (!name) return `<li><hr class="dropdown-divider"/></li>`;
-    if (!action) return ``;
-    return `<li><a class="dropdown-item" href="#" data-action="${action}">${name}</a></li>`;
+    if (!el.name) return `<li><hr class="dropdown-divider"/></li>`;
+    if (el.action) return `<li><a class="dropdown-item" href="#" data-action="${el.action}">${el.name}</a></li>`;
+    if (el.toggle) return `<li><a class="dropdown-item" href="#" data-bs-toggle="${el.toggle}" data-bs-target="${el.target}">${el.name}</a></li>`;
+    if (el.inject) return `<li><a class="dropdown-item" href="#" data-inject="${el.inject}" data-bs-target="${el.target}">${el.name}</a></li>`;
+    return ``;
   }
 
   /**
