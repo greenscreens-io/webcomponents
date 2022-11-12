@@ -318,7 +318,7 @@ export default class GSDropdown extends GSElement {
     children = children || me.children;
     const list = [];
 
-    const sub = level === 0 ? '' : 'submenu';
+    const sub = level === 0 ? 'dropend' : 'submenu';
 
     if (level === 0 && me.title) {
       list.push('<div class="dropdown">');
@@ -344,7 +344,7 @@ export default class GSDropdown extends GSElement {
 
   #renderSub(el) {
     const name = GSAttr.get(el, 'name');
-    return `<li><a class="dropdown-item" href="#">${name} &raquo; </a>`;
+    return `<li><a class="dropdown-item dropdown-toggle" href="#"><div class="d-inline-block w-100">${name}</div></a>`;
   }
 
   #renderChild(el) {

@@ -28,10 +28,21 @@ export default class GSFormGroup extends GSElement {
       Object.seal(GSFormGroup);
    }
 
+   static get observedAttributes() {
+      const attrs = ['value', 'label'];
+      return GSElement.observeAttributes(attrs);
+   }
+
    constructor() {
       super();
       this.#validateAllowed();
   }
+
+  attributeCallback(name = '', oldValue = '', newValue = '') {
+      const me = this;
+      if (name === 'label') me.#labelEl.innerHTML = newValue;
+      if (name === 'value') me.#inputEl.value = newValue;
+   }
 
   #validateAllowed() {
       const me = this;
@@ -92,6 +103,14 @@ export default class GSFormGroup extends GSElement {
          ${me.#field}
          ${me.#info}
       </div>`;
+   }
+
+   get #inputEl() {
+      return this.query('input');
+   }
+
+   get #labelEl() {
+      return this.query('label');
    }
 
    get #input() {

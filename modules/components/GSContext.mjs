@@ -192,9 +192,10 @@ export default class GSContext extends GSElement {
       if (it === '-') return opts.push('<li><hr class="dropdown-divider"/></li>');
       const hasSubmenu = Array.isArray(it.menu);
       opts.push('<li>');
-      opts.push(`<a class="dropdown-item" href="#"`);
+      opts.push(`<a class="dropdown-item ${hasSubmenu ? 'droppdown-toggle' : ''}" href="#"`);
       if (it.action) opts.push(` data-action="${it.action}"`);
-      opts.push(`>${it.name} ${hasSubmenu ? '&raquo;' : ''}</a>`);
+      opts.push(`><div class="d-inline-block w-100">${it.name}</div></a>`);
+      //opts.push(`>${it.name} ${hasSubmenu ? '&raquo;' : ''}</a>`);
       if (hasSubmenu) {
         const sub = me.#renderMenu(it.menu);
         opts.push(`<ul class="submenu dropdown-menu ${dark}">`);
@@ -223,35 +224,42 @@ export default class GSContext extends GSElement {
     this.close();
   }
 
-  #onPopup(e) {
+  async #onPopup(e) {
     GSEvent.prevent(e);
     const me = this;
     me.#caller = e.target;
-    const rect = me.#menu?.getBoundingClientRect();
-    if (!rect) return;
-    let x = e.clientX, y = e.clientY;
-    const overflowH = x + rect.width > window.innerWidth;
-    const overflowV = y + rect.height > window.innerHeight;
-    if (overflowH) x = window.innerWidth - rect.width;
-    if (overflowV) y = window.innerHeight - rect.height;
-    me.#updateSubmenus(overflowV, overflowH);
-    me.popup(x, y);
+    me.popup(e.clientX, e.clientY);
+    await GSUtil.timeout(15);
+    me.#updateSubmenus(e);
     return true;
   }
 
-  #updateSubmenus(overflowV = false, overflowH = false) {
+  #updateSubmenus(e) {
+    
     const me = this;
+    const rect = me.#menu?.getBoundingClientRect();
+    if (!rect) return;
     requestAnimationFrame(() => {
+      let x = e.clientX, y = e.clientY;
+      const overflowH = x + rect.width > window.innerWidth;
+      const overflowV = y + rect.height > window.innerHeight;
+      if (overflowH) x = window.innerWidth - rect.width;
+      if (overflowV) y = window.innerHeight - rect.height;      
       me.#submenus.forEach(el => {
+        let end = true;
         el.style.position = 'absolute';
         el.style.left = 'inherit';
         el.style.right = 'inherit';
         el.style.top = 'inherit';
         if (overflowH) {
           el.style.right = '100%';
+          end = false;          
         } else {
           el.style.left = '100%';
+          end = true;
         }
+        GSDOM.toggleClass(me.#menu, 'dropstart', !end);
+        GSDOM.toggleClass(me.#menu, 'dropend', end);
       });
     });
   }
@@ -332,7 +340,7 @@ export default class GSContext extends GSElement {
     children = children || me.children;
     const list = [];
 
-    const sub = level === 0 ? 'position-fixed' : 'submenu';
+    const sub = level === 0 ? 'dropend position-fixed' : 'submenu';
 
     list.push(`<ul class="${sub} dropdown-menu ${me.dark ? 'dropdown-menu-dark' : ''}">`);
 
@@ -350,7 +358,7 @@ export default class GSContext extends GSElement {
 
   #renderSub(el) {
     const name = GSAttr.get(el, 'name');
-    return `<li><a class="dropdown-item" href="#">${name} &raquo; </a>`;
+    return `<li><a class="dropdown-item dropdown-toggle" href="#"><div class="d-inline-block w-100">${name}</div></a>`;
   }
 
   #renderChild(el) {
