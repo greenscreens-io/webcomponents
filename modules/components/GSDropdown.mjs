@@ -348,12 +348,15 @@ export default class GSDropdown extends GSElement {
   }
 
   #renderChild(el) {
-    const name = GSAttr.get(el, 'name');
     const header = GSAttr.get(el, 'header');
     if (header) return `<li><h6 class="dropdown-header"/>${header}</h6></li>`;
-    if (!name) return `<li><hr class="dropdown-divider"/></li>`;
+    if (!el.name) return `<li><hr class="dropdown-divider"/></li>`;
+    if (el.action) return `<li><a class="dropdown-item" href="#" data-action="${el.action}">${el.name}</a></li>`;
+    if (el.toggle) return `<li><a class="dropdown-item" href="#" data-bs-toggle="${el.toggle}" data-bs-target="${el.target}">${el.name}</a></li>`;
+    if (el.inject) return `<li><a class="dropdown-item" href="#" data-inject="${el.inject}" data-bs-target="${el.target}">${el.name}</a></li>`;
+    if (el.href) return `<li><a class="dropdown-item" href="${el.href}" target="${el.target}">${el.name}</a></li>`;
     const attrs = GSItem.getAttrs(el).trim();
-    return attrs ? `<li><a class="dropdown-item" href="#" ${attrs} >${name}</a></li>` : '';
+    return attrs ? `<li><a class="dropdown-item" href="#" ${attrs} >${el.name}</a></li>` : '';
   }
 
   /**
