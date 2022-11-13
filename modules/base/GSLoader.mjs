@@ -202,7 +202,7 @@ export default class GSLoader {
 
         const isJson = GSUtil.isJson(val);
         const func = !isJson && GSFunction.parseFunction(val);
-        const isFunc = GSFunction.isFunction(func);
+        const isFunc = func && GSFunction.isFunction(func);
         const isData = !isFunc && GSUtil.parseValue(val);
 
         if (isData || isJson) val = GSUtil.toJson(val);

@@ -133,8 +133,8 @@ export default class GSUtil {
 	 * @returns  {*}
 	 */
 	static parseValue(value) {
+		if (!GSUtil.isString(value)) return;
 		if (!GSUtil.isStringNonEmpty(value)) return;
-		const me = this;
 		let o = window;
 		let fn = null;
 		value.trim().split('.').forEach((v, i, a) => {
