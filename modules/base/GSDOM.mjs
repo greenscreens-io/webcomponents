@@ -651,6 +651,8 @@ export default class GSDOM {
 	 static fromJsonAsDOM(obj, tag = 'gs-item') {
 		if (!obj) return null;
 
+		if (Array.isArray(obj)) return obj.map(o => GSDOM.fromJsonAsDOM(o));
+
 		const name = obj['#tagName'] || tag;
 		const el = document.createElement(name);
 
@@ -674,6 +676,8 @@ export default class GSDOM {
 	 */	
 	 static fromJsonAsString(obj, tag = 'gs-item') {
 		if (!obj) return null;
+
+		if (Array.isArray(obj)) return obj.map(o => GSDOM.fromJsonAsString(o)).join('');
 
 		const name = obj['#tagName'] || tag;
 		const src = [];
