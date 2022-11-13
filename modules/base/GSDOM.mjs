@@ -684,7 +684,7 @@ export default class GSDOM {
 		src.push(`<${name} `);
 
 		Object.keys(obj).filter(v => v !='items' && v[0]!= '#')
-			.forEach(v =>  src.push(` ${v}=${obj[v]} `));
+			.forEach(v =>  src.push(` ${v}="${obj[v]}" `));
 
 		src.push(`>`);
 
