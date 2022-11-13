@@ -72,39 +72,6 @@ export default class GSItem extends HTMLElement {
 	}
 
 	/**
-	 * Generate generic <gs-item>  tag from json object. Used by several GS Components
-	 * Json format: array of json or json (child elemetns stored in item property
-	 * Any property will be rendered as gs-item element attribute
-	 * Example: [{title:"test2", message:"test2", items: [{title:"test2", message:"test2"}]}] 
-	 * @param {*} val 
-	 * @returns {string} generated html <gs-item...>
-	 */
-	static generateItem(val = '') {
-		if (!GSUtil.isJsonType(val)) return '';
-		if (!Array.isArray(val)) return GSItem.#generateItem(val);
-		return GSItem.#generateItems(val);
-	}
-
-	static #numOrString(val) {
-		return GSUtil.isNumber(val) || GSUtil.isStringNonEmpty(val);
-	}
-
-	static #generateItems(o) {
-		return o.map(e => GSItem.#generateItem(e)).join('\n');
-	}
-
-	static #generateItem(o) {
-		const args = GSItem.#generateArgs(o);
-		const childs = Array.isArray(o.items) ? GSItem.generateItem(o.items) : '';
-		return `<gs-item ${args}>${childs}</gs-item>`;
-	}
-
-	static #generateArgs(o) {
-		return Object.entries(o).filter(kv => GSItem.#numOrString(kv[1]))
-			.map(kv => `${kv[0]}="${kv[1]}"`).join(' ');
-	}
-
-	/**
 	 * Hepler to joinf all base data-bs related attributes
 	 * @param {*} el 
 	 * @returns 
