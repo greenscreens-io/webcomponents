@@ -488,7 +488,7 @@ export default class GSElement extends HTMLElement {
 	disconnectedCallback() {
 		const me = this;
 		me.#removed = true;
-		if (me.#observer) me.#observer.disconnect();
+		me.#observer?.disconnect();
 		GSComponents.remove(me);
 		GSEvent.deattachListeners(me);
 		me.#removeFlat();

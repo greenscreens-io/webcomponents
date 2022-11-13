@@ -387,9 +387,9 @@ export default class GSContext extends GSElement {
     const data = await GSLoader.loadData(val);
     if (!GSUtil.isJsonType(data)) return;
     const me = this;
+    GSEvent.deattachListeners(me);
     const src = GSDOM.fromJsonAsString(data);
     GSDOM.setHTML(me, src);
-    GSEvent.deattachListeners(me);
     me.connectedCallback();
     return data;
   }

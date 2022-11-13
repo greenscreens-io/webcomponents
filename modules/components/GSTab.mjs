@@ -215,6 +215,7 @@ export default class GSTab extends GSElement {
     const src = GSDOM.fromJsonAsString(data);
     GSDOM.setHTML(me, src);
     GSEvent.deattachListeners(me);
+    me.disconnectedCallback();
     me.connectedCallback();
   }
 

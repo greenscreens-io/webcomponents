@@ -115,7 +115,7 @@ export default class GSList extends GSElement {
         const me = this;
         const src = GSDOM.fromJsonAsString(data);
         GSDOM.setHTML(me, src);
-        GSEvent.deattachListeners(me);
+        me.disconnectedCallback();
         me.connectedCallback();
         return data;
     }
