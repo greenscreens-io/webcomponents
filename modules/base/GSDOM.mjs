@@ -593,9 +593,9 @@ export default class GSDOM {
 
 	/**
 	 * Convert JSON Object into HTMLElements (input)
-	 * @param {*} owner 
-	 * @param {*} qry 
-	 * @param {*} obj 
+	 * @param {HTMLElement} owner Root selector (form)
+	 * @param {object} obj Data source key/value pairs
+	 * @param {string} qry Element type selector,defaults to form elements 
 	 * @returns 
 	 */
 	static fromObject(owner, obj, qry = 'input, textarea, select') {
@@ -608,6 +608,94 @@ export default class GSDOM {
 			.forEach(el => GSDOM.fromValue(el, obj[el.name]));
 	}
 
+	/**
+	 * Convert HTMLElement into a JSON object
+	 * @param {HTMLElement} own 
+	 * @param {boolean} recursive 
+	 * @returns {object}
+	 */
+	static toJson(own, recursive = true) {
+		const obj = {};
+		if (!GSDOM.isHTMLElement(own)) return obj;
+		
+		obj['#tagName'] = own.tagName.toLowerCase();
+
+		Array.from(own.attributes).forEach(v => obj[v.name] = v.value);
+		
+		if (recursive) {
+			const children = Array.from(own.children);
+			if (children.length > 0 ) {
+				obj.items = [];
+				children.forEach(el => obj.items.push(GSDOM.toJson(el)));
+			}
+		}
+
+		return obj;
+	}
+
+	/**
+	 * Convert JSON object to DOM/html
+	 * @param {object} obj 
+	 * @param {boolean} asString As string or HTMLElement Tree 
+	 * @param {string} tag 
+	 */	
+	static fromJson(obj, tag = 'gs-item', asString = false) {
+		return asString ? GSDOM.fromJsonAsString(obj, tag) : GSDOM.fromJsonAsDOM(obj, tag);
+	}
+
+	/**
+	 * Convert JSON object to DOM tree
+	 * @param {*} obj 
+	 * @param {*} tag 
+	 */	
+	 static fromJsonAsDOM(obj, tag = 'gs-item') {
+		if (!obj) return null;
+
+		const name = obj['#tagName'] || tag;
+		const el = document.createElement(name);
+
+		Object.keys(obj).filter(v => v !='items' && v!= '#tagName')
+			.forEach(v => el.setAttribute(v, obj[v]));
+
+		if (Array.isArray(obj.items)) {
+			obj.items.forEach(o => {
+				const sub = GSDOM.fromJsonAsDOM(o, tag);
+				el.appendChild(sub);
+			});
+		}
+
+		return el;
+	}
+
+	/**
+	 * Convert JSON object to HTML source
+	 * @param {*} obj 
+	 * @param {*} tag 
+	 */	
+	 static fromJsonAsString(obj, tag = 'gs-item') {
+		if (!obj) return null;
+
+		const name = obj['#tagName'] || tag;
+		const src = [];
+		src.push(`<${name} `);
+
+		Object.keys(obj).filter(v => v !='items' && v!= '#tagName')
+			.forEach(v =>  src.push(` ${v}=${obj[v]} `));
+
+		src.push(`>`);
+
+		if (Array.isArray(obj.items)) {
+			obj.items.forEach(o => {
+				const sub = GSDOM.fromJsonAsString(o, tag);
+				src.push(sub);
+			});
+		}
+
+		src.push(`</${name}>`);
+
+		return src.join('');
+	}
+	
 	/**
 	 * Convert URL hash key/value to form elements
 	 * @param {HTMLElement} owner 

@@ -10,7 +10,6 @@
 import GSElement from "../base/GSElement.mjs";
 import GSAttr from "../base/GSAttr.mjs";
 import GSLoader from '../base/GSLoader.mjs';
-import GSItem from '../base/GSItem.mjs';
 
 const origin = globalThis.CHART_URL || globalThis.location?.origin || '/webcomponents';
 const url = `${origin}/assets/chart/chart.mjs`;
@@ -186,7 +185,7 @@ export default class GSChart extends GSElement {
         const data = await GSLoader.loadSafe(me.data, 'GET', null, true, []);
 
         const el = me.querySelector('gs-item[group="options"]');
-        const opt = Object.assign(options, GSItem.toJson(el));
+        const opt = Object.assign(options, GSChart.toJson(el));
 
         const sets = opt.data.datasets;
         sets.forEach((o, i) => {
@@ -196,5 +195,65 @@ export default class GSChart extends GSElement {
         const ctx = me.canvas.getContext('2d');
         me.#chart = new Chart(ctx, opt);
     }
+
+	/**
+	 * Convert DOM tree into a JSON structure
+	 * 
+	 * @param {HTMLElement} obj HTML element instance to convert
+	 * @param {string} name DOM attribute name for object key
+	 * @param {string} value DOM attribute name for object value
+	 * @param {string} type DOM attribute name for object type
+	 * @returns {object}
+	 */
+     static toJson(el, name = 'name', value = 'value', type = 'type') {
+
+
+		if (!(el instanceof HTMLElement)) return {};
+
+		const nameV = el.getAttribute(name);
+		const valV = el.getAttribute(value);
+		const typeV = el.getAttribute(type);
+
+		let obj = null;
+
+		switch (typeV) {
+			case 'array':
+				obj = [];
+				break;
+			case 'object':
+				obj = {};
+				break;
+			default:
+				return GSChart.#toType(valV, typeV);
+		}
+
+		const childs = Array.from(el.children);
+		const isArray = typeV === 'array';
+		const isObject = typeV === 'object';
+
+		childs.forEach(el => {
+			const _nam = el.getAttribute(name);
+			if (isArray) {
+				obj.push(GSChart.toJson(el, name, value, type));
+			} else if (isObject) {
+				const tmp = GSChart.toJson(el, name, value, type);
+				obj[_nam] = tmp;
+			} else {
+				const _val = el.getAttribute(value);
+				const _typ = el.getAttribute(type);
+				obj[nameV][_nam] = GSChart.#toType(_val, _typ);
+			}
+		});
+
+		return obj;
+	}
+
+	static #toType(val, type) {
+		switch (type) {
+			case 'boolean': return val === 'true';
+			case 'number': return parseFloat(val);
+			default: return val
+		}
+	}
 
 }
