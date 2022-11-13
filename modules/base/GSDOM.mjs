@@ -656,7 +656,7 @@ export default class GSDOM {
 		const name = obj['#tagName'] || tag;
 		const el = document.createElement(name);
 
-		Object.keys(obj).filter(v => v !='items' && v!= '#tagName')
+		Object.keys(obj).filter(v => v !='items' && v[0]!= '#')
 			.forEach(v => el.setAttribute(v, obj[v]));
 
 		if (Array.isArray(obj.items)) {
@@ -683,7 +683,7 @@ export default class GSDOM {
 		const src = [];
 		src.push(`<${name} `);
 
-		Object.keys(obj).filter(v => v !='items' && v!= '#tagName')
+		Object.keys(obj).filter(v => v !='items' && v[0]!= '#')
 			.forEach(v =>  src.push(` ${v}=${obj[v]} `));
 
 		src.push(`>`);
