@@ -14,6 +14,7 @@ import GSLoader from "../base/GSLoader.mjs";
 import GSUtil from "../base/GSUtil.mjs";
 import GSAttr from "../base/GSAttr.mjs";
 import GSDOM from "../base/GSDOM.mjs";
+import GSFunction from "../base/GSFunction.mjs";
 
 /**
  * Dropdown menu
