@@ -265,6 +265,7 @@ export default class GSDropdown extends GSElement {
     const me = this;
     e.preventDefault();
     me.close();
+    me.#handleGroup(e);
     const data = e.target.dataset;
     const sts = await me.#onAction(data.action);
     if (sts) return;    
@@ -272,6 +273,14 @@ export default class GSDropdown extends GSElement {
     GSEvent.send(me, 'action', opt, true); // notify self
   }
 
+  #handleGroup(e) {
+    const eli = e?.target?.previousSibling;
+    if (!(eli instanceof HTMLInputElement)) return;
+    const me = this;
+    me.queryAll(`input[name="${eli.name}"]`).forEach(el => el.checked = false);
+    eli.checked = true;
+  }
+  
   /**
    * Show proper submenu on mouse over
    * @param {Event} e 

@@ -10,6 +10,7 @@
 import GSUtil from "./GSUtil.mjs";
 import GSAttr from "./GSAttr.mjs";
 import GSDOM from "./GSDOM.mjs";
+import GSID from "./GSID.mjs";
 
 /**
  * Static class for handling generic configurable tag GS-ITEM
@@ -160,6 +161,14 @@ export default class GSItem extends HTMLElement {
 		return GSAttr.get(el, 'href', '#');
 	}
 
+	static getGroup(el) {
+		return GSAttr.get(el, 'group');
+	}
+
+	static getSelected(el) {
+		return el.hasAttribute('selected');
+	}
+
 	static getCSS(el) {
 		return GSAttr.get(el, 'css', '');
 	}
@@ -238,5 +247,21 @@ export default class GSItem extends HTMLElement {
 
 	get href() {
 		return GSItem.getHref(this);
+	}
+
+	get group() {
+		return GSItem.getGroup(this);
+	}
+
+	get selected() {
+		return GSItem.getSelected(this);
+	}
+
+	get html() {
+		const me = this;		
+		if  (GSUtil.isStringEmpty(me.group)) return me.name;
+		const id = GSID.id;
+		const c = me.selected ? 'checked' : '';
+		return `<input id="${id}" ${c} type="radio" name="${me.group}"><label class="ms-2" for="${id}">${me.name}</label>`;
 	}
 }

@@ -279,11 +279,20 @@ export default class GSContext extends GSElement {
     const me = this;
     e.preventDefault();
     me.close();
+    me.#handleGroup(e);
     const data = e.target.dataset;
     const sts = await me.#onAction(data.action);
     if (sts) return;
     const opt = { type: 'contextmenu', option: e.target, caller: me.#caller, data: data };
     GSEvent.send(me, 'action', opt, true, true, true); // notify self
+  }
+
+  #handleGroup(e) {
+    const eli = e?.target?.previousSibling;
+    if (!(eli instanceof HTMLInputElement)) return;
+    const me = this;
+    me.queryAll(`input[name="${eli.name}"]`).forEach(el => el.checked = false);
+    eli.checked = true;
   }
 
   /**
@@ -369,7 +378,7 @@ export default class GSContext extends GSElement {
     const header = GSAttr.get(el, 'header');
     if (header) return `<li><h6 class="dropdown-header"/>${header}</h6></li>`;
     if (!el.name) return `<li><hr class="dropdown-divider"/></li>`;
-    if (el.action) return `<li><a class="dropdown-item" href="#" data-action="${el.action}">${el.name}</a></li>`;
+    if (el.action) return `<li><a class="dropdown-item" href="#" data-action="${el.action}">${el.html}</a></li>`;
     if (el.toggle) return `<li><a class="dropdown-item" href="#" data-bs-toggle="${el.toggle}" data-bs-target="${el.target}">${el.name}</a></li>`;
     if (el.inject) return `<li><a class="dropdown-item" href="#" data-inject="${el.inject}" data-bs-target="${el.target}">${el.name}</a></li>`;
     if (el.href) return `<li><a class="dropdown-item" href="${el.href}" target="${el.target}">${el.name}</a></li>`;
