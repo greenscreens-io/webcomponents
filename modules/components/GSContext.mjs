@@ -14,6 +14,7 @@ import GSLoader from "../base/GSLoader.mjs";
 import GSEvent from "../base/GSEvent.mjs";
 import GSAttr from "../base/GSAttr.mjs";
 import GSDOM from "../base/GSDOM.mjs";
+import GSFunction from "../base/GSFunction.mjs";
 
 /**
  * Context menu
@@ -236,7 +237,7 @@ export default class GSContext extends GSElement {
   }
 
   #updateSubmenus(e) {
-    
+
     const me = this;
     const rect = me.#menu?.getBoundingClientRect();
     if (!rect) return;
@@ -245,7 +246,7 @@ export default class GSContext extends GSElement {
       const overflowH = x + rect.width > window.innerWidth;
       const overflowV = y + rect.height > window.innerHeight;
       if (overflowH) x = window.innerWidth - rect.width;
-      if (overflowV) y = window.innerHeight - rect.height;      
+      if (overflowV) y = window.innerHeight - rect.height;
       me.#submenus.forEach(el => {
         let end = true;
         el.style.position = 'absolute';
@@ -254,7 +255,7 @@ export default class GSContext extends GSElement {
         el.style.top = 'inherit';
         if (overflowH) {
           el.style.right = '100%';
-          end = false;          
+          end = false;
         } else {
           el.style.left = '100%';
           end = true;
@@ -274,11 +275,13 @@ export default class GSContext extends GSElement {
       .forEach(btn => me.attachEvent(btn, 'click', me.#onClick.bind(me)));
   }
 
-  #onClick(e) {
+  async #onClick(e) {
     const me = this;
     e.preventDefault();
     me.close();
     const data = e.target.dataset;
+    const sts = await me.#onAction(data.action);
+    if (sts) return;
     const opt = { type: 'contextmenu', option: e.target, caller: me.#caller, data: data };
     GSEvent.send(me, 'action', opt, true, true, true); // notify self
   }
@@ -397,5 +400,29 @@ export default class GSContext extends GSElement {
     return data;
   }
 
+  async #onAction(action) {
+    let sts = false;
+    if (!action) return sts;
+    const me = this;
+    try {
+      action = GSUtil.capitalizeAttr(action);
+      const fn = me[action];
+      sts = GSFunction.isFunction(fn);
+      if (sts) {
+        if (GSFunction.isFunctionAsync(fn)) {
+          await me[action]();
+        } else {
+          me[action]();
+        }
+      }
+    } catch (e) {
+      me.onError(e);
+    }
+    return sts;
+  }
+
+  onError(e) {
+    console.log(e);
+  }
 }
 

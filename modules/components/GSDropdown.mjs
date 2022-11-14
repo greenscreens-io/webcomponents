@@ -260,10 +260,13 @@ export default class GSDropdown extends GSElement {
       .forEach(btn => me.attachEvent(btn, 'click', me.#onClick.bind(me)));
   }
 
-  #onClick(e) {
+  async #onClick(e) {
     const me = this;
     e.preventDefault();
     me.close();
+    const data = e.target.dataset;
+    const sts = await me.#onAction(data.action);
+    if (sts) return;    
     const opt = { type: 'dropdown', source: e };
     GSEvent.send(me, 'action', opt, true); // notify self
   }
@@ -380,4 +383,28 @@ export default class GSDropdown extends GSElement {
     return data;
   }
 
+  async #onAction(action) {
+    let sts = false;
+    if (!action) return sts;
+    const me = this;
+    try {
+      action = GSUtil.capitalizeAttr(action);
+      const fn = me[action];
+      sts = GSFunction.isFunction(fn);
+      if (sts) {
+        if (GSFunction.isFunctionAsync(fn)) {
+          await me[action]();
+        } else {
+          me[action]();
+        }
+      }
+    } catch (e) {
+      me.onError(e);
+    }
+    return sts;
+  }
+
+  onError(e) {
+    console.log(e);
+  }  
 }
