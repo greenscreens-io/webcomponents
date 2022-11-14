@@ -29,7 +29,7 @@ export default class GSFormGroup extends GSElement {
    }
 
    static get observedAttributes() {
-      const attrs = ['value', 'label'];
+      const attrs = ['value', 'label', 'disabled'];
       return GSElement.observeAttributes(attrs);
    }
 
@@ -42,6 +42,7 @@ export default class GSFormGroup extends GSElement {
       const me = this;
       if (name === 'label') me.#labelEl.innerHTML = newValue;
       if (name === 'value') me.#inputEl.value = newValue;
+      if (name === 'disabled') me.#inputEl.disabled = !GSUtil.isNull(newValue);
    }
 
   #validateAllowed() {

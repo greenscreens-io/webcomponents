@@ -21,6 +21,7 @@ NOTE: Please see [Install](../install.md) document for instructions on how to ge
 | os                 | Element will render only under specified OS (window, linux)   |
 | protocol           | Element will render only URL protocol matched (http, https)   |
 | template           | Element external template                                     |
+| visible            | Element show/hide (boolean)                                   |
  
 <br>
 

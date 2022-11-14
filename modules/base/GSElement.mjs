@@ -54,7 +54,7 @@ export default class GSElement extends HTMLElement {
 	 * @returns {Array<string>} Monitored attributes orientation|id
 	 */
 	static get observedAttributes() {
-		return ['orientation', 'id'];
+		return ['orientation', 'id', 'visible'];
 	}
 
 	/**
@@ -278,6 +278,20 @@ export default class GSElement extends HTMLElement {
 	get self() {
 		const me = this;
 		return me.isProxy && me.#content instanceof GSElement ? me.#content.self : me.#content;
+	}
+
+	/**
+	 * Check element visibility
+	 */
+	get visible() {
+		return this.hasAttribute('visible');
+	}
+
+	/**
+	 * Set element visibility
+	 */
+	set visible(val = true) {
+		GSAttr.setAsBool(this, 'visible', val);
 	}
 
 	/**
@@ -510,6 +524,9 @@ export default class GSElement extends HTMLElement {
 		if (name === 'id') {
 			GSComponents.remove(oldValue);
 			GSComponents.store(me);
+		}
+		if (name === 'visible') {
+			GSDOM.toggleClass(me, 'gs-hide', newValue === 'false');
 		}
 		if (me.#ready) {
 			GSUtil.requestAnimationFrame(() => {

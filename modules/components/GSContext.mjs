@@ -225,8 +225,9 @@ export default class GSContext extends GSElement {
   }
 
   async #onPopup(e) {
-    GSEvent.prevent(e);
     const me = this;
+    if (!e.target.matches(me.target)) return;
+    GSEvent.prevent(e);
     me.#caller = e.target;
     me.popup(e.clientX, e.clientY);
     await GSUtil.timeout(15);
