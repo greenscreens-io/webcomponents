@@ -183,9 +183,7 @@ export default class GSFileBox extends GSElement {
     }
 
     #onClick(e) {
-        if (e.target instanceof HTMLLabelElement) return;
-        const label = this.fileEl.previousElementSibling;
-        if (label instanceof HTMLLabelElement) label.click();
+        this.fileEl.click();
     }
 
     #onDragenter(e) {
