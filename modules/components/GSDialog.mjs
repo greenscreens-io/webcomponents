@@ -415,7 +415,7 @@ export default class GSDialog extends GSElement {
             </div>
         </div>
         <slot name="extra"></slot>
-        <div class="toast-container p-3"></slot></div>        
+        <div class="toast-container position-fixed"></slot></div>        
         </dialog>
      `
   }

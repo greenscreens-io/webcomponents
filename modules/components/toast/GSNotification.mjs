@@ -162,7 +162,7 @@ export default class GSNotification extends GSElement {
     const el = GSDOM.parse(tpl, true);
     const toast = me.#dialogToast;
     requestAnimationFrame(() => {
-      if (toast !== me) GSAttr.set(toast, 'class', `toast-container ${me.position}`);
+      if (toast !== me) GSAttr.set(toast, 'class', `toast-container ${me.css} ${me.position}`);
       toast.appendChild(el);
     });
     return el;
