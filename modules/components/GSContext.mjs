@@ -225,9 +225,16 @@ export default class GSContext extends GSElement {
     this.close();
   }
 
+  #match(e) {
+    const me = this;
+    return e.path.filter(el => el.matches)
+                 .filter(el => el.matches(me.target));
+  }
+
   async #onPopup(e) {
     const me = this;
-    if (!e.target.matches(me.target)) return;
+    const list = me.#match(e);
+    if (list.length === 0) return;
     GSEvent.prevent(e);
     me.#caller = e.target;
     me.popup(e.clientX, e.clientY);
