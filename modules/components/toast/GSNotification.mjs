@@ -82,7 +82,8 @@ export default class GSNotification extends GSElement {
    * NOTE: Might interfer with "css" attribute
    */
   get position() {
-    return GSAttr.get(this, 'position', GSNotification.DEFAULT);
+    const val = GSAttr.get(this, 'position', GSNotification.DEFAULT);
+    return val.indexOf('_') > 0 && GSNotification[val] ? GSNotification[val] : val;
   }
 
   set position(val = '') {
