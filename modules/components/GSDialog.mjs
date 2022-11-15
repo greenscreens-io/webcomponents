@@ -25,6 +25,8 @@ export default class GSDialog extends GSElement {
 
   static #actions = ['ok', 'cancel'];
 
+  static #STACK = [];
+
   static {
     customElements.define('gs-dialog', GSDialog);
     Object.seal(GSDialog);
@@ -35,15 +37,23 @@ export default class GSDialog extends GSElement {
     return GSElement.observeAttributes(attrs);
   }
 
+  static get top() {
+    return GSDialog.#STACK.length === 0 ? null : GSDialog.#STACK[GSDialog.#STACK.length-1];
+  }
+
   attributeCallback(name = '', oldValue = '', newValue = '') {
     const me = this;
     me.#update();
     if (name === 'visible') {
       if (me.visible) {
-        if (!me.#dialog.open) me.#dialog.showModal();
+        if (!me.#dialog.open) {
+          me.#dialog.showModal();
+          GSDialog.#STACK.push(me);
+        }
         me.focusable()?.focus();
       } else {
         me.#dialog.close();
+        GSDialog.#STACK.pop();
       }
       GSEvent.send(me, 'visible', { type: 'dialog', ok: me.visible }, true, true);
     }
@@ -404,6 +414,8 @@ export default class GSDialog extends GSElement {
               <button class="btn ${me.cssButtonOk} dialog-ok" data-action="ok">${me.buttonOk}</button>
             </div>
         </div>
+        <slot name="extra"></slot>
+        <div class="toast-container p-3"></slot></div>        
         </dialog>
      `
   }

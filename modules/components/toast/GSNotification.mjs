@@ -157,10 +157,20 @@ export default class GSNotification extends GSElement {
   }
 
   #showWeb(title = '', message = '', css = '', closable = false, timeout = 2) {
+    const me = this;
     const tpl = `<gs-toast slot="content" css="${css}"  closable="${closable}" timeout="${timeout}" message="${message}" title="${title}"></gs-toast>`;
     const el = GSDOM.parse(tpl, true);
-    this.appendChild(el);
+    const toast = me.#dialogToast;
+    requestAnimationFrame(() => {
+      if (toast !== me) GSAttr.set(toast, 'class', `toast-container ${me.position}`);
+      toast.appendChild(el);
+    });
     return el;
+  }
+
+  get #dialogToast() {
+    const dlg = customElements.get('gs-dialog')?.top;
+    return dlg ? (GSDOM.query(dlg, '.toast-container') || this) : this;
   }
 
   #showNative(title = '', message = '', timeout = 2, options = {}) {
