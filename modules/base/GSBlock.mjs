@@ -13,6 +13,7 @@ import GSID from "./GSID.mjs";
 
 /**
  * Contaner for flat rendering (without Shadow DOM)
+ * Do not use it directly. Used internaly when GSElement marked as flat.
  * @class
  * @extends HTMLElement
  */

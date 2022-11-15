@@ -37,9 +37,6 @@ export default class GSElement extends HTMLElement {
 	#proxied = false;
 	#opts = null;
 
-	static {
-		customElements.define('gs-element', GSElement);
-	}
 
 	constructor() {
 		super();
@@ -738,5 +735,26 @@ export default class GSElement extends HTMLElement {
 		}
 	}
 
+	/**
+	 * Generic safe component define
+	 * @param {*} name 
+	 * @param {*} clazz 
+	 * @param {*} opt 
+	 * @returns 
+	 */
+	 static define(name, clazz, opt) {
+		if (customElements.get(name)) return;
+		if (customElements.GSDefine) return customElements.GSDefine(name, clazz, opt);
+		return customElements.define(name, clazz, opt);
+	}
+	
+	static {
+		customElements.define('gs-element', GSElement);
+		if (!customElements.GSDefine) {
+			customElements.GSDefine = customElements.define;
+			customElements.define = GSElement.define;
+			Object.freeze(customElements);
+		}		
+	}
 }
 

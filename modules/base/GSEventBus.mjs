@@ -134,4 +134,8 @@ export default class GSEventBus extends EventTarget {
         return this.dispatchEvent(evt);
     }
 
+    static {
+        Object.freeze(GSEventBus);
+        globalThis.GSEventBus = GSEventBus;
+    }
 }
