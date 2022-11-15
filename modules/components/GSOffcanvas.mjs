@@ -26,7 +26,7 @@ export default class GSOffcanvas extends GSElement {
   }
 
   static get observedAttributes() {
-    const attrs = ['title', 'visible', 'backdrop', 'placement', 'css', 'closable'];
+    const attrs = ['title', 'expanded', 'backdrop', 'placement', 'css', 'closable'];
     return GSElement.observeAttributes(attrs);
   }
 
@@ -38,7 +38,7 @@ export default class GSOffcanvas extends GSElement {
   attributeCallback(name = '', oldValue = '', newValue = '') {
     const me = this;
     me.#update(name, oldValue, newValue);
-    if (name === 'visible') GSEvent.send(me, 'action', { type: 'offcanvas', ok: newValue });
+    if (name === 'expanded') GSEvent.send(me, 'action', { type: 'offcanvas', ok: newValue });
   }
 
   async getTemplate(val = '') {
@@ -65,7 +65,7 @@ export default class GSOffcanvas extends GSElement {
 
     GSDOM.toggleClass(me.#canvasEl, 'visible', true);
     GSDOM.toggleClass(me.#closeEl, 'invisible', !me.closable);
-    GSDOM.toggleClass(me.#backdropEl, 'show', me.backdrop && me.visible);
+    GSDOM.toggleClass(me.#backdropEl, 'show', me.backdrop && me.expanded);
 
     me.#updateAnim();
     me.#updateShow();
@@ -80,7 +80,7 @@ export default class GSOffcanvas extends GSElement {
     const me = this;
     if (!me.autoclose) return;
 
-    const open = me.visible;
+    const open = me.expanded;
     const pos = me.isHorizontal ? 'width' : 'height';
     const val = open ? me.max : me.min;
 
@@ -92,16 +92,16 @@ export default class GSOffcanvas extends GSElement {
 
   #updateShow() {
     const me = this;
-    if (me.min === 0 && me.visible) return GSDOM.toggleClass(me.#canvasEl, 'show', me.visible);
+    if (me.min === 0 && me.expanded) return GSDOM.toggleClass(me.#canvasEl, 'show', me.expanded);
     setTimeout(() => {
-      GSDOM.toggleClass(me.#canvasEl, me.min === 0 ? me.visible : 'show', true);
+      GSDOM.toggleClass(me.#canvasEl, me.min === 0 ? me.expanded : 'show', true);
     }, GSDOM.SPEED);
   }
 
   #updateBackdrop() {
     const me = this;
     setTimeout(() => {
-      GSDOM.toggleClass(me.#backdropEl, 'invisible', !(me.backdrop && me.visible));
+      GSDOM.toggleClass(me.#backdropEl, 'invisible', !(me.backdrop && me.expanded));
     }, GSDOM.SPEED);
   }
 
@@ -128,15 +128,15 @@ export default class GSOffcanvas extends GSElement {
   }
 
   open() {
-    this.visible = true;
+    this.expanded = true;
   }
 
   close() {
-    this.visible = false;
+    this.expanded = false;
   }
 
   toggle() {
-    this.visible = !this.visible;
+    this.expanded = !this.expanded;
   }
 
   get css() {
@@ -183,12 +183,12 @@ export default class GSOffcanvas extends GSElement {
     GSAttr.set(this, 'title', val);
   }
 
-  get visible() {
-    return GSAttr.getAsBool(this, 'visible', false);
+  get expanded() {
+    return GSAttr.getAsBool(this, 'expanded', false);
   }
 
-  set visible(val = false) {
-    GSAttr.setAsBool(this, 'visible', val);
+  set expanded(val = false) {
+    GSAttr.setAsBool(this, 'expanded', val);
   }
 
   get autoclose() {
@@ -283,7 +283,7 @@ export default class GSOffcanvas extends GSElement {
         <slot name="body"></slot>
       </div>
     </div>
-    <div class="offcanvas-backdrop fade ${me.backdrop && me.visible ? 'show' : 'invisible'}"></div>
+    <div class="offcanvas-backdrop fade ${me.backdrop && me.expanded ? 'show' : 'invisible'}"></div>
     `
   }
 }
