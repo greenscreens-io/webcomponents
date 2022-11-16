@@ -51,15 +51,12 @@ export default class GSDropdown extends GSElement {
       const menu = me.#menu;
       if (!menu) return;
       GSDOM.toggleClass(menu, 'show', me.visible);
-      requestAnimationFrame(() => {
-        if (me.visible) {
-          me.#updatePos(menu);
-        } else {
-          menu.style.left = '';
-          menu.style.top = '';
-        }
-      });
-
+      if (me.visible) {
+        me.#updatePos(menu);
+      } else {
+        menu.style.left = '';
+        menu.style.top = '';
+      }
     }
 
     if (name === 'css') {
@@ -347,7 +344,7 @@ export default class GSDropdown extends GSElement {
       list.push('</button>');
     }
 
-    list.push(`<ul class="${sub} dropdown-menu ${me.dark ? 'dropdown-menu-dark' : ''}">`);
+    list.push(`<ul is="gs-ext-ul" class="${sub} dropdown-menu ${me.dark ? 'dropdown-menu-dark' : ''}">`);
 
     Array.from(children).forEach(el => {
       const isSub = el.childElementCount > 0;
