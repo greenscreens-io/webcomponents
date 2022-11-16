@@ -23,15 +23,15 @@
   </script>
   <script type="module" src="/webcomponents/modules/index.mjs"></script>
   <script type="module" src="/webcomponents/modules/components/ext/GSNavLinkExt.mjs"></script>
+  <script type="module" src="/webcomponents/modules/components/ext/GSAccessibility.mjs"></script>
+  <script type="module" src="/webcomponents/modules/components/ext/GSUListExt.mjs"></script>  
+  <script type="module" src="/webcomponents/modules/components/ext/GSDataAttr.mjs"></script>
   <script type="module" src="/webcomponents/modules/components/GSNav.mjs"></script>
 
 
   <gs-css url="/webcomponents/assets/css/io.greenscreens.bootstrap_5.2.0.css"></gs-css>
   <gs-css url="/webcomponents/assets/icons/bootstrap-icons.css" notheme="true"></gs-css>
 
-  <template id="test">
-    Test
-  </template>
 </head>
 
 <body>
@@ -69,20 +69,20 @@
       <!-- gs-tabitem-nav-->
       <li class="nav-item p-1" role="presentation">
         <a class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab"
-          aria-controls="home" aria-selected="true">Home</a>
+          href="#">Home</a>
       </li>
       <li class="nav-item p-1" role="presentation">
         <a class="nav-link" id="test-tab" data-bs-toggle="tab" data-bs-target="#test" type="button" role="tab"
-          aria-controls="test">Test</a>
+          href="#">Test</a>
       </li>
     </ul>
 
     <div class="tab-content" id="myTabContent">
       <!-- gs-tabitem-pane-->
-      <div class="tab-pane fade active show" id="home" role="tabpanel" aria-labelledby="home-tab">
+      <div class="tab-pane fade active show" id="home" role="tabpanel">
         TEST 1
       </div>
-      <div class="tab-pane fade" id="test" role="tabpanel" aria-labelledby="test-tab">
+      <div class="tab-pane fade" id="test" role="tabpanel">
         TEST 2
       </div>
     </div>

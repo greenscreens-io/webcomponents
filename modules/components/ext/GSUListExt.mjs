@@ -35,17 +35,11 @@ export default class GSUListExt extends HTMLUListElement {
 
         if (idx < 2) return GSAccessibility.click(el, e);
 
-        switch (idx) {
-            case 2:
-            case 3:
-                el = me.#next(el, idx);
-                el?.querySelector(GSAccessibility.QUERY)?.focus();
-                break;
-            case 4:
-            case 5:
-                me.#onSubmenu(el, idx);
-                break;
-        }
+        if (me.#onSubmenu(el, idx)) return;
+        
+
+        el = me.#next(el, idx);
+        el?.querySelector(GSAccessibility.QUERY)?.focus();
 
     }
 
@@ -68,6 +62,7 @@ export default class GSUListExt extends HTMLUListElement {
     }
 
     #onSubmenu(el, idx) {
+        if (idx < 4) return false;
         const dir = GSAccessibility.idxToDir(idx);
         let submenu = el.querySelector('.submenu') || this;
         if (!submenu.matches('.submenu')) return false;
@@ -77,6 +72,7 @@ export default class GSUListExt extends HTMLUListElement {
         GSDOM.toggleClass(submenu, 'show', open);
         submenu = open ? submenu : submenu.parentElement;
         submenu.querySelector(GSAccessibility.QUERY)?.focus();
+        return true;
     }
 
     static {

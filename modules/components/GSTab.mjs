@@ -95,7 +95,7 @@ export default class GSTab extends GSElement {
 
   #renderTabsHorizontal(tabs) {
     return `
-      <ul class="nav user-select-none ${GSTab.CSS_NAV} ${this.#cssnav}" "role="tablist">
+      <ul is="gs-ext-ul" class="nav user-select-none ${GSTab.CSS_NAV} ${this.#cssnav}" "role="tablist">
         ${tabs}
       </ul>      
       `;
@@ -122,6 +122,7 @@ export default class GSTab extends GSElement {
 
     return `${wrap}
           <a type="button" role="tab" is="gs-ext-navlink"
+              tabindex="0"
               id="${el.id}-tab" 
               class="nav-link ${me.#cssNav(el)} ${actievCSS}" 
               aria-controls="${el.id}-tab"                 

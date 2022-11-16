@@ -51,7 +51,7 @@ export default class GSNav extends GSElement {
         const css = me.#isBar ? '' : 'flex-column';
 
         return `
-          <ul class="nav ${css} ${me.#cssnav}">
+          <ul is="gs-ext-ul" class="nav ${css} ${me.#cssnav}">
             ${btns.join('')}
           </ul>
         `;
@@ -91,7 +91,7 @@ export default class GSNav extends GSElement {
         const hreftgt = href && href !== '#' ? `target=${GSItem.getTarget(el)}` : '';
         const attrs = GSItem.getAttrs(el);
 
-        return `<a type="button" role="nav" is="gs-ext-navlink" class="nav-link ${cssnav} ${cssactive}" 
+        return `<a tabindex="0" type="button" role="nav" is="gs-ext-navlink" class="nav-link ${cssnav} ${cssactive}" 
                 href="${href}" ${hreftgt} id="${GSID.id}-nav" ${attrs} ${dataAttrs}>${contentTpl}</a>`;
 
     }

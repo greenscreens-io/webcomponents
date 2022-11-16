@@ -129,7 +129,6 @@ export default class GSDataAttr {
                 break;
             case "tooltip":
                 return { list: [], comps: [] };
-                break;
         }
 
         let gs = GSDOM.queryAll(document.documentElement, `gs-${type}`);
@@ -144,7 +143,7 @@ export default class GSDataAttr {
             }
         }
 
-        const allComps = GSDOM.queryAll(document.documentElement, css);
+        const allComps = GSDOM.queryAll(document.documentElement, css).filter(el => !(el instanceof HTMLTemplateElement));
         gs = GSData.mergeArrays(allComps.filter(el => el instanceof GSElement), gs);
         
 
@@ -171,15 +170,16 @@ export default class GSDataAttr {
     }
 
     static #isHidden(el) {
-        return (el.classList.contains('hide') || el.classList.contains('fade') || el.classList.contains('collapse')) && !el.classList.contains('show');
+        if (el.matches('.hide,.fade,.collapse') && !el.matches('.show')) return true;
+        return GSDOM.getComputedStyledMap(el)?.get('display')?.value === 'none';
     }
 
     static #isCollapsible(el) {
-        return el.classList.contains('collapse') && !el.classList.contains('accordion-collapse');
+        return el.matches('.collapse') && !el.matches('.accordion-collapse');
     }
 
     static #faded(el) {
-        return el.classList.contains('fade');
+        return el.matches('.fade');
     }
 
     static #flip(el, pos, neg) {

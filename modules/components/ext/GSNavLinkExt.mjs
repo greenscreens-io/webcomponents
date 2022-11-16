@@ -69,6 +69,16 @@ export default class GSNavLinkExt extends HTMLAnchorElement {
 
     static #attachEvents(own) {
         GSEvent.attach(own, own, 'click', GSNavLinkExt.#onClick.bind(own));
+        GSEvent.attach(own, own, 'keydown', GSNavLinkExt.#onKeyDown.bind(own));
+    }
+
+    static #onKeyDown(e, own) {
+        switch (e.code) {
+            case 'Space':
+            case 'Enter':
+                GSNavLinkExt.#onClick(e, this);
+                break;
+        }
     }
 
     static #onClick(e, own) {
