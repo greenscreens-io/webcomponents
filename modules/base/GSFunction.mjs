@@ -22,6 +22,10 @@ export default class GSFunction {
      */
     static isFunction = (fn) => typeof fn === 'function';
 
+    static isFunctionNative(fn) {
+        return GSFunction.isFunction(fn) && fn.toString().indexOf('native code') > 0;
+    }
+
     /**
      * Check if object has function
      * 
@@ -87,8 +91,9 @@ export default class GSFunction {
      * @param {object} owner 
      * @returns {object}
      */
-    static callFunction(fn, owner) {
+    static callFunction(fn, owner, native = true) {
         if (!GSFunction.isFunction(fn)) return;
+        if (!native && GSFunction.isFunctionNative(fn)) return;
         if (GSFunction.isFunctionAsync(fn)) {
             return GSFunction.callFunctionAsync(fn, owner);
         }

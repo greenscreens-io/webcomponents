@@ -405,6 +405,7 @@ export default class GSDropdown extends GSElement {
       action = GSUtil.capitalizeAttr(action);
       const fn = me[action];
       sts = GSFunction.isFunction(fn);
+      sts = sts && !GSFunction.isFunctionNative(fn);
       if (sts) {
         if (GSFunction.isFunctionAsync(fn)) {
           await me[action]();
