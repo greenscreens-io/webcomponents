@@ -54,7 +54,10 @@ export default class GSContext extends GSElement {
     if (name === 'visible') {
       me.#submenus.forEach(el => el.classList.remove('show'));
       const menu = me.#menu;
-      if (menu) GSDOM.toggleClass(menu, 'show', me.visible);
+      if (menu) {
+        GSDOM.toggleClass(menu, 'show', me.visible);
+        me.query('a')?.focus();
+      }
     }
   }
 
@@ -136,7 +139,9 @@ export default class GSContext extends GSElement {
 
   close(e) {
     if (e instanceof Event) e.preventDefault();
-    this.visible = false;
+    const me = this;
+    me.visible = false;
+    me.#caller?.focus();
   }
 
   open() {
@@ -193,13 +198,13 @@ export default class GSContext extends GSElement {
       if (it === '-') return opts.push('<li><hr class="dropdown-divider"/></li>');
       const hasSubmenu = Array.isArray(it.menu);
       opts.push('<li>');
-      opts.push(`<a class="dropdown-item ${hasSubmenu ? 'droppdown-toggle' : ''}" href="#"`);
+      opts.push(`<a tabindex="0" class="dropdown-item ${hasSubmenu ? 'droppdown-toggle' : ''}" href="#"`);
       if (it.action) opts.push(` data-action="${it.action}"`);
       opts.push(`><div class="d-inline-block w-100">${it.name}</div></a>`);
       //opts.push(`>${it.name} ${hasSubmenu ? '&raquo;' : ''}</a>`);
       if (hasSubmenu) {
         const sub = me.#renderMenu(it.menu);
-        opts.push(`<ul class="submenu dropdown-menu ${dark}">`);
+        opts.push(`<ul is="gs-ext-ul" class="submenu dropdown-menu ${dark}">`);
         opts.push(sub.join('\n'));
         opts.push('</ul>');
       }
@@ -243,6 +248,17 @@ export default class GSContext extends GSElement {
     return true;
   }
 
+  #onKeyDown(e) {
+    const me = this;
+    switch (e.key) {
+      //case 'ContextMenu' : return me.#onPopup(e);
+      case 'Escape' : 
+        GSEvent.prevent(e);
+        me.close();
+        break;
+    }
+  }
+
   #updateSubmenus(e) {
 
     const me = this;
@@ -267,6 +283,8 @@ export default class GSContext extends GSElement {
           el.style.left = '100%';
           end = true;
         }
+        el.dataset.end = end;
+        el.dataset.start = !end;
         GSDOM.toggleClass(me.#menu, 'dropstart', !end);
         GSDOM.toggleClass(me.#menu, 'dropend', end);
       });
@@ -350,9 +368,12 @@ export default class GSContext extends GSElement {
       return;
     }
     me.#attached = true;
-    targets.forEach(target => me.attachEvent(target, 'contextmenu', me.#onPopup.bind(me)));
+    targets.forEach(target => {
+      me.attachEvent(target, 'contextmenu', me.#onPopup.bind(me));
+    });
     me.removeEvent(document, 'gs-components');
     me.attachEvent(document, 'contextmenu', me.close.bind(me));
+    me.attachEvent(document, 'keydown', me.#onKeyDown.bind(me));
   }
 
   #renderMenuDOM(children, level = 0) {
@@ -362,7 +383,7 @@ export default class GSContext extends GSElement {
 
     const sub = level === 0 ? 'dropend position-fixed' : 'submenu';
 
-    list.push(`<ul class="${sub} dropdown-menu ${me.dark ? 'dropdown-menu-dark' : ''}">`);
+    list.push(`<ul is="gs-ext-ul" class="${sub} dropdown-menu ${me.dark ? 'dropdown-menu-dark' : ''}">`);
 
     Array.from(children).forEach(el => {
       const isSub = el.childElementCount > 0;
@@ -383,8 +404,8 @@ export default class GSContext extends GSElement {
 
   #renderChild(el) {
     const header = GSAttr.get(el, 'header');
-    if (header) return `<li><h6 class="dropdown-header"/>${header}</h6></li>`;
-    if (!el.name) return `<li><hr class="dropdown-divider"/></li>`;
+    if (header) return `<li data-inert="true"><h6 class="dropdown-header"/>${header}</h6></li>`;
+    if (!el.name) return `<li data-inert="true"><hr class="dropdown-divider"/></li>`;
     if (el.action) return `<li><a class="dropdown-item" href="#" data-action="${el.action}">${el.html}</a></li>`;
     if (el.toggle) return `<li><a class="dropdown-item" href="#" data-bs-toggle="${el.toggle}" data-bs-target="${el.target}">${el.name}</a></li>`;
     if (el.inject) return `<li><a class="dropdown-item" href="#" data-inject="${el.inject}" data-bs-target="${el.target}">${el.name}</a></li>`;

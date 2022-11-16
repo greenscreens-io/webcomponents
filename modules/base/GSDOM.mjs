@@ -20,6 +20,23 @@ export default class GSDOM {
 	static SPEED = 300;
 
 	/**
+	 * Find active (focused) element	
+	 * @returns {HTMLElement} Focused element
+	 */
+	static get activeElement() {
+		return GSDOM.active(document.activeElement);
+	}
+
+	/**
+	 * Find active (focused) element
+	 * @param {HTMLElement} el Starting node
+	 * @returns {HTMLElement} Focused element
+	 */
+	static active(el) {
+		return el.shadowRoot?.activeElement ? GSDOM.active(el.shadowRoot?.activeElement) : el;
+	}
+
+	/**
 	* Parse string into html DOM
 	*
 	* @param {string} html Source to parse

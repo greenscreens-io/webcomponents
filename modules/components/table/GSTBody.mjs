@@ -79,7 +79,7 @@ export default class GSTBody extends HTMLTableSectionElement {
         let html = '';
 
         data.forEach((rec, idx) => {
-            rows.push(`<tr class="${me.cssRow}" data-index=${idx}>`);
+            rows.push(`<tr tabindex="0" class="${me.cssRow}" data-index=${idx}>`);
 
             if (Array.isArray(rec)) {
                 html = me.#arrayToHTML(headers, rec, idx, offset);

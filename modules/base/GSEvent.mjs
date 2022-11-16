@@ -197,8 +197,8 @@ export default class GSEvent {
 	/**
 	* Generic event listener appender
 	 * @param {HTMLElement} own Event owner
-	 * @param {HTMLElement} el Owner elelemt to monitor
-	 * @param {string} name Event name to moinitor
+	 * @param {HTMLElement} el Owner element to monitor
+	 * @param {string} name Event name to monitor
 	 * @param {Function} fn Callback to trigger on event
 	 * @param {boolean} once Monitor event only once
 	 * @param {boolean} capture Allow event capture

@@ -306,15 +306,22 @@ export default class GSDropdown extends GSElement {
   #updateSubmenus(overflowV = false, overflowH = false) {
     const me = this;
     me.#submenus.forEach(el => {
+      let end = true;
       el.style.position = 'absolute';
       el.style.left = 'inherit';
       el.style.right = 'inherit';
       el.style.top = 'inherit';
       if (overflowH) {
         el.style.right = '100%';
+        end = false;
       } else {
         el.style.left = '100%';
+        end = true;
       }
+      el.dataset.end = end;
+      el.dataset.start = !end;
+      GSDOM.toggleClass(me.#menu, 'dropstart', !end);
+      GSDOM.toggleClass(me.#menu, 'dropend', end);     
     });
   }
 
@@ -362,8 +369,8 @@ export default class GSDropdown extends GSElement {
 
   #renderChild(el) {
     const header = GSAttr.get(el, 'header');
-    if (header) return `<li><h6 class="dropdown-header"/>${header}</h6></li>`;
-    if (!el.name) return `<li><hr class="dropdown-divider"/></li>`;
+    if (header) return `<li data-inert="true"><h6 class="dropdown-header"/>${header}</h6></li>`;
+    if (!el.name) return `<li data-inert="true"><hr class="dropdown-divider"/></li>`;
     if (el.action) return `<li><a class="dropdown-item" href="#" data-action="${el.action}">${el.name}</a></li>`;
     if (el.toggle) return `<li><a class="dropdown-item" href="#" data-bs-toggle="${el.toggle}" data-bs-target="${el.target}">${el.name}</a></li>`;
     if (el.inject) return `<li><a class="dropdown-item" href="#" data-inject="${el.inject}" data-bs-target="${el.target}">${el.name}</a></li>`;

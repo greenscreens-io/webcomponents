@@ -48,7 +48,7 @@ export default class GSColumn extends HTMLElement {
         const style = me.width ? `style="width:${me.width};"` : '';
         const cspan = me.colspan ? `colspan="${me.colspan}"` : '';
 
-        return `<th scope="col" data-sortable="${me.sortable}" data-order="${me.#orderID}" name="${me.name}" ${cspan} class="${clssort} ${me.cssHeader}" ${style}>${me.title || me.name}</th>`;
+        return `<th tabindex="0" scope="col" data-sortable="${me.sortable}" data-order="${me.#orderID}" name="${me.name}" ${cspan} class="${clssort} ${me.cssHeader}" ${style}>${me.title || me.name}</th>`;
     }
 
     renderFilter() {
