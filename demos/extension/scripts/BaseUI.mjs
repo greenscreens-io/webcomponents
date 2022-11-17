@@ -8,6 +8,7 @@
  */
 
 import {GSFunction, GSDOM, GSElement} from "/webcomponents/release/esm/io.greenscreens.components.all.esm.min.js";
+
 /**
  * BaseUI handles basic screen (used by other UI elements)
  * @class

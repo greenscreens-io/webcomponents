@@ -1,8 +1,10 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 
 <head>
-    <title>Datalist test</title>
+    <title>Alert Test</title>
     <meta charset="utf-8">
+
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
@@ -24,14 +26,17 @@
 
 <body>
 
-    <gs-template href="../header.tpl"></gs-template>
+    <gs-template href="/webcomponents/demos/header.tpl"></gs-template>
 
-    <div class="container text-bg-light mt-4 p-4 border shadow-sm">
-        Example loading data list from JSON file
-        <input type="text" list="types" name="type" class="form-control" autocomplete="on" autocorrect="off"
-            autocapitalize="off" spellcheck="false">
-        <datalist id="types" is="gs-ext-datalist" data="datalist.json"></datalist>
+    <div class="container mt-4">
+
+        <gs-element flat=true anchor="afterend@self">
+            <template>
+                <p>Injection test</p>
+            </template>
+        </gs-element>        
     </div>
+
 
 </body>
 

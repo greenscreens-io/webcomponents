@@ -16,12 +16,12 @@
 <meta name="revisit-after" content="3 month">
 <meta name="description" content="WebComponents UI library based on Bootstrap.">
 
- <script type="module" src="/webcomponents/release/esm/io.greenscreens.components.all.esm.min.js"></script>
- 
-<gs-css url="/webcomponents/assets/css/io.greenscreens.bootstrap_5.2.0.css"></gs-css>
+<script type="module" src="/webcomponents/release/esm/io.greenscreens.components.all.esm.min.js"></script>
+
+<gs-css url="/webcomponents/assets/css/io.greenscreens.bootstrap_5.2.2.css"></gs-css>
 <gs-css url="/webcomponents/assets/icons/bootstrap-icons.css" notheme="true"></gs-css>
 
-<body clasS="vh-100 p-0 m-0">
+<body clasS="vh-100 p-0 m-0" id="body">
 
     <gs-template href="/webcomponents/demos/header.tpl" ></gs-template>
 
@@ -40,11 +40,15 @@
             <gs-item name="Submenu 2.1" action="sub_2_1"></gs-item>
             <gs-item name="Submenu 2.2" action="sub_2_2"></gs-item>
             <gs-item name="Submenu 2.3">
-                <gs-item name="Submenu 2.3.1" action="sub_2_3_1"></gs-item>
-                <gs-item name="Submenu 2.3.2" action="sub_2_3_2"></gs-item>
+                <gs-item name="Submenu 2.3.1" action="sub_2_3_1" group="sm2" selected></gs-item>
+                <gs-item name="Submenu 2.3.2" action="sub_2_3_2" group="sm2"></gs-item>
             </gs-item>
         </gs-item>
+        <gs-item name="Help" inject="gs-notification" target="#content"></gs-item>
+        <gs-item name="About" toggle="dialog" target="#dlgAbout"></gs-item>
     </gs-context>
+
+    <div id="content"></div>
 
     <script defer="true" type="module">
         const tbl = GSComponents.find('gs-context');
