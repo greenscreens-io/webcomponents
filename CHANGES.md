@@ -2,7 +2,7 @@
  
 # Release v1.2.0 (17.11.2022.)
 
-- Added GSAccessibility class keyboard navigation support
+- Added GSAccessibility class for keyboard navigation support
 - Added GSUListExt extension to UL/LL for menu keyboard navigation
 - Added GSMenu class - generic menu handler
 - Aded GSDialog class for native "dialog support"
@@ -17,6 +17,7 @@ __Improvements and fixes__
 - GSNotification position update
 - GSContext, GSDropdown default self action trigger
 - Improved Firefox support
+- Added 2 build variants for "rollup" tool - modeles and standard
 - Bug fixes
 - Demo updates
 - Documentation updates
