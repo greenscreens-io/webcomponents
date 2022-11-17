@@ -45,15 +45,16 @@ export default class GSAccessibility {
      * @param {*} evt 
      */
     static click(focused, evt) {
+        if (focused?.tagName === 'BUTTON') return;
         const event = new MouseEvent('click', {
             view: window,
-            bubbles: true,
+            bubbles: false,
             cancelable: true,
             shiftKey: evt.shiftKey,
             altKey: evt.altKey,
             ctrlKey: evt.ctrlKey
         });
-        if (!focused.dispatchEvent(event)) focused.click();
+        return focused.dispatchEvent(event);
     }
 
     /**

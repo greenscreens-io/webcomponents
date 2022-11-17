@@ -14,6 +14,7 @@ Menu items can be loaded from an external **template** or can be added as compon
 | css                | CSS classes for button containing dropdown menu          |
 | dark               | Is menu light or dark mode                               |
 | template           | For loading menu item from remote html template          |
+| title              | Button title                                             |
  
 <br>
  

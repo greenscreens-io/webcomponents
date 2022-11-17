@@ -33,14 +33,18 @@ export default class GSUListExt extends HTMLUListElement {
         let el = me.#item;
         if (!el) return;
 
-        if (idx < 2) return GSAccessibility.click(el, e);
+        if (idx < 2) return GSAccessibility.click(me.#target(el), e);
 
         if (me.#onSubmenu(el, idx)) return;
         
 
         el = me.#next(el, idx);
-        el?.querySelector(GSAccessibility.QUERY)?.focus();
+        me.#target(el)?.focus();
 
+    }
+
+    #target(el) {
+        return el?.querySelector(GSAccessibility.QUERY);
     }
 
     #next(el, idx) {

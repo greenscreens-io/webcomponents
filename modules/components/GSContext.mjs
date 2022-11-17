@@ -15,6 +15,7 @@ import GSEvent from "../base/GSEvent.mjs";
 import GSAttr from "../base/GSAttr.mjs";
 import GSDOM from "../base/GSDOM.mjs";
 import GSFunction from "../base/GSFunction.mjs";
+import GSMenu from "./GSMenu.mjs";
 
 /**
  * Context menu
@@ -37,7 +38,7 @@ export default class GSContext extends GSElement {
   }
 
   static get observedAttributes() {
-    const attrs = ['visible', 'title', 'css', 'data'];
+    const attrs = ['title', 'css', 'data'];
     return GSElement.observeAttributes(attrs);
   }
 
@@ -51,14 +52,6 @@ export default class GSContext extends GSElement {
 
     if (name === 'data') return this.load(newValue);
 
-    if (name === 'visible') {
-      me.#submenus.forEach(el => el.classList.remove('show'));
-      const menu = me.#menu;
-      if (menu) {
-        GSDOM.toggleClass(menu, 'show', me.visible);
-        me.query('a')?.focus();
-      }
-    }
   }
 
   async getTemplate(val = '') {
@@ -85,10 +78,9 @@ export default class GSContext extends GSElement {
     me.#ready = true;
     me.close();
     me.attachEvent(document, 'gs-component', me.#attachTarget.bind(me));
-    me.attachEvent(me.#menu, 'mouseleave', me.close.bind(me));
+    //me.attachEvent(me.#menu, 'mouseleave', me.close.bind(me));
+    me.attachEvent(me.#menu, 'action', me.#onClick.bind(me));
     me.attachEvent(window, 'resize', me.#onResize.bind(me));
-    me.#attachSubmenu();
-    me.#attachOptions();
     me.#attachTarget();
     super.onReady();
   }
@@ -113,14 +105,6 @@ export default class GSContext extends GSElement {
     return 'beforeend@body';
   }
 
-  get visible() {
-    return GSAttr.getAsBool(this, 'visible');
-  }
-
-  set visible(val = '') {
-    return GSAttr.setAsBool(this, 'visible', val);
-  }
-
   get disabled() {
     return this.hasAttribute('disabled');
   }
@@ -140,16 +124,16 @@ export default class GSContext extends GSElement {
   close(e) {
     if (e instanceof Event) e.preventDefault();
     const me = this;
-    me.visible = false;
+    me.#menu?.close();
     me.#caller?.focus();
   }
 
   open() {
-    this.visible = true;
+    this.#menu?.open();
   }
 
   toggle() {
-    this.visible = !this.visible;
+    me.#menu?.toggle();
   }
 
   /**
@@ -159,18 +143,7 @@ export default class GSContext extends GSElement {
    * @returns {void}
    */
   popup(x = 0, y = 0) {
-    const me = this;
-    if (me.disabled) return;
-    const menu = me.#menu;
-    if (!menu) return;
-    requestAnimationFrame(() => {
-      menu.style.position = 'fixed';
-      menu.style.top = '0px';
-      menu.style.left = '0px';
-      menu.style.transform = `translate(${x}px, ${y}px)`;
-      me.visible = true;
-    });
-
+    this.#menu?.popup(x, y);
   }
 
   /**
@@ -183,47 +156,20 @@ export default class GSContext extends GSElement {
     if (!Array.isArray(items)) return false;
     if (items.length === 0) return false;
     const me = this;
-    const opts = me.#renderMenu(items);
+    const dark = me.dark ? 'dropdown-menu-dark' : '';
+    const opts = GSMenu.fromJSON(items, dark);
     GSDOM.setHTML(me.#menu, opts.join(''));
-    me.#attachOptions();
-    me.#attachSubmenu();
     return true;
   }
 
-  #renderMenu(items = []) {
+  #renderMenuDOM() {
     const me = this;
-    const dark = me.dark ? 'dropdown-menu-dark' : '';
-    const opts = [];
-    items.forEach(it => {
-      if (it === '-') return opts.push('<li><hr class="dropdown-divider"/></li>');
-      const hasSubmenu = Array.isArray(it.menu);
-      opts.push('<li>');
-      opts.push(`<a tabindex="0" class="dropdown-item ${hasSubmenu ? 'droppdown-toggle' : ''}" href="#"`);
-      if (it.action) opts.push(` data-action="${it.action}"`);
-      opts.push(`><div class="d-inline-block w-100">${it.name}</div></a>`);
-      //opts.push(`>${it.name} ${hasSubmenu ? '&raquo;' : ''}</a>`);
-      if (hasSubmenu) {
-        const sub = me.#renderMenu(it.menu);
-        opts.push(`<ul is="gs-ext-ul" class="submenu dropdown-menu ${dark}">`);
-        opts.push(sub.join('\n'));
-        opts.push('</ul>');
-      }
-      opts.push('</li>');
-
-    });
-    return opts;
+    const css = me.dark ? 'dropdown-menu-dark' : ''
+    return GSMenu.fromDOM(me.children, 0, css, true);
   }
 
   get #menu() {
     return this.query('.dropdown-menu');
-  }
-
-  get #items() {
-    return this.queryAll('.dropdown-item', true);
-  }
-
-  get #submenus() {
-    return this.queryAll('.submenu', true);
   }
 
   #onResize(e) {
@@ -243,108 +189,7 @@ export default class GSContext extends GSElement {
     GSEvent.prevent(e);
     me.#caller = e.target;
     me.popup(e.clientX, e.clientY);
-    await GSUtil.timeout(15);
-    me.#updateSubmenus(e);
     return true;
-  }
-
-  #onKeyDown(e) {
-    const me = this;
-    switch (e.key) {
-      //case 'ContextMenu' : return me.#onPopup(e);
-      case 'Escape' : 
-        GSEvent.prevent(e);
-        me.close();
-        break;
-    }
-  }
-
-  #updateSubmenus(e) {
-
-    const me = this;
-    const rect = me.#menu?.getBoundingClientRect();
-    if (!rect) return;
-    requestAnimationFrame(() => {
-      let x = e.clientX, y = e.clientY;
-      const overflowH = x + rect.width > window.innerWidth;
-      const overflowV = y + rect.height > window.innerHeight;
-      if (overflowH) x = window.innerWidth - rect.width;
-      if (overflowV) y = window.innerHeight - rect.height;
-      me.#submenus.forEach(el => {
-        let end = true;
-        el.style.position = 'absolute';
-        el.style.left = 'inherit';
-        el.style.right = 'inherit';
-        el.style.top = 'inherit';
-        if (overflowH) {
-          el.style.right = '100%';
-          end = false;
-        } else {
-          el.style.left = '100%';
-          end = true;
-        }
-        el.dataset.end = end;
-        el.dataset.start = !end;
-        GSDOM.toggleClass(me.#menu, 'dropstart', !end);
-        GSDOM.toggleClass(me.#menu, 'dropend', end);
-      });
-    });
-  }
-
-  /**
-   * Add click events to menu options
-   */
-  #attachOptions() {
-    const me = this;
-    me.#items.filter(btn => btn.dataset.action)
-      .forEach(btn => me.attachEvent(btn, 'click', me.#onClick.bind(me)));
-  }
-
-  async #onClick(e) {
-    const me = this;
-    e.preventDefault();
-    me.close();
-    me.#handleGroup(e);
-    const data = e.target.dataset;
-    const sts = await me.#onAction(data.action);
-    if (sts) return;
-    const opt = { type: 'contextmenu', option: e.target, caller: me.#caller, data: data };
-    GSEvent.send(me, 'action', opt, true, true, true); // notify self
-  }
-
-  #handleGroup(e) {
-    const eli = e?.target?.previousSibling;
-    if (!(eli instanceof HTMLInputElement)) return;
-    const me = this;
-    me.queryAll(`input[name="${eli.name}"]`).forEach(el => el.checked = false);
-    eli.checked = true;
-  }
-
-  /**
-   * Show proper submenu on mouse over
-   * @param {Event} e 
-   * @returns {void}
-   */
-  #onSubmenu(e) {
-    const li = e.target.parentElement;
-    const ul = li.parentElement;
-    const sub = GSDOM.query(li, '.submenu');
-    requestAnimationFrame(() => {
-      GSDOM.queryAll(ul, '.submenu')
-        .forEach(el => el.classList.remove('show'));
-      if (sub) {
-        sub.style.top = `${sub.parentElement.offsetTop}px`;
-        sub.classList.add('show');
-      }
-    });
-  }
-
-  /**
-   * Attach mouseover for menu items that showa/hides submenu
-   */
-  #attachSubmenu() {
-    const me = this;
-    me.#items.forEach(el => me.attachEvent(el, 'mouseover', me.#onSubmenu.bind(me)));
   }
 
   /**
@@ -373,45 +218,6 @@ export default class GSContext extends GSElement {
     });
     me.removeEvent(document, 'gs-components');
     me.attachEvent(document, 'contextmenu', me.close.bind(me));
-    me.attachEvent(document, 'keydown', me.#onKeyDown.bind(me));
-  }
-
-  #renderMenuDOM(children, level = 0) {
-    const me = this;
-    children = children || me.children;
-    const list = [];
-
-    const sub = level === 0 ? 'dropend position-fixed' : 'submenu';
-
-    list.push(`<ul is="gs-ext-ul" class="${sub} dropdown-menu ${me.dark ? 'dropdown-menu-dark' : ''}">`);
-
-    Array.from(children).forEach(el => {
-      const isSub = el.childElementCount > 0;
-      if (isSub) list.push(me.#renderSub(el));
-      const html = isSub ? me.#renderMenuDOM(el.children, ++level) : me.#renderChild(el);
-      list.push(html);
-      if (sub) list.push(`</li>`);
-    });
-
-    list.push('</ul>');
-    return list.join('');
-  }
-
-  #renderSub(el) {
-    const name = GSAttr.get(el, 'name');
-    return `<li><a class="dropdown-item dropdown-toggle" href="#"><div class="d-inline-block w-100">${name}</div></a>`;
-  }
-
-  #renderChild(el) {
-    const header = GSAttr.get(el, 'header');
-    if (header) return `<li data-inert="true"><h6 class="dropdown-header"/>${header}</h6></li>`;
-    if (!el.name) return `<li data-inert="true"><hr class="dropdown-divider"/></li>`;
-    if (el.action) return `<li><a class="dropdown-item" href="#" data-action="${el.action}">${el.html}</a></li>`;
-    if (el.toggle) return `<li><a class="dropdown-item" href="#" data-bs-toggle="${el.toggle}" data-bs-target="${el.target}">${el.name}</a></li>`;
-    if (el.inject) return `<li><a class="dropdown-item" href="#" data-inject="${el.inject}" data-bs-target="${el.target}">${el.name}</a></li>`;
-    if (el.href) return `<li><a class="dropdown-item" href="${el.href}" target="${el.target}">${el.name}</a></li>`;
-    const attrs = GSItem.getAttrs(el).trim();
-    return attrs ? `<li><a class="dropdown-item" href="#" ${attrs} >${el.name}</a></li>` : '';
   }
 
   /**
@@ -435,6 +241,17 @@ export default class GSContext extends GSElement {
     GSDOM.setHTML(me, src);
     me.connectedCallback();
     return data;
+  }
+
+  async #onClick(e) {
+    GSEvent.prevent(e);
+    const me = this;
+    const data = e.detail;
+    const sts = await me.#onAction(data.action);
+    if (sts) return;
+    data.type = 'contextmenu';
+    data.caller = me.#caller;
+    GSEvent.send(me, 'action', data, true, true, true); // notify self
   }
 
   async #onAction(action) {
