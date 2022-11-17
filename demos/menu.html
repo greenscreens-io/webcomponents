@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<title>Contextmenu test</title>
+<meta charset="utf-8">
+
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="viewport"
+    content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+
+<meta name="subject" content="Green Scereens Ltd.">
+<meta name="author" content="www.greenscreens.ltd">
+<meta name="keywords" content="JavaScript,WebComponents">
+<meta name="robots" content="index, follow">
+<meta name="revisit-after" content="3 month">
+<meta name="description" content="WebComponents UI library based on Bootstrap.">
+
+<script type="module" src="/webcomponents/modules/index.mjs"></script>
+<script type="module" src="/webcomponents/modules/components/ext/GSDataAttr.mjs"></script>
+<script type="module" src="/webcomponents/modules/components/ext/GSUListExt.mjs"></script>
+<script type="module" src="/webcomponents/modules/components/GSMenu.mjs"></script>
+
+<gs-css url="/webcomponents/assets/css/io.greenscreens.bootstrap_5.2.0.css"></gs-css>
+<gs-css url="/webcomponents/assets/icons/bootstrap-icons.css" notheme="true"></gs-css>
+
+<body clasS="vh-100 p-0 m-0" id="body">
+
+    <gs-template href="/webcomponents/demos/header.tpl"></gs-template>
+
+    <div class="border p-3 m-4 shadow-sm text-nowrap text-bg-light">
+
+    </div>
+
+    <ul is="gs-menu" class="dropend position-fixed dropdown-menu show"
+        style="top: 0px; left: 0px; transform: translate(271px, 244px);">
+        <li><a class="dropdown-item" href="#" data-action="open" data-gselid="GSId-22">Open</a></li>
+        <li data-inert="true">
+            <hr class="dropdown-divider">
+        </li>
+        <li><a class="dropdown-item dropdown-toggle" href="#" data-gselid="GSId-24">
+                <div class="d-inline-block w-100">Submenu 1</div>
+            </a>
+            <ul  is="gs-ext-ul" class="submenu dropdown-menu" data-end="true" data-start="false">
+                <li><a class="dropdown-item" href="#" data-action="sub_1_1" data-gselid="GSId-26">Submenu 1.1</a></li>
+                <li><a class="dropdown-item" href="#" data-action="sub_1_2" data-gselid="GSId-28">Submenu 1.2</a></li>
+            </ul>
+        </li>
+        <li><a class="dropdown-item dropdown-toggle" href="#" data-gselid="GSId-30">
+                <div class="d-inline-block w-100">Submenu 2</div>
+            </a>
+            <ul is="gs-ext-ul" class="submenu dropdown-menu" data-end="true" data-start="false">
+                <li><a class="dropdown-item" href="#" data-action="sub_2_1" data-gselid="GSId-32">Submenu 2.1</a></li>
+                <li><a class="dropdown-item" href="#" data-action="sub_2_2" data-gselid="GSId-34">Submenu 2.2</a></li>
+                <li><a class="dropdown-item dropdown-toggle" href="#" data-gselid="GSId-36">
+                        <div class="d-inline-block w-100">Submenu 2.3</div>
+                    </a>
+                    <ul  is="gs-ext-ul" class="submenu dropdown-menu" >
+                        <li><a class="dropdown-item" href="#" data-action="sub_2_3_1" data-gselid="GSId-38"><input
+                                    id="GSId-4" checked="" type="radio" name="sm2"><label class="ms-2"
+                                    for="GSId-4">Submenu 2.3.1</label></a></li>
+                        <li><a class="dropdown-item" href="#" data-action="sub_2_3_2" data-gselid="GSId-40"><input
+                                    id="GSId-5" type="radio" name="sm2"><label class="ms-2" for="GSId-5">Submenu
+                                    2.3.2</label></a></li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+        <li><a class="dropdown-item" href="#" data-inject="gs-notification" data-bs-target="#content" id="GSId-6"
+                data-gselid="GSId-7">Help</a></li>
+        <li><a class="dropdown-item" href="#" data-bs-toggle="dialog" data-bs-target="#dlgAbout" id="GSId-9"
+                data-gselid="GSId-10">About</a></li>
+    </ul>
+</body>
+
+</html>

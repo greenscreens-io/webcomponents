@@ -15,6 +15,7 @@ import GSUtil from "../base/GSUtil.mjs";
 import GSAttr from "../base/GSAttr.mjs";
 import GSDOM from "../base/GSDOM.mjs";
 import GSFunction from "../base/GSFunction.mjs";
+import GSMenu from "./GSMenu.mjs";
 
 /**
  * Dropdown menu
@@ -31,7 +32,7 @@ export default class GSDropdown extends GSElement {
   }
 
   static get observedAttributes() {
-    const attrs = ['visible', 'title', 'css', 'data'];
+    const attrs = ['title', 'css', 'data'];
     return GSElement.observeAttributes(attrs);
   }
 
@@ -46,69 +47,18 @@ export default class GSDropdown extends GSElement {
 
     if (name === 'data') return this.load(newValue);
 
-    if (name === 'visible') {
-      me.#submenus.forEach(el => el.classList.remove('show'));
-      const menu = me.#menu;
-      if (!menu) return;
-      GSDOM.toggleClass(menu, 'show', me.visible);
-      if (me.visible) {
-        me.#updatePos(menu);
-      } else {
-        menu.style.left = '';
-        menu.style.top = '';
-      }
-    }
-
     if (name === 'css') {
       GSDOM.toggleClass(me.#button, oldValue, false);
       GSDOM.toggleClass(me.#button, newValue, true);
     }
 
+    if (name === 'visible') {
+      if (!me.visible) me.close();
+    }
+
     if (name === 'title' && me.#button) {
       GSDOM.setHTML(me.#button, newValue);
     }
-  }
-
-  #updatePos(el) {
-
-    const style = window.getComputedStyle(el);
-
-    const w = parseInt(style.width, 10);
-    const l = parseInt(style.left, 10);
-    const ww = parseInt(window.innerWidth, 10);
-
-    const t = parseInt(style.top, 10);
-    const h = parseInt(style.height, 10);
-    const wh = parseInt(window.innerHeight, 10);
-
-    if (l + w > ww) el.style.left = `${l - ((l + w) - ww)}px`;
-    if (t + h > wh) el.style.top = `${t - ((t + h) - wh)}px`;
-  }
-
-  #updateSub(sub) {
-    const me = this;
-    const menu = me.#menu;
-
-    const ww = parseInt(window.innerWidth, 10);
-    const wh = parseInt(window.innerHeight, 10);
-
-    const menustyle = window.getComputedStyle(menu);
-    const substyle = window.getComputedStyle(sub);
-
-    const ml = parseInt(menustyle.left, 10);
-    const mw = parseInt(menustyle.width, 10);
-    const mt = parseInt(menustyle.top, 10);
-    const mh = parseInt(menustyle.height, 10);
-
-    const sl = parseInt(substyle.left, 10);
-    const sw = parseInt(substyle.width, 10);
-
-    const st = parseInt(substyle.top, 10);
-    const sh = parseInt(substyle.height, 10);
-
-    if (sl + sw + ml + mw > ww) sub.style.left = `-${sw}px`;
-    // if (st + sh + mt + mh > wh) sub.style.top = `${wh - ((st+sh) - wh)}px`;
-
   }
 
   async getTemplate(val = '') {
@@ -122,10 +72,7 @@ export default class GSDropdown extends GSElement {
     if (me.#ready) return;
     me.#ready = true;
     me.close();
-    me.attachEvent(me.#menu, 'mouseleave', me.close.bind(me));
-    me.#attachSubmenu();
-    me.#attachItems();
-    me.#updateSubmenus();
+    me.attachEvent(me.#menu, 'action', me.#onClick.bind(me));
     super.onReady();
   }
 
@@ -145,14 +92,6 @@ export default class GSDropdown extends GSElement {
     return GSAttr.set(this, 'title', val);
   }
 
-  get visible() {
-    return GSAttr.getAsBool(this, 'visible');
-  }
-
-  set visible(val = '') {
-    return GSAttr.setAsBool(this, 'visible', val);
-  }
-
   get dark() {
     return GSAttr.getAsBool(this, 'dark');
   }
@@ -167,19 +106,19 @@ export default class GSDropdown extends GSElement {
   }
 
   close() {
-    this.visible = false;
+    this.#menu?.close();
   }
 
   open() {
-    this.visible = true;
+    this.#menu?.open();
   }
 
   toggle() {
-    this.visible = !this.visible;
+    this.#menu?.toggle();
   }
 
   /**
-   * Create menu from JSON object
+   * Create menu items from JSON object
    * [{name:'', action:'', menu: []}]
    * @param {Array<object>} items 
    * @returns {boolean} Status true if creation is ok
@@ -188,49 +127,10 @@ export default class GSDropdown extends GSElement {
     if (!Array.isArray(items)) return false;
     if (items.length === 0) return false;
     const me = this;
-    const opts = me.#renderMenu(items);
-    GSDOM.setHTML(me.#menu, opts.join(''));
-    me.#attachItems();
-    me.#attachSubmenu();
-    return true;
-  }
-
-  #renderMenu(items = []) {
-    const me = this;
     const dark = me.dark ? 'dropdown-menu-dark' : '';
-    const opts = [];
-    items.forEach(it => {
-      if (it === '-') return opts.push('<li><hr class="dropdown-divider"/></li>');
-      const hasSubmenu = Array.isArray(it.menu);
-      opts.push('<li>');
-      opts.push(`<a class="dropdown-item" href="#" `);
-      opts.push(GSItem.getAttrs(el));
-      /*
-      if (it.action) opts.push(` data-action="${it.action}"`);
-      if (it.inject) opts.push(` data-inject="${it.inject}"`);
-      if (it.target) opts.push(` data-bs-target="${it.target}"`);
-      */
-      opts.push('>');
-
-      if (me.rtl) {
-
-      } else {
-
-      }
-      opts.push(`${it.name} ${hasSubmenu ? '&raquo;' : ''}`);
-
-      opts.push('</a>');
-
-      if (hasSubmenu) {
-        const sub = me.#renderMenu(it.menu);
-        opts.push(`<ul class="submenu dropdown-menu ${dark}">`);
-        opts.push(sub.join('\n'));
-        opts.push('</ul>');
-      }
-      opts.push('</li>');
-
-    });
-    return opts;
+    const opts = GSMenu.fromJSON(items, dark);
+    GSDOM.setHTML(me.#menu, opts.join(''));
+    return true;
   }
 
   get #menu() {
@@ -241,139 +141,25 @@ export default class GSDropdown extends GSElement {
     return this.query('.dropdown-toggle');
   }
 
-  get #items() {
-    return this.queryAll('.dropdown-item');
-  }
+  #renderMenuDOM(children) {
 
-  get #submenus() {
-    return this.queryAll('.submenu');
-  }
-
-  /**
-   * Add click events to menu options
-   */
-  #attachItems() {
-    const me = this;
-    me.#items.filter(btn => btn.dataset.action)
-      .forEach(btn => me.attachEvent(btn, 'click', me.#onClick.bind(me)));
-  }
-
-  async #onClick(e) {
-    const me = this;
-    e.preventDefault();
-    me.close();
-    me.#handleGroup(e);
-    const data = e.target.dataset;
-    const sts = await me.#onAction(data.action);
-    if (sts) return;    
-    const opt = { type: 'dropdown', source: e };
-    GSEvent.send(me, 'action', opt, true); // notify self
-  }
-
-  #handleGroup(e) {
-    const eli = e?.target?.previousSibling;
-    if (!(eli instanceof HTMLInputElement)) return;
-    const me = this;
-    me.queryAll(`input[name="${eli.name}"]`).forEach(el => el.checked = false);
-    eli.checked = true;
-  }
-  
-  /**
-   * Show proper submenu on mouse over
-   * @param {Event} e 
-   * @returns {void}
-   */
-  #onSubmenu(e) {
-    const me = this;
-    const li = e.target.closest('li');
-    const ul = li.closest('ul');
-    const sub = GSDOM.query(li, '.submenu');
-    requestAnimationFrame(() => {
-      GSDOM.queryAll(ul, '.submenu')
-        .forEach(el => el.classList.remove('show'));
-      if (sub) {
-        const val = li.offsetTop;
-        sub.style.top = `${val}px`;
-        sub.classList.add('show');
-        me.#updateSub(sub);
-      }
-    });
-  }
-
-  #updateSubmenus(overflowV = false, overflowH = false) {
-    const me = this;
-    me.#submenus.forEach(el => {
-      let end = true;
-      el.style.position = 'absolute';
-      el.style.left = 'inherit';
-      el.style.right = 'inherit';
-      el.style.top = 'inherit';
-      if (overflowH) {
-        el.style.right = '100%';
-        end = false;
-      } else {
-        el.style.left = '100%';
-        end = true;
-      }
-      el.dataset.end = end;
-      el.dataset.start = !end;
-      GSDOM.toggleClass(me.#menu, 'dropstart', !end);
-      GSDOM.toggleClass(me.#menu, 'dropend', end);     
-    });
-  }
-
-  /**
-   * Attach mouseover for menu items that showa/hides submenu
-   */
-  #attachSubmenu() {
-    const me = this;
-    me.#items.forEach(el => me.attachEvent(el, 'mouseover', me.#onSubmenu.bind(me)));
-  }
-
-  #renderMenuDOM(children, level = 0) {
     const me = this;
     children = children || me.children;
     const list = [];
 
-    const sub = level === 0 ? 'dropend' : 'submenu';
-
-    if (level === 0 && me.title) {
+    if (me.title) {
       list.push('<div class="dropdown">');
       list.push(`<button class="btn dropdown-toggle ${me.css}" type="button" data-bs-toggle="dropdown">`);
       list.push(me.title);
       list.push('</button>');
     }
 
-    list.push(`<ul is="gs-ext-ul" class="${sub} dropdown-menu ${me.dark ? 'dropdown-menu-dark' : ''}">`);
+    const css = me.dark ? 'dropdown-menu-dark' : ''
+    const html = GSMenu.fromDOM(children, 0, css, true);
+    list.push(html)
 
-    Array.from(children).forEach(el => {
-      const isSub = el.childElementCount > 0;
-      if (isSub) list.push(me.#renderSub(el));
-      const html = isSub ? me.#renderMenuDOM(el.children, ++level) : me.#renderChild(el);
-      list.push(html);
-      if (sub) list.push(`</li>`);
-    });
-
-    list.push('</ul>');
-    if (level === 0 && me.title) list.push('</div>');
+    if (me.title) list.push('</div>');
     return list.join('');
-  }
-
-  #renderSub(el) {
-    const name = GSAttr.get(el, 'name');
-    return `<li><a class="dropdown-item dropdown-toggle" href="#"><div class="d-inline-block w-100">${name}</div></a>`;
-  }
-
-  #renderChild(el) {
-    const header = GSAttr.get(el, 'header');
-    if (header) return `<li data-inert="true"><h6 class="dropdown-header"/>${header}</h6></li>`;
-    if (!el.name) return `<li data-inert="true"><hr class="dropdown-divider"/></li>`;
-    if (el.action) return `<li><a class="dropdown-item" href="#" data-action="${el.action}">${el.name}</a></li>`;
-    if (el.toggle) return `<li><a class="dropdown-item" href="#" data-bs-toggle="${el.toggle}" data-bs-target="${el.target}">${el.name}</a></li>`;
-    if (el.inject) return `<li><a class="dropdown-item" href="#" data-inject="${el.inject}" data-bs-target="${el.target}">${el.name}</a></li>`;
-    if (el.href) return `<li><a class="dropdown-item" href="${el.href}" target="${el.target}">${el.name}</a></li>`;
-    const attrs = GSItem.getAttrs(el).trim();
-    return attrs ? `<li><a class="dropdown-item" href="#" ${attrs} >${el.name}</a></li>` : '';
   }
 
   /**
@@ -395,6 +181,16 @@ export default class GSDropdown extends GSElement {
     GSDOM.setHTML(me, src);
     me.connectedCallback();
     return data;
+  }
+
+  async #onClick(e) {
+    GSEvent.prevent(e);
+    const me = this;
+    const data = e.detail;
+    const sts = await me.#onAction(data.action);
+    if (sts) return;
+    data.type = 'dropdown';
+    GSEvent.send(me, 'action', data, true, true, true); // notify self
   }
 
   async #onAction(action) {
@@ -421,5 +217,5 @@ export default class GSDropdown extends GSElement {
 
   onError(e) {
     console.log(e);
-  }  
+  }
 }

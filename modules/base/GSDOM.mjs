@@ -780,7 +780,7 @@ export default class GSDOM {
 
 	/**
 	 * Validate against provided list, if child elements allowed inside provided element
-	 * @param {HTMLElement} el Element which slild list to validate
+	 * @param {HTMLElement} el Element which child list to validate
 	 * @param {string} tagName Expected owner element tag name
 	 * @param {string} whiteList Uppercase list of tag names allowed as child
 	 * @param {boolean} asState return state as bool or throw an error (default)

@@ -6,6 +6,20 @@ The component supports menu with submenus as shown in the example below. Use gen
  
 Menu items can be loaded from an external **template** or can be added as component child elements, as shown in the example below.
  
+ <br>
+ 
+## Attributes
+---
+ 
+| Name               | Description                                              |
+|--------------------|----------------------------------------------------------|
+| css                | CSS classes for button containing dropdown menu          |
+| dark               | Is menu light or dark mode                               |
+| disabled           | If exists, disable context menu click activation         |
+| title              | Button title                                             |
+ 
+<br>
+
 ## Example
 ---
  
