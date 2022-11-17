@@ -167,11 +167,10 @@ export default class GSSplitter extends GSElement {
 
     #save() {
         const me = this;
-        const style = GSDOM.getComputedStyledMap(me.target); // no firefox support
-        if (!style) return;
-        const val = me.isVertical ? style.width : style.height;
+        const val = me.isVertical ? GSDOM.styleValue(me.target,'width') : GSDOM.styleValue(me.target,'height');
+        if (!val) return;
         const key = GSID.hashCode(location.origin + location.pathname);
-        localStorage.setItem(`gs-splitter-${key}-${me.id}`, val.match(/(\d+)/)[0]);
+        localStorage.setItem(`gs-splitter-${key}-${me.id}`, val);
     }
 
     /**

@@ -174,7 +174,7 @@ export default class GSContext extends GSElement {
 
   #match(e) {
     const me = this;
-    return e.path.filter(el => el.matches)
+    return e.composedPath().filter(el => el.matches)
                  .filter(el => el.matches(me.target));
   }
 

@@ -81,6 +81,7 @@ export default class GSTableFilter extends HTMLTableRowElement {
     #getValue(el) {
         const me = this;
         const listID = GSAttr.get(el, 'list');
+        if (!listID) return el.value;
         const list = me.root.getElementById(listID);
         const opt = list?.querySelector(`option[value="${el.value}"]`);
         return opt?.dataset?.value || el.value;

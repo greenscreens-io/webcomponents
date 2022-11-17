@@ -182,6 +182,7 @@ export default class GSMenu extends GSUListExt {
   }
 
   get #transform() {
+    if (!globalThis.CSSTranslate) return null;
     return Array.from(GSDOM.styleValue(this, 'transform')).filter(v => v instanceof CSSTranslate).pop();
   }
 
