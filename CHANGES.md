@@ -12,7 +12,7 @@ __Improvements and fixes__
 
 - Refactor GSDropdown and GSContext menus
 - GSContext event matching
-- GSOffcanvs "visible" atribute changed to "expanded"
+- GSOffcanvas "visible" atribute changed to "expanded"
 - GSNotification support for top level native dialogs
 - GSNotification position update
 - GSContext, GSDropdown default self action trigger
