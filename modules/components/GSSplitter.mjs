@@ -120,7 +120,8 @@ export default class GSSplitter extends GSElement {
         el = el || me.parentElement;
         el = GSDOM.isGSElement(el) ? el.self : el;
         if (el instanceof ShadowRoot) {
-            el = Array.from(el.children).filter(o => window.getComputedStyle(o).display !== 'none').pop();
+            // no firefox support
+            el = Array.from(el.children).filter(o => !GSDOM.isStyleValue(o, 'display' ,'none')).pop();
         }
         return el;
     }
@@ -166,7 +167,8 @@ export default class GSSplitter extends GSElement {
 
     #save() {
         const me = this;
-        const style = window.getComputedStyle(me.target);
+        const style = GSDOM.getComputedStyledMap(me.target); // no firefox support
+        if (!style) return;
         const val = me.isVertical ? style.width : style.height;
         const key = GSID.hashCode(location.origin + location.pathname);
         localStorage.setItem(`gs-splitter-${key}-${me.id}`, val.match(/(\d+)/)[0]);

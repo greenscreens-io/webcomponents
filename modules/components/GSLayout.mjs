@@ -11,6 +11,7 @@ import GSItem from "../base/GSItem.mjs";
 import GSElement from "../base/GSElement.mjs";
 import GSID from "../base/GSID.mjs";
 import GSAttr from "../base/GSAttr.mjs";
+import GSDOM from "../base/GSDOM.mjs";
 
 /**
  * Renderer for panel layout 
@@ -51,8 +52,7 @@ export default class GSLayout extends GSElement {
         if (el && el !== me) return true;
 
         const parent = GSComponents.getOwner(me); // me.parentElement
-        const style = window.getComputedStyle(parent);
-        return style.display === 'flex' && style.flexGrow !== '0';
+        return GSDOM.isStyleValue(parent, 'display', 'flex') &&  !GSDOM.styleValue(parent, 'flexGrow', '0');
     }
 
     get anchor() {

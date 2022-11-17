@@ -25,9 +25,6 @@ import GSMenu from "./GSMenu.mjs";
  */
 export default class GSContext extends GSElement {
 
-  // element that opened context
-  #caller = null;
-
   #online = false;
   #ready = false;
   #attached = false;
@@ -125,7 +122,6 @@ export default class GSContext extends GSElement {
     if (e instanceof Event) e.preventDefault();
     const me = this;
     me.#menu?.close();
-    me.#caller?.focus();
   }
 
   open() {
@@ -142,8 +138,8 @@ export default class GSContext extends GSElement {
    * @param {number} y 
    * @returns {void}
    */
-  popup(x = 0, y = 0) {
-    this.#menu?.popup(x, y);
+  popup(x = 0, y = 0, caller) {
+    this.#menu?.popup(x, y, caller);
   }
 
   /**
@@ -187,8 +183,7 @@ export default class GSContext extends GSElement {
     const list = me.#match(e);
     if (list.length === 0) return;
     GSEvent.prevent(e);
-    me.#caller = e.target;
-    me.popup(e.clientX, e.clientY);
+    me.popup(e);
     return true;
   }
 
@@ -250,7 +245,6 @@ export default class GSContext extends GSElement {
     const sts = await me.#onAction(data.action);
     if (sts) return;
     data.type = 'contextmenu';
-    data.caller = me.#caller;
     GSEvent.send(me, 'action', data, true, true, true); // notify self
   }
 

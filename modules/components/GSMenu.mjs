@@ -40,7 +40,7 @@ export default class GSMenu extends GSUListExt {
     const me = this;    
     me.#attachMenuItems();
     me.#attachSubMenu();
-    me.#updateSubmenus();
+    me.#updatePos();
     me.attachEvent(document, 'keydown', me.#onKeyDown.bind(me));
   }
 
@@ -100,16 +100,18 @@ export default class GSMenu extends GSUListExt {
    * Show at x/y position on the screen
    * @param {number} x 
    * @param {number} y 
+   * @param {HTMLElement} caller
    * @returns {void}
    */
-  popup(x = 0, y = 0) {
+  popup(x = 0, y = 0, caller) {
     const me = this;
+    const cfg = {clientX: x.clientX || x, clientY: x.clientY || y, target: x.target || caller };
     requestAnimationFrame(() => {
       me.style.position = 'fixed';
       me.style.top = '0px';
       me.style.left = '0px';
-      me.style.transform = `translate(${x}px, ${y}px)`;
-      me.open({clientX : x, clientY :y});
+      me.style.transform = `translate(${cfg.clientX}px, ${cfg.clientY}px)`;
+      me.open(cfg);
     });
 
   }
@@ -122,18 +124,22 @@ export default class GSMenu extends GSUListExt {
     GSDOM.toggleClass(me, 'show', false);
     me.style.left = '';
     me.style.top = '';
+    me.#caller?.focus();
+    me.#caller = null;
   }
 
   open(e) {
     const me = this;
+    me.#caller = e?.target;
     GSDOM.toggleClass(me, 'show', true);
     me.#updatePos();
     me.#updateSubmenus(e);
+    GSDOM.query(me, 'a,input,[tabindex="0"]')?.focus();
   }
 
-  toggle() {
+  toggle(e) {
     const me = this;
-    me.visible ? me.close() : me.open();
+    me.visible ? me.close(e) : me.open(e);
   }
 
   get #items() {
@@ -150,31 +156,44 @@ export default class GSMenu extends GSUListExt {
 
   #updatePos() {
     const me = this;
-    const style = window.getComputedStyle(me);
-
-    const w = parseInt(style.width, 10);
-    const l = parseInt(style.left, 10);
+    const rect = me.getBoundingClientRect();
+    if (!rect) return;
+    const w = rect.width;
+    const l = rect.left;
     const ww = parseInt(window.innerWidth, 10);
 
-    const t = parseInt(style.top, 10);
-    const h = parseInt(style.height, 10);
+    const t = rect.top;
+    const h = rect.height;
     const wh = parseInt(window.innerHeight, 10);
-
+    const tt = me.#transform;
     requestAnimationFrame(() => {
-      if (l + w > ww) me.style.left = `${l - ((l + w) - ww)}px`;
-      if (t + h > wh) me.style.top = `${t - ((t + h) - wh)}px`;
+      if (l + w > ww) {
+        let left = l - ((l + w) - ww);
+        if (tt) left = left - tt.x.value;
+        me.style.left = `${left}px`;
+      }
+      if (t + h > wh) {
+        let top = t - ((t + h) - wh);
+        if (tt) top = top - tt.y.value;
+        me.style.top = `${top}px`;      
+      }
+
     });
+  }
+
+  get #transform() {
+    return Array.from(GSDOM.styleValue(this, 'transform')).filter(v => v instanceof CSSTranslate).pop();
   }
 
   #updateSubmenus(e) {
     const me = this;
-    const rect = me.getBoundingClientRect();
-    if (!rect) return;
 
     requestAnimationFrame(() => {
-      let x = e?.clientX || 0, y = e?.clientY || 0;
-      const overflowH = x + rect.width > window.innerWidth;
-      const overflowV = y + rect.height > window.innerHeight;
+      const rect = me.getBoundingClientRect();
+      if (!rect) return;
+      let x = e?.clientX || rect.left, y = e?.clientY || rect.top;
+      const overflowH = x + rect.width + 5 > window.innerWidth;
+      const overflowV = y + rect.height + 5 > window.innerHeight;
       if (overflowH) x = window.innerWidth - rect.width;
       if (overflowV) y = window.innerHeight - rect.height;
       me.#submenus.forEach(el => {

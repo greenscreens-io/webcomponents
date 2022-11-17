@@ -7,7 +7,8 @@
  * @module base/GSPopper
  */
 
-import GSLog from "./GSLog.mjs";
+ import GSLog from "./GSLog.mjs";
+ import GSDOM from "./GSDOM.mjs";
 
 /**
  * A generic set of static functions used across GS WebComponents framework
@@ -95,8 +96,8 @@ export default class GSPopper {
 
 		const isEl = element instanceof HTMLElement;
 		if (!isEl) return obj;
-		const cs = getComputedStyle(element);
-
+		const cs = GSDOM.getComputedStyledMap(element);
+		if (!cs) return; // no Firefox support
 		obj.left = parseFloat(cs.paddingLeft);
 		obj.right = parseFloat(cs.paddingRight);
 		obj.top = parseFloat(cs.paddingTop);

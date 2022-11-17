@@ -171,7 +171,7 @@ export default class GSDataAttr {
 
     static #isHidden(el) {
         if (el.matches('.hide,.fade,.collapse') && !el.matches('.show')) return true;
-        return GSDOM.getComputedStyledMap(el)?.get('display')?.value === 'none';
+        return GSDOM.isStyleValue(el, 'display', 'none');
     }
 
     static #isCollapsible(el) {

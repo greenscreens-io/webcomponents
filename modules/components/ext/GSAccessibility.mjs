@@ -48,7 +48,7 @@ export default class GSAccessibility {
         if (focused?.tagName === 'BUTTON') return;
         const event = new MouseEvent('click', {
             view: window,
-            bubbles: false,
+            bubbles: true,
             cancelable: true,
             shiftKey: evt.shiftKey,
             altKey: evt.altKey,
@@ -79,9 +79,7 @@ export default class GSAccessibility {
     static #isVisible(el) {
         const rect = el.getBoundingClientRect();
         if (rect.width === 0 || rect.height === 0) return false;
-        const map = GSDOM.getComputedStyledMap(el);
-        if (!map) return true;
-        return map.get('display').value != 'none' && map.get('opacity').value > 0;
+        return !GSDOM.isStyleValue(el, 'display', 'none') && GSUtil.asNum(GSDOM.styleValue(el, 'opacity')) > 0;
     }
 
     static start() {

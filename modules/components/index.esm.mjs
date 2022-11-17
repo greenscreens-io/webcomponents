@@ -16,6 +16,7 @@ export { default as GSDropdown } from "./GSDropdown.mjs";
 export { default as GSFormGroup } from "./GSFormGroup.mjs";
 export { default as GSLayout } from "./GSLayout.mjs";
 export { default as GSList } from "./GSList.mjs";
+export { default as GSMenu } from "./GSMenu.mjs";
 export { default as GSModal } from "./GSModal.mjs";
 export { default as GSNav } from "./GSNav.mjs";
 export { default as GSOffcanvas } from "./GSOffcanvas.mjs";

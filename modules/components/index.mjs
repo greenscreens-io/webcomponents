@@ -16,6 +16,7 @@ import "./GSDropdown.mjs";
 import "./GSFormGroup.mjs";
 import "./GSLayout.mjs";
 import "./GSList.mjs";
+import "./GSMenu.mjs";
 import "./GSModal.mjs";
 import "./GSNav.mjs";
 import "./GSOffcanvas.mjs";

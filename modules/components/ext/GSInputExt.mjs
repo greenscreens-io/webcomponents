@@ -411,7 +411,7 @@ export default class GSInputExt extends HTMLInputElement {
 
     #updateText(value = '') {
         const me = this;
-        const fmt = GSDOM.getComputedStyledMap(me)?.get('text-transform')?.value;
+        const fmt = GSDOM.styleValue(me, 'text-transform');
         switch (fmt) {
             case 'lowercase':
                 return value.toLocaleLowerCase();

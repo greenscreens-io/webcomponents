@@ -559,8 +559,20 @@ export default class GSDOM {
 	 */
 	static styleValue(el, name) {
 		const map = GSDOM.getComputedStyledMap(el);
-		if (typeof map.get === 'function') return map.get(name);
-		return map[name];
+		if (!map) return null;
+		const css =  (typeof map.get === 'function') ? map.get(name) :  map[name];
+		return css.value ? css.value : css;
+	}
+
+	/**
+	 * Check if computed style is equal
+	 * @param {*} el 
+	 * @param {*} name 
+	 * @param {*} val 
+	 * @returns 
+	 */
+	static isStyleValue(el, name, val = '') {
+		return GSDOM.styleValue(el, name) === val;
 	}
 
 	/**
