@@ -80,8 +80,9 @@ export default class GSDialog extends GSElement {
 
   #onEscape(e) {
     const me = this;
-    if (!me.cancelable && e.key === 'Escape') return GSEvent.prevent(e);
+    if (!me.cancelable || e.key !== 'Escape') return;
     me.close();
+    GSEvent.prevent(e);
   }
 
   #onClose(e) {
