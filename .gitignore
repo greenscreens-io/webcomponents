@@ -1,6 +1,4 @@
-test/
 node_modules/
 admin/
 _ui_/
 TODO.txt
-.parcel-cache/
