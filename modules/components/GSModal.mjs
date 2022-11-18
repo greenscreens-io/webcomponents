@@ -228,6 +228,8 @@ export default class GSModal extends GSElement {
    */
   focusable() {
     const me = this;
+    const form = me.queryAll(GSDOM.QUERY_INPUT, true).filter(el => GSDOM.isVisible(el)).shift();
+    if (form) return form;
     if (me.cancelable) return me.#buttonCancelEl;
     if (me.closable) return me.#buttonOkEl;
     return me;

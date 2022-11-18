@@ -274,6 +274,10 @@ export default class GSElement extends HTMLElement {
 	 */
 	get self() {
 		const me = this;
+		/*
+		if (me.isProxy) return me.#content instanceof GSElement ? me.#content.self : me.#content;
+		return me.querySelector('[slot]:not(template),:not(gs-item)') ? me : me.#content;
+		*/
 		return me.isProxy && me.#content instanceof GSElement ? me.#content.self : me.#content;
 	}
 
@@ -332,11 +336,11 @@ export default class GSElement extends HTMLElement {
 	 * @param {string} name 
 	 * @returns {HTMLElement}
 	 */
-	query(query = '', all = false) {
+	query(query = '', shadow = false) {
 		const me = this;
-		const el = GSDOM.query(me.self, query, all, true);
+		const el = GSDOM.query(me.self, query, false, true);
 		if (me.isProxy || el) return el;
-		return GSDOM.query(me, query, all, false);
+		return GSDOM.query(me, query, false, shadow);
 	}
 
 	/**
@@ -344,11 +348,11 @@ export default class GSElement extends HTMLElement {
 	 * @param {string} query 
 	 * @returns {Array<HTMLElement>}
 	 */
-	queryAll(query = '', all = false) {
+	queryAll(query = '', shadow = false) {
 		const me = this;
-		const list = GSDOM.queryAll(me.self, query, all, true);
+		const list = GSDOM.queryAll(me.self, query, false, true);
 		if (me.isProxy || list.length > 0) return list;
-		return GSDOM.queryAll(me, query, all, false);
+		return GSDOM.queryAll(me, query, false, shadow);
 	}
 
 	/**

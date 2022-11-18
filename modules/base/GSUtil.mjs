@@ -112,6 +112,27 @@ export default class GSUtil {
 	}
 
 	/**
+	 * Transform text based on CSS text attribute format
+	 * @param {string} format 
+	 * @param {string} value 
+	 * @returns 
+	 */
+	static textTransform(format = '', value = '') {
+		switch (format) {
+			case 'lowercase':
+				value = value.toLowerCase();
+				break;
+			case 'uppercase':
+				value = value.toUpperCase();
+				break;
+			case 'capitalize':
+				value = GSUtil.capitalizeAll(value);
+				break;
+		}
+		return value;
+	}
+
+	/**
 	 * Convert parameterized string literal as template to string 
 	 * 
 	 * 	 const template = 'Example text: ${text}';

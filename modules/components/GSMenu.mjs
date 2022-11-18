@@ -13,6 +13,7 @@ import GSDOM from "../base/GSDOM.mjs";
 import GSUListExt from "./ext/GSUListExt.mjs";
 import GSAttr from "../base/GSAttr.mjs";
 import GSItem from "../base/GSItem.mjs";
+import GSCSSMap from "../base/GSCSSMap.mjs";
 
 /**
  * Context menu
@@ -183,7 +184,7 @@ export default class GSMenu extends GSUListExt {
 
   get #transform() {
     if (!globalThis.CSSTranslate) return null;
-    return Array.from(GSDOM.styleValue(this, 'transform')).filter(v => v instanceof CSSTranslate).pop();
+    return Array.from(GSCSSMap.styleValue(this, 'transform')).filter(v => v instanceof CSSTranslate).pop();
   }
 
   #updateSubmenus(e) {

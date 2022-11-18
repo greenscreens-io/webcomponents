@@ -7,6 +7,7 @@
  * @module base/GSDOM
  */
 
+import GSCSSMap from "./GSCSSMap.mjs";
 import GSLog from "./GSLog.mjs";
 import GSUtil from "./GSUtil.mjs";
 
@@ -17,7 +18,8 @@ import GSUtil from "./GSUtil.mjs";
 export default class GSDOM {
 
 	static QUERY_FOCUSABLE = "a[href]:not([tabindex='-1']),area[href]:not([tabindex='-1']),input:not([disabled]):not([tabindex='-1']),select:not([disabled]):not([tabindex='-1']),textarea:not([disabled]):not([tabindex='-1']),button:not([disabled]):not([tabindex='-1']),iframe:not([tabindex='-1']),[tabindex]:not([tabindex='-1']),[contentEditable=true]:not([tabindex='-1'])";
-	
+	static QUERY_INPUT = "input:not([type='hidden']):not(disabled):not(readonly),select:not([type='hidden']):not(disabled):not(readonly),textarea:not([type='hidden']):not(disabled):not(readonly)";
+
 	// Timeout for removing element
 	static SPEED = 300;
 
@@ -38,17 +40,21 @@ export default class GSDOM {
 		return el.shadowRoot?.activeElement ? GSDOM.active(el.shadowRoot?.activeElement) : el;
 	}
 
-    /**
-     * Check if element is visible
-     * @param {HTMLElement} el 
-     * @returns 
-     */
+	/**
+	 * Check if element is visible
+	 * @param {HTMLElement} el 
+	 * @returns 
+	 */
 	static isVisible(el) {
 		if (!GSDOM.isHTMLElement(el)) return false;
-        const rect = el.getBoundingClientRect();
-        if (rect.width === 0 || rect.height === 0) return false;
-        return !GSDOM.isStyleValue(el, 'display', 'none') && GSUtil.asNum(GSDOM.styleValue(el, 'opacity')) > 0;
-    }
+		const css = GSCSSMap.getComputedStyledMap(el);
+		const visibility = !css.matches('visibility', 'hidden');
+		const display = !css.matches('display', 'none');
+		const opacity = css.asNum('opacity') > 0;
+		const rect = el.getBoundingClientRect();
+		const size = (rect.width > 0 && rect.height > 0);
+		return size && opacity && visibility && display;
+	}
 
 	/**
 	* Parse string into html DOM
@@ -123,7 +129,7 @@ export default class GSDOM {
 	 */
 	static isFormElement(el) {
 		const name = GSUtil.isString(el) ? el : el?.tagName;
-		return ['INPUT','SELECT','TEXTAREA', 'BUTTON'].indexOf(name) > -1;
+		return ['INPUT', 'SELECT', 'TEXTAREA', 'BUTTON'].indexOf(name) > -1;
 	}
 	/**
 	  * Check if given element is of given type 
@@ -542,11 +548,8 @@ export default class GSDOM {
 		if ('checkbox' === el.type) return el.checked;
 		let value = el.value;
 		if ('text' === el.type) {
-			const map = GSDOM.styleValue(el, 'text-transform');
-			if (map) {
-				if ('lowercase' == map.value) value = el.value.toLowerCase();
-				if ('uppercase' == map.value) value = el.value.toUpperCase();
-			}
+			const map = GSCSSMap.styleValue(el, 'text-transform');
+			if (map) value = GSUtil.textTransform(map.value, value);
 		}
 		return value;
 	}
@@ -564,40 +567,6 @@ export default class GSDOM {
 		} else {
 			el.value = val;
 		}
-	}
-
-	/**
-	 * Support for Firefox/Gecko to get element computedStyledMap item
-	 * @param {HTMLElement} el 
-	 * @returns {}
-	 */
-	static styleValue(el, name) {
-		const map = GSDOM.getComputedStyledMap(el);
-		if (!map) return null;
-		const css =  (typeof map.get === 'function') ? map.get(name) :  map[name];
-		return css.value ? css.value : css;
-	}
-
-	/**
-	 * Check if computed style is equal
-	 * @param {*} el 
-	 * @param {*} name 
-	 * @param {*} val 
-	 * @returns 
-	 */
-	static isStyleValue(el, name, val = '') {
-		return GSDOM.styleValue(el, name) === val;
-	}
-
-	/**
-	 * Support for Firefox/Gecko to get element computedStyledMap
-	 * @param {HTMLElement} el 
-	 * @returns {}
-	 */
-	static getComputedStyledMap(el) {
-		if (el.computedStyleMap) return el.computedStyleMap();
-		if (window.getComputedStyle) return window.getComputedStyle(el);
-		return null;
 	}
 
 	/**
@@ -647,14 +616,14 @@ export default class GSDOM {
 	static toJson(own, recursive = true) {
 		const obj = {};
 		if (!GSDOM.isHTMLElement(own)) return obj;
-		
+
 		obj['#tagName'] = own.tagName.toLowerCase();
 
 		Array.from(own.attributes).forEach(v => obj[v.name] = v.value);
-		
+
 		if (recursive) {
 			const children = Array.from(own.children);
-			if (children.length > 0 ) {
+			if (children.length > 0) {
 				obj.items = [];
 				children.forEach(el => obj.items.push(GSDOM.toJson(el)));
 			}
@@ -668,7 +637,7 @@ export default class GSDOM {
 	 * @param {object} obj 
 	 * @param {boolean} asString As string or HTMLElement Tree 
 	 * @param {string} tag 
-	 */	
+	 */
 	static fromJson(obj, tag = 'gs-item', asString = false) {
 		return asString ? GSDOM.fromJsonAsString(obj, tag) : GSDOM.fromJsonAsDOM(obj, tag);
 	}
@@ -677,8 +646,8 @@ export default class GSDOM {
 	 * Convert JSON object to DOM tree
 	 * @param {*} obj 
 	 * @param {*} tag 
-	 */	
-	 static fromJsonAsDOM(obj, tag = 'gs-item') {
+	 */
+	static fromJsonAsDOM(obj, tag = 'gs-item') {
 		if (!obj) return null;
 
 		if (Array.isArray(obj)) return obj.map(o => GSDOM.fromJsonAsDOM(o));
@@ -686,7 +655,7 @@ export default class GSDOM {
 		const name = obj['#tagName'] || tag;
 		const el = document.createElement(name);
 
-		Object.keys(obj).filter(v => v !='items' && v[0]!= '#')
+		Object.keys(obj).filter(v => v != 'items' && v[0] != '#')
 			.forEach(v => el.setAttribute(v, obj[v]));
 
 		if (Array.isArray(obj.items)) {
@@ -703,8 +672,8 @@ export default class GSDOM {
 	 * Convert JSON object to HTML source
 	 * @param {*} obj 
 	 * @param {*} tag 
-	 */	
-	 static fromJsonAsString(obj, tag = 'gs-item') {
+	 */
+	static fromJsonAsString(obj, tag = 'gs-item') {
 		if (!obj) return null;
 
 		if (Array.isArray(obj)) return obj.map(o => GSDOM.fromJsonAsString(o)).join('');
@@ -713,8 +682,8 @@ export default class GSDOM {
 		const src = [];
 		src.push(`<${name} `);
 
-		Object.keys(obj).filter(v => v !='items' && v[0]!= '#')
-			.forEach(v =>  src.push(` ${v}="${obj[v]}" `));
+		Object.keys(obj).filter(v => v != 'items' && v[0] != '#')
+			.forEach(v => src.push(` ${v}="${obj[v]}" `));
 
 		src.push(`>`);
 
@@ -729,7 +698,7 @@ export default class GSDOM {
 
 		return src.join('');
 	}
-	
+
 	/**
 	 * Convert URL hash key/value to form elements
 	 * @param {HTMLElement} owner 

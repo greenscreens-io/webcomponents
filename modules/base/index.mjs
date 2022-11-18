@@ -14,6 +14,7 @@ export { default as GSUtil } from "./GSUtil.mjs";
 export { default as GSLoader } from "./GSLoader.mjs";
 export { default as GSAttr } from "./GSAttr.mjs";
 export { default as GSDOM } from "./GSDOM.mjs";
+export { default as GSCSSMap } from "./GSCSSMap.mjs";
 export { default as GSData } from "./GSData.mjs";
 export { default as GSDate } from "./GSDate.mjs";
 export { default as GSPopper } from "./GSPopper.mjs";

@@ -13,6 +13,7 @@ import GSElement from "../base/GSElement.mjs";
 import GSEvent from "../base/GSEvent.mjs";
 import GSAttr from "../base/GSAttr.mjs";
 import GSDOM from "../base/GSDOM.mjs";
+import GSCSSMap from "../base/GSCSSMap.mjs";
 
 /**
  * Renderer for element splitter
@@ -167,7 +168,8 @@ export default class GSSplitter extends GSElement {
 
     #save() {
         const me = this;
-        const val = me.isVertical ? GSDOM.styleValue(me.target,'width') : GSDOM.styleValue(me.target,'height');
+        const css = GSCSSMap.getComputedStyledMap(me.target);
+        const val = me.isVertical ? css.get('width') : css.get('height');
         if (!val) return;
         const key = GSID.hashCode(location.origin + location.pathname);
         localStorage.setItem(`gs-splitter-${key}-${me.id}`, val);

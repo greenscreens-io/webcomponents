@@ -13,6 +13,7 @@ import GSComponents from "../../base/GSComponents.mjs";
 import GSAttr from "../../base/GSAttr.mjs";
 import GSDOM from "../../base/GSDOM.mjs";
 import GSUtil from "../../base/GSUtil.mjs";
+import GSCSSMap from "../../base/GSCSSMap.mjs";
 
 /**
  * Add custom field processing
@@ -410,16 +411,8 @@ export default class GSInputExt extends HTMLInputElement {
     }
 
     #updateText(value = '') {
-        const me = this;
-        const fmt = GSDOM.styleValue(me, 'text-transform');
-        switch (fmt) {
-            case 'lowercase':
-                return value.toLocaleLowerCase();
-            case 'uppercase':
-                return value.toLocaleUpperCase();
-            case 'capitalize':
-                return GSUtil.capitalizeAll(value);
-        }
+        const map = GSCSSMap.styleValue(this, 'text-transform');
+        if (map) value = GSUtil.textTransform(map.value, value);
         return value;
     }
 }
