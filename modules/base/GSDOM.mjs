@@ -16,6 +16,8 @@ import GSUtil from "./GSUtil.mjs";
  */
 export default class GSDOM {
 
+	static QUERY_FOCUSABLE = "a[href]:not([tabindex='-1']),area[href]:not([tabindex='-1']),input:not([disabled]):not([tabindex='-1']),select:not([disabled]):not([tabindex='-1']),textarea:not([disabled]):not([tabindex='-1']),button:not([disabled]):not([tabindex='-1']),iframe:not([tabindex='-1']),[tabindex]:not([tabindex='-1']),[contentEditable=true]:not([tabindex='-1'])";
+	
 	// Timeout for removing element
 	static SPEED = 300;
 
@@ -35,6 +37,18 @@ export default class GSDOM {
 	static active(el) {
 		return el.shadowRoot?.activeElement ? GSDOM.active(el.shadowRoot?.activeElement) : el;
 	}
+
+    /**
+     * Check if element is visible
+     * @param {HTMLElement} el 
+     * @returns 
+     */
+	static isVisible(el) {
+		if (!GSDOM.isHTMLElement(el)) return false;
+        const rect = el.getBoundingClientRect();
+        if (rect.width === 0 || rect.height === 0) return false;
+        return !GSDOM.isStyleValue(el, 'display', 'none') && GSUtil.asNum(GSDOM.styleValue(el, 'opacity')) > 0;
+    }
 
 	/**
 	* Parse string into html DOM

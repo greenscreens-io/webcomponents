@@ -44,7 +44,7 @@ export default class GSUListExt extends HTMLUListElement {
     }
 
     #target(el) {
-        return el?.querySelector(GSAccessibility.QUERY);
+        return el?.querySelector(GSDOM.QUERY_FOCUSABLE);
     }
 
     #next(el, idx) {
@@ -75,7 +75,7 @@ export default class GSUListExt extends HTMLUListElement {
         const open = (start && dir < 0) || (end && dir > 0);
         GSDOM.toggleClass(submenu, 'show', open);
         submenu = open ? submenu : submenu.parentElement;
-        submenu.querySelector(GSAccessibility.QUERY)?.focus();
+        submenu.querySelector(GSDOM.QUERY_FOCUSABLE)?.focus();
         return true;
     }
 

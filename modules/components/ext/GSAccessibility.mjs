@@ -12,7 +12,6 @@ import GSUtil from "../../base/GSUtil.mjs";
 
 export default class GSAccessibility {
 
-    static QUERY = "a[href]:not([tabindex='-1']),area[href]:not([tabindex='-1']),input:not([disabled]):not([tabindex='-1']),select:not([disabled]):not([tabindex='-1']),textarea:not([disabled]):not([tabindex='-1']),button:not([disabled]):not([tabindex='-1']),iframe:not([tabindex='-1']),[tabindex]:not([tabindex='-1']),[contentEditable=true]:not([tabindex='-1'])";
     static KEYS = ['Space', 'Enter', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'];
 
     static #active = false;
@@ -23,7 +22,7 @@ export default class GSAccessibility {
         if (idx < 0) return;
 
         const focused = GSDOM.activeElement;
-        if (!focused.matches(GSAccessibility.QUERY)) return;
+        if (!focused.matches(GSDOM.QUERY_FOCUSABLE)) return;
 
         if (idx < 2) return GSAccessibility.click(focused, e);
 
@@ -64,22 +63,11 @@ export default class GSAccessibility {
      * @returns 
      */
     static #next(focused, dir) {
-        const list = GSDOM.queryAll(GSAccessibility.QUERY).filter(el => GSAccessibility.#isVisible(el));
+        const list = GSDOM.queryAll(GSDOM.QUERY_FOCUSABLE).filter(el => GSDOM.isVisible(el));
         let i = list.indexOf(focused) + dir;
         i = i >= list.length ? 0 : i;
         i = i < 0 ? list.length - 1 : i;
         return list[i];
-    }
-
-    /**
-     * Check if element is visible
-     * @param {*} el 
-     * @returns 
-     */
-    static #isVisible(el) {
-        const rect = el.getBoundingClientRect();
-        if (rect.width === 0 || rect.height === 0) return false;
-        return !GSDOM.isStyleValue(el, 'display', 'none') && GSUtil.asNum(GSDOM.styleValue(el, 'opacity')) > 0;
     }
 
     static start() {
@@ -101,8 +89,7 @@ export default class GSAccessibility {
     }
 
     static set active(val) {
-        const active = GSUtil.asBool(val);
-        return active ? GSAccessibility.start() : GSAccessibility.stop();
+        return GSUtil.asBool(val) ? GSAccessibility.start() : GSAccessibility.stop();
     }
 
     static {
