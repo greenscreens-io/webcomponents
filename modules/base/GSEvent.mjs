@@ -28,22 +28,21 @@ export default class GSEvent {
 	 * Disable browser console and default context menu
 	 */
 	static protect() {
-		globalThis.addEventListener('contextmenu', (e) => {
-			GSEvent.prevent(e);
-		});
+		GSEvent.listen(globalThis, null, 'contextmenu', e =>  GSEvent.prevent(e));
+		GSEvent.listen(globalThis.document, null, 'keydown', GSEvent.#onKeyDown);
+	}
 
-		document.addEventListener('keydown', (event) => {
-			const code = event.code;
-			if (code == 'F12') { // Prevent F12
-				return false;
-			} else if (event.ctrlKey && event.shiftKey && code == 'KeyI') { // Prevent Ctrl+Shift+I
-				return false;
-			}
-		});
+	static #onKeyDown(event) {
+		const code = event.code;
+		if (code == 'F12') { // Prevent F12
+			return false;
+		} else if (event.ctrlKey && event.shiftKey && code == 'KeyI') { // Prevent Ctrl+Shift+I
+			return false;
+		}
 	}
 
 	/**
-	 * Wai for web page to competely load
+	 * Wait for web page to competely load
 	 * 
 	 * @async
 	 * @param {HTMLElement} target 
@@ -52,7 +51,7 @@ export default class GSEvent {
 	 * @param {Promise<number>} timeout 
 	 */
 	static async waitPageLoad(target, name = 'loaded', callback, timeout = 100) {
-		if (!GSEvent.#loaded) await GSEvent.wait(window, 'load'); // DOMContentLoaded
+		if (!GSEvent.#loaded) await GSEvent.wait(globalThis.window, 'load'); // DOMContentLoaded
 		GSEvent.#loaded = true;
 		await GSUtil.timeout(timeout);
 		GSFunction.callFunction(callback);
@@ -107,6 +106,9 @@ export default class GSEvent {
 		return GSDOM.queryAll(own, qry).map(el => el.removeEventListener(event, callback));
 	}
 
+	static on = GSEvent.listen;
+	static off = GSEvent.unlisten;
+
 	/**
 	 * 
 	 * @param {*} own 
@@ -134,7 +136,7 @@ export default class GSEvent {
 			GSEvent.once(own, null, name, (e) => r(e.detail));
 		});
 	}
-
+ 
 	/**
 	 * Generic prevent event bubling
 	 * 

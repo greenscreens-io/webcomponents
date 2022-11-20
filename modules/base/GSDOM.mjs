@@ -68,7 +68,7 @@ export default class GSDOM {
 		try {
 			const parser = new DOMParser();
 			const doc = parser.parseFromString(html, mime);
-			return single ? doc?.body?.firstElementChild : doc;
+			return single ? (doc?.head?.firstElementChild || doc?.body?.firstElementChild) : doc;
 		} catch (e) {
 			GSLog.error(null, e);
 			throw e;
@@ -95,7 +95,7 @@ export default class GSDOM {
 	}
 
 	/**
-	 * The same as lin function, with default wrapper element
+	 * The same as link function, with default wrapper element
 	 * 
 	 * @param {HTMLElement} own Owner element to which target is linked
 	 * @param {HTMLElement} target Target elemetn to link to owner
@@ -295,7 +295,7 @@ export default class GSDOM {
 	 * @returns {boolean}
 	 */
 	static removeElement(el) {
-		return el?.parentNode?.removeChild(el);
+		return GSDOM.parent(el)?.removeChild(el);
 	}
 
 	/**
@@ -492,28 +492,44 @@ export default class GSDOM {
 	}
 
 	/**
+	 * Set style to an element
+	 * @param {HTMLElement|string} el 
+	 * @param {object} obj 
+	 */
+	static css(el, obj) {
+		if (GSUtil.isString(el)) el = GSDOM.query(el);
+		if (!GSDOM.isHTMLElement(el)) return false;
+		requestAnimationFrame(() => {
+			Object.entries(obj).forEach(kv => {
+				el.style[kv[0]] = kv[1];
+			});
+		});
+	}
+
+	/**
 	 * Safe way to toggle CSS class on element, multipel classes are supported in space separated string list
-	 * @param {HTMLElement} el 
+	 * @param {HTMLElement|string} el 
 	 * @param {*} val list of css classes in space separated string
 	 * @param {boolean} sts True to add, false to remove
 	 * @returns {boolean}
 	 */
-	static toggleClass(el, val, sts = true) {
+	static toggleClass(el, val, sts) {
+		if (GSUtil.isString(el)) el = GSDOM.query(el);
 		if (!GSDOM.isHTMLElement(el)) return false;
 		if (!val || val.trim().length == 0) return false;
 		val = val.split(' ').filter(v => v && v.trim().length > 0);
-		if (sts === null) return val.forEach(v => el.classList.toggle(v));
+		if (GSUtil.isNull(sts)) return val.forEach(v => el.classList.toggle(v));
 		sts ? el.classList.add.apply(el.classList, val) : el.classList.remove.apply(el.classList, val);
 		return true;
 	}
 
 	/**
 	 * Toggle element visibility
-	 * @param {HTMLElement} el 
+	 * @param {HTMLElement|string} el 
 	 * @param {boolean} sts 
 	 */
-	static toggle(el, sts = true) {
-		return GSDOM.toggleClass(el, 'd-none', sts);
+	static toggle(el, sts) {
+		return GSDOM.toggleClass(el, 'd-none', GSUtil.isNull(sts) ? sts : !sts);
 	}
 
 	/**

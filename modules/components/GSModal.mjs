@@ -259,8 +259,8 @@ export default class GSModal extends GSElement {
 
   #update() {
     const me = this;
-    GSDOM.toggle(me.#buttonOkEl, !me.closable);
-    GSDOM.toggle(me.#buttonCancelEl, !me.cancelable);
+    GSDOM.toggle(me.#buttonOkEl, me.closable);
+    GSDOM.toggle(me.#buttonCancelEl, me.cancelable);
     const css = `justify-content-${me.align}`;
     const footer = me.query('.modal-footer');
     GSDOM.toggleClass(footer, css, true);

@@ -3,6 +3,7 @@
  */
 
 import GSUtil from "./GSUtil.mjs";
+import GSFunction from "./GSFunction.mjs";
 
 /**
  * A module loading GSCSSMap class
@@ -15,6 +16,8 @@ import GSUtil from "./GSUtil.mjs";
  */
 export default class GSCSSMap {
 
+    static #modern = globalThis.document?.body?.computedStyleMap ? true : false;
+
     #map;
 
     constructor(element) {
@@ -25,20 +28,28 @@ export default class GSCSSMap {
     get(name) {
         const me = this;
         if (!me.#map) return undefined;
-		const css =  (typeof me.#map.get === 'function') ? me.#map.get(name) :  me.#map[GSUtil.capitalizeAttr(name)];
-		return css?.hasOwnProperty('value') ? css.name : css;
+		return  GSCSSMap.#modern ? me.#map.get(name) :  me.#map[GSUtil.capitalizeAttr(name)];
+    }
+
+    asText(name) {
+        return (this.get(name) || '')?.toString();
     }
 
     asBool(name) {
-        return GSUtil.asBool(this.get(name));
+        const val = this.get(name);
+        return GSUtil.asBool(GSCSSMap.#modern ? val?.value : val);
     }
 
     asNum(name) {
-        return GSUtil.asNum(this.get(name));
+        let val = this.get(name);
+        if (GSCSSMap.#modern && GSFunction.isFunction(val?.to)) {
+            val = val.to('px');
+        }
+        return GSUtil.asNum(GSCSSMap.#modern ? val?.value : val);
     }
 
     matches(name, value) {
-        return this.get(name) == value;
+        return this.asText(name) == value;
     }
 
 	/**
@@ -47,8 +58,8 @@ export default class GSCSSMap {
 	 * @returns {}
 	 */
 	static #getMap(el) {
-		if (el.computedStyleMap) return el.computedStyleMap();
-		if (window.getComputedStyle) return window.getComputedStyle(el);
+		if (GSCSSMap.#modern) return el.computedStyleMap();
+		if (globalThis.window?.getComputedStyle) return globalThis.window.getComputedStyle(el);
 		return null;
 	}
 
@@ -69,4 +80,9 @@ export default class GSCSSMap {
     static getComputedStyledMap(element) {
         return new GSCSSMap(element);
     }
+
+    static {
+		Object.seal(GSCSSMap);
+		globalThis.GSCSSMap = GSCSSMap;
+	}
 }

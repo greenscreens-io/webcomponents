@@ -22,3 +22,6 @@ export { default as GSItem } from "./GSItem.mjs";
 export { default as GSBlock } from "./GSBlock.mjs";
 export { default as GSElement } from "./GSElement.mjs";
 export { default as GSi18n } from "./GSi18n.mjs";
+
+export { default as ProxyCSS } from './ProxyCSS.mjs';
+export { default as ProxyElement } from './ProxyElement.mjs';
