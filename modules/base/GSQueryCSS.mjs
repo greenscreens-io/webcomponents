@@ -5,10 +5,10 @@
 import GSDOM from "./GSDOM.mjs";
 
 /**
- * Proxy class to habndle chained css.
- * See ProxyElement class
+ * Proxy class to handle chained css.
+ * See GSQuery class
  */
-export default class ProxyCSS {
+export default class GSQueryCSS {
 
     #map = null;
 
@@ -29,6 +29,6 @@ export default class ProxyCSS {
     }
 
     static wrap(element) {        
-        return new Proxy(element.style, new ProxyCSS(element));
+        return new Proxy(element.style, new GSQueryCSS(element));
     }
 }

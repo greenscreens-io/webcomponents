@@ -23,6 +23,5 @@ export { default as GSBlock } from "./GSBlock.mjs";
 export { default as GSElement } from "./GSElement.mjs";
 export { default as GSi18n } from "./GSi18n.mjs";
 
-export { default as ProxyCSS } from './ProxyCSS.mjs';
-export { default as ProxyElement } from './ProxyElement.mjs';
+export { default as GSQueryCSS } from './GSQueryCSS.mjs';
 export { default as GSQuery } from './GSQuery.mjs';
