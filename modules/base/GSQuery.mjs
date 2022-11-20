@@ -25,7 +25,7 @@ export default class GSQuery {
     #css = null;
 
     constructor(element) {
-        this.#css = GSQueryCSS.wrap(element);
+        if (!Array.isArray(element)) this.#css = GSQueryCSS.wrap(element);
     }
 
     get(object, property) {
