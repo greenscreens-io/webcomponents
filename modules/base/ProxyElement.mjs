@@ -60,10 +60,14 @@ export default class ProxyElement {
         return true;
     }
 
+    static instance(node) {
+        return new Proxy(node, ProxyElement.wrap(node));
+    }
+
     static wrap(node) {
-        if (GSDOM.isHTMLElement(node)) return ProxyElement.wrap(node);
+        if (GSDOM.isHTMLElement(node)) return ProxyElement.instance(node);
         if (!Array.isArray(node)) return node;
-        node = node.map(element => ProxyElement.wrap(element));
-        return new Proxy(node, new ProxyNodes());
+        node = node.map(element => ProxyElement.instance(element));
+        return ProxyElement.instance(node);
     }    
 }
