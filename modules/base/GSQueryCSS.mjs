@@ -3,6 +3,8 @@
  */
 
 import GSDOM from "./GSDOM.mjs";
+import GSFunction from "./GSFunction.mjs";
+import GSUtil from "./GSUtil.mjs";
 
 /**
  * Proxy class to handle chained css.
@@ -17,12 +19,15 @@ export default class GSQueryCSS {
         this.#map = new GSCSSMap(element);
     }
 
+    #isFunc(property) {
+        return GSFunction.hasFunction(this.#map, property);
+    }
+
     get(object, property, receiver) {
         return (value, dft) => {
-            if (!value) return this.#map.get(property);
-            if (typeof this.#map[property] === 'function') {
-                return this.#map[property](value, dft);
-            }
+            const me = this;
+            if (GSUtil.isNull(value)) return me.#map.get(property);
+            if (me.#isFunc(property)) return me.#map[property](value, dft);
             object[property] = value;
             return receiver;
         }
