@@ -25,3 +25,4 @@ export { default as GSi18n } from "./GSi18n.mjs";
 
 export { default as ProxyCSS } from './ProxyCSS.mjs';
 export { default as ProxyElement } from './ProxyElement.mjs';
+export { default as GSQuery } from './GSQuery.mjs';
