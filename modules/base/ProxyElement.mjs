@@ -61,7 +61,7 @@ export default class ProxyElement {
     }
 
     static instance(node) {
-        return new Proxy(node, ProxyElement.wrap(node));
+        return new Proxy(node, new ProxyElement(node));
     }
 
     static wrap(node) {
