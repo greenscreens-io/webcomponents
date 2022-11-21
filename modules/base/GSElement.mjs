@@ -11,7 +11,7 @@ import GSID from "./GSID.mjs";
 import GSUtil from "./GSUtil.mjs";
 import GSAttr from "./GSAttr.mjs";
 import GSLoader from "./GSLoader.mjs";
-import GSEvent from "./GSEvent.mjs";
+import GSEvents from "./GSEvents.mjs";
 import GSComponents from "./GSComponents.mjs";
 import GSCacheStyles from "../head/GSCacheStyles.mjs";
 import GSLog from "./GSLog.mjs";
@@ -302,7 +302,7 @@ export default class GSElement extends HTMLElement {
 		const me = this;
 		if (!me.shadowRoot) return;
 		me.shadowRoot.adoptedStyleSheets = GSCacheStyles.styles;
-		GSEvent.send(document.body, 'i18n', me.shadowRoot);
+		GSEvents.send(document.body, 'i18n', me.shadowRoot);
 	}
 
 	/**
@@ -456,7 +456,7 @@ export default class GSElement extends HTMLElement {
 	* @returns {boolean} State if attachment was successful
 	*/
 	attachEvent(el, name = '', fn, once = false) {
-		return GSEvent.attach(this, el, name, fn, once);
+		return GSEvents.attach(this, el, name, fn, once);
 	}
 
 	/**
@@ -467,7 +467,7 @@ export default class GSElement extends HTMLElement {
 	* @returns {boolean} State if attachment was successful	
 	*/
 	removeEvent(el, name = '', fn) {
-		return GSEvent.remove(this, el, name, fn);
+		return GSEvents.remove(this, el, name, fn);
 	}
 
 	/**
@@ -505,7 +505,7 @@ export default class GSElement extends HTMLElement {
 		me.#removed = true;
 		me.#observer?.disconnect();
 		GSComponents.remove(me);
-		GSEvent.deattachListeners(me);
+		GSEvents.deattachListeners(me);
 		me.#removeFlat();
 		me.#observer = null;
 		me.#content = null;
@@ -556,8 +556,8 @@ export default class GSElement extends HTMLElement {
 		me.#ready = true;
 		const fn = GSFunction.parseFunction(me.onready);
 		GSFunction.callFunction(fn);
-		GSEvent.send(me, 'ready', {});
-		GSEvent.send(document.body, 'componentready', me);
+		GSEvents.send(me, 'ready', {});
+		GSEvents.send(document.body, 'componentready', me);
 	}
 
 	/**
@@ -617,7 +617,7 @@ export default class GSElement extends HTMLElement {
 		const useTpl = me.#useTemplate;
 		const src = useTpl ? await me.getTemplate(me.template) : me.outerHTML;
 
-		await GSEvent.waitAnimationFrame(() => {
+		await GSEvents.waitAnimationFrame(() => {
 
 			if (me.offline) return;
 
@@ -727,7 +727,7 @@ export default class GSElement extends HTMLElement {
 	 */
 	async #render() {
 		const me = this;
-		// await GSEvent.waitPageLoad();
+		// await GSEvents.waitPageLoad();
 		await me.#aplyTemplate();
 		try {
 			if (me.offline) return;

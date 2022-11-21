@@ -10,7 +10,7 @@
 import GSID from "../base/GSID.mjs";
 import GSUtil from "../base/GSUtil.mjs";
 import GSElement from "../base/GSElement.mjs";
-import GSEvent from "../base/GSEvent.mjs";
+import GSEvents from "../base/GSEvents.mjs";
 import GSAttr from "../base/GSAttr.mjs";
 import GSDOM from "../base/GSDOM.mjs";
 import GSCSSMap from "../base/GSCSSMap.mjs";
@@ -191,7 +191,7 @@ export default class GSSplitter extends GSElement {
     */
     #onMouseDown(e) {
         const me = this;
-        GSEvent.prevent(e);
+        GSEvents.prevent(e);
         me.#cursor = me.isVertical ? e.clientX : e.clientY;
         me.attachEvent(document, 'mouseup', me.#onMouseUp.bind(me), true);
         me.attachEvent(document, 'mousemove', me.#onMouseMove.bind(me));
@@ -203,8 +203,8 @@ export default class GSSplitter extends GSElement {
      */
     #onMouseUp(e) {
         const me = this;
-        GSEvent.prevent(e);
-        GSEvent.deattachListeners(me);
+        GSEvents.prevent(e);
+        GSEvents.deattachListeners(me);
         me.#save();
         me.#listen();
     }
@@ -216,7 +216,7 @@ export default class GSSplitter extends GSElement {
      */
     #onMouseMove(e) {
         const me = this;
-        GSEvent.prevent(e);
+        GSEvents.prevent(e);
         const pos = me.isVertical ? e.clientX : e.clientY;
         me.#update(pos);
     }

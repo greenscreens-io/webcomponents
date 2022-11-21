@@ -7,16 +7,15 @@
  * @module base/GSEventBus
  */
 
+import GSEvent from './GSEvent.mjs';
 
 /**
  * Class for handling shared events among components
  * @Class
  */
-export default class GSEventBus extends EventTarget {
+export default class GSEventBus  {
 
     static #registry = new Map();
-
-    #listeners = new Set();
 
     /**
      * Static event emiter. If named event does not exist, create a new one
@@ -48,7 +47,7 @@ export default class GSEventBus extends EventTarget {
      */
     static register(name = '') {
         if (!GSEventBus.exist(name)) {
-            GSEventBus.#registry.set(name, new GSEventBus());
+            GSEventBus.#registry.set(name, new GSEvent());
         }
         return GSEventBus.#registry.get(name);
     }
@@ -60,78 +59,8 @@ export default class GSEventBus extends EventTarget {
      */
     static unregister(name = '') {
         const bus = GSEventBus.#registry.get(name);
-        if (bus) bus.#unbind();
+        if (bus?.unbind) bus.unbind();
         return GSEventBus.#registry.delete(name);
-    }
-
-    #unbind() {
-        const me = this;
-        Array.from(me.#listeners).forEach(o => {
-            me.removeEventListener(o.type, o.listener);
-        });
-        me.#listeners.clear();
-    }
-
-    #isFunction(fn) {
-        return typeof fn === 'function';
-    }
-
-    /**
-     * Listen for events
-     * 
-     * @param {string} type Event name to be listened
-     * @param {Function} listener  Callback to be called on event trigger
-     */
-    on(type = '', listener) {
-        const me = this;
-        if (!me.#isFunction(listener)) return;
-        me.#listeners.add({ type: type, listener: listener });
-        return me.addEventListener(type, listener);
-    }
-
-    /**
-     * Listen for events only once
-     * 
-     * @param {string} type Event name to be listened
-     * @param {Function} listener  Callback to be called on event trigger
-     */
-    once(type, listener) {
-        const me = this;
-        if (!me.#isFunction(listener)) return;
-        const wrap = (e) => {
-            listener(e);
-            me.#listeners.delete(wrap);
-        }
-        wrap.type = type;
-        wrap.listener = listener;
-        me.#listeners.add(wrap);
-        return me.addEventListener(type, wrap, { once: true });
-    }
-
-    /**
-     * Stop listening for events
-     * 
-     * @param {string} type Event name to be listened
-     * @param {Function} listener  Callback to be called on event trigger
-     */
-    off(type = '', listener) {
-        const me = this;
-        if (!me.#isFunction(listener)) return false;
-        Array.from(me.#listeners)
-            .filter(o => o.type === type && o.listener === listener)
-            .forEach(o => me.#listeners.delete(o));
-        return me.removeEventListener(type, listener);
-    }
-
-    /**
-     * Send event to listeners
-     * 
-     * @param {string} type Event name to be listened
-     * @param {object} data  Data to send 
-     */
-    emit(type = '', data) {
-        const evt = new CustomEvent(type, { detail: data });
-        return this.dispatchEvent(evt);
     }
 
     static {

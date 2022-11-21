@@ -14,7 +14,7 @@ import GSComponents from "../base/GSComponents.mjs"
 import GSUtil from "../base/GSUtil.mjs";
 import GSLog from "../base/GSLog.mjs";
 import GSID from "../base/GSID.mjs";
-import GSEvent from "../base/GSEvent.mjs";
+import GSEvents from "../base/GSEvents.mjs";
 import GSEnvironment from "../base/GSEnvironment.mjs";
 import GSAttr from "../base/GSAttr.mjs";
 import GSDOM from "../base/GSDOM.mjs";
@@ -199,11 +199,11 @@ export default class GSTemplate extends HTMLElement {
 			return false;
 		}
 		if (me.parentElement instanceof HTMLHeadElement) {
-			GSEvent.sendSuspended(document, 'gs-template', { id: me.id, href: me.href });
+			GSEvents.sendSuspended(document, 'gs-template', { id: me.id, href: me.href });
 			return tpl;
 		}
 
-		await GSEvent.waitAnimationFrame(async () => {
+		await GSEvents.waitAnimationFrame(async () => {
 			if (!me.#connected) return;
 			if (me.isFlat) {
 				const body = GSDOM.parseWrapped(me, tpl.innerHTML);
@@ -212,7 +212,7 @@ export default class GSTemplate extends HTMLElement {
 				me.shadow.adoptedStyleSheets = GSCacheStyles.styles;
 				GSDOM.setHTML(me.shadow, tpl.innerHTML);
 			}
-			GSEvent.sendSuspended(me, 'templateready', { id: me.id, href: me.href }, true, true);
+			GSEvents.sendSuspended(me, 'templateready', { id: me.id, href: me.href }, true, true);
 		});
 		return tpl;
 	}
@@ -237,7 +237,7 @@ export default class GSTemplate extends HTMLElement {
 		const me = this;
 		return new Promise((r, e) => {
 			if (!name) return e('Event undefined!');
-			GSEvent.once(me, null, name, (e) => r(e.detail), { once: true });
+			GSEvents.once(me, null, name, (e) => r(e.detail), { once: true });
 		});
 	}
 

@@ -10,7 +10,7 @@
 import GSUtil from "../base/GSUtil.mjs";
 import GSElement from "../base/GSElement.mjs";
 import GSItem from "../base/GSItem.mjs";
-import GSEvent from "../base/GSEvent.mjs";
+import GSEvents from "../base/GSEvents.mjs";
 import GSAttr from "../base/GSAttr.mjs";
 import GSDOM from "../base/GSDOM.mjs";
 
@@ -43,7 +43,7 @@ export default class GSButton extends GSElement {
     #onClick(e) {
         const me = this;
         if (me.disable) return false;
-        GSEvent.send(me, 'action', { type: 'button', action: me.action, source: e }, true, true, true);
+        GSEvents.send(me, 'action', { type: 'button', action: me.action, source: e }, true, true, true);
         if (me.active) {
             me.#state = !me.#state;
             GSDOM.toggleClass(me.firstElementChild, 'active', me.#state);

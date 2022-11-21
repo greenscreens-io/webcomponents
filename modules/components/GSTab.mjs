@@ -12,7 +12,7 @@ import GSUtil from "../base/GSUtil.mjs";
 import GSID from "../base/GSID.mjs";
 import GSItem from "../base/GSItem.mjs";
 import GSLoader from "../base/GSLoader.mjs";
-import GSEvent from "../base/GSEvent.mjs";
+import GSEvents from "../base/GSEvents.mjs";
 import GSAttr from "../base/GSAttr.mjs";
 import GSDOM from "../base/GSDOM.mjs";
 
@@ -215,7 +215,7 @@ export default class GSTab extends GSElement {
     const me = this;
     const src = GSDOM.fromJsonAsString(data);
     GSDOM.setHTML(me, src);
-    GSEvent.deattachListeners(me);
+    GSEvents.deattachListeners(me);
     me.disconnectedCallback();
     me.connectedCallback();
   }

@@ -8,7 +8,7 @@
  */
 
 import GSID from "../../base/GSID.mjs";
-import GSEvent from "../../base/GSEvent.mjs";
+import GSEvents from "../../base/GSEvents.mjs";
 import GSComponents from "../../base/GSComponents.mjs";
 import GSAttr from "../../base/GSAttr.mjs";
 import GSDOM from "../../base/GSDOM.mjs";
@@ -68,7 +68,7 @@ export default class GSInputExt extends HTMLInputElement {
     disconnectedCallback() {
         const me = this;
         GSComponents.remove(me);
-        GSEvent.deattachListeners(me);
+        GSEvents.deattachListeners(me);
     }
 
     attributeChangedCallback(name, oldValue, newValue) {
@@ -164,18 +164,18 @@ export default class GSInputExt extends HTMLInputElement {
 
     #attachEvents() {
         const me = this;
-        GSEvent.attach(me, me, 'keydown', me.#onKeyDown.bind(me));
-        GSEvent.attach(me, me, 'keypress', me.#onKeyPress.bind(me));
-        GSEvent.attach(me, me, 'input', me.#onInput.bind(me));
-        GSEvent.attach(me, me, 'change', me.#onChange.bind(me));
-        GSEvent.attach(me, me, 'paste', me.#onPaste.bind(me));
-        GSEvent.attach(me, me, 'blur', me.#onBlur.bind(me));
-        GSEvent.attach(me, me, 'click', me.#onClick.bind(me));
+        GSEvents.attach(me, me, 'keydown', me.#onKeyDown.bind(me));
+        GSEvents.attach(me, me, 'keypress', me.#onKeyPress.bind(me));
+        GSEvents.attach(me, me, 'input', me.#onInput.bind(me));
+        GSEvents.attach(me, me, 'change', me.#onChange.bind(me));
+        GSEvents.attach(me, me, 'paste', me.#onPaste.bind(me));
+        GSEvents.attach(me, me, 'blur', me.#onBlur.bind(me));
+        GSEvents.attach(me, me, 'click', me.#onClick.bind(me));
         requestAnimationFrame(() => {
             const list = me.list;
             if (!list) return;
-            GSEvent.attach(me, me, 'change', me.#onDataChange.bind(me));
-            GSEvent.attach(me, me.filter, 'change', me.#onMonitor.bind(me));
+            GSEvents.attach(me, me, 'change', me.#onDataChange.bind(me));
+            GSEvents.attach(me, me.filter, 'change', me.#onMonitor.bind(me));
         });
     }
 
@@ -254,11 +254,11 @@ export default class GSInputExt extends HTMLInputElement {
     #onBlur(e) {
         const me = this;
         if (me.required) me.reportValidity();
-        if (!me.isInList()) GSEvent.send(me, 'strict', { ok: false, source: e });
+        if (!me.isInList()) GSEvents.send(me, 'strict', { ok: false, source: e });
     }
 
     #onPaste(e) {
-        GSEvent.prevent(e);
+        GSEvents.prevent(e);
         const val = e.clipboardData.getData('text');
         const me = this;
         me.value = me.formatMask(val);
@@ -303,7 +303,7 @@ export default class GSInputExt extends HTMLInputElement {
 
         me.value = me.formatMask(tmp.join(''));
         me.setSelectionRange(pos, pos);
-        return GSEvent.prevent(e);
+        return GSEvents.prevent(e);
 
     }
 
@@ -322,7 +322,7 @@ export default class GSInputExt extends HTMLInputElement {
                     tmp[pos] = e.key;
                     canceled = false;
                 }
-                GSEvent.prevent(e);
+                GSEvents.prevent(e);
                 return false;
             } else {
                 tmp[pos] = mask;
@@ -343,7 +343,7 @@ export default class GSInputExt extends HTMLInputElement {
 
         me.value = me.formatMask(tmp.join(''));
         me.setSelectionRange(pos + 1, pos + 1);
-        GSEvent.prevent(e);
+        GSEvents.prevent(e);
     }
 
     #onChange(e) {

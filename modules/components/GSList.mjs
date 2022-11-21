@@ -11,7 +11,7 @@ import GSUtil from "../base/GSUtil.mjs";
 import GSElement from "../base/GSElement.mjs";
 import GSItem from "../base/GSItem.mjs";
 import GSLoader from "../base/GSLoader.mjs";
-import GSEvent from "../base/GSEvent.mjs";
+import GSEvents from "../base/GSEvents.mjs";
 import GSAttr from "../base/GSAttr.mjs";
 import GSDOM from "../base/GSDOM.mjs";
 

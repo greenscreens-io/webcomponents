@@ -11,7 +11,7 @@ import GSElement from "../base/GSElement.mjs";
 import GSLoader from "../base/GSLoader.mjs";
 import GSAttr from "../base/GSAttr.mjs";
 import GSDOM from "../base/GSDOM.mjs";
-import GSEvent from "../base/GSEvent.mjs";
+import GSEvents from "../base/GSEvents.mjs";
 
 /**
  * Code editor based on MS Monaco 
@@ -62,7 +62,7 @@ export default class GSMonaco extends GSElement {
 
     static #initMonaco(own) {
         if (GSMonaco.#initialized) {
-            if (own) GSEvent.send(own, 'monaco-ready');
+            if (own) GSEvents.send(own, 'monaco-ready');
             return;
         }
         const id = setInterval(() => {

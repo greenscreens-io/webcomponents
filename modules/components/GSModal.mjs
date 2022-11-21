@@ -10,7 +10,7 @@
 import GSAttr from "../base/GSAttr.mjs";
 import GSDOM from "../base/GSDOM.mjs";
 import GSElement from "../base/GSElement.mjs";
-import GSEvent from "../base/GSEvent.mjs";
+import GSEvents from "../base/GSEvents.mjs";
 
 /**
  * Bootstrap modal dialog support
@@ -44,7 +44,7 @@ export default class GSModal extends GSElement {
         me.#hideEL('.modal-backdrop');
         me.normal();
       }
-      GSEvent.send(me, 'visible', { type: 'modal', ok: me.visible }, true, true);
+      GSEvents.send(me, 'visible', { type: 'modal', ok: me.visible }, true, true);
     }
   }
 
@@ -60,8 +60,8 @@ export default class GSModal extends GSElement {
 
   #onForm(e) {
     const me = this;
-    GSEvent.prevent(e);
-    const sts = GSEvent.send(me, 'data', { type: 'modal', data: e.detail.data, evt: e }, true, true, true);
+    GSEvents.prevent(e);
+    const sts = GSEvents.send(me, 'data', { type: 'modal', data: e.detail.data, evt: e }, true, true, true);
     if (sts) me.close();
   }
 
@@ -87,13 +87,13 @@ export default class GSModal extends GSElement {
       if (invalid.length === 0) forms.forEach(form => me.#submitForm(form));
 
       const els = invalid.map(form => GSDOM.queryAll(form, 'textarea, input, select').filter(el => el.checkValidity() == false));
-      if (els.length > 0) GSEvent.send(me, 'error', { type: 'modal', data: els }, true, true, true);
+      if (els.length > 0) GSEvents.send(me, 'error', { type: 'modal', data: els }, true, true, true);
       return;
     }
 
     let sts = true;
     try {
-      sts = GSEvent.send(me, 'action', { type: 'modal', ok: isOk, evt: e }, true, true, true);
+      sts = GSEvents.send(me, 'action', { type: 'modal', ok: isOk, evt: e }, true, true, true);
     } finally {
       if (sts) me.close(null, isOk);
     }
@@ -101,7 +101,7 @@ export default class GSModal extends GSElement {
 
   #submitForm(form) {
     try {
-      GSEvent.send(form, 'action', { action: 'submit' });
+      GSEvents.send(form, 'action', { action: 'submit' });
     } catch (e) {
       console.log(e);
     }
@@ -123,7 +123,7 @@ export default class GSModal extends GSElement {
   #isAcceptedAction(e) {
     const action = this.#getAction(e);
     const isOk = GSModal.#actions.includes(action);
-    if (isOk) GSEvent.prevent(e);
+    if (isOk) GSEvents.prevent(e);
     return isOk ? action : null;
   }
 
@@ -198,9 +198,9 @@ export default class GSModal extends GSElement {
    * Show modal panel
    */
   open(e) {
-    GSEvent.prevent(e);
+    GSEvents.prevent(e);
     const me = this;
-    const sts = GSEvent.send(me, 'open', { type: 'modal' }, true, true, true);
+    const sts = GSEvents.send(me, 'open', { type: 'modal' }, true, true, true);
     if (sts) me.visible = true;
   }
 
@@ -208,9 +208,9 @@ export default class GSModal extends GSElement {
    * Hide modal panel
    */
   close(e, ok = false) {
-    GSEvent.prevent(e);
+    GSEvents.prevent(e);
     const me = this;
-    const sts = GSEvent.send(me, 'close', { type: 'modal', isOk: ok }, true, true, true);
+    const sts = GSEvents.send(me, 'close', { type: 'modal', isOk: ok }, true, true, true);
     if (sts) me.visible = false;
   }
 

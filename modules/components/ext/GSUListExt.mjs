@@ -8,25 +8,25 @@
  */
 
 import GSDOM from "../../base/GSDOM.mjs";
-import GSEvent from "../../base/GSEvent.mjs";
+import GSEvents from "../../base/GSEvents.mjs";
 import GSAccessibility from "./GSAccessibility.mjs";
 
 export default class GSUListExt extends HTMLUListElement {
 
     connectedCallback() {
         const me = this;
-        GSEvent.attach(me, me, 'keydown', me.#onKeyDown.bind(me));
+        GSEvents.attach(me, me, 'keydown', me.#onKeyDown.bind(me));
     }
 
     disconnectedCallback() {
-        GSEvent.deattachListeners(this);
+        GSEvents.deattachListeners(this);
     }
 
     #onKeyDown(e) {
 
         const idx = GSAccessibility.KEYS.indexOf(e.code);
         if (idx < 0) return;
-        GSEvent.prevent(e);
+        GSEvents.prevent(e);
 
         const me = this;
 

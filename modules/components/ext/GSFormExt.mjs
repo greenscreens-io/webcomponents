@@ -9,7 +9,7 @@
 
 import GSID from "../../base/GSID.mjs";
 import GSDOMObserver from '../../base/GSDOMObserver.mjs';
-import GSEvent from "../../base/GSEvent.mjs";
+import GSEvents from "../../base/GSEvents.mjs";
 import GSDOM from "../../base/GSDOM.mjs";
 
 /**
@@ -38,7 +38,7 @@ export default class GSFormExt extends HTMLFormElement {
     }
 
     static #onMonitorRemove(el) {
-        GSEvent.deattachListeners(el);
+        GSEvents.deattachListeners(el);
     }
 
     constructor() {
@@ -59,13 +59,13 @@ export default class GSFormExt extends HTMLFormElement {
     disconnectedCallback() {
         const me = this;
         //GSComponents.remove(me);
-        GSEvent.deattachListeners(me);
+        GSEvents.deattachListeners(me);
     }
 
     static #attachEvents(me) {
-        GSEvent.attach(me, me, 'submit', GSFormExt.#onSubmit.bind(me));
-        GSEvent.attach(me, me, 'action', GSFormExt.#onAction.bind(me));
-        GSEvent.attach(me, me, 'click', GSFormExt.#onAction.bind(me));
+        GSEvents.attach(me, me, 'submit', GSFormExt.#onSubmit.bind(me));
+        GSEvents.attach(me, me, 'action', GSFormExt.#onAction.bind(me));
+        GSEvents.attach(me, me, 'click', GSFormExt.#onAction.bind(me));
     }
 
     /**
@@ -79,7 +79,7 @@ export default class GSFormExt extends HTMLFormElement {
         const action = el?.dataset.action || e.detail.action || el?.type;
         if (!GSFormExt.#actions.includes(action)) return;
 
-        GSEvent.prevent(e);
+        GSEvents.prevent(e);
         const me = this;
 
         switch (action) {
@@ -98,14 +98,14 @@ export default class GSFormExt extends HTMLFormElement {
      * @param {*} e 
      */
     static #onSubmit(e, own) {
-        GSEvent.prevent(e);
+        GSEvents.prevent(e);
         const me = own || this;
         const isValid = me.checkValidity() && me.isValid;
         if (!isValid) return me.reportValidity();
         const obj = GSDOM.toObject(me);
         const type = isValid ? 'submit' : 'invalid';
         const data = { type: type, data: obj, source: e, valid: isValid };
-        GSEvent.send(me, 'form', data, true, true);
+        GSEvents.send(me, 'form', data, true, true);
     }
 
     get isValid() {

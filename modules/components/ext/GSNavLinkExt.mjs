@@ -10,7 +10,7 @@
 import GSID from "../../base/GSID.mjs";
 import GSDOMObserver from '../../base/GSDOMObserver.mjs';
 import GSComponents from "../../base/GSComponents.mjs";
-import GSEvent from "../../base/GSEvent.mjs";
+import GSEvents from "../../base/GSEvents.mjs";
 import GSAttr from "../../base/GSAttr.mjs";
 import GSDOM from "../../base/GSDOM.mjs";
 
@@ -48,7 +48,7 @@ export default class GSNavLinkExt extends HTMLAnchorElement {
     }
 
     static #onMonitorRemove(el) {
-        GSEvent.deattachListeners(el);
+        GSEvents.deattachListeners(el);
     }
 
     constructor() {
@@ -64,12 +64,12 @@ export default class GSNavLinkExt extends HTMLAnchorElement {
 
     disconnectedCallback() {
         //GSComponents.remove(this);
-        GSEvent.deattachListeners(this);
+        GSEvents.deattachListeners(this);
     }
 
     static #attachEvents(own) {
-        GSEvent.attach(own, own, 'click', GSNavLinkExt.#onClick.bind(own));
-        GSEvent.attach(own, own, 'keydown', GSNavLinkExt.#onKeyDown.bind(own));
+        GSEvents.attach(own, own, 'click', GSNavLinkExt.#onClick.bind(own));
+        GSEvents.attach(own, own, 'keydown', GSNavLinkExt.#onKeyDown.bind(own));
     }
 
     static #onKeyDown(e, own) {
@@ -103,7 +103,7 @@ export default class GSNavLinkExt extends HTMLAnchorElement {
     static #trigger(e, el) {
         const own = GSNavLinkExt.#owner(el);
         const obj = { type: 'active', data: el.dataset, source: e };
-        GSEvent.send(own, 'action', obj, true, true, true);
+        GSEvents.send(own, 'action', obj, true, true, true);
     }
 
     static #list(own) {

@@ -11,7 +11,7 @@ import GSAttr from '../base/GSAttr.mjs';
 import GSDate from '../base/GSDate.mjs';
 import GSDOM from '../base/GSDOM.mjs';
 import GSElement from '../base/GSElement.mjs'
-import GSEvent from '../base/GSEvent.mjs';
+import GSEvents from '../base/GSEvents.mjs';
 import GSUtil from '../base/GSUtil.mjs';
 
 /**
@@ -261,7 +261,7 @@ export default class GSCalendar extends GSElement {
         });
         const date = new GSDate(me.#date);
         date.day = day;
-        GSEvent.send(me, 'date', { type: 'calendar', date: date, val: me.formatted(date) }, true, true);
+        GSEvents.send(me, 'date', { type: 'calendar', date: date, val: me.formatted(date) }, true, true);
         me.#updateTarget(date);
     }
 

@@ -3,7 +3,7 @@
  */
 
 import GSCacheStyles from "../head/GSCacheStyles.mjs";
-import GSEvent from "./GSEvent.mjs";
+import GSEvents from "./GSEvents.mjs";
 import GSFunction from "./GSFunction.mjs";
 import GSDOM from "./GSDOM.mjs";
 
@@ -57,13 +57,13 @@ export default class GSComponents {
             const el = e.detail;
             const isComp = name.startsWith('gs-') && el.tagName === name.toUpperCase();
             if (isComp || el.id === name) {
-                GSEvent.unlisten(document.body, null, 'componentready', fn);
+                GSEvents.unlisten(document.body, null, 'componentready', fn);
                 return r(el);
             }
         };
         const opt = { once: false, capture: false };
         if (timeout > 0) opt.signal = AbortSignal.timeout(timeout);
-        GSEvent.listen(document.body, null, 'componentready', fn, opt);
+        GSEvents.listen(document.body, null, 'componentready', fn, opt);
     }
 
     /**
@@ -92,7 +92,7 @@ export default class GSComponents {
         };
         const el = GSComponents.find(name) || GSComponents.get(name);
         if (el) return fn(el);
-        GSEvent.listen(document.body, null, 'componentready', callback);
+        GSEvents.listen(document.body, null, 'componentready', callback);
         return callback;
     }
 

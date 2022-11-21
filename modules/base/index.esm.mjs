@@ -4,8 +4,9 @@
 
 export { default as GSLog } from "./GSLog.mjs";
 export { default as GSID } from "./GSID.mjs";
-export { default as GSEvent } from "./GSEvent.mjs";
 export { default as GSFunction } from "./GSFunction.mjs";
+export { default as GSEvents } from "./GSEvents.mjs";
+export { default as GSEvent } from "./GSEvent.mjs";
 export { default as GSEventBus } from "./GSEventBus.mjs";
 export { default as GSEnvironment } from "./GSEnvironment.mjs";
 export { default as GSDOMObserver } from "./GSDOMObserver.mjs";

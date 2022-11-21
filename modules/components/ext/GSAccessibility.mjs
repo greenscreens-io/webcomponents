@@ -72,14 +72,14 @@ export default class GSAccessibility {
 
     static start() {
         if (GSAccessibility.#active) return;
-        GSEvent.listen(document.body, null, 'keydown', GSAccessibility.#onKeyDown);
+        GSEvents.listen(document.body, null, 'keydown', GSAccessibility.#onKeyDown);
         GSAccessibility.#active = true;
         return GSAccessibility.#active;
     }
 
     static stop() {
         if (!GSAccessibility.#active) return;
-        GSEvent.unlisten(document.body, null, 'keydown', GSAccessibility.#onKeyDown);
+        GSEvents.unlisten(document.body, null, 'keydown', GSAccessibility.#onKeyDown);
         GSAccessibility.#active = false;
         return GSAccessibility.#active;
     }

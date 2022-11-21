@@ -9,7 +9,7 @@
 
 import GSID from "../../base/GSID.mjs";
 import GSUtil from "../../base/GSUtil.mjs";
-import GSEvent from "../../base/GSEvent.mjs";
+import GSEvents from "../../base/GSEvents.mjs";
 import GSComponents from "../../base/GSComponents.mjs";
 import GSData from "../../base/GSData.mjs";
 import GSAttr from "../../base/GSAttr.mjs";
@@ -141,14 +141,14 @@ export default class GSStore extends HTMLElement {
     * TODO handle fucntion key override with same function signature dif instance
     */
     attachEvent(el, name = '', fn, once = false) {
-        return GSEvent.attach(this, el, name, fn, once);
+        return GSEvents.attach(this, el, name, fn, once);
     }
 
     /**
     * Generic event listener remover
     */
     removeEvent(el, name = '', fn) {
-        GSEvent.remove(this, el, name, fn);
+        GSEvents.remove(this, el, name, fn);
     }
 
     /**
@@ -432,7 +432,7 @@ export default class GSStore extends HTMLElement {
     }
 
     #notify(name = 'data', data) {
-        GSEvent.sendDelayed(1, this, name, data, true);
+        GSEvents.sendDelayed(1, this, name, data, true);
     }
 
     #formatFilter(val) {

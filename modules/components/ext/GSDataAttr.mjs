@@ -10,7 +10,7 @@
 import GSID from "../../base/GSID.mjs";
 import GSUtil from "../../base/GSUtil.mjs";
 import GSDOMObserver from '../../base/GSDOMObserver.mjs';
-import GSEvent from "../../base/GSEvent.mjs";
+import GSEvents from "../../base/GSEvents.mjs";
 import GSFunction from "../../base/GSFunction.mjs";
 import GSDOM from "../../base/GSDOM.mjs";
 import GSAttr from "../../base/GSAttr.mjs";
@@ -55,7 +55,7 @@ export default class GSDataAttr {
      */
     static #onMonitorResult(el) {
         el.id = el.id || GSID.id;
-        GSEvent.attach(el, el, 'click', GSDataAttr.#onClick.bind(el));
+        GSEvents.attach(el, el, 'click', GSDataAttr.#onClick.bind(el));
     }
 
     /**
@@ -63,7 +63,7 @@ export default class GSDataAttr {
      * @param {HTMLElement} el 
      */
     static #onMonitorRemove(el) {
-        GSEvent.deattachListeners(el);
+        GSEvents.deattachListeners(el);
     }
 
     /**
@@ -307,7 +307,7 @@ export default class GSDataAttr {
     }
 
     static #hideExt(source) {
-        GSEvent.once(source, null, 'mouseleave', (e) => source.classList.remove('show'));
+        GSEvents.once(source, null, 'mouseleave', (e) => source.classList.remove('show'));
     }
 
     /**

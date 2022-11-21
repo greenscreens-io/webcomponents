@@ -11,7 +11,7 @@ import GSAttr from "../base/GSAttr.mjs";
 import GSComponents from "../base/GSComponents.mjs";
 import GSDOM from "../base/GSDOM.mjs";
 import GSElement from "../base/GSElement.mjs";
-import GSEvent from "../base/GSEvent.mjs";
+import GSEvents from "../base/GSEvents.mjs";
 import GSPopper from "../base/GSPopper.mjs";
 import GSUtil from "../base/GSUtil.mjs";
 
@@ -240,7 +240,7 @@ export default class GSPopup extends GSElement {
         if (e instanceof Event) {
             e.preventDefault();
             const opt = { type: 'popup', option: e.target, caller: me.#caller, data: null };
-            GSEvent.send(me, 'action', opt, true, true);
+            GSEvents.send(me, 'action', opt, true, true);
         }
     }
 
@@ -353,8 +353,8 @@ export default class GSPopup extends GSElement {
         const me = this;
         let sts = me.#validateCaller(e, e.target, 'submit', 'GS-POPUP');
         if (!sts) return;
-        GSEvent.prevent(e);
-        sts = GSEvent.send(me, 'data', { type: 'popup', data: e.detail.data, evt: e }, true, true, true);
+        GSEvents.prevent(e);
+        sts = GSEvents.send(me, 'data', { type: 'popup', data: e.detail.data, evt: e }, true, true, true);
         if (sts) me.close();
     }
 

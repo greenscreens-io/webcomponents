@@ -8,7 +8,7 @@
  */
 
  import GSID from "../../base/GSID.mjs";
- import GSEvent from "../../base/GSEvent.mjs";
+ import GSEvents from "../../base/GSEvents.mjs";
  import GSAttr from "../../base/GSAttr.mjs";
  import GSDOM from "../../base/GSDOM.mjs";
  import GSData from "../../base/GSData.mjs";
@@ -32,7 +32,7 @@
      connectedCallback() {
          const me = this;
          if (!me.id) me.setAttribute('id', GSID.id);
-         GSEvent.attach(me, me, 'click', e => me.#onClick(e));
+         GSEvents.attach(me, me, 'click', e => me.#onClick(e));
          GSComponents.store(me);
          me.onReady();
      }
@@ -40,7 +40,7 @@
      disconnectedCallback() {
          const me = this;
          GSComponents.remove(me);
-         GSEvent.deattachListeners(me);
+         GSEvents.deattachListeners(me);
      }
  
      onReady() {
@@ -106,7 +106,7 @@
          });
          sort = GSData.sortData([{ name: 'idx', ord: 1 }], sort);
  
-         GSEvent.send(me, 'sort', sort, true);
+         GSEvents.send(me, 'sort', sort, true);
      }
  
  }

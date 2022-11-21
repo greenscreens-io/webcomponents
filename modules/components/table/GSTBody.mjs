@@ -8,7 +8,7 @@
  */
 
 import GSID from "../../base/GSID.mjs";
-import GSEvent from "../../base/GSEvent.mjs";
+import GSEvents from "../../base/GSEvents.mjs";
 import GSAttr from "../../base/GSAttr.mjs";
 import GSDOM from "../../base/GSDOM.mjs";
 import GSDate from "../../base/GSDate.mjs";
@@ -31,15 +31,15 @@ export default class GSTBody extends HTMLTableSectionElement {
     connectedCallback() {
         const me = this;
         if (!me.id) me.setAttribute('id', GSID.id);
-        GSEvent.attach(me, me, 'click', e => me.#onClick(e));
-        GSEvent.attach(me, me, 'contextmenu', e => me.#onMenu(e), false, true);
+        GSEvents.attach(me, me, 'click', e => me.#onClick(e));
+        GSEvents.attach(me, me, 'contextmenu', e => me.#onMenu(e), false, true);
         me.#table = GSDOM.closest(me, 'GS-TABLE');
     }
 
     disconnectedCallback() {
         const me = this;
         me.#table = null;
-        GSEvent.deattachListeners(me);
+        GSEvents.deattachListeners(me);
     }
 
     get index() {
@@ -207,7 +207,7 @@ export default class GSTBody extends HTMLTableSectionElement {
 
         const data = [];
         GSDOM.queryAll(me, 'tr[selected=true]').forEach(el => data.push(parseInt(el.dataset.index)));
-        GSEvent.send(me, 'select', { data: data, evt: evt }, true);
+        GSEvents.send(me, 'select', { data: data, evt: evt }, true);
     }
 
 }

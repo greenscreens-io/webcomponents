@@ -14,7 +14,7 @@ import GSLoader from "../base/GSLoader.mjs";
 import GSUtil from "../base/GSUtil.mjs";
 import GSAttr from "../base/GSAttr.mjs";
 import GSDOM from "../base/GSDOM.mjs";
-import GSEvent from "../base/GSEvent.mjs";
+import GSEvents from "../base/GSEvents.mjs";
 
 /**
  * <gs-accordion css="" css-item="" css-header="" css-body="">
@@ -166,7 +166,7 @@ export default class GSAccordion extends GSElement {
     const data = await GSLoader.loadData(val);
     if (!GSUtil.isJsonType(data)) return;
     const me = this;
-    GSEvent.deattachListeners(me);
+    GSEvents.deattachListeners(me);
     const src = GSDOM.fromJsonAsString(data);
     GSDOM.setHTML(me, src);
     me.connectedCallback();

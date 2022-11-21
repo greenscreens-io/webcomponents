@@ -11,7 +11,7 @@ import GSElement from "../base/GSElement.mjs";
 import GSUtil from "../base/GSUtil.mjs";
 import GSItem from "../base/GSItem.mjs";
 import GSLoader from "../base/GSLoader.mjs";
-import GSEvent from "../base/GSEvent.mjs";
+import GSEvents from "../base/GSEvents.mjs";
 import GSAttr from "../base/GSAttr.mjs";
 import GSDOM from "../base/GSDOM.mjs";
 import GSFunction from "../base/GSFunction.mjs";
@@ -182,7 +182,7 @@ export default class GSContext extends GSElement {
     const me = this;
     const list = me.#match(e);
     if (list.length === 0) return;
-    GSEvent.prevent(e);
+    GSEvents.prevent(e);
     me.popup(e);
     return true;
   }
@@ -231,7 +231,7 @@ export default class GSContext extends GSElement {
     const me = this;
     me.#ready = false;
     me.#attached = false;
-    GSEvent.deattachListeners(me);
+    GSEvents.deattachListeners(me);
     const src = GSDOM.fromJsonAsString(data);
     GSDOM.setHTML(me, src);
     me.connectedCallback();
@@ -239,13 +239,13 @@ export default class GSContext extends GSElement {
   }
 
   async #onClick(e) {
-    GSEvent.prevent(e);
+    GSEvents.prevent(e);
     const me = this;
     const data = e.detail;
     const sts = await me.#onAction(data.action);
     if (sts) return;
     data.type = 'contextmenu';
-    GSEvent.send(me, 'action', data, true, true, true); // notify self
+    GSEvents.send(me, 'action', data, true, true, true); // notify self
   }
 
   async #onAction(action) {

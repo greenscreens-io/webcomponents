@@ -11,7 +11,7 @@ import GSAttr from "../../base/GSAttr.mjs";
 import GSComponents from "../../base/GSComponents.mjs";
 import GSDOM from "../../base/GSDOM.mjs";
 import GSElement from "../../base/GSElement.mjs";
-import GSEvent from "../../base/GSEvent.mjs";
+import GSEvents from "../../base/GSEvents.mjs";
 import GSUtil from "../../base/GSUtil.mjs";
 
 // use GSStore
@@ -234,11 +234,11 @@ export default class GSTable extends GSElement {
     }
 
     #onData(e) {
-        GSEvent.prevent(e);
+        GSEvents.prevent(e);
         const me = this;
         if (!me.self) return;
         me.#processData(e.detail);
-        GSEvent.sendDelayed(10, me.self, 'data', e.detail);
+        GSEvents.sendDelayed(10, me.self, 'data', e.detail);
     }
 
     #processData(data) {
@@ -319,7 +319,7 @@ export default class GSTable extends GSElement {
         o.data = [...me.#selected];
         o.type = 'table';
         //const opt = { action: data.data.action, data: me.#selected };
-        //GSEvent.send(me, 'action', opt, true, true, true);
+        //GSEvents.send(me, 'action', opt, true, true, true);
     }
 
     #onRowSelect(data) {
@@ -331,19 +331,19 @@ export default class GSTable extends GSElement {
             if (rec) me.#selected.push(rec);
         });
         if (me.contextMenu) me.contextMenu.disabled = data.data?.length === 0;
-        GSEvent.send(me, 'selected', { data: me.#selected, evt: data.evt });
+        GSEvents.send(me, 'selected', { data: me.#selected, evt: data.evt });
     }
 
     #onColumnSort(data) {
         const me = this;
         me.store.sort = data || [];
-        GSEvent.send(me, 'sort', me.store.sort);
+        GSEvents.send(me, 'sort', me.store.sort);
     }
 
     #onColumnFilter(data) {
         const me = this;
         me.store.filter = data || [];
-        GSEvent.send(me, 'filter', me.store.filter);
+        GSEvents.send(me, 'filter', me.store.filter);
     }
 }
 

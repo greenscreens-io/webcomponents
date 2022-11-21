@@ -9,7 +9,7 @@
 
 import GSElement from "../base/GSElement.mjs";
 import GSItem from "../base/GSItem.mjs";
-import GSEvent from "../base/GSEvent.mjs";
+import GSEvents from "../base/GSEvents.mjs";
 import GSLoader from "../base/GSLoader.mjs";
 import GSUtil from "../base/GSUtil.mjs";
 import GSAttr from "../base/GSAttr.mjs";
@@ -176,7 +176,7 @@ export default class GSDropdown extends GSElement {
     const data = await GSLoader.loadData(val);
     if (!GSUtil.isJsonType(data)) return;
     const me = this;
-    GSEvent.deattachListeners(me);
+    GSEvents.deattachListeners(me);
     const src = GSDOM.fromJsonAsString(data);
     GSDOM.setHTML(me, src);
     me.connectedCallback();
@@ -184,13 +184,13 @@ export default class GSDropdown extends GSElement {
   }
 
   async #onClick(e) {
-    GSEvent.prevent(e);
+    GSEvents.prevent(e);
     const me = this;
     const data = e.detail;
     const sts = await me.#onAction(data.action);
     if (sts) return;
     data.type = 'dropdown';
-    GSEvent.send(me, 'action', data, true, true, true); // notify self
+    GSEvents.send(me, 'action', data, true, true, true); // notify self
   }
 
   async #onAction(action) {

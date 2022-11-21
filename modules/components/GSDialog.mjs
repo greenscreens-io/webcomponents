@@ -10,7 +10,7 @@
 import GSAttr from "../base/GSAttr.mjs";
 import GSDOM from "../base/GSDOM.mjs";
 import GSElement from "../base/GSElement.mjs";
-import GSEvent from "../base/GSEvent.mjs";
+import GSEvents from "../base/GSEvents.mjs";
 
 /**
  * Native dialog with Bootstrap support
@@ -55,7 +55,7 @@ export default class GSDialog extends GSElement {
         me.#dialog.close();
         GSDialog.#STACK.pop();
       }
-      GSEvent.send(me, 'visible', { type: 'dialog', ok: me.visible }, true, true);
+      GSEvents.send(me, 'visible', { type: 'dialog', ok: me.visible }, true, true);
     }
   }
 
@@ -73,8 +73,8 @@ export default class GSDialog extends GSElement {
 
   #onForm(e) {
     const me = this;
-    GSEvent.prevent(e);
-    const sts = GSEvent.send(me, 'data', { type: 'dialog', data: e.detail.data, evt: e }, true, true, true);
+    GSEvents.prevent(e);
+    const sts = GSEvents.send(me, 'data', { type: 'dialog', data: e.detail.data, evt: e }, true, true, true);
     if (sts) me.close();
   }
 
@@ -82,7 +82,7 @@ export default class GSDialog extends GSElement {
     const me = this;
     if (!me.cancelable || e.key !== 'Escape') return;
     me.close();
-    GSEvent.prevent(e);
+    GSEvents.prevent(e);
   }
 
   #onClose(e) {
@@ -111,13 +111,13 @@ export default class GSDialog extends GSElement {
       if (invalid.length === 0) forms.forEach(form => me.#submitForm(form));
 
       const els = invalid.map(form => GSDOM.queryAll(form, 'textarea, input, select').filter(el => el.checkValidity() == false));
-      if (els.length > 0) GSEvent.send(me, 'error', { type: 'dialog', data: els }, true, true, true);
+      if (els.length > 0) GSEvents.send(me, 'error', { type: 'dialog', data: els }, true, true, true);
       return;
     }
 
     let sts = true;
     try {
-      sts = GSEvent.send(me, 'action', { type: 'dialog', ok: isOk, evt: e }, true, true, true);
+      sts = GSEvents.send(me, 'action', { type: 'dialog', ok: isOk, evt: e }, true, true, true);
     } finally {
       if (sts) me.close(null, isOk);
     }
@@ -125,7 +125,7 @@ export default class GSDialog extends GSElement {
 
   #submitForm(form) {
     try {
-      GSEvent.send(form, 'action', { action: 'submit' });
+      GSEvents.send(form, 'action', { action: 'submit' });
     } catch (e) {
       console.log(e);
     }
@@ -147,7 +147,7 @@ export default class GSDialog extends GSElement {
   #isAcceptedAction(e) {
     const action = this.#getAction(e);
     const isOk = GSDialog.#actions.includes(action);
-    if (isOk) GSEvent.prevent(e);
+    if (isOk) GSEvents.prevent(e);
     return isOk ? action : null;
   }
 
@@ -183,9 +183,9 @@ export default class GSDialog extends GSElement {
    * Show modal panel
    */
   open(e) {
-    GSEvent.prevent(e);
+    GSEvents.prevent(e);
     const me = this;
-    const sts = GSEvent.send(me, 'open', { type: 'dialog' }, true, true, true);
+    const sts = GSEvents.send(me, 'open', { type: 'dialog' }, true, true, true);
     if (sts) me.visible = true;
   }
 
@@ -193,9 +193,9 @@ export default class GSDialog extends GSElement {
    * Hide modal panel
    */
   close(e, ok = false) {
-    GSEvent.prevent(e);
+    GSEvents.prevent(e);
     const me = this;
-    const sts = GSEvent.send(me, 'close', { type: 'dialog', isOk: ok }, true, true, true);
+    const sts = GSEvents.send(me, 'close', { type: 'dialog', isOk: ok }, true, true, true);
     if (sts) me.visible = false;
   }
 

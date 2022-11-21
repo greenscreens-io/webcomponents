@@ -4,7 +4,7 @@
 
 import GSUtil from "../../base/GSUtil.mjs";
 import GSElement from "../../base/GSElement.mjs";
-import GSEvent from "../../base/GSEvent.mjs";
+import GSEvents from "../../base/GSEvents.mjs";
 import GSAttr from "../../base/GSAttr.mjs";
 import GSDOM from "../../base/GSDOM.mjs";
 
@@ -50,7 +50,7 @@ export default class GSTimeFormat extends GSElement {
         const date = new Date();
         const src = date.toLocaleTimeString(me.locale);
         GSDOM.setHTML(me.self, src);
-        GSEvent.send(me, 'time', { date }, true, true);
+        GSEvents.send(me, 'time', { date }, true, true);
         return 0;
     }
 

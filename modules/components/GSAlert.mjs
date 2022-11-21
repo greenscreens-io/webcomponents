@@ -10,7 +10,7 @@
 import GSUtil from "../base/GSUtil.mjs";
 import GSElement from "../base/GSElement.mjs";
 import GSDOM from "../base/GSDOM.mjs";
-import GSEvent from "../base/GSEvent.mjs";
+import GSEvents from "../base/GSEvents.mjs";
 import GSAttr from "../base/GSAttr.mjs";
 
 /**
@@ -41,7 +41,7 @@ export default class GSAlert extends GSElement {
 
     #onClick(e) {
         const me = this;
-        GSEvent.send(me, 'action', { type: 'alert', source: e }, true);
+        GSEvents.send(me, 'action', { type: 'alert', source: e }, true);
         me.dismiss();
     }
 

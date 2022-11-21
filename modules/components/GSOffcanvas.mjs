@@ -10,7 +10,7 @@
 import GSAttr from "../base/GSAttr.mjs";
 import GSDOM from "../base/GSDOM.mjs";
 import GSElement from "../base/GSElement.mjs";
-import GSEvent from "../base/GSEvent.mjs";
+import GSEvents from "../base/GSEvents.mjs";
 import GSUtil from "../base/GSUtil.mjs";
 
 /**
@@ -38,7 +38,7 @@ export default class GSOffcanvas extends GSElement {
   attributeCallback(name = '', oldValue = '', newValue = '') {
     const me = this;
     me.#update(name, oldValue, newValue);
-    if (name === 'expanded') GSEvent.send(me, 'action', { type: 'offcanvas', ok: newValue });
+    if (name === 'expanded') GSEvents.send(me, 'action', { type: 'offcanvas', ok: newValue });
   }
 
   async getTemplate(val = '') {

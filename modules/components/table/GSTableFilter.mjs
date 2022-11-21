@@ -8,7 +8,7 @@
  */
 
 import GSID from "../../base/GSID.mjs";
-import GSEvent from "../../base/GSEvent.mjs";
+import GSEvents from "../../base/GSEvents.mjs";
 import GSAttr from "../../base/GSAttr.mjs";
 import GSDOM from "../../base/GSDOM.mjs";
 
@@ -46,7 +46,7 @@ export default class GSTableFilter extends HTMLTableRowElement {
     disconnectedCallback() {
         const me = this;
         GSComponents.remove(me);
-        GSEvent.deattachListeners(me);
+        GSEvents.deattachListeners(me);
     }
 
     get root() {
@@ -56,12 +56,12 @@ export default class GSTableFilter extends HTMLTableRowElement {
     #attachChangeListener() {
         const me = this;
         GSDOM.queryAll(me, 'input, select')
-            .forEach(el => GSEvent.attach(me, el, 'change', e => me.#onChange(e.target)));
+            .forEach(el => GSEvents.attach(me, el, 'change', e => me.#onChange(e.target)));
     }
 
     #attachDataListener() {
         const me = this;
-        if (me.#auto) GSEvent.attach(me, me.root, 'data', e => me.#onData(e.detail), false, true);
+        if (me.#auto) GSEvents.attach(me, me.root, 'data', e => me.#onData(e.detail), false, true);
     }
 
     #onChange(el) {
@@ -71,7 +71,7 @@ export default class GSTableFilter extends HTMLTableRowElement {
             const value = me.#getValue(el);
             if (value) filter.push({ name: el.name, value: value });
         });
-        GSEvent.send(me, 'filter', filter, true);
+        GSEvents.send(me, 'filter', filter, true);
     }
 
     #onData(data) {

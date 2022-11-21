@@ -8,7 +8,7 @@
  */
 
 import GSUtil from "../base/GSUtil.mjs";
-import GSEvent from "../base/GSEvent.mjs";
+import GSEvents from "../base/GSEvents.mjs";
 import GSDOM from "../base/GSDOM.mjs";
 import GSUListExt from "./ext/GSUListExt.mjs";
 import GSAttr from "../base/GSAttr.mjs";
@@ -47,7 +47,7 @@ export default class GSMenu extends GSUListExt {
 
   disconnectedCallback() {
     const me = this;
-    GSEvent.deattachListeners(me);
+    GSEvents.deattachListeners(me);
     super.disconnectedCallback();
   }
 
@@ -61,7 +61,7 @@ export default class GSMenu extends GSUListExt {
 	* @returns {boolean} State if attachment was successful
 	*/
 	attachEvent(el, name = '', fn, once = false) {
-		return GSEvent.attach(this, el, name, fn, once);
+		return GSEvents.attach(this, el, name, fn, once);
 	}
 
 	/**
@@ -72,7 +72,7 @@ export default class GSMenu extends GSUListExt {
 	* @returns {boolean} State if attachment was successful	
 	*/
 	removeEvent(el, name = '', fn) {
-		return GSEvent.remove(this, el, name, fn);
+		return GSEvents.remove(this, el, name, fn);
 	}
 
   /**
@@ -118,7 +118,7 @@ export default class GSMenu extends GSUListExt {
   }
 
   close(e) {
-    GSEvent.prevent(e);
+    GSEvents.prevent(e);
     const me = this;
     if (!me.closable) return false;
     me.#closeSubmenus();
@@ -237,7 +237,7 @@ export default class GSMenu extends GSUListExt {
     switch (e.key) {
       //case 'ContextMenu' : return me.#onPopup(e);
       case 'Escape' : 
-        GSEvent.prevent(e);
+        GSEvents.prevent(e);
         me.close();
         break;
     }
@@ -245,13 +245,13 @@ export default class GSMenu extends GSUListExt {
 
   async #onClick(e) {
     const me = this;
-    GSEvent.prevent(e);
+    GSEvents.prevent(e);
     me.close();
     me.#closeSubmenus();
     me.#handleGroup(e);
     const data = e.target.dataset;
     const opt = { type: 'menu', option: e.target, caller: me.#caller, data: data };
-    GSEvent.send(me, 'action', opt, true, true, true); // notify self
+    GSEvents.send(me, 'action', opt, true, true, true); // notify self
   }
 
   #handleGroup(e) {
@@ -268,7 +268,7 @@ export default class GSMenu extends GSUListExt {
    * @returns {void}
    */
   #onSubmenu(e) {   
-    GSEvent.prevent(e);
+    GSEvents.prevent(e);
     const li = GSDOM.closest(e.target, 'li');
     const ul = GSDOM.closest(li, 'ul');
     const sub = GSDOM.query(li, '.submenu');

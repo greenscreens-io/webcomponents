@@ -9,7 +9,7 @@
 
 import GSID from "../base/GSID.mjs";
 import GSDOMObserver from '../base/GSDOMObserver.mjs';
-import GSEvent from "../base/GSEvent.mjs";
+import GSEvents from "../base/GSEvents.mjs";
 import GSElement from "../base/GSElement.mjs";
 import GSPopper from "../base/GSPopper.mjs";
 import GSAttr from "../base/GSAttr.mjs";
@@ -74,11 +74,11 @@ export default class GSPopover extends GSElement {
     #attachEvents() {
         const me = this;
         if (me.isHoverTrigger) {
-            GSEvent.attach(me, me.target, 'mouseover', me.show.bind(me));
-            GSEvent.attach(me, me.target, 'mouseout', me.hide.bind(me));
+            GSEvents.attach(me, me.target, 'mouseover', me.show.bind(me));
+            GSEvents.attach(me, me.target, 'mouseout', me.hide.bind(me));
         }
         if (me.isFocusTrigger) {
-            GSEvent.attach(me, document.body, 'click', me.#focus.bind(me));
+            GSEvents.attach(me, document.body, 'click', me.#focus.bind(me));
         }
     }
 
