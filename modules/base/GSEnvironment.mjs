@@ -61,7 +61,7 @@ export default class GSEnvironment {
             });
             return sts;
         }
-        const strAgt = navigator.userAgent.toLocaleLowerCase();
+        const strAgt = navigator.userAgent.toLocaleLowerCase() || '';
         const isEdge = strAgt.indexOf('edg') > 0;
         if (isEdge && strVal.startsWith('edg')) return true;
         return !isEdge && strAgt.indexOf(strVal) > 0;
