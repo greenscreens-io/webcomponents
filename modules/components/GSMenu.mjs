@@ -127,6 +127,7 @@ export default class GSMenu extends GSUListExt {
     me.style.top = '';
     me.#caller?.focus();
     me.#caller = null;
+    GSEvents.send(me, 'close');
   }
 
   open(e) {
@@ -136,6 +137,7 @@ export default class GSMenu extends GSUListExt {
     me.#updatePos();
     me.#updateSubmenus(e);
     GSDOM.query(me, 'a,input,[tabindex="0"]')?.focus();
+    GSEvents.send(me, 'open');
   }
 
   toggle(e) {
