@@ -242,7 +242,7 @@ export default class GSContext extends GSElement {
     GSEvents.prevent(e);
     const me = this;
     const data = e.detail;
-    const sts = await me.#onAction(data.action);
+    const sts = await me.#onAction(data.data?.action);
     if (sts) return;
     data.type = 'contextmenu';
     GSEvents.send(me, 'action', data, true, true, true); // notify self
