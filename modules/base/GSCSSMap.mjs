@@ -43,7 +43,7 @@ export default class GSCSSMap {
     asNum(name) {
         let val = this.get(name);
         if (GSCSSMap.#modern && GSFunction.isFunction(val?.to)) {
-            val = val.to('px');
+            if (val.unit !== 'number') val = val.to('px');
         }
         return GSUtil.asNum(GSCSSMap.#modern ? val?.value : val);
     }
