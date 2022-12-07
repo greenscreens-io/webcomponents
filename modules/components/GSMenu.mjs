@@ -295,7 +295,7 @@ export default class GSMenu extends GSUListExt {
       const hasSubmenu = Array.isArray(it.menu);
       opts.push('<li>');
       opts.push(`<a class="dropdown-item" href="#" `);
-      opts.push(GSItem.getAttrs(el));
+      //opts.push(GSItem.getAttrs(el));
       opts.push('>');
       opts.push(`${it.name} ${hasSubmenu ? '&raquo;' : ''}`);
       opts.push('</a>');

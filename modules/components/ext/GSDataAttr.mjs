@@ -47,6 +47,7 @@ export default class GSDataAttr {
     static #onMonitorFilter(el) {
         if (GSDOM.isGSElement(el)) return false;
         if (!GSDOM.isHTMLElement(el)) return false;
+        if (el.dataset.gsAttrMon === 'true') return false;
         if (GSDataAttr.#isCollapsible(el)) el.classList.add('collapsible');
         return el.dataset.bsDismiss
             || el.dataset.bsToggle
@@ -59,6 +60,7 @@ export default class GSDataAttr {
      */
     static #onMonitorResult(el) {
         el.id = el.id || GSID.id;
+        el.dataset.gsAttrMon = true;
         GSEvents.attach(el, el, 'click', GSDataAttr.#onClick.bind(el));
     }
 
