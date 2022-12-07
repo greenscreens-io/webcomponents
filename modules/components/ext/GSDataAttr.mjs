@@ -31,8 +31,12 @@ export default class GSDataAttr {
     static #dismissValues = "offcanvas|modal|alert|popup|dialog";
 
     static {
-        GSDOMObserver.registerFilter(GSDataAttr.#onMonitorFilter, GSDataAttr.#onMonitorResult);
-        GSDOMObserver.registerFilter(GSDataAttr.#onMonitorFilter, GSDataAttr.#onMonitorRemove, true);
+        GSDataAttr.observe();
+    }
+
+    static observe(owner) {
+        GSDOMObserver.registerFilter(GSDataAttr.#onMonitorFilter, GSDataAttr.#onMonitorResult, false, owner);
+        GSDOMObserver.registerFilter(GSDataAttr.#onMonitorFilter, GSDataAttr.#onMonitorRemove, true, owner);
     }
 
     /**

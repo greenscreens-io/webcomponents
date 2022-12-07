@@ -152,14 +152,14 @@ export default class GSDOMObserver extends MutationObserver {
      * 
      * @returns {boolean} Returns true if filter registered
      */
-    static registerFilter(filter, callback, forRemove = false) {
+    static registerFilter(filter, callback, forRemove = false, target) {
 
         if (!GSDOMObserver.#isFunctions(filter, callback)) return false;
 
         GSDOMObserver.#getFilter(forRemove).set(filter, callback);
 
         // initially loaded does not trigger 
-        if (!forRemove) GSDOMObserver.#exec(document.body, filter, callback);
+        if (!forRemove) GSDOMObserver.#exec(target || document.body, filter, callback);
 
         return true;
     }
