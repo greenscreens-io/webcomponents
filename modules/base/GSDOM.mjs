@@ -497,11 +497,14 @@ export default class GSDOM {
 	 * @param {object} obj 
 	 */
 	static css(el, obj) {
-		if (GSUtil.isString(el)) el = GSDOM.query(el);
-		if (!GSDOM.isHTMLElement(el)) return false;
+		if (GSUtil.isString(el)) el = GSDOM.queryAll(el);
+		if (Array.isArray(el) && el.length === 0) return false;
+		if (!GSDOM.isHTMLElement(el)) return false;		
 		requestAnimationFrame(() => {
-			Object.entries(obj).forEach(kv => {
-				el.style[kv[0]] = kv[1];
+			[].concat(el).forEach(it => {
+				Object.entries(obj).forEach(kv => {
+					it.style[kv[0]] = kv[1];
+				});
 			});
 		});
 	}
@@ -514,12 +517,17 @@ export default class GSDOM {
 	 * @returns {boolean}
 	 */
 	static toggleClass(el, val, sts) {
-		if (GSUtil.isString(el)) el = GSDOM.query(el);
+		if (GSUtil.isString(el)) el = GSDOM.queryAll(el);
+		if (Array.isArray(el) && el.length === 0) return false;
 		if (!GSDOM.isHTMLElement(el)) return false;
 		if (!val || val.trim().length == 0) return false;
 		val = val.split(' ').filter(v => v && v.trim().length > 0);
-		if (GSUtil.isNull(sts)) return val.forEach(v => el.classList.toggle(v));
-		sts ? el.classList.add.apply(el.classList, val) : el.classList.remove.apply(el.classList, val);
+		if (GSUtil.isNull(sts)) return val.forEach(v => {
+			[].concat(el).forEach(it => it.classList.toggle(v));
+		});
+		[].concat(el).forEach(it => {
+			sts ? it.classList.add.apply(it.classList, val) : it.classList.remove.apply(it.classList, val);
+		});
 		return true;
 	}
 
@@ -720,11 +728,11 @@ export default class GSDOM {
 	 * @param {HTMLElement} owner 
 	 */
 	static fromURLHashToForm(owner) {
-		location.hash.slice(1).split('&').every((v) => {
-			if (v.length < 2) return true;
+		location.hash.slice(1).split('&')
+		.filter(v => v.length > 1)
+		.forEach(v => {
 			const d = v.split('=');
 			GSDOM.setValue(`input[name=${d[0]}]`, d[1], owner);
-			return true;
 		});
 	}
 
@@ -762,8 +770,8 @@ export default class GSDOM {
 	 * @param {HTMLElement} own 
 	 */
 	static setValue(qry, val, own) {
-		const el = GSDOM.query(own, qry);
-		GSDOM.fromValue(el, val);
+		const el = GSDOM.queryAll(own, qry);
+		el.forEach(it => GSDOM.fromValue(it, val));
 	}
 
 	/**
