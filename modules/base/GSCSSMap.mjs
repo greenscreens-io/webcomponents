@@ -28,7 +28,7 @@ export default class GSCSSMap {
     get(name) {
         const me = this;
         if (!me.#map) return undefined;
-		return  GSCSSMap.#modern ? me.#map.get(name) :  me.#map[GSUtil.capitalizeAttr(name)];
+        return GSCSSMap.#modern ? me.#map.get(name) : me.#map[GSUtil.capitalizeAttr(name)];
     }
 
     asText(name) {
@@ -52,25 +52,25 @@ export default class GSCSSMap {
         return this.asText(name) == value;
     }
 
-	/**
-	 * Support for Firefox/Gecko to get element computedStyledMap
-	 * @param {HTMLElement} el 
-	 * @returns {}
-	 */
-	static #getMap(el) {
-		if (GSCSSMap.#modern) return el.computedStyleMap();
-		if (globalThis.window?.getComputedStyle) return globalThis.window.getComputedStyle(el);
-		return null;
-	}
+    /**
+     * Support for Firefox/Gecko to get element computedStyledMap
+     * @param {HTMLElement} el 
+     * @returns {}
+     */
+    static #getMap(el) {
+        if (GSCSSMap.#modern) return el.computedStyleMap();
+        if (globalThis.window?.getComputedStyle) return globalThis.window.getComputedStyle(el);
+        return null;
+    }
 
-	/**
-	 * Support for Firefox/Gecko to get element computedStyledMap item
-	 * @param {HTMLElement} el 
-	 * @returns {}
-	 */
-     static styleValue(el, name) {
-		return GSCSSMap.getComputedStyledMap(el).get(name);
-	}
+    /**
+     * Support for Firefox/Gecko to get element computedStyledMap item
+     * @param {HTMLElement} el 
+     * @returns {}
+     */
+    static styleValue(el, name) {
+        return GSCSSMap.getComputedStyledMap(el).get(name);
+    }
 
     /**
      * Support for Firefox/Gecko to get element computedStyledMap
@@ -81,8 +81,36 @@ export default class GSCSSMap {
         return new GSCSSMap(element);
     }
 
+    static #normalize(str) {
+        if (!str)  return '';
+        str = String(str).replace(/\s*([>~+])\s*/g, ' $1 ');
+        return str.replace(/(\s+)/g, ' ').trim();           
+    }
+    
+	static #split(str, on) {
+        return str.split(on).map(x => x.trim()).filter(x => x);
+    }
+	
+    static #containsAny(selText, ors) {
+        return selText ? ors.some(x => selText.indexOf(x) >= 0) : false;
+    }
+    
+    /**
+     * Find css defined rules by css selector
+     * @param {string} selector 
+     * @returns 
+     */
+	static findRule(selector) {
+		const me =  GSCSSMap;
+        const logicalORs = me.#split(me.#normalize(selector), ',');
+        const sheets = Array.from(globalThis.document.styleSheets);
+        const ruleArrays = sheets.map(x => Array.from(x.cssRules || []));
+        const allRules = ruleArrays.reduce((all, x) => all.concat(x), []);
+        return allRules.filter((x) => me.#containsAny(me.#normalize(x.selectorText), logicalORs));
+    }
+
     static {
-		Object.seal(GSCSSMap);
-		globalThis.GSCSSMap = GSCSSMap;
-	}
+        Object.seal(GSCSSMap);
+        globalThis.GSCSSMap = GSCSSMap;
+    }
 }
