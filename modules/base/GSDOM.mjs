@@ -498,10 +498,10 @@ export default class GSDOM {
 	 */
 	static css(el, obj) {
 		if (GSUtil.isString(el)) el = GSDOM.queryAll(el);
-		if (Array.isArray(el) && el.length === 0) return false;
-		if (!GSDOM.isHTMLElement(el)) return false;		
+		if (GSDOM.isHTMLElement(el)) el = [].concat(el);
+		if (!(Array.isArray(el) && el.length > 0)) return false;
 		requestAnimationFrame(() => {
-			[].concat(el).forEach(it => {
+			el.forEach(it => {
 				Object.entries(obj).forEach(kv => {
 					it.style[kv[0]] = kv[1];
 				});
@@ -518,14 +518,14 @@ export default class GSDOM {
 	 */
 	static toggleClass(el, val, sts) {
 		if (GSUtil.isString(el)) el = GSDOM.queryAll(el);
-		if (Array.isArray(el) && el.length === 0) return false;
-		if (!GSDOM.isHTMLElement(el)) return false;
+		if (GSDOM.isHTMLElement(el)) el = [].concat(el);
+		if (!(Array.isArray(el) && el.length > 0)) return false;
 		if (!val || val.trim().length == 0) return false;
 		val = val.split(' ').filter(v => v && v.trim().length > 0);
 		if (GSUtil.isNull(sts)) return val.forEach(v => {
-			[].concat(el).forEach(it => it.classList.toggle(v));
+			el.forEach(it => it.classList.toggle(v));
 		});
-		[].concat(el).forEach(it => {
+		el.forEach(it => {
 			sts ? it.classList.add.apply(it.classList, val) : it.classList.remove.apply(it.classList, val);
 		});
 		return true;
