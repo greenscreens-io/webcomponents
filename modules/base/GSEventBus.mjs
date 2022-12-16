@@ -11,6 +11,9 @@ import GSEvent from './GSEvent.mjs';
 
 /**
  * Class for handling shared events among components
+ * Difference from native BroadcastChannel is :
+ *  - support for multiple named events
+ *  - does not work across different pages
  * @Class
  */
 export default class GSEventBus  {
