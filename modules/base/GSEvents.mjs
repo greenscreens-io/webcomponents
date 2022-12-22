@@ -151,7 +151,7 @@ export default class GSEvents {
 	 * Generic event disaptcher
 	 * 
 	 * @param {HTMLElement} sender element that send event
-	 * @param {string} name  Event name to trigger (if name starts with #, wil ltry to map to native event)
+	 * @param {string} name  Event name to trigger (if name starts with #, will try to map to native event)
 	 * @param {object} obj Data object to send 
 	 * @param {boolean} bubbles Send event to parent
 	 * @param {boolean} composed Send event across shadowDom
