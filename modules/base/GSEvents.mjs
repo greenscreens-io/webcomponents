@@ -151,7 +151,7 @@ export default class GSEvents {
 	 * Generic event disaptcher
 	 * 
 	 * @param {HTMLElement} sender element that send event
-	 * @param {string} name  Event name oto trigger
+	 * @param {string} name  Event name to trigger (if name starts with #, wil ltry to map to native event)
 	 * @param {object} obj Data object to send 
 	 * @param {boolean} bubbles Send event to parent
 	 * @param {boolean} composed Send event across shadowDom
@@ -159,8 +159,80 @@ export default class GSEvents {
 	 * @returns {boolean}
 	 */
 	static send(sender = document, name, obj = '', bubbles = false, composed = false, cancelable = false) {
-		const event = new CustomEvent(name, { detail: obj, bubbles: bubbles, composed: composed, cancelable: cancelable });
+		const opt = { detail: obj, bubbles: bubbles, composed: composed, cancelable: cancelable };
+		const type = name.indexOf('#') === 0 ? name.slice(1) : null;
+		const event = type ? GSEvents.toEvent(type, opt) : new CustomEvent(name, opt);
 		return sender?.dispatchEvent(event);
+	}
+
+	/**
+	 * Convert event type to native event
+	 * @param {string} type 
+	 * @param {object} opt 
+	 * @returns {Event}
+	 */
+	static toEvent(type, opt) {
+		let evt  = null;
+		switch(type) {
+			case 'copy' : 
+			case 'cut' : 
+			case 'paste' : 
+				evt = new ClipboardEvent(type, opt);
+				break;
+			case 'blur' : 
+			case 'focus' : 
+			case 'focusin' : 
+			case 'focusout' : 
+				evt = new FocusEvent(type, opt);
+				break;
+			case 'input' : 
+			case 'beforeinput' : 
+				evt = new InputEvent(type, opt);
+				break;
+			case 'keydown' : 
+			case 'keyup' : 
+			case 'keypress' : 						
+				evt = new KeyboardEvent(type, opt);
+				break;
+			case 'dblclick' : 
+			case 'mousedown' : 
+			case 'mouseenter' : 
+			case 'mouseleave' : 
+			case 'mousemove' : 
+			case 'mouseout' : 
+			case 'mouseover' : 
+			case 'mouseup' : 																					
+				evt = new MouseEvent(type, opt);
+				break;
+			case 'submit' : 
+				evt = new SubmitEvent(type, opt);
+				break;
+			case 'touchstart' : 
+			case 'touchend' : 
+			case 'touchmove' : 
+			case 'touchcancel' : 									
+				evt = new TouchEvent(type, opt);
+				break;
+			case 'whell' : 
+				evt = new WheelEvent(type, opt);
+				break;
+			case 'pointerover' : 
+			case 'pointerenter' :
+			case 'pointerdown' :
+			case 'pointermove' :
+			case 'pointerup' :
+			case 'pointercancel' :
+			case 'pointerout' :
+			case 'pointerleave' :
+			case 'pointerrawupdate' :
+			case 'gotpointercapture' :
+			case 'lostpointercapture' :				
+				evt = new PointerEvent(type, opt);
+				break;
+			default:
+				evt = new CustomEvent(type, opt);
+		}
+		return evt;		
 	}
 
 	/** 
