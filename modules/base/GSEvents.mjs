@@ -171,8 +171,6 @@ export default class GSEvents {
 	 * @returns {Event}
 	 */
 	static toEvent(type, opt) {
-		if (type.indexOf('#') !== 0) return new CustomEvent(type, opt);
-		type = type.slice(1);
 		let evt  = null;
 		switch(type) {
 			case 'copy' : 
