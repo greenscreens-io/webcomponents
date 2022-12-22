@@ -151,7 +151,7 @@ export default class GSEvents {
 	 * Generic event disaptcher
 	 * 
 	 * @param {HTMLElement} sender element that send event
-	 * @param {string} name  Event name to trigger (if name starts with #, will try to map to native event)
+	 * @param {string} name  Event name to trigger 
 	 * @param {object} obj Data object to send 
 	 * @param {boolean} bubbles Send event to parent
 	 * @param {boolean} composed Send event across shadowDom
@@ -160,8 +160,7 @@ export default class GSEvents {
 	 */
 	static send(sender = document, name, obj = '', bubbles = false, composed = false, cancelable = false) {
 		const opt = { detail: obj, bubbles: bubbles, composed: composed, cancelable: cancelable };
-		const type = name.indexOf('#') === 0 ? name.slice(1) : null;
-		const event = type ? GSEvents.toEvent(type, opt) : new CustomEvent(name, opt);
+		const event = new CustomEvent(name, opt);
 		return sender?.dispatchEvent(event);
 	}
 
@@ -172,6 +171,8 @@ export default class GSEvents {
 	 * @returns {Event}
 	 */
 	static toEvent(type, opt) {
+		if (type.indexOf('#') !== 0) return new CustomEvent(type, opt);
+		type = type.slice(1);
 		let evt  = null;
 		switch(type) {
 			case 'copy' : 
