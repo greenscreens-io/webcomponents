@@ -8,6 +8,7 @@
  */
 
 import GSDOM from "../../base/GSDOM.mjs";
+import GSEvents from "../../base/GSEvents.mjs";
 import GSUtil from "../../base/GSUtil.mjs";
 
 export default class GSAccessibility {
@@ -25,6 +26,11 @@ export default class GSAccessibility {
         if (!focused.matches(GSDOM.QUERY_FOCUSABLE)) return;
 
         if (idx < 2) return GSAccessibility.click(focused, e);
+
+        const editable = ['INPUT', 'SELECT', 'TEXTAREA'].indexOf(focused.tagName) > -1;
+        if (editable && !e.altKey) return;
+
+        GSEvents.prevent(e);
 
         // prev (-1); next (1)
         const dir = GSAccessibility.idxToDir(idx);

@@ -188,7 +188,7 @@ export default class GSInputExt extends HTMLInputElement {
         } else {
             isMatch ? GSDOM.show(el) : GSDOM.hide(el);
         }
-        GSDOM.queryAll(el, 'input,textarea,select').forEach(el => GSAttr.set(el, 'data-ignore', isMatch ? null : true));
+        GSDOM.queryAll(el.closest('form'), 'input,textarea,select').forEach(el => GSAttr.set(el, 'data-ignore', isMatch ? null : true));
     }
 
     isInList() {

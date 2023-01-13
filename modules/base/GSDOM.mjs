@@ -131,6 +131,7 @@ export default class GSDOM {
 		const name = GSUtil.isString(el) ? el : el?.tagName;
 		return ['INPUT', 'SELECT', 'TEXTAREA', 'BUTTON'].indexOf(name) > -1;
 	}
+
 	/**
 	  * Check if given element is of given type 
 	  * 
