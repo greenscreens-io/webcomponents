@@ -7,7 +7,7 @@
  * @module GSSearch
  */
 
-import { GSAttr, GSEvent, GSElement, GSEnvironment } from '/webcomponents/release/esm/io.greenscreens.components.all.esm.min.js';
+import { GSAttr, GSEvents, GSElement, GSEnvironment } from '/webcomponents/release/esm/io.greenscreens.components.all.esm.min.js';
 
 /**
  * Search input box WebComponent which emits searh event to upper tree.
@@ -45,9 +45,9 @@ class GSSearch extends GSElement {
     #onSearch(e) {
         if (!GSEnvironment.isWebkit && e.which != 13) return;
         const me = this;
-        GSEvent.prevent(e);
+        GSEvents.prevent(e);
         const opt = { type: 'search', action: 'search', value: me.#searchEl.value };
-        GSEvent.send(me, 'action', opt, true, true, true);
+        GSEvents.send(me, 'action', opt, true, true, true);
     }
 
     get #searchEl() {
