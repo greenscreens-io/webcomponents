@@ -187,10 +187,10 @@ export default class GSDropdown extends GSElement {
     GSEvents.prevent(e);
     const me = this;
     const data = e.detail;
-    const sts = await me.#onAction(data.action);
+    const sts = await me.#onAction(data.action || data.data?.action);
     if (sts) return;
     data.type = 'dropdown';
-    GSEvents.send(me, 'action', data, true, true, true); // notify self
+    GSEvents.send(me, 'action', data?.data || data, true, true, true); // notify self
   }
 
   async #onAction(action) {
