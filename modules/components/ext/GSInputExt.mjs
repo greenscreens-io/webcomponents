@@ -36,6 +36,7 @@ export default class GSInputExt extends HTMLInputElement {
         '_': /./g
     };
 
+    #revealing = false;
     #masks = [];
 
     static {
@@ -126,6 +127,13 @@ export default class GSInputExt extends HTMLInputElement {
         return this.hasAttribute('autoselect');
     }
 
+    /**
+     * Allow password field reveal
+     */
+    get reveal() {
+        return this.hasAttribute('reveal');
+    }
+
     #toPattern() {
         const me = this;
         if (me.pattern.length > 0) return;
@@ -165,6 +173,7 @@ export default class GSInputExt extends HTMLInputElement {
     #attachEvents() {
         const me = this;
         GSEvents.attach(me, me, 'keydown', me.#onKeyDown.bind(me));
+        GSEvents.attach(me, me, 'keyup', me.#onKeyUp.bind(me));
         GSEvents.attach(me, me, 'keypress', me.#onKeyPress.bind(me));
         GSEvents.attach(me, me, 'input', me.#onInput.bind(me));
         GSEvents.attach(me, me, 'change', me.#onChange.bind(me));
@@ -264,8 +273,26 @@ export default class GSInputExt extends HTMLInputElement {
         me.value = me.formatMask(val);
     }
 
-    #onKeyDown(e) {
+    #isReveal(e) {
+        return this.reveal && e.key === 'Shift' && e.altKey && e.shiftKey && this.type === 'password';
+    }
+
+    #onKeyUp(e) {
         const me = this;
+        if (e.key === 'Shift' && me.#revealing) {
+            me.type = 'password';
+        }
+    }
+
+    #onKeyDown(e) {
+
+        const me = this;
+
+        if (me.#isReveal(e)) {
+            me.#revealing = true;
+            me.type = 'text';
+        }
+
         if (!me.mask) return;
 
         const tmp = me.value.split('');

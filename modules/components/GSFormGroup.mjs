@@ -126,7 +126,7 @@ export default class GSFormGroup extends GSElement {
                ${me.#mask} ${me.#pattern} ${me.#value} ${me.#list} ${me.#accept}
                ${me.#step} ${me.#min} ${me.#max} ${me.#value} 
                ${me.#minlength} ${me.#maxlength} title="${me.description}"
-               ${me.#readonly} ${me.#required} ${me.#disabled}
+               ${me.#readonly} ${me.#required} ${me.#disabled} ${me.#reveal}
                >`;
    }
 
@@ -233,6 +233,10 @@ export default class GSFormGroup extends GSElement {
    get #mask() {
       const me = this;
       return me.#isText && me.mask ? `mask=${me.mask}` : '';
+   }
+
+   get #reveal() {
+      return this.reveal ? `reveal` : '';
    }
 
    get #disabled() {
@@ -474,7 +478,15 @@ export default class GSFormGroup extends GSElement {
    set mask(val = '') {
       return GSAttr.set(this, 'mask', val);
    }
+   
+   get reveal() {
+      return this.hasAttribute('reveal');
+   }
 
+   set reveal(val = '') {
+      return GSAttr.toggle(this, 'reveal', GSUtil.asBool(val));
+   }
+   
    get disabled() {
       return this.hasAttribute('disabled');
    }
