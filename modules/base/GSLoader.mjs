@@ -48,7 +48,7 @@ export default class GSLoader {
         url = url || '';
         let path = null;
         const isFile = location.pathname.split('/').pop(-1).includes('\.');
-        const isExt = url.includes('extension://');
+        const isExt = url.includes('extension:/');
         const isUrl = url.startsWith('http');
 
         if (isUrl || isExt) {
