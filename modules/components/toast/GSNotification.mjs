@@ -170,7 +170,7 @@ export default class GSNotification extends GSElement {
 
   get #dialogToast() {
     const dlg = customElements.get('gs-dialog')?.top;
-    return dlg ? (GSDOM.query(dlg, '.toast-container') || this) : this;
+    return dlg?.visible ? (GSDOM.query(dlg, '.toast-container') || this) : this;
   }
 
   #showNative(title = '', message = '', timeout = 2, options = {}) {
