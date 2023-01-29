@@ -283,10 +283,6 @@ export default class GSMenu extends GSUListExt {
     });
   }
 
-  #getTitle(el) {
-    return GSAttr.get(el, 'title');
-  }
-
   /**
    * Generate menu items from JSON array
    * @param {*} items 
@@ -299,11 +295,10 @@ export default class GSMenu extends GSUListExt {
     items.forEach(it => {
       if (it === '-') return opts.push('<li><hr class="dropdown-divider"/></li>');
       const hasSubmenu = Array.isArray(it.menu);
-      const title = me.#getTitle(it);
       opts.push('<li>');
       opts.push(`<a class="dropdown-item" href="#" `);
       //opts.push(GSItem.getAttrs(el));
-      if (title) opts.push(` title="${title}" `);
+      if (it.title) opts.push(` title="${it.title}" `);
       opts.push('>');
       opts.push(`${it.name} ${hasSubmenu ? '&raquo;' : ''}`);
       opts.push('</a>');
@@ -343,17 +338,19 @@ export default class GSMenu extends GSUListExt {
 
   static #renderSub(el) {
     const name = GSAttr.get(el, 'name');
-    return `<li><a class="dropdown-item dropdown-toggle" href="#"><div class="d-inline-block w-100">${name}</div></a>`;
+    const title = el?.title ? ` title="${el.title}"`:"";
+    return `<li><a class="dropdown-item dropdown-toggle" href="#"><div class="d-inline-block w-100" ${title}>${name}</div></a>`;
   }
 
   static #renderChild(el) {
     const header = GSAttr.get(el, 'header');
     if (header) return `<li data-inert="true"><h6 class="dropdown-header"/>${header}</h6></li>`;
     if (!el.name) return `<li data-inert="true"><hr class="dropdown-divider"/></li>`;
-    if (el.action) return `<li><a class="dropdown-item" href="#" data-action="${el.action}">${el.html}</a></li>`;
-    if (el.toggle) return `<li><a class="dropdown-item" href="#" data-bs-toggle="${el.toggle}" data-bs-target="${el.target}">${el.name}</a></li>`;
-    if (el.inject) return `<li><a class="dropdown-item" href="#" data-inject="${el.inject}" data-bs-target="${el.target}">${el.name}</a></li>`;
-    if (el.href) return `<li><a class="dropdown-item" href="${el.href}" target="${el.target}">${el.name}</a></li>`;
+    const title = el.title ? ` title="${el.title}"`:"";
+    if (el.action) return `<li><a class="dropdown-item" href="#" data-action="${el.action}" ${title}>${el.html}</a></li>`;
+    if (el.toggle) return `<li><a class="dropdown-item" href="#" data-bs-toggle="${el.toggle}" data-bs-target="${el.target}" ${title}>${el.name}</a></li>`;
+    if (el.inject) return `<li><a class="dropdown-item" href="#" data-inject="${el.inject}" data-bs-target="${el.target}" ${title}>${el.name}</a></li>`;
+    if (el.href) return `<li><a class="dropdown-item" href="${el.href}" target="${el.target}" ${title}>${el.name}</a></li>`;
     const attrs = GSItem.getAttrs(el).trim();
     return attrs ? `<li><a class="dropdown-item" href="#" ${attrs} >${el.name}</a></li>` : '';
   }
