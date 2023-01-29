@@ -283,6 +283,10 @@ export default class GSMenu extends GSUListExt {
     });
   }
 
+  #getTitle(el) {
+    return GSAttr.get(el, 'title');
+  }
+
   /**
    * Generate menu items from JSON array
    * @param {*} items 
@@ -295,9 +299,11 @@ export default class GSMenu extends GSUListExt {
     items.forEach(it => {
       if (it === '-') return opts.push('<li><hr class="dropdown-divider"/></li>');
       const hasSubmenu = Array.isArray(it.menu);
+      const title = me.#getTitle(it);
       opts.push('<li>');
       opts.push(`<a class="dropdown-item" href="#" `);
       //opts.push(GSItem.getAttrs(el));
+      if (title) opts.push(` title="${title}" `);
       opts.push('>');
       opts.push(`${it.name} ${hasSubmenu ? '&raquo;' : ''}`);
       opts.push('</a>');
