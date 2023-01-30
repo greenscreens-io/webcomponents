@@ -110,7 +110,7 @@ export default class GSTable extends GSElement {
         me.attachEvent(me.self, 'select', e => me.#onRowSelect(e.detail));
         me.attachEvent(me.self, 'action', e => me.#onContextMenu(e));
         me.attachEvent(me, 'data', e => me.#onData(e));
-        me.attachEvent(window, 'resize', () => me.#onResize());
+        me.attachEvent(window, 'resize', () => me.resize());
         requestAnimationFrame(() => me.store.page = 1);
     }
 
@@ -322,7 +322,7 @@ export default class GSTable extends GSElement {
         GSDOM.setHTML(me.self, src);
     }
 
-    #onResize() {
+    resize() {
         const me = this;
         clearTimeout(me.#tid);
         me.#tid = setTimeout(() => me.#postResize(), 250);
