@@ -331,9 +331,8 @@ export default class GSTable extends GSElement {
     #postResize() {
 
         const me = this;
-        if (me.autofit) return;
+        if (!me.autofit) return;
 
-        if (!tbl) return;
         if (me.#dftRec === 0) {
             me.#dftRec = me.store.limit;
             const pg = me.query('gs-pager')?.getBoundingClientRect();
