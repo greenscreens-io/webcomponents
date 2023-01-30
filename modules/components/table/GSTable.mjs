@@ -49,6 +49,13 @@ export default class GSTable extends GSElement {
     #rowCSS = '';
     #cellCSS = 'col';
 
+    // used for auto row sizing
+    #dftRec = 0;
+    #oSize = 0;
+    #rSize = 0;
+    #tid = 0;
+
+
     static {
         customElements.define('gs-table', GSTable);
         Object.seal(GSTable);
@@ -103,8 +110,8 @@ export default class GSTable extends GSElement {
         me.attachEvent(me.self, 'select', e => me.#onRowSelect(e.detail));
         me.attachEvent(me.self, 'action', e => me.#onContextMenu(e));
         me.attachEvent(me, 'data', e => me.#onData(e));
-
-        me.store.page = 1;
+        me.attachEvent(window, 'resize', () => me.#onResize());
+        requestAnimationFrame(() => me.store.page = 1);
     }
 
     get contextMenu() {
@@ -158,6 +165,10 @@ export default class GSTable extends GSElement {
         me.#select = GSUtil.asBool(val);
     }
 
+    get autofit() {
+        return GSAttr.getAsBool(this, 'autofit', true);
+    }
+
     get css() {
         return GSAttr.get(this, 'css', this.#tableCSS);
     }
@@ -184,6 +195,10 @@ export default class GSTable extends GSElement {
 
     get cssColumns() {
         return GSAttr.get(this, 'css-columns', '');
+    }
+
+    set autofit(val = true) {
+        GSAttr.setAsBool(this, 'autofit', val);
     }
 
     set css(val = '') {
@@ -305,6 +320,39 @@ export default class GSTable extends GSElement {
         const html = me.querySelector('gs-header').render();
         const src = `<table class="${me.css}">${html}<tbody is="gs-tbody"></tbody></table><slot name="extra"></slot>`;
         GSDOM.setHTML(me.self, src);
+    }
+
+    #onResize() {
+        const me = this;
+        clearTimeout(me.#tid);
+        me.#tid = setTimeout(() => me.#postResize(), 250);
+    }
+
+    #postResize() {
+
+        const me = this;
+        if (me.autofit) return;
+
+        if (!tbl) return;
+        if (me.#dftRec === 0) {
+            me.#dftRec = me.store.limit;
+            const pg = me.query('gs-pager')?.getBoundingClientRect();
+            const th = me.query('thead')?.getBoundingClientRect();
+            me.#oSize = (pg?.height || 0) + (th?.height || 0);
+        }
+
+        if (me.#rSize === 0) {
+            me.#rSize = me.query('tbody tr')?.getBoundingClientRect().height || 0;
+        }
+
+        if (me.#dftRec === 0) return;
+        if (me.#rSize === 0) return;
+
+        const r = me.getBoundingClientRect();
+        const h = window.innerHeight - r.top - me.#oSize - (me.#rSize * 2);
+        const rows = Math.floor(h / me.#rSize);
+        me.store.limit = rows > 1 && rows < me.#dftRec ? rows : me.#dftRec;
+
     }
 
     /**
