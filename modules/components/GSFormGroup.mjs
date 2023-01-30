@@ -222,17 +222,17 @@ export default class GSFormGroup extends GSElement {
    }
 
    get #placeholder() {
-      return this.placeholder ? `placeholder=${this.placeholder}` : '';
+      return this.placeholder ? `placeholder="${this.placeholder}"` : '';
    }
 
    get #pattern() {
       const me = this;
-      return me.#isText && me.pattern ? `pattern=${me.pattern}` : '';
+      return me.#isText && me.pattern ? `pattern="${me.pattern}"` : '';
    }
 
    get #mask() {
       const me = this;
-      return me.#isText && me.mask ? `mask=${me.mask}` : '';
+      return me.#isText && me.mask ? `mask="${me.mask}"` : '';
    }
 
    get #reveal() {
@@ -306,23 +306,23 @@ export default class GSFormGroup extends GSElement {
 
    get #accept() {
       const me = this;
-      return me.#isFile && me.accept ? `accept=${me.accept}` : '';
+      return me.#isFile && me.accept ? `accept="${me.accept}"` : '';
    }
 
    get #autocapitalize() {
-      return this.autocapitalize ? `autocapitalize=${this.autocapitalize}` : '';
+      return this.autocapitalize ? `autocapitalize="${this.autocapitalize}"` : '';
    }
 
    get #autocomplete() {
-      return this.autocomplete ? `autocomplete=${this.autocomplete}` : '';
+      return this.autocomplete ? `autocomplete="${this.autocomplete}"` : '';
    }
 
    get #value() {
-      return this.value ? `value=${this.value}` : '';
+      return this.value ? `value="${this.value}"` : '';
    }
 
    get #list() {
-      return this.list ? `list=${this.list}` : '';
+      return this.list ? `list="${this.list}"` : '';
    }
 
    get #max() {
