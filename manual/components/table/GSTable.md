@@ -14,6 +14,7 @@ When using different components layout / design, element such as ```<gs-pager>``
 
 | Name               | Description                                              |
 |--------------------|----------------------------------------------------------|
+| autofit            | Default true, will reduce rows to fit to a page (bool)   |
 | multiselect        | Is multi row select is enabled (bool)                    |
 | select             | If row select is enabled. (bool)                         |
 | css                | Geenral table CSS                                        | 
