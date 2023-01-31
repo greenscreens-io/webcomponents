@@ -1,12 +1,14 @@
 # [WebComponents](https://webcomponents.greenscreens.ltd/) for [Bootstrap 5.2.0+](https://getbootstrap.com/)
  
 # Release v1.2.1 (30.01.2023.) 
- - GSTable size autofit added
- - Menu item title support added
- - Notification placement fix
  - Bootstrap update to 5.2.3
  - Add password reveal shortcut
+ - GSDialog ESC key fix
  - GSDropdown event data handling fix
+ - GSFormGroup attributes fix
+ - GSMenu item title support added
+ - GSNotification placement fix
+ - GSTable size autofit added
 
 # Release v1.2.0 (17.11.2022.)
 
