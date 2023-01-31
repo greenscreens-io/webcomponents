@@ -16,5 +16,5 @@ Project web page at [webcomponents.greenscreens.ltd](https://webcomponents.green
 
 To compile, use "rollup -c" (recommended) or "webpack" from command line.
  
-&copy; Green Screens Ltd. 2016 - 2022
+&copy; Green Screens Ltd. 2016 - 2023
  

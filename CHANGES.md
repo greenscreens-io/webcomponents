@@ -35,5 +35,5 @@ __Improvements and fixes__
 
 <br><hr>
 
-&copy; Green Screens Ltd. 2016 - 2022
+&copy; Green Screens Ltd. 2016 - 2023
  
