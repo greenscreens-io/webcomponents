@@ -27,7 +27,7 @@ export default class GSModal extends GSElement {
   }
 
   static get observedAttributes() {
-    const attrs = ['cancelable', 'closable', 'title', 'visible'];
+    const attrs = ['cancelable', 'closable', 'title', 'visible', 'button-ok', 'button-cancel'];
     return GSElement.observeAttributes(attrs);
   }
 
@@ -264,6 +264,8 @@ export default class GSModal extends GSElement {
     const css = `justify-content-${me.align}`;
     const footer = me.query('.modal-footer');
     GSDOM.toggleClass(footer, css, true);
+    if (me.#buttonOkEl) me.#buttonOkEl.innerText = me.buttonOk;
+    if (me.#buttonCancelEl) me.#buttonCancelEl.innerText = me.buttonCancel;    
   }
 
   /**
