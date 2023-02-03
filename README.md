@@ -8,7 +8,7 @@ The library code is made with ECMAScript 2022 (ES13) standard using static class
 
 NOTE 1: Safari browser v16.2 is not fully supported. ECMAScript 2022 (ES13) static class initializers are available in Safari Technology Preview, which might become available in the next release (16.3?!).
  
-NOTE 2: Firefox currently does not support HTMLElement.computedStyleMap(). Features as autoamtic field text case conversion and keyboard accessibility navigation are not supported.
+NOTE 2: Firefox currently does not support HTMLElement.computedStyleMap(). Features as automatic field text case conversion and keyboard accessibility navigation are not supported.
 
 Clone a repo and use the web server to point to the repo root directory, then access demos at http://localhost/demos to learn how to use the components.
 
