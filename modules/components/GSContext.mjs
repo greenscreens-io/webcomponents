@@ -121,7 +121,7 @@ export default class GSContext extends GSElement {
   }
 
   close(e) {
-    if (e instanceof Event) e.preventDefault();
+    GSEvents.prevent(e);
     const me = this;
     me.#menu?.close();
   }

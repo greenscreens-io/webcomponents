@@ -121,6 +121,7 @@ export default class GSMenu extends GSUListExt {
     GSEvents.prevent(e);
     const me = this;
     if (!me.closable) return false;
+    if (!me.visible) return false;
     me.#closeSubmenus();
     GSDOM.toggleClass(me, 'show', false);
     me.style.left = '';
@@ -253,7 +254,7 @@ export default class GSMenu extends GSUListExt {
     me.#handleGroup(e);
     const data = e.target.dataset;
     const opt = { type: 'menu', option: e.target, caller: me.#caller, data: data };
-    GSEvents.send(me, 'action', opt, true, true, true); // notify self
+    GSEvents.sendDelayed(me, 'action', opt, true, true, true); // notify self
   }
 
   #handleGroup(e) {
