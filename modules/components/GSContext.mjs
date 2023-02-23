@@ -131,7 +131,8 @@ export default class GSContext extends GSElement {
   }
 
   toggle() {
-    me.#menu?.toggle();
+    const me = this;
+    return me.disabled ? false : me.#menu?.toggle();
   }
 
   /**
@@ -141,7 +142,8 @@ export default class GSContext extends GSElement {
    * @returns {void}
    */
   popup(x = 0, y = 0, caller) {
-    this.#menu?.popup(x, y, caller);
+    const me = this;
+    return me.disabled ? false : me.#menu?.popup(x, y, caller);
   }
 
   /**
@@ -199,6 +201,7 @@ export default class GSContext extends GSElement {
     const me = this;
     if (!me.target) return;
     if (me.#attached) return;
+    if (!me.target) return;
     const targets = GSDOM.queryAll(document.documentElement, me.target);
     if (targets.length === 0) {
       if (me.#online) {
