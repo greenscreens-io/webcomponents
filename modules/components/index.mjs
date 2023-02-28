@@ -30,6 +30,7 @@ import "./GSTooltip.mjs";
 import "./filebox/index.mjs";
 import "./table/index.mjs";
 import "./toast/index.mjs";
+import "./steps/index.mjs";
 
 
 /*

@@ -30,6 +30,7 @@ export { default as GSTooltip } from "./GSTooltip.mjs";
 export * from "./filebox/index.esm.mjs";
 export * from "./table/index.esm.mjs";
 export * from "./toast/index.esm.mjs";
+export * from "./steps/index.esm.mjs";
 
 
 /*

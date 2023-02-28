@@ -79,6 +79,13 @@ export default class GSElement extends HTMLElement {
 	}
 
 	/**
+	 * Is proxied HTML wrapped in GS-block
+	 */
+	get isWrap() {
+        return true;
+    }
+
+	/**
 	 * Return if this component uses shadow DOM or flat - directly injected into a page
 	 * If set to true, use anchor attribute to determine where to inject
 	 * @returns {boolean} 
@@ -625,7 +632,7 @@ export default class GSElement extends HTMLElement {
 
 			if (me.#proxied) {
 				if (useTpl) {
-					me.#content = GSDOM.parseWrapped(me, src, true);
+					me.#content = me.isWrap ? GSDOM.parseWrapped(me, src, true) : GSDOM.parse(src, true);
 				} else {
 					me.#content = GSDOM.parse(src, true);
 					me.#content.id = me.id;
@@ -693,7 +700,7 @@ export default class GSElement extends HTMLElement {
 				el = me.parentElement;
 				break;
 			default:
-				el = GSDOM.query(document.documentElement, target);
+				el = GSDOM.query(me.owner, target) || GSDOM.query(document.documentElement, target);
 		}
 
 		if (!el) {

@@ -73,7 +73,7 @@ export default class GSItem extends HTMLElement {
 	}
 
 	/**
-	 * Hepler to joinf all base data-bs related attributes
+	 * Hepler to join all base data-bs related attributes
 	 * @param {*} el 
 	 * @returns 
 	 */

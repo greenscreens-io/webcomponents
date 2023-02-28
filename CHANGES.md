@@ -1,5 +1,16 @@
 # [WebComponents](https://webcomponents.greenscreens.ltd/) for [Bootstrap 5.2.0+](https://getbootstrap.com/)
- 
+
+# Release v1.3.0 (01.03.2023.) 
+ - Add GSElement proxied html wrap control
+ - Add GSElement proxied target search parent.child
+ - Add GSAttr flatten for attribute clonning
+ - Add GSSteps/GSStep component for wizzard panels
+ - Add buttons live update for GSModal  
+ - Add buttons live update for GSDialog
+ - Fix GSMenu close handling fix to prevent double call
+ - Fix GSCSSMap.asNum for Firefox; add modules type to Rollup build
+ - Bootstrap CSS update to the latest version 5.2.3
+
 # Release v1.2.1 (30.01.2023.) 
  - Bootstrap update to 5.2.3
  - Add password reveal shortcut

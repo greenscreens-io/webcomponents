@@ -133,6 +133,10 @@ export default class GSAttr {
 			.join(' ');
 	}
 
+	static flatten(el) {
+		return Array.from(el?.attributes || []).map(a => `${a.name}="${a.value}"`).join(' ');
+	}
+
 	static {
 		Object.seal(GSAttr);
 		globalThis.GSAttr = GSAttr;
