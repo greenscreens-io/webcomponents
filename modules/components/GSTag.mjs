@@ -15,7 +15,7 @@ import GSItem from "../base/GSItem.mjs";
 
 /**
  * Tag list element
- * TODO GSTag duplicates; input element value
+ * 
  * @class
  * @extends {GSElement}
  */
@@ -103,10 +103,16 @@ export default class GSTag extends GSElement {
         return me.#options.filter(el => el.value.toLowerCase() === me.#input.value.toLowerCase()).pop();        
     }
 
+    get #isDuplicate() {
+        const me = this;
+        const val = me.#input.value.toLowerCase();
+        return me.values.filter( v => v.toLowerCase() === val).length > 0 ;
+    }
+
     #addTag(optEl) {
         const me = this;
         const fld = me.#input;
-        if (me.#isMax ||(!optEl && me.allowAdd == false)) {
+        if (me.#isDuplicate || me.#isMax ||(!optEl && me.allowAdd == false)) {
             fld.value = '';
             return;
         }
