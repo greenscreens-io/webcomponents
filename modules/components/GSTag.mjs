@@ -70,7 +70,7 @@ export default class GSTag extends GSElement {
     }
 
     #onKeyDown(e) {
-        if (['Comma', 'Enter', 'Space'].indexOf(e.code) < 0) return;        
+        if (['Enter', 'NumpadEnter', 'Comma', 'Space'].indexOf(e.code) < 0) return;        
         this.#updateTag(e);
     }
 
@@ -112,10 +112,11 @@ export default class GSTag extends GSElement {
     #addTag(optEl) {
         const me = this;
         const fld = me.#input;
-        if (me.#isDuplicate || me.#isMax ||(!optEl && me.allowAdd == false)) {
+        if (me.#isMax ||(!optEl && me.allowAdd == false)) {
             fld.value = '';
             return;
         }
+        if (me.#isDuplicate) return;
         const src = me.#renderTag(fld.value);
         const el = GSDOM.parse(src, true);
         fld.insertAdjacentElement('beforebegin', el);
