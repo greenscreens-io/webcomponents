@@ -25,6 +25,7 @@ import "./GSPopup.mjs";
 import "./GSProgress.mjs";
 import "./GSSplitter.mjs";
 import "./GSTab.mjs";
+import "./GSTag.mjs";
 import "./GSTooltip.mjs";
 
 import "./filebox/index.mjs";

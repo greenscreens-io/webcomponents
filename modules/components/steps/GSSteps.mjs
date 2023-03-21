@@ -62,8 +62,17 @@ export default class GSSteps extends GSElement {
         return me.steps[me.#index];
     }
 
+    get isFirst() {
+        return this.#index === 0;
+    }
+
+    get isLast() {
+        return this.#index === this.length-1;
+    }
+
     next() {
         const me = this;
+        if (me.isLast) return false;
         me.current.color = GSStep.COMPLETED;
         me.index++;
         me.current.color = GSStep.SELECTED;
@@ -72,7 +81,7 @@ export default class GSSteps extends GSElement {
 
     previous() {
         const me = this;
-        if (me.index === 0) return;
+        if (me.isFirst) return false;
         me.current.color = GSStep.INACTIVE;
         me.index--;
         me.current.color = GSStep.SELECTED;
