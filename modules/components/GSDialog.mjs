@@ -405,8 +405,8 @@ export default class GSDialog extends GSElement {
     if (val) return super.getTemplate(val);
     const me = this;
     return `
-        <dialog class="dialog p-0 border-0 ${me.css}">
-        <div class="card">
+        <dialog class="dialog p-0 border-0">
+        <div class="card  ${me.css}">
             <div class="card-header user-select-none ${me.cssHeader}">
               <div class="card-title ${me.cssTitle}">
                 <slot name="title"></slot>
