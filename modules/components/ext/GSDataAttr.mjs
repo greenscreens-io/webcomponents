@@ -16,6 +16,7 @@ import GSDOM from "../../base/GSDOM.mjs";
 import GSAttr from "../../base/GSAttr.mjs";
 import GSElement from "../../base/GSElement.mjs";
 import GSData from "../../base/GSData.mjs";
+import GSCSSMap from "../../base/GSCSSMap.mjs";
 
 /**
  * Process Bootstrap data-bs-* attributes
@@ -177,7 +178,8 @@ export default class GSDataAttr {
 
     static #isHidden(el) {
         if (el.matches('.hide,.fade,.collapse') && !el.matches('.show')) return true;
-        return GSDOM.isStyleValue(el, 'display', 'none');
+        const css = GSCSSMap.getComputedStyledMap(el);
+		return css.matches('display', 'none');
     }
 
     static #isCollapsible(el) {
