@@ -342,7 +342,7 @@ export default class GSBase extends HTMLElement {
 	 * @returns {boolean}
 	 */
 	get async() {
-		return this.getAttributeBool('async', 'false');
+		return this.hasAttribute('async');
 	}
 
 	/**
@@ -350,7 +350,7 @@ export default class GSBase extends HTMLElement {
 	 * @returns {boolean}
 	 */
 	get defer() {
-		return this.getAttributeBool('defer', 'false');
+		return this.hasAttribute('defer');
 	}
 
 	/**
@@ -358,7 +358,7 @@ export default class GSBase extends HTMLElement {
 	 * @returns {boolean}
 	 */
 	get isHead() {
-		return this.getAttributeBool('head');
+		return this.hasAttribute('head');
 	}
 
 	/**
@@ -366,7 +366,7 @@ export default class GSBase extends HTMLElement {
 	 * @returns {boolean}
 	 */
 	get isAuto() {
-		return this.getAttributeBool('auto');
+		return this.hasAttribute('auto');
 	}
 
 	/**
@@ -400,16 +400,6 @@ export default class GSBase extends HTMLElement {
 
 	get referrerpolicy() {
 		return this.getAttribute('referrerpolicy');
-	}
-
-	/**
-	 * Check if attribute is true or just available
-	 * @param {string} name Attribute name
-	 * @returns {boolean}
-	 */
-	getAttributeBool(name = '', dft = 'true') {
-		const val = this.getAttribute(name) || dft;
-		return val === 'true';
 	}
 
 	get #nocache() {

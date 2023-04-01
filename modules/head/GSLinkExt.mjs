@@ -33,6 +33,7 @@ export default class GSLinkExt extends HTMLLinkElement {
 
 	disconnectedCallback() {
 		const me = this;
+		clearInterval(me.#callback);
 		if (!me.isCSS) return;
 		const sheet = GSCacheStyles.remove(me.order);
 		GSBase.sendSuspendedEvent(document, 'gs-style', sheet);

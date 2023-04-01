@@ -32,6 +32,7 @@ export default class GSStyleExt extends HTMLStyleElement {
 
 	disconnectedCallback() {
 		const me = this;
+		clearInterval(me.#callback);
 		const sheet = GSCacheStyles.remove(me.order);
 		GSBase.sendSuspendedEvent(document, 'gs-style', sheet);
 	}

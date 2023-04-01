@@ -11,7 +11,7 @@ import GSBase from "./GSBase.mjs";
 
 /**
  * Link element to load css src based on environment
- * To support custom components shared styling use shadow=true attribute
+ * To support custom components shared styling use shadow attribute
  * @class
  * @extends head/GSBase
  */
@@ -46,7 +46,7 @@ export default class GSLink extends GSBase {
 	}
 
 	get shadow() {
-		return this.getAttribute('shadow') === 'true';
+		return this.hasAttribute('shadow');
 	}
 
 	static {

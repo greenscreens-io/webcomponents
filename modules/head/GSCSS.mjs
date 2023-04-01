@@ -35,7 +35,7 @@ export default class GSCSS extends GSBase {
 	attributeCallback(name, oldValue, newValue) {
 		const me = this;
 		if (name !== 'disabled') return;
-		return me.isDisabled ? me.dispose() : me.render();
+		return me.disabled ? me.dispose() : me.render();
 	}
 
 	constructor() {
@@ -53,7 +53,7 @@ export default class GSCSS extends GSBase {
 	 */
 	async render() {
 		const me = this;
-		if (me.isDisabled) return;
+		if (me.disabled) return;
 		if (!me.order) me.order = GSBase.nextID();
 		//const hash = GSBase.hashCode(me.url);
 		try {
@@ -104,19 +104,11 @@ export default class GSCSS extends GSBase {
 	 * @returns {boolean}
 	 */
 	get disabled() {
-		return this.getAttribute('disabled');
+		return this.hasAttribute('disabled');
 	}
 
-	set disabled(val = '') {
-		return this.setAttribute('disabled', '' + val == 'true');
-	}
-
-	/**
-	 * Check if style is disabled
-	 * @returns {boolean}
-	 */
-	get isDisabled() {
-		return this.disabled === 'true';
+	set disabled(val = false) {
+		return val ? this.setAttribute('disabled', '') : this.removeAttribute('disabled');
 	}
 
 	/**
