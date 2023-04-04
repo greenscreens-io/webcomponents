@@ -27,7 +27,7 @@ export default class GSProgress extends GSElement {
     }
 
     static get observedAttributes() {
-        const attrs = ['min', 'max', 'now'];
+        const attrs = ['min', 'max', 'value'];
         return GSElement.observeAttributes(attrs);
     }
 
@@ -39,25 +39,43 @@ export default class GSProgress extends GSElement {
         const me = this;
         const bar = me.#bar;
         if (!bar) return;
-        GSAttr.set(bar, `aria-value${name}`, newValue);
-        bar.style.width = `${me.percentage}%`;
-        if (me.label) GSDOM.setHTML(bar, me.#fromLabel());
+        GSAttr.set(bar, `data-${name}`, newValue);
+        me.#updatePercentage();
+    }
+    
+    #updatePercentage() {
+        const me = this;
+        const bar = me.#bar;
+        const rule = GSCacheStyles.getRule(me.#barRule);
+        if (rule) rule.style.width = `${me.percentage}%`;
+        //if (bar) bar.style.width = `${me.percentage}%`;        
+        if (me.label && bar) GSDOM.setHTML(bar, me.#fromLabel());
     }
 
     #fromLabel() {
         const me = this;
-        const opt = { now: me.value, min: me.min, max: me.max, percentage: me.percentage };
+        const opt = { value: me.value, min: me.min, max: me.max, percentage: me.percentage };
         return GSUtil.fromTemplateLiteral(me.label, opt);
+    }
+
+    get #barRule() {
+        return `${this.styleID}-bar`;
     }
 
     async getTemplate(val = '') {
         const me = this;
-        const label = me.label ? GSUtil.fromTemplateLiteral(me.label, { now: me.value, min: me.min, max: me.max, percentage: me.percentage }) : '';
+        const label = me.label ? GSUtil.fromTemplateLiteral(me.label, { value: me.value, min: me.min, max: me.max, percentage: me.percentage }) : '';
+		GSCacheStyles.addRule(`${me.#barRule}`, `width:${me.percentage}%`);
         return `
-        <div class="progress" style="${this.getStyle()}">
-            <div class="progress-bar ${me.css}" role="progressbar" style="width: ${me.percentage}%" aria-valuenow="${me.value}" aria-valuemin="${me.min}" aria-valuemax="${me.max}">${label}</div>
+        <div class="progress ${this.styleID}">
+            <div class="progress-bar ${me.css} ${me.#barRule}" role="progressbar" data-value="${me.value}" data-min="${me.min}" data-max="${me.max}">${label}</div>
         </div>    
         `;
+    }
+
+    onReady() {
+        super.onReady();
+        this.#updatePercentage();
     }
 
     get #bar() {
@@ -78,16 +96,16 @@ export default class GSProgress extends GSElement {
     }
 
     get value() {
-        return GSAttr.getAsNum(this, 'now', 0);
+        return GSAttr.getAsNum(this, 'value', 0);
     }
 
     set value(val = '') {
         if (!GSUtil.isNumber(val)) return false;
         const me = this;
-        let v = GSUtil.asNum(val) || me.value;
+        let v = GSUtil.asNum(val); // || me.value;
         if (v > me.max) v = me.max;
         if (v < me.min) v = me.min;
-        return GSAttr.set(me, 'now', v);
+        return GSAttr.setAsNum(me, 'value', v);
     }
 
     get min() {

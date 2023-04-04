@@ -321,6 +321,19 @@ export default class GSElement extends HTMLElement {
 	}
 
 	/**
+	 * Element dynamic style id
+	 */
+	get styleID() {
+		return `${this.tagName}-${this.id}`.toLocaleLowerCase();
+	}
+
+	#createStyleClass() {
+		const me = this;
+		GSCacheStyles.removeRule(me.styleID);
+		GSCacheStyles.addRule(me.styleID, me.getStyle());
+	}
+
+	/**
 	 * Find element by its ID
 	 * @param {string} name 
 	 * @returns {HTMLElement}
@@ -513,6 +526,7 @@ export default class GSElement extends HTMLElement {
 		me.#observer?.disconnect();
 		GSComponents.remove(me);
 		GSEvents.deattachListeners(me);
+		GSCacheStyles.removeRule(me.styleID);
 		me.#removeFlat();
 		me.#observer = null;
 		me.#content = null;
@@ -628,6 +642,7 @@ export default class GSElement extends HTMLElement {
 
 			if (me.offline) return;
 
+			me.#createStyleClass();
 			const inject = me.#opts;
 
 			if (me.#proxied) {

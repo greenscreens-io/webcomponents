@@ -36,7 +36,7 @@ export default class GSLayout extends GSElement {
         const html = await Promise.all(list);
         const type = me.isVertical ? 'flex-column' : 'flex-row';
         const top = me.isFlat ? '' : 'vh-100';
-        return `<div class="${top} d-flex flex-fill ${type} ${me.css}" style="${this.getStyle()}">${html.join('')}</div>`
+        return `<div class="${top} d-flex flex-fill ${type} ${me.css}" ${this.getStyle(true)}>${html.join('')}</div>`
     }
 
     /**

@@ -72,8 +72,36 @@ export default class GSCacheStyles {
 		return me.set(id, style);
 	}
 
+	static get dynamic() {
+		const me = GSCacheStyles;
+		const id = 'gs-dynamic';
+		let sheet = me.get(id);
+		if (!sheet) {
+			sheet = new CSSStyleSheet();		
+			me.#store.set(id, sheet);
+			document.adoptedStyleSheets = GSCacheStyles.styles;
+		}
+		return sheet;
+	}	
+
+	static getRule(id = '') {
+		return Array.from(GSCacheStyles.dynamic.rules)
+			.filter(v => v.selectorText === `.${id}`).pop();
+	}
+
+	static addRule(id = '', style = '') {
+		if (id && style) GSCacheStyles.dynamic.addRule(`.${id}`, style);
+	}
+
+	static removeRule(id = '') {
+		Array.from(GSCacheStyles.dynamic.rules)
+			.map((v, i) => v.selectorText === `.${id}` ? i : -1)
+			.filter(v => v>-1)
+			.forEach(v => GSCacheStyles.dynamic.removeRule(v));
+	}	
+
 	/**
-	 * Return lsit of registered style sheets
+	 * Return list of registered style sheets
 	 * @returns {Array<CSSStyleSheet>}
 	 */
 	static get styles() {
@@ -99,7 +127,7 @@ export default class GSCacheStyles {
 	static {
 		Object.freeze(GSCacheStyles);
 		globalThis.GSCacheStyles = GSCacheStyles;
-		const style = '.gs-hide{display:none !important;}.gs-hide-orientation,.gs-render{display:none !important;}gs-item{display:none !important;}';
+		const style = '.z-10k{z-index:10000 !important;}.gs-hide{display:none !important;}.gs-hide-orientation,.gs-render{display:none !important;}gs-item{display:none !important;}';
 		GSCacheStyles.injectStyle(style);
 	}
 }

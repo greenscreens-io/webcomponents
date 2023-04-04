@@ -61,7 +61,7 @@ export default class GSNotification extends GSElement {
 
   async getTemplate(val = '') {
     const me = this;
-    return `<div class="toast-container ${me.css} ${me.position}" style="z-index: 10000;">
+    return `<div class="toast-container z-10k ${me.css} ${me.position}">
     <slot name="content"></slot>
     </div>`;
   }
