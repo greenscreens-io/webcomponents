@@ -30,13 +30,18 @@ export default class GSLayout extends GSElement {
         GSItem.validate(this, this.tagName);
     }
 
+    disconnectedCallback() {
+        GSItem.genericItems(this).forEach(el  => GSCacheStyles.removeRule(el.dataset.cssId));        
+        super.disconnectedCallback();
+    }
+
     async getTemplate(val = '') {
         const me = this;
-        const list = GSItem.genericItems(me).map(el => me.#generateHtml(el));
+        const list = GSItem.genericItems(me).map((el, idx) => me.#generateHtml(el, idx));
         const html = await Promise.all(list);
         const type = me.isVertical ? 'flex-column' : 'flex-row';
         const top = me.isFlat ? '' : 'vh-100';
-        return `<div class="${top} d-flex flex-fill ${type} ${me.css}" ${this.getStyle(true)}>${html.join('')}</div>`
+        return `<div class="${top} d-flex flex-fill ${type} ${me.css}  ${me.styleID}"  data-css-id="${me.styleID}">${html.join('')}</div>`
     }
 
     /**
@@ -65,10 +70,12 @@ export default class GSLayout extends GSElement {
      * 
      * @async
      * @param {HTMLElement} el 
+     * @param {Number} idx
      * @returns {Promise<string>}
      */
-    async #generateHtml(el) {
+    async #generateHtml(el, idx) {
         const me = this;
+        el.dataset.cssId = `${me.id}-${idx}`;
         const res = me.#resizable(el);
 
         const id = GSAttr.get(el, 'id');
@@ -76,10 +83,12 @@ export default class GSLayout extends GSElement {
         const tpl = GSItem.getBody(el, me.isFlat);
 
         const style = me.#generateStyle(el);
+        GSCacheStyles.addRule(el.dataset.cssId, style);
+        
         const fixed = style.length > 10 ? true : false;
         const cls = me.#generateClass(el, fixed);
 
-        const child = `<div class="${cls}" id="${name || GSID.next()}" ${style}>${tpl}</div>`;
+        const child = `<div class="${cls} ${el.dataset.cssId}" data-css-id="${el.dataset.cssId}" id="${name || GSID.next()}">${tpl}</div>`;
 
         if (res) {
             const pos = me.#splitter(el);
@@ -109,7 +118,7 @@ export default class GSLayout extends GSElement {
         const min = GSAttr.getAsNum(el, 'min', 0);
         const smax = max > 0 ? `max-${sfx}: ${max}px;` : '';
         const smin = min > 0 ? `min-${sfx}: ${min}px;` : '';
-        return ['style="', smax, smin, '"'].join('');
+        return [smax, smin].join('');
     }
 
     /**
@@ -185,4 +194,3 @@ export default class GSLayout extends GSElement {
     }
 
 }
-

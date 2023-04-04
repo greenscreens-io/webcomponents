@@ -14,6 +14,7 @@ import GSEvents from "../base/GSEvents.mjs";
 import GSAttr from "../base/GSAttr.mjs";
 import GSDOM from "../base/GSDOM.mjs";
 import GSCSSMap from "../base/GSCSSMap.mjs";
+import GSCacheStyles from "../head/GSCacheStyles.mjs";
 
 /**
  * Renderer for element splitter
@@ -34,25 +35,35 @@ export default class GSSplitter extends GSElement {
         super();
     }
 
-    async getTemplate(val = '') {
+    disconnectedCallback(){
+        GSCacheStyles.removeRule(this.#ruleDynamic);
+        super.disconnectedCallback();
+    }
+
+    get #ruleDynamic() {
+        return `${this.styleID}-dynamic`;
+    }
+
+    get #cssDynamic() {
         const me = this;
         const size = me.isVertical ? 'width' : 'height';
         const full = me.isVertical ? 'height' : 'width';
         const cursor = me.isVertical ? 'w-resize' : 'n-resize';
         return `
-            <style>
-                .splitter {
-                    ${size}: ${me.size}px;
-                    ${full}: 100%;
-                    border-width: 1px;
-                    cursor: ${cursor};
-                    border-color: darkgray;
-                    border-style: solid;
-                    background-color: lightgray;
-                }                        
-            </style>
-            <div class="splitter ${me.css} ${this.styleID}"></div>
+            ${size}: ${me.size}px;
+            ${full}: 100%;
+            border-width: 1px;
+            cursor: ${cursor};
+            border-color: darkgray;
+            border-style: solid;
+            background-color: lightgray;
         `;
+    }
+
+    async getTemplate(val = '') {
+        const me = this;
+        GSCacheStyles.addRule(me.#ruleDynamic, me.#cssDynamic);
+        return `<div class="splitter ${me.css} ${me.styleID} ${me.#ruleDynamic}" data-css-id="${this.styleID}" data-rule-id="${this.#ruleDynamic}"></div>`;
     }
 
     /**
@@ -156,14 +167,7 @@ export default class GSSplitter extends GSElement {
         const key = GSID.hashCode(location.origin + location.pathname);
         let val = localStorage.getItem(`gs-splitter-${key}-${me.id}`);
         val = GSUtil.asNum(val);
-        if (val > 0) {
-            me.#cursor = val;
-            if (me.isVertical) {
-                me.target.style.width = val + "px";
-            } else {
-                me.target.style.height = val + "px";
-            }
-        }
+        me.#update(val);
     }
 
     #save() {
@@ -218,10 +222,10 @@ export default class GSSplitter extends GSElement {
         const me = this;
         GSEvents.prevent(e);
         const pos = me.isVertical ? e.clientX : e.clientY;
-        me.#update(pos);
+        me.#updateMouse(pos);
     }
 
-    #update(pos) {
+    #updateMouse(pos) {
         const me = this;
         requestAnimationFrame(() => {
             if (me.isVertical) {
@@ -243,7 +247,7 @@ export default class GSSplitter extends GSElement {
         let dx = (pos - me.#cursor) * dir;
         dx = dx + target.clientWidth;
         dx = dx < 0 ? 0 : dx;
-        target.style.width = dx + "px";
+        me.#styleDynamic.width = dx + "px";
         me.#cursor = pos;
     }
 
@@ -258,8 +262,26 @@ export default class GSSplitter extends GSElement {
         let dx = (pos - me.#cursor) * dir;
         dx = dx + target.clientHeight;
         dx = dx < 0 ? 0 : dx;
-        target.style.height = dx + "px";
+        me.#styleDynamic.height = dx + "px";
         me.#cursor = pos;
+    }
+
+    #update(val = 0) {
+        if (val <= 0) return
+        const me = this;
+        me.#cursor = val;
+        if (me.isVertical) {
+            me.#styleDynamic.width = val + "px";
+        } else {
+            me.#styleDynamic.height = val + "px";
+        }
+    }
+
+    get #styleDynamic() {
+        const me = this;
+        const target = me.target;
+        const rule = GSCacheStyles.getRule(target.dataset.cssId || target.id);
+        return rule?.style || target.style;        
     }
 }
 

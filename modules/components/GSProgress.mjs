@@ -11,6 +11,7 @@ import GSUtil from "../base/GSUtil.mjs";
 import GSElement from "../base/GSElement.mjs";
 import GSAttr from "../base/GSAttr.mjs";
 import GSDOM from "../base/GSDOM.mjs";
+import GSCacheStyles from "../head/GSCacheStyles.mjs";
 
 /**
  * Process Bootstrap progress component
@@ -42,6 +43,11 @@ export default class GSProgress extends GSElement {
         GSAttr.set(bar, `data-${name}`, newValue);
         me.#updatePercentage();
     }
+
+    disconnectedCallback() {
+        GSCacheStyles.removeRule(this.#barRule);
+        super.disconnectedCallback();
+    }
     
     #updatePercentage() {
         const me = this;
@@ -67,8 +73,8 @@ export default class GSProgress extends GSElement {
         const label = me.label ? GSUtil.fromTemplateLiteral(me.label, { value: me.value, min: me.min, max: me.max, percentage: me.percentage }) : '';
 		GSCacheStyles.addRule(`${me.#barRule}`, `width:${me.percentage}%`);
         return `
-        <div class="progress ${this.styleID}">
-            <div class="progress-bar ${me.css} ${me.#barRule}" role="progressbar" data-value="${me.value}" data-min="${me.min}" data-max="${me.max}">${label}</div>
+        <div class="progress ${this.styleID}"  data-css-id="${this.styleID}">
+            <div class="progress-bar ${me.css} ${me.#barRule}" data-rule-id="${this.#barRule}" role="progressbar" data-value="${me.value}" data-min="${me.min}" data-max="${me.max}">${label}</div>
         </div>    
         `;
     }

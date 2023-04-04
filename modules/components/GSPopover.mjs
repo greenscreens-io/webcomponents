@@ -93,7 +93,7 @@ export default class GSPopover extends GSElement {
         const me = this;
         const head = me.title ? `<div class="popover-header ${me.cssHead}">${me.title}</div>` : '';
         return `
-        <div class="popover bs-popover-auto fade ${me.css}" data-popper-placement="${me.placement} ${this.styleID}" role="tooltip">
+        <div class="popover bs-popover-auto fade ${me.css}" data-popper-placement="${me.placement} ${this.styleID}"  data-css-id="${this.styleID}" role="tooltip">
             <div class="popover-arrow"></div>
             ${head}
             <div class="popover-body">${me.content}</div>

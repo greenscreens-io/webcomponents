@@ -67,7 +67,6 @@ export default class GSChart extends GSElement {
     async getTemplate(val = '') {
         const me = this;
         if (me.width && me.height) {
-            //return `<div style="width:${me.width}px;height:${me.height}px;"><canvas width="${me.width}" height="${me.height}" class="${me.css}"></canvas></div>`;
             return `<canvas width="${me.width}" height="${me.height}" class="${me.css}"></canvas>`;
         }
         return `<canvas class="${me.css}"></canvas>`;
