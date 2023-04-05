@@ -51,6 +51,9 @@ export default class GSMenu extends GSUListExt {
     const me = this;
     GSEvents.deattachListeners(me);    
     GSCacheStyles.deleteRule(me.id);
+    while(me.#csscnt>-1) {
+      GSCacheStyles.deleteRule(`${me.id}-${me.#csscnt--}`);
+    }    
     super.disconnectedCallback();
   }
 

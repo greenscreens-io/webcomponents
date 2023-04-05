@@ -289,7 +289,7 @@ export default class GSOffcanvas extends GSElement {
     const closeBtn = me.closable ? `<button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"></button>` : '';
     const header = title || closeBtn || me.#headSlot ? `<div class="offcanvas-header ${me.cssHead}"><slot name="header">${title}${closeBtn}</slot></div>` : '';
     return `
-      <div class="offcanvas offcanvas-${me.placement} overflow-hidden ${me.css} ${me.styleID}" data-style-id="${me.styleID}" data-bs-scroll="${me.scroll}" data-bs-backdrop="${me.backdrop}" tabindex="-1">      
+      <div class="offcanvas offcanvas-${me.placement} overflow-hidden ${me.css} ${me.styleID}" data-bs-scroll="${me.scroll}" data-bs-backdrop="${me.backdrop}" tabindex="-1">      
       ${header}
       <div class="offcanvas-body  ${me.cssBody}">
         <slot name="body"></slot>
