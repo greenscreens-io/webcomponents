@@ -80,5 +80,7 @@ UI WebComponents are divided into following groups
 * Composites based - similar to generators, but reders a template based on multiple GS Components such as [GSTable](../modules/components/table/GSTable.mjs)
 * Extension based - extends browser native HTMLElement descendats, such as [GSTable](../modules/components/ext/GSFormExt.mjs). Requires extending native tag with "is" attribute... ```<form is="gs-ext-form"></gsform>```
 
+### CSP - Content Securit Policy
 
+In some cases, CSP errors might show up in the browser console. All components uses CSS API which should be compatible with CSP to allow dynamic CSS styles change, however, for static resources such as Base64 inline encoded images or SVG, use CSP policy __img-src 'self' data:__
 
