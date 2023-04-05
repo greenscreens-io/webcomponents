@@ -40,7 +40,8 @@ export default class GSMenu extends GSUListExt {
 
   connectedCallback() {
     super.connectedCallback();
-    const me = this;    
+    const me = this;
+    GSDOM.toggleClass(me, me.id, true);    
     me.#attachMenuItems();
     me.#attachSubMenu();
     me.#updatePos();
