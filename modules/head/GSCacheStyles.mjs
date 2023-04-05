@@ -111,20 +111,18 @@ export default class GSCacheStyles {
 			return GSCacheStyles.setRule(id, style, sync);
 		}
 
+		let data = [];
 		if (typeof style === 'string') {
-			if (sync) {
-				rule.replaceSync(style);
-			} else {
-				rule.replace(style);
-			}
-			return rule;
-		} 
+			data = style.replaceAll('\n', '').split(';').map(v => v.trim().split(':')).filter(v => v.length === 2);
+		} else {
+			data = Object.entries(style);
+		}
 		
 		if (sync) {
-			Object.entries(style).forEach(kv => GSCacheStyles.#updateRule(rule, kv[0], kv[1]));
+			data.forEach(kv => GSCacheStyles.#updateRule(rule, kv[0], kv[1]));
 		} else {
 			requestAnimationFrame(()=> {
-				Object.entries(style).forEach(kv => GSCacheStyles.#updateRule(rule, kv[0], kv[1]));
+				data.forEach(kv => GSCacheStyles.#updateRule(rule, kv[0], kv[1]));
 			});
 		}
 
@@ -137,10 +135,6 @@ export default class GSCacheStyles {
 		prop = prop.trim();
 		rule.style.setProperty(prop, style,  isImportant ? 'important' : '');
 	}
-
-	static capitalize = (word = '') => word[0].toUpperCase() + word.slice(1).toLowerCase();
-
-	static capitalizeAttr = (word = '') => word.split('-').map((v, i) => i ? GSCacheStyles.capitalize(v) : v).join('');
 
 	/**
 	 * Remove dynamic element rule

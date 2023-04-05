@@ -116,6 +116,12 @@ export default class GSLayout extends GSElement {
         const sfx = me.isVertical ? 'height' : 'width';
         const max = GSAttr.getAsNum(el, 'max', 0);
         const min = GSAttr.getAsNum(el, 'min', 0);
+        /*
+        const style = {};        
+        style[`max-${sfx}`] = max > 0 ? `${max}px;` : '';
+        style[`min-${sfx}`] = min > 0 ? `${min}px;` : '';
+        return style;        
+        */
         const smax = max > 0 ? `max-${sfx}: ${max}px;` : '';
         const smin = min > 0 ? `min-${sfx}: ${min}px;` : '';
         return [smax, smin].join('');
