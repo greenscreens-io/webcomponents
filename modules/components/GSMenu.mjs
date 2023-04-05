@@ -121,7 +121,7 @@ export default class GSMenu extends GSUListExt {
         left : '0px',
         transform : `translate(${cfg.clientX}px, ${cfg.clientY}px)`
       };
-      GSCacheStyles.setRule(me.id, style);
+      GSCacheStyles.setRule(me.id, style, true);
       me.open(cfg);
     });
 
@@ -138,7 +138,7 @@ export default class GSMenu extends GSUListExt {
       left : '',
       top : ''
     };
-    GSCacheStyles.setRule(me.id, style);
+    GSCacheStyles.setRule(me.id, style, true);
     me.#caller?.focus();
     me.#caller = null;
     GSEvents.send(me, 'close');
@@ -195,7 +195,7 @@ export default class GSMenu extends GSUListExt {
         if (tt) top = top - tt.y.value;
         style = {top : `${top}px`};
       }
-      GSCacheStyles.setRule(me.id, style);
+      GSCacheStyles.setRule(me.id, style, true);
     });
   }
 
@@ -239,7 +239,7 @@ export default class GSMenu extends GSUListExt {
           style.left = '100%';
           end = true;
         }
-        GSCacheStyles.setRule(el.dataset.cssId, style);
+        GSCacheStyles.setRule(el.dataset.cssId, style, true);
         el.dataset.end = end;
         el.dataset.start = !end;
         GSDOM.toggleClass(me, 'dropstart', !end);
@@ -307,7 +307,7 @@ export default class GSMenu extends GSUListExt {
       if (sub) {
         me.#attachDynamic(sub);
         const style = {top : `${sub.parentElement.offsetTop}px`};
-        GSCacheStyles.setRule(sub.dataset.cssId, style);
+        GSCacheStyles.setRule(sub.dataset.cssId, style, true);
         GSDOM.toggleClass(sub, 'show', true);
       }
     });
