@@ -106,29 +106,41 @@ export default class GSCacheStyles {
 	static setRule(id = '', style = '', sync = false) {
 		if (!(id && style)) return;
 		let rule = GSCacheStyles.getRule(id);
-		if (rule) {
-			if (typeof style === 'string') {
-				if (sync) {
-					rule.replaceSync(style);
-				} else {
-					rule.replace(style);
-				}
-			} else if (sync) {
-				Object.entries(style).forEach(kv => rule.style[kv[0]]=kv[1]);
-			} else {
-				requestAnimationFrame(()=> {
-					Object.entries(style).forEach(kv => rule.style[kv[0]]=kv[1]);
-				});
-			}
-		} else {
-			if (typeof style !== 'string') {
-				style = Object.entries(style).map(kv => `${kv[0]}=${kv[1]};`).join('');
-			}
-			GSCacheStyles.dynamic.insertRule(`.${id} {${style}}`);
-			rule = GSCacheStyles.getRule(id);
+		if (!rule) {
+			GSCacheStyles.dynamic.insertRule(`.${id} {}`);
+			return GSCacheStyles.setRule(id, style, sync);
 		}
+
+		if (typeof style === 'string') {
+			if (sync) {
+				rule.replaceSync(style);
+			} else {
+				rule.replace(style);
+			}
+			return rule;
+		} 
+		
+		if (sync) {
+			Object.entries(style).forEach(kv => GSCacheStyles.#updateRule(rule, kv[0], kv[1]));
+		} else {
+			requestAnimationFrame(()=> {
+				Object.entries(style).forEach(kv => GSCacheStyles.#updateRule(rule, kv[0], kv[1]));
+			});
+		}
+
 		return rule;
 	}
+
+	static #updateRule(rule, prop = '', style = '') {
+		const isImportant = style.indexOf('!important') > 0;
+		style = style.replace('!important', '');
+		prop = prop.trim();
+		rule.style.setProperty(prop, style,  isImportant ? 'important' : '');
+	}
+
+	static capitalize = (word = '') => word[0].toUpperCase() + word.slice(1).toLowerCase();
+
+	static capitalizeAttr = (word = '') => word.split('-').map((v, i) => i ? GSCacheStyles.capitalize(v) : v).join('');
 
 	/**
 	 * Remove dynamic element rule

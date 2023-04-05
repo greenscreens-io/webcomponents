@@ -12,6 +12,7 @@ import GSDOM from "../base/GSDOM.mjs";
 import GSElement from "../base/GSElement.mjs";
 import GSEvents from "../base/GSEvents.mjs";
 import GSUtil from "../base/GSUtil.mjs";
+import GSCacheStyles from "../head/GSCacheStyles.mjs";
 
 /**
  * Bootstrap modal dialog support
@@ -84,10 +85,21 @@ export default class GSOffcanvas extends GSElement {
     const pos = me.isHorizontal ? 'width' : 'height';
     const val = open ? me.max : me.min;
 
+    /*
     me.#canvasEl.style.transitionProperty = pos;
     me.#canvasEl.style.transitionDuration = `${me.transitionDuration}s`;
     me.#canvasEl.style.transitionTimingFunction = me.transitionFunction;
     me.#canvasEl.style[pos] = `${val}px`;
+    */
+
+    const obj = {
+      'transition-property' : `${pos} !important`,
+      'transition-duration' : `${me.transitionDuration}s  !important`,
+      'transition-timing-function' : `${me.transitionFunction} !important`
+    };
+    obj[pos] = `${val}px !important`;
+    GSCacheStyles.setRule(me.styleID, obj);
+
   }
 
   #updateShow() {
@@ -277,7 +289,7 @@ export default class GSOffcanvas extends GSElement {
     const closeBtn = me.closable ? `<button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"></button>` : '';
     const header = title || closeBtn || me.#headSlot ? `<div class="offcanvas-header ${me.cssHead}"><slot name="header">${title}${closeBtn}</slot></div>` : '';
     return `
-      <div class="offcanvas offcanvas-${me.placement} overflow-hidden ${me.css}" data-bs-scroll="${me.scroll}" data-bs-backdrop="${me.backdrop}" tabindex="-1">      
+      <div class="offcanvas offcanvas-${me.placement} overflow-hidden ${me.css} ${me.styleID}" data-style-id="${me.styleID}" data-bs-scroll="${me.scroll}" data-bs-backdrop="${me.backdrop}" tabindex="-1">      
       ${header}
       <div class="offcanvas-body  ${me.cssBody}">
         <slot name="body"></slot>

@@ -83,10 +83,19 @@
             <a class="btn btn-secondary dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
                 Dropdown link
             </a>
-            <ul class="dropdown-menu">
+            <ul class="dropdown-menu dropend">
                 <li><a class="dropdown-item" href="#">Action</a></li>
                 <li><a class="dropdown-item" href="#">Another action</a></li>
-                <li><a class="dropdown-item" href="#">Something else here</a></li>
+                <li>
+                    <a class="dropdown-item dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                        <div class="d-inline-block w-100">Submenu 1</div>
+                    </a>
+                    <ul class="submenu dropdown-menu">
+                        <li><a class="dropdown-item" href="#">Action</a></li>
+                        <li><a class="dropdown-item" href="#">Another action</a></li>
+                        <li><a class="dropdown-item" href="#">Something else here</a></li>
+                    </ul>                    
+                </li>
             </ul>
         </div>
     </div>

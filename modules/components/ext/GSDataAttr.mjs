@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2015, 2022 Green Screens Ltd.
- */
+ */ 
 
 /**
  * A module loading GSDataAttr class
@@ -207,6 +207,9 @@ export default class GSDataAttr {
 
     static #toggle(obj, type) {
 
+        obj.list.filter(el => el.toggle).forEach(el => el.toggle());
+
+        obj.list = obj.list.filter(el => !el.toggle);
         const list = GSDataAttr.#getByType(obj.list, type);
 
         const objsH = GSDataAttr.#getHidden(list);

@@ -14,6 +14,7 @@ import GSUListExt from "./ext/GSUListExt.mjs";
 import GSAttr from "../base/GSAttr.mjs";
 import GSItem from "../base/GSItem.mjs";
 import GSCSSMap from "../base/GSCSSMap.mjs";
+import GSCacheStyles from "../head/GSCacheStyles.mjs";
 
 /**
  * Context menu
@@ -24,6 +25,7 @@ import GSCSSMap from "../base/GSCSSMap.mjs";
 export default class GSMenu extends GSUListExt {
 
   #caller = null;
+  #csscnt = 0;
 
   static {
     customElements.define('gs-menu', GSMenu, { extends: 'ul' });
@@ -47,7 +49,8 @@ export default class GSMenu extends GSUListExt {
 
   disconnectedCallback() {
     const me = this;
-    GSEvents.deattachListeners(me);
+    GSEvents.deattachListeners(me);    
+    GSCacheStyles.deleteRule(me.id);
     super.disconnectedCallback();
   }
 
@@ -108,10 +111,13 @@ export default class GSMenu extends GSUListExt {
     const me = this;
     const cfg = {clientX: x.clientX || x, clientY: x.clientY || y, target: x.target || caller };
     requestAnimationFrame(() => {
-      me.style.position = 'fixed';
-      me.style.top = '0px';
-      me.style.left = '0px';
-      me.style.transform = `translate(${cfg.clientX}px, ${cfg.clientY}px)`;
+      const style = {
+        position : 'fixed',
+        top : '0px',
+        left : '0px',
+        transform : `translate(${cfg.clientX}px, ${cfg.clientY}px)`
+      };
+      GSCacheStyles.setRule(me.id, style);
       me.open(cfg);
     });
 
@@ -124,8 +130,11 @@ export default class GSMenu extends GSUListExt {
     if (!me.visible) return false;
     me.#closeSubmenus();
     GSDOM.toggleClass(me, 'show', false);
-    me.style.left = '';
-    me.style.top = '';
+    const style = {
+      left : '',
+      top : ''
+    };
+    GSCacheStyles.setRule(me.id, style);
     me.#caller?.focus();
     me.#caller = null;
     GSEvents.send(me, 'close');
@@ -171,23 +180,32 @@ export default class GSMenu extends GSUListExt {
     const wh = parseInt(window.innerHeight, 10);
     const tt = me.#transform;
     requestAnimationFrame(() => {
+      let style = null;
       if (l + w > ww) {
         let left = l - ((l + w) - ww);
         if (tt) left = left - tt.x.value;
-        me.style.left = `${left}px`;
+        style = { left : `${left}px`};
       }
       if (t + h > wh) {
         let top = t - ((t + h) - wh);
         if (tt) top = top - tt.y.value;
-        me.style.top = `${top}px`;      
+        style = {top : `${top}px`};
       }
-
+      GSCacheStyles.setRule(me.id, style);
     });
   }
 
   get #transform() {
     if (!globalThis.CSSTranslate) return null;
     return Array.from(GSCSSMap.styleValue(this, 'transform')).filter(v => v instanceof CSSTranslate).pop();
+  }
+
+  #attachDynamic(el) {
+    const me = this;
+    if (!el.dataset.cssId) {
+      el.dataset.cssId = `${me.id}-${++me.#csscnt}`;
+      el.classList.add(el.dataset.cssId);
+    }    
   }
 
   #updateSubmenus(e) {
@@ -202,18 +220,22 @@ export default class GSMenu extends GSUListExt {
       if (overflowH) x = window.innerWidth - rect.width;
       if (overflowV) y = window.innerHeight - rect.height;
       me.#submenus.forEach(el => {
+        me.#attachDynamic(el);
         let end = true;
-        el.style.position = 'absolute';
-        el.style.left = 'inherit';
-        el.style.right = 'inherit';
-        el.style.top = 'inherit';
+        const style = {
+          position : 'absolute',
+          left : 'inherit',
+          right : 'inherit',
+          top : 'inherit'
+        };
         if (overflowH) {
-          el.style.right = '100%';
+          style.right = '100%';
           end = false;
         } else {
-          el.style.left = '100%';
+          style.left = '100%';
           end = true;
         }
+        GSCacheStyles.setRule(el.dataset.cssId, style);
         el.dataset.end = end;
         el.dataset.start = !end;
         GSDOM.toggleClass(me, 'dropstart', !end);
@@ -272,13 +294,16 @@ export default class GSMenu extends GSUListExt {
    */
   #onSubmenu(e) {   
     GSEvents.prevent(e);
+    const me = this;
     const li = GSDOM.closest(e.target, 'li');
     const ul = GSDOM.closest(li, 'ul');
     const sub = GSDOM.query(li, '.submenu');
     requestAnimationFrame(() => {
       GSDOM.queryAll(ul, '.submenu').forEach(el => GSDOM.toggleClass(el,'show', false));
       if (sub) {
-        sub.style.top = `${sub.parentElement.offsetTop}px`;
+        me.#attachDynamic(sub);
+        const style = {top : `${sub.parentElement.offsetTop}px`};
+        GSCacheStyles.setRule(sub.dataset.cssId, style);
         GSDOM.toggleClass(sub, 'show', true);
       }
     });
@@ -316,14 +341,15 @@ export default class GSMenu extends GSUListExt {
     return opts;
   }  
 
+
   static fromDOM(children, level = 0, css = '', closable = false) {
     
     const me = GSMenu;
     const list = [];
-
+    
     const sub = level === 0 ? 'dropend position-fixed' : 'submenu';
     const is = level === 0 ? 'gs-menu' : 'gs-ext-ul';
-    list.push(`<ul is="${is}" data-closable="${closable}" class="${sub} dropdown-menu ${css}">`);
+    list.push(`<ul is="${is}" data-closable="${closable}" class="${sub} dropdown-menu ${css}" >`);
 
     Array.from(children).forEach(el => {
       const isSub = el.childElementCount > 0;

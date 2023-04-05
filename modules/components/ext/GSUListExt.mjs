@@ -9,12 +9,14 @@
 
 import GSDOM from "../../base/GSDOM.mjs";
 import GSEvents from "../../base/GSEvents.mjs";
+import GSID from "../../base/GSID.mjs";
 import GSAccessibility from "./GSAccessibility.mjs";
 
 export default class GSUListExt extends HTMLUListElement {
 
     connectedCallback() {
         const me = this;
+        if (!me.id) me.id = GSID.id;
         GSEvents.attach(me, me, 'keydown', me.#onKeyDown.bind(me));
     }
 
