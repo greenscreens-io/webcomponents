@@ -72,6 +72,10 @@ export default class GSCacheStyles {
 		return me.set(id, style);
 	}
 
+	/**
+	 * Get list of dynamic styles
+	 * @returns {CSSStyleSheet}
+	 */
 	static get dynamic() {
 		const me = GSCacheStyles;
 		const id = 'gs-dynamic';
@@ -84,21 +88,58 @@ export default class GSCacheStyles {
 		return sheet;
 	}	
 
+	/**
+	 * Get individual rule from dynamic styles cache
+	 * @param {string} id 
+	 * @returns {CSSRule}
+	 */
 	static getRule(id = '') {
-		return Array.from(GSCacheStyles.dynamic.rules)
+		return Array.from(GSCacheStyles.dynamic.cssRules)
 			.filter(v => v.selectorText === `.${id}`).pop();
 	}
 
-	static addRule(id = '', style = '') {
-		if (id && style) GSCacheStyles.dynamic.addRule(`.${id}`, style);
+	/**
+	 * Set dynamic element rule. Accepts string or json object representation
+	 * @param {string} id 
+	 * @param {string|object} style 
+	 */
+	static setRule(id = '', style = '', sync = false) {
+		if (!(id && style)) return;
+		let rule = GSCacheStyles.getRule(id);
+		if (rule) {
+			if (typeof style === 'string') {
+				if (sync) {
+					rule.replaceSync(style);
+				} else {
+					rule.replace(style);
+				}
+			} else if (sync) {
+				Object.entries(style).forEach(kv => rule.style[kv[0]]=kv[1]);
+			} else {
+				requestAnimationFrame(()=> {
+					Object.entries(style).forEach(kv => rule.style[kv[0]]=kv[1]);
+				});
+			}
+		} else {
+			if (typeof style !== 'string') {
+				style = Object.entries(style).map(kv => `${kv[0]}=${kv[1]};`).join('');
+			}
+			GSCacheStyles.dynamic.insertRule(`.${id} {${style}}`);
+			rule = GSCacheStyles.getRule(id);
+		}
+		return rule;
 	}
 
-	static removeRule(id = '') {
-		Array.from(GSCacheStyles.dynamic.rules)
+	/**
+	 * Remove dynamic element rule
+	 * @param {string} id  
+	 */
+	static deleteRule(id = '') {
+		Array.from(GSCacheStyles.dynamic.cssRules)
 			.map((v, i) => v.selectorText === `.${id}` ? i : -1)
 			.filter(v => v>-1)
-			.forEach(v => GSCacheStyles.dynamic.removeRule(v));
-	}	
+			.forEach(v => GSCacheStyles.dynamic.deleteRule(v));
+	}
 
 	/**
 	 * Return list of registered style sheets

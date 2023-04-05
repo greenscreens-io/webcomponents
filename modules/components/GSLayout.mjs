@@ -31,7 +31,7 @@ export default class GSLayout extends GSElement {
     }
 
     disconnectedCallback() {
-        GSItem.genericItems(this).forEach(el  => GSCacheStyles.removeRule(el.dataset.cssId));        
+        GSItem.genericItems(this).forEach(el  => GSCacheStyles.deleteRule(el.dataset.cssId));        
         super.disconnectedCallback();
     }
 
@@ -83,7 +83,7 @@ export default class GSLayout extends GSElement {
         const tpl = GSItem.getBody(el, me.isFlat);
 
         const style = me.#generateStyle(el);
-        GSCacheStyles.addRule(el.dataset.cssId, style);
+        GSCacheStyles.setRule(el.dataset.cssId, style);
         
         const fixed = style.length > 10 ? true : false;
         const cls = me.#generateClass(el, fixed);

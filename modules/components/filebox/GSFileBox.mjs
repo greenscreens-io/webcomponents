@@ -10,6 +10,7 @@
 import GSAttr from "../../base/GSAttr.mjs";
 import GSElement from "../../base/GSElement.mjs";
 import GSEvents from "../../base/GSEvents.mjs";
+import GSCacheStyles from "../../head/GSCacheStyles.mjs";
 import GSAttachment from "./GSAttachment.mjs";
 
 /**
@@ -26,16 +27,8 @@ export default class GSFileBox extends GSElement {
 
     #dragging = null;
 
-    constructor() {
-        super();
-        const me = this;
-        //me.style.setProperty('border-style', 'dashed', 'important');
-        //GSDOM.toggleClass(me, GSFileBox.CSS, true);
-    }
-
-    async getTemplate(val = '') {
-        const me = this;
-        return `<style>
+    static #initStyle() {
+        const style = `
             .dash {
                 border-style: var(--gs-fieldbox-border, dashed) !important;
                 border-color: var(--gs-fieldbox-border-color, lightgrey);
@@ -44,11 +37,15 @@ export default class GSFileBox extends GSElement {
                 color : var(--gs-fieldbox-color, transparent);
             } 
             input[type=file]::file-selector-button {
-
             }             
             input[type=file]::file-selector-button:hover {
-            }            
-        </style>
+            }`;
+            GSCacheStyles.injectStyle(style);
+    }
+
+    async getTemplate(val = '') {
+        const me = this;
+        return `
         <div part="border" class="${me.css}">
             <label part="label" class="${me.cssLabel}" for="${me.name}">${me.title}</label>
             <input part="input" class="${me.cssInput}" type="file" accept="${me.accept}" id="${me.name}" name="${me.name}" ${me.multiple ? "multiple" : ""} ${me.directory ? "directory webkitdirectory" : ""} >
@@ -274,6 +271,8 @@ export default class GSFileBox extends GSElement {
     static {
         customElements.define('gs-filebox', GSFileBox);
         Object.seal(GSFileBox);
+        GSFileBox.#initStyle();
     }
 
 }
+

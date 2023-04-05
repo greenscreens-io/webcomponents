@@ -36,7 +36,7 @@ export default class GSSplitter extends GSElement {
     }
 
     disconnectedCallback(){
-        GSCacheStyles.removeRule(this.#ruleDynamic);
+        GSCacheStyles.deleteRule(this.#ruleDynamic);
         super.disconnectedCallback();
     }
 
@@ -62,7 +62,7 @@ export default class GSSplitter extends GSElement {
 
     async getTemplate(val = '') {
         const me = this;
-        GSCacheStyles.addRule(me.#ruleDynamic, me.#cssDynamic);
+        GSCacheStyles.setRule(me.#ruleDynamic, me.#cssDynamic);
         return `<div class="splitter ${me.css} ${me.styleID} ${me.#ruleDynamic}" data-css-id="${this.styleID}" data-rule-id="${this.#ruleDynamic}"></div>`;
     }
 

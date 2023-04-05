@@ -45,7 +45,7 @@ export default class GSProgress extends GSElement {
     }
 
     disconnectedCallback() {
-        GSCacheStyles.removeRule(this.#barRule);
+        GSCacheStyles.deleteRule(this.#barRule);
         super.disconnectedCallback();
     }
     
@@ -53,8 +53,7 @@ export default class GSProgress extends GSElement {
         const me = this;
         const bar = me.#bar;
         const rule = GSCacheStyles.getRule(me.#barRule);
-        if (rule) rule.style.width = `${me.percentage}%`;
-        //if (bar) bar.style.width = `${me.percentage}%`;        
+        if (rule) rule.style.width = `${me.percentage}%`;   
         if (me.label && bar) GSDOM.setHTML(bar, me.#fromLabel());
     }
 
@@ -71,7 +70,7 @@ export default class GSProgress extends GSElement {
     async getTemplate(val = '') {
         const me = this;
         const label = me.label ? GSUtil.fromTemplateLiteral(me.label, { value: me.value, min: me.min, max: me.max, percentage: me.percentage }) : '';
-		GSCacheStyles.addRule(`${me.#barRule}`, `width:${me.percentage}%`);
+		GSCacheStyles.setRule(`${me.#barRule}`, `width:${me.percentage}%`);
         return `
         <div class="progress ${this.styleID}"  data-css-id="${this.styleID}">
             <div class="progress-bar ${me.css} ${me.#barRule}" data-rule-id="${this.#barRule}" role="progressbar" data-value="${me.value}" data-min="${me.min}" data-max="${me.max}">${label}</div>

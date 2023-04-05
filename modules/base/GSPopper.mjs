@@ -9,6 +9,7 @@
 
 import GSLog from "./GSLog.mjs";
 import GSCSSMap from "./GSCSSMap.mjs";
+import GSCacheStyles from "../head/GSCacheStyles.mjs";
 
 /**
  * A generic set of static functions used across GS WebComponents framework
@@ -129,11 +130,16 @@ export default class GSPopper {
 			return;
 		}
 
-		source.style.position = 'fixed';
-		source.style.top = '0px';
-		source.style.left = '0px';
-		source.style.margin = '0px';
-		source.style.padding = '0px';
+		const rule = GSCacheStyles.getRule(source.dataset.cssId);
+
+		const style = rule ? {} : source.style;
+
+		style.position = 'fixed';
+		style.top = '0px';
+		style.left = '0px';
+		style.margin = '0px';
+		style.padding = '0px';
+		if (rule) GSCacheStyles.setRule(source.dataset.cssId, style, true);
 
 		const offh = source.clientHeight / 2;
 		const offw = source.clientWidth / 2;
@@ -152,7 +158,8 @@ export default class GSPopper {
 
 		GSPopper.#calcFixed(pos, obj, rect, arect);
 
-		source.style.transform = `translate(${obj.x}px, ${obj.y}px)`;
+		style.transform = `translate(${obj.x}px, ${obj.y}px)`;
+		if (rule) rule.style.transform = style.transform;
 
 	}
 

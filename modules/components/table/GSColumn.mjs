@@ -12,6 +12,7 @@ import GSDOM from "../../base/GSDOM.mjs";
 import GSID from "../../base/GSID.mjs";
 import GSItem from "../../base/GSItem.mjs";
 import GSLoader from "../../base/GSLoader.mjs";
+import GSCacheStyles from "../../head/GSCacheStyles.mjs";
 
 /**
  * Table column renderer for GSTable
@@ -35,6 +36,10 @@ export default class GSColumn extends HTMLElement {
         this.#loadMap();
     }
 
+    disconnectedCallback() {
+        GSCacheStyles.deleteRule(this.dataset.cssId);
+    }
+
     async #loadMap() {
         const me = this;
         const data = await GSLoader.loadSafe(me.src, 'GET', null, true);
@@ -45,10 +50,17 @@ export default class GSColumn extends HTMLElement {
         const me = this;
 
         const clssort = me.sortable ? 'sorting' : '';
-        const style = me.width ? `style="width:${me.width};"` : '';
+        const style = me.width ? `width:${me.width};` : '';
         const cspan = me.colspan ? `colspan="${me.colspan}"` : '';
 
-        return `<th tabindex="0" scope="col" data-sortable="${me.sortable}" data-order="${me.#orderID}" name="${me.name}" ${cspan} class="${clssort} ${me.cssHeader}" ${style}>${me.title || me.name}</th>`;
+        me.dataset.cssId = style ? GSID.id : '';
+        GSCacheStyles.setRule(me.dataset.cssId, style);
+
+        return `<th tabindex="0" scope="col" name="${me.name}" ${cspan} 
+            data-sortable="${me.sortable}" data-order="${me.#orderID}" 
+            class="${clssort} ${me.cssHeader} ${me.dataset.cssId}" 
+            data-css-id="${me.dataset.cssId}">
+            ${me.title || me.name}</th>`;
     }
 
     renderFilter() {

@@ -358,4 +358,3 @@ export default class GSMenu extends GSUListExt {
 
 
 }
-

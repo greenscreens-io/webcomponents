@@ -157,16 +157,15 @@ export default class GSChart extends GSElement {
 
     resize(x, y) {
         const me = this;
-        if (me.#chart) {
-            requestAnimationFrame(() => {
-                const div = me.query('div');
-                if (div) {
-                    div.style.width = `${x}px`;
-                    div.style.height = `${y}px`;
-                }
-                me.#chart.resize(x, y);
-            });
-        }
+        if (!me.#chart) return;
+        requestAnimationFrame(() => {
+            const div = me.query('div');
+            if (div) {
+                div.style.width = `${x}px`;
+                div.style.height = `${y}px`;
+            }
+            me.#chart.resize(x, y);
+        });
     }
 
     toBase64Image(type = "image/png", quality = 1) {

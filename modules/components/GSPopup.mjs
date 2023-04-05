@@ -14,6 +14,7 @@ import GSElement from "../base/GSElement.mjs";
 import GSEvents from "../base/GSEvents.mjs";
 import GSPopper from "../base/GSPopper.mjs";
 import GSUtil from "../base/GSUtil.mjs";
+import GSCacheStyles from "../head/GSCacheStyles.mjs";
 
 /**
  * Popup panel
@@ -266,23 +267,37 @@ export default class GSPopup extends GSElement {
         if (!panel) return;
         requestAnimationFrame(() => {
             me.visible = true;
+            const obj = {
+                top : '0px',
+                left : '0px',
+                transform : `translate(${x}px, ${y}px)`
+            };
+            /*
             panel.style.top = '0px';
             panel.style.left = '0px';
-            me.#resize();
             panel.style.transform = `translate(${x}px, ${y}px)`;
+            */
+            me.#resize(obj);
         });
 
     }
 
-    #resize() {
+    #resize(obj = {}) {
         const me = this;
         const panel = me.#panel;
         if (!panel) return;
-        if (!me.visible) me.style.transform = 'unset';
+        //if (!me.visible) me.style.transform = 'unset';
+        /*
         if (me.wMax) panel.style.maxWidth = `${me.wMax}px`;
         if (me.wMin) panel.style.minWidth = `${me.wMin}px`;
         if (me.hMax) panel.style.maxHeight = `${me.hMax}px`;
         if (me.hMin) panel.style.minHeight = `${me.hMin}px`;
+        */
+        if (me.wMax) obj['max-width'] = `${me.wMax}px`;
+        if (me.wMin) obj['min-width'] = `${me.wMin}px`;
+        if (me.hMax) obj['max-height'] = `${me.hMax}px`;
+        if (me.hMin) obj['min-height'] = `${me.hMin}px`;
+        GSCacheStyles.setRule(panel.dataset.cssId, obj);
     }
 
     #onResize(e) {
@@ -364,3 +379,4 @@ export default class GSPopup extends GSElement {
         return parent == this;
     }
 }
+

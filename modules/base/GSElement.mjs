@@ -329,8 +329,8 @@ export default class GSElement extends HTMLElement {
 
 	#createStyleClass() {
 		const me = this;
-		GSCacheStyles.removeRule(me.styleID);
-		GSCacheStyles.addRule(me.styleID, me.getStyle());
+		GSCacheStyles.deleteRule(me.styleID);
+		GSCacheStyles.setRule(me.styleID, me.getStyle());
 	}
 
 	/**
@@ -526,7 +526,7 @@ export default class GSElement extends HTMLElement {
 		me.#observer?.disconnect();
 		GSComponents.remove(me);
 		GSEvents.deattachListeners(me);
-		GSCacheStyles.removeRule(me.styleID);
+		GSCacheStyles.deleteRule(me.styleID);
 		me.#removeFlat();
 		me.#observer = null;
 		me.#content = null;
