@@ -130,16 +130,16 @@ export default class GSPopper {
 			return;
 		}
 
-		const rule = GSCacheStyles.getRule(source.dataset.cssId);
-
-		const style = rule ? {} : source.style;
+		const style = source.dataset.cssId ? {} : source.style;
 
 		style.position = 'fixed';
 		style.top = '0px';
 		style.left = '0px';
 		style.margin = '0px';
 		style.padding = '0px';
-		if (rule) GSCacheStyles.setRule(source.dataset.cssId, style, true);
+		style.transform = '';
+
+		GSCacheStyles.setRule(source.dataset.cssId, style, true);
 
 		const offh = source.clientHeight / 2;
 		const offw = source.clientWidth / 2;
@@ -157,9 +157,8 @@ export default class GSPopper {
 		}
 
 		GSPopper.#calcFixed(pos, obj, rect, arect);
-
 		style.transform = `translate(${obj.x}px, ${obj.y}px)`;
-		if (rule) rule.style.transform = style.transform;
+		GSCacheStyles.setRule(source.dataset.cssId, style);
 
 	}
 
@@ -183,10 +182,16 @@ export default class GSPopper {
 			return;
 		}
 
-		arrow.style.position = 'absolute';
-		source.style.position = 'absolute';
-		source.style.margin = '0px';
-		source.style.inset = GSPopper.#inset(pos);
+		const style = source.dataset.cssId ? {} : source.style;
+		const astyle = arrow.dataset.cssId ? {} : arrow.style;
+
+		astyle.position = 'absolute';
+		style.position = 'absolute';
+		style.margin = '0px';
+		style.transform = '';
+		style.inset = GSPopper.#inset(pos);
+
+		GSCacheStyles.setRule(source.dataset.cssId, style, true);
 
 		const srect = source.getBoundingClientRect();
 		const arect = arrow.getBoundingClientRect();
@@ -204,10 +209,13 @@ export default class GSPopper {
 
 		GSPopper.#calcAbsolute(pos, obj, arr, srect, arect, offset);
 
-		source.style.transform = `translate(${obj.x}px, ${obj.y}px)`;
-		arrow.style.transform = `translate(${arr.x}px, ${arr.y}px)`;
-		arrow.style.top = arr.top ? arr.top : '';
-		arrow.style.left = arr.left ? arr.left : '';
+		style.transform = `translate(${obj.x}px, ${obj.y}px)`;	
+		astyle.transform = `translate(${arr.x}px, ${arr.y}px)`;
+		astyle.top = arr.top ? arr.top : '';
+		astyle.left = arr.left ? arr.left : '';
+
+		GSCacheStyles.setRule(source.dataset.cssId, style);
+		GSCacheStyles.setRule(arrow.dataset.cssId, astyle);
 
 	}
 
@@ -289,19 +297,24 @@ export default class GSPopper {
 		const arrowPosH = (erect.height / 2) - (size / 2);
 
 		arect.size = size;
-		arrow.style.position = 'absolute';
+
+		const style = arrow.dataset.cssId ? {} : arrow.style;
+
+		style.position = 'absolute';
 
 		if (pos.isStart || pos.isEnd) {
-			arrow.style.left = null;
-			arrow.style.top = '0px';
+			style.left = '';
+			style.top = '0px';
 			shift = pos.isStart ? size : -1 * size;
-			arrow.style.transform = `translate(${shift}px, ${arrowPosH / 2}px)`;
+			style.transform = `translate(${shift}px, ${arrowPosH / 2}px)`;
 		} else {
-			arrow.style.top = null;
-			arrow.style.left = '0px';
+			style.top = '';
+			style.left = '0px';
 			shift = pos.isTop ? size : -1 * size;
-			arrow.style.transform = `translate(${arrowPosW}px, ${shift}px)`;
+			style.transform = `translate(${arrowPosW}px, ${shift}px)`;
 		}
+
+		GSCacheStyles.setRule(arrow.dataset.cssId, style);
 
 		return arect;
 	}

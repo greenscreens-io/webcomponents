@@ -13,6 +13,7 @@ import GSElement from "../base/GSElement.mjs";
 import GSPopper from "../base/GSPopper.mjs";
 import GSAttr from "../base/GSAttr.mjs";
 import GSDOM from "../base/GSDOM.mjs";
+import GSCacheStyles from "../head/GSCacheStyles.mjs";
 
 /**
  * Process Bootstrap tooltip efinition
@@ -59,6 +60,11 @@ export default class GSTooltip extends GSElement {
         super();
     }
 
+    disconnectedCallback() {
+        GSCacheStyles.deleteRule(this.#arrowID);
+        super.disconnectedCallback();
+    }
+
     onReady() {
         const me = this;
         super.onReady();
@@ -79,11 +85,15 @@ export default class GSTooltip extends GSElement {
         return me.firstElementChild;
     }
 
+    get #arrowID() {
+        return `${this.styleID}-arrow`;
+    }
+
     get #html() {
         const me = this;
         return `
          <div class="tooltip bs-tooltip-auto fade " data-popper-placement="${me.placement}" role="tooltip">
-            <div class="tooltip-arrow"></div>
+            <div class="tooltip-arrow ${me.#arrowID}" data-css-id="${me.#arrowID}"></div>
             <div class="tooltip-inner">${me.title}</div>
         </div>        
         `;

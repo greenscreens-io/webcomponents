@@ -1,5 +1,15 @@
 # [WebComponents](https://webcomponents.greenscreens.ltd/) for [Bootstrap 5.2.0+](https://getbootstrap.com/)
 
+# Release v1.4.0 (06.04.2023.) 
+ - Added CSP compatible dynamic styles
+ - GSElement dynamic styles; CSP compatible
+ - Added GSSteps component 
+ - Build script update
+ - Fix css interval loader
+ - Fix GSDataAttr css style match
+ - Fix GSMenu delayed event
+ - Fix GSDialog css template location
+
 # Release v1.3.0 (01.03.2023.) 
  - Add GSElement proxied html wrap control
  - Add GSElement proxied target search parent.child

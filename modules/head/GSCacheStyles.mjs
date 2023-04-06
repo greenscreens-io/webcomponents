@@ -130,6 +130,7 @@ export default class GSCacheStyles {
 	}
 
 	static #updateRule(rule, prop = '', style = '') {
+		style = style || '';
 		const isImportant = style.indexOf('!important') > 0;
 		style = style.replace('!important', '');
 		prop = prop.trim();

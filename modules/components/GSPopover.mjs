@@ -14,6 +14,7 @@ import GSElement from "../base/GSElement.mjs";
 import GSPopper from "../base/GSPopper.mjs";
 import GSAttr from "../base/GSAttr.mjs";
 import GSDOM from "../base/GSDOM.mjs";
+import GSCacheStyles from "../head/GSCacheStyles.mjs";
 
 /**
  * https://getbootstrap.com/docs/5.1/components/popovers/
@@ -64,6 +65,11 @@ export default class GSPopover extends GSElement {
         super();
     }
 
+    disconnectedCallback() {
+        GSCacheStyles.deleteRule(this.#arrowID);
+        super.disconnectedCallback();
+    }
+
     onReady() {
         const me = this;
         super.onReady();
@@ -89,12 +95,16 @@ export default class GSPopover extends GSElement {
         return source;
     }
 
+    get #arrowID() {
+        return `${this.styleID}-arrow`;
+    }
+
     get #html() {
         const me = this;
         const head = me.title ? `<div class="popover-header ${me.cssHead}">${me.title}</div>` : '';
         return `
-        <div class="popover bs-popover-auto fade ${me.css}" data-popper-placement="${me.placement} ${this.styleID}"  data-css-id="${this.styleID}" role="tooltip">
-            <div class="popover-arrow"></div>
+        <div class="popover bs-popover-auto fade ${me.css} ${this.styleID}" data-popper-placement="${me.placement}" data-css-id="${this.styleID}" role="tooltip">
+            <div class="popover-arrow ${me.#arrowID}" data-css-id="${me.#arrowID}"></div>
             ${head}
             <div class="popover-body">${me.content}</div>
         </div>            
