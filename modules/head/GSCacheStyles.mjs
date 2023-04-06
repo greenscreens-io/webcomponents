@@ -10,7 +10,7 @@
 import GSBase from "./GSBase.mjs";
 
 /**
- * Cache for dyamically laoded styles.
+ * Cache for dyamically loaded styles.
  * Used to sharestyles among GS-* WebComponents
  * @class
  */

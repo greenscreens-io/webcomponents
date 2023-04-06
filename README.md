@@ -6,7 +6,7 @@ Green Screens WebComponents are small, Web UI components library based on Bootst
  
 The library code is made with ECMAScript 2022 (ES13) standard using static class initializers and other modern browser features. 
 
-NOTE 1: Safari browser v16.2 is not fully supported. ECMAScript 2022 (ES13) static class initializers are available in Safari Technology Preview, which might become available in the next release (16.3?!).
+NOTE 1: Safari browser v16.5 is not fully supported. ECMAScript 2022 (ES13) static class initializers are not available in Safari.
  
 NOTE 2: Firefox currently does not support HTMLElement.computedStyleMap(). Features as automatic field text case conversion and keyboard accessibility navigation are not supported.
 
@@ -16,7 +16,7 @@ Live version is available at the [Github Pages](https://greenscreens-io.github.i
  
 Project web page at [webcomponents.greenscreens.ltd](https://webcomponents.greenscreens.ltd/).
 
-To compile, use "rollup -c" (recommended) or "webpack" from command line.
+To compile, use "rollup -c" 
  
 &copy; Green Screens Ltd. 2016 - 2023
  
