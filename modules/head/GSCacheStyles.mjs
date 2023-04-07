@@ -18,6 +18,12 @@ export default class GSCacheStyles {
 
 	static #store = new Map();
 
+	static create(id) {
+		const sheet = new CSSStyleSheet();
+		this.#store.set(id, sheet);
+		return sheet;
+	}
+
 	/**
 	 * Store initialized stylesheet under the unique ID
 	 * @param {string} id 
@@ -31,9 +37,8 @@ export default class GSCacheStyles {
 		}
 
 		if (style && typeof style === 'string') {
-			const sheet = new CSSStyleSheet();
+			const sheet = GSCacheStyles.create(id);
 			sheet.replaceSync(style);
-			me.#store.set(id, sheet);
 		}
 
 		return me.get(id);
@@ -67,8 +72,7 @@ export default class GSCacheStyles {
 		const id = 'gs-dynamic';
 		let sheet = me.get(id);
 		if (!sheet) {
-			sheet = new CSSStyleSheet();		
-			me.#store.set(id, sheet);
+			sheet = GSCacheStyles.create(id);
 			document.adoptedStyleSheets = GSCacheStyles.styles;
 		}
 		return sheet;
@@ -90,7 +94,9 @@ export default class GSCacheStyles {
 	 * @param {string|object} style 
 	 */
 	static setRule(id = '', style = '', sync = false) {
+
 		if (!(id && style)) return;
+		
 		let rule = GSCacheStyles.getRule(id);
 		if (!rule) {
 			GSCacheStyles.dynamic.insertRule(`.${id} {}`);
