@@ -95,7 +95,6 @@ export default class GSPopper {
 			y: 0
 		};
 
-		const me = this;
 		const isEl = element instanceof HTMLElement;
 		if (!isEl) return obj;
 		const css = GSCSSMap.getComputedStyledMap(element);
@@ -120,8 +119,7 @@ export default class GSPopper {
 	 */
 	static popupFixed(placement = 'top', source, target, arrow) {
 
-		if (!source) return false;
-		if (!target) return false;
+		if (!(source && target)) return false;
 
 		const pos = GSPopper.#fromPlacement(placement);
 
@@ -172,8 +170,7 @@ export default class GSPopper {
 	 */
 	static popupAbsolute(placement = 'top', source, target, arrow) {
 
-		if (!source) return false;
-		if (!target) return false;
+		if (!(source && target)) return false;
 
 		const pos = GSPopper.#fromPlacement(placement);
 

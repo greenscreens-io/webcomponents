@@ -25,7 +25,7 @@ export default class GSAttr {
 	}
 
 	/**
-	  * Generic function to change elment node attribute
+	  * Generic function to change element node attribute
 	  * 
 	  * @param {HTMLElement} el Target to receive attribute value
 	  * @param {string} name Attribite name
@@ -133,8 +133,14 @@ export default class GSAttr {
 			.join(' ');
 	}
 
-	static flatten(el) {
-		return Array.from(el?.attributes || []).map(a => `${a.name}="${a.value}"`).join(' ');
+	/**
+	 * Convert lsit of element attributes into a flat list separated by given separator (default ' ')
+	 * @param {HTMLMediaElement} el 
+	 * @param {String} sep 
+	 * @returns {String}
+	 */
+	static flatten(el, sep = ' ') {
+		return Array.from(el?.attributes || []).map(a => `${a.name}="${a.value}"`).join(sep);
 	}
 
 	static {
