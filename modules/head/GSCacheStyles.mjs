@@ -143,7 +143,7 @@ export default class GSCacheStyles {
 	}
 
 	/*
-	* Inject CSS used by framework
+	* Inject CSS used by framework across all shadows
 	*/
 	static adopt(css = '', hash = 0) {
 		if (!css) return;
