@@ -30,7 +30,7 @@ export default class GSCacheStyles {
 			me.#store.set(id, style);
 		}
 
-		if (typeof style === 'string') {
+		if (style && typeof style === 'string') {
 			const sheet = new CSSStyleSheet();
 			sheet.replaceSync(style);
 			me.#store.set(id, sheet);
@@ -56,20 +56,6 @@ export default class GSCacheStyles {
 	 */
 	static get(id) {
 		return this.#store.get(id);
-	}
-
-	/**
-	 * Retrieve CSSStyleSheet by ID, and automatically store in cache if does not exist
-	 * @param {string} id Unique stylesheed id
-	 * @param {CSSStyleSheet} style 
-	 * @returns {boolean}
-	 */
-	static getOrSet(id, style) {
-		if (style && style.cssRules.length === 0) return;
-		const me = GSCacheStyles;
-		const el = me.get(id);
-		if (el) return el;
-		return me.set(id, style);
 	}
 
 	/**
@@ -163,19 +149,20 @@ export default class GSCacheStyles {
 		if (!css) return;
 		try {
 			hash = hash || GSBase.hashCode(css);
-			const sheet = new CSSStyleSheet();
-			sheet.replaceSync(css);
-			GSCacheStyles.getOrSet(hash, sheet);
+			GSCacheStyles.set(hash, sheet);
 			document.adoptedStyleSheets = GSCacheStyles.styles;
 		} catch (e) {
 			console.log(e);
 		}
 	}
 
+	static get #css() {
+		return '.z-10k{z-index:10000 !important;}.gs-hide{display:none !important;}.gs-hide-orientation,.gs-render{display:none !important;}gs-item{display:none !important;}';
+	}
+
 	static {
 		Object.freeze(GSCacheStyles);
 		globalThis.GSCacheStyles = GSCacheStyles;
-		const style = '.z-10k{z-index:10000 !important;}.gs-hide{display:none !important;}.gs-hide-orientation,.gs-render{display:none !important;}gs-item{display:none !important;}';
-		GSCacheStyles.injectStyle(style);
+		GSCacheStyles.injectStyle(GSCacheStyles.#css);
 	}
 }

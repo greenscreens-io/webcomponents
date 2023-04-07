@@ -42,7 +42,6 @@ export default class GSStyleExt extends HTMLStyleElement {
 		const sheet = me.sheet;
 		if (!sheet) return;
 		clearInterval(me.#callback);
-		//GSCacheStyles.getOrSet(me.order, sheet);		
 		GSCacheStyles.injectStyle(me.asText, me.order);
 		const proxy = GSCacheStyles.get(me.order);
 		GSBase.sendSuspendedEvent(document, 'gs-style', proxy);
