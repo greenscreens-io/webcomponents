@@ -60,7 +60,7 @@ export default class GSCSS extends GSBase {
 			const res = await fetch(me.url);
 			if (!res.ok) return;
 			const css = await res.text();
-			GSCacheStyles.injectStyle(css, me.order);
+			GSCacheStyles.adopt(css, me.order);
 			const sheet = GSCacheStyles.get(me.order);
 			if (sheet) GSBase.sendSuspendedEvent(document, 'gs-style', sheet);
 		} catch (e) {

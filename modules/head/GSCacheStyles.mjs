@@ -145,7 +145,7 @@ export default class GSCacheStyles {
 	/*
 	* Inject CSS used by framework
 	*/
-	static injectStyle(css = '', hash = 0) {
+	static adopt(css = '', hash = 0) {
 		if (!css) return;
 		try {
 			hash = hash || GSBase.hashCode(css);
@@ -163,6 +163,6 @@ export default class GSCacheStyles {
 	static {
 		Object.freeze(GSCacheStyles);
 		globalThis.GSCacheStyles = GSCacheStyles;
-		GSCacheStyles.injectStyle(GSCacheStyles.#css);
+		GSCacheStyles.adopt(GSCacheStyles.#css);
 	}
 }

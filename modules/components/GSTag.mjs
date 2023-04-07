@@ -22,7 +22,7 @@ import GSItem from "../base/GSItem.mjs";
 export default class GSTag extends GSElement {
 
     static {
-        GSCacheStyles.injectStyle(GSTag.#style);
+        GSCacheStyles.adopt(GSTag.#style);
         customElements.define('gs-tag', GSTag);
         Object.seal(GSTag);
     }

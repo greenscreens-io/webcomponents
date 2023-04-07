@@ -40,7 +40,7 @@ export default class GSFileBox extends GSElement {
             }             
             input[type=file]::file-selector-button:hover {
             }`;
-            GSCacheStyles.injectStyle(style);
+            GSCacheStyles.adopt(style);
     }
 
     async getTemplate(val = '') {

@@ -11,7 +11,7 @@ import GSCacheStyles from "../../head/GSCacheStyles.mjs";
 export default class GSStepStyle {
 
     static {
-        GSCacheStyles.injectStyle(GSStepStyle.style);
+        GSCacheStyles.adopt(GSStepStyle.style);
     }
 
     static get style() {
