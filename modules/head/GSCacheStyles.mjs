@@ -149,7 +149,7 @@ export default class GSCacheStyles {
 		if (!css) return;
 		try {
 			hash = hash || GSBase.hashCode(css);
-			GSCacheStyles.set(hash, sheet);
+			GSCacheStyles.set(hash, css);
 			document.adoptedStyleSheets = GSCacheStyles.styles;
 		} catch (e) {
 			console.log(e);
