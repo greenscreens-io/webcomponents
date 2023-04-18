@@ -48,7 +48,7 @@ export default class GSDialog extends GSElement {
   }
 
   disconnectedCallback() {
-    this.super();
+    super.disconnectedCallback();
     GSDialog.#updateStack();
   }
 

@@ -1,5 +1,8 @@
 # [WebComponents](https://webcomponents.greenscreens.ltd/) for [Bootstrap 5.2.0+](https://getbootstrap.com/)
 
+# Release v1.4.1 (18.04.2023.) 
+ - Fix GSDialog stack
+
 # Release v1.4.0 (06.04.2023.) 
  - Added CSP compatible dynamic styles
  - GSElement dynamic styles; CSP compatible
