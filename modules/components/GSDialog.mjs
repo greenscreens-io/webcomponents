@@ -36,9 +36,20 @@ export default class GSDialog extends GSElement {
     const attrs = ['cancelable', 'closable', 'title', 'visible', 'button-ok', 'button-cancel'];
     return GSElement.observeAttributes(attrs);
   }
+  
+  static #updateStack() {
+    GSDialog.#STACK = GSDialog.#STACK.filter(v => v.isConnected);
+  }
 
   static get top() {
-    return GSDialog.#STACK.length === 0 ? null : GSDialog.#STACK[GSDialog.#STACK.length-1];
+    GSDialog.#updateStack();
+    if (GSDialog.#STACK.length === 0) return null;
+    return GSDialog.#STACK[GSDialog.#STACK.length-1];
+  }
+
+  disconnectedCallback() {
+    this.super();
+    GSDialog.#updateStack();
   }
 
   attributeCallback(name = '', oldValue = '', newValue = '') {
