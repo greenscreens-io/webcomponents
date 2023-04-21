@@ -76,12 +76,6 @@ export default class GSFormGroup extends GSElement {
          if (isValid) break;
      }
 
-      /*
-      const isValid = me.#patterns.map(r => r.test(el.value))
-         .filter(r => r === true)
-         .length > 0;
-      */
-
       if (!isValid) {
          el.setCustomValidity('Invalid input');
          el.reportValidity();
