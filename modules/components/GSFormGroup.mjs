@@ -10,6 +10,7 @@
 import GSAttr from "../base/GSAttr.mjs";
 import GSElement from "../base/GSElement.mjs";
 import GSUtil from "../base/GSUtil.mjs";
+import GSItem from "../base/GSItem.mjs";
 
 /**
  * Center inside browser
@@ -22,6 +23,8 @@ export default class GSFormGroup extends GSElement {
    static CSS_LABEL_CELL = 'col-md-4 col-sm-4 col-xs2 text-md-end';
    static CSS_LABEL = 'user-select-none fw-small fw-light text-secondary';
    static CSS_ICON = 'bi bi-info-circle-fill text-primary me-2 fs-5';
+
+   #patterns = [];
 
    static {
       customElements.define('gs-form-group', GSFormGroup);
@@ -36,24 +39,68 @@ export default class GSFormGroup extends GSElement {
    constructor() {
       super();
       this.#validateAllowed();
-  }
+   }
 
-  attributeCallback(name = '', oldValue = '', newValue = '') {
+   connectedCallback() {
+      const me = this;
+      me.#patterns = GSItem.genericItems(me)
+         .filter(el => el.dataset.pattern)
+         .map(el => new RegExp(el.dataset.pattern));
+      super.connectedCallback();
+   }
+
+   attributeCallback(name = '', oldValue = '', newValue = '') {
       const me = this;
       if (name === 'label') me.#labelEl.innerHTML = newValue;
       if (name === 'value') me.#inputEl.value = newValue;
       if (name === 'disabled') me.#inputEl.disabled = !GSUtil.isNull(newValue);
    }
 
-  #validateAllowed() {
+
+   onReady() {
+      super.onReady();
+      const me = this;
+      me.attachEvent(me.#inputEl, 'blur', me.#onBlur.bind(me));
+   }
+
+   async #onBlur(e) {
+
+      const me = this;
+      const el = me.#inputEl;
+      
+      if (el.value.length === 0 || me.#patterns.length === 0) return;
+
+      let isValid = false;
+      for (const r of me.#patterns) {
+         isValid = r.test(el.value);
+         if (isValid) break;
+     }
+
+      /*
+      const isValid = me.#patterns.map(r => r.test(el.value))
+         .filter(r => r === true)
+         .length > 0;
+      */
+
+      if (!isValid) {
+         el.setCustomValidity('Invalid input');
+         el.reportValidity();
+         me.#inputEl.focus();
+         await GSUtil.timeout(2000);
+         el.setCustomValidity('');
+      }
+   }
+
+
+   #validateAllowed() {
       const me = this;
       let list = Array.from(me.children).filter(el => el.slot && el.slot !== 'body');
       if (list.length > 0) throw new Error(`Custom element injection must contain slot="body" attribute! Element: ${me.tagName}, ID: ${me.id}`);
       list = Array.from(me.children).filter(el => !el.slot);
-      const tagList = ['TEMPLATE'];
+      const tagList = ['TEMPLATE', 'GS-ITEM'];
       const allowed = GSDOM.isAllowed(list, tagList);
       if (!allowed) throw new Error(GSDOM.toValidationError(me, tagList));
-  }
+   }
 
    get isFlat() {
       const me = this;
@@ -478,7 +525,7 @@ export default class GSFormGroup extends GSElement {
    set mask(val = '') {
       return GSAttr.set(this, 'mask', val);
    }
-   
+
    get reveal() {
       return this.hasAttribute('reveal');
    }
@@ -486,7 +533,7 @@ export default class GSFormGroup extends GSElement {
    set reveal(val = '') {
       return GSAttr.toggle(this, 'reveal', GSUtil.asBool(val));
    }
-   
+
    get disabled() {
       return this.hasAttribute('disabled');
    }
@@ -537,12 +584,12 @@ export default class GSFormGroup extends GSElement {
 
    get autocopy() {
       return this.hasAttribute('autocopy');
-  }
+   }
 
-  get autoselect() {
+   get autoselect() {
       return this.hasAttribute('autoselect');
-  }
-     
+   }
+
    get autocapitalize() {
       return GSAttr.get(this, 'autocapitalize', '');
    }
@@ -617,6 +664,6 @@ export default class GSFormGroup extends GSElement {
 
    get autoid() {
       return this.hasAttribute('autoid');
-   }   
+   }
 }
 

@@ -43,6 +43,13 @@
             <gs-form-group css="mt-2" name="date" mask="DD-MM-YYYY" label="Date" description="Masked date input"></gs-form-group>
             <gs-form-group css="mt-2" name="hexa" mask="XXXXXXXXXXXXXXXX" label="Hexadecimal input with" description="Masked hexadecimal input"></gs-form-group>
 
+            <gs-form-group css="mt-2" name="ip" label="IP Address" description="IP Address, CIDR or wildcard">
+                <gs-item data-pattern="^((25[0-5]|(2[0-4]|1\d|[1-9]|)\d)\.?\b){4}(/[1-9]{1,2})?$"></gs-item>
+                <gs-item data-pattern="^(?:(?:25[0-5]|(2[0-4]|1\d|[1-9]|)\d|\*)\.){3}(?:(?:25[0-5]|(2[0-4]|1\d|[1-9]|)\d|\*))$"></gs-item>
+                <gs-item data-pattern=""></gs-item>
+            </gs-form-group>
+
+
             <gs-form-group css="mt-2" name="user" placeholder="...enter user name" label="User" description="Login user"></gs-form-group>
 
             <gs-form-group css="mt-2" name="field1" label="Check box"    type="checkbox" checked></gs-form-group>
@@ -80,9 +87,9 @@
             <gs-form-group css="mt-2" layout="vertical" name="field3" label="Switch box"   type="switch" checked></gs-form-group>
             <gs-form-group css="mt-2" layout="vertical" name="field4" label="Range"        type="range" min="0" max="100" step="2"></gs-form-group>
 
-            <gs-form-group css="mt-2" layout="vertical" name="active" label="Status" description="test">
+            <gs-form-group css="mt-2" layout="vertical" name="active1" label="Status" description="test">
                 <template>
-                    <select class="form-select" id="active" name="active" required>
+                    <select class="form-select" id="active1" name="active1" required>
                         <option value="true">Enabled</option>
                         <option value="false">Disabled</option>
                     </select>
@@ -109,9 +116,9 @@
             <gs-form-group css="mt-2" layout="vertical" name="field3" label="Switch box"   type="switch" checked></gs-form-group>
             <gs-form-group css="mt-2" layout="vertical" name="field4" label="Range"        type="range" min="0" max="100" step="2"></gs-form-group>
             
-            <gs-form-group css="mt-2" layout="vertical" name="active" label="Status" description="test">
+            <gs-form-group css="mt-2" layout="vertical" name="active2" label="Status" description="test">
                 <template>
-                    <select class="form-select" id="active" name="active" required>
+                    <select class="form-select" id="active2" name="active2" required>
                         <option value="true">Enabled</option>
                         <option value="false">Disabled</option>
                     </select>
@@ -137,9 +144,9 @@
             <gs-form-group css="mt-2" layout="vertical" name="field3" label="Switch box"   type="switch" checked icon="false" description="Test tooltip"></gs-form-group>
             <gs-form-group css="mt-2" layout="vertical" name="field4" label="Range"        type="range" min="0" max="100" step="2" icon="false" description="Test tooltip"></gs-form-group>
             
-            <gs-form-group css="mt-2" layout="vertical" name="active" label="Status" description="test" icon="false">
+            <gs-form-group css="mt-2" layout="vertical" name="active4" label="Status" description="test" icon="false">
                 <template>
-                    <select class="form-select" id="active" name="active" required>
+                    <select class="form-select" id="active4" name="active4" required>
                         <option value="true">Enabled</option>
                         <option value="false">Disabled</option>
                     </select>
