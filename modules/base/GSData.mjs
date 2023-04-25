@@ -122,8 +122,16 @@ export default class GSData {
             return sts || GSData.compareNum(v1, v2, order);
         } else if (GSUtil.isString(v1) || GSUtil.isString(v2)) {
             return sts || GSData.compareString(v1, v2, order);
+        } else if(GSUtil.isBool(v1) || GSUtil.isBool(v2)) {
+            return sts || GSData.compareBool(v1, v2, order);
         }
         return sts;
+    }
+
+    static compareBool(v1, v2, ord) {
+        v1 = v1 ? 1 : 0;
+        v2 = v2 ? 1 : 0;
+        return GSData.compareNum(v1, v2, ord);
     }
 
     /**
