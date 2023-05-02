@@ -101,36 +101,36 @@ export default class GSNotification extends GSElement {
     GSAttr.setAsBool(this, 'native', val);
   }
 
-  info(title = '', message = '', closable = false, timeout = 2) {
-    return this.show(title, message, 'text-bg-info', closable, timeout);
+  info(title, message, closable, timeout, delay, options) {
+    return this.show(title, message, 'text-bg-info', closable, timeout, delay, options);
   }
 
-  success(title = '', message = '', closable = false, timeout = 2) {
-    return this.show(title, message, 'text-bg-success', closable, timeout);
+  success(title, message, closable, timeout, delay, options) {
+    return this.show(title, message, 'text-bg-success', closable, timeout, delay, options);
   }
 
-  warn(title = '', message = '', closable = false, timeout = 2) {
-    return this.show(title, message, 'text-bg-warning', closable, timeout);
+  warn(title, message, closable, timeout, delay, options) {
+    return this.show(title, message, 'text-bg-warning', closable, timeout, delay, options);
   }
 
-  danger(title = '', message = '', closable = false, timeout = 2) {
-    return this.show(title, message, 'text-bg-danger', closable, timeout);
+  danger(title, message, closable, timeout, delay, options) {
+    return this.show(title, message, 'text-bg-danger', closable, timeout, delay, options);
   }
 
-  primary(title = '', message = '', closable = false, timeout = 2) {
-    return this.show(title, message, 'text-bg-primary', closable, timeout);
+  primary(title, message, closable, timeout, delay, options) {
+    return this.show(title, message, 'text-bg-primary', closable, timeout, delay, options);
   }
 
-  secondary(title = '', message = '', closable = false, timeout = 2) {
-    return this.show(title, message, 'text-bg-secondary', closable, timeout);
+  secondary(title, message, closable, timeout, delay, options) {
+    return this.show(title, message, 'text-bg-secondary', closable, timeout, delay, options);
   }
 
-  dark(title = '', message = '', closable = false, timeout = 2) {
-    return this.show(title, message, 'text-bg-dark', closable, timeout);
+  dark(title, message, closable, timeout, delay, options) {
+    return this.show(title, message, 'text-bg-dark', closable, timeout, delay, options);
   }
 
-  light(title = '', message = '', closable = false, timeout = 2) {
-    return this.show(title, message, 'text-bg-light', closable, timeout);
+  light(title, message, closable, timeout, delay, options) {
+    return this.show(title, message, 'text-bg-light', closable, timeout, delay, options);
   }
 
   /**
@@ -142,39 +142,37 @@ export default class GSNotification extends GSElement {
    * @param {string} message Notification message
    * @param {string} css CSS styling (web only)
    * @param {boolean} closable Can user close it (web only)
-   * @param {number} timeout Timeout after which to close notification
+   * @param {number} timeout Timeout after which to close notification  (default 2 sec)
+   * @param {number} delay Timeout after which to show notification (default 1 sec)
    * @param {object} options Options for native Notification
    * @returns {Promise<Notification|GSToast>}
    */
-  async show(title = '', message = '', css = '', closable = false, timeout = 2, options) {
+  async show(title = '', message = '', css = '', closable = false, timeout = 2, delay = 0.5, options) {
     const me = this;
     if (me.native) {
       let sts = await GSNotification.requestPermission();
-      if (sts) sts = me.#showNative(title, message, timeout, options);
+      if (sts) sts = me.#showNative(title, message, timeout, delay, options);
       if (sts) return sts;
     }
     return me.#showWeb(title, message, css, closable, timeout);
   }
 
-  #showWeb(title = '', message = '', css = '', closable = false, timeout = 2) {
+  #showWeb(title, message, closable, timeout, delay) {
     const me = this;
     const tpl = `<gs-toast slot="content" css="${css}"  closable="${closable}" timeout="${timeout}" message="${message}" title="${title}"></gs-toast>`;
     const el = GSDOM.parse(tpl, true);
     const toast = me.#dialogToast;
-    requestAnimationFrame(() => {
+    requestAnimationFrame(async () => {
       if (toast !== me) GSAttr.set(toast, 'class', `toast-container ${me.css} ${me.position}`);
+      await me.#delay(delay);
       toast.appendChild(el);
     });
     return el;
   }
 
-  get #dialogToast() {
-    const dlg = customElements.get('gs-dialog')?.top;
-    return dlg && dlg.isConnected ? (GSDOM.query(dlg, '.toast-container') || this) : this;
-  }
-
-  #showNative(title = '', message = '', timeout = 2, options = {}) {
+  async #showNative(title, message, closable, timeout, delay, options = {}) {
     const me = this;
+    await me.#delay(delay);
     options.body = options.body || message;
     const notification = new Notification(title, options);
     me.#list.add(notification);
@@ -182,6 +180,15 @@ export default class GSNotification extends GSElement {
     notification.addEventListener('close', callback);
     if (timeout > 0) setTimeout(callback, timeout * 1000);
     return notification;
+  }
+  
+  get #dialogToast() {
+    const dlg = customElements.get('gs-dialog')?.top;
+    return dlg && dlg.isConnected ? (GSDOM.query(dlg, '.toast-container') || this) : this;
+  }
+
+  async #delay(delay = 0) {
+    if (delay > 0 && GSUtil.isNumber(delay)) await GSUtil.timeout(delay * 1000);
   }
 
   #clearNative() {
