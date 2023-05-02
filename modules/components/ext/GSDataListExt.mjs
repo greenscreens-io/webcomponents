@@ -11,6 +11,7 @@ import GSID from "../../base/GSID.mjs";
 import GSComponents from "../../base/GSComponents.mjs";
 import GSLoader from "../../base/GSLoader.mjs";
 import GSDOM from "../../base/GSDOM.mjs";
+import GSUtil from "../../base/GSUtil.mjs";
 
 /**
  * Add JSON loader to datalist element
@@ -83,6 +84,8 @@ export default class GSDataListExt extends HTMLDataListElement {
 
     #objToHTML(o) {
         const seg = ['<option'];
+
+        if (GSUtil.isString(o)) o = {value : o};
 
         Object.entries(o).forEach(it => {
             const key = it[0];

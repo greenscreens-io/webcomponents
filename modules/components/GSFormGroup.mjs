@@ -88,8 +88,9 @@ export default class GSFormGroup extends GSElement {
 
    #validateAllowed() {
       const me = this;
-      let list = Array.from(me.children).filter(el => el.slot && el.slot !== 'body');
-      if (list.length > 0) throw new Error(`Custom element injection must contain slot="body" attribute! Element: ${me.tagName}, ID: ${me.id}`);
+      const slots = ['header', 'body', 'footer'];
+      let list = Array.from(me.children).filter(el => el.slot && slots.indexOf(el.slot) < 0);
+      if (list.length > 0) throw new Error(`Custom element injection must contain slot="header|body|footer" attribute! Element: ${me.tagName}, ID: ${me.id}`);
       list = Array.from(me.children).filter(el => !el.slot);
       const tagList = ['TEMPLATE', 'GS-ITEM'];
       const allowed = GSDOM.isAllowed(list, tagList);
@@ -141,9 +142,11 @@ export default class GSFormGroup extends GSElement {
       const me = this;
       return `
       <div class="row form-group ${me.css}">
+         <slot name="header"></slot>
          ${me.#labelWrap}
          ${me.#field}
          ${me.#info}
+         <slot name="footer"></slot>
       </div>`;
    }
 
@@ -207,9 +210,7 @@ export default class GSFormGroup extends GSElement {
       const me = this;
       return `
       <div class="${me.#cssCheck} ${me.cellField}">
-         <slot name="body">
-         ${me.#input}         
-         </slot>
+         <slot name="body">${me.#input}</slot>
       </div>`;
    }
 
