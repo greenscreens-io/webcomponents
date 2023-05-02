@@ -63,12 +63,13 @@ export default class GSToast extends GSElement {
     if (me.visible) me.open();
   }
 
-  show(title = '', message = '', css = '', visible = true, closable = false, timeout = 2) {
+  show(title = '', message = '', css = '', visible = true, closable = false, timeout = 2, delay = 0) {
     const me = this;
     me.css = css || me.css;
     me.title = title;
     me.message = message;
     me.timeout = timeout;
+    me.delay = delay;
     me.closable = closable == true;
     me.visible = visible == true;
     me.open();
@@ -77,6 +78,7 @@ export default class GSToast extends GSElement {
   open() {
     const me = this;
     requestAnimationFrame(async () => {
+      if (me.delay > 0) await GSUtil.timeout(me.delay * 1000);
       GSDOM.toggleClass(this.#toast, 'show', true);
       if (me.timeout <= 0) return;
       await GSUtil.timeout(me.timeout * 1000);
@@ -139,6 +141,14 @@ export default class GSToast extends GSElement {
 
   set timeout(val = 2) {
     GSAttr.set(this, 'timeout', val);
+  }
+
+  get delay() {
+    return GSAttr.getAsNum(this, 'delay', 2);
+  }
+
+  set delay(val = 0) {
+    GSAttr.set(this, 'delay', val);
   }
 
   get closable() {

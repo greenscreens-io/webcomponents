@@ -74,7 +74,8 @@
         function show(native) {
             const nn = GSComponents.find('gs-notification');
             nn.native = native;
-            nn.info('Hello', 'Native message test', true, 5);
+            nn.info('Hello', 'Immediate toast message test', true, 5, 0);
+            nn.info('Hello', 'Delayed toast message test', true, 5, 2);
         }
     </script>
 </body>

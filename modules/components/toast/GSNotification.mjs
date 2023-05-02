@@ -154,10 +154,10 @@ export default class GSNotification extends GSElement {
       if (sts) sts = me.#showNative(title, message, timeout, delay, options);
       if (sts) return sts;
     }
-    return me.#showWeb(title, message, css, closable, timeout);
+    return me.#showWeb(title, message, css, closable, timeout, delay);
   }
 
-  #showWeb(title, message, closable, timeout, delay) {
+  #showWeb(title, message, css, closable, timeout, delay) {
     const me = this;
     const tpl = `<gs-toast slot="content" css="${css}"  closable="${closable}" timeout="${timeout}" message="${message}" title="${title}"></gs-toast>`;
     const el = GSDOM.parse(tpl, true);
@@ -170,7 +170,7 @@ export default class GSNotification extends GSElement {
     return el;
   }
 
-  async #showNative(title, message, closable, timeout, delay, options = {}) {
+  async #showNative(title, message, timeout, delay, options = {}) {
     const me = this;
     await me.#delay(delay);
     options.body = options.body || message;
