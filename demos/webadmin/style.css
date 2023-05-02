@@ -9,15 +9,7 @@ dialog {
 
 dialog::backdrop {
     backdrop-filter: blur(4px);
-    /*
-    background: repeating-linear-gradient(
-      45deg,
-      rgba(0, 0, 0, 0.2),
-      rgba(0, 0, 0, 0.2) 1px,
-      rgba(0, 0, 0, 0.3) 1px,
-      rgba(0, 0, 0, 0.3) 20px
-    );
-    */
+    transform: translate3d(0px, 0px, 0px);
 }
 
 .offcanvas,
@@ -65,8 +57,12 @@ dialog::backdrop {
     z-index: 10000;
 }
 
-.dialog-title {
-    background-color: ghostwhite;
+.card {
+    --bs-card-header-bg: ghostwhite;
+}
+
+.card-header {
+    background-color: var(--bs-card-header-bg);
 }
 
 .logo {
@@ -85,4 +81,9 @@ dialog::backdrop {
     --bs-btn-active-border-color: #ff6500;
     --bs-btn-disabled-bg: #d37639;
     --bs-btn-disabled-border-color: #d37639;
+}
+
+.form-control:focus,
+.form-select:focus {
+    background-color: aliceblue;
 }
