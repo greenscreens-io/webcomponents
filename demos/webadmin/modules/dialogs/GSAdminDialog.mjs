@@ -6,7 +6,7 @@
  * A module loading GSLoginAdmin class
  * @module dialogs/GSLoginAdmin
  */
-import { GSAttr, GSComponents, GSDOM, GSEvent, GSFunction, GSLoader, GSDialog } from '/webcomponents/release/esm/io.greenscreens.components.all.esm.min.js';
+import { GSAttr, GSComponents, GSDOM, GSEvents, GSFunction, GSLoader, GSDialog } from '/webcomponents/release/esm/io.greenscreens.components.all.esm.min.js';
 import Utils from '../utils/Utils.mjs';
 
 export default class GSAdminDialog extends GSDialog {

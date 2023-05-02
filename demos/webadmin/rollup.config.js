@@ -1,5 +1,5 @@
 import { terser } from 'rollup-plugin-terser';
-import { sourcemaps } from 'rollup-plugin-sourcemaps';
+import sourcemaps from 'rollup-plugin-sourcemaps';
 import gsExtern from './rollup-plugin-gs-extern.js'
 
 const devMode = (process.env.NODE_ENV === 'development');
