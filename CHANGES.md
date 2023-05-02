@@ -1,7 +1,17 @@
 # [WebComponents](https://webcomponents.greenscreens.ltd/) for [Bootstrap 5.2.0+](https://getbootstrap.com/)
 
-# Release v1.4.1 (18.04.2023.) 
+# Release v1.4.1 (02.05.2023.) 
  - Fix GSDialog stack
+ - Updated Bootstrap Icons
+ - GSNotificaton fix for native toast; added delay flag
+ - GSData bool sort fix
+ - Added multiple regex validation to GSFormGroup
+ - Code cleanup
+ - GSCacheStyles cleanup
+ - Typo fix, update information
+ - SPA Demo, UI updates
+ - SPA Demo added Kerberos dialog 
+ - SPA Demo added Migrate dialog 
 
 # Release v1.4.0 (06.04.2023.) 
  - Added CSP compatible dynamic styles
