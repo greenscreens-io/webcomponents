@@ -1,14 +1,14 @@
 <div class="container-fluid ms-4">
 
-    <div class="row border shadow-sm ms-4 ps-4 py-4 bg-light border shadow-sm mb-4">
+    <div class="row -border shadow-sm rounded-3 ms-4 ps-4 py-4 bg-light mb-4">
         <div class="col">
             <h4 class="text-muted user-select-none">Network Proxy/Tunnel Configuration</h4>
         </div>
     </div>
 
-    <div class="row border shadow-sm ms-4 pb-4 bg-light border shadow-sm ">
+    <div class="row border shadow-sm rounded ms-4 pb-4 bg-light">
 
-        <div class="col-12 border-bottom d-flex justify-content-end ">
+        <div class="col-12 border-bottom d-flex justify-content-end p-1">
             <gs-button action="create" select="false" comment="Add new configuration" css="text-bg-light"
                 icon="bi bi-file-earmark fs-4 fw-bold"></gs-button>                 
             <gs-button action="refresh" select="false" comment="Refresh data" css="text-bg-light"
@@ -81,7 +81,7 @@
                 <gs-pager slot="extra" previous="&laquo;" next="&raquo;" firstlast="false" pages="0"></gs-pager>
             </gs-table>
 
-            <gs-dialog id="modal-main" visible="false" css-modal="modal-lg" css-body="p-0" css-header="p-3 dialog-title">
+            <gs-dialog id="modal-main" visible="false" css-modal="modal-lg" css-body="p-0" css-header="p-3 ">
                 <h4 slot="title">Network tunnel</h4>
                 <gs-template slot="body" href="//forms/tunnel.html"></gs-template>
             </gs-dialog>

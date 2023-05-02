@@ -20,12 +20,22 @@
     </template>
 </gs-form-group>
 
-<gs-form-group css="m-1" name="forcedSSL" label="Cookie Forced SSL" 
+<gs-form-group css="m-1" name="forcedSSL" label="Force SSL" 
     description="When enabled, session cookie will be available only if SSL is used. NOTE: Server restart required!">
     <template>
         <select class="form-select" id="forcedSSL" name="forcedSSL" required="" >
             <option value="false">Disabled</option>
             <option value="true">Enabled</option>
+      </select>        
+    </template>
+</gs-form-group>
+
+<gs-form-group css="m-1" name="allowEmbed" label="Allow Embed" 
+    description="When enabled, allow terminal to be embedded within other web context (iframe). NOTE: SSL forced required!">
+    <template>
+        <select class="form-select" id="allowEmbed" name="allowEmbed" required="" >
+            <option value="false">Disabled</option>
+            <option value="true" selected>Enabled</option>
       </select>        
     </template>
 </gs-form-group>

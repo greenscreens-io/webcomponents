@@ -1,11 +1,33 @@
 <gs-form-group flat="true" css="m-1" name="user" label="User" 
+	css-field="text-uppercase" maxlength="10" 
     description="IBM i server user name.">
 </gs-form-group>
 
 <gs-form-group flat="true" css="m-1" name="password" label="Password" 
+	type="password" maxlength="128" reveal
     description="IBM i server user password.">
 </gs-form-group>
 
 <gs-form-group flat="true" css="m-1" name="service" label="Service"
     description="Service names (web modules). If not set, all services allowed.">
+</gs-form-group>
+
+<gs-form-group css="m-1" name="allowOveride" label="Allow Overide" 
+    description="Allow requester to override credentials.">
+    <template>
+        <select class="form-select" id="allowOveride" name="allowOveride" required>
+            <option value="true">Enabled</option>
+            <option value="false">Disabled</option>
+        </select>
+    </template>
+</gs-form-group>
+
+<gs-form-group css="m-1" name="serviceUser" label="Use service User" 
+    description="Use main host configured service user.">
+    <template>
+        <select class="form-select" id="serviceUser" name="serviceUser" required>
+            <option value="true">Enabled</option>
+            <option value="false">Disabled</option>
+        </select>
+    </template>
 </gs-form-group>

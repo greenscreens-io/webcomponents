@@ -1,13 +1,14 @@
 <div class="container-fluid ms-4">
-    <div class="row border shadow-sm ms-4 ps-4 py-4 bg-light border shadow-sm  mb-4">
+
+    <div class="row -border shadow-sm rounded-3 ms-4 ps-4 py-4 bg-light mb-4">
         <div class="col">
             <h4 class="text-muted user-select-none">API Key Records</h4>
         </div>
     </div>
 
-    <div class="row border shadow-sm ms-4 pb-4 bg-light border shadow-sm ">
+    <div class="row border shadow-sm rounded ms-4 pb-4 bg-light ">
 
-        <div class="col-12 border-bottom d-flex justify-content-end ">
+        <div class="col-12 border-bottom d-flex justify-content-end p-1 ">
             <gs-button action="create" select="false" comment="Add new configuration" css="text-bg-light"
                 icon="bi bi-file-earmark fs-4 fw-bold"></gs-button>
             <gs-button action="refresh" select="false" comment="Refresh data" css="text-bg-light"
@@ -24,6 +25,8 @@
                     <gs-column title="Host" name="host" filter="true"></gs-column>
                     <gs-column title="IP" name="ip" filter="true"></gs-column>
                     <gs-column title="Key" name="key" filter="true"></gs-column>
+                    <gs-column title="Allow Overide" name="allowOveride" filter="true"></gs-column>
+                    <gs-column title="Service User" name="serviceUser" filter="true"></gs-column>
                     <gs-column title="User" name="user" filter="true"></gs-column>
                     <gs-column title="Service" name="service" filter="true"></gs-column>
                     <gs-column title="Created" name="created" type="timestamp" format="HH:mm:ss DD.MM.YYYY"></gs-column>
@@ -40,6 +43,8 @@
                     <gs-item name="host"></gs-item>
                     <gs-item name="ip"></gs-item>
                     <gs-item name="key"></gs-item>
+                    <gs-item name="allowOveride"></gs-item>
+                    <gs-item name="serviceUser"></gs-item>
                     <gs-item name="active"></gs-item>
                     <gs-item name="user"></gs-item>
                     <gs-item name="password"></gs-item>
@@ -56,7 +61,7 @@
                 <gs-pager slot="extra" previous="&laquo;" next="&raquo;" firstlast="false" pages="0"></gs-pager>
             </gs-table>
 
-            <gs-dialog id="modal-main" visible="false" css-body="p-0" css-header="p-3 dialog-title" >
+            <gs-dialog id="modal-main" visible="false" css-body="p-0" css-header="p-3 " >
                 <h4 slot="title">API Key</h4>
                 <gs-template slot="body" href="//forms/key-api.html"></gs-template>
             </gs-dialog>

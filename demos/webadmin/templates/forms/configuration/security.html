@@ -13,6 +13,18 @@
     </template>
 </gs-form-group>
 
+<gs-form-group css="m-1" name="transfer" label="File transfer"
+    description="Select which transfer types are allowed. Default is NONE.">
+    <template>
+        <select class="form-select" id="transfer" name="transfer" required>
+            <option value="0">None</option>
+            <option value="1">Both</option>
+            <option value="2">Download</option>
+            <option value="3">Upload</option>
+        </select>
+    </template>
+</gs-form-group>
+
 <gs-form-group css="m-1" name="expiration" label="Link expiration" required 
     value="0" list="expirations"
     description="Timeout in seconds when generated URL link will expire.">
