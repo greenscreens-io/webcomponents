@@ -1,52 +1,60 @@
-
-<div class="d-flex justify-content-between align-items-center flex-fill">
+<div class="d-flex justify-content-between align-items-center flex-fill pb-1">
     <div></div>
     <div></div>
     <div class="d-flex">
-        <div class="d-flex align-items-center fs-5">        
-            <gs-button id="action" action="explorer" data-src="/admin/explorer.jsp" 
-            select="false" comment="Open resource explorer" 
-            css="text-bg-light" icon="bi bi-folder-symlink fs-3"></gs-button>
+        <div class="d-flex align-items-center fs-5">
+            <gs-button id="action" action="explorer" data-src="/admin/explorer/" select="false"
+                comment="Open resource explorer" css="text-bg-light" icon="bi bi-folder-symlink fs-3"></gs-button>
             <gs-tooltip placement="bottom" title="Open resource explorer"></gs-tooltip>
-        </div>        
+        </div>
         <div>
             <a type="button" class="btn" data-bs-toggle="dropdown" data-bs-target="#menu1">
                 <i class="bi-download fs-3"></i>
             </a>
             <gs-tooltip placement="bottom" title="Downloads"></gs-tooltip>
             <gs-dropdown dark="false" id="menu1">
-                <gs-item name="Download SAVF" action="download-savf"></gs-item>
+                <!--   
+                	<gs-item name="Download SAVF" action="download-savf"></gs-item>
+            	 -->
                 <gs-item name="Download Configuration" action="download-config"></gs-item>
                 <gs-item name="Download Logs" action="download-logs"></gs-item>
             </gs-dropdown>
         </div>
-        <div class="d-flex align-items-center fs-5">        
-            <gs-button id="action" action="restart" select="false" 
-            css="text-bg-light" icon="bi bi-arrow-repeat fs-3"></gs-button>            
+        <div class="d-flex align-items-center fs-5">
+            <gs-button id="action" action="restart" select="false" css="text-bg-light"
+                icon="bi bi-arrow-repeat fs-3"></gs-button>
             <gs-tooltip placement="bottom" title="Restart server"></gs-tooltip>
-        </div>         
+        </div>
+        <div class="d-flex align-items-center fs-5">
+            <a id="migrate" class="btn" data-inject="gs-admin-dialog-migrate" data-bs-target="#dialogs">
+                <i class="bi bi-database fs-3"></i>
+            </a>
+            <gs-tooltip placement="bottom" title="Migrate Storage from previous version"></gs-tooltip>
+        </div>
         <div>
             <a type="button" class="btn" data-bs-toggle="dropdown" data-bs-target="#menu2">
                 <i class="bi-postcard fs-3"></i>
-            </a>            
+            </a>
             <gs-tooltip placement="bottom" title="Digital Certificate Tools"></gs-tooltip>
             <gs-dropdown dark="false" id="menu2">
                 <gs-item name="Blocked Certificates" inject="gs-admin-dialog-certblocked" target="#dialogs"></gs-item>
                 <gs-item></gs-item>
                 <gs-item name="Regenerate Terminal Keys" action="cert-gen-term"></gs-item>
                 <gs-item name="Generate Server Cert" action="cert-gen-svr"></gs-item>
-                <gs-item name="Generate Client Cert" inject="gs-admin-dialog-certclient"  target="#dialogs"></gs-item>
+                <gs-item name="Generate Client Cert" inject="gs-admin-dialog-certclient" target="#dialogs"></gs-item>
                 <gs-item></gs-item>
                 <gs-item name="Generate Server Req" action="cert-gen-req"></gs-item>
-                <gs-item></gs-item>                
+                <gs-item></gs-item>
                 <gs-item name="Export Root CA" action="cert-export"></gs-item>
-                <gs-item name="Import Certificates" inject="gs-admin-dialog-certimport"  target="#dialogs"></gs-item>
-                <gs-item name="Import PFX/P12" inject="gs-admin-dialog-certimportpfx"  target="#dialogs"></gs-item>
-                <gs-item></gs-item>                
-                <gs-item name="Toggle Client Verification" action="cert-client-verify"></gs-item>
-                <gs-item name="Options" inject="gs-admin-dialog-certopt" target="#dialogs"></gs-item>                
+                <gs-item name="Import PFX/PEM" inject="gs-admin-dialog-certstoreimport" target="#dialogs"></gs-item>
+                <gs-item></gs-item>
+                <gs-item name="Toggle Client Verification" action="cert-client-verify"
+                    title="Turn ON/OFF client certificate security."></gs-item>
+                <gs-item name="Reload certificates" action="cert-server-refresh"
+                    title="Reload all certificates from storage to the server"></gs-item>
+                <gs-item name="Options" inject="gs-admin-dialog-certopt" target="#dialogs"></gs-item>
             </gs-dropdown>
-        </div>        
+        </div>
         <div>
             <a type="button" class="btn" data-bs-toggle="dropdown" data-bs-target="#menu3">
                 <i class="bi-gear fs-3"></i>
@@ -60,13 +68,14 @@
                 <gs-item name="Register Biometric" inject="gs-admin-dialog-bioreg" target="#dialogs"></gs-item>
                 <gs-item name="Register OTP" inject="gs-admin-dialog-otpreg" target="#dialogs"></gs-item>
                 <gs-item></gs-item>
+                <gs-item name="Kerberos" inject="gs-admin-dialog-kerberos" target="#dialogs"></gs-item>
                 <gs-item name="Network" inject="gs-admin-dialog-network" target="#dialogs"></gs-item>
                 <gs-item name="System" inject="gs-admin-dialog-system" target="#dialogs"></gs-item>
             </gs-dropdown>
         </div>
-        <div class="d-flex align-items-center fs-5">        
+        <div class="d-flex align-items-center fs-5">
             <gs-button id="action" action="logout" select="false" css="text-bg-light"
-            icon="bi bi-box-arrow-right fs-3"></gs-button>               
+                icon="bi bi-box-arrow-right fs-3"></gs-button>
             <gs-tooltip placement="start" title="Logout from Web Admin Console"></gs-tooltip>
         </div>
     </div>

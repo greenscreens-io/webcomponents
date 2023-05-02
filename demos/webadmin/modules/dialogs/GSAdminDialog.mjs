@@ -6,7 +6,7 @@
  * A module loading GSLoginAdmin class
  * @module dialogs/GSLoginAdmin
  */
-import {GSAttr,GSComponents,GSDOM,GSEvent,GSFunction,GSLoader,GSDialog} from '/webcomponents/release/esm/io.greenscreens.components.all.esm.min.js';
+import { GSAttr, GSComponents, GSDOM, GSEvent, GSFunction, GSLoader, GSDialog } from '/webcomponents/release/esm/io.greenscreens.components.all.esm.min.js';
 import Utils from '../utils/Utils.mjs';
 
 export default class GSAdminDialog extends GSDialog {
@@ -114,7 +114,7 @@ export default class GSAdminDialog extends GSDialog {
     }
 
     async #onData(e) {
-        GSEvent.prevent(e);
+        GSEvents.prevent(e);
         const me = this;
         try {
             const sts = await me.onData(e.detail.data);
@@ -130,12 +130,11 @@ export default class GSAdminDialog extends GSDialog {
         try {
             const action = GSUtil.capitalizeAttr(e.detail.action);
             const fn = me[action];
-            if (GSFunction.isFunction(fn)) {
-                if (GSFunction.isFunctionAsync(fn)) {
-                    await me[action](e);
-                } else {
-                    me[action](e);
-                }
+            if (!GSFunction.isFunction(fn)) return;
+            if (GSFunction.isFunctionAsync(fn)) {
+                await me[action](e);
+            } else {
+                me[action](e);
             }
         } catch (e) {
             Utils.handleError(e);
