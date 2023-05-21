@@ -70,6 +70,10 @@ export default class GSMarkdown extends GSElement {
         return `<div class="overflow-auto ${this.css}" style="max-height: 800px;"><div/>`;
     }
 
+    get isFlat() {
+        return true;
+    }
+
     /**
      * URL location from where to load data
      * 
@@ -125,7 +129,7 @@ export default class GSMarkdown extends GSElement {
         if (!me.#root) me.#root = me.#path;
 
         // MD library error fix
-        data = data.replace(/^[-{3}|\*{3}|_{3}]$/gm, '<hr>');
+        data = data.replace(/^[-_\*]{3}$/gm, '<hr>');
         
         me.#container.innerHTML = me.#makeHtml(data);
 
@@ -168,17 +172,18 @@ export default class GSMarkdown extends GSElement {
     
     #handleLinks() {
         const me = this;
-        const links =  GSDOM.queryAll(me.#container, 'a');
+        const links =  GSDOM.queryAll(me.#container, 'a').filter(el => !GSAttr.get(el, 'href').startsWith('#'));
 
         links
-        .filter(el => !(el.href.endsWith('.md') || el.href.endsWith('/')) )
+        .filter(el => !(GSAttr.get(el, 'href').endsWith('.md') || GSAttr.get(el, 'href').endsWith('/')) )
         .forEach(el => el.target = "_blank");
 
         links
-        .filter(el => el.href.endsWith('.md') || el.href.endsWith('/') )
+        .filter(el => GSAttr.get(el, 'href').endsWith('.md') || GSAttr.get(el, 'href').endsWith('/') )
         .forEach(el => {
             GSEvents.attach(el, el, 'click', me.#onLinkClick.bind(me));
         });
+
     }
 
     #onLinkClick(e) {
