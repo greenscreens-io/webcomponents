@@ -115,7 +115,7 @@ export default class GSMarkdown extends GSElement {
     async #onURL(url = '') {
         const me = this;
 
-        url = url ? GSLoader.normalizeURL(url, true) : url;
+        url = me.#normalize(url);
         if (!url) return;
 
         const data = await GSLoader.load(url);
@@ -125,11 +125,20 @@ export default class GSMarkdown extends GSElement {
         if (!me.#root) me.#root = me.#path;
         
         me.#container.innerHTML = me.#converter.makeHtml(data);
+
+        GSEvents.send(me, 'data', url);
         requestAnimationFrame(() => {
             me.#handleLinks();
             me.#handleTables();
             me.#handleCode();
         });        
+    }
+
+    #normalize(url = '') {
+        const me = this;
+        if (!url || url.startsWith('http')) return url;
+        return me.#path ? new URL(url, me.#path).toString() :
+        GSLoader.normalizeURL(url, true);
     }
 
     #parent(url = '') {
@@ -170,11 +179,11 @@ export default class GSMarkdown extends GSElement {
         const href = GSAttr.get(el, 'href');
         if (href.startsWith('#')) return;
         GSEvents.prevent(e);
+        el.href = me.#normalize(href);
 
-        const success = GSEvents.send(me, 'link', href, false, false, true);
+        const success = GSEvents.send(me, 'link', el.href, false, false, true);
         if (!success) return;
 
-        if (!href.startsWith('http')) el.href = new URL(href, me.#path).toString();
         me.#toCache(el.href);
         me.#onURL(el.href);
         return false;
