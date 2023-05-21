@@ -302,12 +302,17 @@ export default class GSElement extends HTMLElement {
 		GSAttr.setAsBool(this, 'visible', val);
 	}
 
+	get unstyled() {
+		return this.hasAttribute('unstyled');
+	}
+
 	/**
 	 * Update shareable stylesheet on change
 	 */
 	updateUI() {
 		const me = this;
 		if (!me.shadowRoot) return;
+		if (me.unstyled) return;
 		me.shadowRoot.adoptedStyleSheets = GSCacheStyles.styles;
 		GSEvents.send(document.body, 'i18n', me.shadowRoot);
 	}
