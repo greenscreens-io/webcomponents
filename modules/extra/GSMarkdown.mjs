@@ -118,13 +118,16 @@ export default class GSMarkdown extends GSElement {
         url = me.#normalize(url);
         if (!url) return;
 
-        const data = await GSLoader.load(url);
+        let data = await GSLoader.load(url);
         if (!data) return;
         
         me.#path = me.#parent(url);
         if (!me.#root) me.#root = me.#path;
+
+        // MD library error fix
+        data = data.replace(/^[-{3}|\*{3}|_{3}]$/gm, '<hr>');
         
-        me.#container.innerHTML = me.#converter.makeHtml(data);
+        me.#container.innerHTML = me.#makeHtml(data);
 
         GSEvents.send(me, 'data', url);
         requestAnimationFrame(() => {
@@ -151,7 +154,7 @@ export default class GSMarkdown extends GSElement {
     
     #handleTables() {
         const me = this;
-        const clss = "table table-light table-hover table-striped table-bordered w-auto";
+        const clss = "table table-light table-hover table-striped table-bordered w-auto shadow-sm";
         me.#handleStyles('table', clss);
     }
 
@@ -166,8 +169,13 @@ export default class GSMarkdown extends GSElement {
     #handleLinks() {
         const me = this;
         const links =  GSDOM.queryAll(me.#container, 'a');
+
         links
-        .filter(el => !el.href.startsWith('#'))
+        .filter(el => !(el.href.endsWith('.md') || el.href.endsWith('/')) )
+        .forEach(el => el.target = "_blank");
+
+        links
+        .filter(el => el.href.endsWith('.md') || el.href.endsWith('/') )
         .forEach(el => {
             GSEvents.attach(el, el, 'click', me.#onLinkClick.bind(me));
         });
@@ -202,6 +210,10 @@ export default class GSMarkdown extends GSElement {
         me.#cache.push(url);
         me.#last = url;
         if (!me.#first) me.#first = url;
+    }
+
+    #makeHtml(data) {
+        return this.#converter.makeHtml(data);
     }
 
     #onScriptReady() {

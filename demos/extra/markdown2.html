@@ -23,8 +23,13 @@
     <script type="module" src="/webcomponents/modules/index.mjs"></script>
     <script type="module" src="/webcomponents/modules/extra/GSMarkdown.mjs"></script>
 
-    <gs-css url="/webcomponents/assets/css/io.greenscreens.bootstrap_5.2.3.css"></gs-css>
-    <gs-css url="/webcomponents/assets/icons/bootstrap-icons.css" notheme="true"></gs-css>
+    <gs-css order="1" url="/webcomponents/assets/css/io.greenscreens.bootstrap_5.2.3.css"></gs-css>
+    <gs-css order="2" url="/webcomponents/assets/icons/bootstrap-icons.css" notheme="true"></gs-css>
+    <style order="3" is="gs-ext-style">
+        :root {
+            --bs-link-color: rgb(52 149 255 / 70%);
+        }
+    </style>
 
 </head>
 
@@ -38,7 +43,7 @@
     <!-- container for markdown -->
     <div class="row m-4">
         <div class="col-auto m-1 p-1">
-            <gs-markdown id="md1" unstyled css="p-1" url="/webcomponents/manual/index.md"></gs-markdown>
+            <gs-markdown id="md1" css="p-1" url="/webcomponents/manual/index.md"></gs-markdown>
         </div>
         <div class="col m-1 p-1 border-start">
             <gs-markdown id="md2" css="p-1" url="/webcomponents/manual/quickintro.md"></gs-markdown>

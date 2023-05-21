@@ -223,6 +223,7 @@ export default class GSLoader {
 
     static {
         Object.seal(GSLoader);
+        globalThis.GSLoader = GSLoader;
     }
 
 }

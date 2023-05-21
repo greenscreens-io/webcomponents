@@ -41,6 +41,7 @@ export default class GSCSS extends GSBase {
 	constructor() {
 		super();
 		const me = this;
+		if (!me.order) me.order = GSBase.nextID();
 		me.disabled = me.notheme == false && me.theme !== GSCSS.activeTheme;
 		//me.disabled = !(me.theme === 'default' || me.theme === GSCSS.activeTheme);
 	}
@@ -54,7 +55,6 @@ export default class GSCSS extends GSBase {
 	async render() {
 		const me = this;
 		if (me.disabled) return;
-		if (!me.order) me.order = GSBase.nextID();
 		//const hash = GSBase.hashCode(me.url);
 		try {
 			const res = await fetch(me.url);

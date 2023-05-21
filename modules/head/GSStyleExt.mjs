@@ -18,33 +18,25 @@ import GSCacheStyles from "./GSCacheStyles.mjs";
  */
 export default class GSStyleExt extends HTMLStyleElement {
 
-	#callback = null;
-
 	constructor() {
 		super();
 		const me = this;
 		if (!me.order) me.order = GSBase.nextID();
-		me.#callback = setInterval(me.#onLoad.bind(me), 1);
 	}
-
+	
 	connectedCallback() {
+		const me = this;
+		const sheet = me.sheet;
+		if (!sheet) return;
+		GSCacheStyles.adopt(me.asText, me.order);
+		const proxy = GSCacheStyles.get(me.order);
+		GSBase.sendSuspendedEvent(document, 'gs-style', proxy);
 	}
 
 	disconnectedCallback() {
 		const me = this;
-		clearInterval(me.#callback);
 		const sheet = GSCacheStyles.remove(me.order);
 		GSBase.sendSuspendedEvent(document, 'gs-style', sheet);
-	}
-
-	#onLoad() {
-		const me = this;
-		const sheet = me.sheet;
-		if (!sheet) return;
-		clearInterval(me.#callback);
-		GSCacheStyles.adopt(me.asText, me.order);
-		const proxy = GSCacheStyles.get(me.order);
-		GSBase.sendSuspendedEvent(document, 'gs-style', proxy);
 	}
 
 	get asText() {
