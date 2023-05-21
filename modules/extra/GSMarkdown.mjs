@@ -13,6 +13,15 @@ import GSAttr from "../base/GSAttr.mjs";
 import GSDOM from "../base/GSDOM.mjs";
 import GSEvents from "../base/GSEvents.mjs";
 
+/*
+ // use to create linked gs-markdown for ui menu and viewer
+ const md = GSComponents.find('gs-markdown')
+ md.addEventListener('link', e => {
+    GSEvents.prevent(e);
+    //todo take e.detail and set it to another gs-markdown element
+ })
+ */
+
 /**
  * Markdown document renderer
  * 
@@ -26,6 +35,11 @@ export default class GSMarkdown extends GSElement {
     static URL_LIB = globalThis.GS_URL_MARKDOWN || 'https://unpkg.com/showdown/dist/showdown.min.js';
 
     #converter = null;
+    #last = null;
+    #first = null;
+    #root = null;
+    #path = null;
+    #cache = [];
 
     static {
         customElements.define('gs-markdown', GSMarkdown);
@@ -53,7 +67,7 @@ export default class GSMarkdown extends GSElement {
     }
 
     async getTemplate(val = '') {
-        return `<div class="${this.css}"><div/>`;
+        return `<div class="overflow-auto ${this.css}" style="max-height: 800px;"><div/>`;
     }
 
     /**
@@ -66,7 +80,9 @@ export default class GSMarkdown extends GSElement {
     }
 
     set url(val = '') {
-        return GSAttr.set(this, 'url', val);
+        const me = this;
+        me.#toCache(val);
+        return GSAttr.set(me, 'url', val);
     }
 
 
@@ -78,27 +94,117 @@ export default class GSMarkdown extends GSElement {
         return GSAttr.set(this, 'css', val);
     }
 
+    get history() {
+        return GSAttr.getAsNum(this, 'history', 10);
+    }
+
+    set history(val = '') {
+        const me = this;
+        return GSAttr.setAsNum(me, 'history', val, 10);
+    }
+
+    back() {
+        const me = this;
+        const url = me.#fromCache();
+        if (url) me.#onURL(url);
+    }
+
     /**
      * Download source from URL, then send to rendering
      */
     async #onURL(url = '') {
         const me = this;
-        url = url ? GSLoader.normalizeURL(url) : url;
-        const data = url ? await GSLoader.load(url) : '';
-        const src = me.#converter.makeHtml(data);
-        me.#container.innerHTML = src;
-        me.#handleLinks();
+
+        url = url ? GSLoader.normalizeURL(url, true) : url;
+        if (!url) return;
+
+        const data = await GSLoader.load(url);
+        if (!data) return;
+        
+        me.#path = me.#parent(url);
+        if (!me.#root) me.#root = me.#path;
+        
+        me.#container.innerHTML = me.#converter.makeHtml(data);
+        requestAnimationFrame(() => {
+            me.#handleLinks();
+            me.#handleTables();
+            me.#handleCode();
+        });        
+    }
+
+    #parent(url = '') {
+        return url.endsWith('/') ? url : GSLoader.parentPath(url);
+    }
+
+    #handleCode() {
+        this.#handleStyles('pre:has(code)', 'text-white bg-dark p-1');
+    }
+    
+    #handleTables() {
+        const me = this;
+        const clss = "table table-light table-hover table-striped table-bordered w-auto";
+        me.#handleStyles('table', clss);
+    }
+
+    #handleStyles(qry, css) {
+        const me = this;
+        const list =  GSDOM.queryAll(me.#container, qry);
+        list.forEach(el => {
+            GSDOM.toggleClass(el, css);
+        });
     }
     
     #handleLinks() {
         const me = this;
         const links =  GSDOM.queryAll(me.#container, 'a');
-        links.forEach(el => {
-
+        links
+        .filter(el => !el.href.startsWith('#'))
+        .forEach(el => {
+            GSEvents.attach(el, el, 'click', me.#onLinkClick.bind(me));
         });
     }
 
+    #onLinkClick(e) {
+        const me = this;
+        const el = e.target;
+        const href = GSAttr.get(el, 'href');
+        if (href.startsWith('#')) return;
+        GSEvents.prevent(e);
 
+        const success = GSEvents.send(me, 'link', href, false, false, true);
+        if (!success) return;
+
+        if (!href.startsWith('http')) el.href = new URL(href, me.#path).toString();
+        me.#toCache(el.href);
+        me.#onURL(el.href);
+        return false;
+    }
+
+    #fromCache() {
+        const me = this;
+        const url = me.#cache.length > 0 ? me.#cache.pop() : me.#first;
+        return url === me.#last ? me.#fromCache() : url;
+    }
+
+    #toCache(url) {
+        const me = this;
+        if(me.#cache.length >= me.history) me.#cache = me.#cache.slice(1);
+        if (me.#last == url) return;
+        me.#cache.push(url);
+        me.#last = url;
+        if (!me.#first) me.#first = url;
+    }
+
+    #onScriptReady() {
+        const me = this;
+        const opt = {tasklists:true, tables : true};
+        me.#converter = new globalThis.showdown.Converter(opt);
+        requestAnimationFrame(() => {
+            me.#toCache(me.url);
+            me.#onURL(me.url)
+        });
+    }
+   
     #initLib() {
         const me = this;
         if (globalThis.showdown) return me.#onScriptReady();
@@ -107,12 +213,6 @@ export default class GSMarkdown extends GSElement {
         script.type = "text/javascript";
         script.src = GSMarkdown.URL_LIB;
         GSDOM.appendChild(document.head, script);
-    }
-
-    #onScriptReady() {
-        const me = this;
-        me.#converter = new globalThis.showdown.Converter();
-        requestAnimationFrame(() => me.#onURL(me.url));
     }
 
     /**

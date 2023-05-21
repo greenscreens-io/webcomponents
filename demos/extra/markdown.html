@@ -31,14 +31,29 @@
 <body>
     <gs-template href="../header.tpl"></gs-template>
 
+    <div class="m-4 p-1 bg-light border shadow-sm">
+        <button id="btnmenu" class="btn btn-primary">Main Menu</button>
+        <button id="btnback" class="btn btn-primary" onclick="GSComponents.find('gs-markdown').back()">Back</button>
+    </div>
+
     <!-- container for markdown -->
     <div class="row m-4">
-
-        <div class="col-auto m-1 p-1 bg-light border shadow-sm">
-            <gs-markdown unstyled url="/webcomponents/manual/index.md"></gs-markdown>
+        <div class="col m-1 p-1 bg-light border shadow-sm">
+            <gs-markdown _unstyled css="p-1" url="/webcomponents/manual/index.md"></gs-markdown>
         </div>
         
     </div>
 
+    <script>
+        document.getElementById('btnmenu').addEventListener('click', () => {
+            const md = GSComponents.find('gs-markdown');
+            md.url = `${md.dataset.root}/index.md`;
+        });
+        /*
+        document.getElementById('btnback').addEventListener('click', () => {
+            GSComponents.find('gs-markdown').back()
+        });
+        */
+    </script>
 </body>
 </html>

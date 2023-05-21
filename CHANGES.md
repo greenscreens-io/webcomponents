@@ -1,5 +1,9 @@
 # [WebComponents](https://webcomponents.greenscreens.ltd/) for [Bootstrap 5.2.0+](https://getbootstrap.com/)
 
+# Release v1.4.4 (21.05.2023.) 
+ - Added unstyle Attribute to prevent GS style to shadowed component
+ - Added GSMarkdown (gs-markdown) component
+
 # Release v1.4.1 (02.05.2023.) 
  - Fix GSDialog stack
  - Updated Bootstrap Icons

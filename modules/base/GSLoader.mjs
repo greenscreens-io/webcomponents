@@ -71,13 +71,13 @@ export default class GSLoader {
     }
 
     /**
-     * Extrach aprent path from provided URL string
+     * Extrach parent path from provided URL string
      * @param {string} url 
      * @param {number} level How many levels to go up the chain
      * @returns {string}
      */
     static parentPath(url = '', level = 1) {
-        return (url || '').split('/').slice(0, -1 * level).join('/');
+        return (url || '').split('/').slice(0, -1 * level).join('/')+'/';
     }
 
     /**

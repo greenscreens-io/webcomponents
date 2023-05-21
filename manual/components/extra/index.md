@@ -6,5 +6,6 @@ Extra library is a set of classes that wraps around external libraries into WebC
 
 1. [GSChart](./GSChart.md)
 2. [GSHighlight](./GSHighlight.md)
-3. [GSMonaco](./GSMonaco.md)
+3. [GSMarkdown](./GSMarkdown.md)
+4. [GSMonaco](./GSMonaco.md)
 
