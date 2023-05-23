@@ -11,11 +11,6 @@ import GSElement from "../base/GSElement.mjs";
 import GSAttr from "../base/GSAttr.mjs";
 import GSLoader from '../base/GSLoader.mjs';
 
-const origin = globalThis.CHART_URL || globalThis.location?.origin || '/webcomponents';
-const url = `${origin}/assets/chart/chart.mjs`;
-const { Chart, registerables } = await import(url);
-Chart.register(...registerables);
-
 /**
  * Code editor based on ChartJS Library
  * https://www.chartjs.org/docs/latest/
@@ -27,12 +22,26 @@ Chart.register(...registerables);
  */
 export default class GSChart extends GSElement {
 
+    static #isChart = false;
+    static #initializing = false;
+
     #chart = null;
 
     static async #init() {
-        //const { Chart, registerables } = await import('/assets/chart/chart.mjs');
-        //const module = await import('/assets/chart/chart.mjs');
-        //module.Chart.register(...module.registerables);
+        if (GSChart.#isChart || GSChart.#initializing) return;
+        GSChart.#initializing = true;
+        if (globalThis.GS_URL_CHART === false) return;
+        try {
+            const origin = globalThis.GS_URL_CHART || globalThis.location?.origin || '/webcomponents';
+            const url = `${origin}/assets/chart/chart.mjs`;
+            const { Chart, registerables } = await import(url);
+            Chart.register(...registerables);        
+            GSChart.#isChart = true;
+        }  catch(e) {
+            console.log(e);
+        } finally {
+            GSChart.#initializing = false;
+        }
     }
 
     static {
@@ -48,7 +57,7 @@ export default class GSChart extends GSElement {
 
     constructor() {
         super();
-
+        GSChart.#init();
     }
 
     attributeCallback(name = '', oldValue = '', newValue = '') {

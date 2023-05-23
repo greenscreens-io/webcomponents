@@ -61,6 +61,7 @@ export default class GSMonaco extends GSElement {
     }
 
     static #initMonaco(own) {
+        if (globalThis.GS_URL_MONACO === false) return;
         if (GSMonaco.#initialized) {
             if (own) GSEvents.send(own, 'monaco-ready');
             return;
