@@ -67,7 +67,9 @@ export default class GSMarkdown extends GSElement {
     }
 
     async getTemplate(val = '') {
-        return `<div class="overflow-auto ${this.css}" style="max-height: 800px;"><div/>`;
+        const me = this;
+        const style = me.maxHeight > 0 ? `style="max-height: ${me.maxHeight}px;"` : '';
+        return `<div class="overflow-auto ${me.css}" ${style}><div/>`;
     }
 
     get isFlat() {
@@ -89,7 +91,6 @@ export default class GSMarkdown extends GSElement {
         return GSAttr.set(me, 'url', val);
     }
 
-
     get css() {
         return GSAttr.get(this, 'css', '');
     }
@@ -105,6 +106,14 @@ export default class GSMarkdown extends GSElement {
     set history(val = '') {
         const me = this;
         return GSAttr.setAsNum(me, 'history', val, 10);
+    }
+
+    get maxHeight() {
+        return GSAttr.getAsNum(this, 'max', 0);
+    }
+
+    set maxHeight(val = '') {
+        return GSAttr.setAsNumt(this, 'max', val);
     }
 
     back() {
