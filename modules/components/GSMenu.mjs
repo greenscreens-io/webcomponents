@@ -184,16 +184,16 @@ export default class GSMenu extends GSUListExt {
     const wh = parseInt(window.innerHeight, 10);
     const tt = me.#transform;
     requestAnimationFrame(() => {
-      let style = null;
+      let style = {};
       if (l + w > ww) {
         let left = l - ((l + w) - ww);
         if (tt) left = left - tt.x.value;
-        style = { left : `${left}px`};
+        style.left = `${left}px`;
       }
       if (t + h > wh) {
         let top = t - ((t + h) - wh);
         if (tt) top = top - tt.y.value;
-        style = {top : `${top}px`};
+        style.top = `${top}px`;
       }
       GSCacheStyles.setRule(me.id, style, true);
     });
