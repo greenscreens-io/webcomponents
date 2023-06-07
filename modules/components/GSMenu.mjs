@@ -128,7 +128,7 @@ export default class GSMenu extends GSUListExt {
   }
 
   close(e) {
-    GSEvents.prevent(e);
+    GSEvents.prevent(e, false);
     const me = this;
     if (!me.closable) return false;
     if (!me.visible) return false;
@@ -141,7 +141,7 @@ export default class GSMenu extends GSUListExt {
     GSCacheStyles.setRule(me.id, style, true);
     me.#caller?.focus();
     me.#caller = null;
-    GSEvents.send(me, 'close');
+    GSEvents.send(me, 'close', e);
   }
 
   open(e) {
@@ -266,16 +266,14 @@ export default class GSMenu extends GSUListExt {
     switch (e.key) {
       //case 'ContextMenu' : return me.#onPopup(e);
       case 'Escape' : 
-        GSEvents.prevent(e);
-        me.close();
+        me.close(e);
         break;
     }
   }
 
   async #onClick(e) {
     const me = this;
-    GSEvents.prevent(e);
-    me.close();
+    me.close(e);
     me.#closeSubmenus();
     me.#handleGroup(e);
     const data = e.target.dataset;

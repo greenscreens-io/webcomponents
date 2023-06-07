@@ -142,9 +142,10 @@ export default class GSEvents {
 	 * 
 	 * @param {Event} e 
 	 */
-	static prevent(e) {
+	static prevent(e, full = true) {
 		if (GSFunction.hasFunction(e, 'preventDefault')) e.preventDefault();
 		if (GSFunction.hasFunction(e, 'stopPropagation')) e.stopPropagation();
+		if (full && GSFunction.hasFunction(e, 'stopImmediatePropagation')) e.stopImmediatePropagation();
 	}
 
 	/**
