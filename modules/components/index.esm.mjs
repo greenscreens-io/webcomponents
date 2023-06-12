@@ -11,6 +11,7 @@ export { default as GSButton } from "./GSButton.mjs";
 export { default as GSCalendar } from "./GSCalendar.mjs";
 export { default as GSCenter } from "./GSCenter.mjs";
 export { default as GSContext } from "./GSContext.mjs";
+export { default as GSCopyright } from "./GSCopyright.mjs";
 export { default as GSDialog } from "./GSDialog.mjs";
 export { default as GSDropdown } from "./GSDropdown.mjs";
 export { default as GSFormGroup } from "./GSFormGroup.mjs";

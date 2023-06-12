@@ -11,6 +11,7 @@ import "./GSButton.mjs";
 import "./GSCalendar.mjs";
 import "./GSCenter.mjs";
 import "./GSContext.mjs";
+import "./GSCopyright.mjs";
 import "./GSDialog.mjs";
 import "./GSDropdown.mjs";
 import "./GSFormGroup.mjs";

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Dashboard test</title>
+    <meta charset="utf-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="viewport"
+        content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+
+    <meta name="subject" content="Green Scereens Ltd.">
+    <meta name="author" content="www.greenscreens.ltd">
+    <meta name="keywords" content="JavaScript,WebComponents">
+    <meta name="robots" content="index, follow">
+    <meta name="revisit-after" content="3 month">
+    <meta name="description" content="WebComponents UI library based on Bootstrap.">
+
+    <script type="text/javascript">
+        self.GS_TEMPLATE_URL = '/demos/layout/templates';
+    </script>
+    <script type="module" src="/webcomponents/modules/index.mjs"></script>
+    <script type="module" src="/webcomponents/modules/components/index.mjs"></script>
+
+    <gs-css url="/webcomponents/assets/css/io.greenscreens.bootstrap_5.3.0.css"></gs-css>
+    <gs-css url="/webcomponents/assets/icons/bootstrap-icons.css" notheme="true"></gs-css>
+</head>
+
+<body>
+
+    <gs-layout type="vertical" css="">
+
+        <gs-item v-pos="center" h-pos="center" min="5" css="p-3 border-bottm shadow-sm text-bg-light">
+            <template>
+                <div class=" ">
+                    <img src="/webcomponents/assets/img/logo.png" height="32">
+                </div>
+            </template>
+        </gs-item>
+
+        <gs-item>
+            <template>
+                    <gs-item css="p-3" id="content" v-pos="top" h-pos="center">
+                        <template>
+                            centerd data
+                        </template>
+                    </gs-item>
+                </gs-layout>
+            </template>
+        </gs-item>
+
+    </gs-layout>
+
+    <gs-copyright company="Green Screns Ltd." year="2015"></gs-copyright>
+
+</body>
+
+</html>
