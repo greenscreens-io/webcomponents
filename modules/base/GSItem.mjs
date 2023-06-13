@@ -137,8 +137,8 @@ export default class GSItem extends HTMLElement {
 		return GSAttr.get(el, 'inject');
 	}
 
-	static getIcon(el) {
-		return GSAttr.get(el, 'icon');
+	static getIcon(el, dft = '') {
+		return GSAttr.get(el, 'icon', dft);
 	}
 
 	static getSelectable(el) {

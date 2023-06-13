@@ -306,7 +306,7 @@ export default class GSEvents {
 	/**
 	* Generic event listener remover
 	 * @param {HTMLElement} own Event owner
-	 * @param {HTMLElement} el Owner elelemt to monitor
+	 * @param {HTMLElement} el Owner element to monitor
 	 * @param {string} name Event name to moinitor
 	 * @param {Function} fn Callback to trigger on event
 	 */

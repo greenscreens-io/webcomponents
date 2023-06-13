@@ -28,6 +28,7 @@ import "./GSSplitter.mjs";
 import "./GSTab.mjs";
 import "./GSTag.mjs";
 import "./GSTooltip.mjs";
+import "./GSTree.mjs";
 
 import "./filebox/index.mjs";
 import "./table/index.mjs";

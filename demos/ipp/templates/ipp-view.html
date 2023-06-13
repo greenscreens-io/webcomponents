@@ -1,0 +1,59 @@
+<div class="container-fluid"> 
+<div class="row bg-white border rounded">
+    <div class="col-12"><small>NOTE: When running on HTTPS, printer URI schema must be HTTPS and printer must support IPPS.</small></div>            
+    <div class="col-12"><small>NOTE: If HTTPS not supported by printer, use HTTP for this page and HTTp for printer URI.</small></div>    
+    <div class="col-12"><small>NOTE: If CORS not supported by printer, start browser with --disable-web-security  --user-data-dir="c:\\temp"</small></div>    
+</div>
+
+<div class="row pb-2">
+    <div class="col-md-12 p-2">
+        <div class="input-group">
+            <input class="form-control" id="printerURI" name="uri" title="IPP Printer URI address" placeholder="http://printer.local:631/printers/Laserjet" value="http://printer.local:631/printers/Laserjet">
+            <button class="btn btn-outline-secondary" type="button" id="btnReg" title="Initialize printer connection">Register</button>
+          </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <span>
+                        <button class="btn btn-secondary" id="btnPrta" type="button">Get-Printer-Attr</button>
+                        <button class="btn btn-secondary" id="btnPrturi" type="button">Print-URI</button> 
+                        <button class="btn btn-secondary" id="btnGetJobs" type="button">Get-Jobs</button> 
+                        <button class="btn btn-secondary" id="btnGetJoba" type="button">Get-Job-Attr</button> 
+                        <button class="btn btn-secondary" id="btnCancelJobs" type="button">Cancel-Job</button>
+                        <button class="btn btn-secondary" id="btnPurgeJobs" type="button">Purge-Jobs</button> 
+                        <button class="btn btn-secondary" id="btnClear" title="Clear console output">Clear Log</button>
+                    </span>
+                </h4>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+
+    <gs-tab css="bg-light border shadow-sm" css-nav="nav-tabs" css-pane="p-2" placement="top">
+        <gs-item active="true" title="Printer Attributes" css-nav="active" css-pane="">
+            <template>
+                <gs-ipp-attributes></gs-ipp-attributes>
+            </template>
+        </gs-item>
+        <gs-item title="Printer Jobs" css-nav="" css-pane="">
+            <template>
+                <gs-ipp-jobs></gs-ipp-jobs>
+            </template>
+        </gs-item>
+        <gs-item title="Console" css-nav="" css-pane="">
+            <template>
+                <pre id="console"></pre>
+            </template>
+        </gs-item>        
+    </gs-tab>
+
+</div>
+
+</div>

@@ -27,6 +27,7 @@ export { default as GSProgress } from "./GSProgress.mjs";
 export { default as GSSplitter } from "./GSSplitter.mjs";
 export { default as GSTab } from "./GSTab.mjs";
 export { default as GSTooltip } from "./GSTooltip.mjs";
+export { default as GSTree } from  "./GSTree.mjs";
 
 export * from "./filebox/index.esm.mjs";
 export * from "./table/index.esm.mjs";

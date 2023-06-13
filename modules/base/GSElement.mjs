@@ -276,7 +276,7 @@ export default class GSElement extends HTMLElement {
 	}
 
 	/**
-	 * Avaialble only after render, after template is applied
+	 * Available only after render, after template is applied
 	 * @returns {ShadowRoot|HTMLElement} 
 	 */
 	get self() {

@@ -12172,6 +12172,13 @@ input:invalid:not(:placeholder-shown):not(:focus) {
   animation: blinker-danger 1s linear infinite;
 }
 
+.treeview .list-group {
+  --bs-list-group-border-color: none;
+  --bs-list-group-active-border-color: none;
+  --bs-list-group-active-color: rgba(67, 89, 113, 1);
+  --bs-list-group-active-bg: rgb(166 180 197 / 10%);
+}
+
 @keyframes blinker-warn {
   50% {
     border: 1px #435971 dashed;

@@ -17,15 +17,16 @@
     <meta name="robots" content="index, follow">
     <meta name="revisit-after" content="3 month">
     <meta name="description" content="WebComponents UI library based on Bootstrap.">
-
+    
     <script type="text/javascript">
-        self.GS_TEMPLATE_URL = '/demos/layout/templates';
+        self.GS_TEMPLATE_URL = '/webcomponents/demos/ipp/templates';
     </script>
-    <script type="module" src="/webcomponents/modules/index.mjs"></script>
-    <script type="module" src="/webcomponents/modules/components/index.mjs"></script>
-
+        
+    <script type="module" src="./modules/index.mjs"></script>
+    
     <gs-css url="/webcomponents/assets/css/io.greenscreens.bootstrap_5.3.0.css"></gs-css>
     <gs-css url="/webcomponents/assets/icons/bootstrap-icons.css" notheme="true"></gs-css>
+    
 </head>
 
 <body>
@@ -40,14 +41,11 @@
             </template>
         </gs-item>
 
-        <gs-item>
+        <gs-item css="p-3" v-pos="top" h-pos="center">
             <template>
-                    <gs-item css="p-3" id="content" v-pos="top" h-pos="center">
-                        <template>
-                            centerd data
-                        </template>
-                    </gs-item>
-                </gs-layout>
+                <div id="content" class="container-fluid">
+                    <gs-ipp-view></gs-ipp-view>
+                </div>
             </template>
         </gs-item>
 
