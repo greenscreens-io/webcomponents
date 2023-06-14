@@ -51,8 +51,34 @@
 
     </gs-layout>
 
+    <!-- Application toast notification -->
+    <gs-notification id="notification"></gs-notification>
+
     <gs-copyright company="Green Screns Ltd." year="2015"></gs-copyright>
 
+    <script>
+
+        async function demo() {
+            let r = await fetch('./data/printer-attributes.json')
+            r = await r.json()
+
+            let el = GSDOM.query('gs-ipp-attributes')
+            el.load(r)
+
+            r = await fetch('./data/jobs.json')
+            const jd = await r.json()
+
+            r = await fetch('./data/job-attributes.json')
+            const ja = await r.json()
+
+            el = GSDOM.query('gs-ipp-jobs')
+            el.load(jd)
+            el.load(ja)
+
+        }
+
+        // setTimeout(demo, 2000);
+    </script>
 </body>
 
 </html>

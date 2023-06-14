@@ -7,12 +7,13 @@
  * 
  * @module ipp/IPPJobs
  */
-import { GSElement } from '/webcomponents/release/esm/io.greenscreens.components.all.esm.min.js';
+import Utils from './Utils.mjs';
+import BaseView from './BaseView.mjs';
 
 /**
  * IPPJobs UI lists printer jobs and allows job manupulation actions
  */
-export default class IPPJobs extends GSElement {
+export default class IPPJobs extends BaseView {
 
     static {
         customElements.define('gs-ipp-jobs', IPPJobs);
@@ -23,11 +24,6 @@ export default class IPPJobs extends GSElement {
         return super.getTemplate('//ipp-jobs.html');
     }
 
-    onReady() {
-        super.onReady();
-        const me = this;
-    }
-    
     load(data) {
         if (!data) return;
         const me = this;
@@ -60,5 +56,27 @@ export default class IPPJobs extends GSElement {
 
     get #attrStore() {
         return this.#attrTable.store;
+    }
+
+    cancelJob() {
+
+    }
+    
+    printUri() {
+
+    }
+
+    purgeJobs() {
+        this.#jobsStore.clear();
+    }
+
+    async details() {
+        const jobs = await Utils.load('./data/job-attributes.json');
+        this.load(jobs);
+    }
+
+    async refresh() {
+        const jobs = await Utils.load('./data/jobs.json');
+        this.load(jobs);
     }
 }
