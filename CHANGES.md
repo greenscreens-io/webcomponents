@@ -1,6 +1,16 @@
 # [WebComponents](https://webcomponents.greenscreens.ltd/) for [Bootstrap 5.2.0+](https://getbootstrap.com/)
 
-# Release v1.4.4 (21.05.2023.) 
+# Release v1.5.0 (15.06.2023.) 
+ - Update to Bootstrap 5.3.0
+ - Added GSCopyright component
+ - Added GSTree component
+ - Added billboard feature to GSAlert
+ - Addd IPP SPA demo app
+ - GSHighlight improvements
+ - GSMenu & GSContext event handling improvement
+ - GSMenu fix positioning
+
+# Release v1.4.2 (21.05.2023.) 
  - Added unstyle Attribute to prevent GS style to shadowed component
  - Added GSMarkdown (gs-markdown) component
 
