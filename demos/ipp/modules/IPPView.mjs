@@ -23,4 +23,16 @@ export default class IPPView extends GSElement {
         super.onReady();
         const me = this;
     }
+
+    get #console() {
+        return this.query('#log');
+    }
+
+    get #attributes() {
+        return this.query('gs-ipp-attributes');
+    }
+
+    get #jobs() {
+        return this.query('gs-ipp-jobs');
+    }
 }

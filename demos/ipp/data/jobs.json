@@ -1,0 +1,14 @@
+{
+    "operation": "???",
+    "status": "successful-ok",
+    "operation-attributes": {
+        "attributes-charset": "utf-8",
+        "attributes-natural-language": "en"
+    },
+    "jobs": [
+        {
+            "job-uri": "ipp://HPLaserJet.local/ipp/printer/job-0181",
+            "job-id": "181"
+        }
+    ]
+}

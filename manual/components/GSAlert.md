@@ -12,7 +12,8 @@ GSAlert WebComponent extends [GSElement](../base/GSElement.md) and all its attri
 | Name               | Description                                              |
 |--------------------|----------------------------------------------------------|
 | css                | CSS classes for alert content                            |
-| css-active         | CSS classes for visible alert                            | 
+| css-active         | CSS classes for visible alert                            |
+| delay              | If billboad mode, text iteration delay in seconds        | 
 | dismisaable        | Add / remove dismiss button, to close alert              |
 | message            | Content message                                          | 
 
@@ -42,4 +43,9 @@ For more details, check [alert.html](../../demos/alert.html)
     </slot>
 </gs-alert>
 
+<gs-alert css="btn-primary" css-active="fade" message="focus hover" dismissable="true" delay="5">
+    <gs-item title="Message 1"></gs-item>
+    <gs-item title="Message 2"></gs-item>
+    <gs-item title="Message 3"></gs-item>
+</gs-alert>
 ```

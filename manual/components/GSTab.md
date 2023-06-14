@@ -18,7 +18,7 @@ GSTab WebComponent is a renderer for Bootstrap Tab Panel
 |--------------------|----------------------------------------------------------|
 | css-nav            | CSS class for tab item                                  |
 | css-nav-wrap       | CSS class for tab item wrapper                          |
-| css-nav-pane       | CSS class for tab panel body                            |
+| css-pane           | CSS class for tab panel body                            |
 | active             | Mark panel active / selected                             |
 | icon               | Tab panel button icon                                    |
 | title              | Tab panel title                                          |

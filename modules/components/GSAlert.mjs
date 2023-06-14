@@ -12,6 +12,7 @@ import GSElement from "../base/GSElement.mjs";
 import GSDOM from "../base/GSDOM.mjs";
 import GSEvents from "../base/GSEvents.mjs";
 import GSAttr from "../base/GSAttr.mjs";
+import GSItem from "../base/GSItem.mjs";
 
 /**
  * https://getbootstrap.com/docs/5.1/components/buttons/
@@ -24,6 +25,8 @@ export default class GSAlert extends GSElement {
 
     #dismissCSS = '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>';
     #state = false;
+    #interval = 0;
+    #last = 0;
 
     static {
         customElements.define('gs-alert', GSAlert);
@@ -37,6 +40,12 @@ export default class GSAlert extends GSElement {
 
     constructor() {
         super();
+        GSItem.validate(this, this.tagName);
+    }
+
+    disconnectedCallback() {
+        clearInterval(this.#interval);
+        super.disconnectedCallback();
     }
 
     #onClick(e) {
@@ -45,18 +54,35 @@ export default class GSAlert extends GSElement {
         me.dismiss();
     }
 
+    #billboard() {
+        const me = this;
+        const items = GSItem.genericItems(me);
+        if (items.length === 0) return;
+        if (me.message) {
+            me.#last = -1;
+        } else {
+            me.message = items[0].title;
+        }
+        me.#interval = setInterval(() => {
+            me.#last++;
+            if (me.#last >= items.length ) me.#last = 0;
+            me.message = items[me.#last].title;
+        }, me.delay * 1000);
+    }
+
     onReady() {
         const me = this;
         const btn = me.query('.btn-close');
         me.attachEvent(btn, 'click', me.#onClick.bind(me));
         super.onReady();
+        me.#billboard();
     }
 
     attributeCallback(name = '', oldValue = '', newValue = '') {
         const me = this;
-        const el = me.firstElementChild;
+        const el = me.self.firstElementChild;
 
-        if (name == 'message') GSDOM.setHTML(el, me.message);
+        if (name == 'message') GSDOM.setHTML(me.query('slot'), me.message);
 
         if (name == 'css') {
             GSDOM.toggleClass(el, oldValue, false);
@@ -72,7 +98,7 @@ export default class GSAlert extends GSElement {
         <div class="alert ${me.css} ${this.styleID}" data-css-id="${this.styleID}" role="class">
             <slot>${me.message}</slot>
             ${me.dismissible ? me.#dismissCSS : ''}
-        </class>`;
+        </div>`;
     }
 
     get css() {
@@ -105,7 +131,15 @@ export default class GSAlert extends GSElement {
     }
 
     set dismissible(val = '') {
-        return GSAttr.set(this, 'dismissible', GSUtil.asBool(val));
+        return GSAttr.setAsBool(this, 'dismissible', val);
+    }
+
+    get delay() {
+        return GSAttr.getAsNum(this, 'delay', 5);
+    }
+
+    set delay(val = 5) {
+        return GSAttr.setAsNumt(this, 'delay', val);
     }
 
     async #dismiss() {
