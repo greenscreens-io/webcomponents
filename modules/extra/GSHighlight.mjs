@@ -59,7 +59,7 @@ export default class GSHighlight extends GSElement {
     }
 
     async getTemplate(val = '') {
-        return `<div class="${this.css}"><pre><code><code/><pre/></div>`;
+        return '<pre><code><code/><pre/>';
     }
 
     /**
@@ -81,17 +81,6 @@ export default class GSHighlight extends GSElement {
         if (me.theme) me.#onTheme();
         if (me.url) return me.#onURL();
         if (me.target) return me.#onTarget();
-    }
-
-    /**
-     * Wrapper css 
-     */
-    get css() {
-        return GSAttr.get(this, 'css', '');
-    }
-
-    set css(val = '') {
-        return GSAttr.set(this, 'css', val);
     }
 
     /**
