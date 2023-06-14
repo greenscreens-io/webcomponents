@@ -59,7 +59,7 @@ export default class GSHighlight extends GSElement {
     }
 
     async getTemplate(val = '') {
-        return '<pre><code><code/><pre/>';
+        return `<div class="${this.css}"><pre><code><code/><pre/></div>`;
     }
 
     /**
@@ -71,12 +71,27 @@ export default class GSHighlight extends GSElement {
         this.#onHighlight(data);
     }
 
+    set content(val ='') {
+        this.#onHighlight(val);
+    }
+
     onReady() {
         super.onReady();
         const me = this;
         if (me.theme) me.#onTheme();
         if (me.url) return me.#onURL();
         if (me.target) return me.#onTarget();
+    }
+
+    /**
+     * Wrapper css 
+     */
+    get css() {
+        return GSAttr.get(this, 'css', '');
+    }
+
+    set css(val = '') {
+        return GSAttr.set(this, 'css', val);
     }
 
     /**
