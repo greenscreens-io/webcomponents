@@ -25,6 +25,7 @@ export default class GSAlert extends GSElement {
 
     #dismissCSS = '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>';
     #state = false;
+    #pause = false;
     #interval = 0;
     #last = 0;
 
@@ -64,10 +65,13 @@ export default class GSAlert extends GSElement {
             me.message = items[0].title;
         }
         me.#interval = setInterval(() => {
+            if (me.#pause) return;
             me.#last++;
             if (me.#last >= items.length ) me.#last = 0;
             me.message = items[me.#last].title;
         }, me.delay * 1000);
+        me.attachEvent(me.self, 'mouseover', () => me.#pause = true);
+        me.attachEvent(me.self, 'mouseout', () => me.#pause = false);
     }
 
     onReady() {
