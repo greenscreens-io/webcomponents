@@ -12172,6 +12172,35 @@ input:invalid:not(:placeholder-shown):not(:focus) {
   animation: blinker-danger 1s linear infinite;
 }
 
+/* GSTable column sorting */
+.sorting {
+  cursor: pointer;
+  position: relative;
+}
+
+.sorting:before {
+  right: 1em;
+  content: "↑";
+  opacity: 0.3;
+  position: absolute;
+}
+
+.sorting:after {
+  right: 0.5em;
+  content: "↓";
+  opacity: 0.3;
+  position: absolute;
+}
+
+.sorting_desc:after {
+  opacity: 1;
+}
+
+.sorting_asc:before {
+  opacity: 1;
+}
+
+/* GSTree */
 .treeview .list-group {
   --bs-list-group-border-color: none;
   --bs-list-group-active-border-color: none;
@@ -12179,6 +12208,7 @@ input:invalid:not(:placeholder-shown):not(:focus) {
   --bs-list-group-active-bg: rgb(166 180 197 / 10%);
 }
 
+/* GSAlert */
 @keyframes blinker-warn {
   50% {
     border: 1px #435971 dashed;
@@ -12191,4 +12221,4 @@ input:invalid:not(:placeholder-shown):not(:focus) {
   }
 }
 
-/*# sourceMappingURL=io.greenscreens.bootstrap_5.3.0.css.map */
+/*# sourceMappingURL=io.greenscreens.bootstrap.css.map */
