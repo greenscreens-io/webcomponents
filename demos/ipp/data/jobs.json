@@ -9,6 +9,10 @@
         {
             "job-uri": "ipp://HPLaserJet.local/ipp/printer/job-0181",
             "job-id": "181"
-        }
+        },
+        {
+            "job-uri": "ipp://HPLaserJet.local/ipp/printer/job-0182",
+            "job-id": "182"
+        }        
     ]
 }

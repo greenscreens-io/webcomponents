@@ -27,12 +27,16 @@ export default class GSChart extends GSElement {
 
     #chart = null;
 
+    static get URL_LIB() {
+        return globalThis.GS_URL_CHART == false ? false : globalThis.GS_URL_CHART || globalThis.location?.origin || '/webcomponents';
+    }
+
     static async #init() {
+        if (GSChart.URL_LIB === false) return;
         if (GSChart.#isChart || GSChart.#initializing) return;
         GSChart.#initializing = true;
-        if (globalThis.GS_URL_CHART === false) return;
         try {
-            const origin = globalThis.GS_URL_CHART || globalThis.location?.origin || '/webcomponents';
+            const origin = GSChart.URL_LIB;
             const url = `${origin}/assets/chart/chart.mjs`;
             const { Chart, registerables } = await import(url);
             Chart.register(...registerables);        

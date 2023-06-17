@@ -1,5 +1,11 @@
 # [WebComponents](https://webcomponents.greenscreens.ltd/) for [Bootstrap 5.2.0+](https://getbootstrap.com/)
 
+# Development  v1.5.1 (TBD) 
+ - Renaming bootstrap, version removed
+ - GSTable added column sorting arrows CSS
+ - GSAlert added pause on mouseover for billboard mode
+ - Extra components improved controls auto-loading external libs
+
 # Release v1.5.0 (15.06.2023.) 
  - Update to Bootstrap 5.3.0
  - Added GSCopyright component

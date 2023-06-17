@@ -32,8 +32,6 @@ import GSEvents from "../base/GSEvents.mjs";
  */
 export default class GSMarkdown extends GSElement {
 
-    static URL_LIB = globalThis.GS_URL_MARKDOWN || 'https://unpkg.com/showdown/dist/showdown.min.js';
-
     #converter = null;
     #last = null;
     #first = null;
@@ -42,8 +40,17 @@ export default class GSMarkdown extends GSElement {
     #cache = [];
 
     static {
+        GSMarkdown.#init();
+    }
+    
+    static #init() {
+        if (GSMarkdown.URL_LIB == false) return;
         customElements.define('gs-markdown', GSMarkdown);
         Object.seal(GSMarkdown);
+    }
+
+    static get URL_LIB() {
+        return globalThis.GS_URL_MARKDOWN == false ? false : globalThis.GS_URL_MARKDOWN || 'https://unpkg.com/showdown/dist/showdown.min.js';
     }
 
     static get observedAttributes() {

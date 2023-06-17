@@ -24,12 +24,19 @@ import GSEvents from "../base/GSEvents.mjs";
  */
 export default class GSMonaco extends GSElement {
 
-    static URL_LIB = globalThis.GS_URL_MONACO || 'https://unpkg.com/monaco-editor@latest/min/';
-
     static #initialized = false;
     #editor = null;
 
     static {
+        GSMonaco.#init();
+    }
+    
+    static get URL_LIB() {
+        return globalThis.GS_URL_MONACO == false ? false : globalThis.GS_URL_MONACO || 'https://unpkg.com/monaco-editor@latest/min/';
+    }
+
+    static #init() {
+        if (GSMonaco.URL_LIB == false) return;
         customElements.define('gs-monaco', GSMonaco);
         Object.seal(GSMonaco);
         GSMonaco.#initLib();
