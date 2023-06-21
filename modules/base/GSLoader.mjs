@@ -158,13 +158,17 @@ export default class GSLoader {
      * @param {boolean} asjson Parse returned data as JSON
      * @returns {Promise<object|string>}
      */
-    static async load(val = '', method = 'GET', headers, asjson = false) {
+    static async load(val = '', method = 'GET', headers, asjson = false, body) {
         let data = null;
         const ct = 'Content-Type';
         headers = headers || {};
         headers[ct] = asjson ? 'application/json' : headers[ct] || 'text/plain';
         const url = GSLoader.normalizeURL(val, true);
-        const res = await fetch(url, { method: method, headers: headers });
+        const opt  ={ method: method, headers: headers };
+        if (method === 'POST' || method === 'PUT' && body) {
+            opt.body = JSON.stringify(body);
+        }
+        const res = await fetch(url, opt);
         if (res.ok) data = asjson ? await res.json() : await res.text();
         return data;
     }
@@ -180,9 +184,9 @@ export default class GSLoader {
      * @param {object} dft default value
      * @returns {Promise<object|string>}
      */
-    static async loadSafe(url = '', method = 'GET', headers, asjson = false, dft) {
+    static async loadSafe(url = '', method = 'GET', headers, asjson = false, dft, body) {
         try {
-            if (url) return GSLoader.load(url, method, headers, asjson);
+            if (url) return GSLoader.load(url, method, headers, asjson, body);
         } catch (e) {
             GSLog.error(this, e);
         }

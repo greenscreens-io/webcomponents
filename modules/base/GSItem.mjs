@@ -177,6 +177,10 @@ export default class GSItem extends HTMLElement {
 		return GSAttr.get(el, 'template', '');
 	}
 
+	static getType(el) {
+		return GSAttr.get(el, 'type');
+	}
+
 	get dismissAttr() {
 		return GSItem.getDismissAttr(this);
 	}
@@ -187,6 +191,10 @@ export default class GSItem extends HTMLElement {
 
 	get toggleAttr() {
 		return GSItem.getToggleAttr(this);
+	}
+
+	get type() {
+		return GSItem.getType(this);
 	}
 
 	get actionAttr() {

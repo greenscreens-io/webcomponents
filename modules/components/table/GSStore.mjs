@@ -152,6 +152,15 @@ export default class GSStore extends HTMLElement {
     }
 
     /**
+     * Get GS-ITEM field definition by name
+     * @param {String} name 
+     * @returns 
+     */
+    getField(name = '') {
+        return this.querySelector(`gs-item[name="${name}"]`);
+    }
+
+    /**
      * HTTP operational mode
      * rest, query, quark 
      */
@@ -166,7 +175,7 @@ export default class GSStore extends HTMLElement {
         if (isok) return GSAttr.set(this, 'mode', val);
         console.log(`Invalid mode, allowed: ${GSStore.#MODES}`);
     }
-
+    
     /**
      * Call for defined mode
      * - quark - JSON path to CRUD object; ie. io.greenscreens.CRUD

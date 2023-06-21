@@ -97,7 +97,17 @@ export default class GSColumn extends HTMLElement {
 
     #renderField(list = '') {
         const me = this;
-        return `<input auto="${me.auto}" name="${me.name}" title="${me.title || me.name}" class="${me.cssField}" placeholder="${me.title || me.name}" list="${list}">`;
+        let type = '';
+        switch (me.type) {
+            case 'timestamp' :
+                type = 'datetime-local';
+                break;
+            default :
+                type = me.type || '';
+                break;
+        } 
+        if (type) type = `type="${type}"`;
+        return `<input ${type} auto="${me.auto}" name="${me.name}" title="${me.title || me.name}" class="${me.cssField}" placeholder="${me.title || me.name}" list="${list}">`;
     }
 
     #renderOptions(isCombo = false) {
@@ -126,6 +136,10 @@ export default class GSColumn extends HTMLElement {
 
     get table() {
         return GSDOM.closest(this, 'GS-TABLE');
+    }
+
+    get store() {
+        return this.table?.query('gs-store');
     }
 
     get cssField() {
@@ -185,7 +199,9 @@ export default class GSColumn extends HTMLElement {
     }
 
     get type() {
-        return GSAttr.get(this, 'type');
+        const me = this;
+        const type = GSAttr.get(me, 'type');
+        return type ? type : me.store?.getField(me.name)?.type;
     }
 
     get colspan() {
