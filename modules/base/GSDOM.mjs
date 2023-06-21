@@ -564,6 +564,21 @@ export default class GSDOM {
 	}
 
 	/**
+	 * Get proper value from element
+	 * @param {HTMLElement} el 
+	 * @returns {string|number}
+	 */
+	static getValue(el) {
+        switch (el.type) {
+            case 'datetime-local':
+            case 'number':
+                return el.value ? el.valueAsNumber : el.value;
+            default:
+                return el.value;
+        }
+    }
+
+	/**
 	 * Get value from form element
 	 * @param {HTMLElement} el 
 	 * @returns {string}
@@ -571,7 +586,7 @@ export default class GSDOM {
 	static toValue(el) {
 		if (!GSDOM.isHTMLElement(el)) return undefined;
 		if ('checkbox' === el.type) return el.checked;
-		let value = el.value;
+		let value = GSDOM.getValue(el);
 		if ('text' === el.type) {
 			const map = GSCSSMap.styleValue(el, 'text-transform');
 			if (map) value = GSUtil.textTransform(map.value, value);

@@ -81,20 +81,10 @@ export default class GSTableFilter extends HTMLTableRowElement {
     #getValue(el) {
         const me = this;
         const listID = GSAttr.get(el, 'list');
-        if (!listID) return me.#getSimpleValue(el);
+        if (!listID) return GSDOM.getValue(el);
         const list = me.root.getElementById(listID);
         const opt = list?.querySelector(`option[value="${el.value}"]`);
         return opt?.dataset?.value || el.value;
-    }
-
-    #getSimpleValue(el) {
-        switch (el.type) {
-            case 'datetime-local':
-            case 'number':
-                return el.value ? el.valueAsNumber : el.value;
-            default:
-                return el.value;
-        }
     }
 
 }
