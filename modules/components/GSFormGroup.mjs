@@ -20,7 +20,7 @@ import GSItem from "../base/GSItem.mjs";
  */
 export default class GSFormGroup extends GSElement {
 
-   static CSS_LABEL_CELL = 'col-md-4 col-sm-4 col-xs2 text-md-end';
+   static CSS_LABEL_CELL = 'col-md-4 col-sm-4 col-xs-2 text-md-end';
    static CSS_LABEL = 'user-select-none fw-small fw-light text-secondary';
    static CSS_ICON = 'bi bi-info-circle-fill text-primary me-2 fs-5';
 
@@ -415,7 +415,7 @@ export default class GSFormGroup extends GSElement {
    get cellField() {
       const me = this;
       const val = (me.layout === 'horizontal') ? '6' : '11';
-      return GSAttr.get(me, 'cell-field', `col-md-${val} col-sm-${val} col-xs11`);
+      return GSAttr.get(me, 'cell-field', `col-md-${val} col-sm-${val} col-xs-11`);
    }
 
    set cellField(val = '') {
