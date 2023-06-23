@@ -67,8 +67,10 @@ export default class GSModal extends GSElement {
 
   #onEscape(e) {
     const me = this;
-    if (!me.cancelable) return;
-    if (e.key === 'Escape') me.close();
+    if (e.key === 'Escape') {
+      if (me.cancelable || me.escapable)  me.close();
+      GSEvents.prevent(e);
+     }
   }
 
   #onClick(e) {
@@ -332,6 +334,10 @@ export default class GSModal extends GSElement {
   set cancelable(val = true) {
     GSAttr.setAsBool(this, 'cancelable', val);
     this.#update();
+  }
+
+  get escapable() {
+    return this.hasAttribute('escapable');
   }
 
   /**

@@ -92,7 +92,7 @@ export default class GSDialog extends GSElement {
   #onEscape(e) {
     const me = this;
     if (e.key === 'Escape') {
-     if (me.cancelable)  me.close();
+     if (me.cancelable || me.escapable)  me.close();
       GSEvents.prevent(e);
     }
   }
@@ -325,6 +325,10 @@ export default class GSDialog extends GSElement {
   set cancelable(val = true) {
     GSAttr.setAsBool(this, 'cancelable', val);
     this.#update();
+  }
+
+  get escapable() {
+    return this.hasAttribute('escapable');
   }
 
   /**
