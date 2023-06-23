@@ -168,13 +168,15 @@ export default class GSColumn extends HTMLElement {
     }
 
     get cssFilter() {
+        const me = this;
         const val = GSAttr.get(me.#header, 'css-filter', '');
         return GSAttr.get(me, 'css-filter', val);
     }
 
     get cssHeader() {
+        const me = this;
         const val = GSAttr.get(me.#header, 'css-header', 'border-end');
-        return GSAttr.get(this, 'css-header', val);
+        return GSAttr.get(me, 'css-header', val);
     }
 
     get css() {
