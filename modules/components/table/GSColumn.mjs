@@ -142,10 +142,15 @@ export default class GSColumn extends HTMLElement {
         return this.table?.query('gs-store');
     }
 
+    get #header() {
+        return this.closest('gs-header');
+    }
+
     get cssField() {
         const me = this;
         const def = me.list ? 'form-select' : 'form-control';
-        return GSAttr.get(me, 'css-field', def);
+        const val = GSAttr.get(me, 'css-field', def)
+        return GSAttr.get(me.#header, 'css-field', val);
     }
 
     get filter() {
@@ -163,11 +168,13 @@ export default class GSColumn extends HTMLElement {
     }
 
     get cssFilter() {
-        return GSAttr.get(this, 'css-filter', '');
+        const val = GSAttr.get(me.#header, 'css-filter', '');
+        return GSAttr.get(me, 'css-filter', val);
     }
 
     get cssHeader() {
-        return GSAttr.get(this, 'css-header', 'border-end');
+        const val = GSAttr.get(me.#header, 'css-header', 'border-end');
+        return GSAttr.get(this, 'css-header', val);
     }
 
     get css() {

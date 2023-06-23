@@ -71,8 +71,8 @@ export default class GSHeader extends HTMLElement {
         const me = this;
         const cols = me.#available;
         return cols.map(el => GSAttr.get(el, 'name'));
-
     }
+
 }
 
 
