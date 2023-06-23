@@ -267,7 +267,9 @@ export default class GSModal extends GSElement {
     const footer = me.query('.modal-footer');
     GSDOM.toggleClass(footer, css, true);
     if (me.#buttonOkEl) me.#buttonOkEl.innerText = me.buttonOk;
-    if (me.#buttonCancelEl) me.#buttonCancelEl.innerText = me.buttonCancel;    
+    if (me.#buttonCancelEl) me.#buttonCancelEl.innerText = me.buttonCancel;  
+    const hidden = me.cancelable == false && me.closable == false;
+    GSDOM.toggleClass(footer, 'd-none', hidden);      
   }
 
   /**

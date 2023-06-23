@@ -249,6 +249,8 @@ export default class GSDialog extends GSElement {
     GSDOM.toggleClass(footer, css, true);
     if (me.#buttonOkEl) me.#buttonOkEl.innerText = me.buttonOk;
     if (me.#buttonCancelEl) me.#buttonCancelEl.innerText = me.buttonCancel;
+    const hidden = me.cancelable == false && me.closable == false;
+    GSDOM.toggleClass(footer, 'd-none', hidden);
   }
 
   /**
