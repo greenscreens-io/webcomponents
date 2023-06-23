@@ -61,9 +61,8 @@ export default class GSInputExt extends HTMLInputElement {
         me.#toPattern();
         me.#attachEvents();
         GSComponents.store(me);
-        setTimeout(() => {
-            me.#onDataChange();
-        }, 250);
+        if (me.autofocus) me.focus();
+        setTimeout(me.#onDataChange.bind(me), 250);
     }
 
     disconnectedCallback() {
