@@ -165,7 +165,7 @@ export default class GSFormGroup extends GSElement {
       const idattr = me.autoid ? `id="${me.name}"` : '';
       return `<input is="gs-ext-input" class="${me.#cssField} ${me.cssField}" 
                ${idattr} name="${me.name}" type="${me.#type}" ${me.#placeholder}
-               ${me.#autocopy} ${me.#autoselect}
+               ${me.#autocopy} ${me.#autoselect} ${me.#autofocus}
                ${me.#autocomplete} ${me.#autocapitalize} ${me.#multiple} ${me.#checked}
                ${me.#mask} ${me.#pattern} ${me.#value} ${me.#list} ${me.#accept}
                ${me.#step} ${me.#min} ${me.#max} ${me.#value} 
@@ -229,7 +229,11 @@ export default class GSFormGroup extends GSElement {
    get #autocopy() {
       return this.autocopy ? `autocopy` : '';
    }
-
+   
+   get #autofocus() {
+      return this.autofocus ? `autofocus` : '';
+   }
+   
    get #autoselect() {
       return this.autoselect ? `autocopy` : '';
    }
@@ -579,6 +583,10 @@ export default class GSFormGroup extends GSElement {
 
    get autocopy() {
       return this.hasAttribute('autocopy');
+   }
+
+   get autofocus() {
+      return this.hasAttribute('autofocus');
    }
 
    get autoselect() {
