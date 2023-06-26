@@ -182,7 +182,7 @@ export default class GSHighlight extends GSElement {
         URL.revokeObjectURL(e.data.url);
         const me = this;
         const html = e.data.data;
-        GSDOM.setHTML(me.#code, e.data.append ? me.#code + html: html);
+        GSDOM.setHTML(me.#code, e.data.append ? me.#code.innerHTML + html: html);
     }
 
     #onHighlight(data = '', append = false) {
