@@ -1,5 +1,4 @@
-test/
-admin/
 _ui_/
 node_modules/
 TODO.txt
+demos/syslog

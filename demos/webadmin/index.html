@@ -19,10 +19,12 @@
     <meta name="description" content="WebComponents UI library based on Bootstrap.">
 
     <script type="text/javascript">
-        globalThis.GS_TEMPLATE_URL = './templates';
-        globalThis.GS_NO_CACHE = true;
-        globalThis.DEMO = {success: true, code:'0', data:[], msg:''};
-        globalThis.GSC = {
+        self.GS_TEMPLATE_URL = './templates';
+        self.GS_NO_CACHE = true;
+        self.GS_URL_CHART = false;
+		self.GS_URL_MONACO = false;        
+        self.DEMO = {success: true, code:'0', data:[], msg:''};
+        self.GSC = {
             company : 'Green Screens Ltd.'
         };
     </script>
@@ -33,7 +35,7 @@
     -->
     <script type="module" src="./release/io.greenscreens.admin.min.js"></script>
 
-    <gs-css url="/webcomponents/assets/css/io.greenscreens.bootstrap_5.2.2.min.css"></gs-css>
+    <gs-css url="/webcomponents/assets/css/io.greenscreens.bootstrap.min.css"></gs-css>
     <gs-css url="/webcomponents/assets/icons/bootstrap-icons.css" notheme="true"></gs-css>
     <gs-css url="./style.css" notheme="true"></gs-css>
 
