@@ -2,7 +2,7 @@
  * Copyright (C) 2015, 2022 Green Screens Ltd.
  */
 
-import {GSComponents,GSDOM,GSFunction,GSUtil} from '/webcomponents/release/esm/io.greenscreens.components.all.esm.min.js';
+import { GSComponents } from '/webcomponents/release/esm/io.greenscreens.components.all.esm.min.js';
 
 /**
  * A module loading Utils class
