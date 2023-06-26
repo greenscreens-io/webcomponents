@@ -288,7 +288,7 @@ export default class GSInputExt extends HTMLInputElement {
         const me = this;
 
         if (e.key === 'Enter') {
-            GSEvents.send(me, 'action', { type: 'alert', source: e }, true, fale, true);
+            GSEvents.send(me, 'action', { type: 'alert', source: e }, true, false, true);
             return;
         }
 
