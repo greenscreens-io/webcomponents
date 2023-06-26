@@ -24,6 +24,7 @@ export default class GSChart extends GSElement {
 
     static #isChart = false;
     static #initializing = false;
+    static #Chart = null;
 
     #chart = null;
 
@@ -40,6 +41,7 @@ export default class GSChart extends GSElement {
             const url = `${origin}/assets/chart/chart.mjs`;
             const { Chart, registerables } = await import(url);
             Chart.register(...registerables);        
+            GSChart.#Chart = Chart;
             GSChart.#isChart = true;
         }  catch(e) {
             console.log(e);
@@ -204,7 +206,7 @@ export default class GSChart extends GSElement {
         });
 
         const ctx = me.canvas.getContext('2d');
-        me.#chart = new Chart(ctx, opt);
+        me.#chart = new GSChart.#Chart(ctx, opt);
     }
 
 	/**
