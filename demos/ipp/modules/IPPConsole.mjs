@@ -23,11 +23,6 @@ export default class IPPConsole extends GSElement {
         return super.getTemplate('//ipp-console.html');
     }
 
-    onReady() {
-        super.onReady();
-        const me = this;
-    }
-
     log(data = '') {
         this.#console.content = JSON.stringify(data, '', 4);
     }

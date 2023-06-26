@@ -74,8 +74,8 @@ export default class GSHighlight extends GSElement {
      * 
      * @param {string} data 
      */
-    highlight(data = '') {
-        this.#onHighlight(data);
+    highlight(data = '', append = false) {
+        this.#onHighlight(data, append);
     }
 
     set content(val ='') {
@@ -180,10 +180,12 @@ export default class GSHighlight extends GSElement {
 
     #onMessage(e) {
         URL.revokeObjectURL(e.data.url);
-        GSDOM.setHTML(this.#code, e.data.data);
+        const me = this;
+        const html = e.data.data;
+        GSDOM.setHTML(me.#code, e.data.append ? me.#code + html: html);
     }
 
-    #onHighlight(data = '') {
+    #onHighlight(data = '', append = false) {
         const me = this;
         if (!data) return GSDOM.setHTML(me.#code, 'No data!');
         const response = me.#worker;
@@ -191,7 +193,7 @@ export default class GSHighlight extends GSElement {
         const blobURL = URL.createObjectURL(blob);
         const worker = new Worker(blobURL);
         worker.onmessage = me.#onMessage.bind(me);
-        worker.postMessage({ data: data, url: blobURL });
+        worker.postMessage({ data: data, url: blobURL, append : append });
     }
 
     get #worker() {
@@ -201,7 +203,7 @@ export default class GSHighlight extends GSElement {
                 importScripts('${GSHighlight.URL_LIB}/highlight.min.js');
                 ${langs}
                 const result = globalThis.hljs.highlightAuto(event.data.data);
-                postMessage({data:result.value, url:event.data.url});};`
+                postMessage({data:result.value, url:event.data.url, append: event.data.append});};`
     }
 
 }
