@@ -101,7 +101,7 @@ export default class GSContext extends GSElement {
    * to prevent css translate coordinates.
    */
   get anchor() {
-    return 'beforeend@body';
+    return GSAttr.get(this, 'anchor', 'beforeend@body');
   }
 
   get disabled() {
