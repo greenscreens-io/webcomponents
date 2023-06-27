@@ -1,10 +1,22 @@
 # [WebComponents](https://webcomponents.greenscreens.ltd/) for [Bootstrap 5.2.0+](https://getbootstrap.com/)
 
-# Development  v1.5.1 (TBD) 
+# Development  v1.5.1 (27.06.2023.)
  - Renaming bootstrap, version removed
  - GSTable added column sorting arrows CSS
+ - GSColumn add general column css atribute retrieval from parent gs-header
  - GSAlert added pause on mouseover for billboard mode
+ - GSChart fix, demo fix
+ - GSFormGroup fix css
+ - GSHighlight added content append flag
+ - GSInputExt added enter action
+ - GSInputExt added autofocus
+ - GSContext add custom anchor support; to allof context in dialogs
+ - GSDialog - autohide footer if no buttons availables
+ - GSDialog added ESC close when buttons not enabled
+ - GSModal - autohide footer if no buttons availables
+ - GSModal added ESC close when buttons not enabled
  - Extra components improved controls auto-loading external libs
+ - Demo build scripts improved
 
 # Release v1.5.0 (15.06.2023.) 
  - Update to Bootstrap 5.3.0
