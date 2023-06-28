@@ -11,6 +11,7 @@ import GSID from "../../base/GSID.mjs";
 import GSDOMObserver from '../../base/GSDOMObserver.mjs';
 import GSEvents from "../../base/GSEvents.mjs";
 import GSDOM from "../../base/GSDOM.mjs";
+import GSLog from "../../base/GSLog.mjs";
 
 /**
  * Add custom form processing to support forms in modal dialogs
@@ -56,23 +57,33 @@ export default class GSFormExt extends HTMLFormElement {
         GSEvents.deattachListeners(me);
     }
 
+    submit() {
+        return GSFormExt.#onSubmit.bind(this)();
+    }
+
+    onError(e) {
+        GSLog.error(this, e);
+    }
+
     static #attachEvents(me) {
+        me.action='#';
         GSEvents.attach(me, me, 'submit', GSFormExt.#onSubmit.bind(me));
     }
 
     /**
      * Trigger form submit only if form data is valid
-     * @param {*} e 
+     * @param {Event} e 
+     * @returns {boolean} validity status
      */
     static #onSubmit(e) {
         GSEvents.prevent(e);
         const me = this;
-        const isValid = me.checkValidity() && me.isValid;
-        if (!isValid) return me.reportValidity();
         const obj = GSDOM.toObject(me);
-        const type = isValid ? 'submit' : 'invalid';
-        const data = { type: type, data: obj, source: e, valid: isValid };
+        const isValid = me.checkValidity() && me.isValid;
+        if (!isValid) me.reportValidity();
+        const data = { type: 'submit', data: obj, source: e, valid: isValid };
         GSEvents.send(me, 'form', data, true, true);
+        return isValid;
     }
 
     get isValid() {

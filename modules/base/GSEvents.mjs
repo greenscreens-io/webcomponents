@@ -455,7 +455,7 @@ export default class GSEvents {
 				}
 			}
 		} catch (e) {
-			me.onError(e);
+			if (GSFunction.isFunction(me.onError)) me.onError(e);
 		}
 		return sts;
 	}

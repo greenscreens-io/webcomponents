@@ -11,7 +11,6 @@ import GSAttr from "../base/GSAttr.mjs";
 import GSDOM from "../base/GSDOM.mjs";
 import GSElement from "../base/GSElement.mjs";
 import GSEvents from "../base/GSEvents.mjs";
-import GSUtil from "../base/GSUtil.mjs";
 
 /**
  * Bootstrap modal dialog support
@@ -62,8 +61,11 @@ export default class GSModal extends GSElement {
   #onForm(e) {
     const me = this;
     GSEvents.prevent(e);
-    const sts = GSEvents.send(me, 'data', { type: 'modal', data: e.detail.data, evt: e }, true, true, true);
-    if (sts) me.close();
+    const data = e.detail.data;
+    const isValid = e.detail.valid;
+    const msg = isValid ? 'data' : 'error';
+    const sts = GSEvents.send(me, msg, { type: 'modal', data: data, evt: e }, true, true, true);
+    if (isValid && sts) me.close();
   }
 
   #onEscape(e) {
@@ -88,35 +90,8 @@ export default class GSModal extends GSElement {
 
   ok() {
     const me = this;
-    const sts = me.#handleForm();
-    if (sts) me.close(null, true);
-  }
-
-  #handleForm() {
-    const me = this;
     const forms = GSDOM.queryAll(me, 'form');
-    const invalid = forms.filter(form => form.checkValidity() == false);
-    const els = invalid.map(form => GSDOM.queryAll(form, 'textarea, input, select').filter(el => el.checkValidity() == false)).flat();
-    if (invalid.length === 0) forms.forEach(form => me.#submitForm(form));
-    invalid.forEach(form => me.#reportForm(form));
-    if (els.length > 0) GSEvents.send(me, 'error', { type: 'modal', data: els }, true, true, true);
-    return els.length === 0;
-  }
-
-  #submitForm(form) {
-    try {
-      GSEvents.send(form, 'action', { action: 'submit' });
-    } catch (e) {
-      console.log(e);
-    }
-  }
-
-  #reportForm(form) {
-    try {
-      form.reportValidity();
-    } catch (e) {
-      console.log(e);
-    }
+    forms.length == 0 ? me.close(null, true) : forms.forEach(form => form.submit());
   }
 
   #getAction(e) {

@@ -74,6 +74,7 @@ export default class GSContext extends GSElement {
     me.#ready = true;
     me.close();
     //GSEvents.monitorAction(me.#menu, 'context');
+    me.attachEvent(me.#menu, 'action', me.#onAction.bind(me));
     me.attachEvent(document, 'gs-component', me.#attachTarget.bind(me));
     //me.attachEvent(me.#menu, 'mouseleave', me.close.bind(me));
     me.attachEvent(me.#menu, 'open', e => GSEvents.send(me, 'open', e.detail));
@@ -91,11 +92,11 @@ export default class GSContext extends GSElement {
     me.#attachTarget();
   }
 
+  /*
   get isFlat() {
     return this.parentElement !== document.body;
   }
 
-  /*
   get anchor() {
     return GSAttr.get(this, 'anchor', 'beforeend@body');
   }
@@ -173,10 +174,19 @@ export default class GSContext extends GSElement {
     this.close();
   }
 
+  #onAction(e) {
+    debugger;
+    const detail = e.detail;
+    detail.type = 'context';    
+    // TODo if proxied
+    // GSEvents.prevent(e)
+    // GSEvents.send(this.parent, 'action', detail, true,true,true);
+  }
+
   #match(e) {
     const me = this;
     return e.composedPath().filter(el => el.matches)
-                 .filter(el => el.matches(me.target));
+      .filter(el => el.matches(me.target));
   }
 
   async #onPopup(e) {

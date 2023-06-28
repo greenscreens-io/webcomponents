@@ -6,7 +6,7 @@
  * A module loading GSLoginAdmin class
  * @module dialogs/GSLoginAdmin
  */
-import { GSAttr, GSComponents, GSDOM, GSEvents, GSFunction, GSLoader, GSDialog } from '/webcomponents/release/esm/io.greenscreens.components.all.esm.min.js';
+import { GSAttr, GSComponents, GSDOM, GSEvents, GSLoader, GSDialog } from '/webcomponents/release/esm/io.greenscreens.components.all.esm.min.js';
 import Utils from '../utils/Utils.mjs';
 
 export default class GSAdminDialog extends GSDialog {
@@ -32,9 +32,8 @@ export default class GSAdminDialog extends GSDialog {
         super.onReady();
         const me = this;
 
-        me.on('data', me.#onData.bind(me));
-        me.on('action', me.#onAction.bind(me));
-        me.on('error', me.#onError.bind(me));
+        me.on('data', me.#onFormData.bind(me));
+        me.on('error', me.#onFormError.bind(me));
 
         const tpl = await GSLoader.getTemplate(me.dialogTemplate);
         requestAnimationFrame(() => {
@@ -105,15 +104,15 @@ export default class GSAdminDialog extends GSDialog {
         });
     }
 
-    #onError(e) {
-        Utils.inform(false, 'Some fields are invalid!');
-    }
-
     #update(data) {
         if (typeof data == 'object') GSDOM.queryAll(this, 'form').forEach(form => GSDOM.fromObject(form, data))
     }
+   
+    #onFormError(e) {
+        Utils.inform(false, 'Some fields are invalid!');        
+    }
 
-    async #onData(e) {
+    async #onFormData(e) {
         GSEvents.prevent(e);
         const me = this;
         try {
@@ -124,21 +123,9 @@ export default class GSAdminDialog extends GSDialog {
         }
     }
 
-    async #onAction(e) {
-        const me = this;
-        if (!e.detail.action) return;
-        try {
-            const action = GSUtil.capitalizeAttr(e.detail.action);
-            const fn = me[action];
-            if (!GSFunction.isFunction(fn)) return;
-            if (GSFunction.isFunctionAsync(fn)) {
-                await me[action](e);
-            } else {
-                me[action](e);
-            }
-        } catch (e) {
-            Utils.handleError(e);
-        }
+    onError(e) {
+        Utils.handleError(e);
     }
 
 }
+

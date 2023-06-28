@@ -634,7 +634,7 @@ export default class GSElement extends HTMLElement {
 	 * @async
 	 * @returns {Promise}
 	 */
-	async #aplyTemplate() {
+	async #applyTemplate() {
 
 		const me = this;
 
@@ -755,7 +755,7 @@ export default class GSElement extends HTMLElement {
 	async #render() {
 		const me = this;
 		// await GSEvents.waitPageLoad();
-		await me.#aplyTemplate();
+		await me.#applyTemplate();
 		try {
 			if (me.offline) return;
 			if (!me.#useTemplate) return;

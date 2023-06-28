@@ -44,7 +44,7 @@
             icon="bi-alarm me-1"></gs-button>
     </div>
 
-    <gs-dialog id="dialog1" visible="true" css="shadow-sm rounded p-3" closable="false" cancelable="false">
+    <gs-dialog id="dialog1" visible="true" css="shadow-sm rounded p-3" _closable="false" _cancelable="false">
         <h4 slot="title">Login</h4>
         <gs-template slot="body" href="dialog.tpl"></gs-template>
     </gs-dialog>
@@ -52,15 +52,17 @@
     <gs-notification></gs-notification>
     
     <script defer="true" type="module">
+        GSComponents.find('gs-dialog').listen('error', (e) => {
+            const obj = e.detail.data;
+            console.log('error => ', obj);
+        });
         GSComponents.find('gs-dialog').listen('data', (e) => {
             const obj = e.detail.data;
-            console.log(obj);
+            console.log('data => ', obj);
             const sts = obj.password.length > 5;
             if (sts) return;
-            // stop processing (prevent modal close)
-            e.preventDefault();
+            GSEvents.prevent(e);
             alert('Invalid password length');
-
         });
     </script>
 
