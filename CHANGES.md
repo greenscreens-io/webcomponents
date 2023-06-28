@@ -1,6 +1,12 @@
 # [WebComponents](https://webcomponents.greenscreens.ltd/) for [Bootstrap 5.2.0+](https://getbootstrap.com/)
 
-# Development  v1.5.1 (27.06.2023.)
+# Development  v1.5.2 (TBD)
+ - Improved action event processing for dialogs
+ - Improved action event processing for forms
+ - Improved action event processing for menus
+ - Fix recursive action event calls
+
+# Release  v1.5.1 (27.06.2023.)
  - Renaming bootstrap, version removed
  - GSTable added column sorting arrows CSS
  - GSColumn add general column css atribute retrieval from parent gs-header
