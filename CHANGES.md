@@ -6,7 +6,7 @@
  - GSDialog improved action event processing
  - GSMenu improved action event processing 
  - GSFormExt improved action event processing 
- - GSEvents added generic action listener to call dynamically atached class methods 
+ - GSEvents added generic action listener to call dynamically attached class methods 
  - Renaming bootstrap, version removed
  - GSTable added column sorting arrows CSS
  - GSColumn add general column css atribute retrieval from parent gs-header
