@@ -273,12 +273,14 @@ export default class GSMenu extends GSUListExt {
 
   async #onClick(e) {
     const me = this;
+    const caller = me.#caller;
     me.close(e);
     me.#closeSubmenus();
     me.#handleGroup(e);
     const data = e.target.dataset;
-    const opt = { type: 'menu', option: e.target, caller: me.#caller, data: data };
+    const opt = { type: 'menu', action: data.action, option: e.target, caller: caller, data: data };
     GSEvents.sendDelayed(1, me, 'action', opt, true, true, true); // notify self
+    //GSEvents.send(me, 'action', opt, true, true, true); // notify self
   }
 
   #handleGroup(e) {

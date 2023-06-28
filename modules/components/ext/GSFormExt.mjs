@@ -20,8 +20,6 @@ import GSDOM from "../../base/GSDOM.mjs";
  */
 export default class GSFormExt extends HTMLFormElement {
 
-    static #actions = ['ok', 'reset', 'submit'];
-
     static {
         customElements.define('gs-ext-form', GSFormExt, { extends: 'form' });
         Object.seal(GSFormExt);
@@ -45,10 +43,6 @@ export default class GSFormExt extends HTMLFormElement {
         super();
     }
 
-    static get observedAttributes() {
-        return ['mask'];
-    }
-
     connectedCallback() {
         const me = this;
         if (!me.id) me.setAttribute('id', GSID.id);
@@ -64,42 +58,15 @@ export default class GSFormExt extends HTMLFormElement {
 
     static #attachEvents(me) {
         GSEvents.attach(me, me, 'submit', GSFormExt.#onSubmit.bind(me));
-        GSEvents.attach(me, me, 'action', GSFormExt.#onAction.bind(me));
-        GSEvents.attach(me, me, 'click', GSFormExt.#onAction.bind(me));
-    }
-
-    /**
-     * 
-     * @param {*} e 
-     * @param {*} own 
-     */
-    static #onAction(e) {
-
-        const el = e.composedPath().shift();
-        const action = el?.dataset.action || e.detail.action || el?.type;
-        if (!GSFormExt.#actions.includes(action)) return;
-
-        GSEvents.prevent(e);
-        const me = this;
-
-        switch (action) {
-            case 'reset':
-                me.reset();
-                break;
-            case 'ok':
-            case 'submit':
-                GSFormExt.#onSubmit(e, me);
-        }
-
     }
 
     /**
      * Trigger form submit only if form data is valid
      * @param {*} e 
      */
-    static #onSubmit(e, own) {
+    static #onSubmit(e) {
         GSEvents.prevent(e);
-        const me = own || this;
+        const me = this;
         const isValid = me.checkValidity() && me.isValid;
         if (!isValid) return me.reportValidity();
         const obj = GSDOM.toObject(me);
@@ -112,34 +79,6 @@ export default class GSFormExt extends HTMLFormElement {
         return GSDOM.queryAll(this, 'input,select,textarea')
             .map(el => el.checkValidity())
             .filter(v => v === false).length === 0;
-    }
-
-    get buttonOK() {
-        return GSFormExt.#buttonOK(this);
-    }
-
-    get buttonCancel() {
-        return GSFormExt.#buttonCancel(this);
-    }
-
-    get buttonReset() {
-        return GSFormExt.#buttonReset(this);
-    }
-
-    static #buttonOK(own) {
-        return GSDOM.query(own, 'button[type="submit"]');
-    }
-
-    static #buttonCancel(own) {
-        return GSFormExt.#find(own, 'cancel');
-    }
-
-    static #buttonReset(own) {
-        return GSFormExt.#find(own, 'reset');
-    }
-
-    static #find(own, name = '') {
-        return GSDOM.query(own, `button[data-action="${name}"]`);
     }
 
 }

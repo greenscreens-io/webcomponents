@@ -14,7 +14,6 @@ import GSLoader from "../base/GSLoader.mjs";
 import GSUtil from "../base/GSUtil.mjs";
 import GSAttr from "../base/GSAttr.mjs";
 import GSDOM from "../base/GSDOM.mjs";
-import GSFunction from "../base/GSFunction.mjs";
 import GSMenu from "./GSMenu.mjs";
 
 /**
@@ -72,7 +71,7 @@ export default class GSDropdown extends GSElement {
     if (me.#ready) return;
     me.#ready = true;
     me.close();
-    me.attachEvent(me.#menu, 'action', me.#onClick.bind(me));
+    GSEvents.monitorAction(me, 'dropdown');
     super.onReady();
   }
 
@@ -181,38 +180,6 @@ export default class GSDropdown extends GSElement {
     GSDOM.setHTML(me, src);
     me.connectedCallback();
     return data;
-  }
-
-  async #onClick(e) {
-    GSEvents.prevent(e);
-    const me = this;
-    const data = e.detail;
-    const sts = await me.#onAction(data.action || data.data?.action);
-    if (sts) return;
-    data.type = 'dropdown';
-    GSEvents.send(me, 'action', data?.data || data, true, true, true); // notify self
-  }
-
-  async #onAction(action) {
-    let sts = false;
-    if (!action) return sts;
-    const me = this;
-    try {
-      action = GSUtil.capitalizeAttr(action);
-      const fn = me[action];
-      sts = GSFunction.isFunction(fn);
-      sts = sts && !GSFunction.isFunctionNative(fn);
-      if (sts) {
-        if (GSFunction.isFunctionAsync(fn)) {
-          await me[action]();
-        } else {
-          me[action]();
-        }
-      }
-    } catch (e) {
-      me.onError(e);
-    }
-    return sts;
   }
 
   onError(e) {

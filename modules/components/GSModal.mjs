@@ -11,6 +11,7 @@ import GSAttr from "../base/GSAttr.mjs";
 import GSDOM from "../base/GSDOM.mjs";
 import GSElement from "../base/GSElement.mjs";
 import GSEvents from "../base/GSEvents.mjs";
+import GSUtil from "../base/GSUtil.mjs";
 
 /**
  * Bootstrap modal dialog support
@@ -50,8 +51,8 @@ export default class GSModal extends GSElement {
 
   onReady() {
     const me = this;
+    GSEvents.monitorAction(me, 'modal');
     me.attachEvent(me, 'click', me.#onClick.bind(me));
-    me.attachEvent(me, 'action', me.#onClick.bind(me));
     me.attachEvent(me, 'form', me.#onForm.bind(me));
     me.attachEvent(document, 'keyup', me.#onEscape.bind(me));
     super.onReady();
@@ -74,31 +75,32 @@ export default class GSModal extends GSElement {
   }
 
   #onClick(e) {
-
     const me = this;
     const action = me.#isAcceptedAction(e);
     if (!action) return;
-
     const isOk = action === 'ok';
+    GSEvents.send(me, 'action', { action: action, ok: isOk, evt: e }, true, true, true);
+  }
+
+  cancel() {
+    this.close(null, false);
+  }
+
+  ok() {
+    const me = this;
+    const sts = me.#handleForm();
+    if (sts) me.close(null, true);
+  }
+
+  #handleForm() {
+    const me = this;
     const forms = GSDOM.queryAll(me, 'form');
-    const processForms = isOk && forms.length > 0;
-
-    if (processForms) {
-      const invalid = forms.filter(form => form.checkValidity() == false);
-      invalid.forEach(form => me.#reportForm(form));
-      if (invalid.length === 0) forms.forEach(form => me.#submitForm(form));
-
-      const els = invalid.map(form => GSDOM.queryAll(form, 'textarea, input, select').filter(el => el.checkValidity() == false));
-      if (els.length > 0) GSEvents.send(me, 'error', { type: 'modal', data: els }, true, true, true);
-      return;
-    }
-
-    let sts = true;
-    try {
-      sts = GSEvents.send(me, 'action', { type: 'modal', ok: isOk, evt: e }, true, true, true);
-    } finally {
-      if (sts) me.close(null, isOk);
-    }
+    const invalid = forms.filter(form => form.checkValidity() == false);
+    const els = invalid.map(form => GSDOM.queryAll(form, 'textarea, input, select').filter(el => el.checkValidity() == false)).flat();
+    if (invalid.length === 0) forms.forEach(form => me.#submitForm(form));
+    invalid.forEach(form => me.#reportForm(form));
+    if (els.length > 0) GSEvents.send(me, 'error', { type: 'modal', data: els }, true, true, true);
+    return els.length === 0;
   }
 
   #submitForm(form) {

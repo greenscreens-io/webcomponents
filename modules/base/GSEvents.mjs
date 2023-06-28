@@ -421,6 +421,45 @@ export default class GSEvents {
 		o.once = null;
 	}
 
+	static monitorAction(owner, type) {
+		//owner.on('action', GSUtil.#onAction.bind(owner));
+		owner.on('action', async (e) => {
+			const me = owner;
+			const data = e.detail;
+			if (data.type === type) return;
+			
+			GSEvents.prevent(e);
+			const action = data.action || data.data?.action;
+			const sts = await GSEvents.onAction(me, action);
+			if (!sts) {
+				data.type = type;
+				GSEvents.send(me, 'action', data, true, true, true); // notify self
+			}
+		});
+	}
+
+	static async onAction(owner, action) {
+		let sts = false;
+		if (!action) return sts;
+		const me = owner;
+		try {
+			action = GSUtil.capitalizeAttr(action);
+			const fn = me[action];
+			sts = GSFunction.isFunction(fn);
+			sts = sts && !GSFunction.isFunctionNative(fn);
+			if (sts) {
+				if (GSFunction.isFunctionAsync(fn)) {
+					await me[action]();
+				} else {
+					me[action]();
+				}
+			}
+		} catch (e) {
+			me.onError(e);
+		}
+		return sts;
+	}
+	
 	static {
 		Object.freeze(GSEvents);
 		globalThis.GSEvents = GSEvents;
