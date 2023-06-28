@@ -1,12 +1,12 @@
 # [WebComponents](https://webcomponents.greenscreens.ltd/) for [Bootstrap 5.2.0+](https://getbootstrap.com/)
 
-# Development  v1.5.2 (TBD)
- - Improved action event processing for dialogs
- - Improved action event processing for forms
- - Improved action event processing for menus
+# Development  v1.6.0 (28.06.2023.)
  - Fix recursive action event calls
-
-# Release  v1.5.1 (27.06.2023.)
+ - GSMenu popup offset calculation added
+ - GSDialog improved action event processing
+ - GSMenu improved action event processing 
+ - GSFormExt improved action event processing 
+ - GSEvents added generic action listener to call dynamically atached class methods 
  - Renaming bootstrap, version removed
  - GSTable added column sorting arrows CSS
  - GSColumn add general column css atribute retrieval from parent gs-header
@@ -19,7 +19,7 @@
  - GSContext add custom anchor support; to allof context in dialogs
  - GSDialog - autohide footer if no buttons availables
  - GSDialog added ESC close when buttons not enabled
- - GSModal - autohide footer if no buttons availables
+ - GSModal - autohide footer if no buttons available
  - GSModal added ESC close when buttons not enabled
  - Extra components improved controls auto-loading external libs
  - Demo build scripts improved
