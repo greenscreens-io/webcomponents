@@ -113,7 +113,16 @@ export default class GSMenu extends GSUListExt {
    */
   popup(x = 0, y = 0, caller) {
     const me = this;
-    const cfg = {clientX: x.clientX || x, clientY: x.clientY || y, target: x.target || caller };
+    if (x instanceof PointerEvent) {
+      const e = x;
+      y = e.clientY;
+      x = e.clientX;
+      let offset = GSDOM.offsetParent(me);
+      offset = offset ? offset.getBoundingClientRect() : null;
+      x = x - (offset?.left || 0);
+      y = y - (offset?.top || 0);
+    }    
+    const cfg = {clientX: x, clientY: y, target: x.target || caller };
     requestAnimationFrame(() => {
       const style = {
         position : 'fixed',

@@ -373,11 +373,28 @@ export default class GSDOM {
 	}
 
 	/**
+	 * Recursively find offsetparent; used in positional offset calculation
+	 * @param {HTMLElement} el 
+	 * @returns {HTMLElement}
+	 */
+	static offsetParent(el) {
+		let offset = el?.offsetParent;
+		if (offset) return offset;
+		const it = GSDOM.parentAll(el);
+		for (const c of it) {
+			offset = c.offsetParent;
+			if (offset) break;
+		}
+		return offset;
+	}
+
+	/**
 	 * Get root element whch might be shadow root, GSElement, any parent element
 	 * @param {HTMLElement} el 
 	 * @returns {HTMLElement|ShadowRoot}
 	 */
-	static getRoot(el) {
+	static root(el) {
+
 		if (!el) return null;
 
 		const it = GSDOM.parentAll(el);

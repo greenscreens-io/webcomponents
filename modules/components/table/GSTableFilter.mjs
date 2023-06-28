@@ -50,7 +50,7 @@ export default class GSTableFilter extends HTMLTableRowElement {
     }
 
     get root() {
-        return GSDOM.getRoot(this);
+        return GSDOM.root(this);
     }
 
     #attachChangeListener() {
