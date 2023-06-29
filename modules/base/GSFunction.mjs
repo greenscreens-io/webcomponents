@@ -62,7 +62,7 @@ export default class GSFunction {
      */
     static async callFunctionAsync(fn, owner) {
         try {
-            return await fn(owner);
+            return owner ? await fn.bind(owner)() : await fn(owner);
         } catch (e) {
             return e;
         }
@@ -78,7 +78,7 @@ export default class GSFunction {
      */
     static callFunctionSync(fn, owner) {
         try {
-            return fn(owner);
+            return owner ? fn.bind(owner)() : fn(owner);
         } catch (e) {
             return e;
         }

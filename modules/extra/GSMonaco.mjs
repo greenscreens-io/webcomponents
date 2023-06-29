@@ -275,7 +275,7 @@ export default class GSMonaco extends GSElement {
         const me = this;
         me.#editor.layout({ width: 0, height: 0 });
 
-        window.requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
             const rect = me.owner.getBoundingClientRect();
             me.#editor.layout({ width: rect.width, height: rect.height });
         })

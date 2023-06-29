@@ -203,7 +203,9 @@ export default class GSComponents {
     static #listener = false;
     static #onStyles() {
         requestAnimationFrame(() => {
-            GSComponents.findAll(null, false, true).filter(el => el.shadowRoot && el.unstyled !== true).forEach(el => el.shadowRoot.adoptedStyleSheets = GSCacheStyles.styles);
+            GSComponents.findAll(null, false, true)
+                        .filter(el => el.shadowRoot && el.unstyled !== true)
+                        .forEach(el => el.shadowRoot.adoptedStyleSheets = GSCacheStyles.styles);
         });
     }
 

@@ -228,7 +228,7 @@ export default class GSUtil {
 		if (typeof callback !== 'function') return;
 		if (GSUtil.#animating > 0) return callback();
 		GSUtil.#animating++;
-		return globalThis.requestAnimationFrame(() => {
+		return requestAnimationFrame(() => {
 			try {
 				callback();
 			} catch (e) {

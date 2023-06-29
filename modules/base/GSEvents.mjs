@@ -68,13 +68,8 @@ export default class GSEvents {
 	static async waitAnimationFrame(callback) {
 		return new Promise((r, e) => {
 			requestAnimationFrame(() => {
-				try {
-					r();
-					if (typeof callback === 'function') callback();
-				} catch (er) {
-					console.log(er);
-					e(er);
-				}
+				const o = GSFunction.callFunction(callback);
+				(o instanceof Error) ? e(o) : r(o);
 			});
 		});
 	}
