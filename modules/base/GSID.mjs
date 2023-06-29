@@ -52,7 +52,15 @@ export default class GSID {
 			h = (h << 5) - h + s.charCodeAt(i++) | 0;
 		}
 		return h;
-	};
+	}
+
+	/**
+	 * Set element id if not set already
+	 * @param {HTMLElement} el 
+	 */
+	static setIf(el) {
+		if (el) el.id = el.id || GSID.id;
+	}
 
 	static {
 		Object.freeze(GSID);

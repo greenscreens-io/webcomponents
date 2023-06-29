@@ -88,7 +88,7 @@ export default class GSLayout extends GSElement {
         const fixed = style.length > 10 ? true : false;
         const cls = me.#generateClass(el, fixed);
 
-        const child = `<div class="${cls} ${el.dataset.cssId}" data-css-id="${el.dataset.cssId}" id="${name || GSID.next()}">${tpl}</div>`;
+        const child = `<div class="${cls} ${el.dataset.cssId}" data-css-id="${el.dataset.cssId}" id="${name || GSID.id}">${tpl}</div>`;
 
         if (res) {
             const pos = me.#splitter(el);

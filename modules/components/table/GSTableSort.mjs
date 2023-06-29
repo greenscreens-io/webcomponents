@@ -31,7 +31,7 @@
  
      connectedCallback() {
          const me = this;
-         if (!me.id) me.setAttribute('id', GSID.id);
+         GSID.setIf(me);
          GSEvents.attach(me, me, 'click', e => me.#onClick(e));
          GSComponents.store(me);
          me.onReady();

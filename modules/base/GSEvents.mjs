@@ -385,7 +385,7 @@ export default class GSEvents {
 	static #getElementID(el) {
 		let elid = GSAttr.get(el, 'data-gselid');
 		if (!elid) {
-			elid = GSID.next()
+			elid = GSID.id;
 			GSAttr.set(el, 'data-gselid', elid);
 		}
 		return elid;

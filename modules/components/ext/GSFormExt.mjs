@@ -46,7 +46,7 @@ export default class GSFormExt extends HTMLFormElement {
 
     connectedCallback() {
         const me = this;
-        if (!me.id) me.setAttribute('id', GSID.id);
+        GSID.setIf(me);
         GSFormExt.#attachEvents(me);
         //GSComponents.store(me);
     }

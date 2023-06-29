@@ -30,7 +30,7 @@ export default class GSTBody extends HTMLTableSectionElement {
 
     connectedCallback() {
         const me = this;
-        if (!me.id) me.setAttribute('id', GSID.id);
+        GSID.setIf(me);
         GSEvents.attach(me, me, 'click', e => me.#onClick(e));
         GSEvents.attach(me, me, 'contextmenu', e => me.#onMenu(e), false, true);
         me.#table = GSDOM.closest(me, 'GS-TABLE');

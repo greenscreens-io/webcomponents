@@ -57,7 +57,7 @@ export default class GSNavLinkExt extends HTMLAnchorElement {
 
     connectedCallback() {
         const me = this;
-        if (!me.id) me.setAttribute('id', GSID.id);
+        GSID.setIf(me);
         GSNavLinkExt.#attachEvents(me);
         //GSComponents.store(me);
     }

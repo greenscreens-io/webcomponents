@@ -60,7 +60,7 @@ export default class GSDataAttr {
      * @param {HTMLElement} el 
      */
     static #onMonitorResult(el) {
-        el.id = el.id || GSID.id;
+        GSID.setIf(el);
         el.dataset.gsAttrMon = true;
         GSEvents.attach(el, el, 'click', GSDataAttr.#onClick.bind(el));
     }

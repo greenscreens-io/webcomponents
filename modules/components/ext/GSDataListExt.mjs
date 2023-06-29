@@ -45,7 +45,7 @@ export default class GSDataListExt extends HTMLDataListElement {
 
     connectedCallback() {
         const me = this;
-        if (!me.id) me.setAttribute('id', GSID.id);
+        GSID.setIf(me);
         GSComponents.store(me);
     }
 

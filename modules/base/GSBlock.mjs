@@ -25,13 +25,11 @@ export default class GSBlock extends HTMLElement {
 
     connectedCallback() {
         const me = this;
-        if (!me.id) me.setAttribute('id', GSID.id);
+        GSID.setIf(me);
     }
 
     disconnectedCallback() {
-        const me = this;
-        const el = GSDOM.query(document.body, me.proxy);
-        if (el) el.remove();
+        this.owner?.remove();
     }
 
     /**
@@ -40,6 +38,10 @@ export default class GSBlock extends HTMLElement {
      */
     get proxy() {
         return GSAttr.get(this, 'proxy');
+    }
+
+    get owner() {
+        return GSDOM.query(document.documentElement, this.proxy);
     }
 
     static {

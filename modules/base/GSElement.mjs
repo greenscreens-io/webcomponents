@@ -515,7 +515,7 @@ export default class GSElement extends HTMLElement {
 			return me.remove();
 		}
 
-		if (!me.id) me.id = GSID.id;
+		GSID.setIf(me);
 		me.#opts = me.#injection();
 		me.#proxied = me.#opts.ref;
 		GSComponents.store(me);

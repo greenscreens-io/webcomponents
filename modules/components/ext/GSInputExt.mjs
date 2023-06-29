@@ -54,7 +54,7 @@ export default class GSInputExt extends HTMLInputElement {
 
     connectedCallback() {
         const me = this;
-        if (!me.id) me.setAttribute('id', GSID.id);
+        GSID.setIf(me);
         if (me.placeholder.length === 0) {
             if (me.mask) me.placeholder = me.mask;
         }

@@ -54,7 +54,7 @@ export default class GSPopover extends GSElement {
     static async #onMonitorResult(el) {
         await GSUtil.timeout(1000);
         GSUtil.requestAnimationFrame(async () => {
-            el.id = el.id || GSID.id;
+            GSID.setIf(el);
             const popover = document.createElement('gs-popover');
             popover.ref = `#${el.id}`;
             el.parentElement.insertAdjacentElement('beforeend', popover);

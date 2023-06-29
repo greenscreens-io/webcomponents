@@ -53,7 +53,7 @@ export default class GSTab extends GSElement {
   async getTemplate(val = '') {
     const me = this;
     const items = GSItem.genericItems(me);
-    items.forEach(el => el.id = GSID.id);
+    items.forEach(el => GSID.setIf(el));
     const tabs = items.map(el => me.#renderTab(el)).join('');
     const panes = items.map(el => me.#renderPane(el)).join('');
     const panel = me.#renderPanel(panes);

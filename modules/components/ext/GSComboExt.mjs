@@ -43,7 +43,7 @@ export default class GSComboExt extends HTMLSelectElement {
 
     connectedCallback() {
         const me = this;
-        if (!me.id) me.setAttribute('id', GSID.id);
+        GSID.setIf(me);
         GSComponents.store(me);
     }
 

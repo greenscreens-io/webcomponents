@@ -32,7 +32,7 @@ export default class GSTableFilter extends HTMLTableRowElement {
      */
     connectedCallback() {
         const me = this;
-        me.id = me.id || GSID.id;
+        GSID.setIf(me);
         me.#auto = GSDOM.query(me, 'input[auto="true"],select[auto="true"]') != null;
         me.#attachChangeListener();
         me.#attachDataListener();

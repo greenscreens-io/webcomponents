@@ -55,7 +55,7 @@ export default class GSi18n extends HTMLElement {
 
     connectedCallback() {
         const me = this;
-        me.id = me.id ? me.id : GSID.id;
+        GSID.setIf(me);
         me.#isDuplicate = GSComponents.find(this.tagName) ? true : false;
         if (me.#isDuplicate) return console.log(`${me.tagName} ID: ${me.id} is ignored, i18n is already in use by another instance!`);
         GSi18n.#init = me;

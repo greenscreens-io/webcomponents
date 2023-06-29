@@ -88,7 +88,7 @@ export default class GSColumn extends HTMLElement {
 
     #renderFlexi() {
         const me = this;
-        const id = GSID.next();
+        const id = GSID.id;
         const html = me.#renderField(id);
         const opts = me.#renderOptions(false);
         const list = `<datalist id="${id}">${opts}</datalist>`;

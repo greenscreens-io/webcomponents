@@ -49,7 +49,7 @@ export default class GSTooltip extends GSElement {
     static async #onMonitorResult(el) {
         await GSUtil.timeout(1000);
         GSUtil.requestAnimationFrame(() => {
-            el.id = el.id || GSID.id;
+            GSID.setIf(el);
             const tooltip = document.createElement('gs-tooltip');
             tooltip.ref = `#${el.id}`;
             el.parentElement.insertAdjacentElement('beforeend', tooltip);

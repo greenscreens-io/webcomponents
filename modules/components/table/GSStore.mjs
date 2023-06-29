@@ -77,7 +77,7 @@ export default class GSStore extends HTMLElement {
     connectedCallback() {
         const me = this;
         me.#online = true;
-        if (!me.id) me.setAttribute('id', GSID.id);
+        GSID.setIf(me);
         GSComponents.store(me);
     }
 

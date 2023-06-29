@@ -413,7 +413,7 @@ export default class GSDOM {
 	 * @returns {HTMLElement} 
 	 */
 	static getByID(el, id) {
-		if (typeof el === 'string') return GSDOM.getByID(document.body, id);
+		if (typeof el === 'string') return GSDOM.getByID(document.documentElement, id);
 		if (!(el && id)) return null;
 		const it = GSDOM.walk(el, false);
 		for (let o of it) {
@@ -429,7 +429,7 @@ export default class GSDOM {
 	 * @returns {HTMLElement} 
 	 */
 	static closest(el, qry) {
-		if (typeof el === 'string') return GSDOM.closest(document.body, qry);
+		if (typeof el === 'string') return GSDOM.closest(document.documentElement, qry);
 		if (!(el && qry)) return null;
 		const it = GSDOM.walk(el, true);
 		for (let o of it) {
@@ -446,7 +446,7 @@ export default class GSDOM {
 	 * @returns {HTMLElement} 
 	 */
 	static query(el, qry, all = false, shadow = true) {
-		if (typeof el === 'string') return GSDOM.query(document.body, el, all, shadow);
+		if (typeof el === 'string') return GSDOM.query(document.documentElement, el, all, shadow);
 		if (!(el && qry)) return null;
 		if (GSDOM.matches(el, qry)) return el;
 		const it = GSDOM.walk(el, false, all, shadow);
@@ -475,7 +475,7 @@ export default class GSDOM {
 	 * @returns {Array<HTMLElement>}
 	 */
 	static queryAll(el, qry, all = false, shadow = true) {
-		if (typeof el === 'string') return GSDOM.queryAll(document.body, el, all, shadow);
+		if (typeof el === 'string') return GSDOM.queryAll(document.documentElement, el, all, shadow);
 		const res = [];
 		if (!(el && qry)) return res;
 		const it = GSDOM.walk(el, false, all, shadow);

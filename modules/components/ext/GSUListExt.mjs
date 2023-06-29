@@ -16,7 +16,7 @@ export default class GSUListExt extends HTMLUListElement {
 
     connectedCallback() {
         const me = this;
-        if (!me.id) me.id = GSID.id;
+        GSID.setIf(me);
         GSEvents.attach(me, me, 'keydown', me.#onKeyDown.bind(me));
     }
 
