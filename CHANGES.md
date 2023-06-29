@@ -1,6 +1,11 @@
 # [WebComponents](https://webcomponents.greenscreens.ltd/) for [Bootstrap 5.2.0+](https://getbootstrap.com/)
 
-# Development  v1.6.0 (28.06.2023.)
+# Development  v1.6.1 (TBD)
+ - GSMarkdown url fix
+ - code cleanup for setting up ID
+ - requestAnimation cleanup
+
+# Release  v1.6.0 (28.06.2023.)
  - Fix recursive action event calls
  - GSMenu popup offset calculation added
  - GSDialog improved action event processing
