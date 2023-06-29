@@ -83,6 +83,10 @@ export default class GSMarkdown extends GSElement {
         return true;
     }
 
+    get root() {
+        return this.#root;
+    }
+
     /**
      * URL location from where to load data
      * 

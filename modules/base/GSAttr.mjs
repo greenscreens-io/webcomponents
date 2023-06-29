@@ -17,7 +17,7 @@ export default class GSAttr {
 
 	/**
 	 * Check if given element is of type HTMLElement
-	 * NOTE: GSDOM.isHTMLElement duplicate- p revent circualr import
+	 * NOTE: GSDOM.isHTMLElement duplicate - prevent circular import
 	 * @returns {boolean}
 	 */
 	static isHTMLElement(el) {
