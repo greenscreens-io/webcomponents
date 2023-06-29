@@ -3,7 +3,7 @@
 # Development  v1.6.1 (TBD)
  - GSMarkdown url fix
  - code cleanup for setting up ID
- - requestAnimation cleanup
+ - code cleanup for requestAnimation usage
 
 # Release  v1.6.0 (28.06.2023.)
  - Fix recursive action event calls
