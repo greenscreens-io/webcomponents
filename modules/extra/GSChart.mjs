@@ -29,7 +29,7 @@ export default class GSChart extends GSElement {
     #chart = null;
 
     static get URL_LIB() {
-        return globalThis.GS_URL_CHART == false ? false : globalThis.GS_URL_CHART || globalThis.location?.origin || '/webcomponents';
+        return globalThis.GS_EXTERNAL == false || globalThis.GS_URL_CHART == false ? false : globalThis.GS_URL_CHART || globalThis.location?.origin || '/webcomponents';
     }
 
     static async #init() {

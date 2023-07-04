@@ -50,7 +50,7 @@ export default class GSMarkdown extends GSElement {
     }
 
     static get URL_LIB() {
-        return globalThis.GS_URL_MARKDOWN == false ? false : globalThis.GS_URL_MARKDOWN || 'https://unpkg.com/showdown/dist/showdown.min.js';
+        return globalThis.GS_EXTERNAL == false || globalThis.GS_URL_MARKDOWN == false ? false : globalThis.GS_URL_MARKDOWN || 'https://unpkg.com/showdown/dist/showdown.min.js';
     }
 
     static get observedAttributes() {

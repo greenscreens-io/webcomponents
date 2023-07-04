@@ -32,7 +32,7 @@ export default class GSMonaco extends GSElement {
     }
     
     static get URL_LIB() {
-        return globalThis.GS_URL_MONACO == false ? false : globalThis.GS_URL_MONACO || 'https://unpkg.com/monaco-editor@latest/min/';
+        return globalThis.GS_EXTERNAL == false || globalThis.GS_URL_MONACO == false ? false : globalThis.GS_URL_MONACO || 'https://unpkg.com/monaco-editor@latest/min/';
     }
 
     static #init() {
