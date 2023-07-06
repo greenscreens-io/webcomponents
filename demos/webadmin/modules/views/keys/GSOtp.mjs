@@ -43,12 +43,12 @@ export default class GSOtp extends BaseViewUI {
         return o.success;
     }
 
-    toggle(e) {
+    onViewToggle(e) {
         const data = e.detail.data[0];
         if (!data) return Utils.inform(false, 'Record not selected!');
         data.active = !data.active;
         const me = this;
         me.onUpdate(data);
-        me.refresh();
+        me.onViewRefresh();
     }
 }

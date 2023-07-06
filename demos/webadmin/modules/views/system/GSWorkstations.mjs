@@ -30,7 +30,7 @@ export default class GSWorkstations extends BaseViewUI {
         return o.data;
     }
 
-    async message(e) {
+    async onViewMessage(e) {
 
         const msg = prompt('Enter message to send');
         if (!(msg?.trim().length > 0)) return;
@@ -46,7 +46,7 @@ export default class GSWorkstations extends BaseViewUI {
         }
     }
 
-    async logging(e) {
+    async onViewLogging(e) {
         const me = this;
         try {
             const data = e.detail.data[0];
@@ -60,7 +60,7 @@ export default class GSWorkstations extends BaseViewUI {
         }
     }
 
-    async kill(e) {
+    async onViewKill(e) {
         const me = this;
         try {
             const data = e.detail.data[0];
@@ -71,7 +71,7 @@ export default class GSWorkstations extends BaseViewUI {
         }
     }
 
-    async messageFilter(e) {
+    async onViewMessageFilter(e) {
 
         const msg = prompt('Enter message to send');
         if (!(msg?.trim().length > 0)) return;
@@ -87,7 +87,7 @@ export default class GSWorkstations extends BaseViewUI {
         }
     }
 
-    async killFilter(e) {
+    async onViewKillFilter(e) {
         const me = this;
         try {
             const o = DEMO ? DEMO : await io.greenscreens.Manage.killSessions(me.filter);
@@ -97,7 +97,7 @@ export default class GSWorkstations extends BaseViewUI {
         }
     }
 
-    async export(e) {
+    async onViewExport(e) {
         const me = this;
         try {
             const o = DEMO ? DEMO : await io.greenscreens.Manage.export(0, 0, me.filter);
@@ -117,7 +117,7 @@ export default class GSWorkstations extends BaseViewUI {
         me.#terminal = {};
     }
 
-    viewSession(e) {
+    onViewViewSession(e) {
 
         if (DEMO) return Utils.inform(false, 'Not available in DEMO mode.');
 

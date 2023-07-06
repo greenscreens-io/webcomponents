@@ -7,7 +7,7 @@
  * @module BaseUI
  */
 
-import { GSComponents, GSDOM, GSFunction, GSUtil, GSElement, GSEvents } from '/webcomponents/release/esm/io.greenscreens.components.all.esm.min.js';
+import { GSComponents, GSDOM, GSUtil, GSElement, GSEvents } from '/webcomponents/release/esm/io.greenscreens.components.all.esm.min.js';
 
 import Utils from "../utils/Utils.mjs";
 
@@ -26,9 +26,10 @@ export default class BaseViewUI extends GSElement {
     onReady() {
         const me = this;
         super.onReady();
-        GSEvents.monitorAction(me, 'baseview');
-        me.attachEvent(me.#table, 'filter', e => me.refresh());
-        requestAnimationFrame(() => me.refresh());
+        globalThis.GS_LOG_ACTION = true;
+        GSEvents.monitorAction(me, 'view');
+        me.attachEvent(me.#table, 'filter', e => me.onViewRefresh());
+        requestAnimationFrame(() => me.onViewRefresh());
     }
 
     /**
@@ -77,7 +78,7 @@ export default class BaseViewUI extends GSElement {
     /**
      * Export table data
      */
-    async export() {
+    async onViewExport() {
         const me = this;
         const name = me.tagName.toLowerCase();
         const data = me.store.data;
@@ -89,7 +90,7 @@ export default class BaseViewUI extends GSElement {
      * @param {Event} e 
      * @returns {Promise}
      */
-    async clone(e) {
+    async onViewClone(e) {
 
         const me = this;
         const data = e.detail.data[0];
@@ -105,7 +106,7 @@ export default class BaseViewUI extends GSElement {
             // update locally to refresh ui
             me.store.setData(rec, true);
             Utils.notify.secondary('', 'Record cloned!');
-            me.refresh();
+            me.onViewRefresh();
         } catch (e) {
             me.onError(e);
         }
@@ -117,7 +118,7 @@ export default class BaseViewUI extends GSElement {
      * @param {Event} e 
      * @returns {Promise}
      */
-    async remove(e) {
+    async onViewRemove(e) {
 
         const me = this;
         const data = e.detail.data[0];
@@ -144,7 +145,7 @@ export default class BaseViewUI extends GSElement {
      * @param {Event} e 
      * @returns {Promise}
      */
-    async details(e) {
+    async onViewDetails(e) {
 
         const me = this;
         const data = await me.onDetails(e.detail.data[0]);
@@ -175,7 +176,7 @@ export default class BaseViewUI extends GSElement {
      * @param {Event} e 
      * @returns {Promise}
      */
-    async create(e) {
+    async onViewCreate(e) {
 
         const me = this;
 
@@ -190,7 +191,7 @@ export default class BaseViewUI extends GSElement {
             // update locally to refresh ui
             Utils.notify.primary('', 'Record created!');
 
-            me.refresh();
+            me.onViewRefresh();
 
         } catch (e) {
             me.onError(e);
@@ -202,7 +203,7 @@ export default class BaseViewUI extends GSElement {
      * Toolbar table action - refresh data
      * @param {Event} e 
      */
-    async refresh(e) {
+    async onViewRefresh(e) {
         // get data from extension and populate table;
         const me = this;
 
@@ -229,7 +230,7 @@ export default class BaseViewUI extends GSElement {
      * Toolbar table action - filter records
      * @param {Event} val 
      */
-    search(e) {
+    onViewSearch(e) {
         this.store.filter = e.detail.value;
     }
 

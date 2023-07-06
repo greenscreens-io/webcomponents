@@ -96,32 +96,32 @@ export default class GSConfiguration extends BaseViewUI {
         return o.success;
     }
 
-    resetPrinter(e) {
+    onViewResetPrinter(e) {
         const data = e.detail.data[0];
         this.printerReset.open(data);
     }
 
-    setupPrinter(e) {
+    onViewSetupPrinter(e) {
         const data = e.detail.data[0];
         this.printerSetup.open(data);
     }
 
-    activate(e) {
+    onViewActivate(e) {
         const data = e.detail.data[0];
         this.activateDialog.open(data);
     }
 
-    install(e) {
+    onViewInstall(e) {
         const data = e.detail.data[0];
         this.installDialog.open(data);
     }
 
-    license(e) {
+    onViewLicense(e) {
         const data = e.detail.data[0];
         this.licenseDialog.open(data);
     }
 
-    async validateServer(e) {
+    async onViewValidateServer(e) {
         const me = this;
         me.waiter.open();
         try {

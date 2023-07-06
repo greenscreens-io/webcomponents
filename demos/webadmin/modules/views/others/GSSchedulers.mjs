@@ -46,12 +46,12 @@ export default class GSScheduler extends BaseViewUI {
         return o.success;
     }
 
-    async run(e) {
+    async onViewRun(e) {
         const me = this;
         const data = e.detail.data[0];
         const o = DEMO ? DEMO : await io.greenscreens.Scheduler.runNow(data.id);
         Utils.inform(o.success, 'Task started!');
-        me.refresh();
+        me.onViewRefresh();
     }
 
 }

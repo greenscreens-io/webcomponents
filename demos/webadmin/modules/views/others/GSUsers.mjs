@@ -50,7 +50,7 @@ export default class GSUsers extends BaseViewUI {
         return o.success;
     }
 
-    async commit(e) {
+    async onViewCommit(e) {
         const me = this;
         me.waiter.open()
         try {
@@ -61,7 +61,7 @@ export default class GSUsers extends BaseViewUI {
         }
     }
 
-    async resync(e) {
+    async onViewResync(e) {
         const me = this;
         me.waiter.open()
         try {

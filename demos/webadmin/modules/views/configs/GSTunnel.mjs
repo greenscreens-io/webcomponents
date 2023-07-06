@@ -49,28 +49,28 @@ export default class GSTunnel extends BaseViewUI {
         return o.success;
     }
 
-    async start(e) {
+    async onViewSstart(e) {
         const me = this;
         const data = e.detail.data[0];
         const o = DEMO ? DEMO : await io.greenscreens.Proxy.start(data.id);
         Utils.inform(o.success, 'Tunnel started');
     }
 
-    async stop(e) {
+    async onViewStop(e) {
         const me = this;
         const data = e.detail.data[0];
         const o = DEMO ? DEMO : await io.greenscreens.Proxy.stop(data.id);
         Utils.inform(o.success, 'Tunnel stopped');
     }
 
-    async restart(e) {
+    async onViewRestart(e) {
         const me = this;
         const data = e.detail.data[0];
         const o = DEMO ? DEMO : await io.greenscreens.Proxy.restart(data.id);
         Utils.inform(o.success, 'Tunnel restarted');
     }
 
-    async download(e) {
+    async onViewDownload(e) {
         const me = this;
         const data = e.detail.data[0];
         const o = DEMO ? DEMO : await io.greenscreens.Proxy.download(data.id);

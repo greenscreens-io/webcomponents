@@ -12,6 +12,7 @@ import GSID from "./GSID.mjs";
 import GSUtil from "./GSUtil.mjs";
 import GSAttr from "./GSAttr.mjs";
 import GSDOM from "./GSDOM.mjs";
+import GSLog from "./GSLog.mjs";
 
 
 /**
@@ -464,6 +465,7 @@ export default class GSEvents {
 		action = GSUtil.capitalizeAttr(GSUtil.capitalize(action));
 		prefix = GSUtil.capitalizeAttr(GSUtil.capitalize(prefix));
 		const name = `on${prefix}${action}`;
+		if (globalThis.GS_LOG_ACTION) GSLog.warn(owner, `Action : ${name}`);
 		const fn = me[name];
 		sts = GSFunction.isFunction(fn);
 		sts = sts && !GSFunction.isFunctionNative(fn);

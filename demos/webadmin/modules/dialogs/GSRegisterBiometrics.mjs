@@ -41,27 +41,23 @@ export default class GSRegisterBiometrics extends GSAdminDialog {
         if (!WebAuthn.isAllowed()) {
             const msg = 'FIDO2 allowed only on secured url <br>and valid domain name!'
             me.body = msg;
-            Utils.inform(false, msg);
-            return true;
-        }
-
-        const params = { uuid: 'ADMIN', host: 'ADMIN', user: 'ADMIN' };
-        params.appID = 0;
-        params.ipAddress = Tn5250.opt.ip;
-        try {
-            const o = await WebAuthn.register(params);
-            me.body = 'Biometric Web Admin login activated!';
-        } catch (e) {
-            me.body = Utils.handleError(e) || 'Biometric Web Admin login not activated!';
+            return Utils.inform(false, msg);
         }
 
         return true;
     }
 
-    async onData(data) {
-        const me = this;
-        // TODO save data; if ok return true
-
+    async onData() {
+        const params = { uuid: 'ADMIN', host: 'ADMIN', user: 'ADMIN' };
+        params.appID = 0;
+        params.ipAddress = Tn5250.opt.ip;
+        try {
+            const o = await WebAuthn.register(params);
+            console.log(o);
+            me.body = 'Biometric Web Admin login activated!';
+        } catch (e) {
+            me.body = Utils.handleError(e) || 'Biometric Web Admin login not activated!';
+        }
         return true;
     }
 

@@ -37,14 +37,10 @@ export default class GSKerberos extends GSAdminDialog {
         const o = DEMO ? DEMO : await io.greenscreens.Kerberos.save(data);
         return o.success;
     }
-
-    async reload() {
+    
+    async onDialogReload() {
         const o = DEMO ? DEMO : await io.greenscreens.Kerberos.reload();
         return o.success;
-    }
-
-    async onDialogReload() {
-        return this.reload();
     }
 
 }
