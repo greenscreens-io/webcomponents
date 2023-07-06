@@ -40,9 +40,9 @@
   <!-- selectable -->
   <div class="m-4 p-1 bg-light text-bg-light border shadow-sm">
     <gs-tree css="">
-      <gs-item css="" action="" target="" toggle="" target="" dismiss="" title="Item 1" data-path="/test"></gs-item>
-      <gs-item css="" action="" target="" toggle="" target="" dismiss="" title="Item 2">
-        <gs-item css="" action="" target="" toggle="" target="" dismiss="" title="Item 3"></gs-item>
+      <gs-item css="" action="test1" target="" toggle="" target="" dismiss="" title="Item 1" data-path="/test"></gs-item>
+      <gs-item css="" action="test2" target="" toggle="" target="" dismiss="" title="Item 2">
+        <gs-item css="" action="test3" target="" toggle="" target="" dismiss="" title="Item 3"></gs-item>
         <gs-item css="" action="" target="" toggle="" target="" dismiss="" title="Item 4"></gs-item>
         <gs-item css="" action="" target="" toggle="" target="" dismiss="" title="Item 5">
           <gs-item css="" action="" target="" toggle="" target="" dismiss="" title="Item 6"></gs-item>
@@ -60,6 +60,10 @@
     </gs-tree>
   </div>
 
+  <script defer="true" type="module">
+    const tbl = GSComponents.find('gs-tree');
+    tbl.listen('action', (e) => console.log(e.detail));
+</script>
 </body>
 
 </html>

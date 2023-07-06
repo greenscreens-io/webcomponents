@@ -417,44 +417,55 @@ export default class GSEvents {
 	}
 
 	static monitorAction(owner, type) {
-		//owner.on('action', GSUtil.#onAction.bind(owner));
 		owner.on('action', async (e) => {
 			const me = owner;
-			const data = e.detail;
-			if (data.type === type) return;
-			
-			GSEvents.prevent(e);
+			const data = e.detail;	
 			const action = data.action || data.data?.action;
-			const sts = await GSEvents.onAction(me, action);
-			if (!sts) {
-				data.type = type;
-				GSEvents.send(me, 'action', data, true, true, true); // notify self
-			}
+			await GSEvents.onAction(me, action, type, e);
 		});
 	}
 
-	static async onAction(owner, action) {
+	static async onAction(owner, action, prefix, evt) {
+		
+		const callback = GSEvents.findAction(owner, action, prefix);
+		if (!callback) return;
+
+		GSEvents.prevent(e);
 		let sts = false;
-		if (!action) return sts;
-		const me = owner;
 		try {
-			action = GSUtil.capitalizeAttr(action);
-			const fn = me[action];
-			sts = GSFunction.isFunction(fn);
-			sts = sts && !GSFunction.isFunctionNative(fn);
-			if (sts) {
-				if (GSFunction.isFunctionAsync(fn)) {
-					await me[action]();
-				} else {
-					me[action]();
-				}
+			if (GSFunction.isFunctionAsync(callback)) {
+				sts = await callback(evt);
+			} else {
+				sts = callback(evt);
 			}
 		} catch (e) {
-			if (GSFunction.isFunction(me.onError)) me.onError(e);
+			sts = e;
+			if (!GSFunction.isFunction(owner.onError)) throw e;
+			owner.onError(e);
 		}
 		return sts;
 	}
 	
+
+	/**
+	 * Find object instance action by name
+	 * @param {Object} owner 
+	 * @param {String} action 
+	 * @returns {Function}
+	 */
+	static findAction(owner, action = '', prefix = '') {
+		let sts = false;
+		if (!action) return sts;
+		const me = owner;
+		action = GSUtil.capitalizeAttr(action);
+		prefix = GSUtil.capitalizeAttr(prefix);
+		const name = `on${prefix}${action}`;
+		const fn = me[name];
+		sts = GSFunction.isFunction(fn);
+		sts = sts && !GSFunction.isFunctionNative(fn);
+		return sts ? me[name].bind(me) : null
+	}
+
 	static {
 		Object.freeze(GSEvents);
 		globalThis.GSEvents = GSEvents;

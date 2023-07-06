@@ -7,7 +7,7 @@
  * @module BaseUI
  */
 
-import { GSComponents, GSDOM, GSFunction, GSUtil, GSElement } from '/webcomponents/release/esm/io.greenscreens.components.all.esm.min.js';
+import { GSComponents, GSDOM, GSFunction, GSUtil, GSElement, GSEvents } from '/webcomponents/release/esm/io.greenscreens.components.all.esm.min.js';
 
 import Utils from "../utils/Utils.mjs";
 
@@ -26,7 +26,7 @@ export default class BaseViewUI extends GSElement {
     onReady() {
         const me = this;
         super.onReady();
-        me.attachEvent(me, 'action', me.#onAction.bind(me));
+        GSEvents.monitorAction(me, 'baseview');
         me.attachEvent(me.#table, 'filter', e => me.refresh());
         requestAnimationFrame(() => me.refresh());
     }
@@ -75,31 +75,6 @@ export default class BaseViewUI extends GSElement {
     }
 
     /**
-     * Listener for lower componets "action" events
-     * wihch might come from table fitlering, table context menut etc.
-     * Used to handle context menu options. 
-     * Action from context menu is mapped to this class function.
-     * @param {Event} e 
-     */
-    async #onAction(e) {
-        const me = this;
-        if (!e.detail.action) return;
-        try {
-            const action = GSUtil.capitalizeAttr(e.detail.action);
-            const fn = me[action];
-            if (GSFunction.isFunction(fn)) {
-                if (GSFunction.isFunctionAsync(fn)) {
-                    await me[action](e);
-                } else {
-                    me[action](e);
-                }
-            }
-        } catch (e) {
-            Utils.handleError(e);
-        }
-    }
-
-    /**
      * Export table data
      */
     async export() {
@@ -132,7 +107,7 @@ export default class BaseViewUI extends GSElement {
             Utils.notify.secondary('', 'Record cloned!');
             me.refresh();
         } catch (e) {
-            Utils.handleError(e);
+            me.onError(e);
         }
 
     }
@@ -159,7 +134,7 @@ export default class BaseViewUI extends GSElement {
             Utils.notify.danger('', 'Record removed!');
 
         } catch (e) {
-            Utils.handleError(e);
+            me.onError(e);
         }
 
     }
@@ -190,7 +165,7 @@ export default class BaseViewUI extends GSElement {
             Utils.notify.warn('', 'Record updated!');
 
         } catch (e) {
-            Utils.handleError(e);
+            me.onError(e);
         }
 
     }
@@ -218,7 +193,7 @@ export default class BaseViewUI extends GSElement {
             me.refresh();
 
         } catch (e) {
-            Utils.handleError(e);
+            me.onError(e);
         }
 
     }
@@ -244,7 +219,7 @@ export default class BaseViewUI extends GSElement {
                     me.store.reload();
                 }
             } catch (e) {
-                console.log(e);
+                me.onError(e);
             }
         });
 
@@ -256,6 +231,10 @@ export default class BaseViewUI extends GSElement {
      */
     search(e) {
         this.store.filter = e.detail.value;
+    }
+
+	onError(e) {
+        Utils.handleError(e);
     }
 
     /**

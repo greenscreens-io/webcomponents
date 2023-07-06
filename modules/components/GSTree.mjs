@@ -136,7 +136,7 @@ export default class GSTree extends GSElement {
 
     #render() {
         const me = this;
-        return GSItem.genericItems(me).map((el,idx) => me.#html(el, 0, idx)).join('');
+        return GSItem.genericItems(me).map((el, idx) => me.#html(el, 0, idx)).join('');
     }
 
     #html(el, level = 0, idx = 0, pid = '', css = '') {
@@ -152,20 +152,20 @@ export default class GSTree extends GSElement {
         const nodeid = pid ? `${pid}.${idx}` : idx;
 
         const html = [];
-        
+
         html.push(`<li class="list-group-item ${level === 0 ? '' : css}" data-folder="${isFolder}" data-open="${isOpen}" data-nodeid="${nodeid}">`);
         html.push(me.#uiHtml(el, level));
-        
-            if (isFolder) {
-                Array.from(el.children).forEach((ce, idx) => html.push(me.#html(ce, level + 1, idx, nodeid, css )));
-            }
+
+        if (isFolder) {
+            Array.from(el.children).forEach((ce, idx) => html.push(me.#html(ce, level + 1, idx, nodeid, css)));
+        }
 
         html.push('</li>');
         return html.join('');
     }
 
     #uiHtml(el, level) {
-        
+
         const me = this;
         const title = GSAttr.get(el, 'title');
         const isFolder = el.childElementCount > 0;
@@ -176,7 +176,7 @@ export default class GSTree extends GSElement {
 
         const dataAttrs = GSAttr.dataToString(el);
         const dataBS = GSItem.getAttrs(el);
-        
+
         let itemIco = GSItem.getIcon(el, me.itemIcon);
         if (isFolder) itemIco = isOpen ? GSAttr.get(el, 'open-icon', me.openIcon) : GSAttr.get(el, 'close-icon', me.closeIcon);
 
@@ -184,7 +184,7 @@ export default class GSTree extends GSElement {
         while (level--) {
             html.push('<span class="indent"></span>');
         }
-        
+
         html.push(`<i class="fs-5 ${itemIco}"></i>`);
         html.push(`<a href="${href}" ${hreftgt} ${dataBS} ${dataAttrs} class="ps-1">${title}</a>`);
         return html.join('');
@@ -200,15 +200,20 @@ export default class GSTree extends GSElement {
         me.#select();
         me.#selected = el;
         me.#select(el, true);
-        me.#selected.querySelector('a')?.focus();
+        const a = me.#selected.querySelector('a');
+        a?.focus();
         GSEvents.send(me, 'select', me.#selected);
+        const action = a?.dataset?.action;
+        if (!action) return;
+        const data = {type: 'tree', action:action, data:el, evt: e}
+        GSEvents.sendDelayed(1, me, 'action', data);
     }
 
     #isFolder(el) {
         return (el || this.#selected)?.dataset.folder === 'true';
     }
 
-    #isOpen(el) {        
+    #isOpen(el) {
         return (el || this.#selected)?.dataset.open === 'true';
     }
 
@@ -226,7 +231,7 @@ export default class GSTree extends GSElement {
                 const isChild = cid && cid.indexOf(nid) === 0;
                 if (!isChild) break;
                 const cl = cid.split('\.').length;
-                if (pl+1 != cl && sts) break;
+                if (pl + 1 != cl && sts) break;
                 GSDOM.toggleClass(el, 'gs-hide', !sts);
                 if (!sts) el.dataset.open = sts;
                 el = el.nextElementSibling;
@@ -281,14 +286,14 @@ export default class GSTree extends GSElement {
                 break;
             case 'Tab':
                 me.#update(e.target.closest('li'));
-                break;                
+                break;
         }
     }
 
     #parent(el) {
         el = el || this.#selected;
         let s = el.dataset.nodeid;
-        s  = s.substr(0, s.length-2);
+        s = s.substr(0, s.length - 2);
         return el.parentElement.querySelector(`li[data-nodeid="${s}"]`);
     }
 
@@ -307,12 +312,12 @@ export default class GSTree extends GSElement {
 
     prev() {
         const me = this;
-        if (!me.#selected) return me.#update(me.query('li:last-of-type'));      
+        if (!me.#selected) return me.#update(me.query('li:last-of-type'));
         let el = me.#selected.previousElementSibling;
         if (!el) el = me.#selected.parentElement?.previousElementSibling;
         // if rotatable 
         // if (!el) el = me.rootEl.lastElementChild;
-        me.#update(el);        
+        me.#update(el);
     }
 
     /**

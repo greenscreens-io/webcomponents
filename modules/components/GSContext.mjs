@@ -175,7 +175,6 @@ export default class GSContext extends GSElement {
   }
 
   #onAction(e) {
-    debugger;
     const detail = e.detail;
     detail.type = 'context';    
     // TODo if proxied
