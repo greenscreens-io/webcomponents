@@ -118,6 +118,16 @@ export default class GSDialog extends GSElement {
     GSEvents.send(me, 'action', { action: action, ok: isOk, evt: e }, true, true, true);
   }
 
+  // monitor action events
+  onDialogCancel() {
+    this.cancel();
+  }
+
+  // monitor action events
+  onDialogOk() {
+    this.ok();
+  }
+
   cancel() {
     this.close(null, false);
   }

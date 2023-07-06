@@ -92,6 +92,7 @@ export default class GSPagination extends GSElement {
     }
 
     onReady() {
+        super.onReady();
         const me = this;
         me.attachEvent(me.store, 'data', me.#onStore.bind(me));
         me.queryAll('a').forEach(el => me.attachEvent(el, 'click', me.#onClick.bind(me)));

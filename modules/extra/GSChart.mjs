@@ -88,8 +88,8 @@ export default class GSChart extends GSElement {
     }
 
     onReady() {
-        const me = this;
         super.onReady();
+        const me = this;
         me.#render();
     }
 

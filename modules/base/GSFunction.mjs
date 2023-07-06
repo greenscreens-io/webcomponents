@@ -61,11 +61,7 @@ export default class GSFunction {
      * @throws {Error} 
      */
     static async callFunctionAsync(fn, owner) {
-        try {
-            return owner ? await fn.bind(owner)() : await fn(owner);
-        } catch (e) {
-            return e;
-        }
+        return owner ? await fn.bind(owner)() : await fn(owner);
     }
 
     /**
@@ -77,11 +73,7 @@ export default class GSFunction {
      * @throws {Error}
      */
     static callFunctionSync(fn, owner) {
-        try {
-            return owner ? fn.bind(owner)() : fn(owner);
-        } catch (e) {
-            return e;
-        }
+        return owner ? fn.bind(owner)() : fn(owner);
     }
 
     /**
@@ -91,11 +83,11 @@ export default class GSFunction {
      * @param {object} owner 
      * @returns {object}
      */
-    static callFunction(fn, owner, native = true) {
+    static async callFunction(fn, owner, native = true) {
         if (!GSFunction.isFunction(fn)) return;
         if (!native && GSFunction.isFunctionNative(fn)) return;
         if (GSFunction.isFunctionAsync(fn)) {
-            return GSFunction.callFunctionAsync(fn, owner);
+            return await GSFunction.callFunctionAsync(fn, owner);
         }
         return GSFunction.callFunctionSync(fn, owner);
     }

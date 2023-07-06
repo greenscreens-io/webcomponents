@@ -211,14 +211,7 @@ export default class GSLoader {
 
         if (isData || isJson) val = GSUtil.toJson(val);
 
-        if (isFunc) {
-            const isAsync = GSFunction.isFunctionAsync(func);
-            if (isAsync) {
-                val = await GSFunction.callFunctionAsync(func, this);
-            } else {
-                val = GSFunction.callFunction(func);
-            }
-        }
+        if (isFunc) val = await GSFunction.callFunction(func);
 
         if (!GSUtil.isJsonType(val)) return;
 

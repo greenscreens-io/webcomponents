@@ -71,9 +71,9 @@ export default class GSModal extends GSElement {
   #onEscape(e) {
     const me = this;
     if (e.key === 'Escape') {
-      if (me.cancelable || me.escapable)  me.close();
+      if (me.cancelable || me.escapable) me.close();
       GSEvents.prevent(e);
-     }
+    }
   }
 
   #onClick(e) {
@@ -82,6 +82,16 @@ export default class GSModal extends GSElement {
     if (!action) return;
     const isOk = action === 'ok';
     GSEvents.send(me, 'action', { action: action, ok: isOk, evt: e }, true, true, true);
+  }
+
+  // monitor action events
+  onModalCancel() {
+    this.cancel();
+  }
+
+  // monitor action events
+  onModalOk() {
+    this.ok();
   }
 
   cancel() {
@@ -108,8 +118,8 @@ export default class GSModal extends GSElement {
 
   get #size() {
     switch (this.size) {
-      case 'extra' : return 'modal-xl';
-      case 'large' : return 'modal-lg';
+      case 'extra': return 'modal-xl';
+      case 'large': return 'modal-lg';
     }
     return '';
   }
@@ -244,9 +254,9 @@ export default class GSModal extends GSElement {
     const footer = me.query('.modal-footer');
     GSDOM.toggleClass(footer, css, true);
     if (me.#buttonOkEl) me.#buttonOkEl.innerText = me.buttonOk;
-    if (me.#buttonCancelEl) me.#buttonCancelEl.innerText = me.buttonCancel;  
+    if (me.#buttonCancelEl) me.#buttonCancelEl.innerText = me.buttonCancel;
     const hidden = me.cancelable == false && me.closable == false;
-    GSDOM.toggleClass(footer, 'd-none', hidden);      
+    GSDOM.toggleClass(footer, 'd-none', hidden);
   }
 
   /**

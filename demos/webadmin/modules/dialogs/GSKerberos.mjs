@@ -43,4 +43,8 @@ export default class GSKerberos extends GSAdminDialog {
         return o.success;
     }
 
+    async onDialogReload() {
+        return this.reload();
+    }
+
 }

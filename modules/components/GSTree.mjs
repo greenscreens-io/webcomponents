@@ -106,12 +106,12 @@ export default class GSTree extends GSElement {
     }
 
     onReady() {
-        super.onReady();
         const me = this;
         const own = me.rootEl;
         GSEvents.listen(own, null, 'click', me.#events.click);
         GSEvents.listen(own, null, 'keydown', me.#events.keydown);
         GSEvents.listen(own, null, 'keyup', me.#events.keyup);
+        super.onReady();
     }
 
     async getTemplate() {

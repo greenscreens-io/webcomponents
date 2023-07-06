@@ -143,6 +143,7 @@ export default class GSMonaco extends GSElement {
     }
 
     onReady() {
+        super.onReady();
         const me = this;
         me.once('monaco-ready', me.#onMonacoReady.bind(this));
         GSMonaco.#initMonaco(this);

@@ -35,7 +35,7 @@ export default class GSUtil {
 
 	static fromLiteral = (str = '', obj) => str.replace(/\${(.*?)}/g, (x, g) => obj[g]);
 
-	static capitalize = (word = '') => word[0].toUpperCase() + word.slice(1).toLowerCase();
+	static capitalize = (word = '') => word ? word[0].toUpperCase() + word.slice(1).toLowerCase() : '';
 
 	static capitalizeAll = (word = '', split = ' ') => word.split(split).map((v, i) => GSUtil.capitalize(v)).join(split);
 

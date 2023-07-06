@@ -54,7 +54,7 @@ export default class GSEvents {
 		if (!GSEvents.#loaded) await GSEvents.wait(globalThis.window, 'load'); // DOMContentLoaded
 		GSEvents.#loaded = true;
 		await GSUtil.timeout(timeout);
-		GSFunction.callFunction(callback);
+		await GSFunction.callFunction(callback);
 		GSEvents.sendSuspended(target, name);
 	}
 
@@ -66,10 +66,14 @@ export default class GSEvents {
 	 * @returns {Promise}
 	 */
 	static async waitAnimationFrame(callback) {
-		return new Promise((r, e) => {
-			requestAnimationFrame(() => {
-				const o = GSFunction.callFunction(callback);
-				(o instanceof Error) ? e(o) : r(o);
+		return new Promise((accept, reject) => {
+			requestAnimationFrame(async () => {
+				try {
+					const o = await GSFunction.callFunction(callback);
+					accept(o);
+				} catch (e) {
+					reject(e);
+				}
 			});
 		});
 	}
@@ -430,7 +434,7 @@ export default class GSEvents {
 		const callback = GSEvents.findAction(owner, action, prefix);
 		if (!callback) return;
 
-		GSEvents.prevent(e);
+		GSEvents.prevent(evt);
 		let sts = false;
 		try {
 			if (GSFunction.isFunctionAsync(callback)) {

@@ -8,7 +8,6 @@
  */
 import { GSEvents, GSElement } from '/webcomponents/release/esm/io.greenscreens.components.all.esm.min.js';
 import Utils from './Utils.mjs';
-import GSEvents from '../../../modules/base/GSEvents.mjs';
 
 export default class BaseView extends GSElement {
 

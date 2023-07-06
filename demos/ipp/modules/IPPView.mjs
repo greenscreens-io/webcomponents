@@ -32,11 +32,11 @@ export default class IPPView extends BaseView {
         return this.query('#printerURI')?.value || '';
     }
 
-    async register() {
-        this.refresh();
+    async onRegister() {
+        this.onRefresh();
     }
 
-    async refresh() {
+    async onRefresh() {
         const me = this;
         const data = await Utils.load('./data/printer-attributes.json');
         me.#attributes.load(data);

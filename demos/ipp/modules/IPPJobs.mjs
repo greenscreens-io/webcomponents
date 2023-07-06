@@ -58,24 +58,24 @@ export default class IPPJobs extends BaseView {
         return this.#attrTable.store;
     }
 
-    cancelJob(e) {
+    onCancelJob(e) {
 
     }
     
-    printUri(e) {
+    onPrintUri(e) {
 
     }
 
-    purgeJobs(e) {
+    onPurgeJobs(e) {
         this.#jobsStore.clear();
     }
 
-    async details(e) {
+    async onDetails(e) {
         const jobs = await Utils.load('./data/job-attributes.json');
         this.load(jobs);
     }
 
-    async refresh(e) {
+    async onRefresh(e) {
         const jobs = await Utils.load('./data/jobs.json');
         this.load(jobs);
     }
