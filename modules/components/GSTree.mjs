@@ -194,7 +194,7 @@ export default class GSTree extends GSElement {
         GSDOM.toggleClass(el || this.#selected, 'active', sts);
     }
 
-    #update(el) {
+    #update(el, e) {
         if (!el) return;
         const me = this;
         me.#select();
@@ -254,7 +254,7 @@ export default class GSTree extends GSElement {
         const me = this;
         const name = 'list-group-item';
         const el = GSDOM.hasClass(e.target, name) ? e.target : e.target.closest('.' + name);
-        me.#update(el);
+        me.#update(el, e);
         if (e.target.tagName !== 'I') return;
         const isOpen = me.#isOpen();
         me.#toggleFolder(!isOpen);

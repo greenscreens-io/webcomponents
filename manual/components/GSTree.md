@@ -28,6 +28,7 @@ For cancelable events, call e.preventDefault() to cancel operations (closing a m
 | close              | Folder is closed                                             |
 | open               | Folder is opened                                             |
 | select             | Element is selected                                          |
+| action             | Element action trigger                                       |
 
 <br>
 
