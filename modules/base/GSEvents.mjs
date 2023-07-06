@@ -457,8 +457,8 @@ export default class GSEvents {
 		let sts = false;
 		if (!action) return sts;
 		const me = owner;
-		action = GSUtil.capitalizeAttr(action);
-		prefix = GSUtil.capitalizeAttr(prefix);
+		action = GSUtil.capitalizeAttr(GSUtil.capitalize(action));
+		prefix = GSUtil.capitalizeAttr(GSUtil.capitalize(prefix));
 		const name = `on${prefix}${action}`;
 		const fn = me[name];
 		sts = GSFunction.isFunction(fn);
