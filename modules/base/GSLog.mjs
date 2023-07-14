@@ -58,9 +58,9 @@ export default class GSLog {
 
 	static #print(el, msg, forced, type) {
 		if (!(forced || this.logging)) return;
+		msg = el ? `${el.nodeName} -> ${el.id}: ${msg}` : msg;
 		let fn = console[type || 'log'];
 		fn = typeof fn === 'function' ? fn : console.log;
-		if (el) return fn(`${el.nodeName} -> ${el.id}: ${msg}`);
 		fn(msg);
 	}
 
