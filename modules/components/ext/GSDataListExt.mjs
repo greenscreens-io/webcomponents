@@ -39,7 +39,7 @@ export default class GSDataListExt extends HTMLDataListElement {
     }
 
     attributeChangedCallback(name, oldValue, newValue) {
-        //console.log(`name:${name}, oldValue:${oldValue}, newValue:${newValue}`);
+        //GSLog.error(null, e);`name:${name}, oldValue:${oldValue}, newValue:${newValue}`);
         if (name === 'data') this.load(newValue);
     }
 

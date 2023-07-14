@@ -15,6 +15,7 @@ import GSUtil from "../base/GSUtil.mjs";
 import GSAttr from "../base/GSAttr.mjs";
 import GSDOM from "../base/GSDOM.mjs";
 import GSMenu from "./GSMenu.mjs";
+import GSLog from "../base/GSLog.mjs";
 
 /**
  * Dropdown menu
@@ -183,6 +184,6 @@ export default class GSDropdown extends GSElement {
   }
 
   onError(e) {
-    console.log(e);
+    GSLog.error(null, e);
   }
 }

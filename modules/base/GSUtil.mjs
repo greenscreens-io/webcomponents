@@ -232,7 +232,7 @@ export default class GSUtil {
 			try {
 				callback();
 			} catch (e) {
-				console.log(e);
+				GSLog.error(null, e);
 			} finally {
 				GSUtil.#animating--;
 			}

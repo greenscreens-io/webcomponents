@@ -887,7 +887,7 @@ export default class GSDOM {
 			sheet.replaceSync(css);
 			own.shadowRoot.adoptedStyleSheets = [sheet];
 		} catch (e) {
-			console.log(e);
+			GSLog.error(null, e);
 			sts = false;
 		}
 		return sts;

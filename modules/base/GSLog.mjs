@@ -47,10 +47,10 @@ export default class GSLog {
 
 
 	/**
-	 * Generif logging function
+	 * Generic logging function
 	 * @param {HTMLElement} el Element to log (optional)
 	 * @param {string} msg Message to log
-	 * @param {boolean} forced - when logging disable globaly, use this to forse logging
+	 * @param {boolean} forced - when logging disabled globaly, use this to force logging
 	 */
 	static log(el, msg, forced) {
 		this.#print(el, msg, forced);

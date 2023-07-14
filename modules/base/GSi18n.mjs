@@ -11,6 +11,7 @@ import GSComponents from "./GSComponents.mjs";
 import GSDOMObserver from "./GSDOMObserver.mjs";
 import GSID from "./GSID.mjs";
 import GSLoader from "./GSLoader.mjs";
+import GSLog from "./GSLog.mjs";
 import GSUtil from "./GSUtil.mjs";
 
 /**
@@ -57,7 +58,7 @@ export default class GSi18n extends HTMLElement {
         const me = this;
         GSID.setIf(me);
         me.#isDuplicate = GSComponents.find(this.tagName) ? true : false;
-        if (me.#isDuplicate) return console.log(`${me.tagName} ID: ${me.id} is ignored, i18n is already in use by another instance!`);
+        if (me.#isDuplicate) return GSLog.error(null, `${me.tagName} ID: ${me.id} is ignored, i18n is already in use by another instance!`);
         GSi18n.#init = me;
         GSComponents.store(me);
         me.#toggleAuto();
@@ -134,7 +135,7 @@ export default class GSi18n extends HTMLElement {
                     me.#doTranslate(el);
                 });
             } catch (e) {
-                console.log(e);
+                GSLog.error(me, e);
             }
         });
     }

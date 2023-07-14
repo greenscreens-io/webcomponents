@@ -103,7 +103,7 @@ export default class GSDOMObserver extends MutationObserver {
             try {
                 if (k(el)) v(el);
             } catch (e) {
-                console.log(e);
+                GSLog.error(null, e);
             }
         });
     }

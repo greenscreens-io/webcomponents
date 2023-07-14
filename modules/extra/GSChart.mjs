@@ -10,6 +10,8 @@
 import GSElement from "../base/GSElement.mjs";
 import GSAttr from "../base/GSAttr.mjs";
 import GSLoader from '../base/GSLoader.mjs';
+import GSLog from "../base/GSLog.mjs";
+
 
 /**
  * Code editor based on ChartJS Library
@@ -44,7 +46,7 @@ export default class GSChart extends GSElement {
             GSChart.#Chart = Chart;
             GSChart.#isChart = true;
         }  catch(e) {
-            console.log(e);
+            GSLog.error(null, e);
         } finally {
             GSChart.#initializing = false;
         }

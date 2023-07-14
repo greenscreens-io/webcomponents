@@ -37,7 +37,7 @@ export default class GSComboExt extends HTMLSelectElement {
     }
 
     attributeChangedCallback(name, oldValue, newValue) {
-        //console.log(`name:${name}, oldValue:${oldValue}, newValue:${newValue}`);
+        //GSLog.error(null, `name:${name}, oldValue:${oldValue}, newValue:${newValue}`);
         if (name === 'data') this.load(newValue);
     }
 

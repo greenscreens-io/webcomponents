@@ -414,7 +414,7 @@ export default class GSElement extends HTMLElement {
 	 * @param {string} name 
 	 * @returns {Promisa}
 	 */
-	async waitEvent(name = '') {
+	waitEvent(name = '') {
 		if (!name) throw new Error('Event undefined!');
 		const me = this;
 		return new Promise((r, e) => {

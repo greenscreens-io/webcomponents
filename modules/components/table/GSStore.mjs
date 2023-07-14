@@ -15,6 +15,7 @@ import GSData from "../../base/GSData.mjs";
 import GSAttr from "../../base/GSAttr.mjs";
 import GSItem from "../../base/GSItem.mjs";
 import GSDOM from "../../base/GSDOM.mjs";
+import GSLog from "../../base/GSLog.mjs";
 
 /**
  * Table data handler, pager, loader
@@ -173,7 +174,7 @@ export default class GSStore extends HTMLElement {
     set mode(val = 'query') {
         const isok = GSStore.#MODES.includes(val);
         if (isok) return GSAttr.set(this, 'mode', val);
-        console.log(`Invalid mode, allowed: ${GSStore.#MODES}`);
+        GSLog.error(null, `Invalid mode, allowed: ${GSStore.#MODES}`);
     }
     
     /**

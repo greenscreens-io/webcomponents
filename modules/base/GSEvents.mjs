@@ -117,8 +117,9 @@ export default class GSEvents {
 	 * @param {*} callback 
 	 * @returns {boolean}
 	 */
-	static once(own, qry, event, callback) {
-		return GSEvents.listen(own, qry, event, callback, { once: true });
+	static once(own, qry, event, callback, timeout = 0) {
+		const signal = timeout == 0 ? undefined : AbortSignal.timeout(timeout); 
+		return GSEvents.listen(own, qry, event, callback, { once: true, signal : signal });
 	}
 
 	/**
@@ -129,11 +130,10 @@ export default class GSEvents {
 	 * @param {*} name 
 	 * @returns {Promise}
 	 */
-	static wait(own, name = '') {
-		const me = this;
+	static wait(own, name = '', timeout = 0) {
+		if (!name) throw new Error('Event undefined!');
 		return new Promise((r, e) => {
-			if (!name) return e('Event undefined!');
-			GSEvents.once(own, null, name, (e) => r(e.detail));
+			GSEvents.once(own, null, name, (e) => r(e.detail), timeout);
 		});
 	}
  
