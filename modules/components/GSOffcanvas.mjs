@@ -39,7 +39,7 @@ export default class GSOffcanvas extends GSElement {
   attributeCallback(name = '', oldValue = '', newValue = '') {
     const me = this;
     me.#update(name, oldValue, newValue);
-    if (name === 'expanded') GSEvents.send(me, 'action', { type: 'offcanvas', ok: newValue });
+    if (name === 'expanded') GSEvents.send(me, 'action', { type: 'offcanvas', ok: GSUtil.asBool(newValue) });
   }
 
   async getTemplate(val = '') {
@@ -50,11 +50,19 @@ export default class GSOffcanvas extends GSElement {
     const me = this;
     super.onReady();
     me.attachEvent(me.#backdropEl, 'click', me.close.bind(me));
-    if (me.autoclose) {
-      me.attachEvent(me.#canvasEl, 'mouseleave', me.close.bind(me));
-      if (me.min > 0) me.attachEvent(me.#canvasEl, 'mouseenter', me.open.bind(me));
-    }
+    me.attachEvent(me.#canvasEl, 'mouseleave', me.#onLeave.bind(me));
+    me.attachEvent(me.#canvasEl, 'mouseenter', me.#onEnter.bind(me));
     me.#update(null, true, false);
+  }
+
+  #onLeave() {
+    const me = this;
+    if (me.autoclose) me.close();
+  }
+
+  #onEnter() {
+    const me = this;
+    if (me.min > 0) me.open();
   }
 
   #update(name = '', oldValue = '', newValue = '') {
@@ -79,9 +87,8 @@ export default class GSOffcanvas extends GSElement {
   #updateAnim() {
 
     const me = this;
-    if (!me.autoclose) return;
-
     const open = me.expanded;
+
     const pos = me.isHorizontal ? 'width' : 'height';
     const val = open ? me.max : me.min;
 
