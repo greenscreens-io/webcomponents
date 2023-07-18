@@ -26,3 +26,4 @@ export { default as GSi18n } from "./GSi18n.mjs";
 
 export { default as GSQueryCSS } from './GSQueryCSS.mjs';
 export { default as GSQuery } from './GSQuery.mjs';
+export { default as GSTouch } from './GSTouch.mjs';
