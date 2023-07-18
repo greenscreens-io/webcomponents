@@ -171,6 +171,14 @@ export default class GSOffcanvas extends GSElement {
     GSAttr.set(this, 'css', val);
   }
 
+  set cssTitle(val = '') {
+    GSAttr.set(this, 'css-title', val);
+  }
+
+  set cssBody(val = '') {
+    GSAttr.set(this, 'css-body', val);
+  }
+
   get transitionDuration() {
     return GSAttr.getAsNum(this, 'duration', '0.2');
   }
