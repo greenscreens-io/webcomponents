@@ -104,7 +104,11 @@ export default class GSOffcanvas extends GSElement {
       'transition-duration' : `${me.transitionDuration}s  !important`,
       'transition-timing-function' : `${me.transitionFunction} !important`
     };
-    obj[pos] = `${val}px !important`;
+    if (GSUtil.isNumber(val)) {
+      obj[pos] = `${val}px !important`;
+    } else {
+      obj[pos] = `${val} !important`;
+    }
     GSCacheStyles.setRule(me.styleID, obj);
 
   }
@@ -271,11 +275,11 @@ export default class GSOffcanvas extends GSElement {
   }
 
   get max() {
-    return GSAttr.getAsNum(this, 'max', 0);
+    return GSAttr.getAsNum(this, 'max', 'auto');
   }
 
   set max(val = false) {
-    GSAttr.set(this, 'max', GSUtil.asNum(val));
+    GSAttr.set(this, 'max', val);
   }
 
   get #canvasEl() {
