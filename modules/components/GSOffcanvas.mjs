@@ -275,7 +275,7 @@ export default class GSOffcanvas extends GSElement {
   }
 
   get max() {
-    return GSAttr.getAsNum(this, 'max', 'auto');
+    return GSAttr.get(this, 'max', 'auto');
   }
 
   set max(val = false) {
