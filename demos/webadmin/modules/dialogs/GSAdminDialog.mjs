@@ -115,12 +115,16 @@ export default class GSAdminDialog extends GSDialog {
     async #onFormData(e) {
         GSEvents.prevent(e);
         const me = this;
+        let sts = false; 
         try {
-            const sts = await me.onData(e.detail.data);
-            if (sts) me.close();
+			me.disable();
+            sts = await me.onData(e.detail.data);
         } catch (e) {
             Utils.handleError(e);
-        }
+        } finally {
+			me.enable();
+			if (sts) me.close();
+		}
     }
 
     onError(e) {
