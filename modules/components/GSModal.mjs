@@ -21,6 +21,8 @@ export default class GSModal extends GSElement {
 
   static #actions = ['ok', 'cancel'];
 
+  #disabled = false;
+
   static {
     customElements.define('gs-modal', GSModal);
     Object.seal(GSModal);
@@ -100,8 +102,21 @@ export default class GSModal extends GSElement {
 
   ok() {
     const me = this;
+    if (me.#disabled) return;
     const forms = GSDOM.queryAll(me, 'form');
     forms.length == 0 ? me.close(null, true) : forms.forEach(form => form.submit());
+  }
+
+  disable() {
+    const me = this;
+    me.#disabled = true;
+    GSDOM.disableInput(me);
+  }
+
+  enable() {
+    const me = this;
+    me.#disabled = false;
+    GSDOM.enableInput(me);
   }
 
   #getAction(e) {
@@ -304,7 +319,9 @@ export default class GSModal extends GSElement {
   }
 
   set visible(val = false) {
-    GSAttr.setAsBool(this, 'visible', val);
+    const me = this;
+    if (me.#disabled && val === false) return;        
+    GSAttr.setAsBool(me, 'visible', val);
   }
 
   get closable() {

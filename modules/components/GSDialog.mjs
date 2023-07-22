@@ -27,6 +27,8 @@ export default class GSDialog extends GSElement {
 
   static #STACK = [];
 
+  #disabled = false;
+
   static {
     customElements.define('gs-dialog', GSDialog);
     Object.seal(GSDialog);
@@ -36,7 +38,7 @@ export default class GSDialog extends GSElement {
     const attrs = ['cancelable', 'closable', 'title', 'visible', 'button-ok', 'button-cancel'];
     return GSElement.observeAttributes(attrs);
   }
-  
+
   static #updateStack() {
     GSDialog.#STACK = GSDialog.#STACK.filter(v => v.isConnected);
   }
@@ -44,7 +46,7 @@ export default class GSDialog extends GSElement {
   static get top() {
     GSDialog.#updateStack();
     if (GSDialog.#STACK.length === 0) return null;
-    return GSDialog.#STACK[GSDialog.#STACK.length-1];
+    return GSDialog.#STACK[GSDialog.#STACK.length - 1];
   }
 
   disconnectedCallback() {
@@ -95,7 +97,7 @@ export default class GSDialog extends GSElement {
   #onEscape(e) {
     const me = this;
     if (e.key === 'Escape') {
-     if (me.cancelable || me.escapable)  me.close();
+      if (me.cancelable || me.escapable) me.close();
       GSEvents.prevent(e);
     }
   }
@@ -134,8 +136,21 @@ export default class GSDialog extends GSElement {
 
   ok() {
     const me = this;
+    if (me.#disabled) return;
     const forms = GSDOM.queryAll(me, 'form');
     forms.length == 0 ? me.close(null, true) : forms.forEach(form => form.submit());
+  }
+
+  disable() {
+    const me = this;
+    me.#disabled = true;
+    GSDOM.disableInput(me);
+  }
+
+  enable() {
+    const me = this;
+    me.#disabled = false;
+    GSDOM.enableInput(me);
   }
 
   #getAction(e) {
@@ -184,7 +199,7 @@ export default class GSDialog extends GSElement {
   open(e) {
     GSEvents.prevent(e);
     const me = this;
-    const sts = GSEvents.send(me, 'open', { type: 'dialog' }, true, true, true);
+    const sts = GSEvents.send(me, 'open', { type: 'dialog', isOk: true }, true, true, true);    
     if (sts) me.visible = true;
   }
 
@@ -194,7 +209,7 @@ export default class GSDialog extends GSElement {
   close(e, ok = false) {
     GSEvents.prevent(e);
     const me = this;
-    const sts = GSEvents.send(me, 'close', { type: 'dialog', isOk: ok }, true, true, true);
+    const sts = GSEvents.send(me, 'close', { type: 'dialog', isOk: ok }, true, true, true);    
     if (sts) me.visible = false;
   }
 
@@ -262,9 +277,9 @@ export default class GSDialog extends GSElement {
 
   /**
    * N/A - compatibiltiy with gs-modal
-   */  
+   */
   extra() {
-    
+
   }
 
   get #dialog() {
@@ -295,6 +310,8 @@ export default class GSDialog extends GSElement {
   }
 
   set visible(val = false) {
+    const me = this;
+    if (me.#disabled && val === false) return;    
     GSAttr.setAsBool(this, 'visible', val);
   }
 

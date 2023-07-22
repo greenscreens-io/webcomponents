@@ -57,6 +57,14 @@ export default class GSFormExt extends HTMLFormElement {
         GSEvents.deattachListeners(me);
     }
 
+    disable() {
+        GSDOM.disableInput(this);
+    }
+
+    enable() {
+        GSDOM.enableInput(this);
+    }
+
     submit() {
         return GSFormExt.#onSubmit.bind(this)();
     }
