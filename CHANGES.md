@@ -11,7 +11,9 @@
  - Add external modules flag control
 
  - GSDialog null pointer issue fix
- - GSFormExt, GSDialog, GSModal added enable/disable input elements and form
+ - GSDialog added enable/disable input elements and form
+ - GSFormExt added enable/disable input elements and form
+ - GSModal added enable/disable input elements and form
  - GSFunction calls improvements
  - GSNotification method name collision fix
  - GSOffcanvas height
