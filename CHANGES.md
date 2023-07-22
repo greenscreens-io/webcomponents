@@ -1,5 +1,7 @@
 # [WebComponents](https://webcomponents.greenscreens.ltd/) for [Bootstrap 5.2.0+](https://getbootstrap.com/)
 
+# Development  v1.8.0  (TBD)
+
 # Release  v1.7.0  (22.07.2023.)
  - GSMarkdown url fix
  - code cleanup for setting up ID
