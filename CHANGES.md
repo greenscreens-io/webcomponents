@@ -1,9 +1,24 @@
 # [WebComponents](https://webcomponents.greenscreens.ltd/) for [Bootstrap 5.2.0+](https://getbootstrap.com/)
 
-# Development  v1.6.1 (TBD)
+# Release  v1.7.0  (22.07.2023.)
  - GSMarkdown url fix
  - code cleanup for setting up ID
  - code cleanup for requestAnimation usage
+ - Logging code cleanup
+ - Update demos for new action handlers
+ - Add external modules flag control
+
+ - GSDialog null pointer issue fix
+ - GSFormExt, GSDialog, GSModal added enable/disable input elements and form
+ - GSFunction calls improvements
+ - GSNotification method name collision fix
+ - GSOffcanvas height
+ - GSOffcanvas added max=auto support
+ - GSOffcanvas attributes update
+ - GSOffcanvas mouse events improvements
+ - GSTouch added to support swipe events
+ - GSTree action event add; improve general actio nevents triggering
+ - GSUtil disableInput owner fix
 
 # Release  v1.6.0 (28.06.2023.)
  - Fix recursive action event calls
