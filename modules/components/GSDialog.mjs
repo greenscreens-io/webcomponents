@@ -63,7 +63,7 @@ export default class GSDialog extends GSElement {
         }
         me.focusable()?.focus();
       } else {
-        me.#dialog.close();
+        me.#dialog?.close();
         GSDialog.#STACK.pop();
       }
       GSEvents.send(me, 'visible', { type: 'dialog', ok: me.visible }, true, true);
