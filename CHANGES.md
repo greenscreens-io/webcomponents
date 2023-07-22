@@ -19,8 +19,8 @@
  - GSOffcanvas attributes update
  - GSOffcanvas mouse events improvements
  - GSTouch added to support swipe events
- - GSTree action event add; improve general actio nevents triggering
- - GSUtil disableInput owner fix
+ - GSTree action event add; improve general action events triggering
+ - GSUtil disable Input owner fix
 
 # Release  v1.6.0 (28.06.2023.)
  - Fix recursive action event calls
