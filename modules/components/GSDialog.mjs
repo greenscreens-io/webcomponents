@@ -2,6 +2,7 @@
  * Copyright (C) 2015, 2022 Green Screens Ltd.
  */
 
+// TODO disable Ok/Confirm button if foem is invalid, auto-change if valid
 /**
  * A module loading GSDialog class
  * @module components/GSDialog
@@ -62,6 +63,7 @@ export default class GSDialog extends GSElement {
         if (!me.#dialog.open) {
           me.#dialog.showModal();
           GSDialog.#STACK.push(me);
+          me.#onChange();
         }
         me.focusable()?.focus();
       } else {
@@ -74,14 +76,22 @@ export default class GSDialog extends GSElement {
 
   onReady() {
     const me = this;
+    super.onReady();
     GSEvents.monitorAction(me, 'dialog');
     me.attachEvent(me, 'click', me.#onClick.bind(me));
     me.attachEvent(me, 'form', me.#onForm.bind(me));
     me.attachEvent(me.#dialog, 'keydown', me.#onEscape.bind(me));
     me.attachEvent(me.#dialog, 'close', me.#onClose.bind(me));
     me.attachEvent(me.#dialog, 'cancel', me.#onCancel.bind(me));
-    super.onReady();
     if (me.visible) me.open();
+    requestAnimationFrame(()=>{
+      me.forms.forEach(form => me.attachEvent(form, 'change', me.#onChange.bind(me)));
+    });
+  }
+
+  #onChange() {
+    const me = this;
+    me.#buttonOkEl.disabled =  me.forms.filter(form => !form.isValid).length > 0;
   }
 
   #onForm(e) {
@@ -137,7 +147,7 @@ export default class GSDialog extends GSElement {
   ok() {
     const me = this;
     if (me.#disabled) return;
-    const forms = GSDOM.queryAll(me, 'form');
+    const forms = me.forms;
     forms.length == 0 ? me.close(null, true) : forms.forEach(form => form.submit());
   }
 
@@ -286,6 +296,14 @@ export default class GSDialog extends GSElement {
     return this.query('dialog');
   }
 
+  get form() {
+    return GSDOM.query(this, 'form');
+  }
+
+  get forms() {
+    return GSDOM.queryAll(this, 'form');
+  }
+
   get title() {
     //return this.#findSlotOrEl('title', '.card-title');
     //return this.query('.card-title');
@@ -427,7 +445,7 @@ export default class GSDialog extends GSElement {
     const me = this;
     return `
         <dialog class="dialog p-0 border-0 ${me.css}">
-        <div class="card">
+        <div class="card ${me.cssContent}">
             <div class="card-header user-select-none ${me.cssHeader}">
               <div class="card-title ${me.cssTitle}">
                 <slot name="title"></slot>
