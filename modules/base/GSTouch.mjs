@@ -2,8 +2,16 @@
  * Copyright (C) 2015, 2022 Green Screens Ltd.
  */
 
+/**
+ * A module loading GSTouch class
+ * @module base/GSTouch
+ */
 import GSEvents from "./GSEvents.mjs";
 
+/**
+ * A class for handling touch swipe and long press events.
+ * @class
+ */
 export default class GSTouch {
 
     #xDiff = 0;
@@ -19,8 +27,9 @@ export default class GSTouch {
 
     // setTimeout id for longpress
     #delay = 0;
+
     // longpress delay
-    #timeout = 1500;
+    static timeout = 1500;
 
     constructor(element, swipe, tap, longPress) {
         const me = this;
@@ -52,7 +61,7 @@ export default class GSTouch {
         const me = this;
         me.#xDown = evt.touches[0].clientX;
         me.#yDown = evt.touches[0].clientY;
-        if (me.#longPress) setTimeout(me.#onLongPress.bind(me), me.#timeout);
+        if (me.#longPress) setTimeout(me.#onLongPress.bind(me), GSTouch.timeout);
     }
 
     #handleTouchEnd(evt) {
