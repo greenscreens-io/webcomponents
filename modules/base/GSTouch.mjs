@@ -13,30 +13,50 @@ export default class GSTouch {
     #element = null;
     #bindings = null;
 
-    constructor(element) {
+    #swipe = false;
+    #tap = false;
+    #longPress = false;
+
+    // setTimeout id for longpress
+    #delay = 0;
+    // longpress delay
+    #timeout = 1500;
+
+    constructor(element, swipe, tap, longPress) {
         const me = this;
+        me.#swipe = swipe;
+        me.#tap = tap;
+        me.#longPress = longPress;        
         me.#xDown = null;
         me.#yDown = null;
         me.#element = typeof (element) === 'string' ? document.querySelector(element) : element;
 
         me.#bindings = {
             move : me.#handleTouchMove.bind(me),
-            start : me.#handleTouchStart.bind(me)
+            start : me.#handleTouchStart.bind(me),
+            end : me.#handleTouchEnd.bind(me)
         };
         GSEvents.attach(me.#element, me.#element, 'touchmove', me.#bindings.move, false);
         GSEvents.attach(me.#element, me.#element, 'touchstart', me.#bindings.start, false);
+        GSEvents.attach(me.#element, me.#element, 'touchend', me.#bindings.end, false);
     }
 
     unbind() {
         const me = this;
         GSEvents.remove(me.#element, me.#element, 'touchmove', me.#bindings.move);
         GSEvents.remove(me.#element, me.#element, 'touchstart', me.#bindings.start);
+        GSEvents.remove(me.#element, me.#element, 'touchend', me.#bindings.end);
     }
 
     #handleTouchStart(evt) { 
         const me = this;
         me.#xDown = evt.touches[0].clientX;
         me.#yDown = evt.touches[0].clientY;
+        if (me.#longPress) setTimeout(me.#onLongPress.bind(me), me.#timeout);
+    }
+
+    #handleTouchEnd(evt) {
+        clearTimeout(this.#delay);
     }
 
     #handleTouchMove(evt) {
@@ -47,8 +67,15 @@ export default class GSTouch {
             return;
         }
 
+        if (!me.#swipe) return;
+
         const xUp = evt.touches[0].clientX;
         const yUp = evt.touches[0].clientY;
+
+        if (me.#longPress) {
+            const isMoving = Math.abs(me.#xDiff) > 10 &&  Math.abs(me.#yDiff) > 10;
+            if (isMoving) clearTimeout(me.#delay);
+        }
 
         me.#xDiff = me.#xDown - xUp;
         me.#yDiff = me.#yDown - yUp;
@@ -70,6 +97,10 @@ export default class GSTouch {
         me.#yDown = null;
     }
 
+    #onLongPress() {
+        GSEvents.send(me.#element, 'long-press');
+    }
+
     /**
      * Return number of fingers used in touch event
      * @param {Event} e 
@@ -84,7 +115,7 @@ export default class GSTouch {
      * @param {HTMLElement} element 
      * @returns 
      */
-    static attach(element) {
-        return new GSTouch(element);
+    static attach(element, swipe = true, tap = false, longPress = false) {
+        return new GSTouch(element, swipe, tap, longPress);
     }
 }
