@@ -12,10 +12,11 @@ GSOffcanvas WebComponent is a renderer for Bootstrap Offcanvas with additional f
 | css-head           | CSS classes for offcanvas header                         |
 | css-body           | CSS classes for offcanvas body                           |
 | css-title          | CSS classes for offcanvas title                          |
+| autoclose          | Should autoclose on mouse of from offcanvas              |
 | closable           | Should show close button (bool)                          |
 | duration           | Time in sec. for how long to show when autoclosable is on|
 | expanded           | Open / close offcanvas panel                             |
-| autoclose          | Should autoclose on mouse of from offcanvas              |
+| fingers            | Number of fingers to swipe open                          |
 | min                | Minimum width or height of offcanvas                     |
 | max                | Maximum width or height of offcanvas                     |
 | placement          | Where to place it (top,bottom,start,end)                 |

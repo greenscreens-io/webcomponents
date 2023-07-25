@@ -11,6 +11,7 @@ import GSAttr from "../base/GSAttr.mjs";
 import GSDOM from "../base/GSDOM.mjs";
 import GSElement from "../base/GSElement.mjs";
 import GSEvents from "../base/GSEvents.mjs";
+import GSTouch from "../base/GSTouch.mjs";
 import GSUtil from "../base/GSUtil.mjs";
 import GSCacheStyles from "../head/GSCacheStyles.mjs";
 
@@ -20,6 +21,9 @@ import GSCacheStyles from "../head/GSCacheStyles.mjs";
  * @extends {GSElement}
  */
 export default class GSOffcanvas extends GSElement {
+
+  #swiper = null;
+  #bindings = null;
 
   static {
     customElements.define('gs-offcanvas', GSOffcanvas);
@@ -33,7 +37,24 @@ export default class GSOffcanvas extends GSElement {
 
   constructor() {
     super();
-    this.css = this.css || 'border shadow-sm';
+    const me = this;
+    me.css = me.css || 'border shadow-sm';
+    me.#bindings = {
+      left: me.onSwipeLeft.bind(me),
+      right: me.onSwipeRight.bind(me),
+      up: me.onSwipeUp.bind(me),
+      down: me.onSwipeDown.bind(me)
+    };
+  }
+
+  connectedCallback() {
+    this.#bindEvents();
+    super.connectedCallback();
+  }
+
+  disconnectedCallback() {
+    this.#unbindEvents();
+    super.disconnectedCallback();
   }
 
   attributeCallback(name = '', oldValue = '', newValue = '') {
@@ -100,9 +121,9 @@ export default class GSOffcanvas extends GSElement {
     */
 
     const obj = {
-      'transition-property' : `${pos} !important`,
-      'transition-duration' : `${me.transitionDuration}s  !important`,
-      'transition-timing-function' : `${me.transitionFunction} !important`
+      'transition-property': `${pos} !important`,
+      'transition-duration': `${me.transitionDuration}s  !important`,
+      'transition-timing-function': `${me.transitionFunction} !important`
     };
     if (GSUtil.isNumber(val)) {
       obj[pos] = `${val}px !important`;
@@ -142,6 +163,82 @@ export default class GSOffcanvas extends GSElement {
     GSDOM.toggleClass(me.#canvasEl, newValue, true);
   }
 
+  #bindEvents() {
+    const me = this;
+    me.#swiper = GSTouch.attach(document);
+    GSEvents.attach(document, document, 'swipe-left', me.#bindings.left, false);
+    GSEvents.attach(document, document, 'swipe-right', me.#bindings.right, false);
+    GSEvents.attach(document, document, 'swipe-up', me.#bindings.up, false);
+    GSEvents.attach(document, document, 'swipe-down', me.#bindings.down, false);
+  }
+
+  #unbindEvents() {
+    const me = this;
+    me.#swiper?.unbind();
+    me.#swiper = null;
+    GSEvents.remove(document, document, 'swipe-left', me.#bindings.left);
+    GSEvents.remove(document, document, 'swipe-right', me.#bindings.right);
+    GSEvents.remove(document, document, 'swipe-up', me.#bindings.up);
+    GSEvents.remove(document, document, 'swipe-down', me.#bindings.down);
+  }
+
+  onSwipeLeft(e) {
+    const me = this;
+    if (!me.#isFingersValid(e)) return;
+    switch (me.placement) {
+      case 'start':
+        me.close();
+        break;
+      case 'end':
+        me.open();
+        break;
+    }
+  }
+
+  onSwipeRight(e) {
+    const me = this;
+    if (!me.#isFingersValid(e)) return;
+    switch (me.placement) {
+      case 'start':
+        me.open();
+        break;
+        case 'end':
+          me.close();
+        break;
+    }    
+  }
+
+  onSwipeUp(e) {
+    const me = this;
+    if (!me.#isFingersValid(e)) return;
+    switch (me.placement) {
+      case 'top':
+        me.close();
+        break;
+      case 'bottom':
+        me.open();
+        break;
+    }
+  }
+
+  onSwipeDown(e) {
+    const me = this;
+    if (!me.#isFingersValid(e)) return;
+    switch (me.placement) {
+      case 'top':
+        me.open();
+        break;
+      case 'bottom':
+        me.close();
+        break;
+    }    
+  }
+
+  #isFingersValid(e) {
+    const fingers = GSTouch.fingers(e);
+    return fingers === this.fingers;
+  }
+
   get isVertical() {
     return !this.isHorizontal;
   }
@@ -162,28 +259,40 @@ export default class GSOffcanvas extends GSElement {
     this.expanded = !this.expanded;
   }
 
+  get fingers() {
+    return GSAttr.getAsNum(this, 'fingers', 1);
+  }
+
+  set fingers(val = 1) {
+    GSAttr.setAsNum(this, 'fingers', val);
+  }
+
   get css() {
     return GSAttr.get(this, 'css', '');
-  }
-
-  get cssTitle() {
-    return GSAttr.get(this, 'css-title', 'fs-5');
-  }
-
-  get cssHead() {
-    return GSAttr.get(this, 'css-head', '');
-  }
-
-  get cssBody() {
-    return GSAttr.get(this, 'css-body', '');
   }
 
   set css(val = '') {
     GSAttr.set(this, 'css', val);
   }
 
+  get cssTitle() {
+    return GSAttr.get(this, 'css-title', 'fs-5');
+  }
+
   set cssTitle(val = '') {
     GSAttr.set(this, 'css-title', val);
+  }
+
+  get cssHead() {
+    return GSAttr.get(this, 'css-head', '');
+  }
+
+  set cssHead(val = '') {
+    GSAttr.set(this, 'css-head', val);
+  }
+
+  get cssBody() {
+    return GSAttr.get(this, 'css-body', '');
   }
 
   set cssBody(val = '') {

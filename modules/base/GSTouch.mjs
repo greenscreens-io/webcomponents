@@ -70,6 +70,20 @@ export default class GSTouch {
         me.#yDown = null;
     }
 
+    /**
+     * Return number of fingers used in touch event
+     * @param {Event} e 
+     * @returns 
+     */
+    static fingers(e) {
+		return e.detail.touches?.length;
+	}
+
+    /**
+     * Attach swipe event to a element
+     * @param {HTMLElement} element 
+     * @returns 
+     */
     static attach(element) {
         return new GSTouch(element);
     }
