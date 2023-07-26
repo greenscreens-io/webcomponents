@@ -260,10 +260,10 @@ export default class GSOffcanvas extends GSElement {
   }
 
   get fingers() {
-    return GSAttr.getAsNum(this, 'fingers', 1);
+    return GSAttr.getAsNum(this, 'fingers', 2);
   }
 
-  set fingers(val = 1) {
+  set fingers(val = 2) {
     GSAttr.setAsNum(this, 'fingers', val);
   }
 
