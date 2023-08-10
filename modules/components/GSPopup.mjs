@@ -114,12 +114,12 @@ export default class GSPopup extends GSElement {
     /**
      * Event on target element used to trigger popup
      */
-    get event() {
-        return GSAttr.get(this, 'event', 'click');
+    get trigger() {
+        return GSAttr.get(this, 'trigger', 'click');
     }
 
-    set event(val = '') {
-        return GSAttr.set(this, 'event', val);
+    set trigger(val = '') {
+        return GSAttr.set(this, 'trigger', val);
     }
 
     /**
@@ -239,7 +239,7 @@ export default class GSPopup extends GSElement {
         const me = this;
         me.visible = false;
         if (e instanceof Event) {
-            e.preventDefault();
+            GSEvents.prevent(e);
             const opt = { type: 'popup', option: e.target, caller: me.#caller, data: null };
             GSEvents.send(me, 'action', opt, true, true);
         }
@@ -308,8 +308,8 @@ export default class GSPopup extends GSElement {
         const me = this;
         me.#caller = e;
         if (e instanceof Event) {
-            e.preventDefault();
-            me.#caller = e.composedPath().filter(e => (!(e instanceof HTMLSlotElement)))[0];
+            GSEvents.prevent(e);
+            me.#caller = e.composedPath().filter(e => (!(e instanceof HTMLSlotElement))).shift();
         }
 
         if (me.placement) {
@@ -348,7 +348,7 @@ export default class GSPopup extends GSElement {
             return;
         }
         me.#attached = true;
-        me.event.split(' ').forEach(e => {
+        me.trigger.split(' ').forEach(e => {
             targets.forEach(target => me.attachEvent(target, e, me.#onPopup.bind(me)));
         });
         me.removeEvent(document, 'gs-components');

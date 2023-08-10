@@ -63,52 +63,29 @@ export default class GSPopover extends GSElement {
 
     constructor() {
         super();
+        this.innerHTML = this.innerHTML.trim();
     }
 
     disconnectedCallback() {
-        GSCacheStyles.deleteRule(this.#arrowID);
+        const me = this;
+        GSCacheStyles.deleteRule(me.#arrowID);
         super.disconnectedCallback();
     }
 
     onReady() {
         const me = this;
         super.onReady();
+        me.#render(me.#contentel);
         me.#attachEvents();
     }
 
-    // https://javascript.info/mousemove-mouseover-mouseout-mouseenter-mouseleave
-    #attachEvents() {
+    attributeCallback(name = '', oldValue = '', newValue = '') {
         const me = this;
-        if (me.isHoverTrigger) {
-            GSEvents.attach(me, me.target, 'mouseover', me.show.bind(me));
-            GSEvents.attach(me, me.target, 'mouseout', me.hide.bind(me));
+
+        if (name === 'visible') {
+            if (me.visible) me.#render(me.#contentel);
+            GSDOM.toggleClass(me.#contentel, 'show', me.visible);
         }
-        if (me.isFocusTrigger) {
-            GSEvents.attach(me, document.body, 'click', me.#focus.bind(me));
-        }
-    }
-
-    #render(source) {
-        const me = this;
-        const arrowEl = source.querySelector('div.popover-arrow');
-        GSPopper.popupAbsolute(me.placement, source, me.target, arrowEl);
-        return source;
-    }
-
-    get #arrowID() {
-        return `${this.styleID}-arrow`;
-    }
-
-    get #html() {
-        const me = this;
-        const head = me.title ? `<div class="popover-header ${me.cssHead}">${me.title}</div>` : '';
-        return `
-        <div class="popover bs-popover-auto fade ${me.css} ${this.styleID}" data-popper-placement="${me.placement}" data-css-id="${this.styleID}" role="tooltip">
-            <div class="popover-arrow ${me.#arrowID}" data-css-id="${me.#arrowID}"></div>
-            ${head}
-            <div class="popover-body">${me.content}</div>
-        </div>            
-        `;
     }
 
     get target() {
@@ -192,70 +169,92 @@ export default class GSPopover extends GSElement {
     }
 
     get visible() {
-        return this.innerHTML.length !== 0;
+        return GSAttr.getAsBool(this, 'visible', false);
+    }
+
+    set visible(val = '') {
+        return GSAttr.setAsBool(this, 'visible', val);
     }
 
     get isFlat() {
-        return true;
+        //return true;
+        return super.isFlat;
     }
 
     get anchor() {
-        return 'self';
+        //return 'self';
+        return super.anchor;
     }
 
     async getTemplate(def = '') {
-        return '';
+        const tpl = await super.getTemplate(def);
+        const me = this;
+        const head = me.title ? `<div class="popover-header ${me.cssHead}">${me.title}</div>` : '';
+        return `
+        <div class="popover bs-popover-auto fade ${me.css} ${this.styleID}" data-popper-placement="${me.placement}" data-css-id="${this.styleID}" role="tooltip">
+            <div class="popover-arrow ${me.#arrowID}" data-css-id="${me.#arrowID}"></div>
+            ${head}
+            <div class="popover-body">
+                <slot>${tpl || me.content}</slot>
+            </div>
+        </div>            
+        `;
     }
 
     /**
      * Show popover     
      */
-    show() {
-        const me = this;
-        const el = GSDOM.parse(me.#html, true);
-        me.insertAdjacentElement('afterbegin', el);
-        requestAnimationFrame(() => {
-            me.#render(el);
-            GSDOM.toggleClass(el, 'show', true);
-        });
+    show(e) {
+        GSEvents.prevent(e);
+        this.visible = true;
     }
 
     /**
      * Hide popover
      * @returns {boolean}
      */
-    hide() {
-        const me = this;
-        if (me.#unfocus) return false;
-        setTimeout(() => {
-            GSDOM.setHTML(me, '');
-        }, 250);
-        return GSDOM.toggleClass(me.firstElementChild, 'show', false);
+    hide(e) {
+        GSEvents.prevent(e);
+        this.visible = false;
     }
 
     /**
      * Toggle popover on/off
      */
-    toggle() {
+    toggle(e) {
+        GSEvents.prevent(e);
         const me = this;
-        me.visible ? me.hide() : me.show();
+        me.visible = !me.visible;
     }
 
-    #focus(e) {
+    get #contentel() {
+        return this.self.firstElementChild;
+    }
+
+    get #arrowID() {
+        return `${this.styleID}-arrow`;
+    }
+
+    // https://javascript.info/mousemove-mouseover-mouseout-mouseenter-mouseleave
+    #attachEvents() {
         const me = this;
-        if (me.#unfocus) {
-            me.#unfocus = false;
-            me.hide();
-            return;
+        if (me.isHoverTrigger) {
+            GSEvents.attach(me, me.target, 'mouseover', me.show.bind(me));
+            GSEvents.attach(me, me.target, 'mouseleave', me.hide.bind(me));
         }
-        const openable = !me.isHoverTrigger;
-        if (e.target == me.target) {
-            if (me.visible) {
-                me.#unfocus = true;
-            } else if (openable) {
-                me.show();
-            }
-        } else if (openable && me.visible) me.hide();
+        if (me.isFocusTrigger) {
+            GSEvents.attach(me, me.target, 'click', me.toggle.bind(me));
+            GSEvents.attach(me, me.#contentel, 'mouseleave', me.hide.bind(me));
+            GSEvents.attach(me, document.body, 'click', me.hide.bind(me));
+        }
+    }
+
+    #render(source) {
+        const me = this;
+        source = source || me.self.firstElementChild;
+        const arrowEl = source.querySelector('div.popover-arrow');
+        GSPopper.popupAbsolute(me.placement, source, me.target, arrowEl);
+        return source;
     }
 
     /**

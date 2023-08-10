@@ -11,10 +11,10 @@ GSPopup WebComponent is a component similar to GSContext except it is generic po
 |--------------------|----------------------------------------------------------|
 | autoclose          | Close popup on mouseleave                                |
 | css                | CSS classes for popup content                            |
-| event              | Terget element event to trigger popup (click)            |
 | placement          | Where to popup element (start,end,top,bottom)            |
 | target             | Element on which to popup                                | 
 | template           | Popup content template                                   | 
+| trigger            | Terget element event to trigger popup (click)            |
 | visible            | Show or hide popup (bool)                                | 
 | hPos               | Postion popup on X-Axis                                  | 
 | vPos               | Postion popup on Y-Axis                                  | 

@@ -25,6 +25,11 @@
   <gs-css url="/webcomponents/assets/css/io.greenscreens.bootstrap.css"></gs-css>
   <gs-css url="/webcomponents/assets/icons/bootstrap-icons.css" notheme="true"></gs-css>
 
+  <template id="popover1">
+    <div>
+      This is content from template
+    </div>
+  </template>
 </head>
 
 <body class="vh-100 overflow-hidden">
@@ -53,17 +58,29 @@
 
   <!-- attach to ref targeted element -->
   <div class="m-4 p-1 bg-light border shadow-sm">
-    <label id="l5" class="form-label">Bottom</label>
+    <label id="l4" class="form-label">From Template</label>
   </div>
-  <gs-popover placement="bottom" content="Bottom" ref="#l5"></gs-popover>
+  <gs-popover placement="bottom" template="#popover1" ref="#l4"> </gs-popover>
+
+  <!-- attach to ref targeted element -->
+  <div class="m-4 p-1 bg-light border shadow-sm">
+    <label id="l5" class="form-label">Sloted</label>
+  </div>
+  <gs-popover placement="bottom" _content="Bottom" ref="#l5">
+    <slot>
+      <div>
+        <h1>Head</h1>
+      </div>
+    </slot>
+  </gs-popover>
 
   <!-- attach to parent element sibling -->
   <div class="m-4 p-1 bg-light border shadow-sm">
     <label id="l6" class="form-label">
-      Left
-      <gs-popover placement="left" title="Left" trigger="focus"></gs-popover>
+      Bottom
+      <gs-popover placement="bottom" title="Title" content="This is some message" trigger="focus"></gs-popover>
     </label>
-    <small> (click to activate, click outside to deactivate</small>
+    <small> (click to activate, click outside to deactivate)</small>
   </div>
 
   <!-- attach to previous element sibling -->
