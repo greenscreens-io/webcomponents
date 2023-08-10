@@ -1,7 +1,15 @@
 # [WebComponents](https://webcomponents.greenscreens.ltd/) for [Bootstrap 5.2.0+](https://getbootstrap.com/)
 
 # Development  v1.8.0  (TBD)
-
+ - GSPopup improvement
+ - GSPopover improvement
+ - GSPopover add templates support
+ - GSPopover add slot content support
+ - GSTouch added long press event
+ - GSOffcanvas swipe fingers
+ - GSOffcanvas swipe open/close events
+ - GSDialog ok button enable/disable on form validity change
+ 
 # Release  v1.7.0  (22.07.2023.)
  - GSMarkdown url fix
  - code cleanup for setting up ID
