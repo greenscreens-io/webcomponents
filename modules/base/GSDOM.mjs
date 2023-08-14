@@ -793,7 +793,7 @@ export default class GSDOM {
 	 * @param {string} qry Default to form
 	 */
 	static disableInput(own, qry = 'input, select, .btn') {
-		GSDOM.queryAll(own, qry).forEach(el => el.setAttribute('disabled', true));
+		GSDOM.queryAll(own, qry).forEach(el => el.dataset.gsInputDisabled = true);
 	}
 
 	/**

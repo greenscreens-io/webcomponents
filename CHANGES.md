@@ -9,6 +9,7 @@
  - GSOffcanvas swipe fingers
  - GSOffcanvas swipe open/close events
  - GSDialog ok button enable/disable on form validity change
+ - GSFormExt isValid only for visible fields fix
  
 # Release  v1.7.0  (22.07.2023.)
  - GSMarkdown url fix

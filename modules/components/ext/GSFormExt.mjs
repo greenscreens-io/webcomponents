@@ -58,11 +58,18 @@ export default class GSFormExt extends HTMLFormElement {
     }
 
     disable() {
-        GSDOM.disableInput(this);
+		GSDOM.queryAll(this, 'input, select, .btn')
+            .filter(el => !el.disabled)
+			.forEach(el => {
+				el.setAttribute('disabled', true);
+				el.dataset.gsInputDisabled = true;
+			});
     }
 
     enable() {
-        GSDOM.enableInput(this);
+		GSDOM.queryAll(this, 'input, select, .btn')
+		.filter(el => GSUtil.asBool(el.dataset.gsInputDisabled))
+		.forEach(el => el.removeAttribute('disabled'));
     }
 
     submit() {
