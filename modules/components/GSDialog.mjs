@@ -80,13 +80,11 @@ export default class GSDialog extends GSElement {
     GSEvents.monitorAction(me, 'dialog');
     me.attachEvent(me, 'click', me.#onClick.bind(me));
     me.attachEvent(me, 'form', me.#onForm.bind(me));
+    me.attachEvent(me, 'change', me.#onChange.bind(me));
     me.attachEvent(me.#dialog, 'keydown', me.#onEscape.bind(me));
     me.attachEvent(me.#dialog, 'close', me.#onClose.bind(me));
     me.attachEvent(me.#dialog, 'cancel', me.#onCancel.bind(me));
     if (me.visible) me.open();
-    requestAnimationFrame(()=>{
-      me.forms.forEach(form => me.attachEvent(form, 'change', me.#onChange.bind(me)));
-    });
   }
 
   #onChange() {
