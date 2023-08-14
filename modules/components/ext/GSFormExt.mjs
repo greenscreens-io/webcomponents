@@ -96,6 +96,7 @@ export default class GSFormExt extends HTMLFormElement {
 
     get isValid() {
         return GSDOM.queryAll(this, 'input,select,textarea')
+            .filter(el => GSDOM.isVisible(el))
             .map(el => el.checkValidity())
             .filter(v => v === false).length === 0;
     }
