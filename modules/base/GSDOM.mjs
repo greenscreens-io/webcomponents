@@ -783,8 +783,10 @@ export default class GSDOM {
 	 * @param {HTMLElement} own 
 	 * @param {string} qry Default to form
 	 */
-	static enableInput(own, qry = 'input, select, .btn') {
-		GSDOM.queryAll(own, qry).forEach(el => el.removeAttribute('disabled'));
+	static enableInput(own, qry = 'input, select, .btn', all = true, group = '') {
+			let list = GSDOM.queryAll(own, qry);
+			if (!all && group) list = list.filter(el => GSUtil.asBool(el.dataset[group]))
+			list.forEach(el => el.removeAttribute('disabled'));
 	}
 
 	/**
@@ -792,8 +794,13 @@ export default class GSDOM {
 	 * @param {HTMLElement} own 
 	 * @param {string} qry Default to form
 	 */
-	static disableInput(own, qry = 'input, select, .btn') {
-		GSDOM.queryAll(own, qry).forEach(el => el.dataset.gsInputDisabled = true);
+	static disableInput(own, qry = 'input, select, .btn', all = true, group = '') {
+		GSDOM.queryAll(own, qry)
+		.filter(el => all ? true : !el.disabled)
+			.forEach(el => {
+				el.setAttribute('disabled', true);
+				if (group) el.dataset[group] = true;
+			});		
 	}
 
 	/**

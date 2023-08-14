@@ -152,13 +152,15 @@ export default class GSDialog extends GSElement {
   disable() {
     const me = this;
     me.#disabled = true;
-    GSDOM.disableInput(me);
+    me.buttonOkEl.disabled = true;
+    me.forms.forEach(f => GSDOM.disableInput(f, 'input, select, .btn', false, 'gsForm'));
   }
 
   enable() {
     const me = this;
     me.#disabled = false;
-    GSDOM.enableInput(me);
+    me.buttonOkEl.disabled = false;
+    me.forms.forEach(f => GSDOM.enableInput(f, 'input, select, .btn', false, 'gsForm'));
   }
 
   #getAction(e) {
