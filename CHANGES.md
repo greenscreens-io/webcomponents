@@ -1,6 +1,6 @@
 # [WebComponents](https://webcomponents.greenscreens.ltd/) for [Bootstrap 5.2.0+](https://getbootstrap.com/)
 
-# Development  v1.8.0  (TBD)
+# Development  v1.7.1 (15.08.2023.)
  - GSPopup improvement
  - GSPopover improvement
  - GSPopover add templates support
@@ -11,7 +11,7 @@
  - GSDialog ok button enable/disable on form validity change
  - GSFormExt isValid only for visible fields fix
  
-# Release  v1.7.0  (22.07.2023.)
+# Release  v1.7.0 (22.07.2023.)
  - GSMarkdown url fix
  - code cleanup for setting up ID
  - code cleanup for requestAnimation usage
