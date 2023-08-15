@@ -63,7 +63,7 @@ export default class GSDialog extends GSElement {
         if (!me.#dialog.open) {
           me.#dialog.showModal();
           GSDialog.#STACK.push(me);
-          me.#onChange();
+          GSEvents.send(me, 'change');
         }
         me.focusable()?.focus();
       } else {
