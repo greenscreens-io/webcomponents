@@ -79,12 +79,12 @@ export default class GSPopup extends GSElement {
         return `<div class="position-${me.position} ${me.css} ${state} ${me.styleID}"  data-css-id="${this.styleID}"><slot></slot></div>`;
     }
 
-    onReady() {
+    async onBeforeReady() {
         const me = this;
         if (me.#ready) return;
         me.#ready = true;
-        me.#onReady();
-        super.onReady();
+        me.#onBeforeReady();        
+        await super.onBeforeReady();
     }
 
     get isFlat() {
@@ -354,7 +354,7 @@ export default class GSPopup extends GSElement {
         me.removeEvent(document, 'gs-components');
     }
 
-    #onReady() {
+    #onBeforeReady() {
         const me = this;
         me.#attachTarget();
         me.attachEvent(document, 'gs-component', me.#attachTarget.bind(me));

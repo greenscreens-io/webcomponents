@@ -1,6 +1,9 @@
 # [WebComponents](https://webcomponents.greenscreens.ltd/) for [Bootstrap 5.2.0+](https://getbootstrap.com/)
 
-# Development  v1.7.1 (15.08.2023.)
+# Development v1.7.2 (TBD)
+ - GSDialog alllow deregister \'change\' event monitoring form validity
+
+# Release v1.7.1 (15.08.2023.)
  - GSPopup improvement
  - GSPopover improvement
  - GSPopover add templates support

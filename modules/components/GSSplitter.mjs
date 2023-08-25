@@ -144,11 +144,11 @@ export default class GSSplitter extends GSElement {
         super.connectedCallback();
     }
 
-    onReady() {
+    async onBeforeReady() {
+        await super.onBeforeReady();
         const me = this;
         me.#load();
         me.#listen();
-        super.onReady();
     }
 
     get #isPreceeding() {

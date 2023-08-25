@@ -94,7 +94,8 @@ export default class GSTable extends GSElement {
         super.disconnectedCallback();
     }
 
-    async onReady() {
+    
+	async onBeforeReady() {
         const me = this;
 
         const store = me.store;
@@ -103,15 +104,22 @@ export default class GSTable extends GSElement {
             me.#store = await GSComponents.waitFor(dataID);
         }
 
-        super.onReady();
         if (me.contextMenu) me.contextMenu.disabled = true;
+
         me.attachEvent(me.self, 'sort', e => me.#onColumnSort(e.detail));
         me.attachEvent(me.self, 'filter', e => me.#onColumnFilter(e.detail));
         me.attachEvent(me.self, 'select', e => me.#onRowSelect(e.detail));
         me.attachEvent(me.self, 'action', e => me.#onContextMenu(e));
         me.attachEvent(me, 'data', e => me.#onData(e));
         me.attachEvent(window, 'resize', () => me.resize());
+        
+        await super.onBeforeReady();
+	}
+    
+    async onReady() {
+        const me = this;
         requestAnimationFrame(() => me.store.page = 1);
+        super.onReady();
     }
 
     get contextMenu() {

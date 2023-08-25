@@ -82,8 +82,8 @@ export default class GSHighlight extends GSElement {
         this.#onHighlight(val);
     }
 
-    onReady() {
-        super.onReady();
+    async onBeforeReady() {
+        await super.onBeforeReady();
         const me = this;
         if (me.theme) me.#onTheme();
         if (me.url) return me.#onURL();

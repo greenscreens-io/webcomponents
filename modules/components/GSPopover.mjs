@@ -72,9 +72,9 @@ export default class GSPopover extends GSElement {
         super.disconnectedCallback();
     }
 
-    onReady() {
+    async onBeforeReady() {
+        await super.onBeforeReady();
         const me = this;
-        super.onReady();
         me.#render(me.#contentel);
         me.#attachEvents();
     }

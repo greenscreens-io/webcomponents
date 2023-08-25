@@ -74,9 +74,9 @@ export default class GSDialog extends GSElement {
     }
   }
 
-  onReady() {
+  async onBeforeReady() {
+    await super.onBeforeReady();
     const me = this;
-    super.onReady();
     GSEvents.monitorAction(me, 'dialog');
     me.attachEvent(me, 'click', me.#onClick.bind(me));
     me.attachEvent(me, 'form', me.#onForm.bind(me));

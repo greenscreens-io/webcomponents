@@ -6,6 +6,7 @@
  * A module loading GSCertOpt class
  * @module dialogs/GSCertOpt
  */
+import { GSLoader } from '/webcomponents/release/esm/io.greenscreens.components.all.esm.min.js';
 import GSAdminDialog from './GSAdminDialog.mjs';
 
 export default class GSCertOpt extends GSAdminDialog {
@@ -29,6 +30,7 @@ export default class GSCertOpt extends GSAdminDialog {
     }
 
     async onOpen() {
+        if(DEMO)  return await GSLoader.loadSafe('./data/cert.json', 'GET', null, true);
         const o = DEMO ? DEMO : await io.greenscreens.Certificate.loadConfig();
         return o.data;
     }

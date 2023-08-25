@@ -89,8 +89,8 @@ export default class GSChart extends GSElement {
         return `<canvas class="${me.css}"></canvas>`;
     }
 
-    onReady() {
-        super.onReady();
+    async onBeforeReady() {
+        await super.onBeforeReady();
         const me = this;
         me.#render();
     }

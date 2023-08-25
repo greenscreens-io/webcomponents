@@ -52,9 +52,9 @@ export default class GSButton extends GSElement {
     }
 
     onReady() {
+        super.onReady();
         const me = this;
         me.attachEvent(me.#button, 'click', me.#onClick.bind(me));
-        super.onReady();
     }
 
     attributeCallback(name = '', oldValue = '', newValue = '') {

@@ -67,9 +67,9 @@ export default class GSOffcanvas extends GSElement {
     return val ? super.getTemplate(val) : this.#html();
   }
 
-  onReady() {
+  async onBeforeReady() {
+    await super.onBeforeReady();
     const me = this;
-    super.onReady();
     me.attachEvent(me.#backdropEl, 'click', me.close.bind(me));
     me.attachEvent(me.#canvasEl, 'mouseleave', me.#onLeave.bind(me));
     me.attachEvent(me.#canvasEl, 'mouseenter', me.#onEnter.bind(me));

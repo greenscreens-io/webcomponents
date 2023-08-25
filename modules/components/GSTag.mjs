@@ -58,11 +58,11 @@ export default class GSTag extends GSElement {
     }
 
     onReady() {
+        super.onReady();
         const me = this;
         me.attachEvent(me.query('div'), 'click', me.#onClick.bind(me));
         me.attachEvent(me.#input, 'keydown', me.#onKeyDown.bind(me));
         me.attachEvent(me.#input, 'input', me.#onInput.bind(me));
-        super.onReady();
     }
 
     #onInput(e) {

@@ -66,9 +66,9 @@ export default class GSTooltip extends GSElement {
     }
 
     onReady() {
+        super.onReady();
         const me = this;
         me.#attachEvents();
-        super.onReady();
     }
 
     // https://javascript.info/mousemove-mouseover-mouseout-mouseenter-mouseleave

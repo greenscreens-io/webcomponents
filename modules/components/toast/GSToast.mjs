@@ -55,11 +55,11 @@ export default class GSToast extends GSElement {
     `
   }
 
-  onReady() {
+  async onBeforeReady() {
+    await super.onBeforeReady();
     const me = this;
     const btns = me.queryAll('button');
     Array.from(btns).forEach(btn => me.attachEvent(btn, 'click', me.close.bind(me)));
-    super.onReady();
     if (me.visible) me.open();
   }
 

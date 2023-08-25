@@ -74,11 +74,11 @@ export default class GSAlert extends GSElement {
         me.attachEvent(me.self, 'mouseout', () => me.#pause = false);
     }
 
-    onReady() {
-        const me = this;
+    async onBeforeReady() {
+        await super.onBeforeReady();
+        const me = this;        
         const btn = me.query('.btn-close');
         me.attachEvent(btn, 'click', me.#onClick.bind(me));
-        super.onReady();
         me.#billboard();
     }
 

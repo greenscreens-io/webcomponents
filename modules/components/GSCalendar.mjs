@@ -63,14 +63,14 @@ export default class GSCalendar extends GSElement {
         super.disconnectedCallback();
     }
 
-    onReady() {
+    async onBeforeReady() {
+        await super.onBeforeReady();
         const me = this;
         me.#update();
         me.attachEvent(me.query('.header'), 'click', me.#onArrow.bind(me));
         me.attachEvent(me.query('div'), 'click', me.#onDay.bind(me));
         me.attachEvent(me.query, 'change', me.#onYear.bind(me));
         me.attachEvent(me.monthEl, 'change', me.#onMonth.bind(me));
-        super.onReady();
     }
 
     async getTemplate(val = '') {

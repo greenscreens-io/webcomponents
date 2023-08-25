@@ -50,13 +50,13 @@ export default class GSModal extends GSElement {
     }
   }
 
-  onReady() {
+  async onBeforeReady() {
+    await super.onBeforeReady();
     const me = this;
     GSEvents.monitorAction(me, 'modal');
     me.attachEvent(me, 'click', me.#onClick.bind(me));
     me.attachEvent(me, 'form', me.#onForm.bind(me));
     me.attachEvent(document, 'keyup', me.#onEscape.bind(me));
-    super.onReady();
     if (me.visible) me.open();
   }
 

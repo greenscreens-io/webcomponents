@@ -29,6 +29,7 @@ import GSDOMObserver from './GSDOMObserver.mjs';
  */
 export default class GSElement extends HTMLElement {
 
+	#childs = 0;
 	#ready = false;
 	#removed = false;
 	#content = null;
@@ -519,6 +520,9 @@ export default class GSElement extends HTMLElement {
 		me.#opts = me.#injection();
 		me.#proxied = me.#opts.ref;
 		GSComponents.store(me);
+		me.attachEvent(me, 'childrender', me.#onChildRender.bind(me));
+		me.attachEvent(me, 'childready', me.#onChildReady.bind(me));
+		GSEvents.send(me.owner, 'childrender', me);
 		requestAnimationFrame(() => me.#render());
 	}
 
@@ -576,14 +580,45 @@ export default class GSElement extends HTMLElement {
 	 * Called when element fully rendered
 	 * @returns {void}
 	 */
-	onReady() {
+	onReady() {		
+		GSEvents.send(this.owner, 'childready');
+	}
+
+	async onBeforeReady() {
+	}
+
+	async #doReady() {
 		const me = this;
+		if (me.#childs > 0) return;
+		if (me.#ready) return;
 		if (me.offline) return;
 		me.#ready = true;
-		const fn = GSFunction.parseFunction(me.onready);
-		GSFunction.callFunction(fn);
-		GSEvents.send(me, 'ready', {});
-		GSEvents.send(document.body, 'componentready', me);
+		me.removeEvent(me, 'childrender');
+		me.removeEvent(me, 'childready');
+		await me.onBeforeReady();
+		try {
+			const fn = GSFunction.parseFunction(me.onready);
+			GSFunction.callFunction(fn);
+			GSEvents.send(me, 'ready');
+			GSEvents.send(document.body, 'componentready', me);
+		} finally {
+			me.onReady();
+		}
+	}
+
+	#onChildRender(e) {
+		const me = this;
+		if (this !== e.srcElement) me.#childs++;
+	}
+
+	#onChildReady(e) {
+		const me = this;
+		if (!e) return;
+		if (me === e.srcElement) return;
+		if (me.#childs > 0) {
+			me.#childs--;
+		} else return;
+		if (me.#childs == 0) me.#doReady();
 	}
 
 	/**
@@ -762,7 +797,7 @@ export default class GSElement extends HTMLElement {
 			if (!me.isFlat) me.attachEvent(document, 'gs-style', me.#styleChange.bind(me));
 			me.attachEvent(screen.orientation, 'change', me.#onOrientation.bind(me));
 		} finally {
-			GSUtil.requestAnimationFrame(() => me.onReady());
+			GSUtil.requestAnimationFrame(() => me.#doReady());
 		}
 	}
 
