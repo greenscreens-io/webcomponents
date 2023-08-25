@@ -58,11 +58,11 @@ export default class GSFormExt extends HTMLFormElement {
     }
 
     disable() {
-        GSDOM.disableInput(this, 'input, select, .btn', false, 'gsForm');
+        GSDOM.disableInput(this, 'input, textarea, select, .btn', false, 'gsForm');
     }
 
     enable() {
-		GSDOM.enableInput(this, 'input, select, .btn', false, 'gsForm');
+		GSDOM.enableInput(this, 'input, textarea, select, .btn', false, 'gsForm');
     }
 
     submit() {
@@ -71,6 +71,14 @@ export default class GSFormExt extends HTMLFormElement {
 
     onError(e) {
         GSLog.error(this, e);
+    }
+
+    set data(data) {
+        return GSDOM.fromObject(this, data);
+    }
+
+    get data() {
+        return GSDOM.toObject(this);
     }
 
     static #attachEvents(me) {
