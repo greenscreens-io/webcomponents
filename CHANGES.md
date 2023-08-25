@@ -1,7 +1,11 @@
 # [WebComponents](https://webcomponents.greenscreens.ltd/) for [Bootstrap 5.2.0+](https://getbootstrap.com/)
 
 # Development v1.7.2 (TBD)
+ - Update WebAdmin demo
+ - GSFormExt add data getter/setter
+ - GSDialog forward open/close data
  - GSDialog alllow deregister \'change\' event monitoring form validity
+ - Improved post rendering synchronization between child/parent components
 
 # Release v1.7.1 (15.08.2023.)
  - GSPopup improvement
