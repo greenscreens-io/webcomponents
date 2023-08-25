@@ -209,7 +209,7 @@ export default class GSDialog extends GSElement {
   open(e) {
     GSEvents.prevent(e);
     const me = this;
-    const sts = GSEvents.send(me, 'open', { type: 'dialog', isOk: true }, true, true, true);    
+    const sts = GSEvents.send(me, 'open', { type: 'dialog', isOk: true, data : e }, true, true, true);    
     if (sts) me.visible = true;
   }
 
@@ -219,7 +219,7 @@ export default class GSDialog extends GSElement {
   close(e, ok = false) {
     GSEvents.prevent(e);
     const me = this;
-    const sts = GSEvents.send(me, 'close', { type: 'dialog', isOk: ok }, true, true, true);    
+    const sts = GSEvents.send(me, 'close', { type: 'dialog', isOk: ok, data : e }, true, true, true);    
     if (sts) me.visible = false;
   }
 
