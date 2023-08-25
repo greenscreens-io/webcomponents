@@ -106,15 +106,12 @@ export default class HeaderUI extends GSElement {
     }
 
     certExport() {
-        Utils.openInNewTab(`${location.origin}/services/certificate`);
+        Utils.openInNewTab(`${location.origin}/services/certificate?id=0`);
+        Utils.openInNewTab(`${location.origin}/services/certificate?id=1`);
     }
 
     explorer() {
         Utils.openInNewTab(`${location.origin}/admin/explorer`, 'toolbar=no,scrollbars=yes,resizable=yes');
-    }
-
-    downloadSavf() {
-        Utils.openInNewTab(`${location.origin}/services/admintransfer?type=savf`);
     }
 
     downloadConfig() {

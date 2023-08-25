@@ -1,0 +1,32 @@
+<gs-form-group css="m-1" name="commonNameIntermediate" label="Common Name" required 
+    autocomplete="off" description="Intermediate CA Certificate Common Name.">
+</gs-form-group>
+
+<gs-form-group css="m-1" name="organizationIntermediate" label="Organization" required 
+    autocomplete="off" description="Company name.">
+</gs-form-group>
+
+<gs-form-group css="m-1" name="locationIntermediate" label="Location" required
+    pattern="[A-Za-z ]+" autocomplete="off" 
+    description="City name.">
+</gs-form-group>
+
+<gs-form-group css="m-1" name="stateIntermediate" label="State" required
+    maxlength="3" pattern="[a-zA-Z]{1,3}" autocomplete="off" 
+    description="Country state abbreviation.">
+</gs-form-group>
+
+<gs-form-group css="m-1" name="countryIntermediate" label="Country" required
+    maxlength="2" pattern="[A-Za-z]{2}" autocomplete="off"
+    description="Country of origin.">
+</gs-form-group>
+
+<gs-form-group css="m-1" name="emailIntermediate" label="E-mail" required
+    type="email" autocomplete="off"
+    description="Contact email address.">
+</gs-form-group>
+
+<gs-form-group css="m-1" name="expireIntermediate" label="Expiration" required
+    type="number" value="5"
+    description="Enter certificate validity in years.">
+</gs-form-group>

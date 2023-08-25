@@ -33,8 +33,9 @@ export default class GSService extends GSAdminDialog {
         return this.query('input[name=value]');
     }
 
-    async onOpen(data) {
+    open(data) {
         const me = this;
+        me.form?.reset();
         me.valueField.type = 'text';
         me.valueField.classList.value = 'form-control';
         me.valueField.parentElement.classList.value = '';
@@ -49,7 +50,7 @@ export default class GSService extends GSAdminDialog {
             me.valueField.parentElement.classList.value = 'form-check form-switch fs-5';
         }
 
-        return data;
+        super.open(data);
     }
 
     async onData(data) {

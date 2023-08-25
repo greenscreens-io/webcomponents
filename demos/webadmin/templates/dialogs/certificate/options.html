@@ -23,3 +23,43 @@
         </select>
     </template>
 </gs-form-group>
+
+<gs-form-group css="m-1" name="urlCA" label="Link CA"
+    description="Add CA download URL to certificate. Uses Server Common Name as URL!!!">
+    <template>
+        <select class="form-select" id="urlCA" name="urlCA">
+            <option value="true">Enabled</option>
+            <option value="false">Disabled</option>
+        </select>
+    </template>
+</gs-form-group>
+
+<gs-form-group css="m-1" name="useSAN" label="Link SAN"
+    description="Use alternative URL's for CA/CRL/OCSP.">
+    <template>
+        <select class="form-select" id="useSAN" name="useSAN">
+            <option value="true">Enabled</option>
+            <option value="false">Disabled</option>
+        </select>
+    </template>
+</gs-form-group>
+
+<gs-form-group css="m-1" name="urlCRL" label="CRL"
+    description="Add CRL certificate verification URL. Uses Server Common Name as URL!!!">
+    <template>
+        <select class="form-select" id="urlCRL" name="urlCRL">
+            <option value="true">Enabled</option>
+            <option value="false">Disabled</option>
+        </select>
+    </template>
+</gs-form-group>
+
+<gs-form-group css="m-1" name="urlOCSP" label="OCSP"
+    description="Add OCSP certificate verification. Uses Server Common Name as URL!!!">
+    <template>
+        <select class="form-select" id="urlOCSP" name="urlOCSP">
+            <option value="true">Enabled</option>
+            <option value="false">Disabled</option>
+        </select>
+    </template>
+</gs-form-group>

@@ -14,8 +14,8 @@ import WebAuthn from '../utils/WebAuthn.mjs';
 
 globalThis.Tn5250 = {
     version: '6.0.0.300',
-    build: '15.10.2022.',
-    release: 20221015
+    build: '25.07.2023.',
+    release: 20230725
 };
 
 export default class Login extends GSAdminDialog {
