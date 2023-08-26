@@ -161,8 +161,9 @@ export default class GSLoader {
     static async load(val = '', method = 'GET', headers, asjson = false, body) {
         let data = null;
         const ct = 'Content-Type';
-        headers = headers || {};
-        headers[ct] = asjson ? 'application/json' : headers[ct] || 'text/plain';
+        headers = Object.assign({}, headers);
+        headers[ct] = asjson ? 'application/json; utf-8' : headers[ct] || 'text/plain';
+        headers.Accept = 'application/json';
         const url = GSLoader.normalizeURL(val, true);
         const opt  ={ method: method, headers: headers };
         if (method === 'POST' || method === 'PUT' && body) {

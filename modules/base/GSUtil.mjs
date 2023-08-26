@@ -95,11 +95,11 @@ export default class GSUtil {
 	 * @param {string|object} val 
 	 * @returns {boolean}
 	 */
-	static toJson(val = '') {
+	static toJson(val = '', dft = {}) {
 		if (GSUtil.isJsonString(val)) return JSON.parse(val);
 		if (GSUtil.isJsonType(val)) return val;
 		GSLog.warn(null, `Invalid data to convert into JSON: ${val}`);
-		return null;
+		return dft;
 	}
 
 	/**
