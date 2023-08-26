@@ -21,8 +21,6 @@ import './GSPrinterReset.mjs';
 import './GSPrinterSetup.mjs';
 
 import './GSActivate.mjs';
-import './GSInstall.mjs';
-import './GSLicense.mjs';
 
 import './GSKerberos.mjs';
 import './GSMigrate.mjs';

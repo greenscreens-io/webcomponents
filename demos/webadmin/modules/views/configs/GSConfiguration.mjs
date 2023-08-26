@@ -30,10 +30,7 @@ export default class GSConfiguration extends BaseViewUI {
 
         const ctx = me.query('gs-context');
         // If license installer available
-        if (me.#hasInstaller) {
-            ctx?.self?.querySelector('[data-action="license"]')?.remove();
-            ctx?.self?.querySelector('[data-action="install"]')?.remove();
-        } else {
+        if (!me.#hasInstaller) {
             // If license installer not available; remove activator
             ctx?.self?.querySelector('[data-action="activate"]')?.remove();
         }
@@ -49,14 +46,6 @@ export default class GSConfiguration extends BaseViewUI {
 
     get activateDialog() {
         return GSComponents.get('modal-activate');
-    }
-
-    get installDialog() {
-        return GSComponents.get('modal-install');
-    }
-
-    get licenseDialog() {
-        return GSComponents.get('modal-license');
     }
 
     get printerReset() {
@@ -109,16 +98,6 @@ export default class GSConfiguration extends BaseViewUI {
     onViewActivate(e) {
         const data = e.detail.data[0];
         this.activateDialog.open(data);
-    }
-
-    onViewInstall(e) {
-        const data = e.detail.data[0];
-        this.installDialog.open(data);
-    }
-
-    onViewLicense(e) {
-        const data = e.detail.data[0];
-        this.licenseDialog.open(data);
     }
 
     async onViewValidateServer(e) {
