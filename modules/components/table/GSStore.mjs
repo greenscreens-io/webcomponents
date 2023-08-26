@@ -16,6 +16,8 @@ import GSAttr from "../../base/GSAttr.mjs";
 import GSItem from "../../base/GSItem.mjs";
 import GSDOM from "../../base/GSDOM.mjs";
 import GSLog from "../../base/GSLog.mjs";
+import GSPromise from "../../base/GSPromise.mjs";
+import GSReadWriteRegistry from "../../base/GSReadWriteRegistry.mjs";
 
 /**
  * Table data handler, pager, loader
@@ -38,18 +40,22 @@ export default class GSStore extends HTMLElement {
     #filter = [];
     #total = 0;
 
+    #controller;
+    #reader;
+
     static {
         customElements.define('gs-store', GSStore);
         Object.seal(GSStore);
     }
 
     static get observedAttributes() {
-        return ['id', 'src', 'limit', 'skip', 'remote', 'filter', 'sort'];
+        return ['id', 'src', 'limit', 'skip', 'remote', 'filter', 'sort', 'storage'];
     }
 
     constructor() {
         super();
         GSItem.validate(this, this.tagName);
+        this.#reader = this.#onRead.bind(this);
     }
 
     attributeChangedCallback(name = '', oldValue = '', newValue = '') {
@@ -68,7 +74,10 @@ export default class GSStore extends HTMLElement {
         if (name === 'src') {
             me.#data = [];
             me.reload();
+            return;
         }
+
+        if (name === 'storage') return me.#onStorage(oldValue, newValue);
 
     }
 
@@ -88,6 +97,7 @@ export default class GSStore extends HTMLElement {
     disconnectedCallback() {
         const me = this;
         me.#online = false;
+        me.#controller?.abort();
         GSComponents.remove(me);
     }
 
@@ -98,12 +108,12 @@ export default class GSStore extends HTMLElement {
      * @param {*} name 
      * @returns {Promise<void>}
      */
-    async waitEvent(name = '') {
-        if (!name) throw new Error('Event undefined!');
+    async waitEvent(name = '', signal) {
         const me = this;
-        return new Promise((r, e) => {
-            me.once(name, (evt) => r(evt.detail));
-        });
+        const callback = (resolve, reject) => {
+            me.once(name, (evt) => resolve(evt.detail));
+         }
+         return new GSPromise(callback, signal).await();
     }
 
     /**
@@ -316,6 +326,11 @@ export default class GSStore extends HTMLElement {
         me.getData(skip, me.#limit, me.#filter, me.#sort);
     }
 
+    get storage() {
+        return GSAttr.get(this, 'storage', '');
+    }
+   
+
     /**
      * Total pages
      */
@@ -474,6 +489,28 @@ export default class GSStore extends HTMLElement {
         const me = this;
         const fields = me.table?.header?.fields;
         return fields ? fields : Array.from(me.querySelectorAll('gs-item')).map(o => o.name);
+    }
+
+
+    get #handler() {
+        return GSReadWriteRegistry.find(this.storage);
+    }
+
+    async #onStorage(oldValue, newValue) {
+        if (newValue == oldValue) return;
+        const me = this;
+        me.#controller?.abort();
+        const old = GSReadWriteRegistry.find(oldValue);
+        GSEvents.unlisten(me, old, 'read', me.#reader);
+        if (!newValue) return;
+        me.#controller = new AbortController();
+        await GSReadWriteRegistry.wait(newValue, me.#controller.signal);
+        GSEvents.attach(me, me.#handler, 'read', me.#reader);
+        await me.#handler?.read(me);
+    }
+
+    #onRead(e) {
+        if (e.detail.data) this.setData(e.detail.data);
     }
 
 }

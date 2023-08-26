@@ -61,7 +61,8 @@ class GSReadWriteRegistryImpl extends GSEvent {
             if (rw) return rw;
         }
         const type = register ? 'register' : 'unregister';
-        return await super.wait(`${type}-${id}`, signal);
+        await super.wait(`${type}-${id}`, signal);
+        return me.find(id);
     }
 
     #verify(obj) {

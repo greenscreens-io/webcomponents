@@ -57,9 +57,11 @@ export default class GSFormExt extends HTMLFormElement {
     }
 
     #controller;
+    #reader;
 
     constructor() {
         super();
+        this.#reader = this.#onRead.bind(this);
     }
 
     connectedCallback() {
@@ -142,20 +144,28 @@ export default class GSFormExt extends HTMLFormElement {
         if (newValue == oldValue) return;
         const me = this;
         me.#controller?.abort();
+        const old = GSReadWriteRegistry.find(oldValue);
+        GSEvents.unlisten(me, old, 'read', me.#reader);
         if (!newValue) return;
         me.#controller = new AbortController();
         await GSReadWriteRegistry.wait(newValue, me.#controller.signal);
+        GSEvents.attach(me, me.#handler, 'read', me.#reader);
         me.read();
     }
 
     async read() {
         const me = this;
-        me.data = await me.#handler?.read(me);
+        //me.data = 
+        await me.#handler?.read(me);
     }
 
     async write() {
         const me = this;
         me.#handler?.write(me, me.data);
+    }
+
+    #onRead(e) {
+        if (e.detail.data) this.data = e.detail.data;
     }
 
     static #attachEvents(me) {
