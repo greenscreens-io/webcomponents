@@ -145,7 +145,7 @@ export default class GSFormExt extends HTMLFormElement {
         const me = this;
         me.#controller?.abort();
         const old = GSReadWriteRegistry.find(oldValue);
-        GSEvents.unlisten(me, old, 'read', me.#reader);
+        GSEvents.remove(me, old, 'read', me.#reader);
         if (!newValue) return;
         me.#controller = new AbortController();
         await GSReadWriteRegistry.wait(newValue, me.#controller.signal);

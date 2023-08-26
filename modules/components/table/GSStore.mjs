@@ -501,7 +501,9 @@ export default class GSStore extends HTMLElement {
         const me = this;
         me.#controller?.abort();
         const old = GSReadWriteRegistry.find(oldValue);
-        GSEvents.unlisten(me, old, 'read', me.#reader);
+        GSEvents.remove(me, old, 'read', me.#reader);
+        me.#data = [];
+        me.reload();
         if (!newValue) return;
         me.#controller = new AbortController();
         await GSReadWriteRegistry.wait(newValue, me.#controller.signal);
