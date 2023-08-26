@@ -24,4 +24,8 @@ Base library is core of all GS WebComponents UI elements. Contains a set of non 
 17. [GSEvent](./GSEvent.md)
 18. [GSEventBus](./GSEventBus.md)
 19. [GSEvents](./GSEvents.md)
+20. [GSAbortController](./GSAbortController.md)
+21. [GSPromise](./GSPromise.md)
+22. [GSReadWrite](./GSReadWrite.md)
+23. [GSReadWriteRegistry](./GSReadWriteRegistry.md)
 

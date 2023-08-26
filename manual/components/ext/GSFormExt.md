@@ -6,6 +6,8 @@ GSFormExt WebComponent is an extended HTMLFormElement which adds following funct
 * Automatic ```<button>``` processing for Submit / Cancel
 * Event triggering with field data exported as JSON
 
+Use "storage" atribute to link form to GSReadWrite custom class instance for automatic for data handling.
+
 ## Supported actions
 ---
 
@@ -23,7 +25,7 @@ When HTML buttons added to the component with **data-action** attributes, compon
 Define HTML form block with input fields and/or buttons as childs.
 
 ```html
-<form is="gs-ext-form">
+<form is="gs-ext-form" store="mystore">
     ... other input fields ...
     <button type="submit" data-action="submit">Submit</button>        
     <button data-action="cancel">Cancel</button>

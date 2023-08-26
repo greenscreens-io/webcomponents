@@ -29,7 +29,6 @@ import GSDOMObserver from './GSDOMObserver.mjs';
  */
 export default class GSElement extends HTMLElement {
 
-	#childs = 0;
 	#ready = false;
 	#removed = false;
 	#content = null;
@@ -415,12 +414,10 @@ export default class GSElement extends HTMLElement {
 	 * @param {string} name 
 	 * @returns {Promisa}
 	 */
-	waitEvent(name = '') {
+	waitEvent(name = '', timeout = 0) {
 		if (!name) throw new Error('Event undefined!');
 		const me = this;
-		return new Promise((r, e) => {
-			me.once(name, (evt) => r(evt.detail));
-		});
+		return GSEvents.wait(me, name, timeout);
 	}
 
 	/**
@@ -520,9 +517,6 @@ export default class GSElement extends HTMLElement {
 		me.#opts = me.#injection();
 		me.#proxied = me.#opts.ref;
 		GSComponents.store(me);
-		me.attachEvent(me, 'childrender', me.#onChildRender.bind(me));
-		me.attachEvent(me, 'childready', me.#onChildReady.bind(me));
-		GSEvents.send(me.owner, 'childrender', me);
 		requestAnimationFrame(() => me.#render());
 	}
 
@@ -581,7 +575,7 @@ export default class GSElement extends HTMLElement {
 	 * @returns {void}
 	 */
 	onReady() {		
-		GSEvents.send(this.owner, 'childready');
+
 	}
 
 	async onBeforeReady() {
@@ -589,12 +583,9 @@ export default class GSElement extends HTMLElement {
 
 	async #doReady() {
 		const me = this;
-		if (me.#childs > 0) return;
 		if (me.#ready) return;
 		if (me.offline) return;
 		me.#ready = true;
-		me.removeEvent(me, 'childrender');
-		me.removeEvent(me, 'childready');
 		await me.onBeforeReady();
 		try {
 			const fn = GSFunction.parseFunction(me.onready);
@@ -604,21 +595,6 @@ export default class GSElement extends HTMLElement {
 		} finally {
 			me.onReady();
 		}
-	}
-
-	#onChildRender(e) {
-		const me = this;
-		if (this !== e.srcElement) me.#childs++;
-	}
-
-	#onChildReady(e) {
-		const me = this;
-		if (!e) return;
-		if (me === e.srcElement) return;
-		if (me.#childs > 0) {
-			me.#childs--;
-		} else return;
-		if (me.#childs == 0) me.#doReady();
 	}
 
 	/**

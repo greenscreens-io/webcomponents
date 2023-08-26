@@ -1,11 +1,18 @@
 # [WebComponents](https://webcomponents.greenscreens.ltd/) for [Bootstrap 5.2.0+](https://getbootstrap.com/)
 
-# Development v1.7.2 (TBD)
+# Development v1.8.0 (TBD)
  - Update WebAdmin demo
+ - Update manuals for new classes
+ - GSEvent add timeout to wait function
  - GSFormExt add data getter/setter
  - GSDialog forward open/close data
  - GSDialog alllow deregister \'change\' event monitoring form validity
  - Improved post rendering synchronization between child/parent components
+ - Added GSAbortController with timeout support
+ - Added GSPromise wrapper with GSAbortController support
+ - Added GSReadWrite data handler
+ - Added GSReadWriteRegistry of data handlers
+ - Add demo for dynamic forms
 
 # Release v1.7.1 (15.08.2023.)
  - GSPopup improvement

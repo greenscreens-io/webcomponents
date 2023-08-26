@@ -11,7 +11,10 @@ import GSID from "../../base/GSID.mjs";
 import GSDOMObserver from '../../base/GSDOMObserver.mjs';
 import GSEvents from "../../base/GSEvents.mjs";
 import GSDOM from "../../base/GSDOM.mjs";
+import GSData from "../../base/GSData.mjs";
 import GSLog from "../../base/GSLog.mjs";
+import GSAttr from "../../base/GSAttr.mjs";
+import GSReadWriteRegistry from "../../base/GSReadWriteRegistry.mjs";
 
 /**
  * Add custom form processing to support forms in modal dialogs
@@ -40,6 +43,21 @@ export default class GSFormExt extends HTMLFormElement {
         GSEvents.deattachListeners(el);
     }
 
+
+    static observeAttributes(attributes) {
+        return GSData.mergeArrays(attributes, GSFormExt.observedAttributes);
+    }
+
+    /**
+     * List of observable element attributes
+     * @returns {Array<string>} Monitored attributes orientation|id
+     */
+    static get observedAttributes() {
+        return ['storage'];
+    }
+
+    #controller;
+
     constructor() {
         super();
     }
@@ -55,6 +73,24 @@ export default class GSFormExt extends HTMLFormElement {
         const me = this;
         //GSComponents.remove(me);
         GSEvents.deattachListeners(me);
+        me.#controller?.abort();
+    }
+
+    /**
+     * Called when element attribute changed
+     *  
+     * @param {string} name  Attribute name
+     * @param {string} oldValue Old value before change
+     * @param {string} newValue New value after change
+     */
+    attributeChangedCallback(name, oldValue, newValue) {
+        const me = this;
+        requestAnimationFrame(() => me.attributeCallback(name, oldValue, newValue));
+    }
+    
+    attributeCallback(name, oldValue, newValue) {
+        const me = this;
+        if (name === 'storage') return me.#onStorage(oldValue, newValue);
     }
 
     disable() {
@@ -62,7 +98,12 @@ export default class GSFormExt extends HTMLFormElement {
     }
 
     enable() {
-		GSDOM.enableInput(this, 'input, textarea, select, .btn', false, 'gsForm');
+        GSDOM.enableInput(this, 'input, textarea, select, .btn', false, 'gsForm');
+    }
+
+    reset() {
+        super.reset();
+        this.read();
     }
 
     submit() {
@@ -73,17 +114,54 @@ export default class GSFormExt extends HTMLFormElement {
         GSLog.error(this, e);
     }
 
+    get storage() {
+        return GSAttr.get(this, 'storage', '');
+    }
+
+    set storage(val = '') {
+        GSAttr.set(this, 'storage', val);
+    }
+
     set data(data) {
-        return GSDOM.fromObject(this, data);
+        const me = this;
+        GSDOM.fromObject(me, data);
+        const isValid = me.checkValidity() && me.isValid;
+        if (!isValid) me.reportValidity();
+        return isValid;
     }
 
     get data() {
         return GSDOM.toObject(this);
     }
 
+    get #handler() {
+        return GSReadWriteRegistry.find(this.storage);
+    }
+
+    async #onStorage(oldValue, newValue) {
+        if (newValue == oldValue) return;
+        const me = this;
+        me.#controller?.abort();
+        if (!newValue) return;
+        me.#controller = new AbortController();
+        await GSReadWriteRegistry.wait(newValue, me.#controller.signal);
+        me.read();
+    }
+
+    async read() {
+        const me = this;
+        me.data = await me.#handler?.read(me);
+    }
+
+    async write() {
+        const me = this;
+        me.#handler?.write(me, me.data);
+    }
+
     static #attachEvents(me) {
-        me.action='#';
+        me.action = '#';
         GSEvents.attach(me, me, 'submit', GSFormExt.#onSubmit.bind(me));
+        GSEvents.attach(me, me, 'reset', me.read.bind(me));
     }
 
     /**
@@ -94,10 +172,10 @@ export default class GSFormExt extends HTMLFormElement {
     static #onSubmit(e) {
         GSEvents.prevent(e);
         const me = this;
-        const obj = GSDOM.toObject(me);
         const isValid = me.checkValidity() && me.isValid;
         if (!isValid) me.reportValidity();
-        const data = { type: 'submit', data: obj, source: e, valid: isValid };
+        if (isValid) me.write();
+        const data = { type: 'submit', data: me.data, source: e, valid: isValid };
         GSEvents.send(me, 'form', data, true, true);
         return isValid;
     }

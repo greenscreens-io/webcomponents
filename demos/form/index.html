@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Inputmask Test</title>
+    <meta charset="utf-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="viewport"
+        content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+
+    <meta name="subject" content="Green Scereens Ltd.">
+    <meta name="author" content="www.greenscreens.ltd">
+    <meta name="keywords" content="JavaScript,WebComponents">
+    <meta name="robots" content="index, follow">
+    <meta name="revisit-after" content="3 month">
+    <meta name="description" content="WebComponents UI library based on Bootstrap.">
+
+    <script type="module" src="/webcomponents/modules/index.mjs"></script>
+    <script type="module" src="/webcomponents/modules/components/ext/GSFormExt.mjs"></script>
+    <script type="module" src="/webcomponents/modules/components/ext/GSInputExt.mjs"></script>
+    <script type="module" src="/webcomponents/modules/components/GSFormGroup.mjs"></script>
+    <script type="module" src="/webcomponents/modules/components/GSButton.mjs"></script>
+
+    <!-- disable to hide right side help icon -->
+    <script type="module" src="/webcomponents/modules/components/GSToolTip.mjs"></script>
+    <script type="module" src="./index.mjs"></script>
+
+    <gs-css url="/webcomponents/assets/css/io.greenscreens.bootstrap.css"></gs-css>
+    <gs-css url="/webcomponents/assets/icons/bootstrap-icons.css" notheme="true"></gs-css>
+
+</head>
+
+<body>
+
+    <gs-template href="/webcomponents/demos/header.tpl"></gs-template>
+
+    <div class="m-4 p-1 bg-light border shadow-sm row">
+        Dynamic form data linked to GSReadWrite
+    </div>
+    
+    <form is="gs-ext-form" storage="mystore">
+        <div class="container justify-content-center w-50 border p-4 shadow-sm bg-light">
+            <gs-form-group css="mt-2" name="date" mask="DD-MM-YYYY" label="Date" description="Masked date input"></gs-form-group>
+            <gs-form-group css="mt-2" name="hexa" mask="XXXXXXXXXXXXXXXX" label="Hexadecimal input with" description="Masked hexadecimal input"></gs-form-group>
+
+            <gs-form-group css="mt-2" name="ip" label="IP Address" description="IP Address, CIDR or wildcard">
+                <gs-item data-pattern="^(?:(?:25[0-5]|(?:2[0-4]|1\d|[1-9]|)\d)\.?\b){4}(?:/[1-9]{1,2})?$"></gs-item>
+                <gs-item data-pattern="^(?:(?:25[0-5]|(?:2[0-4]|1\d|[1-9]|)\d|\*)\.){3}(?:(?:25[0-5]|(?:2[0-4]|1\d|[1-9]|)\d|\*))$"></gs-item>
+                <gs-item data-pattern="^(?:(?:(?:25[0-5]|(?:2[0-4]|1\d|[1-9]|)\d)(?:\-(?:25[0-5]|(?:2[0-4]|1\d|[1-9]|)\d))?)\.?){3}(?:(?:25[0-5]|(?:2[0-4]|1\d|[1-9]|)\d)(?:-(?:25[0-5]|(?:2[0-4]|1\d|[1-9]|)\d))?)$"></gs-item>
+            </gs-form-group>
+
+
+            <gs-form-group css="mt-2" name="user" placeholder="...enter user name" label="User" description="Login user"></gs-form-group>
+
+            <gs-form-group css="mt-2" name="field1" label="Check box"    type="checkbox" checked></gs-form-group>
+            <gs-form-group css="mt-2" name="field2" label="Radio button" type="radio" checked></gs-form-group>
+            <gs-form-group css="mt-2" name="field3" label="Switch box"   type="switch" checked></gs-form-group>
+            <gs-form-group css="mt-2" name="field4" label="Range"        type="range" min="0" max="100" step="2"></gs-form-group>
+
+            <gs-form-group css="mt-2" name="field3" label="Password (ALT+CTRL+SHIFT)"   type="password" reveal checked></gs-form-group>
+
+            <gs-form-group css="mt-2" name="active" label="Status" description="test">
+                <template>
+                    <select class="form-select" id="active" name="active" required>
+                        <option value="true">Enabled</option>
+                        <option value="false">Disabled</option>
+                    </select>
+                </template>
+            </gs-form-group>
+
+            <div class="row form-group mt-4 pt-4">         
+                <div class=" col-md-9 col-sm-9"></div>       
+                <div class="col-auto">
+                    <gs-button type="reset" title="Reset" css="btn-primary"></gs-button>             
+                    <gs-button type="submit" title="Submit" css="btn-primary"></gs-button>             
+                </div>                
+             </div>
+
+        </div>        
+    </form>
+
+</body>
+
+</html>

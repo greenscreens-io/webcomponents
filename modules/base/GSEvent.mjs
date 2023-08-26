@@ -2,6 +2,9 @@
  * Copyright (C) 2015, 2022 Green Screens Ltd.
  */
 
+import GSPromise from "./GSPromise.mjs";
+import GSUtil from "./GSUtil.mjs";
+
 /**
  * A module loading GSEvent class
  * @module base/GSEvent
@@ -33,9 +36,20 @@ export default class GSEvent extends EventTarget {
      * 
      * @param {string} type Event name to be listened
      * @param {Function} listener  Callback to be called on event trigger
+     * @param {Number} timeout It event timeout set, return AbortSignal
+     * @param {boolean|AbortController} abortable If abortable set, return AbortController
      */
-    on(type = '', listener) {
-        return this.addEventListener(type, listener);
+    on(type = '', listener, timeout = 0, abortable = false) {
+        if (!type) return reject('Event undefined!');
+        let controller = null;
+        if (abortable instanceof AbortController) {
+            controller = abortable;
+        } else {
+            controller = abortable ? new GSAbortController(timeout) : null;
+        }
+        const signal = controller || timeout == 0 ? controller?.signal : AbortSignal.timeout(timeout); 
+        this.addEventListener(type, listener,  { signal:signal });
+        return controller || signal;
     }
 
     /**
@@ -43,8 +57,11 @@ export default class GSEvent extends EventTarget {
      * 
      * @param {string} type Event name to be listened
      * @param {Function} listener  Callback to be called on event trigger
+     * @param {Number} timeout It event timeout set, return AbortSignal
+     * @param {boolean|AbortController} abortable If abortable set, return AbortController
      */
-    once(type, listener) {
+    once(type, listener, timeout = 0, abortable = false) {
+        if (!type) return reject('Event undefined!');
         const me = this;
         const wrap = (e) => {
             listener(e);
@@ -52,7 +69,15 @@ export default class GSEvent extends EventTarget {
         }
         wrap.type = type;
         wrap.listener = listener;
-        return me.addEventListener(type, wrap, { once: true });
+        wrap.timeout = timeout;
+        if (abortable instanceof AbortController) {
+            wrap.controller = abortable;
+        } else {
+            wrap.controller = abortable ? new GSAbortController(timeout) : null;
+        }
+        wrap.signal = wrap.controller || timeout == 0 ? wrap.controller?.signal : AbortSignal.timeout(timeout); 
+        me.addEventListener(type, wrap, { once: true, signal: wrap.signal });
+        return wrap.controller || wrap.signal;
     }
 
     /**
@@ -70,24 +95,33 @@ export default class GSEvent extends EventTarget {
      * 
      * @param {string} type Event name to be listened
      * @param {object} data  Data to send 
+     * @param {number} delayed Emit event delay in miliseconds
      */
-    emit(type = '', data) {
+    emit(type = '', data, delayed = 0) {
+        const me = this;
+        delayed = GSUtil.asNum(delayed, 0);
+        if (delayed <= 0) return me.#send(type, data);
+        return setTimeout(() => me.#send(type, data), delayed);
+    }
+
+    #send(type = '', data) {     
         const evt = new CustomEvent(type, { detail: data });
         return this.dispatchEvent(evt);
     }
 
     /**
-     * Wait for an event 
+     * Wait for an event using GSPromise wrapper
      * @param {string} type Event name to be listened
+     * @param {AbortSignal} signal Used to abort listener
      * @returns {Event}
-     */
-    wait(type = '') {
-        if (!type) return e('Event undefined!');
-        const me = this;
-        return new Promise((r, e) => {
-            me.once(type, (e) => r(e));
-        });
-    }
+    */
+   wait(type = '', signal) {
+       const me = this;
+       const callback = (resolve, reject) => {
+           me.once(type, resolve);
+        }
+        return new GSPromise(callback, signal).await();
+    }    
 
     listen(type, listener) { this.on(type, listener); }
     unlisten(type, listener) { this.off(type, listener); }
