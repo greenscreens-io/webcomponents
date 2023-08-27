@@ -1,7 +1,7 @@
 import GSLoader from "/webcomponents/modules/base/GSLoader.mjs";
-import GSReadWrite from "/webcomponents/modules/base/GSReadWrite.mjs";
+import GSAbstractReadWrite from "/webcomponents/modules/base/GSAbstractReadWrite.mjs";
 
-class MyStore extends GSReadWrite {
+class MyStore extends GSAbstractReadWrite {
 
     constructor(name) {
         super(name);

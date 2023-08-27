@@ -103,7 +103,59 @@ export default class GSFunction {
         return GSFunction.isFunction(fn) ? fn : null;
     }
 
+    static async #contextualize(fn, context, args) {
+        if (!GSFunction.isFunction(fn)) return;
+        const isAsync = GSFunction.isFunctionAsync(fn);
+        if (isAsync) {
+            return await fn.apply(context, args);
+        } else {
+            return fn.apply(context, args);
+        }
+    }
+
+    /**
+     * Wrap function into a single call - loop first call executed
+     * @param {function} fn 
+     * @param {*} context 
+     * @returns 
+     */
+    static callOnceFifo(fn, context) {
+        let cnt = false;
+        return async (...args) => {
+            if (cnt) return;
+            cnt = true;
+            const own = context || this;
+            return await GSFunction.#contextualize(fn, own, args);
+        }
+    }
+
+    /**
+     * Wrap function into a single call - loop last call executed
+     * @param {*} fn 
+     * @param {*} ctx 
+     * @returns 
+     */
+    static callOnceLifo(fn, context) {
+        let cnt = 0;
+        return (...args) => {
+            if (cnt < 0) return;
+            cnt++;
+            const own = context || this;
+            requestAnimationFrame(async () => {
+                if (cnt <= 0) return;
+                cnt--;
+                if (cnt !== 0) return;
+                try {
+                    await GSFunction.#contextualize(fn, own, args);
+                } finally {
+                    cnt = -1;
+                }
+            });
+        }
+    }
+
     static {
         Object.seal(GSFunction);
+        globalThis.GSFunction = GSFunction;
     }
 }

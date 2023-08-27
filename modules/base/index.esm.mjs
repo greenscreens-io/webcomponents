@@ -30,5 +30,6 @@ export { default as GSQueryCSS } from './GSQueryCSS.mjs';
 export { default as GSQuery } from './GSQuery.mjs';
 export { default as GSTouch } from './GSTouch.mjs';
 
+export { default as GSAbstractReadWrite} from './GSAbstractReadWrite.mjs';
 export { default as GSReadWrite} from './GSReadWrite.mjs';
 export { default as GSReadWriteRegistry} from './GSReadWriteRegistry.mjs';

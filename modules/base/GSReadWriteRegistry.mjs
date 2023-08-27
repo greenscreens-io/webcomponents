@@ -27,7 +27,7 @@ class GSReadWriteRegistryImpl extends GSEvent {
     register(obj) {
         const me = this;
         me.#verify(obj);
-        if (me.#map.has(obj.id)) return;
+        if (me.#map.has(obj.id)) throw new Error('Key already exist in read/write registry!');
         me.#map.set(obj.id, obj);
         me.emit(`register-${obj.id}`, obj);
         me.emit(`register`, obj);
@@ -66,7 +66,7 @@ class GSReadWriteRegistryImpl extends GSEvent {
     }
 
     #verify(obj) {
-        //if (!(obj instanceof GSReadWrite)) throw new Error('Invalid parameter type.');
+        //if (!(obj instanceof GSAbstractReadWrite)) throw new Error('Invalid parameter type.');
     }
 
     static get #self() {

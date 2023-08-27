@@ -3,13 +3,19 @@
 # Development v1.8.0 (TBD)
  - Update WebAdmin demo
  - Update manuals for new classes
- - GSEvent add timeout to wait function
- - GSFormExt add data getter/setter
+ - GSUtil add abortable timeout
+ - GSEvent add abortable to "once", "on", "listen", "wait" functions
+ - GSEvents add abortable to "once", "on", "listen", "wait" function
+ - GSEvents add timeout id to sendDelayed function 
+ - GSFormExt add integration with GSReadWrite
+ - GSStore add integration with GSReadWrite
+ - GSFunction add call once wraper for FIFO / LIFO
  - GSDialog forward open/close data
  - GSDialog alllow deregister \'change\' event monitoring form validity
  - Improved post rendering synchronization between child/parent components
  - Added GSAbortController with timeout support
  - Added GSPromise wrapper with GSAbortController support
+ - Added GSAbstractReadWrite data handler
  - Added GSReadWrite data handler
  - Added GSReadWriteRegistry of data handlers
  - Add demo for dynamic forms

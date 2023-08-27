@@ -15,9 +15,9 @@ import GSData from "../../base/GSData.mjs";
 import GSAttr from "../../base/GSAttr.mjs";
 import GSItem from "../../base/GSItem.mjs";
 import GSDOM from "../../base/GSDOM.mjs";
-import GSLog from "../../base/GSLog.mjs";
 import GSPromise from "../../base/GSPromise.mjs";
 import GSReadWriteRegistry from "../../base/GSReadWriteRegistry.mjs";
+import GSReadWrite from "../../base/GSReadWrite.mjs";
 
 /**
  * Table data handler, pager, loader
@@ -26,20 +26,16 @@ import GSReadWriteRegistry from "../../base/GSReadWriteRegistry.mjs";
  */
 export default class GSStore extends HTMLElement {
 
-    static #MODES = ['rest', 'query', 'quark'];
     #online = false;
-    #src = '';
     #data = [];
 
-    #remote = false;
-    #skip = 0;
-    #limit = 0;
     #page = 1;
 
     #sort = [];
     #filter = [];
     #total = 0;
 
+    #handlerID = '';
     #controller;
     #reader;
 
@@ -67,18 +63,10 @@ export default class GSStore extends HTMLElement {
             return;
         }
 
-        if (GSComponents.hasSetter(me, name)) {
-            me[name] = newValue;
-        }
+        if (name === 'src') return me.#onSrcChange(oldValue, newValue);
+        if (name === 'storage') return me.#onStorageChange(oldValue, newValue);
 
-        if (name === 'src') {
-            me.#data = [];
-            me.reload();
-            return;
-        }
-
-        if (name === 'storage') return me.#onStorage(oldValue, newValue);
-
+        if (GSComponents.hasSetter(me, name)) return me.reload();
     }
 
     /*
@@ -98,6 +86,7 @@ export default class GSStore extends HTMLElement {
         const me = this;
         me.#online = false;
         me.#controller?.abort();
+        GSReadWriteRegistry.find(me.#handlerID)?.disable();
         GSComponents.remove(me);
     }
 
@@ -112,8 +101,8 @@ export default class GSStore extends HTMLElement {
         const me = this;
         const callback = (resolve, reject) => {
             me.once(name, (evt) => resolve(evt.detail));
-         }
-         return new GSPromise(callback, signal).await();
+        }
+        return new GSPromise(callback, signal).await();
     }
 
     /**
@@ -170,86 +159,60 @@ export default class GSStore extends HTMLElement {
     getField(name = '') {
         return this.querySelector(`gs-item[name="${name}"]`);
     }
+    
+    get table() {
+        return GSDOM.closest(this, 'GS-TABLE')
+    }
 
     /**
      * HTTP operational mode
      * rest, query, quark 
      */
     get mode() {
-        const mode = GSAttr.get(this, 'mode', 'query');
-        const isok = GSStore.#MODES.includes(mode);
-        return isok ? mode : 'query';
+        return GSAttr.get(this, 'mode', 'query');
     }
 
     set mode(val = 'query') {
-        const isok = GSStore.#MODES.includes(val);
-        if (isok) return GSAttr.set(this, 'mode', val);
-        GSLog.error(null, `Invalid mode, allowed: ${GSStore.#MODES}`);
+        return GSAttr.set(this, 'mode', val);
     }
-    
-    /**
-     * Call for defined mode
-     * - quark - JSON path to CRUD object; ie. io.greenscreens.CRUD
-     * - rest - url rest format, ie. /${limit}/${skip}?sort=${sort}&filter=${filter}
-     * - query - url format, ie. ?limit=${limit}&skip=${skip}&sort=${sort}&filter=${filter}
-     */
+
     get action() {
-        const me = this;
-        let def = '';
-        switch (me.mode) {
-            case 'query':
-                def = '?limit=${limit}&skip=${skip}&sort=${sort}&filter=${filter}';
-                break;
-            case 'rest':
-                def = '/${limit}/${skip}?sort=${sort}&filter=${filter}';
-                break;
-        }
-        return GSAttr.get(me, 'action', def);
-    }
-
-    get table() {
-        return GSDOM.closest(this, 'GS-TABLE')
-    }
-
-    /**
-     * Generate URL from src and mode type
-     */
-    get url() {
-        const me = this;
-        return me.#toURL(me.src, me.skip, me.limit, me.filter, me.sort);
+        return GSAttr.get(this, 'action');
     }
 
     /**
      * Table data url (JSON)
      */
     get src() {
-        return this.#src;
+        return GSAttr.get(this, 'src', '');
     }
 
     set src(val = '') {
-        const me = this;
-        me.#src = val;
-        me.reload();
+        return GSAttr.set(this, 'src', val);
     }
 
     get limit() {
-        return this.#limit;
+        return GSAttr.getAsNum(this, 'limit', 0);
     }
 
     set limit(val = 0) {
-        const me = this;
-        me.#limit = GSUtil.asNum(val);
-        me.reload();
+        return GSAttr.setAsNum(this, 'limit', val, 0);
     }
 
     get skip() {
-        return this.#skip;
+        return GSAttr.getAsNum(this, 'skip', 0);
     }
 
     set skip(val = 0) {
-        const me = this;
-        me.#skip = GSUtil.asNum(val);
-        me.reload();
+        return GSAttr.setAsNum(this, 'skip', val, 0);
+    }
+
+    get storage() {
+        return GSAttr.get(this, 'storage', '');
+    }
+    
+    set storage(val = '') {
+        return GSAttr.set(this, 'storage', val);
     }
 
     /**
@@ -257,13 +220,11 @@ export default class GSStore extends HTMLElement {
      * if false, data is loaded once and cached
      */
     get remote() {
-        return this.#remote;
+        return GSAttr.getAsBool(this, 'remote', false);
     }
 
     set remote(val = false) {
-        const me = this;
-        me.#remote = GSUtil.asBool(val);
-        me.reload();
+        return GSAttr.setAsBool(this, 'remote', val, false);
     }
 
     /**
@@ -305,31 +266,27 @@ export default class GSStore extends HTMLElement {
         return this.#total || this.#data.length;
     }
 
+    /**
+     * PAGINATION SEGMENT 
+     */
+
     get offset() {
         const me = this;
         return (me.page - 1) * me.limit;
     }
 
-    /**
-     * Current page
-     */
     get page() {
         return this.#page;
     }
 
     set page(val = 1) {
-        if (!GSUtil.isNumber(val)) throw new Error('Numeric value required!');
         const me = this;
-        me.#page = GSUtil.asNum(val < 1 ? 1 : val);
-        me.#page = me.#page > me.pages ? me.pages : me.#page;
-        const skip = me.#limit * (val - 1);
-        me.getData(skip, me.#limit, me.#filter, me.#sort);
+        val = GSUtil.asNum(val, 1);
+        val = Math.min(Math.max(val, 1), Number.MAX_VALUE);
+        val = val > me.pages ? me.pages : val;
+        me.#page = val;
+        me.skip = me.limit * (val - 1);
     }
-
-    get storage() {
-        return GSAttr.get(this, 'storage', '');
-    }
-   
 
     /**
      * Total pages
@@ -337,7 +294,7 @@ export default class GSStore extends HTMLElement {
     get pages() {
         const me = this;
         if (me.total === 0) return 1;
-        return me.limit === 0 ? 1 : Math.ceil(me.total / me.#limit);
+        return me.limit === 0 ? 1 : Math.ceil(me.total / me.limit);
     }
 
     nextPage() {
@@ -356,15 +313,19 @@ export default class GSStore extends HTMLElement {
 
     lastPage() {
         const me = this;
-        me.page = me.#limit === 0 ? 1 : me.pages;
+        me.page = me.limit === 0 ? 1 : me.pages;
         return me.#page;
     }
 
     firstPage() {
         const me = this;
         me.page = 1;
-        return me.#page;
+        return me.page;
     }
+    
+    /*
+     * INTERNAL SEGMENT
+     */
 
     clear() {
         const me = this;
@@ -372,26 +333,10 @@ export default class GSStore extends HTMLElement {
         me.setData();
     }
 
-    async load(val, opt) {
-        const me = this;
-        if (!me.#online) return false;
-        const url = val || me.src;
-        if (url.length === 0) return false;
-        opt = opt || {};
-        opt.headers = opt.headers || {};
-        opt.headers['Content-Type'] = 'application/json; utf-8';
-        opt.headers.Accept = 'application/json';
-        const res = await fetch(url, opt);
-        if (!res.ok) return false;
-        const data = await res.json();
-        me.#update(data);
-        return data;
-    }
-
     #update(data = [], append = false) {
 
         const me = this;
-        
+
         let records = [];
         if (Array.isArray(data)) {
             records = data;
@@ -407,7 +352,7 @@ export default class GSStore extends HTMLElement {
             me.#page = 1;
             me.#data = records;
         }
-        
+
         me.#total = me.#data.length;
     }
 
@@ -423,11 +368,11 @@ export default class GSStore extends HTMLElement {
         sort = me.#formatSort(sort || me.sort);
         let data = [];
 
-        const simple = GSUtil.isString(filter) && GSUtil.isStringNonEmpty(filter);
+        const filtered = me.remote && GSUtil.isString(filter) && GSUtil.isStringNonEmpty(filter);
 
-        if (!simple && me.src && (me.remote || me.data.length == 0)) {
-            const url = me.#toURL(me.src, skip, limit, filter, sort);
-            data = await me.load(url);
+        if (filtered || me.remote || me.data.length == 0) {
+            me.#updateHandler(me.#handler);
+            data = await me.#handler?.read(me);
         }
 
         if (!me.remote) {
@@ -442,18 +387,11 @@ export default class GSStore extends HTMLElement {
         return data;
     }
 
-    reload() {
+    reload(clear = false) {
         const me = this;
         if (!me.#online) return;
+        if (clear) me.#data = [];
         return me.getData(me.skip, me.limit, me.filter, me.sort);
-    }
-
-    #toURL(src, skip, limit, filter, sort) {
-        const me = this;
-        sort = sort ? JSON.stringify(sort) : '';
-        filter = filter ? JSON.stringify(filter) : '';
-        const opt = { limit: limit, skip: skip, sort: encodeURIComponent(sort), filter: encodeURIComponent(filter) };
-        return src + GSUtil.fromLiteral(me.action, opt);
     }
 
     #notify(name = 'data', data) {
@@ -491,24 +429,76 @@ export default class GSStore extends HTMLElement {
         return fields ? fields : Array.from(me.querySelectorAll('gs-item')).map(o => o.name);
     }
 
+    /*
+     * HANDLER SEGMENT 
+     */
 
-    get #handler() {
-        return GSReadWriteRegistry.find(this.storage);
+    #handlerName(name, internal) {
+        const me = this;
+        name = name || me.storage || 'handler';
+        return internal ? `${me.id}-${name}` : name;
     }
 
-    async #onStorage(oldValue, newValue) {
-        if (newValue == oldValue) return;
+    get #handler() {
+        const me = this;
+        const name = me.#handlerName(me.storage, me.src);
+        return GSReadWriteRegistry.find(name);
+    }
+
+    #updateHandler(handler, internal = false) {
+        if (!handler) return;
+        const me = this;
+        if(internal) handler.src = me.src;
+        handler.action = me.action;
+        handler.mode = me.mode;
+        handler.limit = me.limit;
+        handler.filter = me.filter;
+        handler.sort = me.sort;
+    }
+
+    async #initHandler(name, internal = false) {
+        const me = this;
+        if (!internal && GSUtil.isStringEmpty(name)) return me.clear();
+        name = me.#handlerName(name, internal);
+        if (internal) me.#handlerID = GSReadWrite.register(name).id;
+        if (!me.#controller || me.#controller?.signal.aborted) me.#controller = new AbortController();
+        const handler = await GSReadWriteRegistry.wait(name, me.#controller?.signal);
+        GSEvents.attach(me, handler, 'read', me.#reader);
+        me.#updateHandler(handler, internal);
+        await handler?.read(me);
+    }
+
+    #cancelHandler(name, internal = false) {
         const me = this;
         me.#controller?.abort();
-        const old = GSReadWriteRegistry.find(oldValue);
+        name = me.#handlerName(name, internal);
+        const old = GSReadWriteRegistry.find(name);
+        if (internal) old?.disable();
         GSEvents.remove(me, old, 'read', me.#reader);
-        me.#data = [];
-        me.reload();
-        if (!newValue) return;
-        me.#controller = new AbortController();
-        await GSReadWriteRegistry.wait(newValue, me.#controller.signal);
-        GSEvents.attach(me, me.#handler, 'read', me.#reader);
-        await me.#handler?.read(me);
+        me.reload(true);
+    }
+    
+    #onSrcChange(oldValue, newValue) {
+        if (newValue == oldValue) return;
+        const me = this;
+        const oldInternal = GSUtil.isStringNonEmpty(oldValue);
+        const newInternal = GSUtil.isStringNonEmpty(newValue);
+        if (oldInternal != newInternal) {
+            me.#cancelHandler(me.storage, oldInternal);    
+            me.#initHandler(me.storage, newInternal);
+        } else {
+            me.#updateHandler(me.#handler, oldInternal && newInternal);
+            me.#handler?.read(me);
+        }
+    }
+
+    #onStorageChange(oldValue, newValue) {
+        if (newValue == oldValue) return;
+        const me = this;
+        const oldInternal = oldValue && this.src;
+        const newInternal = newValue && this.src;
+        me.#cancelHandler(oldValue, oldInternal);
+        me.#initHandler(newValue, newInternal);
     }
 
     #onRead(e) {
@@ -516,5 +506,3 @@ export default class GSStore extends HTMLElement {
     }
 
 }
-
-

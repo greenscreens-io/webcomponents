@@ -262,10 +262,10 @@ export default class GSEvents {
 	 * @param {boolean} bubbles Send event to parent
 	 * @param {boolean} composed Send event across shadowDom
 	 * @param {boolean} cancelable Event is cancelable
-	 * @returns {void} 
+	 * @returns {number} setTimeout id for cancelation
 	 */
 	static sendDelayed(timeout = 1, sender = document, name, obj = '', bubbles = false, composed = false, cancelable = false) {
-		setTimeout(() => GSEvents.send(sender, name, obj, bubbles, composed, cancelable), timeout);
+		return setTimeout(() => GSEvents.send(sender, name, obj, bubbles, composed, cancelable), timeout);
 	}
 
 	/**

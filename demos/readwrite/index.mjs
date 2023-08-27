@@ -1,6 +1,6 @@
 import GSAbortController from "../../modules/base/GSAbortController.mjs";
 import GSReadWriteRegistry from "../../modules/base/GSReadWriteRegistry.mjs";
-import GSReadWriteRest from "../../modules/base/GSReadWriteRest.mjs";
+import GSReadWrite from "../../modules/base/GSReadWrite.mjs";
 
 // emit event delayed to 2 sec.
 async function test1() {
@@ -31,7 +31,7 @@ async function test4() {
 
 // test REST reader
 async function test5() {
-    const rest = new GSReadWriteRest('myrest');
+    const rest = new GSReadWrite('myrest');
     rest.src = '../form/data.json';
     const r = await rest.read();
     console.log('test5', r);

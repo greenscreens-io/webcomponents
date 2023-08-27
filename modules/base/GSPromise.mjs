@@ -83,4 +83,8 @@ export default class GSPromise {
         const me = this;
         me.#signal?.removeEventListener('abort', me.#callbacks.abort);
     }
+
+    static {
+        globalThis.GSPromise = GSPromise;
+    }
 }

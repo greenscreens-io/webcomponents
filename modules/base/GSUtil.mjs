@@ -185,8 +185,7 @@ export default class GSUtil {
 	 * @returns {boolean}
 	 */
 	static isStringEmpty(val = '') {
-		if (GSUtil.isString(val)) return val.trim().length === 0;
-		return false;
+		return GSUtil.normalize(val).trim().length === 0;
 	}
 
 	/**
@@ -210,11 +209,19 @@ export default class GSUtil {
 	 * 
 	 * @async
 	 * @param {number} time 
+	 * @param {number|AbortSignal} signal Abort object
 	 * @returns {Promise<void>}
 	 */
-	static async timeout(time = 0) {
-		return new Promise((r) => {
-			setTimeout(r.bind(null, true), time);
+	static async timeout(time = 0, signal) {
+        signal = GSUtil.isNumber(signal) ? AbortSignal.timeout(signal) : signal;
+		return new Promise((resolve, reject) => {
+			const iid = setTimeout(resolve.bind(null, true), time);
+			if(signal instanceof AbortSignal) {
+				signal.addEventListener('abort', () => {
+					clearTimeout(iid);
+					reject(new Error('aborted timeout'));
+				});
+			}
 		});
 	}
 
