@@ -50,7 +50,7 @@ export default class GSTimeFormat extends GSElement {
         const date = new Date();
         const src = date.toLocaleTimeString(me.locale);
         GSDOM.setHTML(me.self, src);
-        GSEvents.send(me, 'time', { date }, true, true);
+        me.emit('time', { date }, true, true);
         return 0;
     }
 

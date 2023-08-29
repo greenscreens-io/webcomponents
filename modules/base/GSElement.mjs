@@ -409,6 +409,18 @@ export default class GSElement extends HTMLElement {
 	}
 
 	/**
+	 * Send event
+	 * @param {*} name 
+	 * @param {*} obj 
+	 * @param {*} bubbles 
+	 * @param {*} composed 
+	 * @param {*} cancelable 
+	 */
+	emit(name, obj = '', bubbles = false, composed = false, cancelable = false) {
+		GSEvents.send(this, name, obj, bubbles, composed, cancelable);
+	}
+
+	/**
 	 * Wait for event to happen
 	 * @async
 	 * @param {string} name 
@@ -589,7 +601,7 @@ export default class GSElement extends HTMLElement {
 		await me.onBeforeReady();
 		try {
 			GSFunction.callFunction(me.onready);
-			GSEvents.send(me, 'ready');
+			me.emit(me, 'ready');
 			GSEvents.send(document.body, 'componentready', me);
 		} finally {
 			me.onReady();

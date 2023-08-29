@@ -51,7 +51,7 @@ export default class GSAlert extends GSElement {
 
     #onClick(e) {
         const me = this;
-        GSEvents.send(me, 'action', { type: 'alert', source: e }, true);
+        me.emit('action', { type: 'alert', source: e }, true);
         me.dismiss();
     }
 

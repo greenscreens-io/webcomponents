@@ -46,7 +46,7 @@ export default class GSModal extends GSElement {
         me.#hideEL('.modal-backdrop');
         me.normal();
       }
-      GSEvents.send(me, 'visible', { type: 'modal', ok: me.visible }, true, true);
+      me.emit('visible', { type: 'modal', ok: me.visible }, true, true);
     }
   }
 
@@ -66,7 +66,7 @@ export default class GSModal extends GSElement {
     const data = e.detail.data;
     const isValid = e.detail.valid;
     const msg = isValid ? 'data' : 'error';
-    const sts = GSEvents.send(me, msg, { type: 'modal', data: data, evt: e }, true, true, true);
+    const sts = me.emit(msg, { type: 'modal', data: data, evt: e }, true, true, true);
     if (isValid && sts) me.close();
   }
 
@@ -83,7 +83,7 @@ export default class GSModal extends GSElement {
     const action = me.#isAcceptedAction(e);
     if (!action) return;
     const isOk = action === 'ok';
-    GSEvents.send(me, 'action', { action: action, ok: isOk, evt: e }, true, true, true);
+    me.emit('action', { action: action, ok: isOk, evt: e }, true, true, true);
   }
 
   // monitor action events
@@ -204,7 +204,7 @@ export default class GSModal extends GSElement {
   open(e) {
     GSEvents.prevent(e);
     const me = this;
-    const sts = GSEvents.send(me, 'open', { type: 'modal' }, true, true, true);
+    const sts = me.emit('open', { type: 'modal' }, true, true, true);
     if (sts) me.visible = true;
   }
 
@@ -214,7 +214,7 @@ export default class GSModal extends GSElement {
   close(e, ok = false) {
     GSEvents.prevent(e);
     const me = this;
-    const sts = GSEvents.send(me, 'close', { type: 'modal', isOk: ok }, true, true, true);
+    const sts = me.emit('close', { type: 'modal', isOk: ok }, true, true, true);
     if (sts) me.visible = false;
   }
 

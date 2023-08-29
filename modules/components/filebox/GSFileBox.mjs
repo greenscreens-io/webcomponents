@@ -261,10 +261,10 @@ export default class GSFileBox extends GSElement {
             ? await GSAttachment.traverse(transferred, me.directory)
             : GSAttachment.from(transferred);
 
-        const accepted = GSEvents.send(me, 'accept', { attachments }, true, false, true);
+        const accepted = me.emit('accept', { attachments }, true, false, true);
         if (accepted && attachments.length) {
             me.#accept(attachments);
-            GSEvents.send(me, 'accepted', { attachments }, true);
+            me.emit('accepted', { attachments }, true);
         }
     }
 

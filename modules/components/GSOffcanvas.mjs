@@ -63,7 +63,7 @@ export default class GSOffcanvas extends GSElement {
   attributeCallback(name = '', oldValue = '', newValue = '') {
     const me = this;
     me.#update(name, oldValue, newValue);
-    if (name === 'expanded') GSEvents.send(me, 'action', { type: 'offcanvas', ok: GSUtil.asBool(newValue) });
+    if (name === 'expanded') me.emit('action', { type: 'offcanvas', ok: GSUtil.asBool(newValue) });
   }
 
   async getTemplate(val = '') {

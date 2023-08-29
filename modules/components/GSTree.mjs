@@ -204,7 +204,7 @@ export default class GSTree extends GSElement {
         me.#select(el, true);
         const a = me.#selected.querySelector('a');
         a?.focus();
-        GSEvents.send(me, 'select', me.#selected);
+        me.emit('select', me.#selected);
         const action = a?.dataset?.action;
         if (!action) return;
         const data = {type: 'tree', action:action, data:el, evt: e}
@@ -239,7 +239,7 @@ export default class GSTree extends GSElement {
                 el = el.nextElementSibling;
             }
         });
-        GSEvents.send(me, sts ? 'open' : 'close', me.#selected);
+        me.emit(sts ? 'open' : 'close', me.#selected);
     }
 
     #toggleIcon(el, expand) {

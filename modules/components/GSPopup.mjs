@@ -242,7 +242,7 @@ export default class GSPopup extends GSElement {
         if (e instanceof Event) {
             GSEvents.prevent(e);
             const opt = { type: 'popup', option: e.target, caller: me.#caller, data: null };
-            GSEvents.send(me, 'action', opt, true, true);
+            me.emit('action', opt, true, true);
         }
     }
 
@@ -370,7 +370,7 @@ export default class GSPopup extends GSElement {
         let sts = me.#validateCaller(e, e.target, 'submit', 'GS-POPUP');
         if (!sts) return;
         GSEvents.prevent(e);
-        sts = GSEvents.send(me, 'data', { type: 'popup', data: e.detail.data, evt: e }, true, true, true);
+        sts = me.emit('data', { type: 'popup', data: e.detail.data, evt: e }, true, true, true);
         if (sts) me.close();
     }
 

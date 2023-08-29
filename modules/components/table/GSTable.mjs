@@ -377,7 +377,7 @@ export default class GSTable extends GSElement {
         o.data = [...me.#selected];
         o.type = 'table';
         //const opt = { action: data.data.action, data: me.#selected };
-        //GSEvents.send(me, 'action', opt, true, true, true);
+        //me.emit('action', opt, true, true, true);
     }
 
     #onRowSelect(data) {
@@ -389,19 +389,19 @@ export default class GSTable extends GSElement {
             if (rec) me.#selected.push(rec);
         });
         if (me.contextMenu) me.contextMenu.disabled = data.data?.length === 0;
-        GSEvents.send(me, 'selected', { data: me.#selected, evt: data.evt });
+        me.emit('selected', { data: me.#selected, evt: data.evt });
     }
 
     #onColumnSort(data) {
         const me = this;
         me.store.sort = data || [];
-        GSEvents.send(me, 'sort', me.store.sort);
+        me.emit('sort', me.store.sort);
     }
 
     #onColumnFilter(data) {
         const me = this;
         me.store.filter = data || [];
-        GSEvents.send(me, 'filter', me.store.filter);
+        me.emit('filter', me.store.filter);
     }
 }
 

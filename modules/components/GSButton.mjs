@@ -42,7 +42,7 @@ export default class GSButton extends GSElement {
     #onClick(e) {
         const me = this;
         if (me.disable) return false;
-        GSEvents.send(me, 'action', { type: 'button', action: me.action, source: e }, true, true, true);
+        me.emit('action', { type: 'button', action: me.action, source: e }, true, true, true);
         if (me.active) {
             me.#state = !me.#state;
             GSDOM.toggleClass(me.firstElementChild, 'active', me.#state);

@@ -50,6 +50,10 @@ export default class GSDialog extends GSElement {
     return GSDialog.#STACK[GSDialog.#STACK.length - 1];
   }
 
+  constructor() {
+    super();
+  }
+
   disconnectedCallback() {
     super.disconnectedCallback();
     GSDialog.#updateStack();
@@ -63,14 +67,14 @@ export default class GSDialog extends GSElement {
         if (!me.#dialog.open) {
           me.#dialog.showModal();
           GSDialog.#STACK.push(me);
-          GSEvents.send(me, 'change');
+          me.emit('change');
         }
         me.focusable()?.focus();
       } else {
         me.#dialog?.close();
         GSDialog.#STACK.pop();
       }
-      GSEvents.send(me, 'visible', { type: 'dialog', ok: me.visible }, true, true);
+      me.emit('visible', { type: 'dialog', ok: me.visible }, true, true);
     }
   }
 
@@ -106,7 +110,7 @@ export default class GSDialog extends GSElement {
     }
     const isValid = e.detail.valid;
     const msg = isValid ? 'data' : 'error';
-    const sts = GSEvents.send(me, msg, { type: 'dialog', data: data, evt: e }, true, true, true);
+    const sts = me.emit(msg, { type: 'dialog', data: data, evt: e }, true, true, true);
     if (isValid && sts) me.close();
   }
 
@@ -133,7 +137,7 @@ export default class GSDialog extends GSElement {
     const action = me.#isAcceptedAction(e);
     if (!action) return;
     const isOk = action === 'ok';
-    GSEvents.send(me, 'action', { action: action, ok: isOk, evt: e }, true, true, true);
+    me.emit('action', { action: action, ok: isOk, evt: e }, true, true, true);
   }
 
   // monitor action events
@@ -217,7 +221,7 @@ export default class GSDialog extends GSElement {
   open(e) {
     GSEvents.prevent(e);
     const me = this;
-    const sts = GSEvents.send(me, 'open', { type: 'dialog', isOk: true, data : e }, true, true, true);    
+    const sts = me.emit('open', { type: 'dialog', isOk: true, data : e }, true, true, true);    
     if (sts) me.visible = true;
   }
 
@@ -227,7 +231,7 @@ export default class GSDialog extends GSElement {
   close(e, ok = false) {
     GSEvents.prevent(e);
     const me = this;
-    const sts = GSEvents.send(me, 'close', { type: 'dialog', isOk: ok, data : e }, true, true, true);    
+    const sts = me.emit('close', { type: 'dialog', isOk: ok, data : e }, true, true, true);    
     if (sts) me.visible = false;
   }
 

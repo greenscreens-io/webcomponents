@@ -8,6 +8,7 @@
  */
 import { GSAttr, GSComponents, GSDOM, GSEvents, GSLoader, GSDialog } from '/webcomponents/release/esm/io.greenscreens.components.all.esm.min.js';
 import Utils from '../utils/Utils.mjs';
+import GSUtil from '../../../../modules/base/GSUtil.mjs';
 
 export default class GSAdminDialog extends GSDialog {
 
@@ -86,6 +87,10 @@ export default class GSAdminDialog extends GSDialog {
         return GSDOM.query(this, 'form');
     }
 
+    get forms() {
+        return GSDOM.queryAll(this, 'form');
+    }
+
     /**
      * Override parent class method
      * @param {*} data 
@@ -133,10 +138,11 @@ export default class GSAdminDialog extends GSDialog {
      * Update dialog forms 
      */
     #update(data) {
-        if (typeof data == 'object') {
+        if (GSUtil.isJson(data)) {
             const me = this;
-            GSDOM.queryAll(me, 'form').forEach(form => { form.reset(); form.data = data; });
-            GSEvents.send(me, 'change');
+            me.forms.forEach(form => { form.reset(); form.data = data; });
+            me.emit
+            me.emit('change');
         }
     }
 
