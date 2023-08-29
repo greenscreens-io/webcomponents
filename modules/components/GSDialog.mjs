@@ -12,6 +12,7 @@ import GSAttr from "../base/GSAttr.mjs";
 import GSDOM from "../base/GSDOM.mjs";
 import GSElement from "../base/GSElement.mjs";
 import GSEvents from "../base/GSEvents.mjs";
+import GSLog from "../base/GSLog.mjs";
 
 /**
  * Native dialog with Bootstrap support
@@ -221,7 +222,9 @@ export default class GSDialog extends GSElement {
   open(e) {
     GSEvents.prevent(e);
     const me = this;
-    const sts = me.emit('open', { type: 'dialog', isOk: true, data : e }, true, true, true);    
+    const o = { type: 'dialog', isOk: true, data : e };
+    const sts = me.emit('open', o, true, true, true);    
+    if (GSLog.trace(me, `Dialog open status : ${sts}; ${JSON.stringify(o)}`));
     if (sts) me.visible = true;
   }
 
@@ -231,7 +234,9 @@ export default class GSDialog extends GSElement {
   close(e, ok = false) {
     GSEvents.prevent(e);
     const me = this;
-    const sts = me.emit('close', { type: 'dialog', isOk: ok, data : e }, true, true, true);    
+    const o = { type: 'dialog', isOk: ok, data : e };
+    const sts = me.emit('close', o, true, true, true);    
+    if (GSLog.trace(me, `Dialog close status : ${sts}; ${JSON.stringify(o)}`));
     if (sts) me.visible = false;
   }
 

@@ -23,10 +23,10 @@ export default class GSNetwork extends GSAsbtractDialog {
         return 'Netowrk Options';
     }
 
-    async onOpen() {
+    async onFormInit(form) {
         const o = DEMO ? DEMO : await io.greenscreens.Server.getInterface();
         o.data.restart = o.data.restart ? '1' : '0';
-        return o.data;
+        super.onFormInit(form, o.data);
     }
 
     async onData(data) {

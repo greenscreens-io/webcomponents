@@ -28,9 +28,9 @@ export default class GSSystem extends GSAsbtractDialog {
         return 'System Options';
     }
 
-    async onOpen() {
+    async onFormInit(form) {
         const o = DEMO ? DEMO : await io.greenscreens.Server.getConfig();
-        return o.data;
+        super.onFormInit(form, o.data);
     }
 
     async onData(data) {

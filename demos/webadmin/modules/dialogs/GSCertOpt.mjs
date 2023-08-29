@@ -29,10 +29,14 @@ export default class GSCertOpt extends GSAsbtractDialog {
         return 'Certificate Options';
     }
 
-    async onOpen() {
-        if(DEMO)  return await GSLoader.loadSafe('./data/cert.json', 'GET', null, true);
-        const o = DEMO ? DEMO : await io.greenscreens.Certificate.loadConfig();
-        return o.data;
+    async onFormInit(form, data) {
+        if(DEMO)  {
+            data = await GSLoader.loadSafe('./data/cert.json', 'GET', null, true);            
+        } else {
+            data = await io.greenscreens.Certificate.loadConfig();
+            data = data.data;
+        }
+        super.onFormInit(form, data);
     }
 
     async onData(data) {

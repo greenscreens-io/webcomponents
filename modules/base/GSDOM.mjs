@@ -663,7 +663,7 @@ export default class GSDOM {
 	 */
 	static fromObject(owner, obj, qry = 'input, textarea, select') {
 		obj = GSUtil.toJson(obj);
-		if (Object.entries(o).length === 0) return;
+		if (Object.entries(obj).length === 0) return;
 		const root = GSDOM.unwrap(owner);
 		const list = GSDOM.queryAll(root, qry); // root.querySelectorAll(qry);
 		Array.from(list)

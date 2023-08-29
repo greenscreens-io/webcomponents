@@ -28,9 +28,9 @@ export default class GSKerberos extends GSAsbtractDialog {
         return 'SSO Options';
     }
 
-    async onOpen() {
+    async onFormInit(form) {
         const o = DEMO ? DEMO : await io.greenscreens.Kerberos.load();
-        return o.data;
+        super.onFormInit(form, o.data);
     }
 
     async onData(data) {

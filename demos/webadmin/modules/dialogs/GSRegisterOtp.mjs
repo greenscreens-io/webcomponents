@@ -51,13 +51,16 @@ export default class GSRegisterOtp extends GSAsbtractDialog {
         return `${location.origin}${GSRegisterOtp.#URL}${b64}`;
     }
 
-    async onOpen() {
-        const me = this;
-        if (DEMO) return Utils.inform(false, 'Nota available in DEMO!');
+    async onFormInit(form) {
+        if (DEMO) return
         const o = await io.greenscreens.OAuth.register();
         me.#download(o.data);
         me.#update(o.data);
-        return o.data;
+        super.onFormInit(form, o.data);
+    }
+
+    async onOpen() {
+        if (DEMO) return Utils.inform(false, 'Not available in DEMO!');
     }
 
     async onData() {

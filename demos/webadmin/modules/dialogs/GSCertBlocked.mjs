@@ -23,11 +23,11 @@ export default class GSCertBlocked extends GSAsbtractDialog {
         return 'Blocked Certificates';
     }
 
-    async onOpen() {
+    async onFormInit(form) {
         const o = DEMO ? DEMO : await io.greenscreens.Server.getBlocked();
-        return { list: o.msg };
+        super.onFormInit(form, { list: o.msg });
     }
-
+    
     async onData(data) {
         const o = DEMO ? DEMO : await io.greenscreens.Server.setBlocked(data.list);
         return o.success;

@@ -23,9 +23,9 @@ export default class GSOtpOptions extends GSAsbtractDialog {
         return 'OTP Options';
     }
 
-    async onOpen() {
+    async onFormInit(form) {
         const o = DEMO ? DEMO : await io.greenscreens.Server.getOtp();
-        return o.data;
+        super.onFormInit(form, o.data);
     }
 
     async onData(data) {

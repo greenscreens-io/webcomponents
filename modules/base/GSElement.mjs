@@ -397,7 +397,7 @@ export default class GSElement extends HTMLElement {
 	 * @param {boolean} orientation 
 	 */
 	hide(orientation = false) {
-		GSDOM.hide(this, orientation);
+		return GSDOM.hide(this, orientation);
 	}
 
 	/**
@@ -405,7 +405,7 @@ export default class GSElement extends HTMLElement {
 	 * @param {boolean} orientation 
 	 */
 	show(orientation = false) {
-		GSDOM.show(this, orientation);
+		return GSDOM.show(this, orientation);
 	}
 
 	/**
@@ -417,7 +417,7 @@ export default class GSElement extends HTMLElement {
 	 * @param {*} cancelable 
 	 */
 	emit(name, obj = '', bubbles = false, composed = false, cancelable = false) {
-		GSEvents.send(this, name, obj, bubbles, composed, cancelable);
+		return GSEvents.send(this, name, obj, bubbles, composed, cancelable);
 	}
 
 	/**

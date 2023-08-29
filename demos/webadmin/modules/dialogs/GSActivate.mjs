@@ -26,8 +26,10 @@ export default class GSActivate extends GSAsbtractDialog {
         return 'Add license key to the IBM i server';
     }
 
-    async onOpen(data) {
-        return { ipAddress: data?.ipAddress || '' };
+    async onFormInit(form, data) {
+        data = data || form?.data;
+        data = { ipAddress: data?.ipAddress || '' };
+        super.onFormInit(form, data);
     }
 
     async onData(data) {

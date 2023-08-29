@@ -17,6 +17,7 @@ export default class GSLog {
 	 * static flag is loging enabled or disabled
 	 */
 	static logging = true;
+	static tracing = false;
 
 	/**
 	 * Log info message
@@ -43,6 +44,15 @@ export default class GSLog {
 	 */
 	static error(el, msg) {
 		this.#print(el, msg, true, 'error');
+	}
+
+	/**
+	 * Debug messages only if tracing flag enabled
+	 * @param {*} el 
+	 * @param {*} msg 
+	 */
+	static trace(el, msg) {
+		if (GSLog.tracing) this.#print(el, msg, false, 'error');
 	}
 
 	/**

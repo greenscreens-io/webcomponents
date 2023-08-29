@@ -96,8 +96,7 @@ export default class GSAsbtractDialog extends GSDialog {
      * @param {*} data 
      */
     open(data) {
-        const me = this;
-        me.form?.reset();
+        const me = this;        
         me.#update(data);
         super.open(data);
     }
@@ -107,7 +106,7 @@ export default class GSAsbtractDialog extends GSDialog {
      * @returns {*}
      */
     async onOpen(data) {
-        return data;
+        return data ||true;
     }
 
     /**
@@ -118,19 +117,12 @@ export default class GSAsbtractDialog extends GSDialog {
         return true;
     }
 
-    async onFormInit(form, data) {
-        const me = this;
-        form = me.form;
-        data = await me.onOpen(data);
-        super.onFormInit(form, data);
-    }
-
     /**
      * On dialog open, get data, if not ok, return false, cancel events
      */
     async #onOpen(e) {
         const me = this;
-        const data = await me.onOpen(me.form.data);
+        const data = await me.onOpen(me.form?.data);
         data === false ? GSEvents.prevent(e) : me.#update(data);
     }
 
@@ -141,7 +133,6 @@ export default class GSAsbtractDialog extends GSDialog {
         if (GSUtil.isJson(data)) {
             const me = this;
             me.forms.forEach(form => { form.reset(); form.data = data; });
-            me.emit
             me.emit('change');
         }
     }

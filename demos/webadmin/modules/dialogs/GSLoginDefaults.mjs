@@ -23,10 +23,10 @@ export default class GSLoginDefaults extends GSAsbtractDialog {
         return 'Login Defaults';
     }
 
-    async onOpen() {
+    async onFormInit(form) {
         const o = DEMO ? DEMO : await io.greenscreens.Server.getDefaults();
         delete o.data.password;
-        return o.data;
+        super.onFormInit(form, o.data);
     }
 
     async onData(data) {
