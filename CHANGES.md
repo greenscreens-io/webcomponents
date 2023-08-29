@@ -7,6 +7,9 @@
  - GSEvents add abortable to "once", "on", "listen", "wait" function
  - GSEvents add timeout id to sendDelayed function 
  - GSFormExt add integration with GSReadWrite
+ - GSFormExt auto convert standard form to GSFormExt
+ - GSFormExt improve form element initialization handling
+ - GSInputExt add initialization notification events 
  - GSFunction add call once wraper for FIFO / LIFO
  - GSStore add integration with GSReadWrite
  - GSStore add LIFO data read
