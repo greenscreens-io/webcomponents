@@ -1,24 +1,26 @@
 # [WebComponents](https://webcomponents.greenscreens.ltd/) for [Bootstrap 5.2.0+](https://getbootstrap.com/)
 
 # Development v1.8.0 (TBD)
- - Update WebAdmin demo
- - Update manuals for new classes
- - GSUtil add abortable timeout
+ - GSDialog forward open/close data
+ - GSDialog alllow deregister \'change\' event monitoring form validity
  - GSEvent add abortable to "once", "on", "listen", "wait" functions
  - GSEvents add abortable to "once", "on", "listen", "wait" function
  - GSEvents add timeout id to sendDelayed function 
  - GSFormExt add integration with GSReadWrite
- - GSStore add integration with GSReadWrite
  - GSFunction add call once wraper for FIFO / LIFO
- - GSDialog forward open/close data
- - GSDialog alllow deregister \'change\' event monitoring form validity
- - Improved post rendering synchronization between child/parent components
+ - GSStore add integration with GSReadWrite
+ - GSStore add LIFO data read
+ - GSUtil add abortable timeout
+ - GSUtil refactored waitAnimationFrame to GSEvents
  - Added GSAbortController with timeout support
  - Added GSPromise wrapper with GSAbortController support
  - Added GSAbstractReadWrite data handler
  - Added GSReadWrite data handler
  - Added GSReadWriteRegistry of data handlers
+ - Added data-gs-ignore attribute to prevent automatic element conversion
  - Add demo for dynamic forms
+ - Update WebAdmin demo
+ - Update manuals for new classes
 
 # Release v1.7.1 (15.08.2023.)
  - GSPopup improvement

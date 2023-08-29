@@ -2,6 +2,8 @@
  * Copyright (C) 2015, 2022 Green Screens Ltd.
  */
 
+import GSLog from "./GSLog.mjs";
+
 /**
  * A module loading GSDOMObserver class
  * @module base/GSDOMObserver

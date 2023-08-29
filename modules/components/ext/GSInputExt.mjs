@@ -14,6 +14,7 @@ import GSAttr from "../../base/GSAttr.mjs";
 import GSDOM from "../../base/GSDOM.mjs";
 import GSUtil from "../../base/GSUtil.mjs";
 import GSCSSMap from "../../base/GSCSSMap.mjs";
+import GSDOMObserver from "../../base/GSDOMObserver.mjs";
 
 /**
  * Add custom field processing
@@ -42,6 +43,15 @@ export default class GSInputExt extends HTMLInputElement {
     static {
         customElements.define('gs-ext-input', GSInputExt, { extends: 'input' });
         Object.seal(GSInputExt);
+        GSDOMObserver.registerFilter(GSInputExt.#onMonitorFilter, GSInputExt.#onMonitorResult);
+    }
+
+    static #onMonitorFilter(el) {
+        return GSDOM.isFormElement(el);
+    }
+
+    static #onMonitorResult(el) {
+        GSEvents.send(el, 'form-field', el, true, true, true);
     }
 
     constructor() {
@@ -190,7 +200,7 @@ export default class GSInputExt extends HTMLInputElement {
     #togleEl(el, key = '', value = '') {
         const data = GSAttr.get(el, `data-${key}`, '').split(/[,;;]/);
         const isMatch = value.length > 0 && data.includes(value);
-        const frmel = GSDOM.isFormElement(el.tagName);
+        const frmel = GSDOM.isFormElement(el) || GSDOM.isButtonElement(el);
         if (frmel) {
             GSAttr.toggle(el, 'disabled', !isMatch);
         } else {

@@ -5,6 +5,7 @@
 import "./ext/index.mjs";
 import "./intl/index.mjs";
 
+import "./GSDataHandler.mjs";
 import "./GSAccordion.mjs";
 import "./GSAlert.mjs";
 import "./GSButton.mjs";

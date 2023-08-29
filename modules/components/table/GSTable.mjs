@@ -100,25 +100,27 @@ export default class GSTable extends GSElement {
 
         const store = me.store;
         if (!store) {
-            const dataID = GSAttr.get('data');
+            const dataID = GSAttr.get(me, 'data');
             me.#store = await GSComponents.waitFor(dataID);
         }
 
         if (me.contextMenu) me.contextMenu.disabled = true;
-
-        me.attachEvent(me.self, 'sort', e => me.#onColumnSort(e.detail));
-        me.attachEvent(me.self, 'filter', e => me.#onColumnFilter(e.detail));
-        me.attachEvent(me.self, 'select', e => me.#onRowSelect(e.detail));
-        me.attachEvent(me.self, 'action', e => me.#onContextMenu(e));
-        me.attachEvent(me, 'data', e => me.#onData(e));
-        me.attachEvent(window, 'resize', () => me.resize());
         
         await super.onBeforeReady();
 	}
     
     async onReady() {
         const me = this;
-        requestAnimationFrame(() => me.store.page = 1);
+        me.#processData();
+        requestAnimationFrame(() => {
+            me.attachEvent(me.self, 'sort', e => me.#onColumnSort(e.detail));
+            me.attachEvent(me.self, 'filter', e => me.#onColumnFilter(e.detail));
+            me.attachEvent(me.self, 'select', e => me.#onRowSelect(e.detail));
+            me.attachEvent(me.self, 'action', e => me.#onContextMenu(e));
+            me.attachEvent(me, 'data', e => me.#onData(e));
+            me.attachEvent(window, 'resize', () => me.resize());
+            me.store.page = 1
+        });
         super.onReady();
     }
 
@@ -264,7 +266,8 @@ export default class GSTable extends GSElement {
         GSEvents.sendDelayed(10, me.self, 'data', e.detail);
     }
 
-    #processData(data) {
+    #processData(data = []) {
+        if (!Array.isArray(data)) throw new Error('Received data is not JSON array!');
         const me = this;
         me.#data = data;
         me.#selected = [];

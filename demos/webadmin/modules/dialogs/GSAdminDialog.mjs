@@ -27,31 +27,36 @@ export default class GSAdminDialog extends GSDialog {
         return '';
     }
 
-	/**
-	 * Override GSDialog method, to attach UI slot
-	 */
-	async onBeforeReady() {
+    /**
+     * Override GSDialog method, to attach UI slot
+     */
+    async onBeforeReady() {
 
-		await super.onBeforeReady();
-		const me = this;
+        await super.onBeforeReady();
+        const me = this;
 
         me.on('data', me.#onFormData.bind(me));
         me.on('error', me.#onFormError.bind(me));
-		me.on('open', me.#onOpen.bind(me));
+        // me.on('open', me.#onOpen.bind(me));
 
-		const tpl = await GSLoader.getTemplate(me.dialogTemplate);
-		await GSEvents.waitAnimationFrame(async () => {
-			GSDOM.setHTML(me, tpl);
-			me.title = me.dialogTitle;
-			await GSUtil.timeout(200);
-		});
-	}
+        const tpl = await GSLoader.getTemplate(me.dialogTemplate);
+        GSDOM.setHTML(me, tpl);
+        me.title = me.dialogTitle;
 
-	onReady() {
-		const me = this;
-		if (me.auto) me.open();
-		super.onReady();
-	}
+        /*
+        await GSEvents.waitAnimationFrame(async () => {
+            GSDOM.setHTML(me, tpl);
+            me.title = me.dialogTitle;
+            //await GSUtil.timeout(200);
+        });
+        */
+    }
+
+    onReady() {
+        const me = this;
+        if (me.auto) me.open();
+        super.onReady();
+    }
 
     /**
      * Should auto open
@@ -85,12 +90,12 @@ export default class GSAdminDialog extends GSDialog {
      * Override parent class method
      * @param {*} data 
      */
-	open(data) {
-		const me = this;
-		me.form?.reset();
-		me.#update(data);
-		super.open(data);
-	}
+    open(data) {
+        const me = this;
+        me.form?.reset();
+        me.#update(data);
+        super.open(data);
+    }
 
     /**
      * Used by inherited dialogs to load data into dialog forms
@@ -108,43 +113,50 @@ export default class GSAdminDialog extends GSDialog {
         return true;
     }
 
-	/**
-	 * On dialog open, get data, if not ok, return false, cancel events
-	 */
-	async #onOpen(e) {
-		const me = this;
-		const data = await me.onOpen(GSDOM.toObject(me.form));		
-		data === false ? GSEvents.prevent(e) : me.#update(data);
-	}
+    async onFormInit(form, data) {
+        const me = this;
+        form = me.form;
+        data = await this.onOpen(data);
+        super.onFormInit(form, data);
+    }
 
-	/**
-	 * Update dialog forms 
-	 */
-	#update(data) {
-		if (typeof data == 'object') {
-			const me = this;
-			GSDOM.queryAll(me, 'form').forEach(form => GSDOM.fromObject(form, data));
-			GSEvents.send(me, 'change');
-		}
-	}
-   
+    /**
+     * On dialog open, get data, if not ok, return false, cancel events
+     */
+    async #onOpen(e) {
+        const me = this;
+        const data = await me.onOpen(me.form.data);
+        data === false ? GSEvents.prevent(e) : me.#update(data);
+    }
+
+    /**
+     * Update dialog forms 
+     */
+    #update(data) {
+        if (typeof data == 'object') {
+            const me = this;
+            GSDOM.queryAll(me, 'form').forEach(form => { form.reset(); form.data = data; });
+            GSEvents.send(me, 'change');
+        }
+    }
+
     #onFormError(e) {
-        Utils.inform(false, 'Some fields are invalid!');        
+        Utils.inform(false, 'Some fields are invalid!');
     }
 
     async #onFormData(e) {
         GSEvents.prevent(e);
         const me = this;
-        let sts = false; 
+        let sts = false;
         try {
-			me.disable();
+            me.disable();
             sts = await me.onData(e.detail.data);
         } catch (e) {
             Utils.handleError(e);
         } finally {
-			me.enable();
-			if (sts) me.close();
-		}
+            me.enable();
+            if (sts) me.close();
+        }
     }
 
     onError(e) {

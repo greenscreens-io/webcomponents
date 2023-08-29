@@ -84,6 +84,7 @@ export default class GSFunction {
      * @returns {object}
      */
     static async callFunction(fn, owner, native = true) {
+        fn = GSUtil.isString(fn) ? GSFunction.parseFunction(fn) : fn;
         if (!GSFunction.isFunction(fn)) return;
         if (!native && GSFunction.isFunctionNative(fn)) return;
         if (GSFunction.isFunctionAsync(fn)) {
@@ -141,15 +142,20 @@ export default class GSFunction {
             if (cnt < 0) return;
             cnt++;
             const own = context || this;
-            requestAnimationFrame(async () => {
-                if (cnt <= 0) return;
-                cnt--;
-                if (cnt !== 0) return;
-                try {
-                    await GSFunction.#contextualize(fn, own, args);
-                } finally {
-                    cnt = -1;
-                }
+            return new Promise((accept, reject) => {
+                requestAnimationFrame(async () => {
+                    if (cnt <= 0) return;
+                    cnt--;
+                    if (cnt !== 0) return;
+                    try {
+                        const o = await GSFunction.#contextualize(fn, own, args);
+                        accept(o);
+                    } catch (e) {
+                        reject(e);
+                    } finally {
+                        cnt = -1;
+                    }
+                });
             });
         }
     }

@@ -177,7 +177,7 @@ export default class GSComponents {
      * @returns {boolean} Returns true if getter exist
      */
     static hasFunc(own, name, fn) {
-        const desc = Reflect.getOwnPropertyDescriptor(own.__proto__, name);
+        const desc = own ? Reflect.getOwnPropertyDescriptor(own.__proto__, name) : false;
         return desc && typeof desc[fn] === 'function';
     }
 

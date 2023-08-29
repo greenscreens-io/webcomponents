@@ -45,7 +45,6 @@ export default class GSLog {
 		this.#print(el, msg, true, 'error');
 	}
 
-
 	/**
 	 * Generic logging function
 	 * @param {HTMLElement} el Element to log (optional)
@@ -58,10 +57,11 @@ export default class GSLog {
 
 	static #print(el, msg, forced, type) {
 		if (!(forced || this.logging)) return;
-		msg = el ? `${el.nodeName} -> ${el.id}: ${msg}` : msg;
+		const tmp = el ? `${el.nodeName} -> ${el.id}: ${msg}` : msg;
 		let fn = console[type || 'log'];
 		fn = typeof fn === 'function' ? fn : console.log;
-		fn(msg);
+		fn(tmp);
+		if (msg instanceof Error) fn(msg);
 	}
 
 	static {

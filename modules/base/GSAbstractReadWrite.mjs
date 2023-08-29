@@ -3,6 +3,7 @@
  */
 
 
+import GSEvent from "./GSEvent.mjs";
 import GSID from "./GSID.mjs";
 import GSReadWriteRegistry from "./GSReadWriteRegistry.mjs";
 
@@ -19,11 +20,11 @@ export default class GSAbstractReadWrite extends GSEvent {
 
     #id = null;
 
-    constructor(name) {
+    constructor(name, enabled = true) {
         super();
         const me = this;
         me.#id = name || GSID.next();
-        me.enable();
+        if (enabled) me.enable();
     }
 
     get id() {
@@ -43,29 +44,31 @@ export default class GSAbstractReadWrite extends GSEvent {
     }
 
     get isRegistered() {
-        return GSReadWriteRegistry.find(this) ? true : false;
+        return GSReadWriteRegistry.find(this.id) ? true : false;
     }
 
     async read(owner) {
         const me = this;
-        let data = {};
+        let data = null;
         try {
             data = await me.onRead(owner);
             me.emit('read', {owner : owner, data: data});
         } catch (e) {
             me.emit('error', {type : 'read', error: e, owner : owner, data: data});
+            throw e;
         }
         return data;
     }
 
     async write(owner, data) {
         const me = this;
-        let result = {};
+        let result = null;
         try {
             result = await me.onWrite(owner, data);
             me.emit('write', {owner : owner, data: data, result : result});
         } catch (e) {
             me.emit('error', {type : 'write', error: e, owner : owner, data: data});
+            throw e;
         }
         return result;
     }

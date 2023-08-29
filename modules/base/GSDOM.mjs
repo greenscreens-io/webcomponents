@@ -19,6 +19,7 @@ export default class GSDOM {
 
 	static QUERY_FOCUSABLE = "a[href]:not([tabindex='-1']),area[href]:not([tabindex='-1']),input:not([disabled]):not([tabindex='-1']),select:not([disabled]):not([tabindex='-1']),textarea:not([disabled]):not([tabindex='-1']),button:not([disabled]):not([tabindex='-1']),iframe:not([tabindex='-1']),[tabindex]:not([tabindex='-1']),[contentEditable=true]:not([tabindex='-1'])";
 	static QUERY_INPUT = "input:not([type='hidden']):not(disabled):not(readonly),select:not([type='hidden']):not(disabled):not(readonly),textarea:not([type='hidden']):not(disabled):not(readonly)";
+	static #FORMEL = ['INPUT', 'SELECT', 'TEXTAREA'];
 
 	// Timeout for removing element
 	static SPEED = 300;
@@ -129,7 +130,13 @@ export default class GSDOM {
 	 */
 	static isFormElement(el) {
 		const name = GSUtil.isString(el) ? el : el?.tagName;
-		return ['INPUT', 'SELECT', 'TEXTAREA', 'BUTTON'].indexOf(name) > -1;
+		return GSDOM.#FORMEL.indexOf(name) > -1;
+	}
+
+	static isButtonElement(el) {
+		return (el instanceof HTMLButtonElement)
+		 || el?.tagName === 'GS-BUTTON'
+		 || GSDOM.hasClass(el, 'btn');
 	}
 
 	/**
@@ -317,7 +324,7 @@ export default class GSDOM {
 	 * 
 	 * @param {*} node Start node
 	 * @param {*} all  Include all elements (Text,Comment, HTMLElements)
-	 * @param {*} shadow Include traversing aacross shadow tree
+	 * @param {*} shadow Include traversing across shadow tree
 	 * @param {*} child Inernal, do not use
 	 * @returns {Iterable}
 	 */

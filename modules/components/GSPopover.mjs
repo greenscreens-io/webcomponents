@@ -28,8 +28,6 @@ import GSUtil from "../base/GSUtil.mjs";
  */
 export default class GSPopover extends GSElement {
 
-    #unfocus = false;
-
     static {
         customElements.define('gs-popover', GSPopover);
         Object.seal(GSPopover);
@@ -53,12 +51,12 @@ export default class GSPopover extends GSElement {
      */
     static async #onMonitorResult(el) {
         await GSUtil.timeout(1000);
-        GSUtil.requestAnimationFrame(async () => {
+        return GSEvents.waitAnimationFrame(async () => {
             GSID.setIf(el);
             const popover = document.createElement('gs-popover');
             popover.ref = `#${el.id}`;
             el.parentElement.insertAdjacentElement('beforeend', popover);
-        });
+        }, true);
     }
 
     constructor() {

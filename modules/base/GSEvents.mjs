@@ -24,6 +24,7 @@ export default class GSEvents {
 	static #cache = new Map();
 
 	static #loaded = false;
+	static #susspended = 0;
 
 	/**
 	 * Disable browser console and default context menu
@@ -64,9 +65,17 @@ export default class GSEvents {
 	 * 
 	 * @async
 	 * @param {function} callback 
+	 * @param {boolean} chaind Prevent consequtive chained calls.
 	 * @returns {Promise}
 	 */
-	static async waitAnimationFrame(callback) {
+	static async waitAnimationFrame(callback, chained = false) {
+
+		if (chained) {
+			if (typeof callback !== 'function') return;
+			if (GSEvents.#susspended > 0) return GSFunction.callFunction(callback);
+			GSEvents.#susspended++;
+		}
+
 		return new Promise((accept, reject) => {
 			requestAnimationFrame(async () => {
 				try {
@@ -74,6 +83,8 @@ export default class GSEvents {
 					accept(o);
 				} catch (e) {
 					reject(e);
+				} finally {
+					if (chained && GSEvents.#susspended > 0) GSEvents.#susspended--;
 				}
 			});
 		});

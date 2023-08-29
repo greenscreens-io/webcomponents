@@ -23,7 +23,7 @@ export default class GSTunnel extends BaseViewUI {
     async onLoad() {
         const me = this;
         const filter = me.filter;
-        const o = DEMO ? DEMO : await io.greenscreens.Proxy.list(me.store.page, me.store.limit, filter);
+        const o = DEMO ? DEMO : await io.greenscreens.Proxy.list(me.store.skip, me.store.limit, filter);
         return o.data;
     }
 

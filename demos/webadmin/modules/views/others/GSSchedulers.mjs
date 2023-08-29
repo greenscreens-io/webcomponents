@@ -27,7 +27,7 @@ export default class GSScheduler extends BaseViewUI {
         const filter = me.filter;
         const type = filter.type ? parseInt(filter.type, 10) : null;
         const status = me.#mapState[filter.status] || 0;
-        const o = DEMO ? DEMO : await io.greenscreens.Scheduler.list(me.store.page - 1, me.store.limit, type, status);
+        const o = DEMO ? DEMO : await io.greenscreens.Scheduler.list(me.store.skip, me.store.limit, type, status);
         return o.data;
     }
 

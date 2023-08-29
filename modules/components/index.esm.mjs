@@ -5,6 +5,7 @@
 export * from "./ext/index.esm.mjs";
 export * from "./intl/index.esm.mjs";
 
+export { default as GSDataHandler } from "./GSDataHandler.mjs";
 export { default as GSAccordion } from "./GSAccordion.mjs";
 export { default as GSAlert } from "./GSAlert.mjs";
 export { default as GSButton } from "./GSButton.mjs";

@@ -87,15 +87,23 @@ export default class GSDialog extends GSElement {
     if (me.visible) me.open();
   }
 
+  async onFormInit(form, data) {
+    form?.reset();
+    if (form && data) form.data = data;
+  }
+
   #onChange() {
     const me = this;
     me.#buttonOkEl.disabled =  me.forms.filter(form => !form.isValid).length > 0;
   }
 
   #onForm(e) {
-    const me = this;
     GSEvents.prevent(e);
+    const me = this;
     const data = e.detail.data;
+    if (e.detail.type === 'init') {
+      return me.onFormInit(data);
+    }
     const isValid = e.detail.valid;
     const msg = isValid ? 'data' : 'error';
     const sts = GSEvents.send(me, msg, { type: 'dialog', data: data, evt: e }, true, true, true);

@@ -15,7 +15,6 @@ import GSLog from "./GSLog.mjs";
  */
 export default class GSUtil {
 
-	static #animating = 0;
 	static FLAT = globalThis.GS_FLAT == true;
 	static ALPHANUM = /^[a-zA-Z0-9-_]+$/;
 
@@ -31,7 +30,7 @@ export default class GSUtil {
 
 	static asNum = (val = 0, dft = 0) => GSUtil.isNumber(val) ? parseFloat(val) : dft;
 
-	static asBool = (val = false) => val.toString().trim().toLowerCase() === 'true';
+	static asBool = (val = false) => val?.toString().trim().toLowerCase() === 'true';
 
 	static fromLiteral = (str = '', obj) => str.replace(/\${(.*?)}/g, (x, g) => obj[g]);
 
@@ -221,27 +220,6 @@ export default class GSUtil {
 					clearTimeout(iid);
 					reject(new Error('aborted timeout'));
 				});
-			}
-		});
-	}
-
-	/**
-	 * Modified animationFrame to prevent consequtive chained calls.
-	 * 
-	 * @param {function} callback 
-	 * @returns {void}
-	 */
-	static requestAnimationFrame(callback) {
-		if (typeof callback !== 'function') return;
-		if (GSUtil.#animating > 0) return callback();
-		GSUtil.#animating++;
-		return requestAnimationFrame(() => {
-			try {
-				callback();
-			} catch (e) {
-				GSLog.error(null, e);
-			} finally {
-				GSUtil.#animating--;
 			}
 		});
 	}

@@ -2,6 +2,7 @@
  * Copyright (C) 2015, 2023 Green Screens Ltd.
  */
 
+import GSEvent from "./GSEvent.mjs";
 import GSUtil from "./GSUtil.mjs";
 
 /**
@@ -27,7 +28,9 @@ class GSReadWriteRegistryImpl extends GSEvent {
     register(obj) {
         const me = this;
         me.#verify(obj);
-        if (me.#map.has(obj.id)) throw new Error('Key already exist in read/write registry!');
+        const cache = me.find(obj.id);
+        if (cache == obj) return;
+        if (cache) throw new Error(`Key (${obj.id}) already exist in read/write registry!`);
         me.#map.set(obj.id, obj);
         me.emit(`register-${obj.id}`, obj);
         me.emit(`register`, obj);
@@ -37,13 +40,21 @@ class GSReadWriteRegistryImpl extends GSEvent {
         const me = this;
         if (GSUtil.isString(obj)) obj = me.find(obj);
         me.#verify(obj);
-        me.#map.delete(obj.id);
-        me.emit(`unregister-${obj.id}`, obj);
-        me.emit(`unregister`, obj);
+        const sts = me.#map.delete(obj.id);
+        if (sts) {
+            me.emit(`unregister-${obj.id}`, obj);
+            me.emit(`unregister`, obj);
+        }
+        return sts;
     }
 
-    find(name) {
-        return this.#map.get(name);
+    /**
+     * Find registered handler
+     * @param {string} val 
+     * @returns 
+     */
+    find(val) {
+        return this.#map.get(val);
     }
 
     /**

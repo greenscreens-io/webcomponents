@@ -79,6 +79,7 @@ export default class GSData {
         return false;
     }
 
+    // TODO - add support for eq,gt,lt,like,or
     static filterComplex(rec, filter) {
         let found = true;
         let match = null;

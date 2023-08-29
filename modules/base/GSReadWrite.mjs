@@ -6,6 +6,7 @@ import GSLog from "./GSLog.mjs";
 import GSUtil from "./GSUtil.mjs";
 import GSLoader from "./GSLoader.mjs";
 import GSAbstractReadWrite from "./GSAbstractReadWrite.mjs";
+import GSFunction from "./GSFunction.mjs";
 
 /**
  * A module loading GSReadWrite class
@@ -13,7 +14,7 @@ import GSAbstractReadWrite from "./GSAbstractReadWrite.mjs";
  */
 
 /**
- * Generic Class for REST data read/write for various components such as grid/form/dynaimc menu etc.
+ * Generic Class for REST data read/write for various components such as grid/form/dynamic menu etc.
  * @Class
  */
 export default class GSReadWrite extends GSAbstractReadWrite {
@@ -23,7 +24,8 @@ export default class GSReadWrite extends GSAbstractReadWrite {
 
     #src = '';
     #headers = {};
-    #method = 'GET';
+    #reader = 'GET';
+    #writer = 'POST';
     #action = '';
     #mode = 'query';
 
@@ -33,8 +35,8 @@ export default class GSReadWrite extends GSAbstractReadWrite {
     #sort = [];
     #filter = [];
 
-    constructor(name) {
-        super(name);
+    constructor(name, enabled) {
+        super(name, enabled);
     }
 
     /**
@@ -45,20 +47,38 @@ export default class GSReadWrite extends GSAbstractReadWrite {
         return this.#mode || 'query';
     }
 
-    set mode(val = 'query') {
+    set mode(val) {
+        const me = this;
+        val == val || 'query';
         const isok = GSReadWrite.#MODES.includes(val);
-        if (isok) return this.#mode = val;
-        GSLog.error(null, `Invalid mode, allowed: ${GSReadWrite.#MODES}`);
+        if (!isok) throw new Error(null, `Invalid mode, allowed: ${GSReadWrite.#MODES}`);
+        if (me.#mode === 'quark' && me.#mode != val) {
+            me.#reader = 'GET';
+            me.#writer = 'POST';
+        }
+        return this.#mode = val;
     }
 
-    get method() {
-        return this.#method;
+    get reader() {
+        return this.#reader;
     }
 
-    set method(val = '') {
-        const isok = GSReadWrite.#METHOD.includes(val);
-        if (isok) return this.#method = val;
-        GSLog.error(null, `Invalid methog, allowed: ${GSReadWrite.#METHOD}`);        
+    set reader(val) {
+        const me = this;
+        const isok = me.mode === 'quark' ? true : GSReadWrite.#METHOD.includes(val);
+        if (!isok) throw new Error(null, `Invalid method, allowed: ${GSReadWrite.#METHOD}`);
+        return me.#reader = val;
+    }
+
+    get writer() {
+        return this.#writer;
+    }
+
+    set writer(val) {
+        const me = this;
+        const isok = me.mode === 'quark' ? true : GSReadWrite.#METHOD.includes(val);
+        if (!isok) throw new Error(null, `Invalid method, allowed: ${GSReadWrite.#METHOD}`);
+        return this.#writer = val;
     }
 
     get headers() {
@@ -129,7 +149,7 @@ export default class GSReadWrite extends GSAbstractReadWrite {
         const me = this;
         return me.#toURL(me.#src, me.#skip, me.#limit, me.#filter, me.#sort);
     }
-    
+
     set action(val = '') {
         const me = this;
         me.#action = val;
@@ -157,10 +177,15 @@ export default class GSReadWrite extends GSAbstractReadWrite {
 
     #toURL(src, skip, limit, filter, sort) {
         const me = this;
+        if (GSUtil.isStringEmpty(src)) throw new Error('Attribute "src" not set!');
         sort = sort ? JSON.stringify(sort) : '';
         filter = filter ? JSON.stringify(filter) : '';
         const opt = { limit: limit, skip: skip, sort: encodeURIComponent(sort), filter: encodeURIComponent(filter) };
         return src + GSUtil.fromLiteral(me.action, opt);
+    }
+
+    get #isQuark() {
+        return this.mode === 'quark';
     }
 
     /**
@@ -170,7 +195,11 @@ export default class GSReadWrite extends GSAbstractReadWrite {
      */
     async onRead(owner) {
         const me = this;
-        return await GSLoader.load(me.url, 'GET', me.#headers, true);
+        if (!me.#reader) return super.onRead(owner);
+        if (!me.#isQuark) return await GSLoader.load(me.url, me.#reader, me.#headers, true);
+        const fn = GSFunction.parseFunction(me.#reader);
+        if (!fn) throw new Error('Reader quark function not found!')
+        return fn(me.skip, me.limit, me.filter, me.sort);
     }
 
     /**
@@ -180,11 +209,16 @@ export default class GSReadWrite extends GSAbstractReadWrite {
      * @returns 
      */
     async onWrite(owner, data) {
-        super.onWrite(owner, data);
+        const me = this;
+        if (!me.#writer) return super.onWrite(owner);
+        if (!me.#isQuark) return await GSLoader.load(me.url, me.#writer, me.#headers, true, data);
+        const fn = GSFunction.parseFunction(me.#reader);
+        if (!fn) throw new Error('Writer quark function not found!')
+        return fn(data);
     }
 
     static register(name) {
-        return new GSReadWrite(name);
+        return new GSReadWrite(name, true);
     }
 
 }

@@ -11,13 +11,7 @@ Every ```<gs-item>``` child element represents loaded record column which name i
 ## Attributes
 ---
 
-| Name               | Description                                              |
-|--------------------|----------------------------------------------------------|
-| mode               | Remote call operatoin mode (rest,query,quark)            |
-| action             | Strign format for operational mode  (see below)          |
-| src                | URL address for remote service for data retrieval        | 
-| limit              | Number of records to return                              | 
-| skip               | Number fo records to initially skip                      | 
+Refer to GSDataHandler!
 
 
 <br>
@@ -43,9 +37,23 @@ Example below limits data retrieval to 10 records from URL named in "src" attrib
 All data responses must return JSON array or HTTP error.
 
 ```html
+<!-- Default is QUERY mode -->
 <gs-store src="/data/employees" id="employees" limit=10>
     <gs-item name="Age" type="number"></gs-item>
     <gs-item name="Salary" type="number" format="$\d"></gs-item>
     <gs-item name="Start date" type="date" format="yyyy/mm/dd"></gs-item>
 </gs-store>
 ```
+
+Use QUARK engine or any external async function attached to globalThis path
+
+```html
+ <gs-store id="handler" mode="quark" reader="io.test.read" writer="io.test.write"></gs-store>
+ ```
+
+Use externaly defined GSReadWRite. Can be rpealoaded custom class extending GSAbstractReadWrite.
+Custom class must be initialized with id="handler". 
+
+```html
+ <gs-store id="handler"></gs-store>
+ ```

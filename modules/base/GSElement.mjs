@@ -554,9 +554,9 @@ export default class GSElement extends HTMLElement {
 			GSDOM.toggleClass(me, 'gs-hide', newValue === 'false');
 		}
 		if (me.#ready) {
-			GSUtil.requestAnimationFrame(() => {
+			GSEvents.waitAnimationFrame(() => {
 				me.attributeCallback(name, oldValue, newValue);
-			});
+			}, true);
 		}
 	}
 
@@ -588,8 +588,7 @@ export default class GSElement extends HTMLElement {
 		me.#ready = true;
 		await me.onBeforeReady();
 		try {
-			const fn = GSFunction.parseFunction(me.onready);
-			GSFunction.callFunction(fn);
+			GSFunction.callFunction(me.onready);
 			GSEvents.send(me, 'ready');
 			GSEvents.send(document.body, 'componentready', me);
 		} finally {
@@ -602,10 +601,10 @@ export default class GSElement extends HTMLElement {
 	 */
 	#onOrientation(e) {
 		const me = this;
-		GSUtil.requestAnimationFrame(() => {
+		GSEvents.waitAnimationFrame(() => {
 			if (me.offline) return;
 			me.isValidOrientation ? me.show(true) : me.hide(true)
-		});
+		}, true);
 	}
 
 	#isConfig() {
@@ -616,9 +615,9 @@ export default class GSElement extends HTMLElement {
 
 	#styleChange() {
 		const me = this;
-		GSUtil.requestAnimationFrame(() => {
+		GSEvents.waitAnimationFrame(() => {
 			me.updateUI();
-		});
+		}, true);
 	}
 
 	/**
@@ -773,7 +772,7 @@ export default class GSElement extends HTMLElement {
 			if (!me.isFlat) me.attachEvent(document, 'gs-style', me.#styleChange.bind(me));
 			me.attachEvent(screen.orientation, 'change', me.#onOrientation.bind(me));
 		} finally {
-			GSUtil.requestAnimationFrame(() => me.#doReady());
+			GSEvents.waitAnimationFrame(() => me.#doReady(), true);
 		}
 	}
 

@@ -22,7 +22,7 @@ export default class GSPrinting extends BaseViewUI {
     async onLoad() {
         const me = this;
         const filter = me.filter;
-        const o = DEMO ? DEMO : await io.greenscreens.Printers.list(me.store.page - 1, me.store.limit, filter);
+        const o = DEMO ? DEMO : await io.greenscreens.Printers.list(me.store.skip, me.store.limit, filter);
         return o.data;
     }
 

@@ -15,6 +15,7 @@ import GSAttr from "../base/GSAttr.mjs";
 import GSDOM from "../base/GSDOM.mjs";
 import GSCacheStyles from "../head/GSCacheStyles.mjs";
 import GSUtil from "../base/GSUtil.mjs";
+import GSEvents from "../base/GSEvents.mjs";
 
 /**
  * Process Bootstrap tooltip efinition
@@ -48,12 +49,12 @@ export default class GSTooltip extends GSElement {
      */
     static async #onMonitorResult(el) {
         await GSUtil.timeout(1000);
-        GSUtil.requestAnimationFrame(() => {
+        return GSEvents.waitAnimationFrame(() => {
             GSID.setIf(el);
             const tooltip = document.createElement('gs-tooltip');
             tooltip.ref = `#${el.id}`;
             el.parentElement.insertAdjacentElement('beforeend', tooltip);
-        });
+        }, true);
     }
 
     constructor() {

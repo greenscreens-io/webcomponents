@@ -15,6 +15,7 @@ import GSData from "../../base/GSData.mjs";
 import GSLog from "../../base/GSLog.mjs";
 import GSAttr from "../../base/GSAttr.mjs";
 import GSReadWriteRegistry from "../../base/GSReadWriteRegistry.mjs";
+import GSUtil from "../../base/GSUtil.mjs";
 
 /**
  * Add custom form processing to support forms in modal dialogs
@@ -28,21 +29,21 @@ export default class GSFormExt extends HTMLFormElement {
         customElements.define('gs-ext-form', GSFormExt, { extends: 'form' });
         Object.seal(GSFormExt);
         GSDOMObserver.registerFilter(GSFormExt.#onMonitorFilter, GSFormExt.#onMonitorResult);
-        GSDOMObserver.registerFilter(GSFormExt.#onMonitorFilter, GSFormExt.#onMonitorRemove, true);
     }
 
     static #onMonitorFilter(el) {
+        if (GSUtil.asBool(el.dataset?.gsIgnore)) return false;
         return el instanceof HTMLFormElement && (el instanceof GSFormExt) === false;
     }
 
     static #onMonitorResult(el) {
-        GSFormExt.#attachEvents(el);
+        const form = document.createElement('form', {is:'gs-ext-form'});
+        GSAttr.set(form, 'is', 'gs-ext-form');
+        Array.from(el.attributes).forEach(v => GSAttr.set(form, v.name, v.value));
+        Array.from(el?.childNodes || []).forEach(child => GSDOM.appendChild(form, child));
+        GSDOM.insertAdjacent(el, form, 'afterend');
+        GSDOM.removeElement(el);
     }
-
-    static #onMonitorRemove(el) {
-        GSEvents.deattachListeners(el);
-    }
-
 
     static observeAttributes(attributes) {
         return GSData.mergeArrays(attributes, GSFormExt.observedAttributes);
@@ -56,6 +57,7 @@ export default class GSFormExt extends HTMLFormElement {
         return ['storage'];
     }
 
+    #last;
     #controller;
     #reader;
 
@@ -67,7 +69,10 @@ export default class GSFormExt extends HTMLFormElement {
     connectedCallback() {
         const me = this;
         GSID.setIf(me);
-        GSFormExt.#attachEvents(me);
+        me.#attachEvents(me);
+        requestAnimationFrame(() => {
+            GSEvents.send(me, 'form', {type : 'init', data : me}, true, true);
+        });
         //GSComponents.store(me);
     }
 
@@ -109,7 +114,7 @@ export default class GSFormExt extends HTMLFormElement {
     }
 
     submit() {
-        return GSFormExt.#onSubmit.bind(this)();
+        return this.#onSubmit();
     }
 
     onError(e) {
@@ -126,6 +131,7 @@ export default class GSFormExt extends HTMLFormElement {
 
     set data(data) {
         const me = this;
+        me.#last = data;
         GSDOM.fromObject(me, data);
         const isValid = me.checkValidity() && me.isValid;
         if (!isValid) me.reportValidity();
@@ -164,14 +170,23 @@ export default class GSFormExt extends HTMLFormElement {
         me.#handler?.write(me, me.data);
     }
 
-    #onRead(e) {
-        if (e.detail.data) this.data = e.detail.data;
+    #attachEvents(me) {
+        me.action = '#';
+        GSEvents.attach(me, me, 'submit', me.#onSubmit.bind(me));
+        GSEvents.attach(me, me, 'reset', me.read.bind(me));
+        GSEvents.attach(me, me, 'form-field', me.#onField.bind(me));
+    }
+        
+    #onField(e) {
+        const me = this;
+        const el = e.detail;
+        if (el && me.#last?.hasOwnProperty(el.name)) {
+            GSDOM.fromValue(el, me.#last[el.name]);
+        }
     }
 
-    static #attachEvents(me) {
-        me.action = '#';
-        GSEvents.attach(me, me, 'submit', GSFormExt.#onSubmit.bind(me));
-        GSEvents.attach(me, me, 'reset', me.read.bind(me));
+    #onRead(e) {
+        if (e.detail.data) this.data = e.detail.data;
     }
 
     /**
@@ -179,8 +194,8 @@ export default class GSFormExt extends HTMLFormElement {
      * @param {Event} e 
      * @returns {boolean} validity status
      */
-    static #onSubmit(e) {
-        GSEvents.prevent(e);
+    #onSubmit(e) {
+        GSEvents.prevent(e, true);
         const me = this;
         const isValid = me.checkValidity() && me.isValid;
         if (!isValid) me.reportValidity();
