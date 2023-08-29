@@ -7,9 +7,9 @@
  * @module dialogs/GSService
  */
 import {GSAttr,GSUtil} from '/webcomponents/release/esm/io.greenscreens.components.all.esm.min.js';
-import GSAdminDialog from './GSAdminDialog.mjs';
+import GSAsbtractDialog from './GSAsbtractDialog.mjs';
 
-export default class GSService extends GSAdminDialog {
+export default class GSService extends GSAsbtractDialog {
 
     static {
         customElements.define('gs-admin-dialog-service', GSService);

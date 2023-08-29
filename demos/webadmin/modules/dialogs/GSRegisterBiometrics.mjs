@@ -6,11 +6,11 @@
  * A module loading GSRegisterBiometrics class
  * @module dialogs/GSRegisterBiometrics
  */
-import GSAdminDialog from './GSAdminDialog.mjs';
+import GSAsbtractDialog from './GSAsbtractDialog.mjs';
 import WebAuthn from '../utils/WebAuthn.mjs';
 import Utils from '../utils/Utils.mjs';
 
-export default class GSRegisterBiometrics extends GSAdminDialog {
+export default class GSRegisterBiometrics extends GSAsbtractDialog {
 
     static {
         customElements.define('gs-admin-dialog-bioreg', GSRegisterBiometrics);

@@ -8,7 +8,7 @@
  */
 import {GSAttr,GSDOM,GSUtil} from '/webcomponents/release/esm/io.greenscreens.components.all.esm.min.js';
 
-import GSAdminDialog from '../dialogs/GSAdminDialog.mjs';
+import GSAsbtractDialog from '../dialogs/GSAsbtractDialog.mjs';
 import Utils from '../utils/Utils.mjs';
 import WebAuthn from '../utils/WebAuthn.mjs';
 
@@ -21,7 +21,7 @@ globalThis.Tn5250 = {
     }
 };
 
-export default class Login extends GSAdminDialog {
+export default class Login extends GSAsbtractDialog {
 
     static {
         customElements.define('gs-admin-shell-login', Login);

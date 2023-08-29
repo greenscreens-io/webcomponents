@@ -10,7 +10,7 @@ import { GSAttr, GSComponents, GSDOM, GSEvents, GSLoader, GSDialog } from '/webc
 import Utils from '../utils/Utils.mjs';
 import GSUtil from '../../../../modules/base/GSUtil.mjs';
 
-export default class GSAdminDialog extends GSDialog {
+export default class GSAsbtractDialog extends GSDialog {
 
     connectedCallback() {
         super.connectedCallback();

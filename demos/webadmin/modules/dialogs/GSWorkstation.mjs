@@ -7,9 +7,9 @@
  * @module dialogs/GSWorkstation
  */
 import {GSLoader} from '/webcomponents/release/esm/io.greenscreens.components.all.esm.min.js';
-import GSAdminDialog from './GSAdminDialog.mjs';
+import GSAsbtractDialog from './GSAsbtractDialog.mjs';
 
-export default class GSWorkstation extends GSAdminDialog {
+export default class GSWorkstation extends GSAsbtractDialog {
 
     static {
         customElements.define('gs-admin-dialog-workstation', GSWorkstation);

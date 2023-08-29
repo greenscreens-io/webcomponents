@@ -7,9 +7,9 @@
  * @module dialogs/GSPrinterSetup
  */
 import {GSAttr, GSDOM, GSUtil} from '/webcomponents/release/esm/io.greenscreens.components.all.esm.min.js';
-import GSAdminDialog from './GSAdminDialog.mjs';
+import GSAsbtractDialog from './GSAsbtractDialog.mjs';
 
-export default class GSPrinterSetup extends GSAdminDialog {
+export default class GSPrinterSetup extends GSAsbtractDialog {
 
     static {
         customElements.define('gs-admin-dialog-printer-setup', GSPrinterSetup);

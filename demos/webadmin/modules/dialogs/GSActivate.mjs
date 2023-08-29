@@ -6,12 +6,12 @@
  * A module loading GSActivate class
  * @module dialogs/GSActivate
  */
-import GSAdminDialog from './GSAdminDialog.mjs';
+import GSAsbtractDialog from './GSAsbtractDialog.mjs';
 
 /**
  * Available when install.exe exist
  */
-export default class GSActivate extends GSAdminDialog {
+export default class GSActivate extends GSAsbtractDialog {
 
     static {
         customElements.define('gs-admin-dialog-activate', GSActivate);

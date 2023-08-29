@@ -6,9 +6,9 @@
  * A module loading GSSystem class
  * @module dialogs/GSSystem
  */
-import GSAdminDialog from './GSAdminDialog.mjs';
+import GSAsbtractDialog from './GSAsbtractDialog.mjs';
 
-export default class GSSystem extends GSAdminDialog {
+export default class GSSystem extends GSAsbtractDialog {
 
     static {
         customElements.define('gs-admin-dialog-system', GSSystem);

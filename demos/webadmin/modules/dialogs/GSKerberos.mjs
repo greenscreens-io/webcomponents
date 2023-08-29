@@ -6,9 +6,9 @@
  * A module loading GSSystem class
  * @module dialogs/GSSystem
  */
-import GSAdminDialog from './GSAdminDialog.mjs';
+import GSAsbtractDialog from './GSAsbtractDialog.mjs';
 
-export default class GSKerberos extends GSAdminDialog {
+export default class GSKerberos extends GSAsbtractDialog {
 
     static {
         customElements.define('gs-admin-dialog-kerberos', GSKerberos);

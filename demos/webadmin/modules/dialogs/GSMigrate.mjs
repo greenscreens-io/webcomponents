@@ -6,9 +6,9 @@
  * A module loading GSNetwork class
  * @module dialogs/GSNetwork
  */
-import GSAdminDialog from './GSAdminDialog.mjs';
+import GSAsbtractDialog from './GSAsbtractDialog.mjs';
 
-export default class GSMigrate extends GSAdminDialog {
+export default class GSMigrate extends GSAsbtractDialog {
 
     static {
         customElements.define('gs-admin-dialog-migrate', GSMigrate);

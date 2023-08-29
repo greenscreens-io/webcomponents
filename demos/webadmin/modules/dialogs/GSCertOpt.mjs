@@ -7,9 +7,9 @@
  * @module dialogs/GSCertOpt
  */
 import { GSLoader } from '/webcomponents/release/esm/io.greenscreens.components.all.esm.min.js';
-import GSAdminDialog from './GSAdminDialog.mjs';
+import GSAsbtractDialog from './GSAsbtractDialog.mjs';
 
-export default class GSCertOpt extends GSAdminDialog {
+export default class GSCertOpt extends GSAsbtractDialog {
 
     static {
         customElements.define('gs-admin-dialog-certopt', GSCertOpt);

@@ -1,5 +1,5 @@
 
-import './GSAdminDialog.mjs';
+import './GSAsbtractDialog.mjs';
 import './GSAbout.mjs';
 import './GSCertBlocked.mjs';
 import './GSCertClient.mjs';

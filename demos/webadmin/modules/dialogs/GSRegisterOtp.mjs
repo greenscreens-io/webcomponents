@@ -6,11 +6,11 @@
  * A module loading GSRegisterOtp class
  * @module dialogs/GSRegisterOtp
  */
-import GSAdminDialog from './GSAdminDialog.mjs';
+import GSAsbtractDialog from './GSAsbtractDialog.mjs';
 import Utils from '../utils/Utils.mjs';
 import {GSDOM} from '/webcomponents/release/esm/io.greenscreens.components.all.esm.min.js';
 
-export default class GSRegisterOtp extends GSAdminDialog {
+export default class GSRegisterOtp extends GSAsbtractDialog {
 
     static #URL = '/barcode/generator?group=Two%20Dimensional&type=QR&composite=&zoom=4&format=png&eci=-1&attGS1=0&attQR1=&attQR2=3&b64=';
 
