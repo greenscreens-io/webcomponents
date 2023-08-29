@@ -49,6 +49,12 @@ export default class GSFormGroup extends GSElement {
       super.connectedCallback();
    }
 
+   disconnectedCallback() {
+      super.disconnectedCallback();
+      const me = this;
+      me.#patterns = null;
+   }
+
    attributeCallback(name = '', oldValue = '', newValue = '') {
       const me = this;
       if (name === 'label') me.#labelEl.innerHTML = newValue;

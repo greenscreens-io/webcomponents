@@ -77,6 +77,7 @@ export default class GSInputExt extends HTMLInputElement {
 
     disconnectedCallback() {
         const me = this;
+        me.#masks = [];
         GSComponents.remove(me);
         GSEvents.deattachListeners(me);
     }

@@ -81,6 +81,9 @@ export default class GSFormExt extends HTMLFormElement {
         //GSComponents.remove(me);
         GSEvents.deattachListeners(me);
         me.#controller?.abort();
+        me.#controller = null;
+        me.#last = null;
+        me.#reader = null;
     }
 
     /**

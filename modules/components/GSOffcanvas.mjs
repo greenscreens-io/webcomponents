@@ -48,7 +48,10 @@ export default class GSOffcanvas extends GSElement {
   }
 
   connectedCallback() {
-    this.#bindEvents();
+    const me = this;
+    me.#bindEvents();
+    me.#swiper = null;
+    me.#bindings = null;
     super.connectedCallback();
   }
 

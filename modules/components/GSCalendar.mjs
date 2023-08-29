@@ -61,6 +61,7 @@ export default class GSCalendar extends GSElement {
 
     disconnectedCallback() {
         super.disconnectedCallback();
+        this.#date = null;
     }
 
     async onBeforeReady() {

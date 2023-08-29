@@ -37,7 +37,9 @@ export default class GSColumn extends HTMLElement {
     }
 
     disconnectedCallback() {
-        GSCacheStyles.deleteRule(this.dataset.cssId);
+        const me = this;
+        me.#map = [];
+        GSCacheStyles.deleteRule(me.dataset.cssId);
     }
 
     async #loadMap() {

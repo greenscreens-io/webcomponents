@@ -39,8 +39,12 @@ export default class GSNotification extends GSElement {
   }
 
   connectCallback() {
-    const me = this;
     super.connectedCallback();
+  }
+
+  disconnectCallback() {
+    super.disconnectedCallback();
+    this.#list = null;
   }
 
   attributeCallback(name = '', oldVal = '', newVal = '') {

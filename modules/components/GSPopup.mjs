@@ -58,6 +58,7 @@ export default class GSPopup extends GSElement {
 
     disconnectedCallback() {
         const me = this;
+        me.#caller = null;
         me.#online = false;
         super.disconnectedCallback();
     }

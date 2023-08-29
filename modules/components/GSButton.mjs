@@ -23,7 +23,6 @@ import GSDOM from "../base/GSDOM.mjs";
  */
 export default class GSButton extends GSElement {
 
-
     #state = false;
 
     static {

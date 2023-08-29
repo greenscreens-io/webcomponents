@@ -102,6 +102,8 @@ export default class GSTree extends GSElement {
         GSEvents.unlisten(own, null, 'click', me.#events.click);
         GSEvents.unlisten(own, null, 'keydown', me.#events.keydown);
         GSEvents.unlisten(own, null, 'keyup', me.#events.keyup);
+        me.#events = null;
+        me.#selected = null;
         super.disconnectedCallback();
     }
 
