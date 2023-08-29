@@ -66,7 +66,7 @@ export default class Login extends GSAsbtractDialog {
         return this.query('input[name="password"]');
     }
 
-    async onOpen() {
+    async beforeOpen() {
 
         console.clear();
 
@@ -83,7 +83,7 @@ export default class Login extends GSAsbtractDialog {
 
         me.#doWebAuth();
 
-        //return true;
+        return true;
     }
 
     async onData(data) {

@@ -262,8 +262,8 @@ export default class GSCalendar extends GSElement {
         });
         const date = new GSDate(me.#date);
         date.day = day;
-        me.emit('date', { type: 'calendar', date: date, val: me.formatted(date) }, true, true);
         me.#updateTarget(date);
+        me.emit('date', { type: 'calendar', date: date, val: me.formatted(date) }, true, true);
     }
 
     #onArrow(e) {

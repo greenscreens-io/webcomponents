@@ -160,7 +160,8 @@ export default class GSEvents {
 	}
 
 	/**
-	 * Generic event disaptcher
+	 * Generic event disaptcher.
+	 * NOTE: If expecting to catch return value, do not use async in listeners
 	 * 
 	 * @param {HTMLElement} sender element that send event
 	 * @param {string} name  Event name to trigger 
@@ -168,7 +169,7 @@ export default class GSEvents {
 	 * @param {boolean} bubbles Send event to parent
 	 * @param {boolean} composed Send event across shadowDom
 	 * @param {boolean} cancelable Event is cancelable
-	 * @returns {boolean}
+	 * @returns {boolean} false if event is cancelable, and at least one of the event handlers which received event called Event.preventDefault(). Otherwise true.
 	 */
 	static send(sender = document, name, obj = '', bubbles = false, composed = false, cancelable = false) {
 		const opt = { detail: obj, bubbles: bubbles, composed: composed, cancelable: cancelable };
@@ -258,7 +259,7 @@ export default class GSEvents {
 	 * @returns {void} 
 	 */
 	static sendSuspended(sender = document, name, obj = '', bubbles = false, composed = false, cancelable = false) {
-		requestAnimationFrame(() => {
+		return requestAnimationFrame(() => {
 			GSEvents.send(sender, name, obj, bubbles, composed, cancelable);
 		});
 	}

@@ -295,6 +295,14 @@ export default class GSDataHandler extends HTMLElement {
         return me.#handler?.read(me);
     }
 
+    #defaultReader(val) {
+        return this.mode === 'quark' ? val || '' : val || 'GET';
+    }
+
+    #defaultWriter(val) {
+        return this.mode === 'quark' ? val || '' : val || 'POST';
+    }    
+
     /**
      * Callback for data read result
      */
@@ -378,22 +386,26 @@ export default class GSDataHandler extends HTMLElement {
      * HTTP Read operation
      */
     get reader() {
-        return GSAttr.get(this, 'reader', 'GET');
+        const me = this;
+        return GSAttr.get(this, 'reader', me.#defaultReader());
     }
 
     set reader(val) {
-        return GSAttr.set(this, 'reader', val || 'GET');
+        const me = this;
+        return GSAttr.set(me, 'reader', me.#defaultReader(val));
     }
 
     /**
      * HTTP write operation
      */
     get writer() {
-        return GSAttr.get(this, 'writer', 'POST');
+        const me = this;      
+        return GSAttr.get(me, 'writer', me.#defaultWriter());
     }
 
     set writer(val) {
-        return GSAttr.set(this, 'writer', val || 'POST');
+        const me = this;      
+        return GSAttr.set(me, 'writer', me.#defaultWriter(val));
     }
 
     /**

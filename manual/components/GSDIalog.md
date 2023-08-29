@@ -35,13 +35,14 @@ This is browser native version t oBootstrap Modal. If ```<dialog>``` si not supp
 For cancelable events, call e.preventDefault() to cancel operations (closing a modal for example).
 
 ---
-| Name               | Description                                                  |
-|--------------------|--------------------------------------------------------------|
-| action             | Cancelable button action (e.data.ok = true | false )         |
-| close              | Cancelable event before modal is closed                      |
+| Name               | Description                                                      |
+|--------------------|------------------------------------------------------------------|
+| action             | Cancelable button action (e.data.ok = true | false )             |
+| beforeclose        | Cancelable event before modal is closed                          |
+| beforeopen         | Cancelable event before modal is opened                          |
+| close              | Trigger event from underlying child to close dialog              |
 | data               | Data event when modal contains gs-ext-form element (form submit) |
-| open               | Cancelable event before modal is opened                      |
-| visible            | Event triggered when modal visibility status changed         |
+| visible            | Event triggered when modal visibility status changed             |
 
 <br>
  

@@ -70,9 +70,7 @@ export default class GSFormExt extends HTMLFormElement {
         const me = this;
         GSID.setIf(me);
         me.#attachEvents(me);
-        requestAnimationFrame(() => {
-            GSEvents.send(me, 'form', {type : 'init', data : me}, true, true);
-        });
+        GSEvents.sendSuspended(me, 'form', {type : 'init', data : me}, true, true);
         //GSComponents.store(me);
     }
 

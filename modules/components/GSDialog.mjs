@@ -12,7 +12,6 @@ import GSAttr from "../base/GSAttr.mjs";
 import GSDOM from "../base/GSDOM.mjs";
 import GSElement from "../base/GSElement.mjs";
 import GSEvents from "../base/GSEvents.mjs";
-import GSLog from "../base/GSLog.mjs";
 
 /**
  * Native dialog with Bootstrap support
@@ -219,25 +218,27 @@ export default class GSDialog extends GSElement {
   /**
    * Show modal panel
    */
-  open(e) {
+  async open(e) {
     GSEvents.prevent(e);
     const me = this;
+    const sts = await me.beforeOpen();
+    if (!sts) return;
     const o = { type: 'dialog', isOk: true, data : e };
-    const sts = me.emit('open', o, true, true, true);    
-    if (GSLog.trace(me, `Dialog open status : ${sts}; ${JSON.stringify(o)}`));
-    if (sts) me.visible = true;
+    const ret = me.emit('beforeopen', o, true, true, true);    
+    if (ret) me.visible = true;
   }
 
   /**
    * Hide modal panel
    */
-  close(e, ok = false) {
+  async close(e, ok = false) {
     GSEvents.prevent(e);
     const me = this;
+    const sts = await me.beforeClose(e, ok);
+    if (!sts) return;
     const o = { type: 'dialog', isOk: ok, data : e };
-    const sts = me.emit('close', o, true, true, true);    
-    if (GSLog.trace(me, `Dialog close status : ${sts}; ${JSON.stringify(o)}`));
-    if (sts) me.visible = false;
+    const ret = me.emit('beforeclose', o, true, true, true);    
+    if (ret) me.visible = false;
   }
 
   /**
@@ -259,6 +260,14 @@ export default class GSDialog extends GSElement {
     if (me.cancelable) return me.#buttonCancelEl;
     if (me.closable) return me.#buttonOkEl;
     return me;
+  }
+
+  async beforeOpen() {
+    return true;
+  }
+
+  async beforeClose(data, ok) {
+    return true;
   }
 
   get #buttonOkEl() {

@@ -32,7 +32,7 @@ export default class GSRegisterBiometrics extends GSAsbtractDialog {
         return 'Register Biometric';
     }
 
-    async onOpen() {
+    async beforeOpen() {
 
         const me = this;
 

@@ -38,19 +38,10 @@ export default class GSAsbtractDialog extends GSDialog {
 
         me.on('data', me.#onFormData.bind(me));
         me.on('error', me.#onFormError.bind(me));
-        me.on('open', me.#onOpen.bind(me));
 
         const tpl = await GSLoader.getTemplate(me.dialogTemplate);
         GSDOM.setHTML(me, tpl);
         me.title = me.dialogTitle;
-
-        /*
-        await GSEvents.waitAnimationFrame(async () => {
-            GSDOM.setHTML(me, tpl);
-            me.title = me.dialogTitle;
-            //await GSUtil.timeout(200);
-        });
-        */
     }
 
     onReady() {
@@ -58,6 +49,24 @@ export default class GSAsbtractDialog extends GSDialog {
         if (me.auto) me.open();
         super.onReady();
     }
+
+    /**
+     * Override parent class method
+     * @param {*} data 
+     */
+    open(data) {
+        const me = this;
+        me.#update(data);
+        super.open(data);
+    }
+
+    /**
+     * Used by inherited dialogs to process confirmed dialog form
+     * @param {*} data 
+     */
+    async onData(data) {
+        return true;
+    }    
 
     /**
      * Should auto open
@@ -89,41 +98,6 @@ export default class GSAsbtractDialog extends GSDialog {
 
     get forms() {
         return GSDOM.queryAll(this, 'form');
-    }
-
-    /**
-     * Override parent class method
-     * @param {*} data 
-     */
-    open(data) {
-        const me = this;        
-        me.#update(data);
-        super.open(data);
-    }
-
-    /**
-     * Used by inherited dialogs to load data into dialog forms
-     * @returns {*}
-     */
-    async onOpen(data) {
-        return data ||true;
-    }
-
-    /**
-     * Used by inherited dialogs to process confirmed dialog form
-     * @param {*} data 
-     */
-    async onData(data) {
-        return true;
-    }
-
-    /**
-     * On dialog open, get data, if not ok, return false, cancel events
-     */
-    async #onOpen(e) {
-        const me = this;
-        const data = await me.onOpen(me.form?.data);
-        data === false ? GSEvents.prevent(e) : me.#update(data);
     }
 
     /**

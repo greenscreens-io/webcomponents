@@ -50,8 +50,8 @@ export default class GSPrinterSetup extends GSAsbtractDialog {
         super.open();
     }
 
-    async onOpen() {
-        return this.#data;
+    async onFormInit(form) {
+        super.onFormInit(form, this.#data);
     }
 
     async onData(data) {

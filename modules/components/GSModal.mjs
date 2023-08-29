@@ -201,21 +201,34 @@ export default class GSModal extends GSElement {
   /**
    * Show modal panel
    */
-  open(e) {
+  async open(e) {
     GSEvents.prevent(e);
     const me = this;
-    const sts = me.emit('open', { type: 'modal' }, true, true, true);
-    if (sts) me.visible = true;
+    const sts = await me.beforeOpen();
+    if (!sts) return;
+    const o = { type: 'modal', isOk: true, data : e };
+    const ret = me.emit('beforeopen', o, true, true, true);    
+    if (ret) me.visible = true;
   }
 
   /**
    * Hide modal panel
    */
-  close(e, ok = false) {
+  async close(e, ok = false) {
     GSEvents.prevent(e);
     const me = this;
-    const sts = me.emit('close', { type: 'modal', isOk: ok }, true, true, true);
-    if (sts) me.visible = false;
+    const sts = await me.beforeClose(e, ok);
+    if (!sts) return;    
+    const ret = me.emit('beforeclose', { type: 'modal', isOk: ok }, true, true, true);
+    if (ret) me.visible = false;
+  }
+
+  async beforeOpen() {
+    return true;
+  }
+
+  async beforeClose(data, ok) {
+    return true;
   }
 
   /**
