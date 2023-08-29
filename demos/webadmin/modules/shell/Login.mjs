@@ -83,7 +83,7 @@ export default class Login extends GSAdminDialog {
 
         me.#doWebAuth();
 
-        return true;
+        //return true;
     }
 
     async onData(data) {

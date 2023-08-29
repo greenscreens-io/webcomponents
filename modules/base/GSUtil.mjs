@@ -72,12 +72,12 @@ export default class GSUtil {
 	}
 
 	/**
-	 * Check if provided paramter is of JSON type
+	 * Check if provided parameter is of JSON type
 	 * @param {string|object} val 
 	 * @returns {boolean}
 	 */
 	static isJsonType(val = '') {
-		return Array.isArray(val) || typeof val == "object";
+		return val && Array.isArray(val) || typeof val == "object";
 	}
 
 	/**

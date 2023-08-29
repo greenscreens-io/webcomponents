@@ -37,7 +37,7 @@ export default class GSAdminDialog extends GSDialog {
 
         me.on('data', me.#onFormData.bind(me));
         me.on('error', me.#onFormError.bind(me));
-        // me.on('open', me.#onOpen.bind(me));
+        me.on('open', me.#onOpen.bind(me));
 
         const tpl = await GSLoader.getTemplate(me.dialogTemplate);
         GSDOM.setHTML(me, tpl);
@@ -116,7 +116,7 @@ export default class GSAdminDialog extends GSDialog {
     async onFormInit(form, data) {
         const me = this;
         form = me.form;
-        data = await this.onOpen(data);
+        data = await me.onOpen(data);
         super.onFormInit(form, data);
     }
 
