@@ -37,7 +37,7 @@ export default class GSFormExt extends HTMLFormElement {
     }
 
     static #onMonitorResult(el) {
-        const form = document.createElement('form', {is:'gs-ext-form'});
+        const form = document.createElement('form', { is: 'gs-ext-form' });
         GSAttr.set(form, 'is', 'gs-ext-form');
         Array.from(el.attributes).forEach(v => GSAttr.set(form, v.name, v.value));
         Array.from(el?.childNodes || []).forEach(child => GSDOM.appendChild(form, child));
@@ -70,7 +70,7 @@ export default class GSFormExt extends HTMLFormElement {
         const me = this;
         GSID.setIf(me);
         me.#attachEvents(me);
-        GSEvents.sendSuspended(me, 'form', {type : 'init', data : me}, true, true);
+        GSEvents.sendSuspended(me, 'form', { type: 'init', data: me }, true, true);
         //GSComponents.store(me);
     }
 
@@ -95,7 +95,7 @@ export default class GSFormExt extends HTMLFormElement {
         const me = this;
         requestAnimationFrame(() => me.attributeCallback(name, oldValue, newValue));
     }
-    
+
     attributeCallback(name, oldValue, newValue) {
         const me = this;
         if (name === 'storage') return me.#onStorage(oldValue, newValue);
@@ -127,6 +127,10 @@ export default class GSFormExt extends HTMLFormElement {
      */
     get id() {
         return GSAttr.get(this, 'id', '');
+    }
+
+    set id(val = '') {
+        return GSAttr.set(this, 'id', val);
     }
 
     /**
@@ -191,7 +195,7 @@ export default class GSFormExt extends HTMLFormElement {
         GSEvents.attach(me, me, 'reset', me.read.bind(me));
         GSEvents.attach(me, me, 'form-field', me.#onField.bind(me));
     }
-        
+
     #onField(e) {
         const me = this;
         const el = e.detail;

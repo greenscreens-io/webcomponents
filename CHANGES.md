@@ -10,6 +10,8 @@
  - GSFormExt add integration with GSReadWrite
  - GSFormExt auto convert standard form to GSFormExt
  - GSFormExt improve form element initialization handling
+ - GSFormExt add native ID getter override to fix id to field named id mapping
+ - GSFormExt add native function "elements" override with shadow dom support for elemnt retrieval
  - GSInputExt add initialization notification events 
  - GSFunction add call once wraper for FIFO / LIFO
  - GSModal added reset function (reset form and tab)
