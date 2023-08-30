@@ -135,6 +135,7 @@ export default class BaseUI extends GSElement {
             const sts = await me.onUpdate(result.data);
             if (!sts) throw new Error('Record not updated!');
 
+            modal.reset();
             // update locally to refresh ui
             Object.assign(data, result.data);
             me.#store.reload();
@@ -143,8 +144,6 @@ export default class BaseUI extends GSElement {
         } catch (e) {
             console.log(e);
             me.#notify.danger('', e.message || e.toString())
-        } finally {
-            modal.forms.forEach(f => f.reset());
         }
 
     }
@@ -168,7 +167,7 @@ export default class BaseUI extends GSElement {
 
             const sts = await me.onCreate(result.data);
             if (!sts) throw new Error('Record not created!');
-
+            modal.reset();
             // update locally to refresh ui
             me.#store.data.push(result.data);
             me.#store.reload();
@@ -177,7 +176,7 @@ export default class BaseUI extends GSElement {
         } catch (e) {
             console.log(e);
             me.#notify.danger('', e.message || e.toString())
-        } 
+        }
 
     }
 

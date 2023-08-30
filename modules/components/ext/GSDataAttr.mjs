@@ -243,7 +243,8 @@ export default class GSDataAttr {
         const list = GSDOM.queryAll(document.documentElement, target);
         const css = source?.dataset?.css || '';
 
-        const html = isComp ? `<${inject}></${inject}>` : `<gs-template href="${inject}" class="${css}"></gs-template>`;
+        const attrs = GSAttr.flattenJson(GSUtil.toJson(source.dataset.attr));
+        const html = isComp ? `<${inject} ${attrs}></${inject}>` : `<gs-template href="${inject}" class="${css}"></gs-template>`;
 
         list.forEach(el => GSDOM.setHTML(el, html));
     }

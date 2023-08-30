@@ -12,6 +12,7 @@ import GSAttr from "../base/GSAttr.mjs";
 import GSDOM from "../base/GSDOM.mjs";
 import GSElement from "../base/GSElement.mjs";
 import GSEvents from "../base/GSEvents.mjs";
+import GSUtil from "../base/GSUtil.mjs";
 
 /**
  * Native dialog with Bootstrap support
@@ -215,11 +216,11 @@ export default class GSDialog extends GSElement {
     return me.info(title, message, true, true);
   }
 
-  reset() {
+  reset(data, index = 0) {
     const me = this;
-    me.forms.forEach(f => f.reset());
+    me.forms.forEach(f => {f.reset(); GSDOM.fromObject(f, data);});
     const tab = me.query('GS-TAB');
-    if (tab) tab.index = 0;
+    if (tab && index > -1) tab.index = GSUtil.asNum(index, 0);
   }
 
   /**

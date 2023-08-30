@@ -17,6 +17,7 @@ export default class GSUtil {
 
 	static FLAT = globalThis.GS_FLAT == true;
 	static ALPHANUM = /^[a-zA-Z0-9-_]+$/;
+	static #JSON_NORMALIZE = /(['"])?([a-z0-9A-Z_]+)(['"])?\s*:/g;
 
 	static isNumber = (n) => { return !isNaN(parseFloat(n)) && isFinite(n); };
 
@@ -94,11 +95,20 @@ export default class GSUtil {
 	 * @param {string|object} val 
 	 * @returns {boolean}
 	 */
-	static toJson(val = '', dft = {}) {
-		if (GSUtil.isJsonString(val)) return JSON.parse(val);
+	static toJson(val = '', dft = {}, normalize = true) {
+		if (GSUtil.isJsonString(val)) return JSON.parse(normalize ? GSUtil.normalizeJson(val) : val);
 		if (GSUtil.isJsonType(val)) return val;
 		GSLog.warn(null, `Invalid data to convert into JSON: ${val}`);
 		return dft;
+	}
+
+	/**
+	 * Normalize unquoted JSON
+	 * @param {*} val 
+	 * @returns 
+	 */
+	static normalizeJson(val = '') {
+		return val?.replace(GSUtil.#JSON_NORMALIZE, '"$2": ');
 	}
 
 	/**

@@ -54,7 +54,7 @@ export default class GSAsbtractDialog extends GSDialog {
             tpl.body.firstElementChild.slot = 'body';
             GSDOM.setHTML(me, tpl);
         }
-        if (me.title) me.title = me.dialogTitle;
+        if (me.dialogTitle) me.title = me.dialogTitle;
     }
 
     onReady() {
@@ -119,7 +119,8 @@ export default class GSAsbtractDialog extends GSDialog {
     #update(data) {
         if (GSUtil.isJson(data)) {
             const me = this;
-            me.forms.forEach(form => { form.reset(); form.data = data; });
+            me.reset();
+            me.forms.forEach(f => f.data = data);
             me.emit('change');
         }
     }

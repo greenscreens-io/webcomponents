@@ -2,6 +2,7 @@
 
 # Development v1.8.0 (TBD)
  - GSDialog forward open/close data
+ - GSDialog added reset function (reset form and tab)
  - GSDialog alllow deregister \'change\' event monitoring form validity
  - GSEvent add abortable to "once", "on", "listen", "wait" functions
  - GSEvents add abortable to "once", "on", "listen", "wait" function
@@ -11,8 +12,10 @@
  - GSFormExt improve form element initialization handling
  - GSInputExt add initialization notification events 
  - GSFunction add call once wraper for FIFO / LIFO
+ - GSModal added reset function (reset form and tab)
  - GSStore add integration with GSReadWrite
  - GSStore add LIFO data read
+ - GSTab added tab index and pagination support
  - GSUtil add abortable timeout
  - GSUtil refactored waitAnimationFrame to GSEvents
  - Added GSAbortController with timeout support

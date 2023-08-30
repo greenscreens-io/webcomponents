@@ -106,7 +106,7 @@ export default class GSAttr {
 	 */
 	static getAsJson(el, name = '', val = '0') {
 		const attr = GSAttr.get(el, name, val, {});
-		return JSON.parse(attr);
+		return GSUtil.toJson(attr);
 	}
 
 	static setAsBool(el, name = '', val = 'false') {
@@ -122,6 +122,25 @@ export default class GSAttr {
 	}
 
 	/**
+	 * Convert JSON object to attribute string 
+	 * @param {*} obj 
+	 * @returns 
+	 */
+	static flattenJson(obj) {
+		return Object.entries(obj||{}).map(kv => `${kv[0]}=${kv[1]}`).join(' ');
+	}
+
+	/**
+	 * Apply JSON object to elemtn attributes
+	 * @param {*} obj 
+	 * @returns 
+	 */
+	static jsonToAttr(obj, el) {
+		if (!GSAttr.isHTMLElement(el)) return;
+		Object.entries(obj||{}).map(kv => GSAttr.set(el, kv[0], kv[1]));
+	}
+	
+	/**
 	 * Convert list of data attributes into a string list
 	 * @param {HTMLElement} el 
 	  @returns {string}
@@ -134,7 +153,7 @@ export default class GSAttr {
 	}
 
 	/**
-	 * Convert lsit of element attributes into a flat list separated by given separator (default ' ')
+	 * Convert list of element attributes into a flat list separated by given separator (default ' ')
 	 * @param {HTMLMediaElement} el 
 	 * @param {String} sep 
 	 * @returns {String}

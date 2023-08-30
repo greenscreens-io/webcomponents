@@ -7,7 +7,7 @@
  * @module BaseUI
  */
 
-import { GSComponents, GSDOM, GSUtil, GSElement, GSEvents } from '/webcomponents/release/esm/io.greenscreens.components.all.esm.min.js';
+import { GSComponents, GSUtil, GSElement, GSEvents } from '/webcomponents/release/esm/io.greenscreens.components.all.esm.min.js';
 
 import Utils from "../utils/Utils.mjs";
 
@@ -28,7 +28,7 @@ export default class BaseViewUI extends GSElement {
         super.onReady();
         globalThis.GS_LOG_ACTION = true;
         GSEvents.monitorAction(me, 'view');
-        me.attachEvent(me.#table, 'filter', e => me.onViewRefresh());
+        me.attachEvent(me.#table, 'filter', e => me.onViewRefresh(e));
         requestAnimationFrame(() => me.onViewRefresh());
     }
 
@@ -152,8 +152,6 @@ export default class BaseViewUI extends GSElement {
         if (!data) return;
 
         const modal = me.modal;
-        const tab = modal.query('GS-TAB');
-        if (tab) tab.index = 0;
         modal.open(data);
         const result = await modal.waitEvent('data');
 
@@ -161,6 +159,7 @@ export default class BaseViewUI extends GSElement {
             const sts = await me.onUpdate(result.data);
             if (!sts) throw new Error('Record not updated!');
 
+            modal.reset();
             // update locally to refresh ui
             Object.assign(data, result.data);
             me.store.reload();
@@ -168,8 +167,6 @@ export default class BaseViewUI extends GSElement {
 
         } catch (e) {
             me.onError(e);
-        } finally {
-            modal.forms.forEach(f => f.reset());
         }
 
     }
@@ -195,8 +192,9 @@ export default class BaseViewUI extends GSElement {
 
             // update locally to refresh ui
             Utils.notify.primary('', 'Record created!');
-
-            me.onViewRefresh();
+            
+            modal.reset();
+            me.onViewRefresh(e);
 
         } catch (e) {
             me.onError(e);
