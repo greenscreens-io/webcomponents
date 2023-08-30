@@ -80,7 +80,7 @@
                         </gs-item>
                     </gs-column>                    
                 </gs-header>
-                <gs-store src="data/configurations.json" id="sessions" limit=15>
+                <gs-store src="data/configurations.json" id="sessions" limit=15 local-sort local-filter _disabled>
                     <gs-item name="id"></gs-item>
                     <gs-item name="uuid"></gs-item>
                     <gs-item name="name"></gs-item>
@@ -146,22 +146,21 @@
                 <gs-pager slot="extra" previous="&laquo;" next="&raquo;" firstlast="false" pages="0"></gs-pager>
             </gs-table>
 
-            <gs-dialog id="modal-main" visible="false" css-modal="modal-lg" css-body="p-0" css-header="p-3 " >
-                <h4 slot="title">IBM i Configuration</h4>
-                <gs-template slot="body" href="//forms/configuration.html"></gs-template>
-            </gs-dialog>
+            <gs-admin-dialog id="modal-main" visible="false" css-modal="modal-lg" css-body="p-0" css-header="p-3 " 
+                    title="IBM i Configuration" content="//forms/configuration.html">
+            </gs-admin-dialog>
 
             <gs-dialog id="modal-validate" visible="false" button-align="center" closable="true" cancelable="false" 
             	css-modal="modal-lg" css-body="text-start p-2 m-1 border" css-header="p-3 " >
                 <h4 slot="title">Validation</h4>
             </gs-dialog>
             
-            <gs-admin-dialog-printer-setup auto="false" id="modal-setup"></gs-admin-dialog-printer-setup>
-            <gs-admin-dialog-printer-reset auto="false" id="modal-reset"></gs-admin-dialog-printer-reset>
+            <gs-admin-dialog-printer-setup id="modal-setup"></gs-admin-dialog-printer-setup>
+            <gs-admin-dialog-printer-reset id="modal-reset"></gs-admin-dialog-printer-reset>
             
-            <gs-admin-dialog-activate auto="false" id="modal-activate"></gs-admin-dialog-activate>
-            <gs-admin-dialog-install auto="false" id="modal-install"></gs-admin-dialog-install>
-            <gs-admin-dialog-license auto="false" id="modal-license"></gs-admin-dialog-license>
+            <gs-admin-dialog-activate id="modal-activate"></gs-admin-dialog-activate>
+            <gs-admin-dialog-install id="modal-install"></gs-admin-dialog-install>
+            <gs-admin-dialog-license id="modal-license"></gs-admin-dialog-license>
 
         </div>
 

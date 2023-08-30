@@ -22,6 +22,8 @@ import GSAttr from "../../base/GSAttr.mjs";
  */
 export default class GSStore extends GSDataHandler {
 
+    #filter = [];
+    #sort = [];
     #data = [];
     #page = 1;
     #total = 0;
@@ -42,7 +44,10 @@ export default class GSStore extends GSDataHandler {
     }
 
     disconnectedCallback() {
-        this.#data = [];    
+        const me = this;
+        me.#data = [];
+        me.#filter = [];
+        me.#sort = [];
         super.disconnectedCallback();
     }
 
@@ -65,9 +70,17 @@ export default class GSStore extends GSDataHandler {
     getField(name = '') {
         return this.querySelector(`gs-item[name="${name}"]`);
     }
-    
+
     get table() {
         return GSDOM.closest(this, 'GS-TABLE')
+    }
+
+    get localSort() {
+        return this.hasAttribute('local-sort');
+    }
+
+    get localFilter() {
+        return this.hasAttribute('local-filter');
     }
 
     /**
@@ -84,7 +97,7 @@ export default class GSStore extends GSDataHandler {
 
     get isCached() {
         const me = this;
-        return Array.isArray(me.#data) && me.#data.length >0;
+        return Array.isArray(me.#data) && me.#data.length > 0;
     }
 
     /**
@@ -119,7 +132,7 @@ export default class GSStore extends GSDataHandler {
         me.#page = val;
         // me.skip = me.limit * (val - 1);
         const skip = me.limit * (val - 1);
-        me.getData(skip, me.limit, me.filter, me.sort);
+        me.#getData(skip, me.limit, me.filter, me.sort);
     }
 
     /**
@@ -157,24 +170,44 @@ export default class GSStore extends GSDataHandler {
         return me.page;
     }
 
-    get sort() {
-        return super.sort;
-    }
-    
+    /**
+     * Filter data in format 
+     * [{name: idx[num] || name[string], value: ''  , op:'eq'}]
+     */
     get filter() {
-        return super.filter;
-    }       
-
-    set sort(val) {
         const me = this;
-        super.sort = me.#formatSort(val);
-        if (me.disabled) me.reload();
+        return me.localFilter || (me.#isLocal && me.disabled) ? me.#filter : super.filter;
     }
 
     set filter(val) {
         const me = this;
-        super.filter = me.#formatFilter(val);
-        if (me.disabled) me.reload();
+        val = me.#formatFilter(val);
+        if (me.localFilter || (me.#isLocal && me.disabled)) {
+            me.#filter = val;
+            me.reload();
+        } else {
+            super.filter = val;
+        }
+    }
+
+    get sort() {
+        const me = this;
+        return me.localSort || (me.#isLocal && me.disabled) ? me.#sort : super.sort;
+    }
+
+    /**
+     * Sort data in format
+     * [{col: idx[num] || name[string]  , op: -1 | 1 }]
+     */
+    set sort(val) {
+        const me = this;
+        val = me.#formatSort(val);
+        if (me.localSort || (me.#isLocal && me.disabled)) {
+            me.#sort = val;
+            me.reload();
+        } else {
+            super.sort = val;
+        }
     }
 
     /*
@@ -190,39 +223,43 @@ export default class GSStore extends GSDataHandler {
     reload(clear = false) {
         const me = this;
         if (clear) me.#data = [];
-        return me.getData(me.skip, me.limit, me.filter, me.sort);
+        return me.#getData(me.skip, me.limit, me.filter, me.sort);
     }
-    
+
     setData(data = [], append = false) {
         const me = this;
         me.#update(data, append);
         return me.reload();
     }
 
-    async getData(skip = 0, limit = 0, filter, sort) {
+    async #getData(skip = 0, limit = 0, filter, sort) {
+        debugger;
         const me = this;
-        filter = me.#formatFilter(filter || me.filter);
-        sort = me.#formatSort(sort || me.sort);
         let data = [];
 
-        const local = me.isCached && me.cached;
-        // const filtered = !me.cached && GSUtil.isString(filter) && GSUtil.isStringNonEmpty(filter);
-        
-        if (local) {
-            data = GSData.filterData(filter, me.#data, me.#fields);
-            data = GSData.sortData(sort, data);
-            limit = limit === 0 ? data.length : limit;
-            data = data.slice(skip, skip + limit);
+        if (me.#isLocal || me.disabled) {
+            data = me.#getDataLocal(skip, limit, filter, sort, me.#data);
             me.#notify('data', data);
         } else {
-            me.filter = filter; 
-            me.sort = me.sort;
-            me.skip = skip;
-            me.limit = limit;
             data = await me.read();
         }
 
+        debugger;
         return data;
+    }
+
+    #getDataLocal(skip = 0, limit = 0, filter, sort, data) {
+        const me = this;
+        data = GSData.filterData(filter, data, me.#fields);
+        data = GSData.sortData(sort, data);
+        limit = limit === 0 ? data.length : limit;
+        data = data.slice(skip, skip + limit);
+        return data;
+    }
+
+    get #isLocal() {
+        const me = this;
+        return (me.isCached && me.cached);
     }
 
     #update(data = [], append = false) {
@@ -293,20 +330,16 @@ export default class GSStore extends GSDataHandler {
      */
 
     onRead(data) {
+        debugger;
         const me = this;
         me.#update(data);
-        const local = me.cached && me.isCached;
-        if (!local) return me.#notify('data', data);
 
-        me.disabled = true;
-
-        const filter = me.#formatFilter(me.filter);
-        const sort = me.#formatSort(me.sort);
-
-        data = GSData.filterData(filter, me.#data, me.#fields);
-        data = GSData.sortData(sort, data);
-        const limit = me.limit === 0 ? data.length : me.limit;
-        data = data.slice(me.skip, me.skip + limit);
+        if (me.#isLocal) {
+            me.disabled = true;
+            data = me.#getDataLocal(me.skip, me.limit, me.filter, me.sort, data);
+        } else if (me.localFilter || me.localSort) {
+            data = me.#getDataLocal(me.skip, me.limit, me.filter, me.sort, data);
+        }
 
         me.#notify('data', data);
     }

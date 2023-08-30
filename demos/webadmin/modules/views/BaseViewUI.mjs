@@ -61,7 +61,7 @@ export default class BaseViewUI extends GSElement {
     }
 
     get form() {
-        return GSDOM.query(this.modal, '#form-main');
+        return this.modal?.form;
     }
 
     get waiter() {
@@ -151,10 +151,11 @@ export default class BaseViewUI extends GSElement {
         const data = await me.onDetails(e.detail.data[0]);
         if (!data) return;
 
-        me.form?.reset();
-        GSDOM.fromObject(me.form, data);
-        me.modal.open(data);
-        const result = await me.modal.waitEvent('data');
+        const modal = me.modal;
+        const tab = modal.query('GS-TAB');
+        if (tab) tab.index = 0;
+        modal.open(data);
+        const result = await modal.waitEvent('data');
 
         try {
             const sts = await me.onUpdate(result.data);
@@ -167,6 +168,8 @@ export default class BaseViewUI extends GSElement {
 
         } catch (e) {
             me.onError(e);
+        } finally {
+            modal.forms.forEach(f => f.reset());
         }
 
     }
@@ -180,9 +183,11 @@ export default class BaseViewUI extends GSElement {
 
         const me = this;
 
-        me.form?.reset();
-        me.modal.open();
-        const result = await me.modal.waitEvent('data');
+        const modal = me.modal;
+        const tab = modal.query('GS-TAB');
+        if (tab) tab.index = 0;
+        modal.open();
+        const result = await modal.waitEvent('data');
 
         try {
             const sts = await me.onCreate(result.data);

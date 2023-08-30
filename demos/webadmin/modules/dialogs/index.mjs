@@ -3,8 +3,6 @@ import './GSAsbtractDialog.mjs';
 import './GSAbout.mjs';
 import './GSCertBlocked.mjs';
 import './GSCertClient.mjs';
-import './GSCertImport.mjs';
-import './GSCertImportPFX.mjs';
 import './GSCertOpt.mjs';
 import './GSLoginAdmin.mjs';
 import './GSLoginDefaults.mjs';

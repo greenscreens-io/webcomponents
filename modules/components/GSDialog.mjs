@@ -64,7 +64,7 @@ export default class GSDialog extends GSElement {
     me.#update();
     if (name === 'visible') {
       if (me.visible) {
-        if (!me.#dialog.open) {
+        if (!me.#dialog?.open) {
           me.#dialog.showModal();
           GSDialog.#STACK.push(me);
           me.emit('change');
@@ -213,6 +213,13 @@ export default class GSDialog extends GSElement {
   prompt(title = '', message = '') {
     const me = this;
     return me.info(title, message, true, true);
+  }
+
+  reset() {
+    const me = this;
+    me.forms.forEach(f => f.reset());
+    const tab = me.query('GS-TAB');
+    if (tab) tab.index = 0;
   }
 
   /**

@@ -141,10 +141,13 @@ export default class GSEvents {
 	 * @param {*} name 
 	 * @returns {Promise}
 	 */
-	static wait(own, name = '', timeout = 0) {
+	static wait(own, name = '', timeout = 0, prevent = true) {
 		if (!name) throw new Error('Event undefined!');
 		return new Promise((r, e) => {
-			GSEvents.once(own, null, name, (e) => r(e.detail), timeout);
+			GSEvents.once(own, null, name, (e) => {
+				if (prevent) GSEvents.prevent(e);
+				r(prevent ? e.detail : e);
+			}, timeout);
 		});
 	}
  

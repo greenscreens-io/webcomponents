@@ -12,6 +12,15 @@ import GSUtil from '../../../../modules/base/GSUtil.mjs';
 
 export default class GSAsbtractDialog extends GSDialog {
 
+    static {
+        customElements.define('gs-admin-dialog', GSAsbtractDialog);
+        Object.seal(GSAsbtractDialog);
+    }
+
+    constructor() {
+        super();
+    }
+
     connectedCallback() {
         super.connectedCallback();
         const me = this;
@@ -21,11 +30,11 @@ export default class GSAsbtractDialog extends GSDialog {
     }
 
     get dialogTemplate() {
-        return '';
+        return GSAttr.get(this, 'content', '');
     }
 
     get dialogTitle() {
-        return '';
+        return GSAttr.get(this, 'title', '');
     }
 
     /**
@@ -39,9 +48,13 @@ export default class GSAsbtractDialog extends GSDialog {
         me.on('data', me.#onFormData.bind(me));
         me.on('error', me.#onFormError.bind(me));
 
-        const tpl = await GSLoader.getTemplate(me.dialogTemplate);
-        GSDOM.setHTML(me, tpl);
-        me.title = me.dialogTitle;
+        if (me.dialogTemplate) {
+            let tpl = await GSLoader.getTemplate(me.dialogTemplate);
+            tpl = GSDOM.parse(tpl);
+            tpl.body.firstElementChild.slot = 'body';
+            GSDOM.setHTML(me, tpl);
+        }
+        if (me.title) me.title = me.dialogTitle;
     }
 
     onReady() {
@@ -66,13 +79,13 @@ export default class GSAsbtractDialog extends GSDialog {
      */
     async onData(data) {
         return true;
-    }    
+    }
 
     /**
      * Should auto open
      */
     get auto() {
-        return GSAttr.getAsBool(this, 'auto', true);
+        return this.hasAttribute('auto');
     }
 
     /**
@@ -116,7 +129,7 @@ export default class GSAsbtractDialog extends GSDialog {
     }
 
     async #onFormData(e) {
-        GSEvents.prevent(e);
+        // GSEvents.prevent(e);
         const me = this;
         let sts = false;
         try {

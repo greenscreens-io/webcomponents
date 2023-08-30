@@ -220,5 +220,37 @@ export default class GSTab extends GSElement {
     me.connectedCallback();
   }
 
+  get tab() {
+    return this.query('.nav');
+  }
+
+  get tabs() {
+    return this.queryAll('.nav-item');
+  }
+
+  get active() {
+    return this.query('.nav-item > .active').closest('.nav-item');
+  }
+
+  get index() {
+    const me = this;
+    return Array.from(me.tab.children).indexOf(me.active);
+  }
+  
+  set index(val = 0) {
+    val = GSUtil.asNum(val, 0);
+    const me = this;
+    const tabs = me.tabs;
+    let tab = val < 0 ? tabs[tabs.length-1] : tabs[val >= tabs.length ? 0 : val];
+    tab?.querySelector('a').click();
+  }
+
+  next() {
+    this.index++;
+  }
+
+  previous() {
+    this.index--;
+  }
 }
 

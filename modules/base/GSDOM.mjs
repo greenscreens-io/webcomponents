@@ -414,6 +414,20 @@ export default class GSDOM {
 	}
 
 	/**
+	 * Get node index between siblings
+	 * @param {*} node 
+	 * @returns 
+	 */
+	static getElementIndex(node) {
+		if (!GSDOM.isHTMLElement(node)) return 0;
+		let index = 0;
+		while ( (node = node.previousElementSibling) ) {
+			index++;
+		}
+		return index;
+	}
+
+	/**
 	 * Find element by ID within DOM Tree across Shadow DOM
 	 * @param {HTMLElement} el Root node to start from
 	 * @param {string} id Element id
@@ -503,7 +517,7 @@ export default class GSDOM {
 		// TODO - use sanitizer when not any more experimental feature; watch for default Sanitizer.getDefaultConfiguration()
 		//if (el?.setHTML) return el.setHTML(val);
 		const isValid = el instanceof ShadowRoot || el instanceof HTMLElement || el instanceof HTMLTemplateElement;
-		if (isValid) el.innerHTML = val;
+		if (isValid) el.innerHTML = val instanceof Document ? val.body.innerHTML : val;
 	}
 
 	/**

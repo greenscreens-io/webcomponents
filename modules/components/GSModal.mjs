@@ -103,7 +103,7 @@ export default class GSModal extends GSElement {
   ok() {
     const me = this;
     if (me.#disabled) return;
-    const forms = GSDOM.queryAll(me, 'form');
+    const forms = me.forms;
     forms.length == 0 ? me.close(null, true) : forms.forEach(form => form.submit());
   }
 
@@ -196,6 +196,13 @@ export default class GSModal extends GSElement {
   prompt(title = '', message = '') {
     const me = this;
     return me.info(title, message, true, true);
+  }
+
+  reset() {
+    const me = this;
+    me.forms.forEach(f => f.reset());
+    const tab = me.query('GS-TAB');
+    if (tab) tab.index = 0;
   }
 
   /**
@@ -300,6 +307,13 @@ export default class GSModal extends GSElement {
     return el;
   }
 
+  get form() {
+    return GSDOM.query(this, 'form');
+  }
+
+  get forms() {
+    return GSDOM.queryAll(this, 'form');
+  }
 
   get size() {
     return GSAttr.get(this, 'size', '');

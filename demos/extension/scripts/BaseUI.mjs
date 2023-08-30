@@ -6,7 +6,6 @@
  * A module loading BaseUI class
  * @module BaseUI
  */
-import GSDOM from "../../../modules/base/GSDOM.mjs";
 import GSElement from "../../../modules/base/GSElement.mjs";
 import GSFunction from "../../../modules/base/GSFunction.mjs";
 
@@ -38,10 +37,6 @@ export default class BaseUI extends GSElement {
 
     get #modal() {
         return this.query('#modal-main');
-    }
-
-    get #form() {
-        return GSDOM.query(document.body, '#form-main');
     }
 
     get #notify() {
@@ -129,10 +124,11 @@ export default class BaseUI extends GSElement {
         const data = e.detail.data.pop();
         if (!data) return;
 
-        me.#form.reset();
-        GSDOM.fromObject(me.#form, data);
-        me.#modal.open();
-        const result = await me.#modal.waitEvent('data');
+        const modal = me.#modal;
+        const tab = modal.query('GS-TAB');
+        if (tab) tab.index = 0;
+        modal.open();
+        const result = await modal.waitEvent('data');
 
         try {
 
@@ -147,6 +143,8 @@ export default class BaseUI extends GSElement {
         } catch (e) {
             console.log(e);
             me.#notify.danger('', e.message || e.toString())
+        } finally {
+            modal.forms.forEach(f => f.reset());
         }
 
     }
@@ -160,9 +158,11 @@ export default class BaseUI extends GSElement {
 
         const me = this;
 
-        me.#form.reset();
-        me.#modal.open();
-        const result = await me.#modal.waitEvent('data');
+        const modal = me.#modal;
+        const tab = modal.query('GS-TAB');
+        if (tab) tab.index = 0;
+        modal.open();
+        const result = await modal.waitEvent('data');
 
         try {
 
@@ -177,7 +177,7 @@ export default class BaseUI extends GSElement {
         } catch (e) {
             console.log(e);
             me.#notify.danger('', e.message || e.toString())
-        }
+        } 
 
     }
 

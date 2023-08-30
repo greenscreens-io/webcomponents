@@ -97,14 +97,14 @@ export default class GSDataHandler extends HTMLElement {
                     me.writer = me.#handler.writer;
                     me.reader = me.#handler.reader;
                 }
-                if (name == 'writer') return;
+                if (name === 'writer') return;
                 if(me.isRegistered) me.#lifoReadRef();
             } catch (e) {
                 me[name] = oldValue;
                 GSLog.error(this, e);
             } 
         }
-        if (name = 'disabled') return me.#toggleHandler();
+        if (name === 'disabled') return me.#toggleHandler();
     }
 
     /**
@@ -197,7 +197,7 @@ export default class GSDataHandler extends HTMLElement {
 
         // manual store, not linked to external source
         if (me.#isInternal) {
-            me.#handler = new GSReadWrite(me.id);
+            me.#handler = new GSReadWrite(me.id, !me.disabled);
         } else {
             me.#handler = await GSReadWriteRegistry.wait(me.id);
             me.#external = true;
@@ -205,7 +205,7 @@ export default class GSDataHandler extends HTMLElement {
 
         me.#updateHandler();
         me.#listenHandler();
-        me.read();
+        // me.read();
     }
 
     get #isInternal() {
@@ -375,7 +375,8 @@ export default class GSDataHandler extends HTMLElement {
      * rest, query, quark 
      */
     get mode() {
-        return GSAttr.get(this, 'mode', 'query');
+        const me = this;
+        return GSAttr.get(this, 'mode', me.src ? 'query':'');
     }
 
     set mode(val) {
@@ -440,10 +441,11 @@ export default class GSDataHandler extends HTMLElement {
 
     set filter(val) {
         const me = this;
-        val = GSUtil.isJsonString(val) ? JSON.parse(val) : val;
-        if (!me.#handler) return;
-        me.#handler.filter = val;
-        if (me.isRegistered) me.#lifoReadRef();
+        if (me.#handler) {
+            val = GSUtil.isJsonString(val) ? JSON.parse(val) : val;
+            me.#handler.filter = val;
+        }
+        me.#lifoReadRef();
     }
 
     /**
@@ -456,10 +458,11 @@ export default class GSDataHandler extends HTMLElement {
 
     set sort(val) {
         const me = this;
-        val = GSUtil.isString(val) ? JSON.parse(val) : val;
-        if (!me.#handler) return;
-        me.#handler.sort = val;
-        if (me.isRegistered) me.#lifoReadRef();
+        if (me.#handler) {
+            val = GSUtil.isString(val) ? JSON.parse(val) : val;
+            me.#handler.sort = val;
+        }
+        me.#lifoReadRef();
     }
 
     get isExternal() {

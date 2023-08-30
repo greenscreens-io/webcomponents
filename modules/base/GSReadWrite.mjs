@@ -49,7 +49,7 @@ export default class GSReadWrite extends GSAbstractReadWrite {
 
     set mode(val) {
         const me = this;
-        val == val || 'query';
+        val = val || 'query';
         const isok = GSReadWrite.#MODES.includes(val);
         if (!isok) throw new Error(null, `Invalid mode, allowed: ${GSReadWrite.#MODES}`);
         if (me.#mode === 'quark' && me.#mode != val) {
