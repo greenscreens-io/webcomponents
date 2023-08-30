@@ -27,6 +27,8 @@ export default class GSItem extends HTMLElement {
 
 	static #inject = 'data-inject';
 
+	static #attrs = 'data-attr';
+
 	static #selectable = 'data-selectable';
 
 	static #tags = ['GS-ITEM', 'TEMPLATE']
@@ -80,7 +82,7 @@ export default class GSItem extends HTMLElement {
 	static getAttrs(el) {
 		return [GSItem.getDismissAttr(el), GSItem.getTargetAttr(el),
 		GSItem.getToggleAttr(el), GSItem.getActionAttr(el),
-		GSItem.getInjectAttr(el)].join(' ');
+		GSItem.getInjectAttr(el), GSItem.getInjectAttributesAttr(el)].join(' ');
 	}
 
 	static getDismissAttr(el) {
@@ -106,6 +108,11 @@ export default class GSItem extends HTMLElement {
 	static getInjectAttr(el) {
 		const v = GSItem.getInject(el);
 		return v ? `${GSItem.#inject}="${v}"` : '';
+	}
+
+	static getInjectAttributesAttr(el) {
+		const v = el?.dataset?.attr;
+		return v ? `${GSItem.#attrs}="${v}"` : '';
 	}
 
 	static getSelectableAttr(el) {
@@ -205,6 +212,10 @@ export default class GSItem extends HTMLElement {
 		return GSItem.getInjectAttr(this);
 	}
 
+	get injectAttributesAttr() {
+		return GSItem.getInjectAttributesAttr(this);
+	}
+
 	get action() {
 		return GSItem.getAction(this);
 	}
@@ -223,6 +234,10 @@ export default class GSItem extends HTMLElement {
 
 	get inject() {
 		return GSItem.getInject(this);
+	}
+
+	get injectAttributes() {
+		return this.dataset.attr;
 	}
 
 	get selectable() {

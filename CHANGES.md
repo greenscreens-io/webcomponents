@@ -18,6 +18,7 @@
  - GSTab added tab index and pagination support
  - GSUtil add abortable timeout
  - GSUtil refactored waitAnimationFrame to GSEvents
+ - Add user specified attributes; data-attr for injection targets
  - Added GSAbortController with timeout support
  - Added GSPromise wrapper with GSAbortController support
  - Added GSAbstractReadWrite data handler
