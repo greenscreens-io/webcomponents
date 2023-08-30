@@ -135,8 +135,8 @@ export default class GSDOM {
 
 	static isButtonElement(el) {
 		return (el instanceof HTMLButtonElement)
-		 || el?.tagName === 'GS-BUTTON'
-		 || GSDOM.hasClass(el, 'btn');
+			|| el?.tagName === 'GS-BUTTON'
+			|| GSDOM.hasClass(el, 'btn');
 	}
 
 	/**
@@ -421,7 +421,7 @@ export default class GSDOM {
 	static getElementIndex(node) {
 		if (!GSDOM.isHTMLElement(node)) return 0;
 		let index = 0;
-		while ( (node = node.previousElementSibling) ) {
+		while ((node = node.previousElementSibling)) {
 			index++;
 		}
 		return index;
@@ -469,13 +469,50 @@ export default class GSDOM {
 	static query(el, qry, all = false, shadow = true) {
 		if (typeof el === 'string') return GSDOM.query(document.documentElement, el, all, shadow);
 		if (!(el && qry)) return null;
-		if (GSDOM.matches(el, qry)) return el;
+		if (GSDOM.matches(el, qry)) return GSDOM.#proxy(el);
 		const it = GSDOM.walk(el, false, all, shadow);
 		for (let o of it) {
-			if (GSDOM.matches(o, qry)) return o;
+			if (GSDOM.matches(o, qry)) return GSDOM.#proxy(o);
 		}
 		return null;
 	}
+
+	/**
+	 * Query DOM tree with support for Shadow DOM
+	 * 
+	 * @param {HTMLElement} el Root node to start from
+	 * @param {string} qry CSS query
+	 * @returns {Array<HTMLElement>}
+	*/
+	static queryAll(el, qry, all = false, shadow = true) {
+		if (typeof el === 'string') return GSDOM.queryAll(document.documentElement, el, all, shadow);
+		const res = [];
+		if (!(el && qry)) return res;
+		const it = GSDOM.walk(el, false, all, shadow);
+		for (let o of it) {
+			if (GSDOM.matches(o, qry)) res.push(GSDOM.#proxy(o));
+		}
+		return res;
+	}
+
+    /**
+     * Overide native to prevent DOM issue when input field name=id
+     */
+    static #proxy(el) {
+		if (el.tagName !== 'FORM') return el;
+        if (!GSDOM.isHTMLElement(el.id)) return el;
+        return new Proxy(el, {
+            get: function (target, prop, receiver) {
+                if (prop ==='_owner_') return target;
+                if (prop ==='id') return target.getAttribute('id');
+                const res = Reflect.get(target, prop);
+                return GSFunction.isFunction(res) ? res.bind(target) : res;
+            },
+            set: function (target, prop, value) {                
+                return target[prop] = value;
+            }            
+        });
+    }
 
 	/**
 	 * Match element against CSS query
@@ -486,24 +523,6 @@ export default class GSDOM {
 	static matches(el, qry) {
 		// return el && qry && typeof el.matches === 'function' && el.matches(qry);
 		return el && typeof el.matches === 'function' && el.matches(qry);
-	}
-
-	/**
-	 * Query DOM tree with support for Shadow DOM
-	 * 
-	 * @param {HTMLElement} el Root node to start from
-	 * @param {string} qry CSS query
-	 * @returns {Array<HTMLElement>}
-	 */
-	static queryAll(el, qry, all = false, shadow = true) {
-		if (typeof el === 'string') return GSDOM.queryAll(document.documentElement, el, all, shadow);
-		const res = [];
-		if (!(el && qry)) return res;
-		const it = GSDOM.walk(el, false, all, shadow);
-		for (let o of it) {
-			if (GSDOM.matches(o, qry)) res.push(o);
-		}
-		return res;
 	}
 
 	/**
@@ -607,14 +626,14 @@ export default class GSDOM {
 	 * @returns {string|number}
 	 */
 	static getValue(el) {
-        switch (el.type) {
-            case 'datetime-local':
-            case 'number':
-                return el.value ? el.valueAsNumber : el.value;
-            default:
-                return el.value;
-        }
-    }
+		switch (el.type) {
+			case 'datetime-local':
+			case 'number':
+				return el.value ? el.valueAsNumber : el.value;
+			default:
+				return el.value;
+		}
+	}
 
 	/**
 	 * Get value from form element
@@ -784,11 +803,11 @@ export default class GSDOM {
 	 */
 	static fromURLHashToForm(owner) {
 		location.hash.slice(1).split('&')
-		.filter(v => v.length > 1)
-		.forEach(v => {
-			const d = v.split('=');
-			GSDOM.setValue(`input[name=${d[0]}]`, d[1], owner);
-		});
+			.filter(v => v.length > 1)
+			.forEach(v => {
+				const d = v.split('=');
+				GSDOM.setValue(`input[name=${d[0]}]`, d[1], owner);
+			});
 	}
 
 	/**
@@ -806,9 +825,9 @@ export default class GSDOM {
 	 * @param {string} qry Default to form
 	 */
 	static enableInput(own, qry = 'input, select, textarea, .btn', all = true, group = '') {
-			let list = GSDOM.queryAll(own, qry);
-			if (!all && group) list = list.filter(el => GSUtil.asBool(el.dataset[group]))
-			list.forEach(el => el.removeAttribute('disabled'));
+		let list = GSDOM.queryAll(own, qry);
+		if (!all && group) list = list.filter(el => GSUtil.asBool(el.dataset[group]))
+		list.forEach(el => el.removeAttribute('disabled'));
 	}
 
 	/**
@@ -818,11 +837,11 @@ export default class GSDOM {
 	 */
 	static disableInput(own, qry = 'input, select, textarea, .btn', all = true, group = '') {
 		GSDOM.queryAll(own, qry)
-		.filter(el => all ? true : !el.disabled)
+			.filter(el => all ? true : !el.disabled)
 			.forEach(el => {
 				el.setAttribute('disabled', true);
 				if (group) el.dataset[group] = true;
-			});		
+			});
 	}
 
 	/**

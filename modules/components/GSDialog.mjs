@@ -64,15 +64,16 @@ export default class GSDialog extends GSElement {
     const me = this;
     me.#update();
     if (name === 'visible') {
+      const dlg = me.#dialog;
       if (me.visible) {
-        if (!me.#dialog?.open) {
-          me.#dialog.showModal();
+        if (dlg && !dlg.open) {
+          dlg.showModal();
           GSDialog.#STACK.push(me);
           me.emit('change');
         }
         me.focusable()?.focus();
       } else {
-        me.#dialog?.close();
+        dlg?.close();
         GSDialog.#STACK.pop();
       }
       me.emit('visible', { type: 'dialog', ok: me.visible }, true, true);

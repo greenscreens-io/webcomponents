@@ -59,7 +59,9 @@ export default class GSID {
 	 * @param {HTMLElement} el 
 	 */
 	static setIf(el) {
-		if (el) el.id = el.id || GSID.id;
+		if (el) {
+			el.id = typeof el.id !== 'string' ? GSID.id : el.id || GSID.id;
+		}
 	}
 
 	static {

@@ -16,6 +16,8 @@ import GSLog from "../../base/GSLog.mjs";
 import GSAttr from "../../base/GSAttr.mjs";
 import GSReadWriteRegistry from "../../base/GSReadWriteRegistry.mjs";
 import GSUtil from "../../base/GSUtil.mjs";
+import GSFunction from "../../base/GSFunction.mjs";
+
 
 /**
  * Add custom form processing to support forms in modal dialogs
@@ -63,7 +65,7 @@ export default class GSFormExt extends HTMLFormElement {
 
     constructor() {
         super();
-        this.#reader = this.#onRead.bind(this);
+        this.#reader = this.#onRead.bind(this);       
     }
 
     connectedCallback() {
@@ -120,17 +122,6 @@ export default class GSFormExt extends HTMLFormElement {
 
     onError(e) {
         GSLog.error(this, e);
-    }
-
-    /**
-     * Overide native to prevent DOM spec override when input field name=id
-     */
-    get id() {
-        return GSAttr.get(this, 'id', '');
-    }
-
-    set id(val = '') {
-        return GSAttr.set(this, 'id', val);
     }
 
     /**
@@ -232,4 +223,3 @@ export default class GSFormExt extends HTMLFormElement {
     }
 
 }
-
