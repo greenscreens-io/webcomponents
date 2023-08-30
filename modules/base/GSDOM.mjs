@@ -19,7 +19,7 @@ export default class GSDOM {
 
 	static QUERY_FOCUSABLE = "a[href]:not([tabindex='-1']),area[href]:not([tabindex='-1']),input:not([disabled]):not([tabindex='-1']),select:not([disabled]):not([tabindex='-1']),textarea:not([disabled]):not([tabindex='-1']),button:not([disabled]):not([tabindex='-1']),iframe:not([tabindex='-1']),[tabindex]:not([tabindex='-1']),[contentEditable=true]:not([tabindex='-1'])";
 	static QUERY_INPUT = "input:not([type='hidden']):not(disabled):not(readonly),select:not([type='hidden']):not(disabled):not(readonly),textarea:not([type='hidden']):not(disabled):not(readonly)";
-	static #FORMEL = ['INPUT', 'SELECT', 'TEXTAREA'];
+	static #FORMEL = ['INPUT', 'SELECT', 'TEXTAREA', 'OUTPUT'];
 
 	// Timeout for removing element
 	static SPEED = 300;
@@ -594,7 +594,7 @@ export default class GSDOM {
 	 * @param {HTMLElement} owner 
 	 * @param {string} qry 
 	 */
-	static clearInputs(owner, qry = 'input, textarea') {
+	static clearInputs(owner, qry = 'input, textarea, output') {
 		const root = GSDOM.unwrap(owner);
 		requestAnimationFrame(() => {
 			root.querySelectorAll(qry).forEach((el) => el.value = '');
@@ -654,7 +654,7 @@ export default class GSDOM {
 	 * @param {boolean} invalid Should include invalid fields
 	 * @returns {object}
 	 */
-	static toObject(owner, qry = 'input, textarea, select', invalid = true) {
+	static toObject(owner, qry = 'input, textarea, select, output', invalid = true) {
 		const root = GSDOM.unwrap(owner);
 		const params = {};
 		const list = GSDOM.queryAll(root, qry); // root.querySelectorAll(qry);
@@ -675,7 +675,7 @@ export default class GSDOM {
 	 * @param {string} qry Element type selector,defaults to form elements 
 	 * @returns 
 	 */
-	static fromObject(owner, obj, qry = 'input, textarea, select') {
+	static fromObject(owner, obj, qry = 'input, textarea, select, output') {
 		obj = GSUtil.toJson(obj);
 		if (Object.entries(obj).length === 0) return;
 		const root = GSDOM.unwrap(owner);
@@ -805,7 +805,7 @@ export default class GSDOM {
 	 * @param {HTMLElement} own 
 	 * @param {string} qry Default to form
 	 */
-	static enableInput(own, qry = 'input, select, .btn', all = true, group = '') {
+	static enableInput(own, qry = 'input, select, textarea, .btn', all = true, group = '') {
 			let list = GSDOM.queryAll(own, qry);
 			if (!all && group) list = list.filter(el => GSUtil.asBool(el.dataset[group]))
 			list.forEach(el => el.removeAttribute('disabled'));
@@ -816,7 +816,7 @@ export default class GSDOM {
 	 * @param {HTMLElement} own 
 	 * @param {string} qry Default to form
 	 */
-	static disableInput(own, qry = 'input, select, .btn', all = true, group = '') {
+	static disableInput(own, qry = 'input, select, textarea, .btn', all = true, group = '') {
 		GSDOM.queryAll(own, qry)
 		.filter(el => all ? true : !el.disabled)
 			.forEach(el => {

@@ -11,8 +11,17 @@ import GSAsbtractDialog from './GSAsbtractDialog.mjs';
 export default class GSFilter extends GSAsbtractDialog {
 
     //"((25[0-5]|(2[0-4]|1\\d|[1-9]|)\\d)\.?\\b){4}";
+    /*
     static #IP = "((([0-9]{1,2})|(1[0-9]{2,2})|(2[0-4][0-9])|(25[0-5])|\\*)\\.){3}(([0-9]{1,2})|(1[0-9]{2,2})|(2[0-4][0-9])|(25[0-5])|\\*)";
     static #MASK = [`^${GSFilter.#IP}$`, `^${GSFilter.#IP}/[0-9]{1,2}$`, `^${GSFilter.#IP}-${GSFilter.#IP}$`];
+    */
+    static #SEG = "(?:(?:[0-9]{1,2})|(?:1[0-9]{2,2})|(?:2[0-4][0-9])|(?:25[0-5])|\\*)";
+    static #CDIR = "(?:/[1-9]{1,2})";
+    static #IP = `(${GSFilter.#SEG}\\.){3}${GSFilter.#SEG}`; 
+    static #SEGM = `${GSFilter.#SEG}(?:\-${GSFilter.#SEG})?`;
+    static #IPM = `(${GSFilter.#SEGM}\\.){3}${GSFilter.#SEGM}`;
+    static #MASK = [`^${GSFilter.#IP}$`, `^${GSFilter.#IP}${GSFilter.#CDIR}$`, `^${GSFilter.#IPM}$`];
+
 
     static {
         customElements.define('gs-admin-dialog-filter', GSFilter);

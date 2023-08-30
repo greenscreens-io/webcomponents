@@ -122,6 +122,20 @@ export default class GSFormExt extends HTMLFormElement {
         GSLog.error(this, e);
     }
 
+    /**
+     * Overide native to prevent DOM spec override when input field name=id
+     */
+    get id() {
+        return GSAttr.get(this, 'id', '');
+    }
+
+    /**
+     * Overide native to pickup all form elements, including ones in shadow dom
+     */
+    get elements() {
+        return GSDOM.queryAll(this, 'input,select,output,textarea');
+    }
+
     get storage() {
         return GSAttr.get(this, 'storage', '');
     }

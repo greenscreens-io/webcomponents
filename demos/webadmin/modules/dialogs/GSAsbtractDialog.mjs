@@ -6,7 +6,7 @@
  * A module loading GSLoginAdmin class
  * @module dialogs/GSLoginAdmin
  */
-import { GSAttr, GSComponents, GSDOM, GSEvents, GSLoader, GSDialog } from '/webcomponents/release/esm/io.greenscreens.components.all.esm.min.js';
+import { GSAttr, GSComponents, GSDOM, GSLoader, GSDialog } from '/webcomponents/release/esm/io.greenscreens.components.all.esm.min.js';
 import Utils from '../utils/Utils.mjs';
 import GSUtil from '../../../../modules/base/GSUtil.mjs';
 
@@ -52,15 +52,10 @@ export default class GSAsbtractDialog extends GSDialog {
             let tpl = await GSLoader.getTemplate(me.dialogTemplate);
             tpl = GSDOM.parse(tpl);
             tpl.body.firstElementChild.slot = 'body';
-            GSDOM.setHTML(me, tpl);
+            GSDOM.appendChild(me, tpl.body.firstElementChild);
+            //GSDOM.setHTML(me, tpl);
         }
         if (me.dialogTitle) me.title = me.dialogTitle;
-    }
-
-    onReady() {
-        const me = this;
-        if (me.auto) me.open();
-        super.onReady();
     }
 
     /**
@@ -82,13 +77,6 @@ export default class GSAsbtractDialog extends GSDialog {
     }
 
     /**
-     * Should auto open
-     */
-    get auto() {
-        return this.hasAttribute('auto');
-    }
-
-    /**
      * Wait dialog
      */
     get waiter() {
@@ -100,17 +88,6 @@ export default class GSAsbtractDialog extends GSDialog {
      */
     get notify() {
         return GSComponents.get('notification');
-    }
-
-    /**
-     * Dialog form
-     */
-    get form() {
-        return GSDOM.query(this, 'form');
-    }
-
-    get forms() {
-        return GSDOM.queryAll(this, 'form');
     }
 
     /**
