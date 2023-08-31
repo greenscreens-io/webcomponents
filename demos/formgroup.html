@@ -20,6 +20,7 @@
 
     <script type="module" src="/webcomponents/modules/index.mjs"></script>
     <script type="module" src="/webcomponents/modules/components/ext/GSInputExt.mjs"></script>
+    <script type="module" src="/webcomponents/modules/components/ext/GSFormExt.mjs"></script>
     <script type="module" src="/webcomponents/modules/components/GSFormGroup.mjs"></script>
 
     <!-- disable to hide right side help icon -->
@@ -38,7 +39,7 @@
         Horizontal layout
     </div>
     
-    <form>
+    <form is="gs-ext-form">
         <div class="container justify-content-center w-50 border p-4 shadow-sm bg-light">
             <gs-form-group css="mt-2" name="date" mask="DD-MM-YYYY" label="Date" description="Masked date input"></gs-form-group>
             <gs-form-group css="mt-2" name="hexa" mask="XXXXXXXXXXXXXXXX" label="Hexadecimal input with" description="Masked hexadecimal input"></gs-form-group>
@@ -53,11 +54,18 @@
             <gs-form-group css="mt-2" name="user" placeholder="...enter user name" label="User" description="Login user"></gs-form-group>
 
             <gs-form-group css="mt-2" name="field1" label="Check box"    type="checkbox" checked></gs-form-group>
-            <gs-form-group css="mt-2" name="field2" label="Radio button" type="radio" checked></gs-form-group>
+            
+            <fieldset>
+                <legend>Radio button</legend>
+                <gs-form-group css="mt-2" name="field2" type="radio" value="1" checked></gs-form-group>
+                <gs-form-group css="mt-2" name="field2" type="radio" value="2" ></gs-form-group>
+                <gs-form-group css="mt-2" name="field2" type="radio" value="3" ></gs-form-group>
+            </fieldset>
+
             <gs-form-group css="mt-2" name="field3" label="Switch box"   type="switch" checked></gs-form-group>
             <gs-form-group css="mt-2" name="field4" label="Range"        type="range" min="0" max="100" step="2"></gs-form-group>
 
-            <gs-form-group css="mt-2" name="field3" label="Password (ALT+CTRL+SHIFT)"   type="password" reveal checked></gs-form-group>
+            <gs-form-group css="mt-2" name="field5" label="Password (ALT+CTRL+SHIFT)"   type="password" reveal checked></gs-form-group>
 
             <gs-form-group css="mt-2" name="active" label="Status" description="test">
                 <template>

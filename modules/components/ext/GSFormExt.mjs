@@ -16,7 +16,6 @@ import GSLog from "../../base/GSLog.mjs";
 import GSAttr from "../../base/GSAttr.mjs";
 import GSReadWriteRegistry from "../../base/GSReadWriteRegistry.mjs";
 import GSUtil from "../../base/GSUtil.mjs";
-import GSFunction from "../../base/GSFunction.mjs";
 
 
 /**

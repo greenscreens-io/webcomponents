@@ -495,24 +495,24 @@ export default class GSDOM {
 		return res;
 	}
 
-    /**
-     * Overide native to prevent DOM issue when input field name=id
-     */
-    static #proxy(el) {
+	/**
+	 * Overide native to prevent DOM issue when input field name=id
+	 */
+	static #proxy(el) {
 		if (el.tagName !== 'FORM') return el;
-        if (!GSDOM.isHTMLElement(el.id)) return el;
-        return new Proxy(el, {
-            get: function (target, prop, receiver) {
-                if (prop ==='_owner_') return target;
-                if (prop ==='id') return target.getAttribute('id');
-                const res = Reflect.get(target, prop);
-                return GSFunction.isFunction(res) ? res.bind(target) : res;
-            },
-            set: function (target, prop, value) {                
-                return target[prop] = value;
-            }            
-        });
-    }
+		if (!GSDOM.isHTMLElement(el.id)) return el;
+		return new Proxy(el, {
+			get: function (target, prop, receiver) {
+				if (prop === '_owner_') return target;
+				if (prop === 'id') return target.getAttribute('id');
+				const res = Reflect.get(target, prop);
+				return GSFunction.isFunction(res) ? res.bind(target) : res;
+			},
+			set: function (target, prop, value) {
+				return target[prop] = value;
+			}
+		});
+	}
 
 	/**
 	 * Match element against CSS query
@@ -676,13 +676,16 @@ export default class GSDOM {
 	static toObject(owner, qry = 'input, textarea, select, output', invalid = true) {
 		const root = GSDOM.unwrap(owner);
 		const params = {};
-		const list = GSDOM.queryAll(root, qry); // root.querySelectorAll(qry);
-		Array.from(list)
+		GSDOM.queryAll(root, qry)
 			.filter(el => el.name)
 			.filter(el => el.dataset.ignore !== 'true')
 			.filter(el => invalid ? true : el.checkValidity())
 			.forEach(el => {
-				params[el.name] = GSDOM.toValue(el);
+				if (el.type !== 'radio') {
+					params[el.name] = GSDOM.toValue(el);
+				} else if (el.checked) {
+					params[el.name] = GSDOM.toValue(el);
+				}
 			});
 		return params;
 	}
@@ -702,7 +705,11 @@ export default class GSDOM {
 		Array.from(list)
 			//.filter(el => el.name && Object.hasOwn(obj, el.name))
 			.filter(el => el.name && el.name in obj)
-			.forEach(el => GSDOM.fromValue(el, obj[el.name]));
+			.forEach(el => {
+				if (el.type !== 'radio') {
+					GSDOM.fromValue(el, obj[el.name])
+				} else if (el.value === obj[el.name]) el.checked = true; 
+			});
 	}
 
 	/**
