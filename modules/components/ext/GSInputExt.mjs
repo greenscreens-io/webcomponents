@@ -24,6 +24,8 @@ import GSDOMObserver from "../../base/GSDOMObserver.mjs";
  */
 export default class GSInputExt extends HTMLInputElement {
 
+    static #wordop = ['KeyC', 'KeyV', 'KeyX', 'KeyA'];
+    static #copycut = ['KeyC', 'KeyX'];
     static #special = '.^$*+?()[]{}\|';
 
     static #maskType = {
@@ -272,7 +274,8 @@ export default class GSInputExt extends HTMLInputElement {
 
     #onBlur(e) {
         const me = this;
-        if (me.required) me.reportValidity();
+        if (me.mask && me.value === me.mask) me.value = '';
+        if (me.required || !me.checkValidity()) me.reportValidity();
         if (!me.isInList()) GSEvents.send(me, 'strict', { ok: false, source: e });
     }
 
@@ -312,35 +315,44 @@ export default class GSInputExt extends HTMLInputElement {
 
         if (!me.mask) return;
 
+        if (e.ctrlKey) {
+            const wordop = GSInputExt.#wordop.indexOf(e.code) > -1;
+            const copycut = GSInputExt.#copycut.indexOf(e.code) > -1;
+            // if ctrl+[c,a,x,v] operation
+            if (wordop) {
+                // if ctrl+[c,x] operation and invalid, prevent
+                if (copycut && !me.checkValidity()) {
+                    me.reportValidity();
+                    return GSEvents.prevent(e);
+                }
+                return;
+            } 
+        }
+
         const tmp = me.value.split('');
         let pos1 = me.selectionStart;
         let pos2 = me.selectionEnd;
-
         let handle = false;
         let pos = pos1;
 
-        if (e.key === 'Delete') {
+        if (e.code === 'Delete') {
+            if(pos2 === tmp.length) return;
             handle = true;
-            tmp[pos] = me.mask[pos];
+            while(pos <= pos2) {
+                tmp[pos] = me.mask[pos];
+                pos++;
+            }
+            pos = pos1;
         }
 
-        if (e.key === 'Backspace') {
+        if (e.code === 'Backspace') {
+            if(pos1 === 0) return;
             handle = true;
-            if (pos1 === pos2) {
-                tmp[pos - 1] = me.mask[pos - 1];
-                pos = pos1 - 1;
-            } else {
-                pos = pos1;
+            while(pos2 >= pos1) {
+                pos2--;
+                if (pos2 >=0) tmp[pos2] = me.mask[pos2];
             }
-        }
-
-
-        if (pos1 !== pos2 && e.key.length === 1) {
-            handle = true;
-            while (pos1 < pos2) {
-                tmp[pos1] = me.mask[pos1];
-                pos1++;
-            }
+            pos = pos1-1;            
         }
 
         if (!handle) return;
@@ -356,37 +368,30 @@ export default class GSInputExt extends HTMLInputElement {
         if (!me.mask) return;
 
         const tmp = me.value.split('');
-        let pos = me.selectionStart;
-        let masks = me.#masks.slice(pos);
-        let canceled = true;
+        let pos1 = me.selectionStart;
+        let pos2 = me.selectionEnd;
 
-        masks.every(mask => {
-            if (mask instanceof RegExp) {
-                if (mask.test(e.key)) {
-                    tmp[pos] = e.key;
-                    canceled = false;
-                }
+        const mask = me.#masks[pos1];
+
+        if (mask instanceof RegExp) {
+            mask.lastIndex = 0;
+            if (!mask.test(e.key)) {
                 GSEvents.prevent(e);
                 return false;
-            } else {
-                tmp[pos] = mask;
             }
-            pos++;
-            return true;
-        });
+            tmp[pos1] = e.key;
+        } else {
+            tmp[pos1] = me.mask[pos1];    
+        }
 
-        if (canceled) return;
 
-        masks = me.#masks.slice(pos + 1);
-        masks.every(mask => {
-            if (mask instanceof RegExp) return false;
-            pos++;
-            return true;
-        });
-
+        while(pos2 > pos1) {
+            tmp[pos2] = me.mask[pos2];
+            pos2--;
+        }
 
         me.value = me.formatMask(tmp.join(''));
-        me.setSelectionRange(pos + 1, pos + 1);
+        me.setSelectionRange(pos1 + 1, pos1 + 1);
         GSEvents.prevent(e);
     }
 
@@ -415,9 +420,11 @@ export default class GSInputExt extends HTMLInputElement {
 
         me.value = me.#updateText(me.value);
 
+        /*
         if (!me.checkValidity()) {
             me.reportValidity();
         }
+        */
     }
 
     formatMask(value = '') {
