@@ -186,7 +186,7 @@ export default class GSInputExt extends HTMLInputElement {
         const me = this;
         GSEvents.attach(me, me, 'keydown', me.#onKeyDown.bind(me));
         GSEvents.attach(me, me, 'keyup', me.#onKeyUp.bind(me));
-        GSEvents.attach(me, me, 'keypress', me.#onKeyPress.bind(me));
+        GSEvents.attach(me, me, 'keydown', me.#onKeyPress.bind(me));
         GSEvents.attach(me, me, 'input', me.#onInput.bind(me));
         GSEvents.attach(me, me, 'change', me.#onChange.bind(me));
         GSEvents.attach(me, me, 'paste', me.#onPaste.bind(me));
@@ -368,6 +368,7 @@ export default class GSInputExt extends HTMLInputElement {
     #onKeyPress(e) {
         const me = this;
         if (!me.mask) return;
+        if (e.ctrlKey ||e.altKey||e.shiftKey||e.metaKey||e.key.length!==1) return;
 
         const tmp = me.value.split('');
         let pos1 = me.selectionStart;
