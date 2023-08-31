@@ -13,6 +13,7 @@ import GSDOM from "../../base/GSDOM.mjs";
 import GSElement from "../../base/GSElement.mjs";
 import GSEvents from "../../base/GSEvents.mjs";
 import GSUtil from "../../base/GSUtil.mjs";
+import GSStore from "./GSStore.mjs";
 
 // use GSStore
 // - if data attr set to gs-store id find el
@@ -85,6 +86,12 @@ export default class GSTable extends GSElement {
         me.#setCSS(me.#map[name], newValue);
     }
 
+    connectedCallback() {
+        const me = this;
+        me.listen('ready', me.#onStoreReady.bind(me));
+        super.connectedCallback();
+    }
+
     disconnectedCallback() {
         const me = this;
         me.#headers = [];
@@ -94,7 +101,6 @@ export default class GSTable extends GSElement {
         super.disconnectedCallback();
     }
 
-    
 	async onBeforeReady() {
         const me = this;
 
@@ -112,17 +118,12 @@ export default class GSTable extends GSElement {
     async onReady() {
         const me = this;
         me.#processData();
-        requestAnimationFrame(() => {
-            me.attachEvent(me.self, 'sort', e => me.#onColumnSort(e.detail));
-            me.attachEvent(me.self, 'filter', e => me.#onColumnFilter(e.detail));
-            me.attachEvent(me.self, 'select', e => me.#onRowSelect(e.detail));
-            me.attachEvent(me.self, 'action', e => me.#onContextMenu(e));
-            me.attachEvent(me, 'data', e => me.#onData(e));
-            me.attachEvent(window, 'resize', () => me.resize());
-            me.store.filter = me.filters;
-            me.store.sort = me.sorters;
-            me.store.page = 1;
-        });
+        me.attachEvent(me.self, 'sort', e => me.#onColumnSort(e));
+        me.attachEvent(me.self, 'filter', e => me.#onColumnFilter(e));
+        me.attachEvent(me.self, 'select', e => me.#onRowSelect(e.detail));
+        me.attachEvent(me.self, 'action', e => me.#onContextMenu(e));
+        me.attachEvent(me, 'data', e => me.#onData(e));
+        me.attachEvent(window, 'resize', () => me.resize());
         super.onReady();
     }
 
@@ -410,16 +411,32 @@ export default class GSTable extends GSElement {
         me.emit('selected', { data: me.#selected, evt: data.evt });
     }
 
-    #onColumnSort(data) {
+    #onColumnSort(e) {
+        GSEvents.prevent(e);
         const me = this;
-        me.store.sort = data || [];
+        me.store.sort = e.detail.data || [];
         me.emit('sort', me.store.sort);
+        if (!e.detail.initial) me.store.read();
     }
 
-    #onColumnFilter(data) {
+    #onColumnFilter(e) {
+        GSEvents.prevent(e);
         const me = this;
-        me.store.filter = data || [];
+        me.store.filter = e.detail.data || [];
         me.emit('filter', me.store.filter);
+        if (!e.detail.initial) me.store.read();
+    }
+
+    #onStoreReady(e) {
+        const me = this;
+        const isStore = e.srcElement instanceof GSStore;
+        if (!isStore) return;
+        GSEvents.prevent(e);
+        requestAnimationFrame(() => {
+            me.store.filter = me.filters;
+            me.store.sort = me.sorters;
+            me.store.page = 1;
+        });
     }
 }
 

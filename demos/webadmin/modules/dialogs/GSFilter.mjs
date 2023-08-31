@@ -56,10 +56,10 @@ export default class GSFilter extends GSAsbtractDialog {
         me.valueField.pattern = GSFilter.#MASK[me.typeField.value];
     }   
 
-    async onOpen() {
+    async onOpen(data) {
         const me = this;
         if (me.valueField) me.valueField.pattern = GSFilter.#MASK[me.form.data?.type];
-        super.onOpen();
+        super.onOpen(data);
     }
 
 }

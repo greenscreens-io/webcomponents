@@ -7,7 +7,7 @@
  * @module BaseUI
  */
 
-import { GSComponents, GSUtil, GSElement, GSEvents } from '/webcomponents/release/esm/io.greenscreens.components.all.esm.min.js';
+import { GSComponents, GSUtil, GSElement, GSEvents, GSAttr } from '/webcomponents/release/esm/io.greenscreens.components.all.esm.min.js';
 
 import Utils from "../utils/Utils.mjs";
 
@@ -28,8 +28,10 @@ export default class BaseViewUI extends GSElement {
         super.onReady();
         globalThis.GS_LOG_ACTION = true;
         GSEvents.monitorAction(me, 'view');
-        me.attachEvent(me.#table, 'filter', e => me.onViewRefresh(e));
-        requestAnimationFrame(() => me.onViewRefresh());
+        if (DEMO) {
+            GSAttr.toggle(me.store, 'local-sort', true);
+            GSAttr.toggle(me.store, 'local-filter', true);
+        }
     }
 
     /**
@@ -43,7 +45,7 @@ export default class BaseViewUI extends GSElement {
      * Table data filter
      */
     get filter() {
-        const flt = this.#table?.store.filter || [];
+        const flt = this.store?.filter || [];
         const obj = {};
         flt.forEach(o => obj[o.name] = o.value);
         return obj;
@@ -68,6 +70,10 @@ export default class BaseViewUI extends GSElement {
         return GSComponents.get('modal-waiter');
     }
 
+    get notify() {
+        return GSComponents.get('notification');
+    }
+    
     /**
      * Record popup
      */
@@ -162,7 +168,7 @@ export default class BaseViewUI extends GSElement {
             modal.reset();
             // update locally to refresh ui
             Object.assign(data, result.data);
-            me.store.reload();
+            me.store.load();
             Utils.notify.warn('', 'Record updated!');
 
         } catch (e) {
@@ -214,18 +220,16 @@ export default class BaseViewUI extends GSElement {
 
         if (!me.store) return;
 
-        requestAnimationFrame(() => {
-            try {
-                if (Array.isArray(data) && data.length > 0) {
-                    me.store.setData(data);
-                    // me.store.firstPage();
-                } else {
-                    me.store.reload();
-                }
-            } catch (e) {
-                me.onError(e);
+        try {
+            if (Array.isArray(data) && data.length > 0) {
+                me.store.setData(data);
+                // me.store.firstPage();
+            } else {
+                me.store.read();
             }
-        });
+        } catch (e) {
+            me.onError(e);
+        }
 
     }
 
@@ -234,7 +238,9 @@ export default class BaseViewUI extends GSElement {
      * @param {Event} val 
      */
     onViewSearch(e) {
-        this.store.filter = e.detail.value;
+        const me = this;
+        me.store.filter = e.detail.value;
+        me.store.read();
     }
 
 	onError(e) {
@@ -242,7 +248,7 @@ export default class BaseViewUI extends GSElement {
     }
 
     /**
-     * Handle data befoer opening the modal form
+     * Handle data before opening the modal form
      * @param {*} data 
      * @returns 
      */

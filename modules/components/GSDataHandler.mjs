@@ -206,6 +206,7 @@ export default class GSDataHandler extends HTMLElement {
         me.#updateHandler();
         me.#listenHandler();
         // me.read();
+        GSEvents.send(me, 'ready', {}, true, true, true);
     }
 
     get #isInternal() {
@@ -336,6 +337,14 @@ export default class GSDataHandler extends HTMLElement {
         me.#handler?.write(me, data);
     }
 
+    load() {
+        return this.read();
+    }
+
+    save(data) {
+        return this.write(data);
+    }
+
     get isRegistered() {
         return this.#handler?.isRegistered === true;
     }
@@ -445,7 +454,7 @@ export default class GSDataHandler extends HTMLElement {
             val = GSUtil.isJsonString(val) ? JSON.parse(val) : val;
             me.#handler.filter = val;
         }
-        me.#lifoReadRef();
+        // me.#lifoReadRef();
     }
 
     /**
@@ -462,7 +471,7 @@ export default class GSDataHandler extends HTMLElement {
             val = GSUtil.isString(val) ? JSON.parse(val) : val;
             me.#handler.sort = val;
         }
-        me.#lifoReadRef();
+        // me.#lifoReadRef();
     }
 
     get isExternal() {

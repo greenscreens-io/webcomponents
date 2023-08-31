@@ -130,7 +130,6 @@ export default class GSStore extends GSDataHandler {
         val = Math.min(Math.max(val, 1), Number.MAX_VALUE);
         val = val > me.pages ? me.pages : val;
         me.#page = val;
-        // me.skip = me.limit * (val - 1);
         const skip = me.limit * (val - 1);
         me.#getData(skip, me.limit, me.filter, me.sort);
     }
@@ -184,7 +183,7 @@ export default class GSStore extends GSDataHandler {
         val = me.#formatFilter(val);
         if (me.localFilter || (me.#isLocal && me.disabled)) {
             me.#filter = val;
-            me.reload();
+            // me.read();
         } else {
             super.filter = val;
         }
@@ -204,7 +203,7 @@ export default class GSStore extends GSDataHandler {
         val = me.#formatSort(val);
         if (me.localSort || (me.#isLocal && me.disabled)) {
             me.#sort = val;
-            me.reload();
+            // me.read();
         } else {
             super.sort = val;
         }
@@ -214,25 +213,39 @@ export default class GSStore extends GSDataHandler {
      * INTERNAL SEGMENT
      */
 
+    /**
+     * Clear cache and reload from remote
+     */
     clear() {
         const me = this;
         me.#total = 0;
         me.setData();
     }
 
-    reload(clear = false) {
+    /**
+     * Manual data set, 
+     * @param {*} data 
+     * @param {*} append 
+     * @returns 
+     */
+    setData(data = [], append = false) {
+        const me = this;
+        me.#update(data, append);
+        return me.read();
+    }
+
+    /**
+     * Read from remote with optional caching support and local sort/filter
+     * @param {*} clear 
+     * @returns 
+     */
+    read(clear = false) {
         const me = this;
         if (clear) me.#data = [];
         return me.#getData(me.skip, me.limit, me.filter, me.sort);
     }
 
-    setData(data = [], append = false) {
-        const me = this;
-        me.#update(data, append);
-        return me.reload();
-    }
-
-    async #getData(skip = 0, limit = 0, filter, sort) {        
+    async #getData(skip = 0, limit = 0, filter, sort) {
         const me = this;
         let data = [];
 
@@ -240,7 +253,7 @@ export default class GSStore extends GSDataHandler {
             data = me.#getDataLocal(skip, limit, filter, sort, me.#data);
             me.#notify('data', data);
         } else {
-            data = await me.read();
+            data = await super.read();
         }
 
         return data;
@@ -283,6 +296,11 @@ export default class GSStore extends GSDataHandler {
         me.#total = me.#data.length;
     }
 
+    /**
+     * Notify upper components about the finalized data
+     * @param {*} name 
+     * @param {*} data 
+     */
     #notify(name = 'data', data) {
         GSEvents.sendDelayed(1, this, name, data, true);
     }
@@ -292,11 +310,6 @@ export default class GSStore extends GSDataHandler {
 
         if (typeof val === 'string') {
             filter = val;
-            /*
-            this.#fields
-                .filter(v=> GSUtil.isStringNonEmpty(v))
-                .map(name => { return {"name":name, "value":val}});
-            */
         } else if (Array.isArray(val)) {
             filter = val;
         }
@@ -327,6 +340,10 @@ export default class GSStore extends GSDataHandler {
      * HANDLER SEGMENT 
      */
 
+    /**
+     * Override inheriting class data listener callback
+     * @param {*} data 
+     */
     onRead(data) {
         const me = this;
         me.#update(data);

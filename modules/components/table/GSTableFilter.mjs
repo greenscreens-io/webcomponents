@@ -66,7 +66,7 @@ export default class GSTableFilter extends HTMLTableRowElement {
     #attachChangeListener() {
         const me = this;
         GSDOM.queryAll(me, 'input, select')
-            .forEach(el => GSEvents.attach(me, el, 'change', e => me.#onChange(e.target)));
+            .forEach(el => GSEvents.attach(me, el, 'change', e => me.#onChange(e)));
     }
 
     #attachDataListener() {
@@ -74,9 +74,13 @@ export default class GSTableFilter extends HTMLTableRowElement {
         if (me.#auto) GSEvents.attach(me, me.root, 'data', e => me.#onData(e.detail), false, true);
     }
 
-    #onChange(el) {
+    #onChange(e) {
         const me = this;
-        GSEvents.send(me, 'filter', me.filters, true);
+        const obj = {
+            data : me.filters,
+            initial : e ? false : true
+        };
+        GSEvents.send(me, 'filter', obj, true, true, true);
     }
 
     #onData(data) {
