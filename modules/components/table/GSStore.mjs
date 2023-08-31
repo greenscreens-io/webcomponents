@@ -232,8 +232,7 @@ export default class GSStore extends GSDataHandler {
         return me.reload();
     }
 
-    async #getData(skip = 0, limit = 0, filter, sort) {
-        debugger;
+    async #getData(skip = 0, limit = 0, filter, sort) {        
         const me = this;
         let data = [];
 
@@ -244,7 +243,6 @@ export default class GSStore extends GSDataHandler {
             data = await me.read();
         }
 
-        debugger;
         return data;
     }
 
@@ -330,7 +328,6 @@ export default class GSStore extends GSDataHandler {
      */
 
     onRead(data) {
-        debugger;
         const me = this;
         me.#update(data);
 

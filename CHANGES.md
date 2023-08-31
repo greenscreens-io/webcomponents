@@ -12,6 +12,7 @@
  - GSFormExt improve form element initialization handling
  - GSFormExt add native ID getter override to fix id to field named id mapping
  - GSFormExt add native function "elements" override with shadow dom support for elemnt retrieval
+ - GSFormGroup type radio improvement
  - GSInputExt add initialization notification events 
  - GSInputExt masked input handling improved
  - GSFunction add call once wraper for FIFO / LIFO

@@ -119,7 +119,9 @@ export default class GSTable extends GSElement {
             me.attachEvent(me.self, 'action', e => me.#onContextMenu(e));
             me.attachEvent(me, 'data', e => me.#onData(e));
             me.attachEvent(window, 'resize', () => me.resize());
-            me.store.page = 1
+            me.store.filter = me.filters;
+            me.store.sort = me.sorters;
+            me.store.page = 1;
         });
         super.onReady();
     }
@@ -249,6 +251,22 @@ export default class GSTable extends GSElement {
 
     get isFilterable() {
         return this.#headers.filter(o => o.filter).length > 0;
+    }
+
+    get filters() {
+        return this.#filter?.filters;
+    }
+
+    get sorters() {
+        return this.#sorter?.sorters;
+    }
+
+    get #sorter() {
+        return this.query('[is="gs-tablesort"]');
+    }
+
+    get #filter() {
+        return this.query('[is="gs-tablefilter"]');
     }
 
     #setCSS(qry, val) {

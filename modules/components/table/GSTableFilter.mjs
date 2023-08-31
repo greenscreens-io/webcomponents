@@ -53,6 +53,16 @@ export default class GSTableFilter extends HTMLTableRowElement {
         return GSDOM.root(this);
     }
 
+    get filters() {
+        const me = this;
+        const filter = [];
+        GSDOM.queryAll(me, 'input, select').forEach(el => {
+            const value = me.#getValue(el);
+            if (value) filter.push({ name: el.name, value: value });
+        });
+        return filter; 
+    }
+
     #attachChangeListener() {
         const me = this;
         GSDOM.queryAll(me, 'input, select')
@@ -66,12 +76,7 @@ export default class GSTableFilter extends HTMLTableRowElement {
 
     #onChange(el) {
         const me = this;
-        const filter = [];
-        GSDOM.queryAll(me, 'input, select').forEach(el => {
-            const value = me.#getValue(el);
-            if (value) filter.push({ name: el.name, value: value });
-        });
-        GSEvents.send(me, 'filter', filter, true);
+        GSEvents.send(me, 'filter', me.filters, true);
     }
 
     #onData(data) {

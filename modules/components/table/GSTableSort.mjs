@@ -49,6 +49,22 @@
              me.#autoSortable.forEach((el, i) => me.#onColumnSort(el, i > 0));
          });
      }
+
+     get sorters() {
+        const me = this;
+        let sort = [];
+        me.#sorted
+        .filter(el => GSUtil.asNum(el.dataset.order, 0) !== 0)
+        .forEach(el => {
+            const ord = GSUtil.asNum(el.dataset.order);
+            const idx = GSUtil.asNum(el.dataset.idx, 1);
+            const name = GSAttr.get(el, 'name', el.innerText);
+            const cfg = { ord: ord, col: el.cellIndex, name: name, idx: idx };
+            sort.push(cfg);
+        });
+        sort = GSData.sortData([{ name: 'idx', ord: 1 }], sort);        
+        return sort;
+     }
  
      get #autoSortable() {
          return this.#sortable.filter(el => el.dataset.order != '0');
@@ -94,19 +110,7 @@
          el.dataset.idx = me.#sc;
          el.dataset.order = ord;
          GSDOM.toggleClass(el, 'table-active', true);
- 
- 
-         let sort = [];
-         me.#sorted.forEach(el => {
-             const ord = GSUtil.asNum(el.dataset.order, 1);
-             const idx = GSUtil.asNum(el.dataset.idx, 1);
-             const name = GSAttr.get(el, 'name', el.innerText);
-             const cfg = { ord: ord, col: el.cellIndex, name: name, idx: idx };
-             sort.push(cfg);
-         });
-         sort = GSData.sortData([{ name: 'idx', ord: 1 }], sort);
- 
-         GSEvents.send(me, 'sort', sort, true);
+         GSEvents.send(me, 'sort', me.sorters, true);
      }
  
  }
