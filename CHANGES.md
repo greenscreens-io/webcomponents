@@ -20,6 +20,8 @@
  - GSStore add integration with GSReadWrite
  - GSStore add LIFO data read
  - GSTab added tab index and pagination support
+ - GSTable added sorters and filter property; 
+ - GSTable improved initial auto sort/filter
  - GSUtil add abortable timeout
  - GSUtil refactored waitAnimationFrame to GSEvents
  - Add user specified attributes; data-attr for injection targets
