@@ -13,6 +13,7 @@
  - GSFormExt add native ID getter override to fix id to field named id mapping
  - GSFormExt add native function "elements" override with shadow dom support for elemnt retrieval
  - GSInputExt add initialization notification events 
+ - GSInputExt masked input handling improved
  - GSFunction add call once wraper for FIFO / LIFO
  - GSModal added reset function (reset form and tab)
  - GSStore add integration with GSReadWrite

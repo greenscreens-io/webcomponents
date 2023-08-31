@@ -313,6 +313,8 @@ export default class GSInputExt extends HTMLInputElement {
             me.type = 'text';
         }
 
+        if (e.code === 'Tab') return;
+
         if (!me.mask) return;
 
         if (e.ctrlKey) {
