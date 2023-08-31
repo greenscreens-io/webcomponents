@@ -28,6 +28,7 @@
  - Added GSReadWrite data handler
  - Added GSReadWriteRegistry of data handlers
  - Added data-gs-ignore attribute to prevent automatic element conversion
+ - Fix input type radio JSON import/export
  - Add demo for dynamic forms
  - Update WebAdmin demo
  - Update manuals for new classes

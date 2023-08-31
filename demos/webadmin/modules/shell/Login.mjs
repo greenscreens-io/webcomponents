@@ -66,6 +66,11 @@ export default class Login extends GSAsbtractDialog {
         return this.query('input[name="password"]');
     }
 
+    async onFormInit(form) {
+    
+        super.onFormInit(form, { });
+    }
+
     async beforeOpen() {
 
         console.clear();
@@ -159,8 +164,13 @@ export default class Login extends GSAsbtractDialog {
     }
 
     #toggle(sts = false) {
-        GSDOM.queryAll(this, 'input, button').forEach(el => GSAttr.toggle(el, 'disabled', sts));
-        GSDOM.query(this, 'input').focus();
+		const me = this;
+		if (sts) {			
+			me.disable();
+		} else {
+			me.enable();
+			me.form?.elements[0]?.focus();
+		}
     }
 
     async #initAuth() {

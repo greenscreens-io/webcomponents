@@ -55,12 +55,7 @@
 
             <gs-form-group css="mt-2" name="field1" label="Check box"    type="checkbox" checked></gs-form-group>
             
-            <fieldset>
-                <legend>Radio button</legend>
-                <gs-form-group css="mt-2" name="field2" type="radio" value="1" checked></gs-form-group>
-                <gs-form-group css="mt-2" name="field2" type="radio" value="2" ></gs-form-group>
-                <gs-form-group css="mt-2" name="field2" type="radio" value="3" ></gs-form-group>
-            </fieldset>
+            <gs-form-group css="mt-2" name="field2" type="radio" value="1,2,3" label="Radio button" checked="2"></gs-form-group>
 
             <gs-form-group css="mt-2" name="field3" label="Switch box"   type="switch" checked></gs-form-group>
             <gs-form-group css="mt-2" name="field4" label="Range"        type="range" min="0" max="100" step="2"></gs-form-group>
@@ -91,7 +86,7 @@
             <gs-form-group css="mt-2" layout="vertical" name="fieldv" placeholder="...enter user name" label="Field vertical" description="Login user"></gs-form-group>
             
             <gs-form-group css="mt-2" layout="vertical" name="field1" label="Check box"    type="checkbox" checked></gs-form-group>
-            <gs-form-group css="mt-2" layout="vertical" name="field2" label="Radio button" type="radio" checked></gs-form-group>
+            <gs-form-group css="mt-2" layout="vertical" name="field2" label="Radio button" type="radio" value="1,2,3"  checked="2" data-radio-layout="vertical"></gs-form-group>
             <gs-form-group css="mt-2" layout="vertical" name="field3" label="Switch box"   type="switch" checked></gs-form-group>
             <gs-form-group css="mt-2" layout="vertical" name="field4" label="Range"        type="range" min="0" max="100" step="2"></gs-form-group>
 

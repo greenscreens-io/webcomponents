@@ -164,20 +164,49 @@ export default class GSFormGroup extends GSElement {
       return this.query('label');
    }
 
+   get #isFieldset() {
+      const me = this;
+      return me.type === 'radio' && me.#value.indexOf(',') > -1
+   }
+
    get #input() {
       const me = this;
       const tpl = me.query('template');
       if (tpl) return tpl.innerHTML;
       const idattr = me.autoid ? `id="${me.name}"` : '';
+      const val = me.#isFieldset ? me.value.split(',') : me.#value;
+
+      if (Array.isArray(val)) {
+         const wrap = me.dataset.radioLayout === 'vertical' ? 'div' : 'span';
+         return val.map((it, i) => {return { v:it, h:`value="${it}"`, id : `id="${me.name}_${i}"`}})
+         .map((o, i) => me.#fieldSet(me.name+i, o.v, me.#inputHTML(o.id, me.name, o.h, o.v), wrap))
+         .join('');
+      }
+
+      return me.#inputHTML(idattr, me.name, me.#value, me.value);
+   }
+
+   #inputHTML(id, name, value, val ) {
+      const me = this;
+      const sel = GSAttr.get(me, 'checked');
+      const checked = (me.#isCheckable && me.checked && val && val == sel) ? 'checked' : '';
+      
       return `<input is="gs-ext-input" class="${me.#cssField} ${me.cssField}" 
-               ${idattr} name="${me.name}" type="${me.#type}" ${me.#placeholder}
+               ${id} name="${name}" type="${me.#type}" ${me.#placeholder}
                ${me.#autocopy} ${me.#autoselect} ${me.#autofocus}
-               ${me.#autocomplete} ${me.#autocapitalize} ${me.#multiple} ${me.#checked}
-               ${me.#mask} ${me.#pattern} ${me.#value} ${me.#list} ${me.#accept}
-               ${me.#step} ${me.#min} ${me.#max} ${me.#value} 
+               ${me.#autocomplete} ${me.#autocapitalize} ${me.#multiple} ${checked}
+               ${me.#mask} ${me.#pattern} ${value} ${me.#list} ${me.#accept}
+               ${me.#step} ${me.#min} ${me.#max} 
                ${me.#minlength} ${me.#maxlength} title="${me.description}"
                ${me.#readonly} ${me.#required} ${me.#disabled} ${me.#reveal}
                >`;
+   }
+
+   #fieldSet(id, val, fld, wrap='span') {
+      return `<${wrap} class="me-3">
+               ${fld}
+               <label for="${id}" class="ms-1">${val}</label>
+              </${wrap}>`;
    }
 
    get #label() {
@@ -207,7 +236,9 @@ export default class GSFormGroup extends GSElement {
    get #cssCheck() {
       const me = this;
       if (me.#isCheckable) {
-         return me.#isSwitch ? 'form-check form-switch ps-3 fs-5' : 'form-check';
+         //return me.#isSwitch ? 'form-check form-switch ps-3 fs-5' : 'form-check';
+         if (me.#isSwitch) return 'form-check form-switch ps-3 fs-5';
+         return me.#isFieldset ? '' : 'form-check';
       }
       return '';
    }
