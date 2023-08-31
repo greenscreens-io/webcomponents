@@ -39,6 +39,7 @@ export default class GSInputExt extends HTMLInputElement {
         '_': /./g
     };
 
+    #changed = false;
     #revealing = false;
     #masks = [];
 
@@ -275,8 +276,15 @@ export default class GSInputExt extends HTMLInputElement {
     #onBlur(e) {
         const me = this;
         if (me.mask && me.value === me.mask) me.value = '';
-        if (me.required || !me.checkValidity()) me.reportValidity();
-        if (!me.isInList()) GSEvents.send(me, 'strict', { ok: false, source: e });
+        if (!me.checkValidity()) return me.reportValidity();
+        try {
+            if (me.mask && me.#changed) {
+                GSEvents.send(me, 'change', {}, true, true, true);
+            }
+            if (!me.isInList()) GSEvents.send(me, 'strict', { ok: false, source: e });
+        } finally {
+            me.#changed = false;
+        }
     }
 
     #onPaste(e) {
@@ -313,9 +321,16 @@ export default class GSInputExt extends HTMLInputElement {
             me.type = 'text';
         }
 
-        if (e.code === 'Tab') return;
-
+        
         if (!me.mask) return;
+        
+        if (e.code === 'Tab') {
+            if (!me.checkValidity()) {
+                GSEvents.prevent(e);
+                me.reportValidity();
+            }
+            return;
+        }
 
         if (e.ctrlKey) {
             const wordop = GSInputExt.#wordop.indexOf(e.code) > -1;
@@ -361,7 +376,8 @@ export default class GSInputExt extends HTMLInputElement {
 
         me.value = me.formatMask(tmp.join(''));
         me.setSelectionRange(pos, pos);
-        return GSEvents.prevent(e);
+        me.#changed = true;        
+        //return GSEvents.prevent(e);
 
     }
 
@@ -393,9 +409,10 @@ export default class GSInputExt extends HTMLInputElement {
             pos2--;
         }
 
-        me.value = me.formatMask(tmp.join(''));
-        me.setSelectionRange(pos1 + 1, pos1 + 1);
-        GSEvents.prevent(e);
+        me.value = me.formatMask(tmp.join(''))
+        me.setSelectionRange(pos1 + 1, pos1 + 1);       
+        me.#changed = true;
+        //GSEvents.prevent(e);
     }
 
     #onChange(e) {
