@@ -52,7 +52,7 @@ export default class GSAbstractReadWrite extends GSEvent {
         let data = null;
         try {
             data = await me.onRead(owner);
-            me.emit('read', {owner : owner, data: data});
+            if (data) me.emit('read', {owner : owner, data: data});
         } catch (e) {
             me.emit('error', {type : 'read', error: e, owner : owner, data: data});
             throw e;
@@ -65,7 +65,7 @@ export default class GSAbstractReadWrite extends GSEvent {
         let result = null;
         try {
             result = await me.onWrite(owner, data);
-            me.emit('write', {owner : owner, data: data, result : result});
+            if (result) me.emit('write', {owner : owner, data: data, result : result});
         } catch (e) {
             me.emit('error', {type : 'write', error: e, owner : owner, data: data});
             throw e;

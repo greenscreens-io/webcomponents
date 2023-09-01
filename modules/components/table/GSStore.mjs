@@ -57,7 +57,6 @@ export default class GSStore extends GSDataHandler {
             const me = this;
             if (!me.cached) {
                 me.clear();
-                me.disabled = false;
             }
         }
     }
@@ -73,14 +72,6 @@ export default class GSStore extends GSDataHandler {
 
     get table() {
         return GSDOM.closest(this, 'GS-TABLE')
-    }
-
-    get localSort() {
-        return this.hasAttribute('local-sort');
-    }
-
-    get localFilter() {
-        return this.hasAttribute('local-filter');
     }
 
     /**
@@ -174,24 +165,17 @@ export default class GSStore extends GSDataHandler {
      * [{name: idx[num] || name[string], value: ''  , op:'eq'}]
      */
     get filter() {
-        const me = this;
-        return me.localFilter || (me.#isLocal && me.disabled) ? me.#filter : super.filter;
+        return super.filter;
     }
 
     set filter(val) {
         const me = this;
         val = me.#formatFilter(val);
-        if (me.localFilter || (me.#isLocal && me.disabled)) {
-            me.#filter = val;
-            // me.read();
-        } else {
-            super.filter = val;
-        }
+        super.filter = val;
     }
 
     get sort() {
-        const me = this;
-        return me.localSort || (me.#isLocal && me.disabled) ? me.#sort : super.sort;
+        return super.sort;
     }
 
     /**
@@ -201,12 +185,7 @@ export default class GSStore extends GSDataHandler {
     set sort(val) {
         const me = this;
         val = me.#formatSort(val);
-        if (me.localSort || (me.#isLocal && me.disabled)) {
-            me.#sort = val;
-            // me.read();
-        } else {
-            super.sort = val;
-        }
+        super.sort = val;
     }
 
     /*
@@ -249,7 +228,7 @@ export default class GSStore extends GSDataHandler {
         const me = this;
         let data = [];
 
-        if (me.#isLocal || me.disabled) {
+        if (me.#isLocal || me.isOffline) {
             data = me.#getDataLocal(skip, limit, filter, sort, me.#data);
             me.#notify('data', data);
         } else {
@@ -347,14 +326,7 @@ export default class GSStore extends GSDataHandler {
     onRead(data) {
         const me = this;
         me.#update(data);
-
-        if (me.#isLocal) {
-            me.disabled = true;
-            data = me.#getDataLocal(me.skip, me.limit, me.filter, me.sort, data);
-        } else if (me.localFilter || me.localSort) {
-            data = me.#getDataLocal(me.skip, me.limit, me.filter, me.sort, data);
-        }
-
+        data = me.#getDataLocal(me.skip, me.limit, me.filter, me.sort, data);
         me.#notify('data', data);
     }
 

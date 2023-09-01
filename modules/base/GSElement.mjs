@@ -601,7 +601,7 @@ export default class GSElement extends HTMLElement {
 		await me.onBeforeReady();
 		try {
 			GSFunction.callFunction(me.onready);
-			me.emit(me, 'ready');
+			me.emit('ready');
 			GSEvents.send(document.body, 'componentready', me);
 		} finally {
 			me.onReady();

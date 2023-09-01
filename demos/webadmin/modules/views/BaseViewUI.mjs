@@ -22,16 +22,19 @@ export default class BaseViewUI extends GSElement {
         super();
         this.className = 'd-flex flex-fill';
     }
+    
 
     onReady() {
         const me = this;
         super.onReady();
         globalThis.GS_LOG_ACTION = true;
         GSEvents.monitorAction(me, 'view');
-        if (DEMO) {
-            GSAttr.toggle(me.store, 'local-sort', true);
-            GSAttr.toggle(me.store, 'local-filter', true);
-        }
+        requestAnimationFrame(() => {
+            if (!me.#table) return;
+			me.store.filter = me.#table.filters;
+			me.store.sort = me.#table.sorters;
+			me.onViewRefresh();
+		});       
     }
 
     /**

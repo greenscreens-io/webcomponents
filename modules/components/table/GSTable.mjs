@@ -431,7 +431,6 @@ export default class GSTable extends GSElement {
         const me = this;
         const isStore = e.srcElement instanceof GSStore;
         if (!isStore) return;
-        GSEvents.prevent(e);
         requestAnimationFrame(() => {
             me.store.filter = me.filters;
             me.store.sort = me.sorters;

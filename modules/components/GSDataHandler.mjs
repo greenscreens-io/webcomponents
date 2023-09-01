@@ -34,7 +34,7 @@ export default class GSDataHandler extends HTMLElement {
     }
 
     static get observedAttributes() {
-        return ['src', 'limit', 'skip', 'action', 'mode', 'reader', 'writer', 'disabled'];
+        return ['src', 'limit', 'skip', 'action', 'mode', 'reader', 'writer'];
     }
 
     #handler = null;
@@ -104,12 +104,11 @@ export default class GSDataHandler extends HTMLElement {
                 GSLog.error(this, e);
             } 
         }
-        if (name === 'disabled') return me.#toggleHandler();
     }
 
     /**
      * Wait for event to happen
-     * 
+     * TODO - refactor for GSEventd.wait
      * @async
      * @param {*} name 
      * @returns {Promise<void>}
@@ -197,7 +196,7 @@ export default class GSDataHandler extends HTMLElement {
 
         // manual store, not linked to external source
         if (me.#isInternal) {
-            me.#handler = new GSReadWrite(me.id, !me.disabled);
+            me.#handler = new GSReadWrite(me.id, !me.isOffline);
         } else {
             me.#handler = await GSReadWriteRegistry.wait(me.id);
             me.#external = true;
@@ -206,7 +205,7 @@ export default class GSDataHandler extends HTMLElement {
         me.#updateHandler();
         me.#listenHandler();
         // me.read();
-        GSEvents.send(me, 'ready', {}, true, true, true);
+        GSEvents.send(me, 'ready', {}, true, true);
     }
 
     get #isInternal() {
@@ -244,20 +243,9 @@ export default class GSDataHandler extends HTMLElement {
         me.removeEvent(me.#handler, 'error', me.#error);
     }
 
-    #toggleHandler() {
-        const me = this;
-        if (me.disabled) {
-            me.#handler?.disable();
-            me.#unlistenHandler();
-        } else if (!me.isRegistered) {
-            me.#handler?.enable();
-            me.#listenHandler();
-        }
-    }
-
     #verifyHandler() {
         const me = this;
-        if (me.disabled || me.isRegistered) return;
+        if (me.isOffline || me.isRegistered) return;
         throw new Error('Data handler not initialized!');
     }
 
@@ -349,12 +337,8 @@ export default class GSDataHandler extends HTMLElement {
         return this.#handler?.isRegistered === true;
     }
 
-    get disabled() {
-        return this.hasAttribute('disabled');
-    }
-
-    set disabled(val = '') {
-        return GSAttr.toggle(this, 'disabled', GSUtil.asBool(val));
+    get isOffline() {
+        return this.#handler?.isOffline;
     }
 
     /**

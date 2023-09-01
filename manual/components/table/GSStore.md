@@ -51,7 +51,7 @@ Use QUARK engine or any external async function attached to globalThis path
  <gs-store id="handler" mode="quark" reader="io.test.read" writer="io.test.write"></gs-store>
  ```
 
-Use externaly defined GSReadWRite. Can be rpealoaded custom class extending GSAbstractReadWrite.
+Use externaly defined GSReadWRite. Can be a preloaded custom class extending GSAbstractReadWrite.
 Custom class must be initialized with id="handler". 
 
 ```html
