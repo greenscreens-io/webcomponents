@@ -162,11 +162,13 @@ export default class GSNotification extends GSElement {
     return me.#showWeb(title, message, css, closable, timeout, delay);
   }
 
-  async #showWeb(title, message, css, closable, timeout, delay) {
+  #showWeb(title, message, css, closable, timeout, delay) {
     const me = this;
-    const tpl = `<gs-toast slot="content" css="${css}"  closable="${closable}" timeout="${timeout}" delay="${delay}" message="${message}" title="${title}"></gs-toast>`;
+    // NOT used, dialog issue delay="${delay}"
+    const tpl = `<gs-toast slot="content" css="${css}"  closable="${closable}" timeout="${timeout}" message="${message}" title="${title}"></gs-toast>`;
     const el = GSDOM.parse(tpl, true);
-    requestAnimationFrame(() => {
+    requestAnimationFrame(async () => {
+      await me.#delay(delay);
       const toast = me.#dialogToast;
       if (toast !== me) GSAttr.set(toast, 'class', `toast-container ${me.css} ${me.position}`);
       toast.appendChild(el);

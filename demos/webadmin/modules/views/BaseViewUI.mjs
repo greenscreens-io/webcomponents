@@ -7,7 +7,7 @@
  * @module BaseUI
  */
 
-import { GSComponents, GSUtil, GSElement, GSEvents, GSAttr } from '/webcomponents/release/esm/io.greenscreens.components.all.esm.min.js';
+import { GSUtil, GSElement, GSEvents, GSAttr } from '/webcomponents/release/esm/io.greenscreens.components.all.esm.min.js';
 
 import Utils from "../utils/Utils.mjs";
 
