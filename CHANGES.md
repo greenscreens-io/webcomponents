@@ -1,5 +1,9 @@
 # [WebComponents](https://webcomponents.greenscreens.ltd/) for [Bootstrap 5.2.0+](https://getbootstrap.com/)
 
+# Development v1.8.1 (TBD)
+ - GSTouch renamed to GSGesture
+ - Added code comments
+
 # Release v1.8.0 (01.09.2023.)
  - GSDialog forward open/close data
  - GSDialog added reset function (reset form and tab)
