@@ -106,6 +106,7 @@ export default class GSAsbtractDialog extends GSDialog {
         try {
             me.disable();
             sts = await me.onData(e.detail.data);
+            Utils.inform(true, 'Changes applied!')
         } catch (e) {
             Utils.handleError(e);
         } finally {

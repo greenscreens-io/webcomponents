@@ -162,14 +162,13 @@ export default class GSNotification extends GSElement {
     return me.#showWeb(title, message, css, closable, timeout, delay);
   }
 
-  #showWeb(title, message, css, closable, timeout, delay) {
+  async #showWeb(title, message, css, closable, timeout, delay) {
     const me = this;
-    const tpl = `<gs-toast slot="content" css="${css}"  closable="${closable}" timeout="${timeout}" message="${message}" title="${title}"></gs-toast>`;
+    const tpl = `<gs-toast slot="content" css="${css}"  closable="${closable}" timeout="${timeout}" delay="${delay}" message="${message}" title="${title}"></gs-toast>`;
     const el = GSDOM.parse(tpl, true);
-    const toast = me.#dialogToast;
-    requestAnimationFrame(async () => {
+    requestAnimationFrame(() => {
+      const toast = me.#dialogToast;
       if (toast !== me) GSAttr.set(toast, 'class', `toast-container ${me.css} ${me.position}`);
-      await me.#delay(delay);
       toast.appendChild(el);
     });
     return el;
@@ -183,23 +182,24 @@ export default class GSNotification extends GSElement {
     me.#list.add(notification);
     const callback = me.#clearNative.bind({ notification: notification, owner: me });
     notification.addEventListener('close', callback);
-    if (timeout > 0) setTimeout(callback, timeout * 1000);
+    if (timeout > 0) notification.iid = setTimeout(callback, timeout * 1000);
     return notification;
   }
-  
+
   get #dialogToast() {
     const dlg = customElements.get('gs-dialog')?.top;
     return dlg && dlg.isConnected ? (GSDOM.query(dlg, '.toast-container') || this) : this;
   }
 
   async #delay(delay = 0) {
-    if (delay > 0 && GSUtil.isNumber(delay)) await GSUtil.timeout(delay * 1000);
+    if (GSUtil.isNumber(delay) && delay > 0 ) await GSUtil.timeout(delay * 1000);
   }
 
   #clearNative() {
     const me = this;
     me.notification.close();
     me.owner.#list.delete(me.notification);
+    if(me.notification.iid) clearTimeout(me.notification.iid);
   }
 
   /**

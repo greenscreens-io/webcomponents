@@ -44,7 +44,7 @@ export default class GSToast extends GSElement {
     const me = this;
     const btn = me.closable ? '<button type="button" class="btn-close me-2 m-auto"></button>' : '';
     return `
-        <div class="mt-1 mb-1 toast fade ${me.visible ? 'show' : ''} ${me.css}">
+        <div class="mt-1 mb-1 toast fade ${me.css}">
           <div class="d-flex">
               <div class="toast-body">
               ${me.message}
@@ -79,7 +79,7 @@ export default class GSToast extends GSElement {
     const me = this;
     requestAnimationFrame(async () => {
       if (me.delay > 0) await GSUtil.timeout(me.delay * 1000);
-      GSDOM.toggleClass(this.#toast, 'show', true);
+      GSDOM.toggleClass(me.#toast, 'show', true);
       if (me.timeout <= 0) return;
       await GSUtil.timeout(me.timeout * 1000);
       me.close();
