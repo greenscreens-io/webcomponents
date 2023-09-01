@@ -6,6 +6,7 @@
  * A module loading GSNetwork class
  * @module dialogs/GSNetwork
  */
+import Utils from '../utils/Utils.mjs';
 import GSAsbtractDialog from './GSAsbtractDialog.mjs';
 
 export default class GSMigrate extends GSAsbtractDialog {
@@ -31,7 +32,7 @@ export default class GSMigrate extends GSAsbtractDialog {
     }
     
     inform() {
-		this.notify.primary('', 'Migration started, check server logs for details!');
+		Utils.notify.primary('', 'Migration started, check server logs for details!');
 	}
 
 }

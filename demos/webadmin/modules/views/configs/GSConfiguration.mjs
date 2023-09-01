@@ -19,13 +19,11 @@ export default class GSConfiguration extends BaseViewUI {
     onReady() {
         super.onReady();
         const me = this;
-        requestAnimationFrame(async () => {
-            await GSUtil.timeout(1000);
-            me.#update();
-        });
+        requestAnimationFrame(() => me.#update());
     }
-
-    #update() {
+    
+    async #update() {
+        await GSUtil.timeout(1000);
         const me = this;
 
         const ctx = me.query('gs-context');

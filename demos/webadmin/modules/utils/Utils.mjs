@@ -29,6 +29,10 @@ export default class Utils {
         return GSComponents.get('notification');
     }
 
+    static get waiter() {
+        return GSComponents.get('modal-waiter');
+    }
+
     /**
      * Used by inherited dialogs to show notification on remote data fetch
      * 
@@ -37,9 +41,11 @@ export default class Utils {
      * @returns {boolean}
      */
     static inform(success = false, msg) {
-        if (!Utils.notify) return;
-        if (success) return Utils.notify.info('Info', msg);
-        Utils.notify.danger('Error', msg);
+        if (success) {
+			Utils.notify?.info('Info', msg);
+		} else {
+        	Utils.notify?.danger('Error', msg);			
+		}
         return success;
     }
 
@@ -49,6 +55,11 @@ export default class Utils {
         Utils.inform(false, msg);
         return msg;
     }
+
+    static handleResponse(msg) {
+        const txt = (msg.message || msg)?.toString();
+        if (txt) Utils.inform(msg.success === true, txt);
+    }    
 
     /**
      * Convert hex string to Uint8Array

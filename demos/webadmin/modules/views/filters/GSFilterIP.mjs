@@ -36,7 +36,7 @@ export default class GSFilterIP extends BaseViewUI {
         try {
             const val = parseInt(e.target.value, 10);
             const o = DEMO ? DEMO : await io.greenscreens.Filter.activity(val);
-            this.notify?.info('', 'Filter monitoring changed!');
+            Utils.inform(true, 'Filter monitoring changed!');
         } catch (e) {
             Utils.handleError(e);
         }

@@ -80,14 +80,7 @@ export default class GSAsbtractDialog extends GSDialog {
      * Wait dialog
      */
     get waiter() {
-        return GSComponents.get('modal-waiter');
-    }
-
-    /**
-     * UI Notificator
-     */
-    get notify() {
-        return GSComponents.get('notification');
+        return Utils.waiter;
     }
 
     /**

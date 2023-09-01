@@ -36,7 +36,7 @@ export default class GSFilterMobile extends BaseViewUI {
         try {
             const val = parseInt(e.target.value, 10);
             const o = DEMO ? DEMO : await io.greenscreens.Mobile.activity(val);
-            this.notify?.info('', 'Mobile monitoring changed!');
+            Utils.inform(true, 'Mobile monitoring changed!');
         } catch (e) {
             Utils.handleError(e);
         }

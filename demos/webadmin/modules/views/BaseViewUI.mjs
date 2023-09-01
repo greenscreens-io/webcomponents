@@ -70,13 +70,9 @@ export default class BaseViewUI extends GSElement {
     }
 
     get waiter() {
-        return GSComponents.get('modal-waiter');
+        return Utils.waiter;
     }
 
-    get notify() {
-        return GSComponents.get('notification');
-    }
-    
     /**
      * Record popup
      */
