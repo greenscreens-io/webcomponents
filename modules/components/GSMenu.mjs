@@ -113,7 +113,7 @@ export default class GSMenu extends GSUListExt {
    */
   popup(x = 0, y = 0, caller) {
     const me = this;
-    if (x instanceof PointerEvent) {
+    if (GSEvents.isMouseOrPointerEvent(x)) {
       const e = x;
       y = e.clientY;
       x = e.clientX;

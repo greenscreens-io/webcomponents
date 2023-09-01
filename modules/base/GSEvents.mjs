@@ -250,6 +250,15 @@ export default class GSEvents {
 		return evt;		
 	}
 
+	/**
+	 * Helper to fix some Firefox issues, detect event
+	 * @param {Event} e 
+	 * @returns {boolean}
+	 */
+	static isMouseOrPointerEvent(e) {
+		return e instanceof MouseEvent || e instanceof PointerEvent;
+	}
+
 	/** 
 	 * Generic event disaptcher in suspended rendering
 	 * 
