@@ -12,7 +12,7 @@ import { terser } from 'rollup-plugin-terser';
 import sourcemaps from 'rollup-plugin-sourcemaps';
 import gsExtern from './rollup-plugin-gs-extern.js'
 
-console.log(new Date());
+console.log((new Date()).toLocaleString());
 
 const devMode = (process.env.NODE_ENV === 'development');
 console.log(`${devMode ? 'development' : 'production'} mode bundle`);
