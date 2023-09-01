@@ -436,6 +436,11 @@ export default class GSEvents {
 		o.once = null;
 	}
 
+	/**
+	 * Monitor GSElement 'action' events and trigger class functions if avaialble.
+	 * @param {HTMLElement} owner 
+	 * @param {String} type 
+	 */
 	static monitorAction(owner, type) {
 		owner.on('action', async (e) => {
 			const me = owner;
@@ -445,6 +450,14 @@ export default class GSEvents {
 		});
 	}
 
+	/**
+	 * Trigger class function defined in 'action' attribute
+	 * @param {HTMLElement} owner 
+	 * @param {string} action 
+	 * @param {string} prefix 
+	 * @param {Event} evt 
+	 * @returns {*} Action result or false
+	 */
 	static async onAction(owner, action, prefix, evt) {
 		
 		const callback = GSEvents.findAction(owner, action, prefix);

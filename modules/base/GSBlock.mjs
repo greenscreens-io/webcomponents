@@ -40,6 +40,10 @@ export default class GSBlock extends HTMLElement {
         return GSAttr.get(this, 'proxy');
     }
 
+    /**
+     * Component created this element
+     * @returns {GSElement}
+     */
     get owner() {
         return GSDOM.query(document.documentElement, this.proxy);
     }

@@ -28,7 +28,7 @@ export { default as GSi18n } from "./GSi18n.mjs";
 
 export { default as GSQueryCSS } from './GSQueryCSS.mjs';
 export { default as GSQuery } from './GSQuery.mjs';
-export { default as GSTouch } from './GSTouch.mjs';
+export { default as GSGesture } from './GSGesture.mjs';
 
 export { default as GSAbstractReadWrite} from './GSAbstractReadWrite.mjs';
 export { default as GSReadWrite} from './GSReadWrite.mjs';

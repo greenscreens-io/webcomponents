@@ -11,7 +11,7 @@ import GSUtil from "./GSUtil.mjs";
  */
 
 /**
- * Generic Class for data read/write global registry
+ * Global registry for GSAbstractReadWrite instances - data read/write 
  * @Class
  */
 class GSReadWriteRegistryImpl extends GSEvent {
@@ -25,6 +25,10 @@ class GSReadWriteRegistryImpl extends GSEvent {
         super();
     }
 
+    /**
+     * Register GSAbstractReadWrite instance or inherited classes
+     * @param {GSAbstractReadWrite} obj 
+     */
     register(obj) {
         const me = this;
         me.#verify(obj);
@@ -36,6 +40,11 @@ class GSReadWriteRegistryImpl extends GSEvent {
         me.emit(`register`, obj);
     }
 
+    /**
+     * Unregister GSAbstractReadWrite instance or inherited classes
+     * @param {GSAbstractReadWrite} obj 
+     * @returns {boolean} Deletion status
+     */
     unregister(obj) {
         const me = this;
         if (GSUtil.isString(obj)) obj = me.find(obj);
@@ -58,9 +67,9 @@ class GSReadWriteRegistryImpl extends GSEvent {
     }
 
     /**
-     * 
+     * Wait for specific habdler to be either registered or unregistered
      * @param {string} id 
-     * @param {number|AbortSignal} signal Cancelation in timouet or provided signal
+     * @param {number|AbortSignal} signal Cancelation in timeout or provided signal
      * @param {boolean} register Listen for register or unregister
      * @returns 
      */

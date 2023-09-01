@@ -109,16 +109,34 @@ export default class GSAttr {
 		return GSUtil.toJson(attr);
 	}
 
+	/**
+	 * Store data into attribute as boolean
+	 * @param {HTMLElement} el Element containing attribute
+	 * @param {string} name Attribute name
+	 * @param {boolean} val Default value
+	 */
 	static setAsBool(el, name = '', val = 'false') {
-		return GSAttr.set(el, name, GSUtil.asBool(val), false);
+		GSAttr.set(el, name, GSUtil.asBool(val), false);
 	}
 
+	/**
+	 * Store data into attribute as numeric
+	 * @param {HTMLElement} el Element containing attribute
+	 * @param {string} name Attribute name
+	 * @param {Number} val Default value
+	 */	
 	static setAsNum(el, name = '', val = '0') {
-		return GSAttr.set(el, name, GSUtil.asNum(val), NaN);
+		GSAttr.set(el, name, GSUtil.asNum(val), NaN);
 	}
 
+	/**
+	 * Store data into attribute as JSON string
+	 * @param {HTMLElement} el Element containing attribute
+	 * @param {string} name Attribute name
+	 * @param {string val Default value
+	 */
 	static setAsJson(el, name = '', val = '0') {
-		return GSAttr.set(el, name, JSON.stringify(val), '{}');
+		GSAttr.set(el, name, JSON.stringify(val), '{}');
 	}
 
 	/**
@@ -143,7 +161,7 @@ export default class GSAttr {
 	/**
 	 * Convert list of data attributes into a string list
 	 * @param {HTMLElement} el 
-	  @returns {string}
+	 * @returns {string}
 	 */
 	static dataToString(el) {
 		return Array.from(el.attributes)

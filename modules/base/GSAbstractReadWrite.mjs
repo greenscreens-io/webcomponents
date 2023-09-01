@@ -27,26 +27,45 @@ export default class GSAbstractReadWrite extends GSEvent {
         if (enabled) me.enable();
     }
 
+    /**
+     * Unique data handler name
+     * @returns {string} 
+     */
     get id() {
         return this.#id;
     }
 
+    /**
+     * Register into global data handler registry
+     */
     enable() {
         const me = this;
         GSReadWriteRegistry.register(me);
         me.emit('enabled');
     }
 
+    /**
+     * Unregister from global data handler registry
+     */
     disable() {
         const me = this;
         GSReadWriteRegistry.unregister(me);
         me.emit('disabled');
     }
 
+    /**
+     * Check if data handler is registered in global registry
+     * @returns {boolean}
+     */
     get isRegistered() {
         return GSReadWriteRegistry.find(this.id) ? true : false;
     }
 
+    /**
+     * Initiate data read from remote
+     * @param {HTMLElement} owner 
+     * @returns {Array|Object} JSON data response
+     */
     async read(owner) {
         const me = this;
         let data = null;
@@ -60,6 +79,11 @@ export default class GSAbstractReadWrite extends GSEvent {
         return data;
     }
 
+    /**
+     * Initiate data write to remote
+     * @param {HTMLElement} owner 
+     * @returns {Array|Object} JSON data response
+     */    
     async write(owner, data) {
         const me = this;
         let result = null;
@@ -74,7 +98,7 @@ export default class GSAbstractReadWrite extends GSEvent {
     }
 
     /**
-     * Override in inherited class
+     * Override in inherited class to implement read logic
      * @param {} owner 
      * @returns 
      */
@@ -83,7 +107,7 @@ export default class GSAbstractReadWrite extends GSEvent {
     }
 
     /**
-     * Override in inherited class
+     * Override in inherited class to implement write logic
      * @param {} owner 
      * @param {} data
      * @returns 

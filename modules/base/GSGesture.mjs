@@ -3,8 +3,8 @@
  */
 
 /**
- * A module loading GSTouch class
- * @module base/GSTouch
+ * A module loading GSGesture class
+ * @module base/GSGesture
  */
 import GSEvents from "./GSEvents.mjs";
 
@@ -12,7 +12,7 @@ import GSEvents from "./GSEvents.mjs";
  * A class for handling touch swipe and long press events.
  * @class
  */
-export default class GSTouch {
+export default class GSGesture {
 
     #xDiff = 0;
     #yDiff = 0;
@@ -31,6 +31,13 @@ export default class GSTouch {
     // longpress delay
     static timeout = 1500;
 
+    /**
+     * Constrictor to attach Gesture featuer t oan HTML element
+     * @param {HTMLElement} element 
+     * @param {boolean} swipe Monitor swipe gesture
+     * @param {boolean} tap Monitor tap gesture
+     * @param {boolean} longPress Monitor long press gesture
+     */
     constructor(element, swipe, tap, longPress) {
         const me = this;
         me.#swipe = swipe;
@@ -50,6 +57,9 @@ export default class GSTouch {
         GSEvents.attach(me.#element, me.#element, 'touchend', me.#bindings.end, false);
     }
 
+    /**
+     * Remove gesture events from element
+     */
     unbind() {
         const me = this;
         GSEvents.remove(me.#element, me.#element, 'touchmove', me.#bindings.move);
@@ -61,7 +71,7 @@ export default class GSTouch {
         const me = this;
         me.#xDown = evt.touches[0].clientX;
         me.#yDown = evt.touches[0].clientY;
-        if (me.#longPress) setTimeout(me.#onLongPress.bind(me), GSTouch.timeout);
+        if (me.#longPress) setTimeout(me.#onLongPress.bind(me), GSGesture.timeout);
     }
 
     #handleTouchEnd(evt) {
@@ -113,7 +123,7 @@ export default class GSTouch {
     /**
      * Return number of fingers used in touch event
      * @param {Event} e 
-     * @returns 
+     * @returns {numner}
      */
     static fingers(e) {
 		return e.detail.touches?.length;
@@ -125,6 +135,6 @@ export default class GSTouch {
      * @returns 
      */
     static attach(element, swipe = true, tap = false, longPress = false) {
-        return new GSTouch(element, swipe, tap, longPress);
+        return new GSGesture(element, swipe, tap, longPress);
     }
 }

@@ -11,7 +11,7 @@ import GSAttr from "../base/GSAttr.mjs";
 import GSDOM from "../base/GSDOM.mjs";
 import GSElement from "../base/GSElement.mjs";
 import GSEvents from "../base/GSEvents.mjs";
-import GSTouch from "../base/GSTouch.mjs";
+import GSGesture from "../base/GSGesture.mjs";
 import GSUtil from "../base/GSUtil.mjs";
 import GSCacheStyles from "../head/GSCacheStyles.mjs";
 
@@ -168,7 +168,7 @@ export default class GSOffcanvas extends GSElement {
 
   #bindEvents() {
     const me = this;
-    me.#swiper = GSTouch.attach(document);
+    me.#swiper = GSGesture.attach(document);
     GSEvents.attach(document, document, 'swipe-left', me.#bindings.left, false);
     GSEvents.attach(document, document, 'swipe-right', me.#bindings.right, false);
     GSEvents.attach(document, document, 'swipe-up', me.#bindings.up, false);
@@ -238,7 +238,7 @@ export default class GSOffcanvas extends GSElement {
   }
 
   #isFingersValid(e) {
-    const fingers = GSTouch.fingers(e);
+    const fingers = GSGesture.fingers(e);
     return fingers === this.fingers;
   }
 

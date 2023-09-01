@@ -57,17 +57,39 @@ export default class GSData {
         return first.concat(second).filter((value, index, arr) => arr.indexOf(value) === index);
     }
 
+    /**
+     * Filter array of records 
+     * @param {Array<object>|String} filter Check filterComplex function for details
+     * @param {Array} data Array of JSON objects or array of array of primitive types
+     * @param {Array<String>} fields List of Object properties to check, if not set, all are checked
+     * @returns 
+     */
     static filterData(filter, data, fields) {
         const me = this;
+        data = Array.isArray(data) ? data : [];
         return filter.length === 0 ? data : data.filter(rec => GSData.filterRecord(rec, filter, fields));
     }
 
+    /**
+     * Filter single record to a matchign critheria
+     * @param {Array<object>|String} filter Check filterComplex function for details
+     * @param {Array} data Array of JSON objects or array of array of primitive types
+     * @param {Array<String>} fields List of Object properties to check, if not set, all are checked
+     * @returns 
+     */    
     static filterRecord(rec, filter, fields) {
         const me = this;
         const isSimple = typeof filter === 'string';
         return isSimple ? GSData.filterSimple(rec, filter, fields) : GSData.filterComplex(rec, filter);
     }
 
+    /**
+     * Check if JSON object contains a value in any of defined properties
+     * @param {Object} rec Json object to check
+     * @param {string} filter Value to search for
+     * @param {Array<string>} fields List of proerties to serach
+     * @returns {boolean} Retuen true if any of given properties (or all) contains provided value
+     */
     static filterSimple(rec, filter = '', fields) {
         filter = filter.toLowerCase();
         fields = fields || Object.keys(rec);
@@ -79,13 +101,23 @@ export default class GSData {
         return false;
     }
 
-    // TODO - add support for eq,gt,lt,like,or
+    /**
+     * Check if object contains data in selected properities
+     * @todo Add support for eq,gt,lt,like,or operators
+     * @param {Object|Array} rec Json object or array of primitive values to check
+     * @param {Array<Object>} filter List of filter objects in format
+     *        [{name: idx[num] || name[string], value: ''  , op:'eq'}]
+     *        Where:
+     *           - name is numeric index only if rec is array of primitive values ([1,'a','b',4]...etc)
+     *           - name is string if rec is JSON object
+     * @returns {boolean} Flag indicating if record is matched to a given filter critheria
+     */
     static filterComplex(rec, filter) {
+
         let found = true;
         let match = null;
 
         for (let flt of filter) {
-
             match = flt?.value?.toString().toLowerCase();
             found = found && ('' + rec[flt.name]).toLocaleLowerCase().includes(match);
             if (!found) break;
@@ -94,11 +126,24 @@ export default class GSData {
         return found;
     }
 
+    /**
+     * 
+     * @param {*} sort 
+     * @param {*} data 
+     * @returns 
+     */
     static sortData(sort, data) {
         if (sort.length === 0) return data;
         return data.sort((a, b) => GSData.sortPair(a, b, sort));
     }
 
+    /**
+     * Sort two values, recursion supported
+     * @param {*} v1 Array of primitive types or JSON object
+     * @param {*} v2 Array of primitive types or JSON object
+     * @param {number} sort -1 | 0 | 1 (descending, as id, ascending )
+     * @returns {number} -1 | 0 | 1
+     */
     static sortPair(a, b, sort) {
         const me = this;
         const isArray = Array.isArray(a);
@@ -117,6 +162,14 @@ export default class GSData {
         return sts;
     }
 
+    /**
+     * Compare two values, recursion supported
+     * @param {*} v1 
+     * @param {*} v2 
+     * @param {number} order -1 | 0 | 1 (descending, as id, ascending )
+     * @param {number} sts previous value
+     * @returns {number} -1 | 0 | 1
+     */
     static compare(v1, v2, order, sts) {
         const me = this;
         if (GSUtil.isNumber(v1) && GSUtil.isNumber(v2)) {
@@ -129,6 +182,13 @@ export default class GSData {
         return sts;
     }
 
+    /**
+     * Safely compare two boolean values
+     * @param {boolean} v1 
+     * @param {boolean} v2 
+     * @param {number} ord 
+     * @returns 
+     */
     static compareBool(v1, v2, ord) {
         v1 = v1 ? 1 : 0;
         v2 = v2 ? 1 : 0;
@@ -153,7 +213,7 @@ export default class GSData {
      * @param {number} v1 
      * @param {number} v2 
      * @param {number} ord positive = ascending, negative - descending 
-     * @returns {number} -1 or 1 or 0
+     * @returns {number} < 0 or 1 or > 0
      */
     static compareNum(v1, v2, ord) {
         return ord < 0 ? v2 - v1 : v1 - v2;

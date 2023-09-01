@@ -8,7 +8,7 @@ import GSUtil from "./GSUtil.mjs";
 
 /**
  * Proxy class to handle chained css.
- * See GSQuery class
+ * Used internally, see GSQuery class.
  */
 export default class GSQueryCSS {
 
