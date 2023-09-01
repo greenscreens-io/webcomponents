@@ -119,9 +119,18 @@ export default class GSContext extends GSElement {
     return GSAttr.get(this, 'target');
   }
 
+  get altContext() {
+		return this.hasAttribute('altctx');
+	}
+
+	set altContext(val) {
+		GSAttr.toggle(this, 'altctx', GSUtil.asBool(val));
+	}
+
   close(e) {
-    GSEvents.prevent(e);
     const me = this;
+    if (e?.type === 'contextmenu' && e?.shiftKey && me.altContext) return;
+    GSEvents.prevent(e);
     me.#menu?.close();
   }
 
@@ -191,6 +200,7 @@ export default class GSContext extends GSElement {
 
   async #onPopup(e) {
     const me = this;
+    if (e.shiftKey && me.altContext) return;
     const list = me.#match(e);
     if (list.length === 0) return;
     GSEvents.prevent(e);

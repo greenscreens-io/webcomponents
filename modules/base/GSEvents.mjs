@@ -21,17 +21,30 @@ import GSLog from "./GSLog.mjs";
  */
 export default class GSEvents {
 
+	static #protect = false;
 	static #cache = new Map();
 
 	static #loaded = false;
 	static #susspended = 0;
 
+	get altContext() {
+		return GSEvents.#protect;
+	}
+
+	set altContext(val) {
+		GSEvents.#protect = GSUtil.asBool(val, true);
+	}
+
 	/**
 	 * Disable browser console and default context menu
 	 */
 	static protect() {
-		GSEvents.listen(globalThis, null, 'contextmenu', e =>  GSEvents.prevent(e));
+		GSEvents.listen(globalThis, null, 'contextmenu', GSEvents.#onContext);
 		GSEvents.listen(globalThis.document, null, 'keydown', GSEvents.#onKeyDown);
+	}
+
+	static #onContext(event) {
+		if (GSEvents.#protect || !event.shiftKey) GSEvents.prevent(event);
 	}
 
 	static #onKeyDown(event) {
