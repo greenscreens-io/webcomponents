@@ -528,15 +528,22 @@ export default class GSDOM {
 	/**
 	 * Set html text to provided element.
 	 * NOTE: Done intentionaly like this to prevent source validation warning.
+	 *       Use sanitizer when not any more experimental feature;
+	 *       Watch for default Sanitizer.getDefaultConfiguration()
 	 * @param {HTMLElement} el 
 	 * @param {string} val 
+	 * @param {boolean} sanitize 
+	 * @param {Sanitizer} sanitizer 
 	 * @returns {void}
 	 */
-	static setHTML(el, val = '') {
-		// TODO - use sanitizer when not any more experimental feature; watch for default Sanitizer.getDefaultConfiguration()
-		//if (el?.setHTML) return el.setHTML(val);
+	static setHTML(el, val = '', sanitize = false, sanitizer) {
 		const isValid = el instanceof ShadowRoot || el instanceof HTMLElement || el instanceof HTMLTemplateElement;
-		if (isValid) el.innerHTML = val instanceof Document ? val.body.innerHTML : val;
+		if (!isValid) return;
+		if (sanitize && el?.setHTML) {
+			sanitizer ? el.setHTML(val, {sanitizer}) : el.setHTML(val);
+		} else {
+			el.innerHTML = val instanceof Document ? val.body.innerHTML : val;
+		}
 	}
 
 	/**

@@ -108,7 +108,7 @@ export default class GSDataHandler extends HTMLElement {
 
     /**
      * Wait for event to happen
-     * TODO - refactor for GSEventd.wait
+     * TODO - refactor for GSEvents.wait
      * @async
      * @param {*} name 
      * @returns {Promise<void>}
@@ -173,8 +173,6 @@ export default class GSDataHandler extends HTMLElement {
 
     /**
     * Generic event listener appender
-    * TODO handle once events to self remove
-    * TODO handle fucntion key override with same function signature dif instance
     */
     attachEvent(el, name = '', fn, once = false) {
         return GSEvents.attach(this, el, name, fn, once);

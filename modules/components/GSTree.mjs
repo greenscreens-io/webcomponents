@@ -351,10 +351,13 @@ export default class GSTree extends GSElement {
         const data = await GSLoader.loadData(val);
         if (!GSUtil.isJsonType(data)) return;
         const me = this;
-
-        // TODO render html from json
-
         me.disconnectedCallback();
+        me.innerHTML = '';
+
+        let dom = GSDOM.fromJson(val);
+        dom = Array.isArray(dom) ? dom : [dom];
+        dom.forEach(el => GSDOM.appendChild(me, el) );
+
         me.connectedCallback();
         return data;
     }

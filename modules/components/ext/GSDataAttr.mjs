@@ -23,7 +23,6 @@ import GSCSSMap from "../../base/GSCSSMap.mjs";
  * toggle="offcanvas|collapse|dropdown|button|tab|pill|popover|modal|popup" 
  * dismiss="offcanvas|modal|alert|popup"
  * 
- * TODO : trigger events to document.body
  * @class
  */
 export default class GSDataAttr {

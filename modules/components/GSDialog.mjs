@@ -2,7 +2,6 @@
  * Copyright (C) 2015, 2022 Green Screens Ltd.
  */
 
-// TODO disable Ok/Confirm button if foem is invalid, auto-change if valid
 /**
  * A module loading GSDialog class
  * @module components/GSDialog

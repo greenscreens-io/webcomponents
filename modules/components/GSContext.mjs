@@ -187,7 +187,7 @@ export default class GSContext extends GSElement {
   #onAction(e) {
     const detail = e.detail;
     detail.type = 'context';    
-    // TODo if proxied
+    // TODO if proxied element, we should send event to owning component
     // GSEvents.prevent(e)
     // GSEvents.send(this.parent, 'action', detail, true,true,true);
   }

@@ -18,7 +18,7 @@ import GSEvents from "../base/GSEvents.mjs";
  const md = GSComponents.find('gs-markdown')
  md.addEventListener('link', e => {
     GSEvents.prevent(e);
-    //todo take e.detail and set it to another gs-markdown element
+    // take e.detail and set it to another gs-markdown element
  })
  */
 
