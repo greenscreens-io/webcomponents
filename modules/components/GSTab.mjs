@@ -87,7 +87,7 @@ export default class GSTab extends GSElement {
 
   #renderTabsVertical(tabs) {
     return `
-      <div class="nav flex-column user-select-none ${GSTab.CSS_NAV} ${this.#cssnav}" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+      <div class="nav flex-column user-select-none ${GSTab.CSS_NAV} ${this.#cssnav}" role="tablist" aria-orientation="vertical">
         ${tabs}
       </div>
     `;
@@ -134,29 +134,14 @@ export default class GSTab extends GSElement {
 
   #renderPane(el) {
     const me = this;
-    return me.isFlat ? me.#renderPaneFlat(el) : me.#renderPaneShadow(el);
-  }
-
-  #renderPaneShadow(el) {
-    const me = this;
     const actievCSS = me.#activePaneCSS(el);
-    const body = GSItem.getBody(el);
-    const slot = GSDOM.parseWrapped(me, body);
-    GSAttr.set(slot, 'slot', el.id);
-    GSDOM.appendChild(me, slot);
-    return `
-      <div  id="${el.id}-pane" aria-labelledby="${el.id}-tab" 
-          class="tab-pane fade ${me.#cssPane(el)}  ${actievCSS}" 
-          role="tabpanel">
-          <slot name="${el.id}"></slot>
-      </div>        
-      `;
-  }
-
-  #renderPaneFlat(el) {
-    const me = this;
-    const actievCSS = me.#activePaneCSS(el);
-    const body = GSItem.getBody(el, me.isFlat);
+    let body = GSItem.getBody(el, me.isFlat);
+    if (!me.isFlat) {
+      const slot = GSDOM.parseWrapped(me, body);
+      GSAttr.set(slot, 'slot', el.id);
+      GSDOM.appendChild(me, slot);
+      body = `<slot name="${el.id}"></slot>`;
+    }
     return `
       <div  id="${el.id}-pane" aria-labelledby="${el.id}-tab" 
           class="tab-pane fade ${me.#cssPane(el)}  ${actievCSS}" 
