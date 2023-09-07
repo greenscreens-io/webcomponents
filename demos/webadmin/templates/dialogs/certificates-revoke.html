@@ -1,0 +1,19 @@
+<form slot="body" is="gs-ext-form" id="form-main" class="flex-fill" novalidate="">
+
+    <div class="row m-1">
+        <gs-alert css="alert-info" css-active="fade" message="Use either email address or load client certificate!" dismissable="false"></gs-alert>
+    </div>
+                
+    <gs-form-group css="m-1" name="email" label="Email" type="email" autocomplete="off"  
+        description="Certificate owner email address.">
+    </gs-form-group>
+                    
+    <div class="row form-group m-1">
+        <div class="col-12">
+            <gs-filebox multiple="false" elid="file" name="file" 
+            accept=".pem,.cer"
+            css="" css-input="" css-label="mb-2 text-secondary" css-list="text-info"></gs-filebox>
+        </div>
+    </div>
+    
+</form>

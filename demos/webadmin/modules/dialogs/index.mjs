@@ -4,6 +4,7 @@ import './GSAbout.mjs';
 import './GSCertBlocked.mjs';
 import './GSCertClient.mjs';
 import './GSCertOpt.mjs';
+import './GSCertRevoke.mjs';
 import './GSLoginAdmin.mjs';
 import './GSLoginDefaults.mjs';
 import './GSOtpOptions.mjs';
