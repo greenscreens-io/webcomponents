@@ -1,0 +1,36 @@
+<gs-form-group css="m-1" name="friendlyName" label="Friendly Name" required
+autocomplete="off"
+description="Client First and last name.">
+</gs-form-group> 
+
+<gs-form-group css="m-1" name="commonNameClient" label="Common Name" required
+autocomplete="off"
+description="First and Last user name.">
+</gs-form-group> 
+
+<gs-form-group css="m-1" name="organizationUnitClient" label="Organization Unit" required
+autocomplete="off"
+description="Group to which user belongs. Usually branch or department.">
+</gs-form-group> 
+
+<gs-form-group css="m-1" name="emailClient" label="Email" required
+type="email" autocomplete="off"
+description="Client email address.">
+</gs-form-group> 
+
+<gs-form-group css="m-1" name="expire" label="Expiration" required
+type="number" min="1" autocomplete="off" value="1"
+description="When certificate will expire.">
+</gs-form-group> 
+
+<gs-form-group css="m-1" name="expirationType" label="Expiration Type" required
+description="Expiration value type.">
+<template>
+    <select class="form-select" id="expirationType" name="expirationType" selected="3" value="3" required>
+        <option value="0">Hours</option>
+        <option value="1">Days</option>
+        <option value="2">Months</option>
+        <option value="3" selected>Years</option>
+      </select> 
+</template>
+</gs-form-group> 
