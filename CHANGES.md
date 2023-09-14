@@ -2,8 +2,11 @@
 
 # Development v1.8.1 (TBD)
  - Fix - Firefox context menu event detection issue
- - GSContext add altctx attribute to allow open system context menu whike pressing shift key
+ - GSContext add altctx attribute to allow open system context menu while pressing shift key
  - GSTouch renamed to GSGesture
+ - GSData Object named path support added
+ - GSDOM added form fields named path JSON import export
+ - GSFormExt - reading/writing named paths for JSON data
  - Added code comments
 
 # Release v1.8.0 (01.09.2023.)
