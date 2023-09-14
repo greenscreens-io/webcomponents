@@ -219,6 +219,58 @@ export default class GSData {
         return ord < 0 ? v2 - v1 : v1 - v2;
     }
 
+
+	/**
+	 * Write value to JSON object into structured name.
+	 * Name subelements are separated by dot (users.name etc.).
+	 * @param {Object} obj 
+	 * @param {String} name  
+	 * @param {*} value 
+	 */
+	static writeToOject(obj, name, value) {
+		let o = obj;
+		name.split('.').forEach((v, i, a) => {
+			const last = i === a.length - 1;
+			if (!o.hasOwnProperty(v)) o[v] = last ? value : {};
+			o = o[v];
+		});
+		return obj;
+	}
+
+	/**
+	 * Write value to JSON object into structured name.
+	 * Name subelements are separated by dot (users.name etc.).
+	 * @param {Object} obj 
+	 * @param {String} name 
+     * @returns {*}
+	 */
+	static readFromObject(obj, name) {
+		let o = obj;
+		name.split('.').forEach((v, i, a) => {
+            if (o === null) return;
+			const last = i === a.length - 1;
+			if (!o.hasOwnProperty(v)) return o = null;
+			o = o[v];
+		});
+		return o;
+	}
+	
+    /**
+     * Check if named path exist withing object
+     * @param {Object} obj 
+     * @param {String} name 
+     * @returns {Boolean}
+     */
+	static objectPathExist(obj, name) {
+        if (!name) return false;
+		let o = obj || null;
+		name.split('.').forEach(v => {
+            if (o == null) return;
+			o = o.hasOwnProperty(v) ? o = o[v] : null;
+		});
+		return o ? true : false;        
+	}
+
     static {
         Object.seal(GSData);
     }

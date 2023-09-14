@@ -8,6 +8,7 @@
  */
 
 import GSCSSMap from "./GSCSSMap.mjs";
+import GSData from "./GSData.mjs";
 import GSLog from "./GSLog.mjs";
 import GSUtil from "./GSUtil.mjs";
 
@@ -689,9 +690,11 @@ export default class GSDOM {
 			.filter(el => invalid ? true : el.checkValidity())
 			.forEach(el => {
 				if (el.type !== 'radio') {
-					params[el.name] = GSDOM.toValue(el);
+					//params[el.name] = GSDOM.toValue(el);
+					GSData.writeToOject(params, el.name, GSDOM.toValue(el));
 				} else if (el.checked) {
-					params[el.name] = GSDOM.toValue(el);
+					//params[el.name] = GSDOM.toValue(el);
+					GSData.writeToOject(params, el.name, GSDOM.toValue(el));
 				}
 			});
 		return params;
@@ -711,11 +714,14 @@ export default class GSDOM {
 		const list = GSDOM.queryAll(root, qry); // root.querySelectorAll(qry);
 		Array.from(list)
 			//.filter(el => el.name && Object.hasOwn(obj, el.name))
-			.filter(el => el.name && el.name in obj)
+			//.filter(el => el.name && el.name in obj)
+			.filter(el => GSData.objectPathExist(obj, el.name))
 			.forEach(el => {
+				const val = GSData.readFromObject(obj, el.name);
 				if (el.type !== 'radio') {
-					GSDOM.fromValue(el, obj[el.name])
-				} else if (el.value === obj[el.name]) el.checked = true; 
+					//GSDOM.fromValue(el, obj[el.name]);
+					GSDOM.fromValue(el, val);
+				} else if (el.value === val) el.checked = true; 
 			});
 	}
 

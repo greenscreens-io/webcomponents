@@ -24,8 +24,17 @@
     </template>
 </gs-form-group>
 
-<gs-form-group css="m-1" name="urlCA" label="Link CA"
-    description="Add CA download URL to certificate. Uses Server Common Name as URL!!!">
+<hr>
+
+<gs-form-group css="m-1" name="authorityDomain" label="Authority Domain" autocomplete="off" 
+    description="Domains for OCSP/CRL. Optional port can be used (localhost,localhost:8080).If not set, OCSP/CA flags does not apply.">
+    <template>
+		<textarea class="form-control" name="authorityDomain" lines="5"></textarea>
+	</template>
+</gs-form-group>
+
+<gs-form-group css="m-1" name="urlCA" label="Authority CA"
+    description="Add CA download URL to certificate.">
     <template>
         <select class="form-select" id="urlCA" name="urlCA">
             <option value="true">Enabled</option>
@@ -34,10 +43,10 @@
     </template>
 </gs-form-group>
 
-<gs-form-group css="m-1" name="useSAN" label="Link SAN"
-    description="Use alternative URL's for CA/CRL/OCSP.">
+<gs-form-group css="m-1" name="urlOCSP" label="Authority OCSP"
+    description="Add OCSP certificate verification URL.">
     <template>
-        <select class="form-select" id="useSAN" name="useSAN">
+        <select class="form-select" id="urlOCSP" name="urlOCSP">
             <option value="true">Enabled</option>
             <option value="false">Disabled</option>
         </select>
@@ -45,7 +54,7 @@
 </gs-form-group>
 
 <gs-form-group css="m-1" name="urlCRL" label="CRL"
-    description="Add CRL certificate verification URL. Uses Server Common Name as URL!!!">
+    description="Add CRL certificate verification URL.">
     <template>
         <select class="form-select" id="urlCRL" name="urlCRL">
             <option value="true">Enabled</option>
@@ -54,12 +63,14 @@
     </template>
 </gs-form-group>
 
-<gs-form-group css="m-1" name="urlOCSP" label="OCSP"
-    description="Add OCSP certificate verification. Uses Server Common Name as URL!!!">
+<!-- BY spec, it shoud be merged
+<gs-form-group css="m-1" name="crlMerged" label="CRL Merged"
+    description="Distribution point generation model.">
     <template>
-        <select class="form-select" id="urlOCSP" name="urlOCSP">
+        <select class="form-select" id="crlMerged" name="crlMerged">
             <option value="true">Enabled</option>
             <option value="false">Disabled</option>
         </select>
     </template>
 </gs-form-group>
+-->

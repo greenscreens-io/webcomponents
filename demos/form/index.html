@@ -46,14 +46,14 @@
             <gs-form-group css="mt-2" name="date" mask="DD-MM-YYYY" label="Date" description="Masked date input"></gs-form-group>
             <gs-form-group css="mt-2" name="hexa" mask="XXXXXXXXXXXXXXXX" label="Hexadecimal input with" description="Masked hexadecimal input"></gs-form-group>
 
-            <gs-form-group css="mt-2" name="ip" label="IP Address" description="IP Address, CIDR or wildcard">
+            <gs-form-group css="mt-2" name="client.ip" label="IP Address" description="IP Address, CIDR or wildcard">
                 <gs-item data-pattern="^(?:(?:25[0-5]|(?:2[0-4]|1\d|[1-9]|)\d)\.?\b){4}(?:/[1-9]{1,2})?$"></gs-item>
                 <gs-item data-pattern="^(?:(?:25[0-5]|(?:2[0-4]|1\d|[1-9]|)\d|\*)\.){3}(?:(?:25[0-5]|(?:2[0-4]|1\d|[1-9]|)\d|\*))$"></gs-item>
                 <gs-item data-pattern="^(?:(?:(?:25[0-5]|(?:2[0-4]|1\d|[1-9]|)\d)(?:\-(?:25[0-5]|(?:2[0-4]|1\d|[1-9]|)\d))?)\.?){3}(?:(?:25[0-5]|(?:2[0-4]|1\d|[1-9]|)\d)(?:-(?:25[0-5]|(?:2[0-4]|1\d|[1-9]|)\d))?)$"></gs-item>
             </gs-form-group>
 
 
-            <gs-form-group css="mt-2" name="user" placeholder="...enter user name" label="User" description="Login user"></gs-form-group>
+            <gs-form-group css="mt-2" name="client.user" placeholder="...enter user name" label="User" description="Login user"></gs-form-group>
 
             <gs-form-group css="mt-2" name="field1" label="Check box"    type="checkbox" checked></gs-form-group>
             <gs-form-group css="mt-2" name="field2" label="Radio button" type="radio" checked></gs-form-group>

@@ -1,11 +1,13 @@
 {
     "date": "15-11-1900",
     "hexa": "cae4edf934c04102",
-    "ip": "127.0.0.1",
-    "user": "JohnDoe",
     "field1": true,
     "field2": "on",
     "field3": "mysecurity",
     "field4": "60",
-    "active": "true"
+    "active": "true",
+    "client" : {
+        "ip": "127.0.0.1",
+        "user": "JohnDoe"
+    }
 }
