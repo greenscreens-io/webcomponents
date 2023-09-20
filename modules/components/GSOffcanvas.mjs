@@ -50,13 +50,14 @@ export default class GSOffcanvas extends GSElement {
   connectedCallback() {
     const me = this;
     me.#bindEvents();
-    me.#swiper = null;
-    me.#bindings = null;
     super.connectedCallback();
   }
-
+  
   disconnectedCallback() {
-    this.#unbindEvents();
+    const me = this;
+    me.#unbindEvents();
+    me.#swiper = null;
+    me.#bindings = null;
     super.disconnectedCallback();
   }
 
@@ -169,6 +170,7 @@ export default class GSOffcanvas extends GSElement {
   #bindEvents() {
     const me = this;
     me.#swiper = GSGesture.attach(document);
+    if (!me.#bindings) return;
     GSEvents.attach(document, document, 'swipe-left', me.#bindings.left, false);
     GSEvents.attach(document, document, 'swipe-right', me.#bindings.right, false);
     GSEvents.attach(document, document, 'swipe-up', me.#bindings.up, false);
@@ -179,6 +181,7 @@ export default class GSOffcanvas extends GSElement {
     const me = this;
     me.#swiper?.unbind();
     me.#swiper = null;
+    if (!me.#bindings) return;
     GSEvents.remove(document, document, 'swipe-left', me.#bindings.left);
     GSEvents.remove(document, document, 'swipe-right', me.#bindings.right);
     GSEvents.remove(document, document, 'swipe-up', me.#bindings.up);

@@ -40,6 +40,8 @@
             <gs-tooltip placement="bottom" title="Digital Certificate Tools"></gs-tooltip>
             <gs-dropdown dark="false" id="menu2">
                 <gs-item name="Regenerate Terminal Keys" action="cert-gen-term"></gs-item>
+				<gs-item></gs-item>
+				<gs-item name="Generate Timestamp Cert" action="cert-gen-tsp"></gs-item>
                 <gs-item name="Generate Server Cert" action="cert-gen-svr"></gs-item>
                 <gs-item name="Generate Client Cert" data-attr="{visible:true}" inject="gs-admin-dialog-certclient"  target="#dialogs"></gs-item>
 				<gs-item name="Revoke Client" data-attr="{visible:true}" inject="gs-admin-dialog-certrevoke" target="#dialogs"></gs-item>
