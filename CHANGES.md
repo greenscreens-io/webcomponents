@@ -1,6 +1,6 @@
 # [WebComponents](https://webcomponents.greenscreens.ltd/) for [Bootstrap 5.2.0+](https://getbootstrap.com/)
 
-# Development v1.8.1 (TBD)
+# Development v1.8.1 (22.09.2023.)
  - Fix - Firefox context menu event detection issue
  - GSContext add altctx attribute to allow open system context menu while pressing shift key
  - GSOffcanvas fix event bindings 
