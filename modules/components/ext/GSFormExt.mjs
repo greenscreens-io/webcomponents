@@ -189,8 +189,8 @@ export default class GSFormExt extends HTMLFormElement {
     #onField(e) {
         const me = this;
         const el = e.detail;
-        if (el && me.#last?.hasOwnProperty(el.name)) {
-            GSDOM.fromValue(el, me.#last[el.name]);
+        if (el && me.#last) {
+            GSDOM.fromObject2Element(el, me.#last);
         }
     }
 

@@ -712,17 +712,21 @@ export default class GSDOM {
 		if (Object.entries(obj).length === 0) return;
 		const root = GSDOM.unwrap(owner);
 		const list = GSDOM.queryAll(root, qry); // root.querySelectorAll(qry);
-		Array.from(list)
-			//.filter(el => el.name && Object.hasOwn(obj, el.name))
-			//.filter(el => el.name && el.name in obj)
-			.filter(el => GSData.objectPathExist(obj, el.name))
-			.forEach(el => {
-				const val = GSData.readFromObject(obj, el.name);
-				if (el.type !== 'radio') {
-					//GSDOM.fromValue(el, obj[el.name]);
-					GSDOM.fromValue(el, val);
-				} else if (el.value === val) el.checked = true; 
-			});
+		Array.from(list).forEach(el => GSDOM.fromObject2Element(el, obj));
+	}
+
+	/**
+	 * Convert JSON Object into HTMLElement (input)
+	 * @param {HTMLElement} owner Element to populate
+	 * @param {object} obj Data source key/value pairs
+	 */	
+	static fromObject2Element(el, obj) {
+		if (!GSData.objectPathExist(obj, el.name)) return;		
+		const val = GSData.readFromObject(obj, el.name);
+		if (el.type !== 'radio') {
+			//GSDOM.fromValue(el, obj[el.name]);
+			GSDOM.fromValue(el, val);
+		} else if (el.value === val) el.checked = true; 
 	}
 
 	/**

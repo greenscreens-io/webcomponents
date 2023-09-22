@@ -41,6 +41,7 @@ export default class GSCertOpt extends GSAsbtractDialog {
 
     async onData(data) {
         const o = DEMO ? DEMO : await io.greenscreens.Certificate.saveConfig(data);
+		super.onData();			   
         return o.success;
     }
 
