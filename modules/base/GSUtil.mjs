@@ -50,7 +50,7 @@ export default class GSUtil {
 	 */
 	static isURL = (url = '') => /^(https?:\/\/|\/{1,2}|\.\/{1})(\S*\/*){1,}/i.test(url.trim());
 
-	static isHTML = (val = '') => val.includes('<') && val.includes('>');
+	static isHTML = (val = '') => val.trim().startsWith('<') && val.trim().endsWith('>');
 
 	/**
 	 * Generate random set of characters

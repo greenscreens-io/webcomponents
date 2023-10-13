@@ -154,7 +154,7 @@ export default class GSDataAttr {
         
 
         // all not descendants of component
-        const all = allComps.filter(el => gs.indexOf(el) < 0).filter(el => gs.filter(c => c.self.firstElementChild === el).length === 0);
+        const all = allComps.filter(el => !gs.includes(el)).filter(el => gs.filter(c => c.self.firstElementChild === el).length === 0);
 
         return { list: Array.from(new Set(all)), comps: gs };
     }

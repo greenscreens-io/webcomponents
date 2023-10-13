@@ -328,9 +328,9 @@ export default class GSBase extends HTMLElement {
 		const me = this;
 		let type = me.getAttribute('type') || ''
 		if (!type) {
-			if (me.url.indexOf('.js') > 0) {
+			if (me.url.includes('.js')) {
 				type = 'text/javascript';
-			} else if (me.url.indexOf('.css') > 0) {
+			} else if (me.url.includes('.css')) {
 				type = 'text/css';
 			}
 		};

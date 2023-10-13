@@ -131,7 +131,7 @@ export default class GSDOM {
 	 */
 	static isFormElement(el) {
 		const name = GSUtil.isString(el) ? el : el?.tagName;
-		return GSDOM.#FORMEL.indexOf(name) > -1;
+		return GSDOM.#FORMEL.includes(name);
 	}
 
 	static isButtonElement(el) {
@@ -214,7 +214,6 @@ export default class GSDOM {
 	 */
 	static isGSElement(el) {
 		if (!el?.clazzName) return false;
-		//if (el?.tagName?.indexOf('GS-') === 0) return true;
 		const it = GSDOM.inheritance(el);
 		for (let v of it) {
 			if (!v) break;

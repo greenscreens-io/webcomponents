@@ -276,7 +276,7 @@ export default class GSReadWrite extends GSAbstractReadWrite {
      * @returns {boolean}
      */
     get isRemote() {
-        return ['rest' ,'query'].indexOf(this.mode) > -1;
+        return ['rest' ,'query'].includes(this.mode);
     }
 
     /**

@@ -21,6 +21,8 @@ import GSItem from "../base/GSItem.mjs";
  */
 export default class GSTag extends GSElement {
 
+    static #KEYS = ['Enter', 'NumpadEnter', 'Comma', 'Space'];
+
     static {
         GSCacheStyles.adopt(GSTag.#style);
         customElements.define('gs-tag', GSTag);
@@ -70,8 +72,7 @@ export default class GSTag extends GSElement {
     }
 
     #onKeyDown(e) {
-        if (['Enter', 'NumpadEnter', 'Comma', 'Space'].indexOf(e.code) < 0) return;        
-        this.#updateTag(e);
+        if (GSTag.#KEYS.includes(e.code)) this.#updateTag(e);
     }
 
     #onClick(e) {

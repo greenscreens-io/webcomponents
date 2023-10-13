@@ -95,7 +95,7 @@ export default class GSFormGroup extends GSElement {
    #validateAllowed() {
       const me = this;
       const slots = ['header', 'body', 'footer'];
-      let list = Array.from(me.children).filter(el => el.slot && slots.indexOf(el.slot) < 0);
+      let list = Array.from(me.children).filter(el => el.slot && !slots.includes(el.slot));
       if (list.length > 0) throw new Error(`Custom element injection must contain slot="header|body|footer" attribute! Element: ${me.tagName}, ID: ${me.id}`);
       list = Array.from(me.children).filter(el => !el.slot);
       const tagList = ['TEMPLATE', 'GS-ITEM'];
@@ -166,7 +166,7 @@ export default class GSFormGroup extends GSElement {
 
    get #isFieldset() {
       const me = this;
-      return me.type === 'radio' && me.#value.indexOf(',') > -1
+      return me.type === 'radio' && me.#value.includes(',');
    }
 
    get #input() {

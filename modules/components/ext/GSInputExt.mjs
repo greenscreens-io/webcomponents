@@ -124,7 +124,7 @@ export default class GSInputExt extends HTMLInputElement {
             if (masks[masks.length - 1] === v) return cnt++;
             if (cnt > 0) masks.push(`{${++cnt}}`);
             cnt = 0;
-            if (GSInputExt.#special.indexOf(v) > -1) masks.push('\\');
+            if (GSInputExt.#special.includes(v)) masks.push('\\');
             masks.push(v);
         });
         if (cnt > 0) masks.push(`{${++cnt}}`);
@@ -161,7 +161,7 @@ export default class GSInputExt extends HTMLInputElement {
             if (!m) {
                 if (cnt > 0) masks.push(`{${++cnt}}`);
                 cnt = 0;
-                if (GSInputExt.#special.indexOf(v) > -1) masks.push('\\');
+                if (GSInputExt.#special.includes(v)) masks.push('\\');
                 return masks.push(v);
             }
 
@@ -333,8 +333,8 @@ export default class GSInputExt extends HTMLInputElement {
         }
 
         if (e.ctrlKey) {
-            const wordop = GSInputExt.#wordop.indexOf(e.code) > -1;
-            const copycut = GSInputExt.#copycut.indexOf(e.code) > -1;
+            const wordop = GSInputExt.#wordop.includes(e.code);
+            const copycut = GSInputExt.#copycut.includes(e.code);
             // if ctrl+[c,a,x,v] operation
             if (wordop) {
                 // if ctrl+[c,x] operation and invalid, prevent

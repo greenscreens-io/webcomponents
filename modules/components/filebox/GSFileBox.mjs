@@ -231,7 +231,7 @@ export default class GSFileBox extends GSElement {
     }
 
     #hasFile(transfer) {
-        return Array.from(transfer.types).indexOf('Files') >= 0;
+        return Array.from(transfer.types).includes('Files');
     }
 
     #pastedFile(items) {

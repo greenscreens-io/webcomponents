@@ -92,7 +92,7 @@ export default class GSCSSMap {
     }
 	
     static #containsAny(selText, ors) {
-        return selText ? ors.some(x => selText.indexOf(x) >= 0) : false;
+        return selText ? ors.some(x => selText.includes(x)) : false;
     }
     
     /**

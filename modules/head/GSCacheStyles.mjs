@@ -123,7 +123,7 @@ export default class GSCacheStyles {
 
 	static #updateRule(rule, prop = '', style = '') {
 		style = style || '';
-		const isImportant = style.indexOf('!important') > 0;
+		const isImportant = style.includes('!important');
 		style = style.replace('!important', '');
 		prop = prop.trim();
 		rule.style.setProperty(prop, style,  isImportant ? 'important' : '');

@@ -23,7 +23,7 @@ export default class GSFunction {
     static isFunction = (fn) => typeof fn === 'function';
 
     static isFunctionNative(fn) {
-        return GSFunction.isFunction(fn) && fn.toString().indexOf('native code') > 0;
+        return GSFunction.isFunction(fn) && fn.toString().includes('native code');
     }
 
     /**
