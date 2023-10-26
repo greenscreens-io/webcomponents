@@ -46,7 +46,7 @@ export default class GSCenter extends GSElement {
    }
 
    set css(val = '') {
-      return GSAttr.set(this, 'css', vel);
+      return GSAttr.set(this, 'css', val);
    }
 
 }

@@ -22,6 +22,7 @@ export { default as GSMenu } from "./GSMenu.mjs";
 export { default as GSModal } from "./GSModal.mjs";
 export { default as GSNav } from "./GSNav.mjs";
 export { default as GSOffcanvas } from "./GSOffcanvas.mjs";
+export { default as GSOverlay } from "./GSOverlay.mjs";
 export { default as GSPopover } from "./GSPopover.mjs";
 export { default as GSPopup } from "./GSPopup.mjs";
 export { default as GSProgress } from "./GSProgress.mjs";

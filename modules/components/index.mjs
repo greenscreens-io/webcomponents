@@ -22,6 +22,7 @@ import "./GSMenu.mjs";
 import "./GSModal.mjs";
 import "./GSNav.mjs";
 import "./GSOffcanvas.mjs";
+import "./GSOverlay.mjs";
 import "./GSPopover.mjs";
 import "./GSPopup.mjs";
 import "./GSProgress.mjs";
