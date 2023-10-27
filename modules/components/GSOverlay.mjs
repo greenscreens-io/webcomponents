@@ -10,17 +10,19 @@
 import GSAttr from "../base/GSAttr.mjs";
 import GSDOM from "../base/GSDOM.mjs";
 import GSElement from "../base/GSElement.mjs";
-import GSEvents from "../base/GSEvents.mjs";
 import GSID from "../base/GSID.mjs";
 
 /**
  * SVG overlay renderer around selected target.
- * 
+ * <gs-overlay target="#GSId-30-nav" autoremove></gs-overlay>
  * @class
  * @extends {GSElement}
  */
 export default class GSOverlay extends GSElement {
 
+    static #attrs = ['target', 'opacity', 'color', 'radius', 'padding'];
+
+    #tid = 0;
     #svgid = GSID.id;
 
     static {
@@ -28,21 +30,46 @@ export default class GSOverlay extends GSElement {
         Object.seal(GSOverlay);
     }
 
+    static get attributes() {
+        return GSOverlay.#attrs;
+    }
+
     static get observedAttributes() {
-        const attrs = ['target'];
-        return GSElement.observeAttributes(attrs);
+        return GSElement.observeAttributes(GSOverlay.#attrs);
     }
 
     attributeCallback(name = '', oldValue = '', newValue = '') {
         const me = this;
-        if (name === 'target') {
-            me.#updateSVG(oldValue, newValue);
+        if (GSOverlay.attributes.includes(name)) {
+            if (name === 'target') {
+                me.#updateSVG(oldValue, newValue);
+            } else {
+                me.#updateSVG('', me.target);
+            }
         }
+    }
+
+    connectedCallback() {
+        const me  = this;
+        me.attachEvent(window, 'resize', me.#onResize.bind(me));
+        super.connectedCallback();
     }
 
     disconnectedCallback() {
         this.svg?.remove();
         super.disconnectedCallback();
+    }
+
+    get isFlat() {
+        return true;
+    }
+
+    get autoremove() {
+        return this.hasAttribute('autoremove');
+    }
+
+    set autoremove(val) {
+        return GSAttr.toggle(this, 'autoremove', GSUtil.asBool(val));
     }
 
     get target() {
@@ -54,72 +81,103 @@ export default class GSOverlay extends GSElement {
     }
 
     get overlayPadding() {
-        return GSAttr.getAsNum(this, 'overlay-padding', 0);
+        return GSAttr.getAsNum(this, 'padding', 1);
     }
 
-    set overlayPadding(val = 0) {
-        return GSAttr.setAsNum(this, 'overlay-padding', val);
+    set overlayPadding(val = 1) {
+        return GSAttr.setAsNum(this, 'padding', val);
     }
 
     get overlayRadius() {
-        return GSAttr.getAsNum(this, 'overlay-radius', 0);
+        return GSAttr.getAsNum(this, 'radius', 6);
     }
 
-    set overlayRadius(val = 0) {
-        return GSAttr.setAsNum(this, 'overlay-radius', val);
+    set overlayRadius(val = 6) {
+        return GSAttr.setAsNum(this, 'radius', val);
     }
 
     get overlayColor() {
-        return GSAttr.get(this, 'overlayColor', 'rgb(0,0,0)');
+        return GSAttr.get(this, 'color', 'rgb(0,0,0)');
     }
 
     set overlayColor(val = '') {
-        return GSAttr.set(this, 'overlayColor', val);
+        return GSAttr.set(this, 'color', val);
     }
 
     get overlayOpacity() {
-        return GSAttr.getAsNum(this, 'overlayOpacity', 0.7);
+        return GSAttr.getAsNum(this, 'opacity', 0.7);
     }
 
     set overlayOpacity(val = 0.7) {
-        return GSAttr.setAsNum(this, 'overlayOpacity', val);
+        return GSAttr.setAsNum(this, 'opacity', val);
     }
 
     get svg() {
-        return GSDOM.query(this.#svgid);
+        return GSDOM.getByID(this.#svgid);
     }
 
     get path() {
-        return GSDOM.query(this.#svgid, 'path');
+        return GSDOM.query(this.svg, 'path');
+    }
+
+    open() {
+        const me = this;
+        me.#updateSVG('', me.target);
+    }
+
+    close() {
+        const me = this;
+        const svg = me.svg;
+        me.removeEvent(svg, 'click');
+        svg?.remove();
+    }
+    
+    reset() {
+        const me = this;
+        if (me.autoremove) me.close();
+    }
+
+    #onResize() {
+        const me = this;
+        me.close();
+        clearTimeout(me.#tid);
+        me.#tid = setTimeout(() => me.open(), 200);
     }
 
     #updateSVG(oldTarget = '', newTarget = '') {
         const me = this;
-        if (oldTarget != newTarget) me.svg?.remove();
+        if (oldTarget === newTarget) return;
+        if (!newTarget) return me.svg?.remove();
         const el = GSDOM.query(newTarget);
-        if (!GSDOM.isHTMLElement(el)) return;
+        if (!el) return;
 
         const svg = me.svg || me.#createSVG();
         const path = me.path || me.#createSVGPath();
         const pathStr = me.#createSVGPathString(el);
+        svg.setAttribute("viewBox", me.#viewBox);
         path.setAttribute("d", pathStr);
-        svg.appendChild(path);
-        if (!me.svg) document.body.appendChild(svg);
+        if (!me.svg) {
+            svg.appendChild(path);
+            document.body.appendChild(svg);
+            me.attachEvent(svg, 'click', me.reset.bind(me));
+        }
 
+    }
+
+    get #viewBox() {
+        return `0 0 ${window.innerWidth} ${window.innerHeight}`;
     }
 
     #createSVG() {
 
         const me = this;
-        
-        const windowX = window.innerWidth;
-        const windowY = window.innerHeight;
+
 
         const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
         svg.id = me.#svgid;
         svg.classList.add("gs-overlay", "gs-overlay-animated");
 
-        svg.setAttribute("viewBox", `0 0 ${windowX} ${windowY}`);
+        svg.setAttribute("viewBox", me.#viewBox);
         svg.setAttribute("xmlSpace", "preserve");
         svg.setAttribute("xmlnsXlink", "http://www.w3.org/1999/xlink");
         svg.setAttribute("version", "1.1");
