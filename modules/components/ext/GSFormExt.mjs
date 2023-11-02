@@ -138,7 +138,7 @@ export default class GSFormExt extends HTMLFormElement {
         GSAttr.set(this, 'storage', val);
     }
 
-    set data(data) {
+    set asJSON(data) {
         const me = this;
         me.#last = data;
         GSDOM.fromObject(me, data);
@@ -147,8 +147,18 @@ export default class GSFormExt extends HTMLFormElement {
         return isValid;
     }
 
-    get data() {
+    get asJSON() {
         return GSDOM.toObject(this);
+    }
+
+    // @Deprecated
+    set data(data) {
+        return this.asJSON = data;
+    }
+
+    // @Deprecated
+    get data() {
+        return this.asJSON;
     }
 
     get #handler() {
@@ -170,13 +180,12 @@ export default class GSFormExt extends HTMLFormElement {
 
     async read() {
         const me = this;
-        //me.data = 
         await me.#handler?.read(me);
     }
 
     async write() {
         const me = this;
-        me.#handler?.write(me, me.data);
+        me.#handler?.write(me, me.asJSON);
     }
 
     #attachEvents(me) {
@@ -195,7 +204,7 @@ export default class GSFormExt extends HTMLFormElement {
     }
 
     #onRead(e) {
-        if (e.detail.data) this.data = e.detail.data;
+        if (e.detail.data) this.asJSON = e.detail.data;
     }
 
     /**
@@ -209,7 +218,7 @@ export default class GSFormExt extends HTMLFormElement {
         const isValid = me.checkValidity() && me.isValid;
         if (!isValid) me.reportValidity();
         if (isValid) me.write();
-        const data = { type: 'submit', data: me.data, source: e, valid: isValid };
+        const data = { type: 'submit', data: me.asJSON, source: e, valid: isValid };
         GSEvents.send(me, 'form', data, true, true);
         return isValid;
     }
