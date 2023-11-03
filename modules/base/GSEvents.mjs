@@ -65,8 +65,8 @@ export default class GSEvents {
 	 * @param {function} callback 
 	 * @param {Promise<number>} timeout 
 	 */
-	static async waitPageLoad(target, name = 'loaded', callback, timeout = 100) {
-		if (!GSEvents.#loaded) await GSEvents.wait(globalThis.window, 'load'); // DOMContentLoaded
+	static async waitPageLoad(target, name = 'loaded', callback, timeout = 100, prevent = true) {
+		if (!GSEvents.#loaded) await GSEvents.wait(globalThis.window, 'load', timeout, prevent); // DOMContentLoaded
 		GSEvents.#loaded = true;
 		await GSUtil.timeout(timeout);
 		await GSFunction.callFunction(callback);
