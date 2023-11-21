@@ -1,4 +1,10 @@
+/*
+ * Copyright (C) 2015, 2024 Green Screens Ltd.
+ */
 
+/**
+ * Rollup plugin to preven inclusion of external libraryies into final build.
+ */
 export default function gsExtern () {
 
     const isString = (val) => (typeof val == 'string');
