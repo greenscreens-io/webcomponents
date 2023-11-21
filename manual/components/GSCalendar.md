@@ -39,3 +39,7 @@ How to listen for date slection:
 const el = GSComponents.find('gs-calendar');
 el.listen('date', e => console.log(e));
 ```
+
+<br>
+
+&copy; Green Screens Ltd. 2016 - 2023

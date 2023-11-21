@@ -47,3 +47,6 @@ For more details, check [tree.html](../../demos/tree.html)
   </gs-item>        
 </gs-item>  
 ```
+<br>
+
+&copy; Green Screens Ltd. 2016 - 2023

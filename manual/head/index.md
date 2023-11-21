@@ -19,4 +19,6 @@ Also, **GSLink**, **GSCSSS**, **GSStyle** components, when loading CSS styles, u
 7. [GSStyleExt](./GSStyleExt.md)
 8. [GSTheme](./GSTheme.md)
    
+<br>
 
+&copy; Green Screens Ltd. 2016 - 2023

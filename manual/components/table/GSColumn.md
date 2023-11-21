@@ -52,3 +52,6 @@ Column with filterable list
     <gs-item value="Sydney"></gs-item>
 </gs-column>
 ```
+<br>
+
+&copy; Green Screens Ltd. 2016 - 2023

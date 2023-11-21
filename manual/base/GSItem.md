@@ -35,3 +35,7 @@ Below are basic attributes linked to Bootstrap data-bs-* with special behavior. 
 ```
 <gs-item name="test" selectable="false" target="" toggle="" dismiss="" action="" inject="" target="" data-attr=""></gs-item>
 ```
+
+<br>
+
+&copy; Green Screens Ltd. 2016 - 2023

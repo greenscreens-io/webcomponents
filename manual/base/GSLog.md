@@ -5,3 +5,6 @@ GSLog class is a static generic logging used across the framework. it is a wrapp
 If we decide to extend this logging mechanism with other functionalities, such as remote log recording, this is the only place to update. All other classes and components will use the new facility without code modification.
 
 
+<br>
+
+&copy; Green Screens Ltd. 2016 - 2023

@@ -58,3 +58,6 @@ For more details, check [button.html](../../demos/button.html)
  
 ```
 
+<br>
+
+&copy; Green Screens Ltd. 2016 - 2023

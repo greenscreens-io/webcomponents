@@ -11,3 +11,6 @@ This component is used internally by composite GS WebComponets.
 <a is="gs-ext-navlink">
 ```
 
+<br>
+
+&copy; Green Screens Ltd. 2016 - 2023

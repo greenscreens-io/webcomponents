@@ -14,3 +14,6 @@ Example to use it:
 <link is="gs-ext-link" src=""></link>
 ```
 
+<br>
+
+&copy; Green Screens Ltd. 2016 - 2023

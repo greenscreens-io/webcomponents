@@ -33,3 +33,7 @@ For more details, check [splitter.html](../../demos/splitter.html)
 <gs-splitter split="vertical"></gs-splitter>
 <div>test end / right</div>
 ```
+
+<br>
+
+&copy; Green Screens Ltd. 2016 - 2023

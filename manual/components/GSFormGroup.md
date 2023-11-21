@@ -58,3 +58,6 @@ Custom element injected
         </gs-form-group>
 ```
 
+<br>
+
+&copy; Green Screens Ltd. 2016 - 2023

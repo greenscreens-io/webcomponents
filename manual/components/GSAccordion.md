@@ -46,3 +46,6 @@ For more details, check [accordion.html](../../demos/accordion.html)
     <gs-item title="Template content" message="//content.html" visible="false" autoclose="true" ></gs-item>
 </gs-accordion>
 ```
+<br>
+
+&copy; Green Screens Ltd. 2016 - 2023

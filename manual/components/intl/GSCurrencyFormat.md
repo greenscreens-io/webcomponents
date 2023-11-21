@@ -26,3 +26,6 @@ For more details, check [currency.html](../../demos/intl/currency.html)
 <gs-currency-format language="en-EN", curreny="JPY" value="123456.789"></gs-currency-format>
 ```
 
+<br>
+
+&copy; Green Screens Ltd. 2016 - 2023

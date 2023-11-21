@@ -98,3 +98,6 @@ const child = ... some element inside injected template ....
 GSUtil.sendEvent(child, 'modal', {type : 'close'}, true, true);
 ```
 
+<br>
+
+&copy; Green Screens Ltd. 2016 - 2023

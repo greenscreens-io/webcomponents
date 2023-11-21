@@ -33,3 +33,6 @@ For more details, check [toast.html](../../../demos/toast.html)
 
 To programmatically popup a new toast message see [GSNotification](./GSNotification.md) component.
  
+<br>
+
+&copy; Green Screens Ltd. 2016 - 2023

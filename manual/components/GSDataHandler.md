@@ -57,3 +57,7 @@ Custom class must be initialized with id="handler".
 ```html
  <gs-data-handler id="handler"></gs-data-handler>
  ```
+
+ <br>
+
+&copy; Green Screens Ltd. 2016 - 2023

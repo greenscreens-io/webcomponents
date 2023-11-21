@@ -36,3 +36,6 @@ For more details, check [offcanvas.html](../../demos/offcanvas.html)
 <gs-offcanvas title="Offfcanvas panel" expanded="true" closable="false" placement="end"  backdrop="true"></gs-offcanvas>
 ```
 
+<br>
+
+&copy; Green Screens Ltd. 2016 - 2023

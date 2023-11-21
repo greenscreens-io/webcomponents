@@ -18,3 +18,6 @@ GSBase Class is not registered as WebComponent itself. Injecting it into a page 
 | url            | Retrieve resource url (src or href)                                         |
  
 
+<br>
+
+&copy; Green Screens Ltd. 2016 - 2023

@@ -6,3 +6,6 @@ Developers does not need to use this class directly. In order to see its functio
  
 NOTE: Please see [Install](../install.md) document for instructions on how to generate API manuals.
  
+<br>
+
+&copy; Green Screens Ltd. 2016 - 2023

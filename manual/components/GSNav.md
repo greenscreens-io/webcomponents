@@ -56,3 +56,6 @@ const menu = GSComponents.find('gs-nav');
 menu.listen('action', (e) => console.log(e.detail));
 ```
 
+<br>
+
+&copy; Green Screens Ltd. 2016 - 2023

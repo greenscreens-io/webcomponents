@@ -12,3 +12,6 @@ For more details, check [popover.html](../../demos/popover.html)
 <gs-popover placement="bottom" content="Bottom" ref="#l5"></gs-popover>
 ```
  
+<br>
+
+&copy; Green Screens Ltd. 2016 - 2023

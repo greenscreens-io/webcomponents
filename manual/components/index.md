@@ -41,4 +41,6 @@ Components library contains all WebComponents UI elements based on Bootstrap 5.2
 27. [Extra](./extra/index.md)
 
 
+<br>
 
+&copy; Green Screens Ltd. 2016 - 2023

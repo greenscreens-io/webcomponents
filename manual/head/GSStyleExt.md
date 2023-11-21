@@ -16,3 +16,6 @@ Example to use it:
 </style>
 ```
 
+<br>
+
+&copy; Green Screens Ltd. 2016 - 2023

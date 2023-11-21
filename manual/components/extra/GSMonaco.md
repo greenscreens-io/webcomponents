@@ -31,3 +31,7 @@ Loading data from remote resource.
 ```html
 <gs-monaco url="monaco.html" language="html" class="flex-fill d-flex" css="flex-fill"></gs-monaco>
 ```
+
+<br>
+
+&copy; Green Screens Ltd. 2016 - 2023

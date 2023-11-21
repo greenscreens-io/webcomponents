@@ -44,3 +44,6 @@ Check for **e.data.type** to determine type of form action.
 cosnt frm = document.querySelector('.myform');
 frm.addEventListener('form', e => console.log(e.data.type));
 ```
+<br>
+
+&copy; Green Screens Ltd. 2016 - 2023

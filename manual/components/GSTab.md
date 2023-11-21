@@ -47,3 +47,6 @@ For more details, check [Tab Demo](../../demos/tab/)
 </gs-tab>
 ```
  
+<br>
+
+&copy; Green Screens Ltd. 2016 - 2023

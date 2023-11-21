@@ -38,3 +38,6 @@ Shows five years in the past from oow
 ```html
 <gs-year-format offset="-5"></gs-year-format>
 ```
+<br>
+
+&copy; Green Screens Ltd. 2016 - 2023

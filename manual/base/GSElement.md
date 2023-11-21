@@ -41,3 +41,7 @@ NOTE: Please see [Install](../install.md) document for instructions on how to ge
     *  apple - render on Mac OS            
     *  linux - render on Linux OS
     *  windows - render on MS Windows OS
+
+<br>
+
+&copy; Green Screens Ltd. 2016 - 2023

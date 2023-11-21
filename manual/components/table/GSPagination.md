@@ -32,3 +32,6 @@ When gs-pager used within ```<GS-TABLE>``` tag, make sure ```slot="extra"``` att
 ```html
 <gs-pager id="mypager" slot="extra" previous="&laquo;" next="&raquo;" firstlast="false"></gs-pager>
 ```
+<br>
+
+&copy; Green Screens Ltd. 2016 - 2023

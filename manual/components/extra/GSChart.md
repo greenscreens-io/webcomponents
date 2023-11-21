@@ -111,3 +111,7 @@ Loading complete options from config structure.
     </gs-item>        
 </gs-chart>
 ```
+
+<br>
+
+&copy; Green Screens Ltd. 2016 - 2023

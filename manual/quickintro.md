@@ -84,3 +84,6 @@ UI WebComponents are divided into following groups
 
 In some cases, CSP errors might show up in the browser console. All components uses CSS API which should be compatible with CSP to allow dynamic CSS styles change, however, for static resources such as Base64 inline encoded images or SVG, use CSP policy __img-src 'self' data:__
 
+<br>
+
+&copy; Green Screens Ltd. 2016 - 2023

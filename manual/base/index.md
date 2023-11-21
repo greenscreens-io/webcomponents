@@ -30,3 +30,6 @@ Base library is core of all GS WebComponents UI elements. Contains a set of non 
 23. [GSReadWrite](./GSReadWrite.md)
 24. [GSReadWriteRegistry](./GSReadWriteRegistry.md)
 
+<br>
+
+&copy; Green Screens Ltd. 2016 - 2023

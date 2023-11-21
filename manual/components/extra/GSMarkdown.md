@@ -29,3 +29,7 @@ Loading data from remote resource.
 ```html
 <gs-markdown url="main.md"></gs-markdown>
 ```
+
+<br>
+
+&copy; Green Screens Ltd. 2016 - 2023

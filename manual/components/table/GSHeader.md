@@ -21,4 +21,6 @@ Column with custom title
 </gs-header>
 ```
 
+<br>
 
+&copy; Green Screens Ltd. 2016 - 2023

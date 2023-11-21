@@ -42,3 +42,6 @@ controller.abort();
 // block until aborted - return immediately as it is aborted already 
 await promise.await();
 ```
+<br>
+
+&copy; Green Screens Ltd. 2016 - 2023

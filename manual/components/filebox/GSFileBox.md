@@ -49,3 +49,6 @@ For more details, check [filebox.html](../../../demos/filebox.html)
 const fileBox = document.querySelector('gs-filebox');
 fileBox.listen('accept', e => console.log(e));
 ```
+<br>
+
+&copy; Green Screens Ltd. 2016 - 2023

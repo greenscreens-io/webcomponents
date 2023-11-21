@@ -49,3 +49,6 @@ For repeatable JavaScript loading.  Use it if script must be injected with templ
 ```html
 <gs-script auto="false" url="script.js"></gs-script>
 ```
+<br>
+
+&copy; Green Screens Ltd. 2016 - 2023

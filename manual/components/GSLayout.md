@@ -68,3 +68,6 @@ For more details, check [Layouts Demo](../../demos/layouts/)
 </gs-layout>
 ```
 
+<br>
+
+&copy; Green Screens Ltd. 2016 - 2023

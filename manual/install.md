@@ -30,7 +30,7 @@ As source requires modern browsers, and as modern browsers use HTTPS/2 which, wh
 
 Another advantage of not "building" JavaScript Modules is [tree-shaking](https://en.wikipedia.org/wiki/Tree_shaking) support which allows loading only required modules on demand.
 
-However, we preapred Webpack configuration if there is a requirement to build a single library. Check inside [webpack.config.js](../webpack.config.js) for instructions.
+However, we preapred Rollup configuration if there is a requirement to build a single library. Check inside [rollup.config.mjs](../rollup.config.mjs) for instructions.
  
 <br>
  
@@ -113,3 +113,6 @@ When using library built with WebPack, use the following template.
 </html>
 ```
 
+<br>
+
+&copy; Green Screens Ltd. 2016 - 2023

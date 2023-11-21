@@ -18,3 +18,6 @@ const handler = (el) => { console.log(el); }
 GSDOMObserver.registerFilter(filter, handler);
 ```
 
+<br>
+
+&copy; Green Screens Ltd. 2016 - 2023

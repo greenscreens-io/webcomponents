@@ -10,3 +10,6 @@ Do not use this component directly.
 ```html
 <tbody is="gs-tbody"></tbody>
 ```
+<br>
+
+&copy; Green Screens Ltd. 2016 - 2023

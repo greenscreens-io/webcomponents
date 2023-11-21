@@ -12,3 +12,6 @@ Example usage:
 ```
 <gs-link async="true" defer="true" url="" nonce="" type="text/javascript" os="windows" environment="desktop"></gs-link>
 ```
+<br>
+
+&copy; Green Screens Ltd. 2016 - 2023

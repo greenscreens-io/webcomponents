@@ -20,3 +20,7 @@ myEventBus.once('event-name', ({ detail }) => {
 myEventBus.emit('event-name', 'Hello'); 
 myEventBus.emit('event-name', 'World'); 	
 ```
+
+<br>
+
+&copy; Green Screens Ltd. 2016 - 2023

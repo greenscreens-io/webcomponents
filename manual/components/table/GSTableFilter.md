@@ -10,3 +10,6 @@ Do not use this component directly.
 ```html
 <thead><tr is="gs-tablefilter"></tr></thead>
 ```
+<br>
+
+&copy; Green Screens Ltd. 2016 - 2023

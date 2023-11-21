@@ -9,3 +9,6 @@ GSComboExt WebComponent is an extension of a standard HTMLSelectElement that add
 <select is="gs-ext-select" data="data.json"  name="type" class="form-control">
 ```
 
+<br>
+
+&copy; Green Screens Ltd. 2016 - 2023

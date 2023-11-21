@@ -11,3 +11,7 @@ GSPopper Class is a generic set of static functions used across GS WebComponents
 
   * **GSPopper.popupAbsolute** - position elements within a whole page area. Move element as page scrolls. 
   Element is repositioned along relative placement on the page.
+
+<br>
+
+&copy; Green Screens Ltd. 2016 - 2023

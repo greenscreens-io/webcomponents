@@ -38,3 +38,7 @@ Loading data from page element.
 ```html
 <gs-highlight target="#demo"></gs-highlight>
 ```
+
+<br>
+
+&copy; Green Screens Ltd. 2016 - 2023

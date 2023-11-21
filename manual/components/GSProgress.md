@@ -19,3 +19,6 @@ GSComponents.find('gs-progress').increase();
 GSComponents.find('gs-progress').decrease();
 ```
 
+<br>
+
+&copy; Green Screens Ltd. 2016 - 2023

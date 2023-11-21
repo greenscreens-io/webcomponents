@@ -9,3 +9,6 @@ GSUListExt WebComponent is an extension of a standard HTMLULElement that adds ke
 <ul is="gs-ext-ul"></ul>
 ```
 
+<br>
+
+&copy; Green Screens Ltd. 2016 - 2023

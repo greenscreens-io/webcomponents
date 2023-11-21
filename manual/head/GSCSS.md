@@ -54,3 +54,6 @@ https://localhost/app.html#theme=lite
 <gs-css src="/webcomponents/assets/css/custom_lite.css" theme="lite"></gs-css>
 ```
 
+<br>
+
+&copy; Green Screens Ltd. 2016 - 2023

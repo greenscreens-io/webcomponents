@@ -52,3 +52,6 @@ Visible on load at specified location
 <gs-popup target="#" v-pos="0" h-pos="300" css="" template="//content.html"></gs-popup>
 ```
 
+<br>
+
+&copy; Green Screens Ltd. 2016 - 2023

@@ -66,3 +66,7 @@ For more details, check [Table demo](../../demos/table/)
     <gs-pager slot="extra" store="employees" previous="&laquo;" next="&raquo;" firstlast="false"></gs-pager>
 </gs-table>
 ```
+
+<br>
+
+&copy; Green Screens Ltd. 2016 - 2023

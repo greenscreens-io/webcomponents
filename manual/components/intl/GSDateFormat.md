@@ -56,3 +56,6 @@ For more details, check [date.html](../../demos/intl/date.html)
 
 <gs-date-format locale="hr-HR" data-dateStyle="full"></gs-date-format>
 ```
+<br>
+
+&copy; Green Screens Ltd. 2016 - 2023

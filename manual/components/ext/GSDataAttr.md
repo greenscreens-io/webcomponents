@@ -17,3 +17,6 @@ As DOM Observer is used to monitor element add / remove events to a page, this c
  * ***data-css*** - CSS class for injected template
  * ***data-inject*** - Target where to inject template
  
+<br>
+
+&copy; Green Screens Ltd. 2016 - 2023

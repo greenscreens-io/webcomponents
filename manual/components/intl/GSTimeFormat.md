@@ -25,3 +25,6 @@ For more details, check [time.html](../../demos/intl/time.html)
 ```html
 <gs-time-format></gs-time-format>
 ```
+<br>
+
+&copy; Green Screens Ltd. 2016 - 2023

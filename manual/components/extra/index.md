@@ -9,3 +9,6 @@ Extra library is a set of classes that wraps around external libraries into WebC
 3. [GSMarkdown](./GSMarkdown.md)
 4. [GSMonaco](./GSMonaco.md)
 
+<br>
+
+&copy; Green Screens Ltd. 2016 - 2023

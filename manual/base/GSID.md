@@ -5,3 +5,7 @@ GSID Class is a generic auto-counter and generator for HTMLElement **id** attrib
 it is used internally, and only required for developers when creating their own custom WebComponents.
  
 When extending GSElement, there is no need to use GSID unless it is required to add unique **id** to a generated HTML code.
+
+<br>
+
+&copy; Green Screens Ltd. 2016 - 2023

@@ -14,3 +14,6 @@ Also, this library contains replacement for Bootstrap Javascript support for **d
 6. [GSInputExt](./GSInputExt.md)
 7. [GSNavLinkExt](./GSNavLinkExt.md)
 8. [GSUListExt](./GSUListExt.md)
+<br>
+
+&copy; Green Screens Ltd. 2016 - 2023

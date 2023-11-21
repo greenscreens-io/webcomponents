@@ -94,3 +94,6 @@ Template content can be injected in slot elements when **flat** mode is used.
 <gs-template href="//mytemplate.html" flat="true" slot="test"></gs-template>
 ```
  
+<br>
+
+&copy; Green Screens Ltd. 2016 - 2023

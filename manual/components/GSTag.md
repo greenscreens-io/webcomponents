@@ -36,3 +36,7 @@ For more details, check [tags.html](../../demos/tags.html)
       <gs-item name="Internet Explorer"></gs-item>
     </gs-tag>
 ```
+
+<br>
+
+&copy; Green Screens Ltd. 2016 - 2023

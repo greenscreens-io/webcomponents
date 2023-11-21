@@ -49,3 +49,7 @@ For more details, check [alert.html](../../demos/alert.html)
     <gs-item title="Message 3"></gs-item>
 </gs-alert>
 ```
+
+<br>
+
+&copy; Green Screens Ltd. 2016 - 2023

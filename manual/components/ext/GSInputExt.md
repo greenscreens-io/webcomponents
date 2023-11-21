@@ -10,3 +10,6 @@ Main support added is masked input through **mask** attribute, validation, datal
 ```html
  <input is="gs-ext-input">
  ```
+<br>
+
+&copy; Green Screens Ltd. 2016 - 2023

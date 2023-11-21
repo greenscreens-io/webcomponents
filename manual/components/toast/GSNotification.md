@@ -60,3 +60,6 @@ notifier.native = true;
 notifier.info('My Title', 'My message', false, 5);
 ```
 
+<br>
+
+&copy; Green Screens Ltd. 2016 - 2023

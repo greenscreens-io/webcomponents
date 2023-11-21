@@ -14,3 +14,6 @@ const controller = GSAbortController(1000);
 // block until aborted
 await controller.wait();
 ```
+<br>
+
+&copy; Green Screens Ltd. 2016 - 2023

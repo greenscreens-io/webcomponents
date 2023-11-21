@@ -36,3 +36,7 @@ GSComponents.query('.content');
 ```
 await GSComponents.wait('GS-MODAL');
 ```
+
+<br>
+
+&copy; Green Screens Ltd. 2016 - 2023

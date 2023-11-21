@@ -5,4 +5,6 @@ GSFormExt and GSStore use "storage" attribute to attach to a registerd data read
 
 NOTE: Please see [Install](../install.md) document for instructions on how to generate API manuals.
  
+<br>
 
+&copy; Green Screens Ltd. 2016 - 2023
