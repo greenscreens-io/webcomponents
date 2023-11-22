@@ -639,6 +639,11 @@ export default class GSDOM {
 				return el.value ? el.valueAsNumber : el.value;
 			case 'select-multiple':
 				return Array.from(el.selectedOptions).map(o => o.value);
+			case 'checkbox':
+				if (el.hasAttribute('value')) {
+					return el.checked ? el.value : null;
+				} 
+				return el.checked;
 			default:
 				return el.value;
 		}
@@ -651,7 +656,6 @@ export default class GSDOM {
 	 */
 	static toValue(el) {
 		if (!GSDOM.isHTMLElement(el)) return undefined;
-		if ('checkbox' === el.type) return el.checked;
 		let value = GSDOM.getValue(el);
 		if ('text' === el.type) {
 			const map = GSCSSMap.styleValue(el, 'text-transform');
@@ -668,10 +672,18 @@ export default class GSDOM {
 	 */
 	static fromValue(el, val) {
 		if (!GSDOM.isHTMLElement(el)) return;
-		if (el.type === 'checkbox') {
-			el.checked = val == true;
-		} else {
-			el.value = val;
+		const data = Array.isArray(val) ? val[0] || '' : val;
+
+		switch (el.type) {
+			case 'checkbox':
+				if (el.hasAttribute('value')) {
+					el.checked = data === el.value;
+				} else {
+					el.checked = data == true;		
+				}
+				break;
+			default :
+				el.value = data;
 		}
 	}
 

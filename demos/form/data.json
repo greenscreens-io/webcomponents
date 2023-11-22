@@ -2,9 +2,10 @@
     "date": "15-11-1900",
     "hexa": "cae4edf934c04102",
     "field1": true,
-    "field2": "on",
-    "field3": "mysecurity",
+    "field2": "b",
+    "field3": true,
     "field4": "60",
+    "field5": "mysecurity",
     "active": "true",
     "client" : {
         "ip": "127.0.0.1",

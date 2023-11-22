@@ -225,20 +225,46 @@ export default class GSData {
 	 * Name subelements are separated by dot (users.name etc.).
 	 * @param {Object} obj 
 	 * @param {String} name  
+     * @param {Boolean} ignoreNull  
 	 * @param {*} value 
 	 */
-	static writeToOject(obj, name, value) {
-		let o = obj;
-		name.split('.').forEach((v, i, a) => {
-			const last = i === a.length - 1;
-			if (!o.hasOwnProperty(v)) o[v] = last ? value : {};
-			o = o[v];
-		});
-		return obj;
+	static writeToOject(obj, name, value, ignoreNull = true) {
+        if (ignoreNull && GSUtil.isNull(value)) return;
+        
+        const seg = name.split('.');
+        if (seg.length === 1) {
+            return GSData.#writeSingleToOject(obj, name, value);
+        }
+        
+        const tree = seg.slice(0, -1);
+        const key = seg.slice(-1)[0];
+        
+        tree.forEach( v => {
+            if(!obj.hasOwnProperty(v)) obj[v] = {};
+            obj = obj[v];
+        });
+
+        return GSData.#writeSingleToOject(obj, key, value);
 	}
 
+    static #writeSingleToOject(obj, name, value) {        
+        if (obj.hasOwnProperty(name)) {
+            if (!Array.isArray(obj[name])) {
+                obj[name] = [obj[name]];
+            }
+            if (Array.isArray(value)) {
+                obj[name] = obj[name].concat(value);
+            } else {
+                obj[name].push(value);
+            }
+        } else {
+            obj[name] = value;
+        }
+        return obj;
+    }
+
 	/**
-	 * Write value to JSON object into structured name.
+	 * Read value from JSON object by structured name.
 	 * Name subelements are separated by dot (users.name etc.).
 	 * @param {Object} obj 
 	 * @param {String} name 
