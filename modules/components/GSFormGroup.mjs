@@ -67,6 +67,16 @@ export default class GSFormGroup extends GSElement {
       super.onReady();
       const me = this;
       me.attachEvent(me.#inputEl, 'blur', me.#onBlur.bind(me));
+      if (me.#isRange) {
+         me.attachEvent(me.#inputEl, 'input', me.#onRange.bind(me));
+         me.#onRange();
+      } 
+   }
+
+   #onRange(e) {
+      const me = this;
+      const el = me.#outputEl;
+      if (el) el.innerHTML = me.#inputEl?.value || '';
    }
 
    async #onBlur(e) {
@@ -154,6 +164,10 @@ export default class GSFormGroup extends GSElement {
          ${me.#info}
          <slot name="footer"></slot>
       </div>`;
+   }
+
+   get #outputEl() {
+      return this.query('input').nextElementSibling;
    }
 
    get #inputEl() {
@@ -247,8 +261,14 @@ export default class GSFormGroup extends GSElement {
       const me = this;
       return `
       <div class="${me.#cssCheck} ${me.cellField}">
-         <slot name="body">${me.#input}</slot>
+         <slot name="body">${me.#input}${me.#output}</slot>
       </div>`;
+   }
+
+   get #output() {
+      const me = this;
+      if (!me.#isRange) return "";
+      return `<span class="position-absolute px-1">${me.value}</span>`; 
    }
 
    get #info() {
