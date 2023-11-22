@@ -637,6 +637,8 @@ export default class GSDOM {
 			case 'datetime-local':
 			case 'number':
 				return el.value ? el.valueAsNumber : el.value;
+			case 'select-multiple':
+				return Array.from(el.selectedOptions).map(o => o.value);
 			default:
 				return el.value;
 		}

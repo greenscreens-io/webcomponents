@@ -9,6 +9,7 @@
  - GSTouch renamed to GSGesture
  - GSData Object named path support added
  - GSDOM added form fields named path JSON import export
+ - GSDOM added seelct-multiple to JSON support
  - GSFormExt - reading/writing named paths for JSON data
  - Added GSOverlay - render SVG overlay around target element
  - Added code comments
