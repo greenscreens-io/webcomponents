@@ -61,7 +61,8 @@ export default class GSFunction {
      * @throws {Error} 
      */
     static async callFunctionAsync(fn, owner) {
-        return owner ? await fn.bind(owner)() : await fn(owner);
+        const args = arguments ? Array.from(arguments).slice(2) : [];
+        return await fn.apply(owner ||null, args);
     }
 
     /**
@@ -73,7 +74,8 @@ export default class GSFunction {
      * @throws {Error}
      */
     static callFunctionSync(fn, owner) {
-        return owner ? fn.bind(owner)() : fn(owner);
+        const args = arguments ? Array.from(arguments).slice(2) : [];
+        return fn.apply(owner ||null, args);
     }
 
     /**
@@ -87,10 +89,11 @@ export default class GSFunction {
         fn = GSUtil.isString(fn) ? GSFunction.parseFunction(fn) : fn;
         if (!GSFunction.isFunction(fn)) return;
         if (!native && GSFunction.isFunctionNative(fn)) return;
+        const args = arguments ? Array.from(arguments).slice(3) : [];
         if (GSFunction.isFunctionAsync(fn)) {
-            return await GSFunction.callFunctionAsync(fn, owner);
+            return await GSFunction.callFunctionAsync(fn, owner, ...args);
         }
-        return GSFunction.callFunctionSync(fn, owner);
+        return GSFunction.callFunctionSync(fn, owner, ...args);
     }
 
     /**
