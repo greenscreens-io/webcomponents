@@ -152,7 +152,7 @@ export default class GSTree extends GSElement {
             css = isFolder && !isOpen ? 'gs-hide' : '';
         }
 
-        const nodeid = GSUtil.isNull(pid) ? idx : `${pid}.${idx}`;
+        const nodeid = GSUtil.isStringEmpty(pid) ? idx : `${pid}.${idx}`;
 
         const html = [];
 
