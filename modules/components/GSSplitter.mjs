@@ -187,6 +187,36 @@ export default class GSSplitter extends GSElement {
         const me = this;
         const el = me.#splitter;
         me.attachEvent(el, 'mousedown', me.#onMouseDown.bind(me), true);
+        me.attachEvent(el, 'dblclick', me.#onDoubleClick.bind(me));
+    }
+
+    #onDoubleClick(e) {
+
+        const me = this;
+        let csize = 0;
+        let key = '';
+
+        if (me.isVertical) {
+            key = 'width';
+            csize = me.target.clientWidth;
+        } else {
+            key = 'height';
+            csize = me.target.clientHeight;
+        }
+        
+        let min = GSCSSMap.styleValue(me.target, `min-${key}`);
+        let max = GSCSSMap.styleValue(me.target, `max-${key}`);
+
+        min = GSUtil.asNum(min.value);
+        max = GSUtil.asNum(max.value);
+
+        if ((max - min) / 2 > csize) {
+            csize = max;
+        } else {
+            csize = min;
+        }
+        me.#update(csize);
+
     }
 
     /**
