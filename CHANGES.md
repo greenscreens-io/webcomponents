@@ -9,6 +9,7 @@
  - GSElement add 'repaint' function to completely rerender component
  - GSFunctions dynamic parameters support added
  - GSOffcanvas fix event bindings 
+ - GSSplitter ass double click to auto-resize if min/max set
  - GSTouch renamed to GSGesture
  - GSData Object named path support added
  - GSDOM added form fields named path JSON import export

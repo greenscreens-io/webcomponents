@@ -229,6 +229,7 @@ export default class GSSplitter extends GSElement {
         me.#cursor = me.isVertical ? e.clientX : e.clientY;
         me.attachEvent(document, 'mouseup', me.#onMouseUp.bind(me), true);
         me.attachEvent(document, 'mousemove', me.#onMouseMove.bind(me));
+        GSEvents.send(globalThis, 'gs-split', {start: true});
     }
 
     /**
@@ -241,8 +242,8 @@ export default class GSSplitter extends GSElement {
         GSEvents.deattachListeners(me);
         me.#save();
         me.#listen();
+        GSEvents.send(globalThis, 'gs-split', {stop: true});
     }
-
 
     /**
      * Handles resizing based on mouse move event
