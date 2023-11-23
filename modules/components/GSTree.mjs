@@ -305,6 +305,10 @@ export default class GSTree extends GSElement {
         return el.parentElement.querySelector(`li[data-nodeid="${s}"]`);
     }
 
+    get level() {
+        return this.#selected?.dataset.nodeid.split('.').length || -1;
+    }
+
     get path() {
         const me = this;
         const seg = [];
