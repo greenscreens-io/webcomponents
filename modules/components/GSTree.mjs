@@ -234,6 +234,11 @@ export default class GSTree extends GSElement {
                 const isChild = cid && cid.indexOf(nid) === 0;
                 if (!isChild) break;
                 const cl = cid.split('\.').length;
+                if (cl > pl + 1) {
+                    el = el.nextElementSibling;
+                    continue;    
+                }
+
                 if (pl + 1 != cl && sts) break;
                 GSDOM.toggleClass(el, 'gs-hide', !sts);
                 if (!sts) el.dataset.open = sts;
