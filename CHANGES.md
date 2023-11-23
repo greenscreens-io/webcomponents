@@ -5,6 +5,7 @@
  - Fix - property set typo fix for GSCenter
  - Fix - GSDOM.getByID argument passing
  - GSContext add altctx attribute to allow open system context menu while pressing shift key
+ - GSFunctions dynamic parameters support added
  - GSOffcanvas fix event bindings 
  - GSTouch renamed to GSGesture
  - GSData Object named path support added
