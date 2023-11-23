@@ -156,7 +156,7 @@ export default class GSTree extends GSElement {
 
         const html = [];
 
-        html.push(`<li class="list-group-item ${level === 0 ? '' : css}" data-folder="${isFolder}" data-open="${isOpen}" data-nodeid="${nodeid}">`);
+        html.push(`<li class="list-group-item ${level === 0 ? '' : css}" data-folder="${isFolder}" data-open="${isOpen}" data-nodeid="${nodeid}"  data-name="${el.name || el.title}">`);
         html.push(me.#uiHtml(el, level));
 
         if (isFolder) {
@@ -293,11 +293,28 @@ export default class GSTree extends GSElement {
         }
     }
 
+    #parentNode(nodeid) {
+        return nodeid.split('.').slice(0,-1).join('.');
+    }
+
     #parent(el) {
-        el = el || this.#selected;
+        const me = this;
+        el = el || me.#selected;
         let s = el.dataset.nodeid;
-        s = s.substr(0, s.length - 2);
+        s = me.#parentNode(s);
         return el.parentElement.querySelector(`li[data-nodeid="${s}"]`);
+    }
+
+    get path() {
+        const me = this;
+        const seg = [];
+        let el = me.#selected;
+        while (el) {
+            seg.push(el.dataset.name);
+            el = me.#parent(el);
+        }
+        return '/' + seg.reverse().join('/');
+
     }
 
     next() {
