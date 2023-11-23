@@ -29,7 +29,7 @@ import GSEvents from "../base/GSEvents.mjs";
 export default class GSTree extends GSElement {
 
     #selected = null;
-    #events = {};
+    #events = null;
 
     static {
         customElements.define('gs-tree', GSTree);
@@ -90,6 +90,7 @@ export default class GSTree extends GSElement {
 
     connectedCallback() {
         const me = this;
+        me.#events = {};
         me.#events.click = me.#onClick.bind(me);
         me.#events.keydown = me.#onKeyDown.bind(me);
         me.#events.keyup = me.#onKeyUp.bind(me);
@@ -99,9 +100,9 @@ export default class GSTree extends GSElement {
     disconnectedCallback() {
         const me = this;
         const own = me.rootEl;
-        GSEvents.unlisten(own, null, 'click', me.#events.click);
-        GSEvents.unlisten(own, null, 'keydown', me.#events.keydown);
-        GSEvents.unlisten(own, null, 'keyup', me.#events.keyup);
+        GSEvents.unlisten(own, null, 'click', me.#events?.click);
+        GSEvents.unlisten(own, null, 'keydown', me.#events?.keydown);
+        GSEvents.unlisten(own, null, 'keyup', me.#events?.keyup);
         me.#events = null;
         me.#selected = null;
         super.disconnectedCallback();
@@ -351,14 +352,14 @@ export default class GSTree extends GSElement {
         const data = await GSLoader.loadData(val);
         if (!GSUtil.isJsonType(data)) return;
         const me = this;
-        me.disconnectedCallback();
+        // me.disconnectedCallback();
         me.innerHTML = '';
 
         let dom = GSDOM.fromJson(val);
         dom = Array.isArray(dom) ? dom : [dom];
         dom.forEach(el => GSDOM.appendChild(me, el) );
 
-        me.connectedCallback();
+        me.repaint();
         return data;
     }
 

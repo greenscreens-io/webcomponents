@@ -549,6 +549,17 @@ export default class GSElement extends HTMLElement {
 	}
 
 	/**
+	 * Rerender the whole component
+	 */
+	repaint() {
+		const me = this;
+		me.disconnectedCallback();
+		me.#removed = false;
+		me.#ready = false;
+		me.connectedCallback();
+	}
+
+	/**
 	 * Called when element attribute changed
 	 * 
 	 * @param {string} name  Attribute name
