@@ -744,11 +744,12 @@ export default class GSDOM {
 
 	/**
 	 * Convert HTMLElement into a JSON object
-	 * @param {HTMLElement} own 
+	 * @param {HTMLElement|Array} own 
 	 * @param {boolean} recursive 
 	 * @returns {object}
 	 */
 	static toJson(own, recursive = true) {
+		if (Array.isArray(own)) return own.forEach(o => GSDOM.toJson(o, recursive));
 		const obj = {};
 		if (!GSDOM.isHTMLElement(own)) return obj;
 

@@ -219,7 +219,6 @@ export default class GSData {
         return ord < 0 ? v2 - v1 : v1 - v2;
     }
 
-
 	/**
 	 * Write value to JSON object into structured name.
 	 * Name subelements are separated by dot (users.name etc.).

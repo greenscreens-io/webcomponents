@@ -1,11 +1,12 @@
 # [WebComponents](https://webcomponents.greenscreens.ltd/) for [Bootstrap 5.2.0+](https://getbootstrap.com/)
 
-# Development v1.8.1 (22.09.2023.)
+# Development v1.9.0 (24.11.2023.)
  - Fix - Firefox context menu event detection issue
  - Fix - property set typo fix for GSCenter
  - Fix - GSDOM.getByID argument passing
  - GSContext add altctx attribute to allow open system context menu while pressing shift key
  - GSDOM fromJSON to GS-ITEM conversion improvements
+ - GSDOM toJSON added root array support
  - GSElement add 'repaint' function to completely rerender component
  - GSFunctions dynamic parameters support added
  - GSOffcanvas fix event bindings 
@@ -15,7 +16,7 @@
  - GSTouch renamed to GSGesture
  - GSData Object named path support added
  - GSDOM added form fields named path JSON import export
- - GSDOM added seelct-multiple to JSON support
+ - GSDOM added select-multiple to JSON support
  - GSFormExt - reading/writing named paths for JSON data
  - Added GSOverlay - render SVG overlay around target element
  - Added code comments
