@@ -262,6 +262,31 @@ export default class GSData {
         return obj;
     }
 
+    /**
+     * Read object property by supporting arrays
+     * name can be plain name or name[idx]
+     * @param {*} obj 
+     * @param {string} name 
+     * @returns 
+     */
+    static readFromProperty(obj, name) {
+        if (GSUtil.isNull(obj)) return;
+        const r = /\[\d+\]$/g;
+        const isArray = r.test(name);
+        let n = name;
+        let i = '';
+
+        if (isArray) {
+            n = name.replace(r, '')
+            i = name.match(r).shift().match(/\d+/).shift();
+            i = GSUtil.asNum(i);
+            obj = obj.hasOwnProperty(n) ? obj = obj[n][i] : null;
+        } else {
+            obj = obj.hasOwnProperty(n) ? obj = obj[n] : null;
+        }
+        return obj;
+    }
+
 	/**
 	 * Read value from JSON object by structured name.
 	 * Name subelements are separated by dot (users.name etc.).
@@ -270,14 +295,11 @@ export default class GSData {
      * @returns {*}
 	 */
 	static readFromObject(obj, name) {
-		let o = obj;
 		name.split('.').forEach((v, i, a) => {
-            if (o === null) return;
-			const last = i === a.length - 1;
-			if (!o.hasOwnProperty(v)) return o = null;
-			o = o[v];
+            if (GSUtil.isNull(o)) return;
+			obj = GSData.readFromProperty(obj, v);
 		});
-		return o;
+		return obj;
 	}
 	
     /**
@@ -288,15 +310,15 @@ export default class GSData {
      */
 	static objectPathExist(obj, name) {
         if (!name) return false;
-		let o = obj || null;
 		name.split('.').forEach(v => {
-            if (o == null) return;
-			o = o.hasOwnProperty(v) ? o = o[v] : null;
+            if (GSUtil.isNull(o)) return;
+            obj = GSData.readFromProperty(obj, v);
 		});
-		return o ? true : false;        
+		return obj ? true : false;
 	}
 
     static {
         Object.seal(GSData);
+        globalThis.GSData = GSData;
     }
 }

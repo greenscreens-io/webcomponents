@@ -142,9 +142,11 @@ export default class GSTree extends GSElement {
         return GSItem.genericItems(me).map((el, idx) => me.#html(el, 0, idx)).join('');
     }
 
-    #html(el, level = 0, idx = 0, pid = '', css = '') {
+    #html(el, level = 0, idx = 0, pid = '', parent = '', css = '') {
 
         const me = this;
+        const name = el.name || el.title;
+        const path = `${parent}/${name}`
         const isFolder = el.childElementCount > 0;
         const isOpen = GSAttr.getAsBool(el, 'open', false);
 
@@ -156,11 +158,13 @@ export default class GSTree extends GSElement {
 
         const html = [];
 
-        html.push(`<li class="list-group-item ${level === 0 ? '' : css}" data-folder="${isFolder}" data-open="${isOpen}" data-nodeid="${nodeid}"  data-name="${el.name || el.title}">`);
+        html.push(`<li class="list-group-item ${level === 0 ? '' : css}" `);
+        html.push(`data-folder="${isFolder}" data-open="${isOpen}" data-nodeid="${nodeid}"  `);
+        html.push(`data-path="${path}"  data-name="${name}">`);
         html.push(me.#uiHtml(el, level));
 
         if (isFolder) {
-            Array.from(el.children).forEach((ce, idx) => html.push(me.#html(ce, level + 1, idx, nodeid, css)));
+            Array.from(el.children).forEach((ce, idx) => html.push(me.#html(ce, level + 1, idx, nodeid, path, css)));
         }
 
         html.push('</li>');
@@ -315,6 +319,8 @@ export default class GSTree extends GSElement {
     }
 
     get path() {
+        return this.#selected?.dataset.path;
+        /*
         const me = this;
         const seg = [];
         let el = me.#selected;
@@ -323,7 +329,7 @@ export default class GSTree extends GSElement {
             el = me.#parent(el);
         }
         return '/' + seg.reverse().join('/');
-
+        */
     }
 
     next() {

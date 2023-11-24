@@ -287,4 +287,8 @@ export default class GSItem extends HTMLElement {
 		const c = me.selected ? 'checked' : '';
 		return `<input id="${id}" ${c} type="radio" name="${me.group}"><label class="ms-2" for="${id}">${me.name}</label>`;
 	}
+
+	asJSON(recursive = true) {
+		return GSDOM.toJson(this, recursive);
+	}
 }
