@@ -229,6 +229,7 @@ export default class GSSplitter extends GSElement {
         me.#cursor = me.isVertical ? e.clientX : e.clientY;
         me.attachEvent(document, 'mouseup', me.#onMouseUp.bind(me), true);
         me.attachEvent(document, 'mousemove', me.#onMouseMove.bind(me));
+        me.#lock(true);
         GSEvents.send(globalThis, 'gs-split', {start: true});
     }
 
@@ -242,6 +243,7 @@ export default class GSSplitter extends GSElement {
         GSEvents.deattachListeners(me);
         me.#save();
         me.#listen();
+        me.#lock(false);
         GSEvents.send(globalThis, 'gs-split', {stop: true});
     }
 
@@ -256,6 +258,41 @@ export default class GSSplitter extends GSElement {
         me.#updateMouse(pos);
     }
 
+    /**
+     * Lock IFRAME,EMBED,PORTAL elements for mouse move events
+     * @param {*} lock 
+     */
+    #lock(lock = true) {
+        const me = this;
+        const cls = 'pe-none';
+        if (lock) {
+            me.#lockable
+            .filter(el => !GSDOM.hasClass(el, 'pe-none'))
+            .forEach(el =>{
+                GSDOM.toggleClass(el, cls, true);
+                el.dataset.gsSplitter = true;
+            });
+        } else {
+            me.#lockable
+            .filter(el => el.dataset.gsSplitter)
+            .forEach(el =>{
+                GSDOM.toggleClass(el, cls, false);
+                delete el.dataset.gsSplitter;
+            });            
+        }
+    }
+
+    /**
+     * Get elements which must be protected to allow mouse move over 
+     */
+    get #lockable() {
+        const me = this;
+        const qry = 'iframe,embed,portal';
+        const p = GSDOM.queryAll(me.previousElementSibling, qry);
+        const n = GSDOM.queryAll(me.nextElementSibling, qry);
+        return p.concat(n);
+    }
+    
     #updateMouse(pos) {
         const me = this;
         requestAnimationFrame(() => {
