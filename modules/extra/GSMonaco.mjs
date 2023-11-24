@@ -259,7 +259,8 @@ export default class GSMonaco extends GSElement {
             value: ``,
             language: me.language,
             theme: me.theme,
-            automaticLayout: true
+            automaticLayout: true,
+            minimap: { enabled: false }
         };
 
         me.#editor = monaco.editor.create(me.#container, opt);

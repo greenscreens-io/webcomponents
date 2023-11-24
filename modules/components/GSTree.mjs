@@ -357,15 +357,17 @@ export default class GSTree extends GSElement {
 
     /**
      * Open folder
+     * TODO - path navigation
      */
-    open() {
+    open(path) {
         this.#toggleFolder(true);
     }
 
     /**
      * Close folder
+     * TODO - path navigation
      */
-    close() {
+    close(path) {
         const me = this;
         const isFolder = me.#isFolder();
         const isOpen = me.#isOpen();
