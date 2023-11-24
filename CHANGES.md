@@ -11,6 +11,7 @@
  - GSOffcanvas fix event bindings 
  - GSSplitter add double click to auto-resize if min/max set
  - GSSplitter add global event notifier
+ - GSSplitter add embeded elements auto-locking for mouse events
  - GSTouch renamed to GSGesture
  - GSData Object named path support added
  - GSDOM added form fields named path JSON import export
