@@ -9,6 +9,7 @@
  - GSDOM toJSON added root array support
  - GSElement add 'repaint' function to completely rerender component
  - GSFunctions dynamic parameters support added
+ - GSLayout - add default size along min,max
  - GSOffcanvas fix event bindings 
  - GSSplitter add double click to auto-resize if min/max set
  - GSSplitter add global event notifier
@@ -18,6 +19,7 @@
  - GSDOM added form fields named path JSON import export
  - GSDOM added select-multiple to JSON support
  - GSFormExt - reading/writing named paths for JSON data
+ - GSMonaco - hide minimap
  - Added GSOverlay - render SVG overlay around target element
  - Added code comments
 

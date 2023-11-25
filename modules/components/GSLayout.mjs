@@ -66,7 +66,7 @@ export default class GSLayout extends GSElement {
     }
 
     /**
-     * Generate html injection source for an gs-item
+     * Generate html injection source for a gs-item
      * 
      * @async
      * @param {HTMLElement} el 
@@ -116,15 +116,17 @@ export default class GSLayout extends GSElement {
         const sfx = me.isVertical ? 'height' : 'width';
         const max = GSAttr.getAsNum(el, 'max', 0);
         const min = GSAttr.getAsNum(el, 'min', 0);
+        const size = GSAttr.getAsNum(el, 'size', 0);
         /*
         const style = {};        
         style[`max-${sfx}`] = max > 0 ? `${max}px;` : '';
         style[`min-${sfx}`] = min > 0 ? `${min}px;` : '';
         return style;        
         */
+        const ssize = size > 0 ? `${sfx}: ${size}}px;` : '';
         const smax = max > 0 ? `max-${sfx}: ${max}px;` : '';
         const smin = min > 0 ? `min-${sfx}: ${min}px;` : '';
-        return [smax, smin].join('');
+        return [ssize, smax, smin].join('');
     }
 
     /**
