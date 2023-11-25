@@ -123,7 +123,7 @@ export default class GSLayout extends GSElement {
         style[`min-${sfx}`] = min > 0 ? `${min}px;` : '';
         return style;        
         */
-        const ssize = size > 0 ? `${sfx}: ${size}}px;` : '';
+        const ssize = size > 0 ? `${sfx}: ${size}px;` : '';
         const smax = max > 0 ? `max-${sfx}: ${max}px;` : '';
         const smin = min > 0 ? `min-${sfx}: ${min}px;` : '';
         return [ssize, smax, smin].join('');
