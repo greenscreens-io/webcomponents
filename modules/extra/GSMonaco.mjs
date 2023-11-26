@@ -12,6 +12,7 @@ import GSLoader from "../base/GSLoader.mjs";
 import GSAttr from "../base/GSAttr.mjs";
 import GSDOM from "../base/GSDOM.mjs";
 import GSEvents from "../base/GSEvents.mjs";
+import GSUtil from "../base/GSUtil.mjs";
 
 /**
  * Code editor based on MS Monaco 
@@ -172,21 +173,34 @@ export default class GSMonaco extends GSElement {
         const model = me.model;
         const ranges = model.getOverviewRulerDecorations()
             .map(o => o.range)
-            .map(o => me.#rangeToPos(o));
-            ;
+            .map(o => me.#rangeToPos(o))
+            .map((o, i) => me.#rangeMatch(o, i===0 ? markStart:markEnd, i))
+            .map(o => o?.range)
+            .filter(o => !GSUtil.isNull(o));
         if (ranges.length != 2) return "";
+        const obj = me.#rangesMerge(ranges[0], ranges[1]);
+        return me.model.getValueInRange(obj);
+    }
 
-        let os = ranges[0]
-        let oe = ranges[1];
-        os = me.model.findPreviousMatch(markStart, os, true);
-        oe = me.model.findNextMatch(markEnd, oe, true);
-        const obj = {
-            startLineNumber:os.startLineNumber, 
-            startColumn : os.startColumn,
-            endColumn: oe.endColumn, 
-            endLineNumber: oe.endLineNumber
+    #rangeMatch(range, val, mode = -1) {
+        const me = this;
+        switch (mode) {
+            case 0 :
+                return me.model.findPreviousMatch(val, range, true);
+            case 1 :
+                return me.model.findNextMatch(val, range, true);
+            default :
+                return null;
+        }
+    }
+
+    #rangesMerge(r1, r2) {
+        return {
+            startLineNumber:r1.startLineNumber, 
+            startColumn : r1.startColumn,
+            endColumn: r2.endColumn, 
+            endLineNumber: r2.endLineNumber
           };
-          return me.model.getValueInRange(obj);
     }
 
     #rangeToPos(range) {
