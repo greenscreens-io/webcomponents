@@ -179,6 +179,7 @@ export default class GSMonaco extends GSElement {
             .map((o, i) => me.#rangeMatch(o, i, markStart, markEnd))
             .map(o => o?.range)
             .filter(o => !GSUtil.isNull(o));
+        if (ranges.length < 2) return "";
         const obj = me.#rangesMerge(ranges[0], ranges[1]);
         return me.model.getValueInRange(obj);
     }
