@@ -120,6 +120,14 @@ export default class GSMonaco extends GSElement {
         return `<div class="${this.css}"><div/>`;
     }
 
+    get editor() {
+        return this.#editor;
+    }
+
+    get model() {
+        return this.#editor.getModel();
+    }
+
     /**
      * Get editor code 
      * 
@@ -127,12 +135,33 @@ export default class GSMonaco extends GSElement {
      */
     get code() {
         const me = this;
-        return me.#editor ? me.#editor.getValue() : '';
+        return me.#editor?.getValue() || '';
     }
 
     set code(data = '') {
         const me = this;
         if (me.#editor) me.#editor.setValue(data);
+    }
+
+
+    /**
+     * Get text selected in Monaco
+     */
+    get selection() {
+        const me = this;
+        return me.model.getValueInRange(me.editor.getSelection());
+    }
+
+    /**
+     * Get highlightet code segments
+     */
+    get highlighted() {
+        const me = this;
+        const model = me.model;
+        const decorations = model.getOverviewRulerDecorations();
+        const list  = decorations.map(o => model.getValueInRange(o.range) );
+        // distinct values
+        return [...new Set(list)]; 
     }
 
     /**
