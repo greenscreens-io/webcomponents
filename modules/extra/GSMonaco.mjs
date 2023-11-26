@@ -178,8 +178,8 @@ export default class GSMonaco extends GSElement {
 
         let os = ranges[0]
         let oe = ranges[1];
-        os = me.model.findPreviousMatch(markStart, o1, true);
-        oe = me.model.findNextMatch(markEnd, o2, true);
+        os = me.model.findPreviousMatch(markStart, os, true);
+        oe = me.model.findNextMatch(markEnd, oe, true);
         const obj = {
             startLineNumber:os.startLineNumber, 
             startColumn : os.startColumn,
