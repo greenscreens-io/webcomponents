@@ -153,15 +153,44 @@ export default class GSMonaco extends GSElement {
     }
 
     /**
-     * Get highlightet code segments
+     * Get highlighted node
      */
-    get highlighted() {
+    get highlightedNode() {
         const me = this;
         const model = me.model;
         const decorations = model.getOverviewRulerDecorations();
         const list  = decorations.map(o => model.getValueInRange(o.range) );
         // distinct values
         return [...new Set(list)]; 
+    }
+
+    /**
+     * Get highlighted code segment
+     */
+    highlightedCode(markStart = '', markEnd = '') {
+        const me = this;
+        const model = me.model;
+        const ranges = model.getOverviewRulerDecorations()
+            .map(o => o.range)
+            .map(o => me.#rangeToPos(o));
+            ;
+        if (ranges.length != 2) return "";
+
+        let os = ranges[0]
+        let oe = ranges[1];
+        os = me.model.findPreviousMatch(markStart, o1, true);
+        oe = me.model.findNextMatch(markEnd, o2, true);
+        const obj = {
+            startLineNumber:os.startLineNumber, 
+            startColumn : os.startColumn,
+            endColumn: oe.endColumn, 
+            endLineNumber: oe.endLineNumber
+          };
+          return me.model.getValueInRange(obj);
+    }
+
+    #rangeToPos(range) {
+        return {column:range.endColumn, lineNumber : range.endLineNumber};
     }
 
     /**
