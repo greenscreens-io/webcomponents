@@ -187,9 +187,9 @@ export default class GSMonaco extends GSElement {
         const me = this;
         switch (index) {
             case 0:
-                return me.model.findPreviousMatch(range, markStart, true);
+                return me.model.findPreviousMatch(markStart, range, true);
             case 1:
-                return me.model.findNextMatch(range, markEnd, true);
+                return me.model.findNextMatch(markEnd, range, true);
             default:
                 return null;
         }
