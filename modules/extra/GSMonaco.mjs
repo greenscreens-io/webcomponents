@@ -31,7 +31,7 @@ export default class GSMonaco extends GSElement {
     static {
         GSMonaco.#init();
     }
-    
+
     static get URL_LIB() {
         return globalThis.GS_EXTERNAL == false || globalThis.GS_URL_MONACO == false ? false : globalThis.GS_URL_MONACO || 'https://unpkg.com/monaco-editor@latest/min/';
     }
@@ -160,9 +160,9 @@ export default class GSMonaco extends GSElement {
         const me = this;
         const model = me.model;
         const decorations = model.getOverviewRulerDecorations();
-        const list  = decorations.map(o => model.getValueInRange(o.range) );
+        const list = decorations.map(o => model.getValueInRange(o.range));
         // distinct values
-        return [...new Set(list)]; 
+        return [...new Set(list)];
     }
 
     /**
@@ -171,40 +171,41 @@ export default class GSMonaco extends GSElement {
     highlightedCode(markStart = '', markEnd = '') {
         const me = this;
         const model = me.model;
-        const ranges = model.getOverviewRulerDecorations()
-            .map(o => o.range)
+        let ranges = model.getOverviewRulerDecorations();
+        if (ranges.length < 1) return "";
+        if (ranges.length == 1) ranges.push(ranges[0]);
+        ranges = ranges.map(o => o.range)
             .map(o => me.#rangeToPos(o))
-            .map((o, i) => me.#rangeMatch(o, i===0 ? markStart:markEnd, i))
+            .map((o, i) => me.#rangeMatch(o, i, markStart, markEnd))
             .map(o => o?.range)
             .filter(o => !GSUtil.isNull(o));
-        if (ranges.length != 2) return "";
         const obj = me.#rangesMerge(ranges[0], ranges[1]);
         return me.model.getValueInRange(obj);
     }
 
-    #rangeMatch(range, val, mode = -1) {
+    #rangeMatch(range, index, markStart, markEnd) {
         const me = this;
-        switch (mode) {
-            case 0 :
-                return me.model.findPreviousMatch(val, range, true);
-            case 1 :
-                return me.model.findNextMatch(val, range, true);
-            default :
+        switch (index) {
+            case 0:
+                return me.model.findPreviousMatch(range, markStart, true);
+            case 1:
+                return me.model.findNextMatch(range, markEnd, true);
+            default:
                 return null;
         }
     }
 
     #rangesMerge(r1, r2) {
         return {
-            startLineNumber:r1.startLineNumber, 
-            startColumn : r1.startColumn,
-            endColumn: r2.endColumn, 
+            startLineNumber: r1.startLineNumber,
+            startColumn: r1.startColumn,
+            endColumn: r2.endColumn,
             endLineNumber: r2.endLineNumber
-          };
+        };
     }
 
     #rangeToPos(range) {
-        return {column:range.endColumn, lineNumber : range.endLineNumber};
+        return { column: range.endColumn, lineNumber: range.endLineNumber };
     }
 
     /**
