@@ -298,6 +298,7 @@ export default class GSMonaco extends GSElement {
             }
         } finally {
             requestAnimationFrame(() => me.emit('initialized'));
+            me.#onResize();
         }
     }
 
