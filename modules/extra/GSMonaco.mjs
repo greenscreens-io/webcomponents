@@ -95,7 +95,6 @@ export default class GSMonaco extends GSElement {
 
     constructor() {
         super();
-
     }
 
     attributeCallback(name = '', oldValue = '', newValue = '') {
@@ -119,6 +118,10 @@ export default class GSMonaco extends GSElement {
 
     async getTemplate(val = '') {
         return `<div class="${this.css}"><div/>`;
+    }
+
+    get monaco() {
+        return window.monaco;
     }
 
     get editor() {
@@ -231,15 +234,14 @@ export default class GSMonaco extends GSElement {
 
     #onLanguage(language) {
         const me = this;
-        if (monaco && language) {
-            const models = monaco.editor.getModels();
-            monaco.editor.setModelLanguage(models[0], language);
+        if (me.monaco && language) {
+            me.monaco.editor.setModelLanguage(me.model, language);
         }
     }
 
     async #onTheme(theme) {
         const me = this;
-        if (monaco && theme) monaco.editor.setTheme(theme);
+        if (me.monaco && theme) me.monaco.editor.setTheme(theme);
     }
 
     /**
@@ -281,14 +283,19 @@ export default class GSMonaco extends GSElement {
             minimap: { enabled: false }
         };
 
-        me.#editor = monaco?.editor?.create(me.#container, opt);
+        me.#editor = me.monaco?.editor?.create(me.#container, opt);
 
         me.attachEvent(self, 'resize', me.#onResize.bind(me));
-
-        me.emit('initialized');
-
-        if (me.url) return me.#onURL(me.url);
-        if (me.target) return me.#onTarget(me.target);
+        
+        try {
+            if (me.url) {
+                me.#onURL(me.url);
+            } else if (me.target) {
+                me.#onTarget(me.target);
+            }
+        } finally {
+            requestAnimationFrame(() => me.emit('initialized'));
+        }
     }
 
     #onResize(e) {
