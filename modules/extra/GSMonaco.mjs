@@ -12,7 +12,6 @@ import GSLoader from "../base/GSLoader.mjs";
 import GSAttr from "../base/GSAttr.mjs";
 import GSDOM from "../base/GSDOM.mjs";
 import GSEvents from "../base/GSEvents.mjs";
-import GSUtil from "../base/GSUtil.mjs";
 
 /**
  * Code editor based on MS Monaco 
@@ -76,7 +75,11 @@ export default class GSMonaco extends GSElement {
         }
         const id = setInterval(() => {
             if (typeof globalThis.require !== 'function') return;
-            require.config({ paths: { 'vs': `${GSMonaco.URL_LIB}/vs` } });
+            // TODO  set disabled to true and manually load themes into shadow dom
+            require.config({ 
+                paths: { 'vs': `${GSMonaco.URL_LIB}/vs` },
+                'vs/css': { disabled: false } 
+             });
             require(['vs/editor/editor.main'], () => {
                 clearInterval(id);
                 GSMonaco.#initialized = true;
@@ -306,6 +309,12 @@ export default class GSMonaco extends GSElement {
             const rect = me.owner.getBoundingClientRect();
             me.#editor.layout({ width: rect.width, height: rect.height });
         })
+    }
+
+    get owner() {
+        const me = this;
+        const owner = super.owner;
+        return owner === document.body ? me.parentElement : me.owner;
     }
 
 }

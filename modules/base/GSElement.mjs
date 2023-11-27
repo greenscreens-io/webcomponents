@@ -311,8 +311,7 @@ export default class GSElement extends HTMLElement {
 	 */
 	updateUI() {
 		const me = this;
-		if (!me.shadowRoot) return;
-		if (me.unstyled) return;
+		if (me.unstyled || !me.shadowRoot) return;
 		me.shadowRoot.adoptedStyleSheets = GSCacheStyles.styles;
 		GSEvents.send(document.body, 'i18n', me.shadowRoot);
 	}
