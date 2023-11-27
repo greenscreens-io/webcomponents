@@ -229,11 +229,6 @@ export default class GSMonaco extends GSElement {
         return GSAttr.set(this, 'css', val);
     }
 
-    onReady() {
-        super.onReady();
-        this.emit('initialized');
-    }
-
     #onLanguage(language) {
         const me = this;
         if (monaco && language) {
@@ -290,7 +285,7 @@ export default class GSMonaco extends GSElement {
 
         me.attachEvent(self, 'resize', me.#onResize.bind(me));
 
-        me.onReady();
+        me.emit('initialized');
 
         if (me.url) return me.#onURL(me.url);
         if (me.target) return me.#onTarget(me.target);
