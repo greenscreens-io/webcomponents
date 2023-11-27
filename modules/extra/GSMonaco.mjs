@@ -154,62 +154,6 @@ export default class GSMonaco extends GSElement {
     }
 
     /**
-     * Get highlighted node
-     */
-    get highlightedNode() {
-        const me = this;
-        const model = me.model;
-        const decorations = model.getOverviewRulerDecorations();
-        const list = decorations.map(o => model.getValueInRange(o.range));
-        // distinct values
-        return [...new Set(list)];
-    }
-
-    /**
-     * Get highlighted code segment
-     */
-    highlightedCode(markStart = '', markEnd = '') {
-        const me = this;
-        const model = me.model;
-        let ranges = model.getOverviewRulerDecorations();
-        if (ranges.length < 1) return "";
-        if (ranges.length == 1) ranges.push(ranges[0]);
-        ranges = ranges.map(o => o.range)
-            .map(o => me.#rangeToPos(o))
-            .map((o, i) => me.#rangeMatch(o, i, markStart, markEnd))
-            .map(o => o?.range)
-            .filter(o => !GSUtil.isNull(o));
-        if (ranges.length < 2) return "";
-        const obj = me.#rangesMerge(ranges[0], ranges[1]);
-        return me.model.getValueInRange(obj);
-    }
-
-    #rangeMatch(range, index, markStart, markEnd) {
-        const me = this;
-        switch (index) {
-            case 0:
-                return me.model.findPreviousMatch(markStart, range, true);
-            case 1:
-                return me.model.findNextMatch(markEnd, range, true);
-            default:
-                return null;
-        }
-    }
-
-    #rangesMerge(r1, r2) {
-        return {
-            startLineNumber: r1.startLineNumber,
-            startColumn: r1.startColumn,
-            endColumn: r2.endColumn,
-            endLineNumber: r2.endLineNumber
-        };
-    }
-
-    #rangeToPos(range) {
-        return { column: range.endColumn, lineNumber: range.endLineNumber };
-    }
-
-    /**
      * Must be flat, as Monaco is loading and injecting CSS on its own
      */
     get isFlat() {
@@ -285,6 +229,11 @@ export default class GSMonaco extends GSElement {
         return GSAttr.set(this, 'css', val);
     }
 
+    onReady() {
+        super.onReady();
+        this.emit('initialized');
+    }
+
     #onLanguage(language) {
         const me = this;
         if (monaco && language) {
@@ -337,11 +286,11 @@ export default class GSMonaco extends GSElement {
             minimap: { enabled: false }
         };
 
-        me.#editor = monaco.editor.create(me.#container, opt);
+        me.#editor = monaco?.editor?.create(me.#container, opt);
 
         me.attachEvent(self, 'resize', me.#onResize.bind(me));
 
-        super.onReady();
+        me.onReady();
 
         if (me.url) return me.#onURL(me.url);
         if (me.target) return me.#onTarget(me.target);
