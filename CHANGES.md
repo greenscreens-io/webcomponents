@@ -1,12 +1,12 @@
 # [WebComponents](https://webcomponents.greenscreens.ltd/) for [Bootstrap 5.2.0+](https://getbootstrap.com/)
 
-# Development v1.9.0 (01.12.2023.)
+# Release v1.9.0 (04.12.2023.)
  - Fix - Firefox context menu event detection issue
  - Fix - property set typo fix for GSCenter
  - Fix - GSDOM.getByID argument passing
  - GSContext add altctx attribute to allow open system context menu while pressing shift key
- - GSDOM fromJSON to GS-ITEM conversion improvements
- - GSDOM toJSON added root array support
+ - GSDOM function fromJSON to GS-ITEM conversion improvements
+ - GSDOM function toJSON added root array support
  - GSElement add 'repaint' function to completely rerender component
  - GSFunctions dynamic parameters support added
  - GSLayout - add default size along min,max
