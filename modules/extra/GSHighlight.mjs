@@ -24,17 +24,12 @@ import GSDOM from "../base/GSDOM.mjs";
 export default class GSHighlight extends GSElement {
 
     static {
-        GSHighlight.#init();
-    }
-    
-    static #init() {
-        if (GSHighlight.URL_LIB === false) return;
         customElements.define('gs-highlight', GSHighlight);
         Object.seal(GSHighlight);
     }
-
+    
     static get URL_LIB() {
-        return globalThis.GS_EXTERNAL == false || globalThis.GS_URL_HLJS == false ? false : globalThis.GS_URL_HLJS || 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0';;
+        return globalThis.GS_URL_HLJS || 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0';
     }
 
     static get observedAttributes() {

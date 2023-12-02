@@ -1,6 +1,6 @@
 # [WebComponents](https://webcomponents.greenscreens.ltd/) for [Bootstrap 5.2.0+](https://getbootstrap.com/)
 
-# Development v1.9.0 (24.11.2023.)
+# Development v1.9.0 (01.12.2023.)
  - Fix - Firefox context menu event detection issue
  - Fix - property set typo fix for GSCenter
  - Fix - GSDOM.getByID argument passing
@@ -20,6 +20,7 @@
  - GSDOM added select-multiple to JSON support
  - GSFormExt - reading/writing named paths for JSON data
  - GSMonaco - hide minimap
+ - Extra components - improved external script loader control
  - Added GSOverlay - render SVG overlay around target element
  - Added code comments
 

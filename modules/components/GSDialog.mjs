@@ -13,6 +13,8 @@ import GSElement from "../base/GSElement.mjs";
 import GSEvents from "../base/GSEvents.mjs";
 import GSUtil from "../base/GSUtil.mjs";
 
+// TODO - add CloseWatcher when API available
+
 /**
  * Native dialog with Bootstrap support
  * @class

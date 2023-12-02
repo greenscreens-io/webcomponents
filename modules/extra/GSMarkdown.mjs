@@ -44,13 +44,12 @@ export default class GSMarkdown extends GSElement {
     }
     
     static #init() {
-        if (GSMarkdown.URL_LIB == false) return;
         customElements.define('gs-markdown', GSMarkdown);
         Object.seal(GSMarkdown);
     }
 
     static get URL_LIB() {
-        return globalThis.GS_EXTERNAL == false || globalThis.GS_URL_MARKDOWN == false ? false : globalThis.GS_URL_MARKDOWN || 'https://unpkg.com/showdown/dist/showdown.min.js';
+        return globalThis.GS_URL_MARKDOWN || 'https://unpkg.com/showdown/dist/showdown.min.js';
     }
 
     static get observedAttributes() {
@@ -58,9 +57,9 @@ export default class GSMarkdown extends GSElement {
         return GSElement.observeAttributes(attrs);
     }
 
-    constructor() {
-        super();
-        this.#initLib();
+    async connectedCallback() {
+        await this.#initLib();
+        if (globalThis.showdown) super.connectedCallback();
     }
 
     attributeCallback(name = '', oldValue = '', newValue = '') {
@@ -79,12 +78,20 @@ export default class GSMarkdown extends GSElement {
         return `<div class="overflow-auto ${me.css}" ${style}><div/>`;
     }
 
+    onReady() {
+        const me = this;
+        const opt = {tasklists:true, tables : true};
+        me.#converter = new globalThis.showdown.Converter(opt);        
+        me.#toCache(me.url);
+        me.#onURL(me.url)
+    }
+
     get isFlat() {
         return true;
     }
 
     get root() {
-        return this.#root;
+        return this.#root || '';
     }
 
     /**
@@ -241,24 +248,16 @@ export default class GSMarkdown extends GSElement {
         return this.#converter.makeHtml(data);
     }
 
-    #onScriptReady() {
+    async #initLib() {
         const me = this;
-        const opt = {tasklists:true, tables : true};
-        me.#converter = new globalThis.showdown.Converter(opt);
-        requestAnimationFrame(() => {
-            me.#toCache(me.url);
-            me.#onURL(me.url)
-        });
-    }
-   
-    #initLib() {
-        const me = this;
-        if (globalThis.showdown) return me.#onScriptReady();
+        if (globalThis.showdown) return;
         const script = document.createElement('script');
-        GSEvents.attach(me, script, 'load', me.#onScriptReady.bind(this));
+        // GSEvents.attach(me, script, 'load', me.#onScriptReady.bind(this));
+        const promise = GSEvents.wait(script, 'load', 0, false);
         script.type = "text/javascript";
         script.src = GSMarkdown.URL_LIB;
         GSDOM.appendChild(document.head, script);
+        await promise;
     }
 
     /**

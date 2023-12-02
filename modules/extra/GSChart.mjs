@@ -31,7 +31,7 @@ export default class GSChart extends GSElement {
     #chart = null;
 
     static get URL_LIB() {
-        return globalThis.GS_EXTERNAL == false || globalThis.GS_URL_CHART == false ? false : globalThis.GS_URL_CHART || globalThis.location?.origin || '/webcomponents';
+        return globalThis.GS_URL_CHART || globalThis.location?.origin || '/webcomponents';
     }
 
     static async #init() {
@@ -45,6 +45,7 @@ export default class GSChart extends GSElement {
             Chart.register(...registerables);        
             GSChart.#Chart = Chart;
             GSChart.#isChart = true;
+            GSEvents.send(document, 'gs-chart');
         }  catch(e) {
             GSLog.error(null, e);
         } finally {
@@ -54,8 +55,7 @@ export default class GSChart extends GSElement {
 
     static {
         customElements.define('gs-chart', GSChart);
-        Object.seal(GSChart);
-        GSChart.#init();        
+        Object.seal(GSChart);   
     }
 
     static get observedAttributes() {
@@ -63,15 +63,15 @@ export default class GSChart extends GSElement {
         return GSElement.observeAttributes(attrs);
     }
 
-    constructor() {
-        super();
-        GSChart.#init();
-    }
-
     attributeCallback(name = '', oldValue = '', newValue = '') {
         const me = this;
         me.resize(me.width, me.height);
+    }
 
+    async connectedCallback() {
+        await GSChart.#init();
+        if(!GSChart.#isChart) await GSEvents.wait(document, 'gs-chart', 0, false);
+        super.connectedCallback();
     }
 
     disconnectedCallback() {

@@ -28,27 +28,31 @@ export default class GSMonaco extends GSElement {
     #editor = null;
 
     static {
-        GSMonaco.#init();
+        customElements.define('gs-monaco', GSMonaco);
+        Object.seal(GSMonaco);
     }
 
     static get URL_LIB() {
-        return globalThis.GS_EXTERNAL == false || globalThis.GS_URL_MONACO == false ? false : globalThis.GS_URL_MONACO || 'https://unpkg.com/monaco-editor@latest/min/';
+        //return globalThis.GS_EXTERNAL == false || globalThis.GS_URL_MONACO == false ? false : globalThis.GS_URL_MONACO || 'https://unpkg.com/monaco-editor@latest/min/';
+        return globalThis.GS_URL_MONACO || 'https://unpkg.com/monaco-editor@latest/min/';
     }
 
-    static #init() {
-        if (GSMonaco.URL_LIB == false) return;
-        customElements.define('gs-monaco', GSMonaco);
-        Object.seal(GSMonaco);
-        GSMonaco.#initLib();
+    static async #init() {
+        if  (GSMonaco.#initialized) return;
         GSMonaco.#initEnv();
-        GSMonaco.#initMonaco();
+        await GSMonaco.#initLib();
+        await GSMonaco.#initMonaco();
+        GSMonaco.#initialized = true;
     }
 
-    static #initLib() {
+    static async #initLib() {
+        if (globalThis.monaco) return;
         const script = document.createElement('script');
+        const promise = GSEvents.wait(script, 'load', 0, false);
         script.type = "text/javascript";
         script.src = `${GSMonaco.URL_LIB}vs/loader.js`;
         GSDOM.appendChild(document.head, script);
+        await promise;
     }
 
     // Before loading vs/editor/editor.main, define a global MonacoEnvironment that overwrites
@@ -67,25 +71,15 @@ export default class GSMonaco extends GSElement {
         };
     }
 
-    static #initMonaco(own) {
-        if (globalThis.GS_URL_MONACO === false) return;
-        if (GSMonaco.#initialized) {
-            if (own) GSEvents.send(own, 'monaco-ready');
-            return;
-        }
-        const id = setInterval(() => {
-            if (typeof globalThis.require !== 'function') return;
+    static #initMonaco() {
+        return new Promise((resolve, reject) =>{
             // TODO  set disabled to true and manually load themes into shadow dom
             require.config({ 
                 paths: { 'vs': `${GSMonaco.URL_LIB}/vs` },
                 'vs/css': { disabled: false } 
              });
-            require(['vs/editor/editor.main'], () => {
-                clearInterval(id);
-                GSMonaco.#initialized = true;
-                GSMonaco.#initMonaco(own);
-            });
-        }, 100);
+            require(['vs/editor/editor.main'], resolve);
+        });
     }
 
     static get observedAttributes() {
@@ -98,6 +92,16 @@ export default class GSMonaco extends GSElement {
 
     constructor() {
         super();
+    }
+
+    async connectedCallback() {
+        await GSMonaco.#init();
+        super.connectedCallback();
+    }
+    
+    onBeforeReady() {
+        super.onBeforeReady();
+        this.#onMonacoReady();
     }
 
     attributeCallback(name = '', oldValue = '', newValue = '') {
@@ -150,7 +154,6 @@ export default class GSMonaco extends GSElement {
         if (me.#editor) me.#editor.setValue(data);
     }
 
-
     /**
      * Get text selected in Monaco
      */
@@ -164,13 +167,6 @@ export default class GSMonaco extends GSElement {
      */
     get isFlat() {
         return true;
-    }
-
-    async onBeforeReady() {
-        await super.onBeforeReady();
-        const me = this;
-        me.once('monaco-ready', me.#onMonacoReady.bind(this));
-        GSMonaco.#initMonaco(this);
     }
 
     /**
