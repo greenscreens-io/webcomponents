@@ -4,7 +4,7 @@ css-select="table-active table-dark _fw-bold" css-header="user-select-none table
     <gs-column title="Job ID" width="200px" name="job-id"></gs-column>
     <gs-column  title="Job URI" name="job-uri"></gs-column>
 </gs-header>
-<gs-store id="printer-attributes" limit=10>
+<gs-store id="jobs" limit=10>
     <gs-item name="job-uri"></gs-item>
     <gs-item name="job-id"></gs-item>
 </gs-store>
@@ -26,7 +26,7 @@ css-select="table-active" css-header="user-select-none table-light">
     <gs-column title="Property" width="500px" name="key"></gs-column>
     <gs-column  title="Value" name="value"></gs-column>
 </gs-header>
-<gs-store id="printer-attributes">
+<gs-store id="job-attributes">
     <gs-item name="key"></gs-item>
     <gs-item name="value"></gs-item>
 </gs-store>

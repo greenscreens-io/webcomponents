@@ -67,7 +67,7 @@ There are 3 main parts:
 
 * Core - [Head](../modules/head/), [Templating](../modules/templating/), [Base](../modules/base/) libraries are core engine to build GS WebComponents and handle various browser "things"
 * UI - [Components](../modules/components/) library is a set of UI WebComponents based on Bootstrap 5.2.0+ CSS
-* Extra - [Extra](../modules/extra/) is set of UI elements which wraps around 2rd party libs to meke their usage easier. Ligs such as [ChratJS](https://www.chartjs.org/), [MS Monacco](https://microsoft.github.io/monaco-editor/) and [HLJS](https://highlightjs.org/). 
+* Extra - [Extra](../modules/extra/) is set of UI elements which wraps around 2rd party libs to make their usage easier. Libraries such as [ChratJS](https://www.chartjs.org/), [MS Monacco](https://microsoft.github.io/monaco-editor/) and [HLJS](https://highlightjs.org/). 
 
 ### UI Library
 

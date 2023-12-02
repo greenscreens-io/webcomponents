@@ -252,7 +252,6 @@ export default class GSMarkdown extends GSElement {
         const me = this;
         if (globalThis.showdown) return;
         const script = document.createElement('script');
-        // GSEvents.attach(me, script, 'load', me.#onScriptReady.bind(this));
         const promise = GSEvents.wait(script, 'load', 0, false);
         script.type = "text/javascript";
         script.src = GSMarkdown.URL_LIB;
