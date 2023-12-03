@@ -381,7 +381,6 @@ export default class GSTree extends GSElement {
         const isFolder = me.#isFolder();
         const isOpen = me.#isOpen();
         if (!isFolder || !(isOpen && isFolder)) return me.#update(me.#parent());
-        //if (!isOpen && isFolder) return me.prev();
         me.#toggleFolder(false);
     }
 

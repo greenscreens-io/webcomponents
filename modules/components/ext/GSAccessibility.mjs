@@ -27,7 +27,7 @@ export default class GSAccessibility {
 
         if (idx < 2) return GSAccessibility.click(focused, e);
 
-        const editable = ['INPUT', 'SELECT', 'TEXTAREA'].includes(focused.tagName);
+        const editable = ['INPUT', 'SELECT', 'TEXTAREA'].indexOf(focused.tagName) > -1;
         if (editable && !e.altKey) return;
 
         GSEvents.prevent(e);
