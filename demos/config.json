@@ -1,0 +1,37 @@
+{
+
+    "title":"65535AB",
+    "items": [{
+        "title" : "0",
+        "items": [{
+            "title" : "DEMO",
+            "items": [
+                {"title": "COLOR", "items" : ["RECORD.json"]},
+                {"title": "COLORS", "items" : ["COLORS01.json"]},
+                {"title": "DEMO", "items" : ["DSP1.json"]},
+
+                {"title": "DEMOFM", "items" : ["INITIAL.json", "REC2WIN1_WINDOW1.json", "REC2WIN2_WINDOW2.json", "REC3WIN1_WINDOW1.json", "WINDOW1.json", "WINDOW2.json"]},
+                {"title": "DISPLAY1", "items" : ["REC1.json", "REC2.json"]},
+                {"title": "DISPLAY2", "items" : ["REC2WIN1_WINDOW1.json"]},
+
+                {"title": "TEST1", "items" : ["DSP1.json"]},
+                {"title": "TEST10", "items" : ["RECORD1.json"]},
+                {"title": "TEST2", "items" : ["DSP1.json"]},
+                {"title": "TEST3", "items" : ["DSP1.json"]},
+                {"title": "TEST5", "items" : ["DSP1.json"]},
+                {"title": "TEST6", "items" : ["DSP1.json"]},
+                {"title": "TEST8", "items" : ["DSP1.json"]},
+                {"title": "TEST9", "items" : ["DSP1.json"]},
+
+                {"title": "TESTCHOICE", "items" : ["RECMULTI.json", "RECSINGLE.json"]},
+                {"title": "TESTFORMAT", "items" : ["EDTCDE1.json","EDTCDE2.json","EDTCDE3.json","EDTCDE4.json","EDTCDE5.json","EDTCDE6.json"  ,"FMAT2.json","RCDDAT.json","RCDDFT.json","RCDFMT.json","RCDTIME.json","RCDVRYLNG.json"]},
+                {"title": "TESTMULTI", "items" : ["FMT01.json", "FMT02.json", "FMT03.json"]},
+                {"title": "TESTMULTI2", "items" : ["FMT02.json"]},
+                {"title": "WIN1", "items" : ["SFLCTLRCD_SFLRCD.json", "SFLDATA_WINDOW1.json", "SFLRCD2_SFLWCTL.json"]},
+                {"title": "WIN2", "items" : ["WINDOW1.json", "WINDOW2.json", "RECORD2_WINDOW2.json"]},
+                {"title": "WIN3", "items" : ["WINDOW1.json", "WINDOW2.json"]},
+                {"title": "WIN4", "items" : ["RECORD1.json", "RECORD2.json", "RECORD3.json"]}               
+            ]
+        }]
+    }]
+}

@@ -237,13 +237,15 @@ export default class GSTree extends GSElement {
                 const cid = el.dataset.nodeid;
                 const isChild = cid && cid.indexOf(nid) === 0;
                 if (!isChild) break;
-                const cl = cid.split('\.').length;
-                if (cl > pl + 1) {
-                    el = el.nextElementSibling;
-                    continue;    
+                if (sts) {
+                    const cl = cid.split('\.').length;
+                    if (cl > pl + 1) {
+                        el = el.nextElementSibling;
+                        continue;    
+                    }
+    
+                    if (pl + 1 != cl && sts) break;
                 }
-
-                if (pl + 1 != cl && sts) break;
                 GSDOM.toggleClass(el, 'gs-hide', !sts);
                 if (!sts) el.dataset.open = sts;
                 el = el.nextElementSibling;
@@ -314,6 +316,24 @@ export default class GSTree extends GSElement {
         return el.parentElement.querySelector(`li[data-nodeid="${s}"]`);
     }
 
+    #next(el) {
+        el = el?.nextElementSibling;
+        while(el) {
+            if (!el.classList.contains('gs-hide')) break;
+            el = el.nextElementSibling;
+        }
+        return el;
+    }
+
+    #previous(el) {
+        el = el?.previousElementSibling;
+        while(el) {
+            if (!el.classList.contains('gs-hide')) break;
+            el = el.previousElementSibling;
+        }        
+        return el;
+    }
+
     get level() {
         return this.#selected?.dataset.nodeid.split('.').length || -1;
     }
@@ -324,25 +344,20 @@ export default class GSTree extends GSElement {
 
     next() {
         const me = this;
-        if (!me.#selected) return me.#update(me.query('li'));
-        const isOpen = me.#isOpen();
-        const isFolder = me.#isFolder();
-        if (isFolder && !isOpen) return;
-        let el = isOpen ? me.#selected.querySelector('li') : me.#selected.nextElementSibling;
-        if (!el) el = me.#selected.nextElementSibling;
-        // if rotatable 
-        // if (!el) el = me.rootEl.firstElementChild;
-        me.#update(el);
+        if (!me.#selected) return me.#update(me.query('li:first-of-type'));
+        const el = me.#next(me.#selected);
+        if (el) return me.#update(el);
+        me.#selected = null;
+        me.next() ;
     }
 
     prev() {
         const me = this;
         if (!me.#selected) return me.#update(me.query('li:last-of-type'));
-        let el = me.#selected.previousElementSibling;
-        if (!el) el = me.#selected.parentElement?.previousElementSibling;
-        // if rotatable 
-        // if (!el) el = me.rootEl.lastElementChild;
-        me.#update(el);
+        const el = me.#previous(me.#selected);
+        if (el) return me.#update(el);
+        me.#selected = null;
+        me.prev() ;
     }
 
     /**
@@ -350,7 +365,11 @@ export default class GSTree extends GSElement {
      * TODO - path navigation
      */
     open(path) {
-        this.#toggleFolder(true);
+        const me = this;
+        const isOpen = me.#isOpen();
+        const isFolder = me.#isFolder();
+        if (isOpen && isFolder) return me.next();
+        me.#toggleFolder(true);
     }
 
     /**
@@ -361,7 +380,8 @@ export default class GSTree extends GSElement {
         const me = this;
         const isFolder = me.#isFolder();
         const isOpen = me.#isOpen();
-        if (!isFolder || (isFolder && !isOpen)) me.#update(me.#parent());
+        if (!isFolder || !(isOpen && isFolder)) return me.#update(me.#parent());
+        //if (!isOpen && isFolder) return me.prev();
         me.#toggleFolder(false);
     }
 
