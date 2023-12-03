@@ -24,6 +24,8 @@ export default class GSData {
         return Array.from(new Set(data));
     }
 
+    static compareArrays = (a, b) =>  a.length === b.length && a.every((element, index) => element === b[index]);
+
     /**
      * Check if two arrays are equal
      * 
@@ -33,18 +35,14 @@ export default class GSData {
      */
     static arraysEqual(a, b) {
 
-        if (a === b) return true;
         if (!Array.isArray(a)) return false;
         if (!Array.isArray(b)) return false;
+        if (a === b) return true;
 
-        a.sort();
-        b.sort();
+        a = a.toSorted();
+        b = b.toSorted();
 
-        for (var i = 0; i < a.length; ++i) {
-            if (a[i] !== b[i]) return false;
-        }
-
-        return true;
+        return GSData.compareArrays(a, b);
     }
 
     /**
@@ -134,7 +132,7 @@ export default class GSData {
      */
     static sortData(sort, data) {
         if (sort.length === 0) return data;
-        return data.sort((a, b) => GSData.sortPair(a, b, sort));
+        return data.toSorted((a, b) => GSData.sortPair(a, b, sort));
     }
 
     /**

@@ -320,16 +320,6 @@ export default class GSTree extends GSElement {
 
     get path() {
         return this.#selected?.dataset.path;
-        /*
-        const me = this;
-        const seg = [];
-        let el = me.#selected;
-        while (el) {
-            seg.push(el.dataset.name);
-            el = me.#parent(el);
-        }
-        return '/' + seg.reverse().join('/');
-        */
     }
 
     next() {

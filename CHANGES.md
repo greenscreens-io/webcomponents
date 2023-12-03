@@ -4,6 +4,7 @@
  - Fix - Firefox context menu event detection issue
  - Fix - property set typo fix for GSCenter
  - Fix - GSDOM.getByID argument passing
+ - GSData - array functions replaced with ES14
  - GSContext add altctx attribute to allow open system context menu while pressing shift key
  - GSDOM function fromJSON to GS-ITEM conversion improvements
  - GSDOM function toJSON added root array support
