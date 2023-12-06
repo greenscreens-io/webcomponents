@@ -1,5 +1,8 @@
 # [WebComponents](https://webcomponents.greenscreens.ltd/) for [Bootstrap 5.2.0+](https://getbootstrap.com/)
 
+# Development v1.9.1 (05.12.2023.)
+ - Fix - GSEvents callback timeout caller
+
 # Release v1.9.0 (04.12.2023.)
  - Fix - Firefox context menu event detection issue
  - Fix - property set typo fix for GSCenter
