@@ -2,6 +2,7 @@
 
 # Development v1.9.1 (05.12.2023.)
  - Fix - GSEvents callback timeout caller
+ - Fix - GSModal wait events synced with GSDialog
 
 # Release v1.9.0 (04.12.2023.)
  - Fix - Firefox context menu event detection issue

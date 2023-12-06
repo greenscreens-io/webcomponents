@@ -84,6 +84,7 @@ export default class GSModal extends GSElement {
     if (!action) return;
     const isOk = action === 'ok';
     me.emit('action', { action: action, ok: isOk, evt: e }, true, true, true);
+    me.emit('postaction', { action: action, ok: isOk, evt: e });
   }
 
   // monitor action events
@@ -185,7 +186,7 @@ export default class GSModal extends GSElement {
     me.cancelable = cancelable;
     me.closable = closable;
     me.open();
-    if (closable || cancelable) return me.waitEvent('action');
+    if (closable || cancelable) return me.waitEvent('postaction');
   }
 
   confirm(title = '', message = '') {
