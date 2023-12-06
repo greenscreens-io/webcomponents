@@ -145,7 +145,7 @@ export default class GSEvents {
 	static once(own, qry, event, callback, timeout = 0) {
 		const signal = timeout == 0 ? undefined : AbortSignal.timeout(timeout); 
 		let tmp = callback;
-		if (signal && GSUtil.isFunction(callback)) {
+		if (signal && GSFunction.isFunction(callback)) {
 			tmp = (...args) => {
 				if (signal.called) return;
 				signal.called = true;
