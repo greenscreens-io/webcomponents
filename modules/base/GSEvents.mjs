@@ -57,7 +57,7 @@ export default class GSEvents {
 	}
 
 	/**
-	 * Wait for web page to competely load
+	 * Wait for web page to completely load, then send event to target element
 	 * 
 	 * @async
 	 * @param {HTMLElement} target 
@@ -134,16 +134,26 @@ export default class GSEvents {
 	static off = GSEvents.unlisten;
 
 	/**
-	 * 
-	 * @param {*} own 
-	 * @param {*} qry 
-	 * @param {*} event 
-	 * @param {*} callback 
+	 * Wait for an event. Also, trigger on timeout if event not triggered.
+	 * @param {HTMLElement} own 
+	 * @param {string} qry Optional selector within owner
+	 * @param {string} event Event name to wait for
+	 * @param {*} callback Function to call 
+	 * @param {*} timeout If GT 0, call callback after timeout if event not triggered 
 	 * @returns {boolean}
 	 */
 	static once(own, qry, event, callback, timeout = 0) {
 		const signal = timeout == 0 ? undefined : AbortSignal.timeout(timeout); 
-		return GSEvents.listen(own, qry, event, callback, { once: true, signal : signal });
+		let tmp = callback;
+		if (signal && GSUtil.isFunction(callback)) {
+			tmp = (...args) => {
+				if (signal.called) return;
+				signal.called = true;
+				callback(...args);
+			}
+			signal.addEventListener('abort', tmp);			
+		}
+		return GSEvents.listen(own, qry, event, tmp, { once: true, signal : signal });
 	}
 
 	/**
@@ -156,10 +166,10 @@ export default class GSEvents {
 	 */
 	static wait(own, name = '', timeout = 0, prevent = true) {
 		if (!name) throw new Error('Event undefined!');
-		return new Promise((r, e) => {
+		return new Promise((resolve, reject) => {
 			GSEvents.once(own, null, name, (e) => {
 				if (prevent) GSEvents.prevent(e);
-				r(prevent ? e.detail : e);
+				resolve(prevent ? e.detail : e);
 			}, timeout);
 		});
 	}
