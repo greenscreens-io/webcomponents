@@ -161,12 +161,12 @@ export default class BaseViewUI extends GSElement {
         const result = await modal.waitEvent('data');
 
         try {
-            const sts = await me.onUpdate(result.data);
+            const sts = await me.onUpdate(result.detail.data);
             if (!sts) throw new Error('Record not updated!');
 
             modal.reset();
             // update locally to refresh ui
-            Object.assign(data, result.data);
+            Object.assign(data, result.detail.data);
             me.store.load();
             Utils.notify.warn('', 'Record updated!');
 
@@ -192,7 +192,7 @@ export default class BaseViewUI extends GSElement {
         const result = await modal.waitEvent('data');
 
         try {
-            const sts = await me.onCreate(result.data);
+            const sts = await me.onCreate(result.detail.data);
             if (!sts) throw new Error('Record not created!');
 
             // update locally to refresh ui

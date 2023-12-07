@@ -14,7 +14,6 @@ import GSAttr from "./GSAttr.mjs";
 import GSDOM from "./GSDOM.mjs";
 import GSLog from "./GSLog.mjs";
 
-
 /**
  * Class for handling events, also a registry of all GS-* element listeners
  * @Class
@@ -58,7 +57,7 @@ export default class GSEvents {
 
 	/**
 	 * Wait for web page to completely load, then send event to target element
-	 * 
+	 * DOMContentLoaded vs load ?!
 	 * @async
 	 * @param {HTMLElement} target 
 	 * @param {string} name 
@@ -66,13 +65,41 @@ export default class GSEvents {
 	 * @param {Promise<number>} timeout 
 	 */
 	static async waitPageLoad(target, name = 'loaded', callback, timeout = 100, prevent = true) {
-		if (!GSEvents.#loaded) await GSEvents.wait(globalThis.window, 'load', timeout, prevent); // DOMContentLoaded
-		GSEvents.#loaded = true;
-		await GSUtil.timeout(timeout);
+		if (!GSEvents.#loaded) {
+			try {
+				await GSEvents.wait(globalThis.window, 'load', timeout, prevent); 
+				GSEvents.#loaded = true;
+			} catch(e) {
+				console.log(e);
+			}
+		}
+		// await GSUtil.timeout(timeout);
 		await GSFunction.callFunction(callback);
 		GSEvents.sendSuspended(target, name);
 	}
 
+	/**
+	 * Async version of event listener
+	 * 
+	 * @async
+	 * @param {HTMLElement} own 
+	 * @param {String} name 
+	 * @param {Number} timeout  
+	 * @param {Boolean} prevent 
+	 * @returns {Promise}
+	 */
+	static wait(own, name = '', timeout = 0, prevent = true) {		
+		if (GSUtil.isStringEmpty(name)) throw new Error('Event undefined!');
+		if (!GSUtil.isNumber(timeout)) throw new Error('Invalid timeout value!');
+		if (timeout > 0) return GSEvents.once(own, null, name, null, timeout);
+		return new Promise(resolve => {
+			GSEvents.once(own, null, name, e => {
+				if (prevent) GSEvents.prevent(e);
+				resolve(e);
+			}, timeout);
+		});
+	}
+ 	
 	/**
 	 * Async version of animation frame
 	 * 
@@ -139,41 +166,20 @@ export default class GSEvents {
 	 * @param {string} qry Optional selector within owner
 	 * @param {string} event Event name to wait for
 	 * @param {*} callback Function to call 
-	 * @param {*} timeout If GT 0, call callback after timeout if event not triggered 
+	 * @param {Number | AbortSignal} timeout If GT 0, retrun Promise
 	 * @returns {boolean}
 	 */
 	static once(own, qry, event, callback, timeout = 0) {
-		const signal = timeout == 0 ? undefined : AbortSignal.timeout(timeout); 
-		let tmp = callback;
-		if (signal && GSFunction.isFunction(callback)) {
-			tmp = (...args) => {
-				if (signal.called) return;
-				signal.called = true;
-				callback(...args);
-			}
-			signal.addEventListener('abort', tmp);			
+		const signal = GSEvents.#toSignal(timeout);
+		if (signal && signal.internal) {
+			return new Promise((resolve, reject) => {
+				GSEvents.listen(own, qry, event, callback || resolve, { once: true, signal : signal });
+				signal.addEventListener('abort', reject);
+			});
 		}
-		return GSEvents.listen(own, qry, event, tmp, { once: true, signal : signal });
+		return GSEvents.listen(own, qry, event, callback, { once: true, signal : signal });
 	}
 
-	/**
-	 * Async version of event listener
-	 * 
-	 * @async
-	 * @param {*} own 
-	 * @param {*} name 
-	 * @returns {Promise}
-	 */
-	static wait(own, name = '', timeout = 0, prevent = true) {
-		if (!name) throw new Error('Event undefined!');
-		return new Promise((resolve, reject) => {
-			GSEvents.once(own, null, name, (e) => {
-				if (prevent) GSEvents.prevent(e);
-				resolve(prevent ? e.detail : e);
-			}, timeout);
-		});
-	}
- 
 	/**
 	 * Generic prevent event bubling
 	 * 
@@ -466,6 +472,20 @@ export default class GSEvents {
 		o.el = null;
 		o.fn = null;
 		o.once = null;
+	}
+
+	/**
+	 * Internal helper, converter to Abortignal
+	 * @param {*} timeout 
+	 */
+	static #toSignal(timeout = 0) {
+		if (GSUtil.isNumber(timeout) && timeout > 0) {
+			timeout = AbortSignal.timeout(timeout); 
+			timeout.internal = true;
+			return timeout;
+		} 
+		if (timeout instanceof AbortSignal) return timeout;
+		return undefined;
 	}
 
 	/**

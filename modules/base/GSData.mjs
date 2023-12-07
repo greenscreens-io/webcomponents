@@ -293,25 +293,23 @@ export default class GSData {
      * @returns {*}
 	 */
 	static readFromObject(obj, name) {
-		name.split('.').forEach((v, i, a) => {
-            if (GSUtil.isNull(o)) return;
-			obj = GSData.readFromProperty(obj, v);
-		});
+		name.split('.')
+        .filter(v => !GSUtil.isNull(v))
+        .forEach(v => obj = GSData.readFromProperty(obj, v));
 		return obj;
 	}
 	
     /**
-     * Check if named path exist withing object
+     * Check if named path exist within the object
      * @param {Object} obj 
      * @param {String} name 
      * @returns {Boolean}
      */
 	static objectPathExist(obj, name) {
         if (!name) return false;
-		name.split('.').forEach(v => {
-            if (GSUtil.isNull(o)) return;
-            obj = GSData.readFromProperty(obj, v);
-		});
+		name.split('.')
+        .filter(v => !GSUtil.isNull(v))
+        .forEach(v => obj = GSData.readFromProperty(obj, v));
 		return obj ? true : false;
 	}
 

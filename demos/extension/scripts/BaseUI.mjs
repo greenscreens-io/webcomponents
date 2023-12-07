@@ -132,12 +132,12 @@ export default class BaseUI extends GSElement {
 
         try {
 
-            const sts = await me.onUpdate(result.data);
+            const sts = await me.onUpdate(result.detail.data);
             if (!sts) throw new Error('Record not updated!');
 
             modal.reset();
             // update locally to refresh ui
-            Object.assign(data, result.data);
+            Object.assign(data, result.detail.data);
             me.#store.reload();
             me.#notify.warn('', 'Record updated!');
 
@@ -165,11 +165,11 @@ export default class BaseUI extends GSElement {
 
         try {
 
-            const sts = await me.onCreate(result.data);
+            const sts = await me.onCreate(result.detail.data);
             if (!sts) throw new Error('Record not created!');
             modal.reset();
             // update locally to refresh ui
-            me.#store.data.push(result.data);
+            me.#store.data.push(result.detail.data);
             me.#store.reload();
             me.#notify.primary('', 'Record created!');
 
