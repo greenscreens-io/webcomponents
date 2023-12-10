@@ -117,7 +117,7 @@ export default class GSReadWrite extends GSAbstractReadWrite {
      * @returns {Object} Json structure
      */
     get headers() {
-        return Object.assign({}, this.#headers);
+        return {...this.#headers};
     }
 
     /**
@@ -127,7 +127,7 @@ export default class GSReadWrite extends GSAbstractReadWrite {
     set headers(val = {}) {
         val = GSUtil.toJson(val);
         const me = this;
-        me.#headers = Object.assign({}, val);
+        me.#headers = {...val};
     }
 
     /**
