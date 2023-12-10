@@ -86,7 +86,11 @@ export default class GSDOM {
 	static parseWrapped(own, src = '', forceWrap = false) {
 
 		const doc = GSDOM.parse(src);
-		const nodes = GSDOM.#fromNode(doc.head.children).concat(GSDOM.#fromNode(doc.body.children));
+		const head = GSDOM.#fromNode(doc.head.children);
+		const body = GSDOM.#fromNode(doc.body.children);
+
+		const nodes = [...head , ...body];
+
 		const wrap = forceWrap || nodes.length !== 1;
 
 		const tpl = GSDOM.wrap(own, wrap ? null : nodes.shift());
@@ -563,7 +567,7 @@ export default class GSDOM {
 	 */
 	static css(el, obj) {
 		if (GSUtil.isString(el)) el = GSDOM.queryAll(el);
-		if (GSDOM.isHTMLElement(el)) el = [].concat(el);
+		if (GSDOM.isHTMLElement(el)) el = [el];
 		if (!(Array.isArray(el) && el.length > 0)) return false;
 		requestAnimationFrame(() => {
 			el.forEach(it => {
@@ -583,7 +587,7 @@ export default class GSDOM {
 	 */
 	static toggleClass(el, val, sts) {
 		if (GSUtil.isString(el)) el = GSDOM.queryAll(el);
-		if (GSDOM.isHTMLElement(el)) el = [].concat(el);
+		if (GSDOM.isHTMLElement(el)) el = [el];
 		if (!(Array.isArray(el) && el.length > 0)) return false;
 		if (!val || val.trim().length == 0) return false;
 		val = val.split(' ').filter(v => v && v.trim().length > 0);

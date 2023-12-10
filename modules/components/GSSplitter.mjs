@@ -290,7 +290,7 @@ export default class GSSplitter extends GSElement {
         const qry = 'iframe,embed,portal';
         const p = GSDOM.queryAll(me.previousElementSibling, qry);
         const n = GSDOM.queryAll(me.nextElementSibling, qry);
-        return p.concat(n);
+        return [...p, ...n];
     }
     
     #updateMouse(pos) {

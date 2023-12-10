@@ -29,7 +29,7 @@ import GSCacheStyles from "./GSCacheStyles.mjs";
 export default class GSCSS extends GSBase {
 
 	static get observedAttributes() {
-		return ['disabled'].concat(super.observedAttributes);
+		return ['disabled', ...super.observedAttributes];
 	}
 
 	attributeCallback(name, oldValue, newValue) {

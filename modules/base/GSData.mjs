@@ -52,7 +52,7 @@ export default class GSData {
      * @returns {Array}
      */
     static mergeArrays(first = [], second = []) {
-        return first.concat(second).filter((value, index, arr) => arr.indexOf(value) === index);
+        return [...first, ...second].filter((value, index, arr) => arr.indexOf(value) === index);
     }
 
     /**

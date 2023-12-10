@@ -266,7 +266,7 @@ export default class GSStore extends GSDataHandler {
         }
 
         if (append) {
-            me.#data = me.#data.concat(records);
+            me.#data = [...me.#data, ...records];
         } else {
             me.#page = 1;
             me.#data = records;
