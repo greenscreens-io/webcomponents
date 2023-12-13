@@ -10,7 +10,6 @@
 import GSUtil from "../base/GSUtil.mjs";
 import GSElement from "../base/GSElement.mjs";
 import GSItem from "../base/GSItem.mjs";
-import GSEvents from "../base/GSEvents.mjs";
 import GSAttr from "../base/GSAttr.mjs";
 import GSDOM from "../base/GSDOM.mjs";
 
@@ -37,7 +36,7 @@ export default class GSButton extends GSElement {
 
     constructor() {
         super();
-    }
+    } 
 
     #onClick(e) {
         const me = this;

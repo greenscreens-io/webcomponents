@@ -39,7 +39,15 @@ export default class GSTheme {
         // TODO  switch dark/light mode ?!??!? 
 
         // save last state
-        localStorage.setItem(GSTheme.#STORAGE, to);
+        GSTheme.theme = to;
+    }
+
+    static get theme() {
+        return localStorage.getItem(GSTheme.#STORAGE);
+    }
+
+    static set theme(val) {
+        localStorage.setItem(GSTheme.#STORAGE, val);
     }
 
     /**
@@ -58,7 +66,8 @@ export default class GSTheme {
         }
 
         if (settings == 'dark') return GSTheme.darkMode();
-        GSTheme.lightMode();
+        if (settings == 'light') return GSTheme.lightMode();
+        // TODO switch
     }
 
     static {
