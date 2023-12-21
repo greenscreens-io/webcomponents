@@ -1,10 +1,12 @@
 # [WebComponents](https://webcomponents.greenscreens.ltd/) for [Bootstrap 5.2.0+](https://getbootstrap.com/)
 
-# Development v1.9.1 (05.12.2023.)
+# Development v1.9.1 (21.12.2023.)
  - Fix - GSEvents callback timeout caller
  - Fix - GSModal wait events synced with GSDialog
  - Fix - GSData.readFromObject invalid variable
  - Fix - GSData.objectPathExist invalid variable
+ - Added - GSDynamicStyle - dynamic CSS style
+ - Added - GSAttr generic element attribute proxy 
 
 # Release v1.9.0 (04.12.2023.)
  - Fix - Firefox context menu event detection issue
