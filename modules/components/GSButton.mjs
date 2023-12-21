@@ -92,7 +92,7 @@ export default class GSButton extends GSElement {
         const dissmis = GSItem.getDismissAttr(me);
         const target = GSItem.getTargetAttr(me);
         const toggle = GSItem.getToggleAttr(me);
-        return `<button type="${me.type}" class="btn ${me.css}" ${action} ${toggle} ${target} ${dissmis} ${disabled} title="${me.comment}" role="tooltip">${content}</button>`;
+        return `<button type="${me.type}" class="btn ${me.css}" ${action} ${toggle} ${target} ${dissmis} ${disabled} title="${me.comment}" aria-label="${me.ariaLabel}">${content}</button>`;
     }
 
     get css() {

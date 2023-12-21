@@ -8,6 +8,7 @@
  */
 
 import GSBase from "./GSBase.mjs";
+import GSDynamicStyle from "./GSDynamicStyle.mjs";
 
 /**
  * Cache for dyamically loaded styles.
@@ -19,7 +20,7 @@ export default class GSCacheStyles {
 	static #store = new Map();
 
 	static create(id) {
-		const sheet = new CSSStyleSheet();
+		const sheet = new GSDynamicStyle(id);
 		this.#store.set(id, sheet);
 		return sheet;
 	}
@@ -84,8 +85,7 @@ export default class GSCacheStyles {
 	 * @returns {CSSRule}
 	 */
 	static getRule(id = '') {
-		return Array.from(GSCacheStyles.dynamic.cssRules)
-			.filter(v => v.selectorText === `.${id}`).pop();
+		return GSCacheStyles.dynamic.getRule(id);
 	}
 
 	/**
@@ -94,39 +94,7 @@ export default class GSCacheStyles {
 	 * @param {string|object} style 
 	 */
 	static setRule(id = '', style = '', sync = false) {
-
-		if (!(id && style)) return;
-		
-		let rule = GSCacheStyles.getRule(id);
-		if (!rule) {
-			GSCacheStyles.dynamic.insertRule(`.${id} {}`);
-			return GSCacheStyles.setRule(id, style, sync);
-		}
-
-		let data = [];
-		if (typeof style === 'string') {
-			data = style.replaceAll('\n', '').split(';').map(v => v.trim().split(':')).filter(v => v.length === 2);
-		} else {
-			data = Object.entries(style);
-		}
-		
-		if (sync) {
-			data.forEach(kv => GSCacheStyles.#updateRule(rule, kv[0], kv[1]));
-		} else {
-			requestAnimationFrame(()=> {
-				data.forEach(kv => GSCacheStyles.#updateRule(rule, kv[0], kv[1]));
-			});
-		}
-
-		return rule;
-	}
-
-	static #updateRule(rule, prop = '', style = '') {
-		style = style || '';
-		const isImportant = style.includes('!important');
-		style = style.replace('!important', '');
-		prop = prop.trim();
-		rule.style.setProperty(prop, style,  isImportant ? 'important' : '');
+		return GSCacheStyles.dynamic.setRule(id,style, sync);
 	}
 
 	/**
@@ -134,10 +102,7 @@ export default class GSCacheStyles {
 	 * @param {string} id  
 	 */
 	static deleteRule(id = '') {
-		Array.from(GSCacheStyles.dynamic.cssRules)
-			.map((v, i) => v.selectorText === `.${id}` ? i : -1)
-			.filter(v => v>-1)
-			.forEach(v => GSCacheStyles.dynamic.deleteRule(v));
+		GSCacheStyles.dynamic.deleteRule(id);
 	}
 
 	/**

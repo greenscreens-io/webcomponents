@@ -17,6 +17,8 @@ import GSID from "./GSID.mjs";
  */
 export default class GSItem extends HTMLElement {
 
+	// static #BOOL = ['active', 'flat', 'selectable'];
+
 	static #dismiss = 'data-bs-dismiss';
 
 	static #target = 'data-bs-target';
@@ -38,9 +40,12 @@ export default class GSItem extends HTMLElement {
 		Object.seal(GSItem);
 	}
 
+	#proxy;
+
 	constructor() {
 		super();
 		GSItem.validate(this);
+		//this.#proxy = GSAttr.proxify(this, {"bool":GSItem.#BOOL});
 	}
 
 	static validate(own, tagName = 'GS-ITEM') {
@@ -186,6 +191,10 @@ export default class GSItem extends HTMLElement {
 
 	static getType(el) {
 		return GSAttr.get(el, 'type');
+	}
+
+	get proxy() {
+		return this.#proxy;
 	}
 
 	get dismissAttr() {

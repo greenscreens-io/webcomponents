@@ -66,6 +66,7 @@ export default class GSAttr {
 	 */
 	static get(el, name = '', val = '') {
 		if (!GSAttr.isHTMLElement(el)) return val;
+		if (!GSUtil.isInstance(el)) return undefined;
 		const v = el.getAttribute(name) || val;
 		return GSUtil.normalize(v);
 	}
@@ -178,6 +179,61 @@ export default class GSAttr {
 	 */
 	static flatten(el, sep = ' ') {
 		return Array.from(el?.attributes || []).map(a => `${a.name}="${a.value}"`).join(sep);
+	}
+
+
+	/**
+	 * Generic attribute retriever 
+	 * opt format { prop: {type:Number, attribute: 'alt-prop-name'}}
+	 * @returns 
+	 */
+	static proxify(host, opt = {}) {
+		return new Proxy(host, {
+			
+			set(target, prop, value) {
+				if (prop === 'self') return;
+				if (prop === 'dataset') return target.dataset = value;
+				const type = opt[prop]?.type;
+				prop = opt[prop]?.attribute || prop;
+				switch(type) {
+					case Boolean :
+						GSAttr.toggle(target, prop,  GSUtil.asBool(value));
+						break;
+					case Number :
+						GSAttr.setAsNum(target, prop, value);
+						break;
+					case Object :
+					case Array :
+						GSAttr.set(target, prop, JSON.stringify(value));
+					default:					
+						GSAttr.set(target, prop, value);
+						break;
+				}
+				return true;
+			},
+
+			get(target, prop) {
+				if (prop === 'dataset') return target.dataset;
+				if (prop === 'self') return target;
+				const type = opt[prop]?.type;
+				const multi = opt[prop]?.multi === true;
+				prop = opt[prop]?.attribute || prop;
+				let val = GSAttr.get(target, prop);
+				switch(type) {
+					case Boolean :
+						return target.hasAttribute(prop);
+					case Number :
+						return GSUtil.asNum(val, 0);
+					case Object :
+						return GSUtil.toJson(val, {});
+					case Array :
+						return GSUtil.toJson(val, []);
+					default:					
+						val = val || '';
+						return multi ? GSUtil.toStringArray(val) : val;
+				}
+			}
+		});
 	}
 
 	static {

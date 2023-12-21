@@ -10,7 +10,7 @@
             <gs-tooltip placement="bottom" title="Open resource explorer"></gs-tooltip>
         </div>        
         <div>
-            <a type="button" class="btn" data-bs-toggle="dropdown" data-bs-target="#menu1">
+            <a type="button" class="btn" data-bs-toggle="dropdown" data-bs-target="#menu1" aria-label="Download Options">
                 <i class="bi-download fs-3"></i>
             </a>
             <gs-tooltip placement="bottom" title="Downloads"></gs-tooltip>
@@ -23,7 +23,7 @@
             </gs-dropdown>
         </div>
         <div class="d-flex align-items-center fs-5">        
-            <gs-button id="action" action="restart" select="false" 
+            <gs-button id="action" action="restart" select="false" aria-label="Restart Server"
             css="text-bg-light" icon="bi bi-arrow-repeat fs-3"></gs-button>            
             <gs-tooltip placement="bottom" title="Restart server"></gs-tooltip>
         </div> 
@@ -76,7 +76,7 @@
         </div>
         <div class="d-flex align-items-center fs-5">        
             <gs-button id="action" action="logout" select="false" css="text-bg-light"
-            icon="bi bi-box-arrow-right fs-3"></gs-button>               
+            icon="bi bi-box-arrow-right fs-3" aria-label="Logout"></gs-button>               
             <gs-tooltip placement="start" title="Logout from Web Admin Console"></gs-tooltip>
         </div>
     </div>

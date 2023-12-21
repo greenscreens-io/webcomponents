@@ -9,8 +9,6 @@
 
 import GSUtil from "../base/GSUtil.mjs";
 import GSElement from "../base/GSElement.mjs";
-import GSDOM from "../base/GSDOM.mjs";
-import GSEvents from "../base/GSEvents.mjs";
 import GSAttr from "../base/GSAttr.mjs";
 
 /**
@@ -35,7 +33,6 @@ export default class GSCopyright extends GSElement {
 
     get template() {
         const me = this;
-        GSUtil.isStringEmpty(me.company)
         if (!(me.isCompany && me.isYear)) return '';
         const year = new Date().getFullYear();
         return `

@@ -426,9 +426,7 @@ export default class GSElement extends HTMLElement {
 	 * @returns {Promisa}
 	 */
 	waitEvent(name = '', timeout = 0) {
-		if (!name) throw new Error('Event undefined!');
-		const me = this;
-		return GSEvents.wait(me, name, timeout);
+		return GSEvents.wait(this, name, timeout);
 	}
 
 	/**

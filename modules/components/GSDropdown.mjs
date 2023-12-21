@@ -164,7 +164,7 @@ export default class GSDropdown extends GSElement {
 
   /**
    * Load data from various sources
-   * Json format: array of json or json (child elemetns stored in item property
+   * Json format: array of json or json (child elements stored in item property
    * Any property will be rendered as gs-item element attribute
    * Example: [{title:"test2", message:"test2", items: [{title:"test2", message:"test2"}]}]
    * 

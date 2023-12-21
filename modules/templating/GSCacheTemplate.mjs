@@ -18,7 +18,7 @@ import GSLog from "../base/GSLog.mjs";
  */
 export default class GSCacheTemplate {
 
-	static _store = new Map();
+	static #store = new Map();
 
 	/**
 	 * Store pre-processed template into a cache under given name. 
@@ -27,7 +27,7 @@ export default class GSCacheTemplate {
 	 * @param {HTMLTemplateElement} template Preprocessed template
 	 */
 	static store(name, template) {
-		this._store.set(name, template);
+		this.#store.set(name, template);
 	}
 
 	/**
@@ -36,7 +36,7 @@ export default class GSCacheTemplate {
 	 * @returns {boolean}
 	 */
 	static remove(name) {
-		return this._store.delete(name);
+		return this.#store.delete(name);
 	}
 
 	/**
@@ -45,7 +45,7 @@ export default class GSCacheTemplate {
 	 * @returns {HTMLTemplateElement}
 	 */
 	static load(name) {
-		return this._store.get(name);
+		return this.#store.get(name);
 	}
 
 	/**
@@ -160,14 +160,11 @@ export default class GSCacheTemplate {
 	 */
 	static async loadURLTemplate(cached = false, name = '', tpl) {
 		const me = GSCacheTemplate;
-		//const o = me.isURLTemplate(tpl);
-		//if (!o) return o;
-		const o = tpl;
 		try {
 			let template = null;
-			if (cached) template = me.load(o);
+			if (cached) template = me.load(tpl);
 			if (template) return template;
-			template = await GSLoader.loadTemplate(o);
+			template = await GSLoader.loadTemplate(tpl);
 			return me.initTemplate(cached, name, template);
 		} catch (e) {
 			GSLog.error(me, e);

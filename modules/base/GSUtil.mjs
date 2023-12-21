@@ -43,6 +43,8 @@ export default class GSUtil {
 
 	static initerror = () => { throw new Error('This class cannot be instantiated') };
 
+	static isInstance = (el) => el instanceof el.constructor;
+
 	/**
 	 * Validate string for url format
 	 * @param {string} url 

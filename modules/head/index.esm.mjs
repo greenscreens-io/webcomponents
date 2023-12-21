@@ -7,6 +7,7 @@ export { default as GSStyleExt } from "./GSStyleExt.mjs";
 export { default as GSCSS } from "./GSCSS.mjs";
 export { default as GSScript } from "./GSScript.mjs";
 export { default as GSLink } from "./GSLink.mjs";
+export { default as GSDynamicStyle } from "./GSDynamicStyle.mjs";
 export { default as GSCacheStyles } from "./GSCacheStyles.mjs";
 
 // wait bootstrap support
