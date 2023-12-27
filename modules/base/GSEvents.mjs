@@ -333,7 +333,8 @@ export default class GSEvents {
 	 */
 	static attach(own, el, name = '', fn, once = false, capture = false) {
 		if (!el) return false;
-		if (el.offline) return false;
+		//if (el.offline) return false;
+		if (!(window instanceof Window || el.isConnected)) return false;
 		if (!GSFunction.isFunction(fn)) return false;
 		if (!GSFunction.hasFunction(el, 'addEventListener')) return false;
 		const me = this;
@@ -441,10 +442,15 @@ export default class GSEvents {
 	}
 
 	static #getElementID(el) {
-		let elid = GSAttr.get(el, 'data-gselid');
+		const isWin = el instanceof Window;
+		let elid = isWin ? el.gselid : GSAttr.get(el, 'data-gselid');
 		if (!elid) {
 			elid = GSID.id;
-			GSAttr.set(el, 'data-gselid', elid);
+			if (isWin)  {
+				el.gselid = elid; 
+			} else {
+				GSAttr.set(el, 'data-gselid', elid);
+			}
 		}
 		return elid;
 	}

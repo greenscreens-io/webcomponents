@@ -11,6 +11,7 @@ import GSAttr from "../base/GSAttr.mjs";
 import GSDOM from "../base/GSDOM.mjs";
 import GSElement from "../base/GSElement.mjs";
 import GSID from "../base/GSID.mjs";
+import GSUtil from "../base/GSUtil.mjs";
 
 /**
  * SVG overlay renderer around selected target.

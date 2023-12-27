@@ -264,20 +264,13 @@ export default class GSPopup extends GSElement {
      */
     popup(x = 0, y = 0) {
         const me = this;
-        const panel = me.#panel;
-        if (!panel) return;
         requestAnimationFrame(() => {
             me.visible = true;
             const obj = {
                 top : '0px',
                 left : '0px',
-                transform : `translate(${x}px, ${y}px)`
+                translate : `${x}px ${y}px`
             };
-            /*
-            panel.style.top = '0px';
-            panel.style.left = '0px';
-            panel.style.transform = `translate(${x}px, ${y}px)`;
-            */
             me.#resize(obj);
         });
 
@@ -287,13 +280,6 @@ export default class GSPopup extends GSElement {
         const me = this;
         const panel = me.#panel;
         if (!panel) return;
-        //if (!me.visible) me.style.transform = 'unset';
-        /*
-        if (me.wMax) panel.style.maxWidth = `${me.wMax}px`;
-        if (me.wMin) panel.style.minWidth = `${me.wMin}px`;
-        if (me.hMax) panel.style.maxHeight = `${me.hMax}px`;
-        if (me.hMin) panel.style.minHeight = `${me.hMin}px`;
-        */
         if (me.wMax) obj['max-width'] = `${me.wMax}px`;
         if (me.wMin) obj['min-width'] = `${me.wMin}px`;
         if (me.hMax) obj['max-height'] = `${me.hMax}px`;

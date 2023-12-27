@@ -11,7 +11,6 @@ import GSAttr from '../base/GSAttr.mjs';
 import GSDate from '../base/GSDate.mjs';
 import GSDOM from '../base/GSDOM.mjs';
 import GSElement from '../base/GSElement.mjs'
-import GSEvents from '../base/GSEvents.mjs';
 import GSUtil from '../base/GSUtil.mjs';
 
 /**

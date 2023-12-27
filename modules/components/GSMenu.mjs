@@ -128,7 +128,7 @@ export default class GSMenu extends GSUListExt {
         position : 'fixed',
         top : '0px',
         left : '0px',
-        transform : `translate(${cfg.clientX}px, ${cfg.clientY}px)`
+        translate : `${cfg.clientX}px ${cfg.clientY}px`
       };
       GSCacheStyles.setRule(me.id, style, true);
       me.open(cfg);

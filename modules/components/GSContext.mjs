@@ -76,10 +76,9 @@ export default class GSContext extends GSElement {
     me.close();
     //GSEvents.monitorAction(me.#menu, 'context');
     me.attachEvent(me.#menu, 'action', me.#onAction.bind(me));
-    me.attachEvent(document, 'gs-component', me.#attachTarget.bind(me));
-    //me.attachEvent(me.#menu, 'mouseleave', me.close.bind(me));
     me.attachEvent(me.#menu, 'open', e => me.emit( 'open', e.detail));
     me.attachEvent(me.#menu, 'close', e => me.emit( 'close', e.detail));
+    me.attachEvent(document, 'gs-component', me.#attachTarget.bind(me));
     me.attachEvent(window, 'resize', me.#onResize.bind(me));
     me.#attachTarget();
     super.onReady();
