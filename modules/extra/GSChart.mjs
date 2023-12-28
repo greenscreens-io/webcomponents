@@ -11,6 +11,7 @@ import GSElement from "../base/GSElement.mjs";
 import GSAttr from "../base/GSAttr.mjs";
 import GSLoader from '../base/GSLoader.mjs';
 import GSLog from "../base/GSLog.mjs";
+import GSEvents from "../base/GSEvents.mjs";
 
 
 /**
@@ -148,28 +149,23 @@ export default class GSChart extends GSElement {
     // https://www.chartjs.org/docs/latest/developers/api.html
 
     reset() {
-        const me = this;
-        if (me.#chart) me.#chart.reset();
+        this.#chart?.reset();
     }
 
     render() {
-        const me = this;
-        if (me.#chart) me.#chart.render();
+        this.#chart?.render();
     }
 
     update(val) {
-        const me = this;
-        if (me.#chart) me.#chart.update(val);
+        this.#chart?.update(val);
     }
 
     stop() {
-        const me = this;
-        if (me.#chart) me.#chart.stop();
+        this.#chart?.stop();
     }
 
     clear() {
-        const me = this;
-        if (me.#chart) me.#chart.clear();
+        this.#chart?.clear();
     }
 
     resize(x, y) {
@@ -186,8 +182,7 @@ export default class GSChart extends GSElement {
     }
 
     toBase64Image(type = "image/png", quality = 1) {
-        const me = this;
-        if (me.#chart) return me.#chart.toBase64Image(type, quality);
+        return this.#chart?.toBase64Image(type, quality);
     }
 
     // internal functions to render JSON from gs-items elements
@@ -206,6 +201,8 @@ export default class GSChart extends GSElement {
         sets.forEach((o, i) => {
             o.data = sets.length === 1 ? data : data[i] || [];
         });
+
+        if (me.#chart) return me.update(opt);
 
         const ctx = me.canvas.getContext('2d');
         me.#chart = new GSChart.#Chart(ctx, opt);

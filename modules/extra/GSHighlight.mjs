@@ -174,10 +174,11 @@ export default class GSHighlight extends GSElement {
     }
 
     #onMessage(e) {
-        URL.revokeObjectURL(e.data.url);
         const me = this;
         const html = e.data.data;
+        URL.revokeObjectURL(e.data.url);
         GSDOM.setHTML(me.#code, e.data.append ? me.#code.innerHTML + html: html);
+        e.target.terminate();
     }
 
     #onHighlight(data = '', append = false) {
@@ -193,7 +194,7 @@ export default class GSHighlight extends GSElement {
 
     get #worker() {
         const me = this;
-        const langs = me.language ? me.language.split(',').map(v => `importScripts('${GSHighlight.URL_LIB}$/languages/${v.trim}.min.js');`).join('') : '';
+        const langs = me.language ? me.language.split(',').map(v => `importScripts('${GSHighlight.URL_LIB}/languages/${v.trim()}.min.js');`).join('') : '';
         return `globalThis.onmessage = (event) => {
                 importScripts('${GSHighlight.URL_LIB}/highlight.min.js');
                 ${langs}

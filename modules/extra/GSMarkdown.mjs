@@ -232,7 +232,7 @@ export default class GSMarkdown extends GSElement {
     #fromCache() {
         const me = this;
         const url = me.#cache.length > 0 ? me.#cache.pop() : me.#first;
-        return url === me.#last ? me.#fromCache() : url;
+        return url && url === me.#last ? me.#fromCache() : url;
     }
 
     #toCache(url) {

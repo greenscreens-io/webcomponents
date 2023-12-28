@@ -1,0 +1,45 @@
+{
+    "type": "bubble",
+    "data": {
+        "datasets": [
+            {
+                "label": "Dataset 1",
+                "_data_": [],
+                "borderColor": "rgb(255, 99, 132)",
+                "backgroundColor": "rgba(255, 99, 132, 0.5)"
+            },
+            {
+                "label": "Dataset 2",
+                "_data_": [],
+                "borderColor": "rgb(255, 159, 64)",
+                "backgroundColor": "rgba(255, 159, 64, 0.5)"
+            },
+            {
+                "label": "Dataset 3",
+                "backgroundColor": "rgba(255, 205, 86, 0.5)",
+                "borderColor": "rgb(255, 205, 86)",
+                "_data_": []
+            },
+            {
+                "label": "Dataset 4",
+                "backgroundColor": "rgba(75, 192, 192, 0.5)",
+                "borderColor": "rgb(75, 192, 192)",
+                "_data_": []
+            }
+        ],
+        "labels": []
+    },
+    "options": {
+        "responsive": true,
+        "maintainAspectRatio": true,
+        "scales": {
+            "x": {
+                "display": true
+            },
+            "y": {
+                "beginAtZero": true,
+                "display": true
+            }
+        }
+    }
+}
