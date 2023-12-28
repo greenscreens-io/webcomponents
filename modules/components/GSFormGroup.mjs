@@ -133,6 +133,7 @@ export default class GSFormGroup extends GSElement {
       <div class="row ${me.css}">
          <div class="form-floating ${me.#cssCheck} ${me.cellField}">
             ${me.#input}
+            ${me.#output}
             ${me.#label}
          </div>
          ${me.#info}
@@ -148,6 +149,7 @@ export default class GSFormGroup extends GSElement {
         </div>
          <div class="${me.#cssCheck} ${me.cellField}">
             ${me.#input}
+            ${me.#output}
          </div>
          ${me.#info}   
       </div>      
@@ -230,7 +232,7 @@ export default class GSFormGroup extends GSElement {
 
    get #labelWrap() {
       const me = this;
-      return `<div class="${me.cellLabel}">${me.#label}</label></div>`;
+      return `<div class="${me.cellLabel}">${me.#label}</div>`;
    }
 
    get #cssField() {

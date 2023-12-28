@@ -139,8 +139,8 @@ export default class GSHighlight extends GSElement {
 
     #onLanguage(oldValue, newValue) {
         const me = this;
-        if (oldValue) me.#code.remove(`language-${oldValue}`);
-        if (newValue) me.#code.add(`language-${newValue}`);
+        if (oldValue) GSDOM.toggleClass(me.#code, `language-${oldValue}`, false);
+        if (newValue) GSDOM.toggleClass(me.#code, `language-${newValue}`, true);
     }
 
     async #onTheme() {
@@ -193,7 +193,7 @@ export default class GSHighlight extends GSElement {
 
     get #worker() {
         const me = this;
-        const langs = me.language ? me.language.split(',').map(v => `importScripts('${GSHighlight.URL_LIB}$/languages/{v.trim}.min.js');`).join('') : '';
+        const langs = me.language ? me.language.split(',').map(v => `importScripts('${GSHighlight.URL_LIB}$/languages/${v.trim}.min.js');`).join('') : '';
         return `globalThis.onmessage = (event) => {
                 importScripts('${GSHighlight.URL_LIB}/highlight.min.js');
                 ${langs}

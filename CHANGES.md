@@ -5,8 +5,10 @@
  - Fix - GSModal wait events synced with GSDialog
  - Fix - GSData.readFromObject invalid variable
  - Fix - GSData.objectPathExist invalid variable
+ - Fix - GSHighlight language set
  - Added - GSDynamicStyle - dynamic CSS style
  - Added - GSAttr generic element attribute proxy 
+ - Improvement - GSEvents registration
 
 # Release v1.9.0 (04.12.2023.)
  - Fix - Firefox context menu event detection issue
