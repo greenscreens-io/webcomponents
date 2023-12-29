@@ -6,6 +6,8 @@
  - Fix - GSData.readFromObject invalid variable
  - Fix - GSData.objectPathExist invalid variable
  - Fix - GSHighlight language set
+ - Fix - GSChart improvements; updated demos
+ - Added - GSTheme added theme getter
  - Added - GSDynamicStyle - dynamic CSS style
  - Added - GSAttr generic element attribute proxy 
  - Improvement - GSEvents registration
