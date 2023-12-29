@@ -208,7 +208,7 @@ export default class GSMonaco extends GSElement {
     }
 
     /**
-     * Comma separated lsit of additiona languages
+     * Comma separated lsit of additional languages
      * 
      * @returns {string}
      */
