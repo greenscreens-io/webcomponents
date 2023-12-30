@@ -20,6 +20,7 @@ import GSData from "./GSData.mjs";
 import GSEnvironment from "./GSEnvironment.mjs";
 import GSDOM from "./GSDOM.mjs";
 import GSDOMObserver from './GSDOMObserver.mjs';
+import OrientationController from "../controllers/OrientationController.mjs";
 
 /**
  * Base element inherited by all other registered GS-Elements
@@ -37,9 +38,15 @@ export default class GSElement extends HTMLElement {
 	#proxied = false;
 	#opts = null;
 
+	#queued;
+    #queue = [];
+
+	#controllers = null;
+	#orientationController = null;
 
 	constructor() {
 		super();
+		this.#orientationController = new OrientationController(this);
 	}
 
 	static observeAttributes(attributes) {
@@ -526,6 +533,7 @@ export default class GSElement extends HTMLElement {
 		me.#opts = me.#injection();
 		me.#proxied = me.#opts.ref;
 		GSComponents.store(me);
+		me.#controllers?.forEach((c) => c.hostConnected?.());
 		requestAnimationFrame(() => me.#render());
 	}
 
@@ -535,6 +543,7 @@ export default class GSElement extends HTMLElement {
 	disconnectedCallback() {
 		const me = this;
 		me.#removed = true;
+		me.#controllers?.forEach((c) => c.hostDisconnected?.());
 		me.#observer?.disconnect();
 		GSComponents.remove(me);
 		GSEvents.deattachListeners(me);
@@ -543,7 +552,20 @@ export default class GSElement extends HTMLElement {
 		me.#observer = null;
 		me.#content = null;
 		me.#opts = null;
+		me.#controllers = null;
 	}
+
+    addController(controller) {
+        const me = this;
+        (me.#controllers ??= new Set()).add(controller);
+        if (me.isConnected && me.self !== undefined) {
+            controller.hostConnected?.();
+        }
+    }
+
+    removeController(controller) {
+        this.#controllers?.delete(controller);
+    }
 
 	/**
 	 * Rerender the whole component
@@ -565,19 +587,34 @@ export default class GSElement extends HTMLElement {
 	 */
 	attributeChangedCallback(name, oldValue, newValue) {
 		const me = this;
-		if (name === 'orientation') me.#onOrientation();
+
+        me.#queue.push(arguments);
+        if (me.#queued) return;
+        me.#queued = true;
+        queueMicrotask(() => {
+			GSEvents.waitAnimationFrame(() => {
+				while (me.#queue.length > 0) {
+					try {
+						me.#scheduledAttributes(...me.#queue.shift());
+					} catch(e) {
+						console.log(e);
+					}
+				}
+				me.#queued = false;
+			});
+        });
+	}
+
+	#scheduledAttributes(name, oldValue, newValue) {
+		const me = this;
 		if (name === 'id') {
 			GSComponents.remove(oldValue);
 			GSComponents.store(me);
 		}
-		if (name === 'visible') {
-			GSDOM.toggleClass(me, 'gs-hide', newValue === 'false');
-		}
-		if (me.#ready) {
-			GSEvents.waitAnimationFrame(() => {
-				me.attributeCallback(name, oldValue, newValue);
-			}, true);
-		}
+		if (name === 'visible') GSDOM.toggleClass(me, 'gs-hide', newValue === 'false');
+		//if (me.#ready) 
+		me.attributeCallback(name, oldValue, newValue);
+		me.#controllers?.forEach((c) => c.attributeCallback?.());
 	}
 
 	/**
@@ -612,6 +649,7 @@ export default class GSElement extends HTMLElement {
 		me.#ready = true;
 		await me.onBeforeReady();
 		try {
+			me.#controllers?.forEach((c) => c.onReady?.());
 			GSFunction.callFunction(me.onready, me);
 			me.emit('ready');
 			GSEvents.send(document.body, 'componentready', me);
@@ -620,28 +658,10 @@ export default class GSElement extends HTMLElement {
 		}
 	}
 
-	/**
-	 * Update UI state if orientation changes
-	 */
-	#onOrientation(e) {
-		const me = this;
-		GSEvents.waitAnimationFrame(() => {
-			if (me.offline) return;
-			me.isValidOrientation ? me.show(true) : me.hide(true)
-		}, true);
-	}
-
 	#isConfig() {
 		const me = this;
 		const pe = GSComponents.getOwner(me, GSElement);
 		return pe && pe.isProxy;
-	}
-
-	#styleChange() {
-		const me = this;
-		GSEvents.waitAnimationFrame(() => {
-			me.updateUI();
-		}, true);
 	}
 
 	/**
@@ -788,16 +808,8 @@ export default class GSElement extends HTMLElement {
 	 */
 	async #render() {
 		const me = this;
-		// await GSEvents.waitPageLoad();
 		await me.#applyTemplate();
-		try {
-			if (me.offline) return;
-			if (!me.#useTemplate) return;
-			if (!me.isFlat) me.attachEvent(document, 'gs-style', me.#styleChange.bind(me));
-			me.attachEvent(screen.orientation, 'change', me.#onOrientation.bind(me));
-		} finally {
-			GSEvents.waitAnimationFrame(() => me.#doReady(), true);
-		}
+		GSEvents.waitAnimationFrame(() => me.#doReady(), true);
 	}
 
 	/**

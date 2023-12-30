@@ -14,8 +14,8 @@ import GSDOM from "../../base/GSDOM.mjs";
 import GSData from "../../base/GSData.mjs";
 import GSLog from "../../base/GSLog.mjs";
 import GSAttr from "../../base/GSAttr.mjs";
-import GSReadWriteRegistry from "../../base/GSReadWriteRegistry.mjs";
 import GSUtil from "../../base/GSUtil.mjs";
+import GSReadWriteRegistry from "../../base/GSReadWriteRegistry.mjs";
 
 
 /**
@@ -62,6 +62,9 @@ export default class GSFormExt extends HTMLFormElement {
     #controller;
     #reader;
 
+    #queued;
+    #queue = [];
+
     constructor() {
         super();
         this.#reader = this.#onRead.bind(this);       
@@ -94,7 +97,22 @@ export default class GSFormExt extends HTMLFormElement {
      */
     attributeChangedCallback(name, oldValue, newValue) {
         const me = this;
-        requestAnimationFrame(() => me.attributeCallback(name, oldValue, newValue));
+
+        this.#queue.push(arguments);
+        if (me.#queued) return;
+        me.#queued = true;
+        queueMicrotask(() => {
+            while (me.#queue.length > 0) {
+                try {
+                    me.attributeCallback(...me.#queue.shift());
+                } catch(e) {
+                    console.log(e);
+                }
+            }
+            me.#queued = false;
+        });
+
+        //requestAnimationFrame(() => me.attributeCallback(name, oldValue, newValue));
     }
 
     attributeCallback(name, oldValue, newValue) {
