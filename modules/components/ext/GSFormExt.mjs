@@ -141,6 +141,13 @@ export default class GSFormExt extends HTMLFormElement {
         GSLog.error(this, e);
     }
 
+    validate() {
+        const me = this;
+        const isValid = me.checkValidity() && me.isValid;
+        if (!isValid) me.reportValidity();
+        return isValid;
+    }
+
     /**
      * Overide native to pickup all form elements, including ones in shadow dom
      */
@@ -160,9 +167,7 @@ export default class GSFormExt extends HTMLFormElement {
         const me = this;
         me.#last = data;
         GSDOM.fromObject(me, data);
-        const isValid = me.checkValidity() && me.isValid;
-        if (!isValid) me.reportValidity();
-        return isValid;
+        return me.validate();
     }
 
     get asJSON() {
@@ -233,8 +238,7 @@ export default class GSFormExt extends HTMLFormElement {
     #onSubmit(e) {
         GSEvents.prevent(e, true);
         const me = this;
-        const isValid = me.checkValidity() && me.isValid;
-        if (!isValid) me.reportValidity();
+        const isValid = me.validate();
         if (isValid) me.write();
         const data = { type: 'submit', data: me.asJSON, source: e, valid: isValid };
         GSEvents.send(me, 'form', data, true, true);

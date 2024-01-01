@@ -156,7 +156,7 @@ export default class GSComponents {
      * @returns {boolean} Returns true if getter exist
      */
     static hasGetter(own, name) {
-        return GSComponents.hasFunc(own, name, 'get');
+        return GSFunction.isFunctionDefined(own, name, 'get');
     }
 
     /**
@@ -166,7 +166,7 @@ export default class GSComponents {
      * @returns {boolean} Returns true if setter exist
      */
     static hasSetter(own, name) {
-        return GSComponents.hasFunc(own, name, 'set');
+        return GSFunction.isFunctionDefined(own, name, 'get');
     }
 
     /**
@@ -177,8 +177,7 @@ export default class GSComponents {
      * @returns {boolean} Returns true if getter exist
      */
     static hasFunc(own, name, fn) {
-        const desc = own ? Reflect.getOwnPropertyDescriptor(own.__proto__, name) : false;
-        return desc && typeof desc[fn] === 'function';
+        return GSFunction.isFunctionDefined(own, name, fn);
     }
 
     /**

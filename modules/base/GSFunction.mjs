@@ -38,6 +38,18 @@ export default class GSFunction {
     }
 
     /**
+     * Check if class instance has defined function
+     * @param {object} own Class instance
+     * @param {string} name Function name to check
+     * @param {string} fn Function name to check
+     * @returns {boolean} Returns true if getter exist
+     */
+    static isFunctionDefined(own, name, fn) {
+        const desc = own ? Reflect.getOwnPropertyDescriptor(own.__proto__, name) : false;
+        return desc && typeof desc[fn] === 'function';
+    }
+
+    /**
      * Check if object is of type async function
      * 
      * @param {function} fn 
@@ -62,7 +74,7 @@ export default class GSFunction {
      */
     static async callFunctionAsync(fn, owner) {
         const args = arguments ? Array.from(arguments).slice(2) : [];
-        return await fn.apply(owner ||null, args);
+        return await fn.apply(owner || null, args);
     }
 
     /**
@@ -75,7 +87,7 @@ export default class GSFunction {
      */
     static callFunctionSync(fn, owner) {
         const args = arguments ? Array.from(arguments).slice(2) : [];
-        return fn.apply(owner ||null, args);
+        return fn.apply(owner || null, args);
     }
 
     /**
