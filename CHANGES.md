@@ -12,6 +12,7 @@
  - Added - GSAttr generic element attribute proxy 
  - Added - Controller support for easy component extensions
  - Added - Scheduled attribute change updates
+ - Added - validator to custom form
  - Improvement - GSEvents registration
 
 # Release v1.9.0 (04.12.2023.)

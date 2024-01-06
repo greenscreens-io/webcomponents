@@ -15,7 +15,7 @@ import GSLog from "./GSLog.mjs";
 import GSUtil from "./GSUtil.mjs";
 
 /**
- * Support for i18n Internationalization
+ * Support for i18n Localization
  * Class loads requested language translations and applies to the templates
   * @class
  */
