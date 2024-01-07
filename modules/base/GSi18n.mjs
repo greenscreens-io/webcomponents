@@ -350,7 +350,7 @@ export default class GSi18n extends HTMLElement {
      * List of attributes on an element used to translate.
      */
     get list() {
-        const val = GSAttr.get(this, 'list', 'title,comment');
+        const val = GSAttr.get(this, 'list', 'title,comment, placeholder');
         return val.split(',');
     }
 
