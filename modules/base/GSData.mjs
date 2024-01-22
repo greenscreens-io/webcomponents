@@ -153,8 +153,9 @@ export default class GSData {
             const key = isArray ? idx : o.name;
             const v1 = a[key];
             const v2 = b[key];
+            const ord = GSUtil.isNumber(o) ? o : o.ord;
 
-            sts = GSData.compare(v1, v2, o.ord, sts);
+            sts = GSData.compare(v1, v2, ord, sts);
         });
 
         return sts;
