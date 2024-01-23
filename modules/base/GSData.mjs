@@ -149,11 +149,11 @@ export default class GSData {
 
         sort.forEach((o, i) => {
             if (!o) return;
-            const idx = o.col || i;
+            const ord = GSUtil.isNumber(o) ? o : o.ord;
+            const idx = GSUtil.isNumber(o.col) ? o.col : i;
             const key = isArray ? idx : o.name;
             const v1 = a[key];
             const v2 = b[key];
-            const ord = GSUtil.isNumber(o) ? o : o.ord;
 
             sts = GSData.compare(v1, v2, ord, sts);
         });
