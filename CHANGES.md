@@ -1,10 +1,11 @@
 # [WebComponents](https://webcomponents.greenscreens.ltd/) for [Bootstrap 5.2.0+](https://getbootstrap.com/)
 
-# Development v1.9.1 (29.12.2023.)
+# Development v1.9.1 (23.01.2024.)
  - Fix - GSEvents callback timeout caller
  - Fix - GSModal wait events synced with GSDialog
  - Fix - GSData.readFromObject invalid variable
  - Fix - GSData.objectPathExist invalid variable
+ - Fix - GSData sorting improvements
  - Fix - GSHighlight language set
  - Fix - GSChart improvements; updated demos
  - Added - GSTheme added theme getter
