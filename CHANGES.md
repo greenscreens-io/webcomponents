@@ -1,9 +1,8 @@
-# [Bootstrap_Lit](https://webcomponents.greenscreens.ltd/).
+# [WebComponents](https://webcomponents.greenscreens.ltd/).
 
-# Release v1.0.0 (01.10.2024.)
+# Release v2.0.0 BETA (25.10.2024.)
 
-- Migrated from GS WebComponents
-
+- Migrated to Lit Elements 3.0
 
 <br><hr>
 

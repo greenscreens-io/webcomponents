@@ -1,8 +1,8 @@
-# [Bootstrap_Lit](https://webcomponents.greenscreens.ltd/).
+# [WebComponents](https://webcomponents.greenscreens.ltd/).
  
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) 
 
-Green Screens Bootstrap-Lit are Web UI components library based on Bootstrap (5.2.0.+) CSS, and Google Lit.
+Green Screens WbComponents is  Web UI components library based on Bootstrap (5.2.0.+) CSS, and Google Lit Elements 3.0.
  
 Clone a repo and use the web server to point to the repo root directory, then access demos at http://localhost/demos to learn how to use the components.
 
