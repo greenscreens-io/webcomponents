@@ -158,7 +158,7 @@ export default class GSFunction {
             cnt++;
             const own = context || this;
             return new Promise((accept, reject) => {
-                requestAnimationFrame(async () => {
+                queueMicrotask(async () => {
                     if (cnt <= 0) return;
                     cnt--;
                     if (cnt !== 0) return;

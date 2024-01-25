@@ -22,8 +22,6 @@ import GSAttr from "../../base/GSAttr.mjs";
  */
 export default class GSStore extends GSDataHandler {
 
-    #filter = [];
-    #sort = [];
     #data = [];
     #page = 1;
     #total = 0;
@@ -46,8 +44,6 @@ export default class GSStore extends GSDataHandler {
     disconnectedCallback() {
         const me = this;
         me.#data = [];
-        me.#filter = [];
-        me.#sort = [];
         super.disconnectedCallback();
     }
 
