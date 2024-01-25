@@ -2,6 +2,8 @@
  
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) 
 
+### NOTE Archived v1.x based on Vanilla JavaScript. 25.01.2024. Use version v2.x from main branch. 
+
 Green Screens WebComponents are small, Web UI components library based on Bootstrap (5.2.0.+) CSS, built with vanilla JavaScript without other dependencies.
  
 The library code is made with ECMAScript 2022 (ES13) standard using static class initializers and other modern browser features. 
