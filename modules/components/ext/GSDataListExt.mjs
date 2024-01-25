@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015, 2022 Green Screens Ltd.
+ * Copyright (C) 2015, 2024 Green Screens Ltd.
  */
 
 /**
@@ -7,11 +7,11 @@
  * @module components/ext/GSDataListExt
  */
 
-import GSID from "../../base/GSID.mjs";
-import GSComponents from "../../base/GSComponents.mjs";
-import GSLoader from "../../base/GSLoader.mjs";
-import GSDOM from "../../base/GSDOM.mjs";
-import GSUtil from "../../base/GSUtil.mjs";
+
+import { GSID } from "../../base/GSID.mjs";
+import { GSDOM } from "../../base/GSDOM.mjs";
+import { GSUtil } from "../../base/GSUtil.mjs";
+import { GSLoader } from "../../base/GSLoader.mjs";
 
 /**
  * Add JSON loader to datalist element
@@ -23,7 +23,7 @@ import GSUtil from "../../base/GSUtil.mjs";
  * @class
  * @extends {HTMLDataListElement}
  */
-export default class GSDataListExt extends HTMLDataListElement {
+export class GSDataListExt extends HTMLDataListElement {
 
     static {
         customElements.define('gs-ext-datalist', GSDataListExt, { extends: 'datalist' });
@@ -44,17 +44,11 @@ export default class GSDataListExt extends HTMLDataListElement {
     }
 
     connectedCallback() {
-        const me = this;
-        GSID.setIf(me);
-        GSComponents.store(me);
-    }
-
-    disconnectedCallback() {
-        GSComponents.remove(this);
+        GSID.setIf(this);
     }
 
     get owner() {
-        const own = GSComponents.getOwner(this);
+        const own = GSDOM.root(this);
         return GSDOM.unwrap(own);
     }
 
@@ -85,7 +79,7 @@ export default class GSDataListExt extends HTMLDataListElement {
     #objToHTML(o) {
         const seg = ['<option'];
 
-        if (GSUtil.isString(o)) o = {value : o};
+        if (GSUtil.isString(o)) o = { value: o };
 
         Object.entries(o).forEach(it => {
             const key = it[0];

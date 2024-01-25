@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Bootstrap-Lit</title>
+  <meta charset="utf-8">
+
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0">
+
+  <meta name="subject" content="Green Scereens Ltd.">
+  <meta name="author" content="www.greenscreens.ltd">
+  <meta name="keywords" content="JavaScript,WebComponents">
+  <meta name="robots" content="index, follow">
+  <meta name="revisit-after" content="3 month">
+  <meta name="description" content="WebComponents UI library based on Bootstrap.">
+
+  <script>
+    globalThis.GS_TEMPLATE_URL = '/bootstrap-lit/demos/templates/';
+  </script>
+
+    <!-- Optimized CSS loading -->
+    <link rel="preload" href="/bootstrap-lit/assets/css/bootstrap.css" as="style"  data-adoptable="true" data-id="1">
+    <link rel="preload" href="/bootstrap-lit/assets/themes/default.css" as="style" data-adoptable="true" data-id="2">
+    <link rel="preload" href="/bootstrap-lit/assets/icons/bootstrap-icons.css" as="style" data-adoptable="true" data-id="4">
+
+    <script type="module" src="/bootstrap-lit/modules/base/GSAdoptedEngine.mjs"></script>
+    <script type="module" src="/bootstrap-lit/modules/base/GSTheme.mjs"></script>
+    <script type="module" src="/bootstrap-lit/modules/components/Template.mjs"></script>
+    <script type="module" src="/bootstrap-lit/modules/components/Popup.mjs"></script>
+    <script type="module" src="/bootstrap-lit/modules/components/Button.mjs"></script>
+    <script type="module" src="/bootstrap-lit/modules/components/Center.mjs"></script>
+
+</head>
+<body>
+
+  <gs-template url="//header.html"></gs-template>
+
+  <div class="m-4 p-1 bg-light bordered shadow-sm">
+    <gs-button id="b1" title="Popup 1" color="primary" data-gs-call="open" data-gs-target="#mypopup1" tooltip="Toggle popup on/off"></gs-button>
+    <gs-button id="b2" title="Popup 2" color="primary" data-gs-call="open" data-gs-target="#mypopup2" tooltip="Toggle popup on/off"></gs-button>
+  </div>
+
+  <!-- target elemnt for popup, also triggers on/off by clicking on it -->
+  <gs-center css="p-4 bg-light bordered shadow-sm" id="mypanel">
+      Click inside to show popup
+  </gs-center>
+
+  <!-- 
+    position popup at the end of target 
+    target and placement attributes tells popup component where to show up 
+    if target not set, it will take calling element as a target
+  -->
+  <gs-popup css="text-bg-light bordered p-4 m-2" template="//tab/content.html" 
+    id="mypopup1" target="#mypanel" trigger="click mouseover" placement="bottom"></gs-popup>
+
+  <gs-popup css="text-bg-light bordered p-4 m-2" v-pos="107" h-pos="16" id="mypopup2">
+      <div class="mb-3">
+        <label for="email" class="form-label">Email address</label>
+        <input name="email" type="email" class="form-control" placeholder="email" required="">
+      </div>
+  </gs-popup>
+
+
+</body>
+
+</html>

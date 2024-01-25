@@ -2,14 +2,12 @@
 <html lang="en">
 
 <head>
-    <title>Inputmask Test</title>
+    <title>Bootstrap-Lit</title>
     <meta charset="utf-8">
 
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
-    <meta name="viewport"
-        content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0">
 
     <meta name="subject" content="Green Scereens Ltd.">
     <meta name="author" content="www.greenscreens.ltd">
@@ -18,29 +16,34 @@
     <meta name="revisit-after" content="3 month">
     <meta name="description" content="WebComponents UI library based on Bootstrap.">
 
-    <script type="module" src="/webcomponents/modules/index.mjs"></script>
-    <script type="module" src="/webcomponents/modules/components/ext/GSInputExt.mjs"></script>
-    <script type="module" src="/webcomponents/modules/components/ext/GSFormExt.mjs"></script>
-    <script type="module" src="/webcomponents/modules/components/GSFormGroup.mjs"></script>
+    <script>
+        globalThis.GS_TEMPLATE_URL = '/bootstrap-lit/demos/templates/';
+    </script>
+    
+    <!-- Optimized CSS loading -->
+    <link rel="preload" href="/bootstrap-lit/assets/css/bootstrap.css" as="style"  data-adoptable="true" data-id="1">
+    <link rel="preload" href="/bootstrap-lit/assets/themes/default.css" as="style" data-adoptable="true" data-id="2">
+    <link rel="preload" href="/bootstrap-lit/assets/icons/bootstrap-icons.css" as="style" data-adoptable="true" data-id="4">
 
-    <!-- disable to hide right side help icon -->
-    <script type="module" src="/webcomponents/modules/components/GSToolTip.mjs"></script>
-
-    <gs-css url="/webcomponents/assets/css/io.greenscreens.bootstrap.css"></gs-css>
-    <gs-css url="/webcomponents/assets/icons/bootstrap-icons.css" notheme="true"></gs-css>
+    <script type="module" src="/bootstrap-lit/modules/base/GSAdoptedEngine.mjs"></script>
+    <script type="module" src="/bootstrap-lit/modules/base/GSTheme.mjs"></script>
+    <script type="module" src="/bootstrap-lit/modules/components/Template.mjs"></script>
+    <script type="module" src="/bootstrap-lit/modules/components/FormGroup.mjs"></script>
+    <script type="module" src="/bootstrap-lit/modules/components/Tooltip.mjs"></script>
+    <script type="module" src="/bootstrap-lit/modules/components/Icon.mjs"></script>
+    <script type="module" src="/bootstrap-lit/modules/components/ext/index.mjs"></script>
 
 </head>
 
 <body>
+    <gs-template url="//header.html"></gs-template>
 
-    <gs-template href="/webcomponents/demos/header.tpl"></gs-template>
-
-    <div class="m-4 p-1 bg-light border shadow-sm row">
+    <div class="m-4 p-1 bg-light bordered shadow-sm row">
         Horizontal layout
     </div>
     
-    <form is="gs-ext-form">
-        <div class="container justify-content-center w-50 border p-4 shadow-sm bg-light">
+    <form>
+        <div class="container justify-content-center w-50 bordered p-4 shadow-sm bg-light">
             <gs-form-group css="mt-2" name="date" mask="DD-MM-YYYY" label="Date" description="Masked date input"></gs-form-group>
             <gs-form-group css="mt-2" name="hexa" mask="XXXXXXXXXXXXXXXX" label="Hexadecimal input with" description="Masked hexadecimal input"></gs-form-group>
 
@@ -73,12 +76,12 @@
         </div>        
     </form>
 
-    <div class="m-4 p-1 bg-light border shadow-sm row">
+    <div class="m-4 p-1 bg-light bordered shadow-sm row">
         Vertical layout
     </div>
     
     <form>
-        <div class="container justify-content-center w-50 border p-4 shadow-sm bg-light">
+        <div class="container justify-content-center w-50 bordered p-4 shadow-sm bg-light">
 
             <gs-form-group css="mt-2" layout="vertical" name="date" mask="DD-MM-YYYY" label="Date" description="Masked date input"></gs-form-group>
             <gs-form-group css="mt-2" layout="vertical" name="hexa" mask="XXXXXXXXXXXXXXXX" label="Hexadecimal input with" description="Masked hexadecimal input"></gs-form-group>
@@ -102,12 +105,12 @@
         </div>       
     </form>
 
-    <div class="m-4 p-1 bg-light border shadow-sm row">
+    <div class="m-4 p-1 bg-light bordered shadow-sm row">
         Floating layout
     </div>
     
     <form>
-        <div class="container justify-content-center w-50 border p-4 shadow-sm bg-light">
+        <div class="container justify-content-center w-50 bordered p-4 shadow-sm bg-light">
 
             <gs-form-group css="mt-2" layout="floating" css-label="fw-bold text-muted" name="date" mask="DD-MM-YYYY" label="Date" description="Masked date input"></gs-form-group>
             <gs-form-group css="mt-2" layout="floating" css-label="fw-bold text-muted" name="hexa" mask="XXXXXXXXXXXXXXXX" label="Hexadecimal input with" description="Masked hexadecimal input"></gs-form-group>
@@ -131,23 +134,23 @@
         </div>
     </form>
 
-    <div class="m-4 p-1 bg-light border shadow-sm row">
+    <div class="m-4 p-1 bg-light bordered shadow-sm row">
         Tooltip without icon
     </div>
     
     <form>
-        <div class="container justify-content-center w-50 border p-4 shadow-sm bg-light">
+        <div class="container justify-content-center w-50 bordered p-4 shadow-sm bg-light">
 
-            <gs-form-group css="mt-2" layout="horizontal" css-label="fw-bold text-muted" name="date" mask="DD-MM-YYYY" label="Date" description="Masked date input" icon="false"></gs-form-group>
-            <gs-form-group css="mt-2" layout="vertical" css-label="fw-bold text-muted" name="hexa" mask="XXXXXXXXXXXXXXXX" label="Hexadecimal input with" description="Masked hexadecimal input"  icon="false"></gs-form-group>            
-            <gs-form-group css="mt-2" layout="floating" css-label="fw-bold text-muted" name="fieldv" placeholder="...enter user name" label="Field vertical" description="Login user"  icon="false"></gs-form-group>
+            <gs-form-group css="mt-2" layout="horizontal" css-label="fw-bold text-muted" name="date" mask="DD-MM-YYYY" label="Date" description="Masked date input" icon=""></gs-form-group>
+            <gs-form-group css="mt-2" layout="vertical" css-label="fw-bold text-muted" name="hexa" mask="XXXXXXXXXXXXXXXX" label="Hexadecimal input with" description="Masked hexadecimal input"  icon=""></gs-form-group>            
+            <gs-form-group css="mt-2" layout="floating" css-label="fw-bold text-muted" name="fieldv" placeholder="...enter user name" label="Field vertical" description="Login user"  icon=""></gs-form-group>
             
-            <gs-form-group css="mt-2" layout="vertical" name="field1" label="Check box"    type="checkbox" checked  icon="false" description="Test tooltip"></gs-form-group>
-            <gs-form-group css="mt-2" layout="vertical" name="field2" label="Radio button" type="radio" checked icon="false" description="Test tooltip"></gs-form-group>
-            <gs-form-group css="mt-2" layout="vertical" name="field3" label="Switch box"   type="switch" checked icon="false" description="Test tooltip"></gs-form-group>
-            <gs-form-group css="mt-2" layout="vertical" name="field4" label="Range"        type="range" min="0" max="100" step="2" icon="false" description="Test tooltip"></gs-form-group>
+            <gs-form-group css="mt-2" layout="vertical" name="field1" label="Check box"    type="checkbox" checked  icon="" description="Test tooltip"></gs-form-group>
+            <gs-form-group css="mt-2" layout="vertical" name="field2" label="Radio button" type="radio" checked icon="" description="Test tooltip"></gs-form-group>
+            <gs-form-group css="mt-2" layout="vertical" name="field3" label="Switch box"   type="switch" checked icon="" description="Test tooltip"></gs-form-group>
+            <gs-form-group css="mt-2" layout="vertical" name="field4" label="Range"        type="range" min="0" max="100" step="2" icon="" description="Test tooltip"></gs-form-group>
             
-            <gs-form-group css="mt-2" layout="vertical" name="active4" label="Status" description="test" icon="false">
+            <gs-form-group css="mt-2" layout="vertical" name="active4" label="Status" description="test" icon="">
                 <template>
                     <select class="form-select" id="active4" name="active4" required>
                         <option value="true">Enabled</option>
@@ -160,6 +163,7 @@
     </form>
 
     <br><br><br><br><br><br><br><br><br><br>
+    
 </body>
 
 </html>

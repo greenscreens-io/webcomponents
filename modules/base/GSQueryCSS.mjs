@@ -1,16 +1,16 @@
 /*
- * Copyright (C) 2015, 2022 Green Screens Ltd.
+ * Copyright (C) 2015, 2024 Green Screens Ltd.
  */
 
-import GSDOM from "./GSDOM.mjs";
-import GSFunction from "./GSFunction.mjs";
-import GSUtil from "./GSUtil.mjs";
+import { GSDOM } from "./GSDOM.mjs";
+import { GSFunction } from "./GSFunction.mjs";
+import { GSUtil } from "./GSUtil.mjs";
 
 /**
  * Proxy class to handle chained css.
  * Used internally, see GSQuery class.
  */
-export default class GSQueryCSS {
+export class GSQueryCSS {
 
     #map = null;
 
@@ -33,7 +33,7 @@ export default class GSQueryCSS {
         }
     }
 
-    static wrap(element) {        
+    static wrap(element) {
         return new Proxy(element.style, new GSQueryCSS(element));
     }
 }

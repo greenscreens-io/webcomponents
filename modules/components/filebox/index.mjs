@@ -1,7 +1,7 @@
 /*
- * Copyright (C) 2015, 2022 Green Screens Ltd.
+ * Copyright (C) 2015, 2024 Green Screens Ltd.
  */
 
-import "./GSAttachment.mjs";
-import "./GSFileBox.mjs";
+export * from "./Attachment.mjs";
+export * from "./FileBox.mjs";
 

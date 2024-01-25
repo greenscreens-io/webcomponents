@@ -15,4 +15,4 @@ GSCenter WebComponent is a simple helper class to center elements inside a web p
 
 <br>
 
-&copy; Green Screens Ltd. 2016 - 2023
+&copy; Green Screens Ltd. 2016 - 2024

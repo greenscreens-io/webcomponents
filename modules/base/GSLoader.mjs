@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015, 2022 Green Screens Ltd.
+ * Copyright (C) 2015, 2024 Green Screens Ltd.
  */
 
 /**
@@ -7,16 +7,16 @@
  * @module base/GSLoader
  */
 
-import GSDOM from "./GSDOM.mjs";
-import GSFunction from "./GSFunction.mjs";
-import GSLog from "./GSLog.mjs";
-import GSUtil from "./GSUtil.mjs";
+import { GSDOM } from "./GSDOM.mjs";
+import { GSFunction } from "./GSFunction.mjs";
+import { GSLog } from "./GSLog.mjs";
+import { GSUtil } from "./GSUtil.mjs";
 
 /**
  * A set of static functions used for loading resources
  * @class
  */
-export default class GSLoader {
+export class GSLoader {
 
     static TEMPLATE_URL = globalThis.GS_TEMPLATE_URL || location.origin;
     static NO_CACHE = false;
@@ -40,8 +40,8 @@ export default class GSLoader {
     }
     /**
      * Convert partial URL to a real URL
-     * @param {string} url 
-     * @return {string}
+     * @param {String} url 
+     * @return {String}
      */
     static normalizeURL(url = '', base = false) {
 
@@ -72,12 +72,12 @@ export default class GSLoader {
 
     /**
      * Extrach parent path from provided URL string
-     * @param {string} url 
-     * @param {number} level How many levels to go up the chain
-     * @returns {string}
+     * @param {String} url 
+     * @param {Number} level How many levels to go up the chain
+     * @returns {String}
      */
     static parentPath(url = '', level = 1) {
-        return (url || '').split('/').slice(0, -1 * level).join('/')+'/';
+        return (url || '').split('/').slice(0, -1 * level).join('/') + '/';
     }
 
     /**
@@ -85,7 +85,7 @@ export default class GSLoader {
      * Can be html source or url, checks if load or not
      * 
      * @async
-     * @param {string} def
+     * @param {String} def
      * @return {Promise<string>}
      */
     static async getTemplate(def = '') {
@@ -107,8 +107,8 @@ export default class GSLoader {
 
     /**
      * Decode template URL into a real URL
-     * @param {string} url 
-     * @return {string}
+     * @param {String} url 
+     * @return {String}
      */
     static #getTemplateURL(url = '') {
         /*
@@ -121,7 +121,7 @@ export default class GSLoader {
 
     /**
      * Retrieve default template url
-     * @return {string}
+     * @return {String}
      */
     static get #templateURL() {
         return GSLoader.normalizeURL(GSLoader.#templatePath, true);
@@ -129,7 +129,7 @@ export default class GSLoader {
 
     /**
      * Retrieve defult template path
-     * @return {string}
+     * @return {String}
      */
     static get #templatePath() {
         return GSLoader.TEMPLATE_URL ? GSLoader.TEMPLATE_URL.replace('//', '/') : '';
@@ -139,8 +139,8 @@ export default class GSLoader {
      * Load html template (used for template cache)
      * 
      * @async
-     * @param {string} val Full or partial url path
-     * @param {string} method HTTP methog get|put|post
+     * @param {String} val Full or partial url path
+     * @param {String} method HTTP methog get|put|post
      * @returns {Promise<string>}
      * @throws {Error}
      */
@@ -153,19 +153,19 @@ export default class GSLoader {
      * Load remote data as text (for loading templates)
      * 
      * @async
-     * @param {string} val Full or partial url path
-     * @param {string} method HTTP methog get|put|post
-     * @param {boolean} asjson Parse returned data as JSON
+     * @param {String} val Full or partial url path
+     * @param {String} method HTTP methog get|put|post
+     * @param {Boolean} asjson Parse returned data as JSON
      * @returns {Promise<object|string>}
      */
     static async load(val = '', method = 'GET', headers, asjson = false, body) {
         let data = null;
         const ct = 'Content-Type';
-        headers = {...headers};
+        headers = { ...headers };
         headers[ct] = asjson ? 'application/json; utf-8' : headers[ct] || 'text/plain';
         headers.Accept = 'application/json';
         const url = GSLoader.normalizeURL(val, true);
-        const opt  ={ method: method, headers: headers };
+        const opt = { method: method, headers: headers };
         if (method === 'POST' || method === 'PUT' && body) {
             opt.body = JSON.stringify(body);
         }
@@ -178,11 +178,11 @@ export default class GSLoader {
      * Load remote data without throwing an exception
      * 
      * @async
-     * @param {string} url Full or partial url path
-     * @param {string} method http method GET|POST|PUT
-     * @param {object} headers return json or string
-     * @param {boolean} asjson return json or string
-     * @param {object} dft default value
+     * @param {String} url Full or partial url path
+     * @param {String} method http method GET|POST|PUT
+     * @param {Object} headers return json or string
+     * @param {Boolean} asjson return json or string
+     * @param {Object} dft default value
      * @returns {Promise<object|string>}
      */
     static async loadSafe(url = '', method = 'GET', headers, asjson = false, dft, body) {

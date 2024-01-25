@@ -48,6 +48,10 @@
 	user-select: all;
 }
 
+.dropdown-menu {
+	--bs-dropdown-link-active-bg: lightsteelblue;
+}
+
 @keyframes spin {
   from {
     transform: rotate(0deg);

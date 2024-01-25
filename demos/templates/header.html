@@ -1,0 +1,31 @@
+<div class="d-flex justify-content-between flex-fill bg-light bordered shadow-sm p-2 mb-1">
+    <div>
+        <a href="/bootstrap-lit/demos/index.html" title="Return to the main demo page">
+                <i class="bi bi-house fs-4 fw-bold"></i>
+        </a>
+    </div>
+    <div>
+        <a href="https://webcomponents.greenscreens.ltd" target="_blank" title="Open Green Screens WebComponents landing page">
+                <img src="/bootstrap-lit/assets/img/logo.png" height="32" alt="logo">
+        </a>
+    </div>
+    <div class="d-flex">  
+        <div class="d-flex align-items-center fs-6">
+            <div class="form-check form-check-inline form-check-reverse form-switch">
+                <label class="form-check-label" for="direction">RTL</label>
+                <input class="form-check-input" type="checkbox" id="direction" onchange="document.body.dir = this.checked ? 'rtl' :'';">
+              </div>            
+        </div>        
+        <div class="d-flex align-items-center fs-6">
+            <div class="form-check form-check-inline form-check-reverse form-switch">
+                <label class="form-check-label" for="theme">Dark/Light theme</label>
+                <input class="form-check-input" type="checkbox" id="theme" onchange="GSTheme.theme = this.checked ? 'dark' :'light';console.log(GSTheme.theme)">
+              </div>            
+        </div>
+        <div class="d-flex align-items-center fs-5">
+            <a href="#" onclick="window.close()" title="Close this browser tab">
+                    <i class="bi bi-door-open fs-4 fw-bold" fs-4=""></i>
+            </a>
+        </div>
+    </div>
+</div>

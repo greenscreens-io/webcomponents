@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015, 2022 Green Screens Ltd.
+ * Copyright (C) 2015, 2024 Green Screens Ltd.
  */
 
 /**
@@ -7,9 +7,9 @@
  * @module base/GSPopper
  */
 
-import GSLog from "./GSLog.mjs";
-import GSCSSMap from "./GSCSSMap.mjs";
-import GSCacheStyles from "../head/GSCacheStyles.mjs";
+import { GSLog } from "./GSLog.mjs";
+import { GSCSSMap } from "./GSCSSMap.mjs";
+import { GSDynamicStyle } from "./GSDynamicStyle.mjs";
 
 /**
  * A generic set of static functions used across GS WebComponents framework
@@ -17,16 +17,25 @@ import GSCacheStyles from "../head/GSCacheStyles.mjs";
  * Also used to replace Bootstrap popper.
  * @class
  */
-export default class GSPopper {
+export class GSPopper {
+
+	/**
+	 * A simple wrapper to get element DOMRect
+	 * @param {HTMLElement} el 
+	 * @returns {DOMRect}
+	 */
+	static asRect(el) {
+		return el.getBoundingClientRect();
+	}
 
 	/**
 	 * Get element offset position
 	 * Returns absolute position {left:0, top:0, width:0, height:0,centeY:0 centerX:0}
 	 * @param {HTMLElement} el 
-	 * @returns {object} 
+	 * @returns {Object} 
 	 */
 	static getOffset(el) {
-		const rect = el.getBoundingClientRect();
+		const rect = GSPopper.asRect(el);
 		const sx = window.scrollX;
 		const sy = window.scrollY;
 		const obj = {
@@ -48,11 +57,11 @@ export default class GSPopper {
 	 * Return element position and size without padding
 	 * Returned objext is the same format as native getBoundingRect
 	 * @param {HTMLElement} element 
-	 * @returns {object} 
+	 * @returns {Object} 
 	 */
 	static boundingRect(element, calcPadding) {
 
-		const rect = element.getBoundingClientRect();
+		const rect = GSPopper.asRect(element);
 		const padding = GSPopper.elementPadding(calcPadding ? element : null);
 
 		const paddingX = padding.x;
@@ -82,7 +91,7 @@ export default class GSPopper {
 	/**
 	 * Calculate element padding
 	 * @param {HTMLElement} element 
-	 * @returns {object}
+	 * @returns {Object}
 	 */
 	static elementPadding(element) {
 
@@ -98,7 +107,7 @@ export default class GSPopper {
 		const isEl = element instanceof HTMLElement;
 		if (!isEl) return obj;
 		const css = GSCSSMap.getComputedStyledMap(element);
-		
+
 		obj.left = css.asNum('padding-left');
 		obj.right = css.asNum('padding-right');
 		obj.top = css.asNum('padding-top');
@@ -111,10 +120,10 @@ export default class GSPopper {
 
 	/**
 	 * Fixed positioning on a viewport.
-	 * @param {string} placement Location on target element top|bottom|left|right
+	 * @param {String} placement Location on target element top|bottom|left|right
 	 * @param {HTMLElement} source Element to show
 	 * @param {HTMLElement} target Element location at which to show
-	 * @param {boolean} arrow if true, will calculate arrow position
+	 * @param {Boolean} arrow if true, will calculate arrow position
 	 * @returns {void}
 	 */
 	static popupFixed(placement = 'top', source, target, arrow) {
@@ -128,16 +137,19 @@ export default class GSPopper {
 			return;
 		}
 
-		const style = source.dataset.cssId ? {} : source.style;
+		const style = GSDynamicStyle.dynamicStyle(source);
 
-		style.position = 'fixed';
-		style.top = '0px';
-		style.left = '0px';
-		style.margin = '0px';
-		style.padding = '0px';
-		style.transform = '';
+		const css = {
+			position: 'fixed',
+			top: '0px',
+			left: '0px',
+			margin: '0px',
+			padding: '0px',
+			transform: '',
+			translate: ''
+		};
 
-		GSCacheStyles.setRule(source.dataset.cssId, style, true);
+		Object.assign(style, css);
 
 		const offh = source.clientHeight / 2;
 		const offw = source.clientWidth / 2;
@@ -155,17 +167,16 @@ export default class GSPopper {
 		}
 
 		GSPopper.#calcFixed(pos, obj, rect, arect);
-		style.transform = `translate(${obj.x}px, ${obj.y}px)`;
-		GSCacheStyles.setRule(source.dataset.cssId, style);
+		style.translate = `${obj.x}px ${obj.y}px`;
 
 	}
 
 	/**
 	 * Place element around target element. Bootstrap support for popup etc.
-	 * @param {string} placement Location on target element top|bottom|left|right
+	 * @param {String} placement Location on target element top|bottom|left|right
 	 * @param {HTMLElement} source Element to show
 	 * @param {HTMLElement} target Element location at which to show
-	 * @param {boolean} arrow if true, will calculate arrow position
+	 * @param {Boolean} arrow if true, will calculate arrow position
 	 * @returns {void}
 	 */
 	static popupAbsolute(placement = 'top', source, target, arrow) {
@@ -179,19 +190,26 @@ export default class GSPopper {
 			return;
 		}
 
-		const style = source.dataset.cssId ? {} : source.style;
-		const astyle = arrow.dataset.cssId ? {} : arrow.style;
+		const style = GSDynamicStyle.dynamicStyle(source);
+		const astyle = GSDynamicStyle.dynamicStyle(arrow);
 
+		const css = {
+			inset: GSPopper.#inset(pos),
+			position: 'absolute',
+			margin: '0px',
+			top: '0px',
+			left: '0px',
+			width: 'max-content',
+			height: 'max-content',			
+			transform: '',
+			translate: ''
+		};
+
+		Object.assign(style, css);
 		astyle.position = 'absolute';
-		style.position = 'absolute';
-		style.margin = '0px';
-		style.transform = '';
-		style.inset = GSPopper.#inset(pos);
 
-		GSCacheStyles.setRule(source.dataset.cssId, style, true);
-
-		const srect = source.getBoundingClientRect();
-		const arect = arrow.getBoundingClientRect();
+		const srect = GSPopper.asRect(source);
+		const arect = GSPopper.asRect(arrow);
 		const offset = GSPopper.getOffset(target);
 
 		const obj = {
@@ -206,14 +224,18 @@ export default class GSPopper {
 
 		GSPopper.#calcAbsolute(pos, obj, arr, srect, arect, offset);
 
-		style.transform = `translate(${obj.x}px, ${obj.y}px)`;	
-		astyle.transform = `translate(${arr.x}px, ${arr.y}px)`;
-		astyle.top = arr.top ? arr.top : '';
-		astyle.left = arr.left ? arr.left : '';
+		const aopt = {
+			translate: `${arr.x}px ${arr.y}px`,
+			top: arr.top ? arr.top : '',
+			left: arr.left ? arr.left : ''
+		}
 
-		GSCacheStyles.setRule(source.dataset.cssId, style);
-		GSCacheStyles.setRule(arrow.dataset.cssId, astyle);
+		const opt = {
+			translate : `${obj.x}px ${obj.y}px`
+		};
 
+		Object.assign(style, opt);
+		Object.assign(astyle, aopt);
 	}
 
 	static #calcAbsolute(pos, obj, arr, srect, arect, offset) {
@@ -284,6 +306,7 @@ export default class GSPopper {
 	static #updateArrow(element, arrow, pos) {
 
 		if (!arrow) return { x: 0, y: 0, size: 0, width: 0, height: 0 };
+
 		let shift = 0;
 		const erect = GSPopper.boundingRect(element);
 		const arect = GSPopper.boundingRect(arrow);
@@ -295,23 +318,23 @@ export default class GSPopper {
 
 		arect.size = size;
 
-		const style = arrow.dataset.cssId ? {} : arrow.style;
+		const opt = {};
 
-		style.position = 'absolute';
+		opt.position = 'absolute';
 
 		if (pos.isStart || pos.isEnd) {
-			style.left = '';
-			style.top = '0px';
-			shift = pos.isStart ? size : -1 * size;
-			style.transform = `translate(${shift}px, ${arrowPosH / 2}px)`;
+			opt.left = '';
+			opt.top = '0px';
+			shift = 0; //pos.isStart ? size : -1 * size;
+			opt.translate = `${shift}px ${arrowPosH / 2}px`;
 		} else {
-			style.top = '';
-			style.left = '0px';
-			shift = pos.isTop ? size : -1 * size;
-			style.transform = `translate(${arrowPosW}px, ${shift}px)`;
+			opt.top = '';
+			opt.left = '0px';
+			shift = 0; //pos.isTop ? size : -1 * size;
+			opt.translate = `${arrowPosW}px ${shift}px`;
 		}
 
-		GSCacheStyles.setRule(arrow.dataset.cssId, style);
+		GSDynamicStyle.applyDynamicStyle(arrow, opt);
 
 		return arect;
 	}

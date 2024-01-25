@@ -18,9 +18,16 @@ GSCalendar WebComponent is a month selector renderer.
 | css-weeks          | CSS classes for weeks bar                                |
 | css-selected       | CSS classes for selected day                             |
 | css-today          | CSS classes for current day                              |
+| arrow-prev         | Text for arrow "previous"                                |
+| arrow-next         | Text for arrow "next"                                    |
+| day                | Initial day                                              |
+| month              | Initial month                                            |
+| year               | Initial year                                             |
 | date               | Initial date                                             |
 | format             | String format the date                                   |
 | locale             | Local language support                                   |
+| year-min           | Minimum year to allowed                                  |
+| year-max           | Maximum year to allowed                                  |
 
 <br>
 
@@ -36,10 +43,10 @@ For more details, check [calendar.html](../../demos/calendar.html)
 How to listen for date slection:
 
 ```JavaScript
-const el = GSComponents.find('gs-calendar');
+const el = GSDOM.query('gs-calendar');
 el.listen('date', e => console.log(e));
 ```
 
 <br>
 
-&copy; Green Screens Ltd. 2016 - 2023
+&copy; Green Screens Ltd. 2016 - 2024

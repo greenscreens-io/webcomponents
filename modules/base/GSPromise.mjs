@@ -1,8 +1,8 @@
 /*
- * Copyright (C) 2015, 2023 Green Screens Ltd.
+ * Copyright (C) 2015, 2024 Green Screens Ltd.
  */
 
-import GSUtil from "./GSUtil.mjs";
+import { GSUtil } from "./GSUtil.mjs";
 
 /**
  * A module loading GSPromise class
@@ -13,7 +13,7 @@ import GSUtil from "./GSUtil.mjs";
  * A Promise wrapper for timeouted and cancelable events
  * @class
  */
-export default class GSPromise {
+export class GSPromise {
 
     #signal;
     #callback;
@@ -33,10 +33,10 @@ export default class GSPromise {
         me.#signal = signal instanceof AbortSignal ? signal : null;
         me.#signal = GSUtil.isNumber(signal) ? AbortSignal.timeout(signal) : me.#signal;
         me.#callbacks = {
-            abort : me.#onAbort.bind(me)
+            abort: me.#onAbort.bind(me)
         };
     }
-    
+
     await() {
         const me = this;
         if (me.#promise) return me.#promise;
@@ -55,7 +55,7 @@ export default class GSPromise {
         me.#reject = reject;
         try {
             me.#callback(me.#onResolve.bind(me), me.#onReject.bind(me));
-        } catch(e) {
+        } catch (e) {
             me.#clear();
             reject(e);
         }
@@ -83,6 +83,16 @@ export default class GSPromise {
         const me = this;
         me.#signal?.removeEventListener('abort', me.#callbacks.abort);
     }
+
+	/**
+	 * Execute array of promisses sequentially
+	 * @param {Arrayy<Promise>} ps 
+	 * @returns 
+	 */
+	static sequential(ps) {
+		if (!Array.isArray(ps)) ps = [];
+		return ps.reduce((p, next) => p.then(next), Promise.resolve());
+	}
 
     static {
         globalThis.GSPromise = GSPromise;

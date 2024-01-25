@@ -1,8 +1,8 @@
 /*
- * Copyright (C) 2015, 2022 Green Screens Ltd.
+ * Copyright (C) 2015, 2024 Green Screens Ltd.
  */
 
-import GSLog from "./GSLog.mjs";
+import { GSLog } from "./GSLog.mjs";
 
 /**
  * A module loading GSDOMObserver class
@@ -18,7 +18,7 @@ import GSLog from "./GSLog.mjs";
  * @class
  * @extends MutationObserver
  */
-export default class GSDOMObserver extends MutationObserver {
+export class GSDOMObserver extends MutationObserver {
 
     static #filtersAdd = new Map();
     static #filtersDel = new Map();
@@ -26,8 +26,8 @@ export default class GSDOMObserver extends MutationObserver {
     /**
      * Observe element for insertion / deletion
      * @param {HTMLElement} el A HTMLElement instance to observe for child changes
-     * @param {object} opt A JSON configuration object
-     * @returns {boolean} A satus of successfull observer registration
+     * @param {Object} opt A JSON configuration object
+     * @returns {Boolean} A satus of successfull observer registration
      */
     observe(el, opt) {
         const cfg = opt || { childList: true, subtree: true };
@@ -37,17 +37,18 @@ export default class GSDOMObserver extends MutationObserver {
     /**
      * Create a new observer instance for given root element
      * @param {HTMLElement} el An element to monitor for changes 
+     * @param {Object} opt A JSON configuration object
      * @returns {GSDOMObserver}
      */
-    static create(el) {
+    static create(el, opt) {
         const observer = new GSDOMObserver(GSDOMObserver.#onObserve);
-        observer.observe(el);
+        observer.observe(el, opt);
         return observer;
     }
 
     /**
      * Get add or remove filter
-     * @param {boolean} forRemove If "true", return injection filter functions, elseremoval functions
+     * @param {Boolean} forRemove If "true", return injection filter functions, elseremoval functions
      * @returns {Map<Function, Function>} Returns map of filter functions
      */
     static #getFilter(forRemove = false) {
@@ -85,7 +86,7 @@ export default class GSDOMObserver extends MutationObserver {
      * Walk node tree
      * @param {HTMLElement} rootEL node root
      * @param {Map} filters
-     * @returns {boolean} 
+     * @returns {Boolean} 
      */
     static #walk(rootEL, filters) {
         if (filters.size === 0) return false;
@@ -117,7 +118,7 @@ export default class GSDOMObserver extends MutationObserver {
      * @param {Function} filter function to filter nodes
      * @param {Function} callback function to be called on selected node
      * 
-     * @returns {boolean}
+     * @returns {Boolean}
      */
     static #exec(el, filter, callback) {
         if (el instanceof HTMLElement == false) return false;
@@ -129,7 +130,7 @@ export default class GSDOMObserver extends MutationObserver {
     /**
      * Check if parameter is function
      * @param {function} fn 
-     * @returns {boolean} true if parameter is function type
+     * @returns {Boolean} true if parameter is function type
      */
     static #isFunction(fn) {
         return typeof fn === 'function';
@@ -139,7 +140,7 @@ export default class GSDOMObserver extends MutationObserver {
      * Check if registration functions are valid
      * @param {Function} filter function to filter nodes
      * @param {Function} callback function to be called on selected node
-     * @returns {boolean}
+     * @returns {Boolean}
      */
     static #isFunctions(filter, callback) {
         return GSDOMObserver.#isFunction(filter) && GSDOMObserver.#isFunction(callback);
@@ -150,9 +151,9 @@ export default class GSDOMObserver extends MutationObserver {
      * 
      * @param {Function} filter - filter function returns true
      * @param {Function} callback - result function
-     * @param {boolean} forRemove - call on node remove or add
-     * 
-     * @returns {boolean} Returns true if filter registered
+     * @param {Boolean} forRemove - call on node remove or add
+     * @param {HTMLElement} target - element to monitor
+     * @returns {Boolean} Returns true if filter registered
      */
     static registerFilter(filter, callback, forRemove = false, target) {
 
@@ -170,9 +171,9 @@ export default class GSDOMObserver extends MutationObserver {
      * Unregister element filter
      * 
      * @param {Function} fn Filter function
-     * @param {boolean} forRemove Call on node remove or add
+     * @param {Boolean} forRemove Call on node remove or add
      * 
-     * @returns {boolean} Returns true if unregistered
+     * @returns {Boolean} Returns true if unregistered
      */
     static unregisterFilter(fn, forRemove = false) {
         return GSDOMObserver.#isFunction(fn) ? GSDOMObserver.#getFilter(forRemove).delete(fn) : false;

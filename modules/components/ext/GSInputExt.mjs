@@ -1,20 +1,19 @@
 /*
- * Copyright (C) 2015, 2022 Green Screens Ltd.
+ * Copyright (C) 2015, 2024 Green Screens Ltd.
  */
+
+import { GSID } from "../../base/GSID.mjs";
+import { GSEvents } from "../../base/GSEvents.mjs";
+import { GSAttr } from "../../base/GSAttr.mjs";
+import { GSDOM } from "../../base/GSDOM.mjs";
+import { GSUtil } from "../../base/GSUtil.mjs";
+import { GSCSSMap } from "../../base/GSCSSMap.mjs";
 
 /**
  * A module loading GSInputExt class
  * @module components/ext/GSInputExt
  */
 
-import GSID from "../../base/GSID.mjs";
-import GSEvents from "../../base/GSEvents.mjs";
-import GSComponents from "../../base/GSComponents.mjs";
-import GSAttr from "../../base/GSAttr.mjs";
-import GSDOM from "../../base/GSDOM.mjs";
-import GSUtil from "../../base/GSUtil.mjs";
-import GSCSSMap from "../../base/GSCSSMap.mjs";
-import GSDOMObserver from "../../base/GSDOMObserver.mjs";
 
 /**
  * Add custom field processing
@@ -22,7 +21,7 @@ import GSDOMObserver from "../../base/GSDOMObserver.mjs";
  * @class
  * @extends {HTMLInputElement}
  */
-export default class GSInputExt extends HTMLInputElement {
+export class GSInputExt extends HTMLInputElement {
 
     static #wordop = ['KeyC', 'KeyV', 'KeyX', 'KeyA'];
     static #copycut = ['KeyC', 'KeyX'];
@@ -45,16 +44,6 @@ export default class GSInputExt extends HTMLInputElement {
 
     static {
         customElements.define('gs-ext-input', GSInputExt, { extends: 'input' });
-        Object.seal(GSInputExt);
-        GSDOMObserver.registerFilter(GSInputExt.#onMonitorFilter, GSInputExt.#onMonitorResult);
-    }
-
-    static #onMonitorFilter(el) {
-        return GSDOM.isFormElement(el);
-    }
-
-    static #onMonitorResult(el) {
-        GSEvents.send(el, 'form-field', el, true, true, true);
     }
 
     constructor() {
@@ -73,7 +62,6 @@ export default class GSInputExt extends HTMLInputElement {
         }
         me.#toPattern();
         me.#attachEvents();
-        GSComponents.store(me);
         if (me.autofocus) me.focus();
         setTimeout(me.#onDataChange.bind(me), 250);
     }
@@ -81,7 +69,6 @@ export default class GSInputExt extends HTMLInputElement {
     disconnectedCallback() {
         const me = this;
         me.#masks = [];
-        GSComponents.remove(me);
         GSEvents.deattachListeners(me);
     }
 
@@ -89,8 +76,15 @@ export default class GSInputExt extends HTMLInputElement {
         if (name === 'mask' || name === 'pattern') this.#toPattern();
     }
 
+    validate() {
+        const me = this;
+        const isValid = me.checkValidity();
+        if (!isValid) me.reportValidity();
+        return isValid;
+    }
+
     get owner() {
-        const own = GSComponents.getOwner(this);
+        const own = GSDOM.root(this);
         return GSDOM.unwrap(own);
     }
 
@@ -237,7 +231,7 @@ export default class GSInputExt extends HTMLInputElement {
             clean = true;
         }
 
-        const obj = opt?.dataset ||{};
+        const obj = opt?.dataset || {};
         Object.entries(obj).forEach(p => {
             const val = clean ? '' : p[1];
             const key = p[0];
@@ -276,10 +270,11 @@ export default class GSInputExt extends HTMLInputElement {
     #onBlur(e) {
         const me = this;
         if (me.mask && me.value === me.mask) me.value = '';
-        if (!me.checkValidity()) return me.reportValidity();
+        if (!me.validate()) return;
         try {
             if (me.mask && me.#changed) {
-                GSEvents.send(me, 'change', {}, true, true, true);
+                //GSEvents.send(me, 'change', {}, true, true);
+                GSEvents.send(me, 'change', {});
             }
             if (!me.isInList()) GSEvents.send(me, 'strict', { ok: false, source: e });
         } finally {
@@ -321,13 +316,12 @@ export default class GSInputExt extends HTMLInputElement {
             me.type = 'text';
         }
 
-        
+
         if (!me.mask) return;
-        
+
         if (e.code === 'Tab') {
-            if (!me.checkValidity()) {
+            if (!me.validate()) {
                 GSEvents.prevent(e);
-                me.reportValidity();
             }
             return;
         }
@@ -338,12 +332,11 @@ export default class GSInputExt extends HTMLInputElement {
             // if ctrl+[c,a,x,v] operation
             if (wordop) {
                 // if ctrl+[c,x] operation and invalid, prevent
-                if (copycut && !me.checkValidity()) {
-                    me.reportValidity();
+                if (copycut && !me.validate()) {
                     return GSEvents.prevent(e);
                 }
                 return;
-            } 
+            }
         }
 
         const tmp = me.value.split('');
@@ -353,9 +346,9 @@ export default class GSInputExt extends HTMLInputElement {
         let pos = pos1;
 
         if (e.code === 'Delete') {
-            if(pos2 === tmp.length) return;
+            if (pos2 === tmp.length) return;
             handle = true;
-            while(pos <= pos2) {
+            while (pos <= pos2) {
                 tmp[pos] = me.mask[pos];
                 pos++;
             }
@@ -363,20 +356,20 @@ export default class GSInputExt extends HTMLInputElement {
         }
 
         if (e.code === 'Backspace') {
-            if(pos1 === 0) return;
+            if (pos1 === 0) return;
             handle = true;
-            while(pos2 >= pos1) {
+            while (pos2 >= pos1) {
                 pos2--;
-                if (pos2 >=0) tmp[pos2] = me.mask[pos2];
+                if (pos2 >= 0) tmp[pos2] = me.mask[pos2];
             }
-            pos = pos1-1;            
+            pos = pos1 - 1;
         }
 
         if (!handle) return;
 
         me.value = me.formatMask(tmp.join(''));
         me.setSelectionRange(pos, pos);
-        me.#changed = true;        
+        me.#changed = true;
         //return GSEvents.prevent(e);
 
     }
@@ -384,7 +377,7 @@ export default class GSInputExt extends HTMLInputElement {
     #onKeyPress(e) {
         const me = this;
         if (!me.mask) return;
-        if (e.ctrlKey ||e.altKey||e.shiftKey||e.metaKey||e.key.length!==1) return;
+        if (e.ctrlKey || e.altKey || e.shiftKey || e.metaKey || e.key.length !== 1) return;
 
         const tmp = me.value.split('');
         let pos1 = me.selectionStart;
@@ -400,25 +393,25 @@ export default class GSInputExt extends HTMLInputElement {
             }
             tmp[pos1] = e.key;
         } else {
-            tmp[pos1] = me.mask[pos1];    
+            tmp[pos1] = me.mask[pos1];
         }
 
 
-        while(pos2 > pos1) {
+        while (pos2 > pos1) {
             tmp[pos2] = me.mask[pos2];
             pos2--;
         }
 
         me.value = me.formatMask(tmp.join(''))
-        me.setSelectionRange(pos1 + 1, pos1 + 1);       
+        me.setSelectionRange(pos1 + 1, pos1 + 1);
         me.#changed = true;
         //GSEvents.prevent(e);
     }
 
     #onChange(e) {
         const me = this;
-        if (me.type !== 'range') return;
-        me.title = me.value;
+        if (me.type == 'range') me.title = me.value;
+        //GSEvents.send(me, 'changed', {}, true, true);
     }
 
     #onInput(e) {
@@ -437,20 +430,14 @@ export default class GSInputExt extends HTMLInputElement {
 
     #onTextInput(e) {
         const me = this;
-
         me.value = me.#updateText(me.value);
-
-        /*
-        if (!me.checkValidity()) {
-            me.reportValidity();
-        }
-        */
+        //me.validate();
     }
 
     formatMask(value = '') {
         const me = this;
         if (!me.mask) return value;
-        
+
         const chars = value.split('');
 
         const tmp = [];

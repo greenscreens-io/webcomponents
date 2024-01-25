@@ -1,8 +1,8 @@
 {
     "HELLO_WORLD" : "Zdravo svijete",
-    "TESTING" : "Testiranje prevođenja",
+    "TESTING" : "Testiranje prijevoda",
     "USER_NAME" : "Korisničko ime",
     "PASSWORD" : "Zaporka",
-    "MAIL_ADDRESS" : "Email adresa"
+    "MAIL_ADDRESS" : "Elektronička pošta"
 }
 

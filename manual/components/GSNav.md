@@ -9,27 +9,18 @@ GSNav WebComponent renders Bootstrap Nav which can be used to toggle or dismiss 
  
 | Name               | Description                                                  |
 |--------------------|--------------------------------------------------------------|
-| css-nav            | CSS classes for nav bar                                      |
+| type               | Nav type (pills, tabs, underline)                            |
 | bar                | Show as horizontal (true) or vertical (false)                |
  
 <br>
  
 ## Attributes ```<gs-item>```
 ---
- 
-| Name               | Description                                                  |
-|--------------------|--------------------------------------------------------------|
-| css-nav            | CSS classes for nav item                                     |
-| css-nav-wrap       | CSS classes for item wrapper                                 |
-| active             | Render item as selected / active                             |
-| icon               | CSS classes for item                                         |
-| title              | Item text                                                    |
-| action             | Event action to trigger on item click                        |
-| href               | URL location to open on click                                |
-| target             | CSS selector to element which will be affected by click event |
-| toggle             | *Type of target, defines different behavior                  |
-| dismiss            | *Type of target, defines different behavior                  |
- 
+
+All attributes from [GSSelectableItem](./GSSelectableItem.md).
+
+NOTE: GS-LIST-ITEM supports [GSAttributeHandler](../base/GSAttributeHandler.md) options.
+
 <br>
  
 ## Example
@@ -39,11 +30,11 @@ GSNav WebComponent renders Bootstrap Nav which can be used to toggle or dismiss 
 For more details, check [nav.html](../../demos/nav.html)
  
 ```html
-<gs-nav css-nav="nav-pills" bar="true">
-    <gs-item title="Home" css-nav-wrap="" css-nav=""></gs-item>
-    <gs-item title="Test1"></gs-item>
-    <gs-item title="Test2" icon="bi-alarm ms-1"></gs-item>
-    <gs-item title="Test1" toggle="modal" target="#register"></gs-item>
+<gs-nav type="pills" bar>
+    <gs-nav-item title="Home"></gs-nav-item>
+    <gs-nav-item title="Test1"></gs-nav-item>
+    <gs-nav-item title="Test2" icon="alarm ms-1"></gs-nav-item>
+    <gs-nav-item title="Test1" gs-toggle="modal" gs-target="#register"></gs-nav-item>
 </gs-nav>
 ```
  
@@ -52,10 +43,10 @@ For more details, check [nav.html](../../demos/nav.html)
 This example shows how to catch list item click events.
  
 ```JavaScript
-const menu = GSComponents.find('gs-nav');
+const menu = GSDOM.query('gs-nav');
 menu.listen('action', (e) => console.log(e.detail));
 ```
 
 <br>
 
-&copy; Green Screens Ltd. 2016 - 2023
+&copy; Green Screens Ltd. 2016 - 2024

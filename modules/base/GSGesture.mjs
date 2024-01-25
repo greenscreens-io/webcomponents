@@ -1,18 +1,18 @@
 /*
- * Copyright (C) 2015, 2022 Green Screens Ltd.
+ * Copyright (C) 2015, 2024 Green Screens Ltd.
  */
 
 /**
  * A module loading GSGesture class
  * @module base/GSGesture
  */
-import GSEvents from "./GSEvents.mjs";
+import { GSEvents } from "./GSEvents.mjs";
 
 /**
  * A class for handling touch swipe and long press events.
  * @class
  */
-export default class GSGesture {
+export class GSGesture {
 
     #xDiff = 0;
     #yDiff = 0;
@@ -32,25 +32,25 @@ export default class GSGesture {
     static timeout = 1500;
 
     /**
-     * Constrictor to attach Gesture featuer t oan HTML element
+     * Constructor to attach Gesture featuer to an HTML element
      * @param {HTMLElement} element 
-     * @param {boolean} swipe Monitor swipe gesture
-     * @param {boolean} tap Monitor tap gesture
-     * @param {boolean} longPress Monitor long press gesture
+     * @param {Boolean} swipe Monitor swipe gesture
+     * @param {Boolean} tap Monitor tap gesture
+     * @param {Boolean} longPress Monitor long press gesture
      */
     constructor(element, swipe, tap, longPress) {
         const me = this;
         me.#swipe = swipe;
         me.#tap = tap;
-        me.#longPress = longPress;        
+        me.#longPress = longPress;
         me.#xDown = null;
         me.#yDown = null;
         me.#element = typeof (element) === 'string' ? document.querySelector(element) : element;
 
         me.#bindings = {
-            move : me.#handleTouchMove.bind(me),
-            start : me.#handleTouchStart.bind(me),
-            end : me.#handleTouchEnd.bind(me)
+            move: me.#handleTouchMove.bind(me),
+            start: me.#handleTouchStart.bind(me),
+            end: me.#handleTouchEnd.bind(me)
         };
         GSEvents.attach(me.#element, me.#element, 'touchmove', me.#bindings.move, false);
         GSEvents.attach(me.#element, me.#element, 'touchstart', me.#bindings.start, false);
@@ -67,7 +67,7 @@ export default class GSGesture {
         GSEvents.remove(me.#element, me.#element, 'touchend', me.#bindings.end);
     }
 
-    #handleTouchStart(evt) { 
+    #handleTouchStart(evt) {
         const me = this;
         me.#xDown = evt.touches[0].clientX;
         me.#yDown = evt.touches[0].clientY;
@@ -92,7 +92,7 @@ export default class GSGesture {
         const yUp = evt.touches[0].clientY;
 
         if (me.#longPress) {
-            const isMoving = Math.abs(me.#xDiff) > 10 &&  Math.abs(me.#yDiff) > 10;
+            const isMoving = Math.abs(me.#xDiff) > 10 && Math.abs(me.#yDiff) > 10;
             if (isMoving) clearTimeout(me.#delay);
         }
 
@@ -123,16 +123,16 @@ export default class GSGesture {
     /**
      * Return number of fingers used in touch event
      * @param {Event} e 
-     * @returns {numner}
+     * @returns {Number}
      */
     static fingers(e) {
-		return e.detail.touches?.length;
-	}
+        return e.detail.touches?.length;
+    }
 
     /**
      * Attach swipe event to a element
      * @param {HTMLElement} element 
-     * @returns 
+     * @returns {GSGesture}
      */
     static attach(element, swipe = true, tap = false, longPress = false) {
         return new GSGesture(element, swipe, tap, longPress);

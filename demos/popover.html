@@ -2,14 +2,12 @@
 <html lang="en">
 
 <head>
-  <title>Popover Test</title>
+  <title>Bootstrap-Lit</title>
   <meta charset="utf-8">
 
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="mobile-web-app-capable" content="yes">
-  <meta name="viewport"
-    content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0">
 
   <meta name="subject" content="Green Scereens Ltd.">
   <meta name="author" content="www.greenscreens.ltd">
@@ -18,55 +16,71 @@
   <meta name="revisit-after" content="3 month">
   <meta name="description" content="WebComponents UI library based on Bootstrap.">
 
-  <script type="module" src="/webcomponents/modules/index.mjs"></script>
-  <script type="module" src="/webcomponents/modules/components/ext/GSNavLinkExt.mjs"></script>
-  <script type="module" src="/webcomponents/modules/components/GSPopover.mjs"></script>
+  <script>
+    globalThis.GS_TEMPLATE_URL = '/bootstrap-lit/demos/templates/';
+  </script>
 
-  <gs-css url="/webcomponents/assets/css/io.greenscreens.bootstrap.css"></gs-css>
-  <gs-css url="/webcomponents/assets/icons/bootstrap-icons.css" notheme="true"></gs-css>
+    <!-- Optimized CSS loading -->
+    <link rel="preload" href="/bootstrap-lit/assets/css/bootstrap.css" as="style"  data-adoptable="true" data-id="1">
+    <link rel="preload" href="/bootstrap-lit/assets/themes/default.css" as="style" data-adoptable="true" data-id="2">
+    <link rel="preload" href="/bootstrap-lit/assets/icons/bootstrap-icons.css" as="style" data-adoptable="true" data-id="4">
+
+    <script type="module" src="/bootstrap-lit/modules/base/GSAdoptedEngine.mjs"></script>
+    <script type="module" src="/bootstrap-lit/modules/base/GSTheme.mjs"></script>
+    <script type="module" src="/bootstrap-lit/modules/components/Template.mjs"></script>
+    <script type="module" src="/bootstrap-lit/modules/components/Popover.mjs"></script>
+    <script type="module" src="/bootstrap-lit/modules/components/Button.mjs"></script>
+    <script type="module" src="/bootstrap-lit/modules/components/Mouse.mjs"></script>
 
   <template id="popover1">
     <div>
       This is content from template
     </div>
   </template>
+
 </head>
+<body>
 
-<body class="vh-100 overflow-hidden">
-
-  <gs-template href="/webcomponents/demos/header.tpl" ></gs-template>
+  <gs-template url="//header.html"></gs-template>
 
   <!-- auto-generated gs-popover based on data-bs-toggle="popover" and title attribute -->
-  <div class="m-4 p-1 bg-light border shadow-sm">
+  <div class="m-4 p-1 bg-light bordered shadow-sm">
     <button type="button" class="btn btn-secondary" data-bs-container="body" data-bs-toggle="popover"
       data-bs-placement="top" data-bs-content="Top popover">
       Popover on top
     </button>
+    <gs-popover placement="top" content="Top popover" target="@previous"> </gs-popover>
+
     <button type="button" class="btn btn-secondary" data-bs-container="body" data-bs-toggle="popover"
       data-bs-placement="bottom" data-bs-content="Bottom popover">
       Popover on bottom
     </button>
+    <gs-popover placement="bottom" content="Bottom popover" target="@previous"> </gs-popover>
+
     <button type="button" class="btn btn-secondary" data-bs-container="body" data-bs-toggle="popover"
       data-bs-placement="left" data-bs-content="Left popover">
       Popover on left
     </button>
+    <gs-popover placement="left" content="Left popover" target="@previous"> </gs-popover>
+
     <button type="button" class="btn btn-secondary" data-bs-container="body" data-bs-toggle="popover"
       data-bs-placement="right" data-bs-content="Right popover">
       Popover on right
     </button>
+    <gs-popover placement="right" content="Right popover" target="@previous"> </gs-popover>
   </div>
 
   <!-- attach to ref targeted element -->
-  <div class="m-4 p-1 bg-light border shadow-sm">
+  <div class="m-4 p-1 bg-light bordered shadow-sm">
     <label id="l4" class="form-label">From Template</label>
   </div>
-  <gs-popover placement="bottom" template="#popover1" ref="#l4"> </gs-popover>
+  <gs-popover placement="bottom" template="#popover1" target="#l4"> </gs-popover>
 
   <!-- attach to ref targeted element -->
-  <div class="m-4 p-1 bg-light border shadow-sm">
+  <div class="m-4 p-1 bg-light bordered shadow-sm">
     <label id="l5" class="form-label">Sloted</label>
   </div>
-  <gs-popover placement="bottom" _content="Bottom" ref="#l5">
+  <gs-popover placement="bottom" _content="Bottom" target="#l5">
     <slot>
       <div>
         <h1>Head</h1>
@@ -75,20 +89,21 @@
   </gs-popover>
 
   <!-- attach to parent element sibling -->
-  <div class="m-4 p-1 bg-light border shadow-sm">
+  <div class="m-4 p-1 bg-light bordered shadow-sm">
     <label id="l6" class="form-label">
       Bottom
-      <gs-popover placement="bottom" title="Title" content="This is some message" trigger="focus"></gs-popover>
+      <gs-popover placement="bottom" title="Title" content="This is some message" trigger="focus" target="@parent"></gs-popover>
     </label>
     <small> (click to activate, click outside to deactivate)</small>
   </div>
 
   <!-- attach to previous element sibling -->
-  <div class="m-4 p-1 bg-light border shadow-sm">
+  <div class="m-4 p-1 bg-light bordered shadow-sm">
     <label id="l7" class="form-label">Right</label>
-    <gs-popover placement="right" title="Right" content="Content" trigger="hover"></gs-popover>
+    <gs-popover placement="right" title="Right" content="Content" trigger="hover" target="@previous"></gs-popover>
   </div>
 
+  <gs-mouse></gs-mouse>
 </body>
 
 </html>

@@ -1,5 +1,5 @@
-import GSLoader from "/webcomponents/modules/base/GSLoader.mjs";
-import GSAbstractReadWrite from "/webcomponents/modules/base/GSAbstractReadWrite.mjs";
+import { GSLoader } from "/bootstrap-lit/modules/base/GSLoader.mjs";
+import { GSAbstractReadWrite } from "/bootstrap-lit/modules/data/AbstractReadWrite.mjs";
 
 class MyStore extends GSAbstractReadWrite {
 
@@ -20,10 +20,10 @@ class MyStore extends GSAbstractReadWrite {
         console.log(msg, `data : ${JSON.stringify(data)}`);
         this.#notify(msg, data);
     }
-    
+
     async #notify(msg, body) {
         await Notification.requestPermission();
-        const o = new Notification(msg, {body: JSON.stringify(body)});
+        const o = new Notification(msg, { body: JSON.stringify(body) });
         setTimeout(o.close.bind(o), 2000);
     }
 }

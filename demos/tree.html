@@ -2,14 +2,12 @@
 <html lang="en">
 
 <head>
-  <title>List test</title>
+  <title>Bootstrap-Lit</title>
   <meta charset="utf-8">
 
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="mobile-web-app-capable" content="yes">
-  <meta name="viewport"
-    content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0">
 
   <meta name="subject" content="Green Scereens Ltd.">
   <meta name="author" content="www.greenscreens.ltd">
@@ -18,51 +16,101 @@
   <meta name="revisit-after" content="3 month">
   <meta name="description" content="WebComponents UI library based on Bootstrap.">
 
-  <script type="text/javascript">
-    self.GS_TEMPLATE_URL = '/demos/tab';
+  <script>
+    globalThis.GS_TEMPLATE_URL = '/bootstrap-lit/demos/templates/';
   </script>
-  <script type="module" src="/webcomponents/modules/index.mjs"></script>
-  <!--
-    <script type="module" src="/webcomponents/modules/components/ext/GSDataAttr.mjs"></script>
-    <script type="module" src="/webcomponents/modules/components/ext/GSNavLinkExt.mjs"></script>
-  -->
-  <script type="module" src="/webcomponents/modules/components/GSTree.mjs"></script>
 
-  <gs-css url="/webcomponents/assets/css/io.greenscreens.bootstrap.css"></gs-css>
-  <gs-css url="/webcomponents/assets/icons/bootstrap-icons.css" notheme="true"></gs-css>
+  <!-- Optimized CSS loading -->
+  <link rel="preload" href="/bootstrap-lit/assets/css/bootstrap.css" as="style" data-adoptable="true" data-id="1">
+  <link rel="preload" href="/bootstrap-lit/assets/themes/default.css" as="style" data-adoptable="true" data-id="2">
+  <link rel="preload" href="/bootstrap-lit/assets/icons/bootstrap-icons.css" as="style" data-adoptable="true"
+    data-id="4">
 
+  <script type="module" src="/bootstrap-lit/modules/base/GSAdoptedEngine.mjs"></script>
+  <script type="module" src="/bootstrap-lit/modules/base/GSTheme.mjs"></script>
+  <script type="module" src="/bootstrap-lit/modules/components/Template.mjs"></script>
+  <script type="module" src="/bootstrap-lit/modules/components/DataHandler.mjs"></script>
+  <script type="module" src="/bootstrap-lit/modules/components/Indent.mjs"></script>
+  <script type="module" src="/bootstrap-lit/modules/components/Icon.mjs"></script>
+  <script type="module" src="/bootstrap-lit/modules/components/Link.mjs"></script>
+  <script type="module" src="/bootstrap-lit/modules/components/Button.mjs"></script>
+
+  <script type="module" src="/bootstrap-lit/modules/components/tree/Tree.mjs"></script>
+  <script type="module" src="/bootstrap-lit/modules/components/tree/TreeItem.mjs"></script>
+  <script type="module" src="/bootstrap-lit/modules/data/TreeReader.mjs"></script>
 </head>
 
 <body>
+  <gs-template url="//header.html"></gs-template>
 
-  <gs-template href="/webcomponents/demos/header.tpl"></gs-template>
-
-  <div class="m-4 p-1 bg-light text-bg-light border shadow-sm">
-    <gs-tree css="">
-      <gs-item css="" action="test1" target="" toggle="" target="" dismiss="" title="Item 1" data-path="/test"></gs-item>
-      <gs-item css="" action="test2" target="" toggle="" target="" dismiss="" title="Item 2">
-        <gs-item css="" action="test3" target="" toggle="" target="" dismiss="" title="Item 3"></gs-item>
-        <gs-item css="" action="" target="" toggle="" target="" dismiss="" title="Item 4"></gs-item>
-        <gs-item css="" action="" target="" toggle="" target="" dismiss="" title="Item 5">
-          <gs-item css="" action="" target="" toggle="" target="" dismiss="" title="Item 6"></gs-item>
-          <gs-item css="" action="" target="" toggle="" target="" dismiss="" title="Item 7"></gs-item>
-          <gs-item css="" action="" target="" toggle="" target="" dismiss="" title="Item 8">
-            <gs-item css="" action="" target="" toggle="" target="" dismiss="" title="Item 9"></gs-item>
-            <gs-item css="" action="" target="" toggle="" target="" dismiss="" title="Item 10"></gs-item>
-            <gs-item css="" action="" target="" toggle="" target="" dismiss="" title="Item 11">
-              <gs-item css="" action="" target="" toggle="" target="" dismiss="" title="Item 12"></gs-item>
-              <gs-item css="" action="" target="" toggle="" target="" dismiss="" title="Item 13"></gs-item>
-            </gs-item>        
-          </gs-item>          
-        </gs-item>        
+  <!-- Automatic selection -->
+  <div class="m-4 p-1 bg-light text-bg-light bordered shadow-sm">
+    <div>HTML based data</div>
+    <div class="d-flex p-1">
+      <gs-button color="primary" title="Expand All" data-gs-target="#tree1" data-gs-call="expandAll"></gs-button>
+      <span>&nbsp;</span>
+      <gs-button color="primary" title="Collapse All" data-gs-target="#tree1" data-gs-call="collapseAll"></gs-button>
+      <span>&nbsp;</span>
+      <select class="" id="treetype" onchange="onSelect(this)">
+        <option value="1" selected>Single</option>
+        <option value="2">Multiple</option>
+        <option value="3">Leaf</option>
+      </select>
+    </div>
+    <gs-tree id="tree1">
+      <gs-item action="test1" title="Item 1" data-path="/test"></gs-item>
+      <gs-item action="test2" title="Item 2">
+        <gs-item action="test3" title="Item 3"></gs-item>
+        <gs-item title="Item 4"></gs-item>
+        <gs-item title="Item 5">
+          <gs-item title="Item 6"></gs-item>
+          <gs-item title="Item 7"></gs-item>
+          <gs-item title="Item 8">
+            <gs-item title="Item 9"></gs-item>
+            <gs-item title="Item 10"></gs-item>
+            <gs-item title="Item 11">
+              <gs-item selected title="Item 12"></gs-item>
+              <gs-item title="Item 13"></gs-item>
+            </gs-item>
+          </gs-item>
+        </gs-item>
       </gs-item>
     </gs-tree>
   </div>
 
-  <script defer="true" type="module">
-    const tbl = GSComponents.find('gs-tree');
-    tbl.listen('action', (e) => console.log(e.detail));
-</script>
+  <!-- manual selection -->
+  <div class="m-4 p-1 bg-light text-bg-light bordered shadow-sm">
+    <div>Store based data</div>
+    <div class="d-flex p-1">
+      <gs-button color="primary" title="Clear" data-gs-target="#tree2" data-gs-call="clear"></gs-button>
+      <span>&nbsp;</span>      
+      <gs-button color="primary" title="Load" data-gs-target="#tree2" data-gs-call="reload"></gs-button>
+    </div>    
+    <gs-data-handler id="tree-data" type="tree" src="/bootstrap-lit/demos/helpers/data/root.json" ></gs-data-handler>
+    <gs-tree id="tree2" storage="tree-data"></gs-tree>
+  </div>
+
+  <script>
+    function onSelect(el) {
+      const st = GSDOM.query('#tree1');
+      switch (el.value) {
+        case '1':
+          st.multiselect = false;
+          st.leaf = false;
+          break;
+        case '2':
+          st.multiselect = true;
+          st.leaf = false;
+          break;
+        case '3':
+          st.multiselect = false;
+          st.leaf = true;
+          break;
+      }
+    }
+
+  </script>
+
 </body>
 
 </html>

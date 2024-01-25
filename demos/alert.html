@@ -1,15 +1,14 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-    <title>Alert Test</title>
+    <title>Bootstrap-Lit</title>
     <meta charset="utf-8">
 
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
-    <meta name="viewport"
-        content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0">
 
     <meta name="subject" content="Green Scereens Ltd.">
     <meta name="author" content="www.greenscreens.ltd">
@@ -18,50 +17,34 @@
     <meta name="revisit-after" content="3 month">
     <meta name="description" content="WebComponents UI library based on Bootstrap.">
 
-    <script type="module" src="/webcomponents/modules/index.mjs"></script>
-    <script type="module" src="/webcomponents/modules/components/ext/GSDataAttr.mjs"></script>
-    <script type="module" src="/webcomponents/modules/components/GSAlert.mjs"></script>
+    <script>
+        globalThis.GS_TEMPLATE_URL='/bootstrap-lit/demos/templates/';
+    </script>
 
-    <gs-css url="/webcomponents/assets/css/io.greenscreens.bootstrap.css"></gs-css>
-    <gs-css url="/webcomponents/assets/icons/bootstrap-icons.css" notheme="true"></gs-css>
+    <!-- Optimized CSS loading -->
+    <link rel="preload" href="/bootstrap-lit/assets/css/bootstrap.css" as="style"  data-adoptable="true">
+    <link rel="preload" href="/bootstrap-lit/assets/themes/default.css" as="style" data-adoptable="true">
+    <link rel="preload" href="/bootstrap-lit/assets/icons/bootstrap-icons.css" as="style" data-adoptable="true">
+
+    <script type="module" src="/bootstrap-lit/modules/base/GSAdoptedEngine.mjs"></script>
+    <script type="module" src="/bootstrap-lit/modules/base/GSTheme.mjs"></script>
+    <script type="module" src="/bootstrap-lit/modules/components/Template.mjs"></script>
+    <script type="module" src="/bootstrap-lit/modules/components/Alert.mjs"></script>
 </head>
 
 <body>
+    <gs-template url="//header.html"></gs-template>
 
-    <gs-template href="/webcomponents/demos/header.tpl"></gs-template>
+    <gs-alert margin="2" color="primary" message="This is alert demonstration" template="//tpl.html"></gs-alert>
+    <gs-alert margin="2" color="warning" message="This is alert demonstration" closable></gs-alert>
+    <gs-alert margin="2" color="danger" message="This is alert demonstration" closable></gs-alert>
 
-    <div class="container mt-4">
-        <gs-alert css="alert-primary" css-active="fade" message="GS primary alert!" dismissable="false"></gs-alert>
-        <gs-alert css="alert-secondary border shadow-sm mt-2" message="GS secondary alert!" dismissible="true">
-        </gs-alert>
-        <gs-alert css="alert-light border shadow-sm mt-2" flat="false" dismissible="true">
-            This is slot light injection
-        </gs-alert>
-        <gs-alert css="alert-dark border shadow-sm mt-2" flat="false" message="This is slot dark injection!"></gs-alert>
-        <gs-alert css="alert-dark border shadow-sm mt-2" message="This is billboard with rotatable messages" delay="3">
-            <gs-item title="Dynamic message changing every 3 seconds"></gs-item>
-            <gs-item title="Dynamic message NO 2"></gs-item>
-            <gs-item title="Dynamic message NO 3"></gs-item>
-        </gs-alert>
-    </div>
-
-    <hr>
-
-    <div class="container">
-        <div class="alert alert-primary" role="alert" id="a1">
-            A simple primary alert!
-        </div>
-
-        <div class="alert alert-secondary" role="alert" id="a2">
-            A simple secondary alert!
-        </div>
-
-        <div class="alert alert-dark alert-dismissible fade show" role="alert" id="a3">
-            A simple dark alert!
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    </div>
-
+    <gs-alert color="primary" message="focus hover" closable delay="5">
+        <gs-item message="Message 1"></gs-item>
+        <gs-item message="Message 2"></gs-item>
+        <gs-item message="Message 3"></gs-item>
+    </gs-alert>    
 </body>
 
 </html>
+

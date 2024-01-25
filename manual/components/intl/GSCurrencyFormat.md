@@ -28,4 +28,4 @@ For more details, check [currency.html](../../demos/intl/currency.html)
 
 <br>
 
-&copy; Green Screens Ltd. 2016 - 2023
+&copy; Green Screens Ltd. 2016 - 2024

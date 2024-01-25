@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015, 2022 Green Screens Ltd.
+ * Copyright (C) 2015, 2024 Green Screens Ltd.
  */
 
 /**
@@ -11,7 +11,7 @@
  * Generic unique ID generator for element
  * @class
  */
-export default class GSID {
+export class GSID {
 
 	static #id = 0;
 
@@ -25,7 +25,7 @@ export default class GSID {
 	/**
 	 * Get next unique generated ID
 	 * @param {*} prefx Value to prepend to ID counter
-	 * @returns {string} A generated ID
+	 * @returns {String} A generated ID
 	 */
 	static next(prefx = 'GSId-') {
 		return `${prefx}${this.#id++}`;
@@ -33,7 +33,7 @@ export default class GSID {
 
 	/**
 	 * Auto generate next ID
-	 * @returns {string} A generated ID
+	 * @returns {String} A generated ID
 	 */
 	static get id() {
 		return this.next();

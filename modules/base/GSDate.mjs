@@ -1,6 +1,8 @@
 /*
- * Copyright (C) 2015, 2022 Green Screens Ltd.
+ * Copyright (C) 2015, 2024 Green Screens Ltd.
  */
+
+import { GSUtil } from "./GSUtil.mjs";
 
 /**
  * A module loading GSDate class
@@ -12,7 +14,7 @@
  * 
  * @class
  */
-export default class GSDate extends Date {
+export class GSDate extends Date {
 
     static DEFAULT_FORMAT = 'YYYY-MM-DDTHH:mm:ssZ';
     static REGEX_FORMAT = /\[([^\]]+)]|Y{1,4}|M{1,4}|D{1,2}|d{1,4}|H{1,2}|h{1,2}|a|A|m{1,2}|s{1,2}|Z{1,2}|SSS/g
@@ -339,4 +341,41 @@ export default class GSDate extends Date {
         return `${seg1}${seg2}:${seg3}`;
     }
 
+    static parse(value, format, locale) {
+        format = format || GSUtil.getDateFormat(locale);
+        const regex = GSDate.#getFormattedDateRegex(format);
+        return GSDate.#parseFormattedDate(value, regex);
+    }
+    
+    static #getFormattedDateRegex(format) {
+        return new RegExp(
+            '^\\s*' + format.toUpperCase().replaceAll(/([MDY])\1*/g, '(?<$1>\\d+)') + '\\s*$'
+        );
+    }
+
+    static #parseFormattedDate(value, regex) {
+
+        const { groups } = value.match(regex) ?? {};
+
+        if (!groups) return null;
+
+        const y = Number(groups.Y);
+        const m = Number(groups.M);
+        const d = Number(groups.D);
+
+        // Validate range of year and month
+        if (y < 1000 || y > 2999) return null;
+        if (m < 1 || m > 12) return null;
+
+        const date = new Date(y, m - 1, d);
+
+        // Validate day of month exists
+        if (d !== date.getDate()) return null;
+
+        return isNaN(date.valueOf()) ? null : date;
+    }
+
+    static {
+        globalThis.GSDate = GSDate;
+    }
 }

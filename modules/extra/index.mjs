@@ -1,8 +1,8 @@
 /*
- * Copyright (C) 2015, 2022 Green Screens Ltd.
- */
+ * Copyright (C) 2015, 2024 Green Screens Ltd.
+*/
 
-import './GSChart.mjs';
-import './GSHighlight.mjs';
-import './GSMonaco.mjs';
-import './GSMarkdown.mjs';
+export * from './Chart.mjs';
+export * from './Highlight.mjs';
+export * from './Markdown.mjs';
+export * from './Monaco.mjs';

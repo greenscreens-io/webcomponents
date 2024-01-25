@@ -11,7 +11,10 @@ GSAccordion WebComponent extends [GSElement](../base/GSElement.md) and all its a
 
 | Name               | Description                                         |
 |--------------------|-----------------------------------------------------|
-| css                | CSS classes for generated .accordion wrapper        |
+| autoclose          | When set will allow only one item opened            |
+| border             | Helper flag to set accordion border                 |
+| shadow             | Helper flag to set accordion shadow                 |
+| css                | CSS classes for generated accordion                 |
 | css-item           | CSS classes for gs-item element container           | 
 | css-body           | CSS classes for accordion item content wrapper      |
 | css-header         | CSS classes for accordion header title              |
@@ -23,10 +26,10 @@ GSAccordion WebComponent extends [GSElement](../base/GSElement.md) and all its a
 
 | Name               | Description                                                 |
 |--------------------|-------------------------------------------------------------|
-| autoclose          | When set to "false", will not close when another item opens |
 | message            | Item content, might be a text, id-ref or template path      | 
 | title              | Item title                                                  |
-| visible            | Is item initially opened or closed                          |
+| template           | Template url or ID for item content                         |
+| opened             | Is item initially opened or closed                          |
 
 <br>
 
@@ -40,12 +43,12 @@ For more details, check [accordion.html](../../demos/accordion.html)
 <template id="content">
     ... some html code ...
 </template>
-<gs-accordion css="" css-item="" css-header="" css-body="">
-    <gs-item title="Simple" message="My content message" visible="false" autoclose="true" ></gs-item>
-    <gs-item title="ID Reference" message="#content" visible="false" autoclose="true" ></gs-item>
-    <gs-item title="Template content" message="//content.html" visible="false" autoclose="true" ></gs-item>
+<gs-accordion css="" css-item="" css-header="" css-body="" autoclose>
+    <gs-item title="Simple" message="My content message" opened ></gs-item>
+    <gs-item title="ID Reference" message="#content"></gs-item>
+    <gs-item title="Template content" message="//content.html"></gs-item>
 </gs-accordion>
 ```
 <br>
 
-&copy; Green Screens Ltd. 2016 - 2023
+&copy; Green Screens Ltd. 2016 - 2024

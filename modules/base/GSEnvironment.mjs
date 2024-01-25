@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015, 2022 Green Screens Ltd.
+ * Copyright (C) 2015, 2024 Green Screens Ltd.
  */
 
 /**
@@ -12,11 +12,11 @@
  * such as OS, orientation, browser type etc.
  * @class
  */
-export default class GSEnvironment {
+export class GSEnvironment {
 
     /**
      * Check if page is inside mobile device
-     * @returns {boolean}
+     * @returns {Boolean}
      */
     static get isMobile() {
         if (navigator.userAgentData) return navigator.userAgentData.mobile;
@@ -25,7 +25,7 @@ export default class GSEnvironment {
 
     /** 
      * Check if page is inside desktop
-     * @returns {boolean}
+     * @returns {Boolean}
      */
     static get isDesktop() {
         return !GSEnvironment.isMobile;
@@ -46,8 +46,8 @@ export default class GSEnvironment {
 
     /**
      * Check if value match current browser type
-     * @param {string} val 
-     * @returns {boolean}
+     * @param {String} val 
+     * @returns {Boolean}
      */
     static isValidBrowser(val = '') {
         if (!val) return true;
@@ -69,8 +69,8 @@ export default class GSEnvironment {
 
     /**
      * Returns if environment matched
-     * dektop, mobile, tablet, android, linux, winwdows, macos
-     * @returns {boolean}
+     * dektop, mobile, tablet, android, linux, windows, macos, ios
+     * @returns {Boolean}
      */
     static isValidEnvironment(val = '') {
 
@@ -89,8 +89,8 @@ export default class GSEnvironment {
 
     /**
      * Returns true if device /os is valid
-     * @param {string} val 
-     * @returns {boolean}
+     * @param {String} val 
+     * @returns {Boolean}
      */
     static isDevice(val = '') {
         if (!val) return true;
@@ -110,8 +110,8 @@ export default class GSEnvironment {
      * horizontal, vertical, portrait, landscape
      * retuns true if value not set
      * 
-     * @param {string} val
-     * @returns {boolean}
+     * @param {String} val
+     * @returns {Boolean}
      */
     static isValidOrientation(val = '') {
 

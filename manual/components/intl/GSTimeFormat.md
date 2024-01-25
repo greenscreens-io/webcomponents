@@ -9,10 +9,8 @@ GSTimeFormat WebComponent is a plain WebComponent to render time with languagae 
 
 | Name               | Description                                              |
 |--------------------|----------------------------------------------------------|
-| css                | CSS classes for alert content                            |
-| css-active         | CSS classes for visible alert                            | 
-| dismisaable        | Add / remove dismiss button, to close alert              |
-| message            | Content message                                          | 
+| locale             | Langauge / locale to use for date time formatting        |
+| interval           | Update interval                                          | 
 
 <br>
 
@@ -27,4 +25,4 @@ For more details, check [time.html](../../demos/intl/time.html)
 ```
 <br>
 
-&copy; Green Screens Ltd. 2016 - 2023
+&copy; Green Screens Ltd. 2016 - 2024

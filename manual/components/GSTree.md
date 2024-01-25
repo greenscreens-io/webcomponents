@@ -3,32 +3,61 @@
 GSTree WebComponent is a dynamic tree list component.
 
 GSTree WebComponent extends [GSElement](../base/GSElement.md) and all its attributes and functions.
-
+ 
 <br>
 
-## Attributes 
+## Shared Attributes 
 ---
+
+These attributes are shared between GSTreeElement and GSTreeItemElement.
+
+| Name                 | Description                                              |
+|----------------------|----------------------------------------------------------|
+| icon-open            | Custom icon when folder is open                          | 
+| icon-close           | Custom icon when folder is closed                        | 
+| icon-item            | Custom item icon                                         | 
+| css-check            | CSS for check box item (multiselect only)                | 
+| css-focus            | CSS for focused item                                     | 
+| css-selected         | CSS for selected item                                    | 
+| check-color          | Color for unchecked item icon  (multiselect only)        | 
+| check-color-selected | Color for checked item icon  (multiselect only)          | 
+
+
+## Tree Attributes 
+---
+
 
 | Name               | Description                                              |
 |--------------------|----------------------------------------------------------|
-| css                | CSS classes for alert content                            |
-| open               | Indicate folder is open                                  | 
-| icon-open          | Custom icon when folder is open                          | 
-| icon-close         | Custom icon when folder is closed                        | 
-| icon               | Cusomt item icon                                         | 
+| data               | JSON Array of tree nodes                                 | 
+| node               | TreeNode isntacne of tree nodes                          | 
+| storage            | GSDataHandler store ID                                   | 
+| border             | Rener border for each Tree Item                          | 
+| leaf               | Prevent selecting "folder" nodes                         | 
+| multiselect        | Allow selecting multipel nodes                           | 
 
-<br>
-## Events
 
-For cancelable events, call e.preventDefault() to cancel operations (closing a modal for example).
+## Tree Item Attributes 
+---
+
+NOTE: icon-* attributes if set, applies to all nodes unles node has it's own value inplace.
 
 ---
 | Name               | Description                                                  |
 |--------------------|--------------------------------------------------------------|
-| close              | Folder is closed                                             |
-| open               | Folder is opened                                             |
-| select             | Element is selected                                          |
-| action             | Element action trigger                                       |
+| icon               | Element icon                                                 |
+| color              | Element color                                                |
+| title              | Element title                                                |
+| opened             | Element is opened                                            |
+| selected           | Element is selected                                          |
+| url                | Element url (optional)                                       |
+| icon-open          | Custom icon when folder is open                              | 
+| icon-close         | Custom icon when folder is closed                            | 
+| icon-item          | Custom item icon                                             | 
+
+All attributes from [GSSelectableItem](./GSSelectableItem.md).
+
+NOTE: GS-LIST-ITEM supports [GSAttributeHandler](../base/GSAttributeHandler.md) options.
 
 <br>
 
@@ -39,14 +68,16 @@ For cancelable events, call e.preventDefault() to cancel operations (closing a m
 For more details, check [tree.html](../../demos/tree.html)
 
 ```html
-<gs-item css="" action="" target="" toggle="" target="" dismiss="" title="Item 1">
-  <gs-item css="" action="" target="" toggle="" target="" dismiss="" title="Item 2"></gs-item>
-  <gs-item css="" action="" target="" toggle="" target="" dismiss="" title="Item 3">
-    <gs-item css="" action="" target="" toggle="" target="" dismiss="" title="Item 4"></gs-item>
-    <gs-item css="" action="" target="" toggle="" target="" dismiss="" title="Item 5"></gs-item>
-  </gs-item>        
-</gs-item>  
+<gs-tree>
+  <gs-item title="Item 1" data-path="/test">
+    <gs-item title="Item 2"></gs-item>
+    <gs-item title="Item 3">
+      <gs-item title="Item 4"></gs-item>
+      <gs-item title="Item 5"></gs-item>
+    </gs-item>        
+  </gs-item>  
+</gs-tree>
 ```
 <br>
 
-&copy; Green Screens Ltd. 2016 - 2023
+&copy; Green Screens Ltd. 2016 - 2024

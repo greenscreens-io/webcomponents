@@ -10,14 +10,22 @@ Component creates a Bootstrap toast box..
 
 ## Attributes
 
-| Name         | Description                              |
-|--------------|------------------------------------------|
-| css          | Custom CSS for a single toast            |
-| closable     | Can user close a toast message (boolean) |
-| message      | Text to display when toast shows         |
-| slot         | Default injection target (content)       |
-| timeout      | Seconds to take before toast autoclose. Set 0 to never close. |
-| visible      | Initial toast state.                     |
+| Name         | Description                                |
+|--------------|--------------------------------------------|
+| closable     | Can user close a toast message (boolean)   |
+| message      | Text to display when toast shows           |
+| delay        | Autoclose dely in seconds. (0 never close) |
+| opened       | Initial toast state.                       |
+
+<br>
+
+## Slots
+---
+
+| Name               | Description                                              |
+|--------------------|----------------------------------------------------------|
+| body               | Place HTML content into body position                    |
+| header             | Place HTML content into header position                  |
 
 <br>
 
@@ -28,11 +36,11 @@ Component creates a Bootstrap toast box..
 For more details, check [toast.html](../../../demos/toast.html)
 
 ```html
-<gs-toast slot="content" css="text-bg-dark" message="Welcome" closable="false" timeout="0" visible="true"></gs-toast>
+<gs-toast css="text-bg-dark" message="Welcome" delay="0" closable opened></gs-toast>
 ```
 
 To programmatically popup a new toast message see [GSNotification](./GSNotification.md) component.
  
 <br>
 
-&copy; Green Screens Ltd. 2016 - 2023
+&copy; Green Screens Ltd. 2016 - 2024

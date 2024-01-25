@@ -2,6 +2,19 @@
  
 GSTooltip WebComponent is a renderer for Bootstrap Tooltip.
  
+## Attributes ```<gs-tab>```
+---
+ 
+| Name               | Description                                              |
+|--------------------|----------------------------------------------------------|
+| local              | Target search position (if set, search within self)      |
+| opened             | If set, render as visible                                |
+| title              | Tooltip header title                                     |
+| target             | Element to which tooltip is attached                     |
+| placement          | Tooltip placement around tagret (start,end,top, bottom)  |
+ 
+<br>
+
 ## Example
 ---
  
@@ -11,14 +24,7 @@ For more details, check [tooltip.html](../../demos/tooltip.html)
 ```html
 <gs-tooltip placement="bottom" title="Bottom" ref="#l5"></gs-tooltip>
 ```
- 
-Example from JavaScript.
- 
-```JavaScript
-GSComponents.find('gs-progress').increase();
-GSComponents.find('gs-progress').decrease();
-```
 
 <br>
 
-&copy; Green Screens Ltd. 2016 - 2023
+&copy; Green Screens Ltd. 2016 - 2024

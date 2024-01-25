@@ -2,40 +2,6 @@
 
 GSItem WebComopnent is a generic configuration element used by various GS UI WebComponent composites such as [GSNav](../components/GSNav.md), [GSList](../components/GSList.md), [GSTable](../components/table/index.md), [GSTab](../components/GSTab.md).
 
-Below are basic attributes linked to Bootstrap data-bs-* with special behavior. Additional attributes might be used specific to WebComponent composites.
-
-<br>
- 
-## Attributes
----
- 
-| Name               | Description                                                  |
-|--------------------|--------------------------------------------------------------|
-| data-attr          |                                                              |
-| action             |                                                              |
-| active             |                                                              |
-| anchor             |                                                              |
-| body               |                                                              |
-| css                |                                                              |
-| dismiss            |                                                              |
-| group              |                                                              |
-| href               |                                                              |
-| icon               |                                                              |
-| flat               |                                                              |
-| inject             |                                                              |
-| name               |                                                              |
-| selectable         |                                                              |
-| target             |                                                              |
-| template           |                                                              |
-| toggle             |                                                              |
-| type               |                                                              |
- 
- <br>
-
-```
-<gs-item name="test" selectable="false" target="" toggle="" dismiss="" action="" inject="" target="" data-attr=""></gs-item>
-```
-
 <br>
 
-&copy; Green Screens Ltd. 2016 - 2023
+&copy; Green Screens Ltd. 2016 - 2024

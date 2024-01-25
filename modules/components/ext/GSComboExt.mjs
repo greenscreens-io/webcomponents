@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015, 2022 Green Screens Ltd.
+ * Copyright (C) 2015, 2024 Green Screens Ltd.
  */
 
 /**
@@ -7,10 +7,9 @@
  * @module components/ext/GSDataListExt
  */
 
-import GSID from "../../base/GSID.mjs";
-import GSComponents from "../../base/GSComponents.mjs";
-import GSLoader from "../../base/GSLoader.mjs";
-import GSDOM from "../../base/GSDOM.mjs";
+import { GSID } from "../../base/GSID.mjs";
+import { GSDOM } from "../../base/GSDOM.mjs";
+import { GSLoader } from "../../base/GSLoader.mjs";
 
 /**
  * Add JSON loader to select element
@@ -21,7 +20,7 @@ import GSDOM from "../../base/GSDOM.mjs";
  * @class
  * @extends {HTMLSelectElement}
  */
-export default class GSComboExt extends HTMLSelectElement {
+export class GSComboExt extends HTMLSelectElement {
 
     static {
         customElements.define('gs-ext-select', GSComboExt, { extends: 'select' });
@@ -42,17 +41,18 @@ export default class GSComboExt extends HTMLSelectElement {
     }
 
     connectedCallback() {
-        const me = this;
-        GSID.setIf(me);
-        GSComponents.store(me);
+        GSID.setIf(this);
     }
 
-    disconnectedCallback() {
-        GSComponents.remove(this);
+    validate() {
+        const me = this;
+        const isValid = me.checkValidity();
+        if (!isValid) me.reportValidity();
+        return isValid;
     }
 
     get owner() {
-        const own = GSComponents.getOwner(this);
+        const own = GSDOM.root(this);
         return GSDOM.unwrap(own);
     }
 

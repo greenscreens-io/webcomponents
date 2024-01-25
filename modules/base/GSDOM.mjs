@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015, 2022 Green Screens Ltd.
+ * Copyright (C) 2015, 2024 Green Screens Ltd.
  */
 
 /**
@@ -7,16 +7,16 @@
  * @module base/GSDOM
  */
 
-import GSCSSMap from "./GSCSSMap.mjs";
-import GSData from "./GSData.mjs";
-import GSLog from "./GSLog.mjs";
-import GSUtil from "./GSUtil.mjs";
+import { GSCSSMap } from "./GSCSSMap.mjs";
+import { GSData } from "./GSData.mjs";
+import { GSLog } from "./GSLog.mjs";
+import { GSUtil } from "./GSUtil.mjs";
 
 /**
  * A generic set of static functions to handle DOM tree and DOM elements
  * @class
  */
-export default class GSDOM {
+export class GSDOM {
 
 	static QUERY_FOCUSABLE = "a[href]:not([tabindex='-1']),area[href]:not([tabindex='-1']),input:not([disabled]):not([tabindex='-1']),select:not([disabled]):not([tabindex='-1']),textarea:not([disabled]):not([tabindex='-1']),button:not([disabled]):not([tabindex='-1']),iframe:not([tabindex='-1']),[tabindex]:not([tabindex='-1']),[contentEditable=true]:not([tabindex='-1'])";
 	static QUERY_INPUT = "input:not([type='hidden']):not(disabled):not(readonly),select:not([type='hidden']):not(disabled):not(readonly),textarea:not([type='hidden']):not(disabled):not(readonly)";
@@ -45,7 +45,7 @@ export default class GSDOM {
 	/**
 	 * Check if element is visible
 	 * @param {HTMLElement} el 
-	 * @returns 
+	 * @returns {Boolean}
 	 */
 	static isVisible(el) {
 		if (!GSDOM.isHTMLElement(el)) return false;
@@ -61,9 +61,9 @@ export default class GSDOM {
 	/**
 	* Parse string into html DOM
 	*
-	* @param {string} html Source to parse
-	* @param {boolean} single Return first element or all
-	* @param {string} mime Src mime type
+	* @param {String} html Source to parse
+	* @param {Boolean} single Return first element or all
+	* @param {String} mime Src mime type
 	* @return {HTMLElement}
 	*/
 	static parse(html = '', single = false, mime = 'text/html') {
@@ -80,7 +80,7 @@ export default class GSDOM {
 	/**
 	 * Parse source and auto wrap if required
 	 * @param {GSElement} own 
-	 * @param {string} src 
+	 * @param {String} src 
 	 * @returns {HTMLElement}
 	 */
 	static parseWrapped(own, src = '', forceWrap = false) {
@@ -89,7 +89,7 @@ export default class GSDOM {
 		const head = GSDOM.#fromNode(doc.head.children);
 		const body = GSDOM.#fromNode(doc.body.children);
 
-		const nodes = [...head , ...body];
+		const nodes = [...head, ...body];
 
 		const wrap = forceWrap || nodes.length !== 1;
 
@@ -131,13 +131,27 @@ export default class GSDOM {
 	/**
 	 * Check if given value is part of HTMLFormElement
 	 * @param {string | HTMLElement} el 
-	 * @returns {boolean}
+	 * @returns {Boolean}
 	 */
 	static isFormElement(el) {
 		const name = GSUtil.isString(el) ? el : el?.tagName;
 		return GSDOM.#FORMEL.includes(name);
 	}
 
+	/**
+	 * Return all form elements for a given root element
+	 * @param {HTMLElement} el 
+	 * @returns 
+	 */
+	static formElements(el) {
+		return GSDOM.queryAll(el, GSDOM.#FORMEL.map(v => v.toLowerCase()));
+	}
+
+	/**
+	 * Check if element is button
+	 * @param {HTMLElement} el 
+	 * @returns {Boolean}
+	 */
 	static isButtonElement(el) {
 		return (el instanceof HTMLButtonElement)
 			|| el?.tagName === 'GS-BUTTON'
@@ -148,8 +162,8 @@ export default class GSDOM {
 	  * Check if given element is of given type 
 	  * 
 	  * @param {HTMLElement} el
-	  * @param {string|class} type Tag Name, class name or Class
-	  * @returns {boolean}
+	  * @param {String|class} type Tag Name, class name or Class
+	  * @returns {Boolean}
 	  */
 	static isElement(el, type) {
 
@@ -175,7 +189,7 @@ export default class GSDOM {
 
 	/**
 	 * Check if given element is of type HTMLElement
-	 * @returns {boolean}
+	 * @returns {Boolean}
 	 */
 	static isTemplateElement(el) {
 		return el instanceof HTMLTemplateElement;
@@ -183,7 +197,7 @@ export default class GSDOM {
 
 	/**
 	 * Check if given element is of type HTMLElement
-	 * @returns {boolean}
+	 * @returns {Boolean}
 	 */
 	static isHTMLElement(el) {
 		return el instanceof HTMLElement;
@@ -191,7 +205,7 @@ export default class GSDOM {
 
 	/**
 	 * Check if given element is of type SVGElement
-	 * @returns {boolean}
+	 * @returns {Boolean}
 	 */
 	static isSVGElement(el) {
 		return el instanceof SVGElement;
@@ -199,7 +213,7 @@ export default class GSDOM {
 
 	/**
 	 * Check if given element is of type Text
-	 * @returns {boolean}
+	 * @returns {Boolean}
 	 */
 	static isText(el) {
 		return el instanceof Text;
@@ -207,7 +221,7 @@ export default class GSDOM {
 
 	/**
 	 * Check if given element is of type Comment
-	 * @returns {boolean}
+	 * @returns {Boolean}
 	 */
 	static isComment(el) {
 		return el instanceof Comment;
@@ -215,6 +229,7 @@ export default class GSDOM {
 
 	/*
 	 * Check if given element is of type GSElement
+	 * @returns {Boolean}
 	 */
 	static isGSElement(el) {
 		if (!el?.clazzName) return false;
@@ -229,7 +244,7 @@ export default class GSDOM {
 	/**
 	 * Check if standard element extended with GS
 	 * @param {HTMLElement} el 
-	 * @returns {boolean}
+	 * @returns {Boolean}
 	 */
 	static isGSExtra(el) {
 		return el?.getAttribute('is')?.indexOf('GS-') === 0;
@@ -247,8 +262,8 @@ export default class GSDOM {
 	/**
 	 * Hide html element
 	 * @param {HTMLElement} el 
-	 * @param {boolean} orientation 
-	 * @returns {boolean}
+	 * @param {Boolean} orientation 
+	 * @returns {Boolean}
 	 */
 	static hide(el, orientation = false) {
 		return el?.classList?.add(orientation ? 'gs-hide-orientation' : 'gs-hide');
@@ -257,8 +272,8 @@ export default class GSDOM {
 	/**
 	 * Show html element
 	 * @param {HTMLElement} el 
-	 * @param {boolean} orientation 
-	 * @returns {boolean}
+	 * @param {Boolean} orientation 
+	 * @returns {Boolean}
 	 */
 	static show(el, orientation = false) {
 		return el?.classList?.remove(orientation ? 'gs-hide-orientation' : 'gs-hide');
@@ -268,7 +283,7 @@ export default class GSDOM {
 	 * Add node as next in list of nodes
 	 * @param {HTMLElement} target 
 	 * @param {HTMLElement} newEl 
-	 * @returns {boolean}
+	 * @returns {Boolean}
 	 */
 	static addSibling(target, newEl) {
 		const injectable = GSDOM.isHTMLElement(newEl) || GSDOM.isSVGElement(newEl);
@@ -281,7 +296,7 @@ export default class GSDOM {
 	 * Add child node to a target
 	 * @param {HTMLElement} target 
 	 * @param {HTMLElement} newEl 
-	 * @returns {boolean}
+	 * @returns {Boolean}
 	 */
 	static appendChild(target, newEl) {
 		const isok = GSDOM.isHTMLElement(target) && GSDOM.isHTMLElement(newEl);
@@ -292,8 +307,8 @@ export default class GSDOM {
 	 * Add node to a target at specified place
 	 * @param {HTMLElement} target 
 	 * @param {HTMLElement} newEl 
-	 * @param {string} placement
-	 * @returns {boolean}
+	 * @param {String} placement
+	 * @returns {Boolean}
 	 */
 	static insertAdjacent(target, newEl, placement) {
 		const isok = GSDOM.isHTMLElement(target) && GSDOM.isHTMLElement(newEl);
@@ -304,7 +319,7 @@ export default class GSDOM {
 	/**
 	 * Remove genarated componnt from parent
 	 * @param {HTMLElement} el 
-	 * @returns {boolean}
+	 * @returns {Boolean}
 	 */
 	static removeElement(el) {
 		return GSDOM.parent(el)?.removeChild(el);
@@ -314,9 +329,9 @@ export default class GSDOM {
 	 * Walk node tree
 	 * 
 	 * @param {HTMLLegendElement} node Start node to walk from 
-	 * @param {boolean} closest Direction down (false) or up (true)
-	 * @param {boolean} all  Filter HTMLElements (false) only or text also (true) (only down)
-	 * @param {boolean} shadow Traverse shadow DOM also (only down)
+	 * @param {Boolean} closest Direction down (false) or up (true)
+	 * @param {Boolean} all  Filter HTMLElements (false) only or text also (true) (only down)
+	 * @param {Boolean} shadow Traverse shadow DOM also (only down)
 	 * @returns {Iterable}
 	 */
 	static walk(node, closest = false, all = false, shadow = true) {
@@ -418,23 +433,28 @@ export default class GSDOM {
 	}
 
 	/**
+	 * Get WebComponent owning element inside rendered shadow root
+	 * @param {HTMLElement} el 
+	 * @returns {HTMLElement}
+	 */
+	static component(el) {
+		return GSDOM.parent(GSDOM.root(el));
+	}
+
+	/**
 	 * Get node index between siblings
-	 * @param {*} node 
-	 * @returns 
+	 * @param {HTMLElement} node 
+	 * @returns {Number}
 	 */
 	static getElementIndex(node) {
 		if (!GSDOM.isHTMLElement(node)) return 0;
-		let index = 0;
-		while ((node = node.previousElementSibling)) {
-			index++;
-		}
-		return index;
+		return [...node.parentElement.children].indexOf(node);
 	}
 
 	/**
 	 * Find element by ID within DOM Tree across Shadow DOM
 	 * @param {HTMLElement} el Root node to start from
-	 * @param {string} id Element id
+	 * @param {String} id Element id
 	 * @returns {HTMLElement} 
 	 */
 	static getByID(el, id) {
@@ -450,7 +470,7 @@ export default class GSDOM {
 	/**
 	 * Query DOM Tree up to find closest element across Shadow DOM
 	 * @param {HTMLElement} el Root node to start from
-	 * @param {string} qry CSS query
+	 * @param {String} qry CSS query
 	 * @returns {HTMLElement} 
 	 */
 	static closest(el, qry) {
@@ -467,7 +487,7 @@ export default class GSDOM {
 	 * Query DOM tree with support for Shadow DOM
 	 * 
 	 * @param {HTMLElement} el Root node to start from
-	 * @param {string} qry CSS query
+	 * @param {String} qry CSS query
 	 * @returns {HTMLElement} 
 	 */
 	static query(el, qry, all = false, shadow = true) {
@@ -485,7 +505,7 @@ export default class GSDOM {
 	 * Query DOM tree with support for Shadow DOM
 	 * 
 	 * @param {HTMLElement} el Root node to start from
-	 * @param {string} qry CSS query
+	 * @param {String} qry CSS query
 	 * @returns {Array<HTMLElement>}
 	*/
 	static queryAll(el, qry, all = false, shadow = true) {
@@ -501,6 +521,7 @@ export default class GSDOM {
 
 	/**
 	 * Overide native to prevent DOM issue when input field name=id
+	 * @returns{Proxy}
 	 */
 	static #proxy(el) {
 		if (el.tagName !== 'FORM') return el;
@@ -521,8 +542,8 @@ export default class GSDOM {
 	/**
 	 * Match element against CSS query
 	 * @param {HTMLElement} el 
-	 * @param {string} qry 
-	 * @returns {boolean}
+	 * @param {String} qry 
+	 * @returns {Boolean}
 	 */
 	static matches(el, qry) {
 		// return el && qry && typeof el.matches === 'function' && el.matches(qry);
@@ -535,8 +556,8 @@ export default class GSDOM {
 	 *       Use sanitizer when not any more experimental feature;
 	 *       Watch for default Sanitizer.getDefaultConfiguration()
 	 * @param {HTMLElement} el 
-	 * @param {string} val 
-	 * @param {boolean} sanitize 
+	 * @param {String} val 
+	 * @param {Boolean} sanitize 
 	 * @param {Sanitizer} sanitizer 
 	 * @returns {void}
 	 */
@@ -544,7 +565,7 @@ export default class GSDOM {
 		const isValid = el instanceof ShadowRoot || el instanceof HTMLElement || el instanceof HTMLTemplateElement;
 		if (!isValid) return;
 		if (sanitize && el?.setHTML) {
-			sanitizer ? el.setHTML(val, {sanitizer}) : el.setHTML(val);
+			sanitizer ? el.setHTML(val, { sanitizer }) : el.setHTML(val);
 		} else {
 			el.innerHTML = val instanceof Document ? val.body.innerHTML : val;
 		}
@@ -553,7 +574,7 @@ export default class GSDOM {
 	/**
 	 * Set text to provided element
 	 * @param {HTMLElement} el 
-	 * @param {string} val 
+	 * @param {String} val 
 	 * @returns {void}
 	 */
 	static setText(el, val = '') {
@@ -563,7 +584,7 @@ export default class GSDOM {
 	/**
 	 * Set style to an element
 	 * @param {HTMLElement|string} el 
-	 * @param {object} obj 
+	 * @param {Object} obj 
 	 */
 	static css(el, obj) {
 		if (GSUtil.isString(el)) el = GSDOM.queryAll(el);
@@ -582,8 +603,8 @@ export default class GSDOM {
 	 * Safe way to toggle CSS class on element, multipel classes are supported in space separated string list
 	 * @param {HTMLElement|string} el 
 	 * @param {*} val list of css classes in space separated string
-	 * @param {boolean} sts True to add, false to remove
-	 * @returns {boolean}
+	 * @param {Boolean} sts True to add, false to remove
+	 * @returns {Boolean}
 	 */
 	static toggleClass(el, val, sts) {
 		if (GSUtil.isString(el)) el = GSDOM.queryAll(el);
@@ -603,7 +624,7 @@ export default class GSDOM {
 	/**
 	 * Toggle element visibility
 	 * @param {HTMLElement|string} el 
-	 * @param {boolean} sts 
+	 * @param {Boolean} sts 
 	 */
 	static toggle(el, sts) {
 		return GSDOM.toggleClass(el, 'd-none', GSUtil.isNull(sts) ? sts : !sts);
@@ -612,8 +633,8 @@ export default class GSDOM {
 	/**
 	 * Checks if element contains a css class
 	 * @param {HTMLElement} el 
-	 * @param {string} val 
-	 * @returns {boolean}
+	 * @param {String} val 
+	 * @returns {Boolean}
 	 */
 	static hasClass(el, val = '') {
 		return el?.classList?.contains(val);
@@ -622,7 +643,7 @@ export default class GSDOM {
 	/**
 	 * Alternative way to clear fields instead of form.reset()
 	 * @param {HTMLElement} owner 
-	 * @param {string} qry 
+	 * @param {String} qry 
 	 */
 	static clearInputs(owner, qry = 'input, textarea, output') {
 		const root = GSDOM.unwrap(owner);
@@ -634,7 +655,7 @@ export default class GSDOM {
 	/**
 	 * Get proper value from element
 	 * @param {HTMLElement} el 
-	 * @returns {string|number}
+	 * @returns {String|Number}
 	 */
 	static getValue(el) {
 		switch (el.type) {
@@ -644,9 +665,9 @@ export default class GSDOM {
 			case 'select-multiple':
 				return Array.from(el.selectedOptions).map(o => o.value);
 			case 'checkbox':
-				if (el.hasAttribute('value')) {
+				if (el.hasAttribute('value') && el.value) {
 					return el.checked ? el.value : null;
-				} 
+				}
 				return el.checked;
 			default:
 				return el.value;
@@ -656,7 +677,7 @@ export default class GSDOM {
 	/**
 	 * Get value from form element
 	 * @param {HTMLElement} el 
-	 * @returns {string}
+	 * @returns {String}
 	 */
 	static toValue(el) {
 		if (!GSDOM.isHTMLElement(el)) return undefined;
@@ -671,8 +692,7 @@ export default class GSDOM {
 	/**
 	 * Set element value, taking chekbox into consideration
 	 * @param {HTMLElement} el 
-	 * @param {string|boolean|number} val 
-	 * @returns 
+	 * @param {String|Boolean|Number} val 
 	 */
 	static fromValue(el, val) {
 		if (!GSDOM.isHTMLElement(el)) return;
@@ -683,10 +703,10 @@ export default class GSDOM {
 				if (el.hasAttribute('value')) {
 					el.checked = data === el.value;
 				} else {
-					el.checked = data == true;		
+					el.checked = data == true;
 				}
 				break;
-			default :
+			default:
 				el.value = data;
 		}
 	}
@@ -694,9 +714,9 @@ export default class GSDOM {
 	/**
 	 * Convert form elements into JSON object
 	 * @param {HTMLElement} owner 
-	 * @param {string} qry 
-	 * @param {boolean} invalid Should include invalid fields
-	 * @returns {object}
+	 * @param {String} qry 
+	 * @param {Boolean} invalid Should include invalid fields
+	 * @returns {Object}
 	 */
 	static toObject(owner, qry = 'input, textarea, select, output', invalid = true) {
 		const root = GSDOM.unwrap(owner);
@@ -720,9 +740,9 @@ export default class GSDOM {
 	/**
 	 * Convert JSON Object into HTMLElements (input)
 	 * @param {HTMLElement} owner Root selector (form)
-	 * @param {object} obj Data source key/value pairs
-	 * @param {string} qry Element type selector,defaults to form elements 
-	 * @returns 
+	 * @param {Object} obj Data source key/value pairs
+	 * @param {String} qry Element type selector,defaults to form elements 
+	 * @returns {Object}
 	 */
 	static fromObject(owner, obj, qry = 'input, textarea, select, output') {
 		obj = GSUtil.toJson(obj);
@@ -730,43 +750,43 @@ export default class GSDOM {
 		const root = GSDOM.unwrap(owner);
 		const list = GSDOM.queryAll(root, qry); // root.querySelectorAll(qry);
 		Array.from(list).forEach(el => GSDOM.fromObject2Element(el, obj));
+		return obj;
 	}
 
 	/**
 	 * Convert JSON Object into HTMLElement (input)
 	 * @param {HTMLElement} owner Element to populate
-	 * @param {object} obj Data source key/value pairs
-	 */	
+	 * @param {Object} obj Data source key/value pairs
+	 */
 	static fromObject2Element(el, obj) {
-		if (!GSData.objectPathExist(obj, el.name)) return;		
+		if (!GSData.objectPathExist(obj, el.name)) return;
 		const val = GSData.readFromObject(obj, el.name);
 		if (el.type !== 'radio') {
 			//GSDOM.fromValue(el, obj[el.name]);
 			GSDOM.fromValue(el, val);
-		} else if (el.value === val) el.checked = true; 
+		} else if (el.value === val) el.checked = true;
 	}
 
 	/**
 	 * Convert HTMLElement into a JSON object
 	 * @param {HTMLElement|Array} own 
-	 * @param {boolean} recursive 
-	 * @returns {object}
+	 * @param {Boolean} recursive 
+	 * @param {Boolean} plain  
+	 * @returns {Object}
 	 */
-	static toJson(own, recursive = true) {
+	static toJson(own, recursive = true, plain = false) {
 		if (Array.isArray(own)) return own.map(o => GSDOM.toJson(o, recursive));
 		const obj = {};
 		if (!GSDOM.isHTMLElement(own)) return obj;
 
-		obj['#tagName'] = own.tagName.toLowerCase();
+		if (!plain) obj['#tagName'] = own.tagName.toLowerCase();
+		obj['$text'] = own.innerText;
 
 		Array.from(own.attributes).forEach(v => obj[v.name] = v.value);
 
 		if (recursive) {
-			const children = Array.from(own.children);
-			if (children.length > 0) {
-				obj.items = [];
-				children.forEach(el => obj.items.push(GSDOM.toJson(el)));
-			}
+			const children = Array.from(own.children).map(el => GSDOM.toJson(el, recursive, plain));
+			if (children.length > 0) obj.items = children;
 		}
 
 		return obj;
@@ -774,9 +794,9 @@ export default class GSDOM {
 
 	/**
 	 * Convert JSON object to DOM/html
-	 * @param {object} obj 
-	 * @param {boolean} asString As string or HTMLElement Tree 
-	 * @param {string} tag 
+	 * @param {Object} obj 
+	 * @param {Boolean} asString As string or HTMLElement Tree 
+	 * @param {String} tag 
 	 */
 	static fromJson(obj, tag = 'gs-item', asString = false) {
 		return asString ? GSDOM.fromJsonAsString(obj, tag) : GSDOM.fromJsonAsDOM(obj, tag);
@@ -784,14 +804,15 @@ export default class GSDOM {
 
 	/**
 	 * Convert JSON object to DOM tree
-	 * @param {*} obj 
-	 * @param {*} tag 
+	 * @param {Object} obj 
+	 * @param {String} tag 
+	 * @returns {HTMLElement|Array}
 	 */
 	static fromJsonAsDOM(obj, tag = 'gs-item') {
 		if (!obj) return null;
 
 		const isPrimitive = GSUtil.isNumber(obj) || GSUtil.isString(obj);
-		if (isPrimitive) return GSDOM.fromJsonAsDOM({title: obj}, tag);
+		if (isPrimitive) return GSDOM.fromJsonAsDOM({ title: obj }, tag);
 
 		const isArray = Array.isArray(obj);
 		if (isArray) return obj.map(o => GSDOM.fromJsonAsDOM(o, tag));
@@ -814,8 +835,9 @@ export default class GSDOM {
 
 	/**
 	 * Convert JSON object to HTML source
-	 * @param {*} obj 
-	 * @param {*} tag 
+	 * @param {Object} obj 
+	 * @param {String} tag 
+	 * @returns {String}
 	 */
 	static fromJsonAsString(obj, tag = 'gs-item') {
 		if (!obj) return null;
@@ -868,7 +890,7 @@ export default class GSDOM {
 	/**
 	 * Enable input on all input elements under provided owner
 	 * @param {HTMLElement} own 
-	 * @param {string} qry Default to form
+	 * @param {String} qry Default to form
 	 */
 	static enableInput(own, qry = 'input, select, textarea, .btn', all = true, group = '') {
 		let list = GSDOM.queryAll(own, qry);
@@ -879,7 +901,7 @@ export default class GSDOM {
 	/**
 	 * Disable input on all input elements under provided owner
 	 * @param {HTMLElement} own 
-	 * @param {string} qry Default to form
+	 * @param {String} qry Default to form
 	 */
 	static disableInput(own, qry = 'input, select, textarea, .btn', all = true, group = '') {
 		GSDOM.queryAll(own, qry)
@@ -892,8 +914,8 @@ export default class GSDOM {
 
 	/**
 	 * Set value to a element by css selector
-	 * @param {string} qry 
-	 * @param {string} val 
+	 * @param {String} qry 
+	 * @param {String} val 
 	 * @param {HTMLElement} own 
 	 */
 	static setValue(qry, val, own) {
@@ -927,10 +949,11 @@ export default class GSDOM {
 	/**
 	 * Validate against provided list, if child elements allowed inside provided element
 	 * @param {HTMLElement} el Element which child list to validate
-	 * @param {string} tagName Expected owner element tag name
-	 * @param {string} whiteList Uppercase list of tag names allowed as child
-	 * @param {boolean} asState return state as bool or throw an error (default)
-	 * @returns {boolean} return true if validation is ok.
+	 * @param {String} tagName Expected owner element tag name
+	 * @param {String} whiteList Uppercase list of tag names allowed as child
+	 * @param {String} slotList List of named slots allowed
+	 * @param {Boolean} asState return state as bool or throw an error (default)
+	 * @returns {Boolean} return true if validation is ok.
 	 * @throws {Error}
 	 */
 	static validate(own, tagName, whiteList, asState = false) {
@@ -938,7 +961,6 @@ export default class GSDOM {
 			if (asState) return false;
 			throw new Error(`Owner element : ${own.tagName}, id:${own.id} is not of excpected type: ${tagName}`);
 		}
-		//const ok = Array.from(own.childNodes).filter(el => GSDOM.isAllowed(el, whiteList)).length === 0;
 		const ok = GSDOM.isAllowed(Array.from(own.childNodes), whiteList);
 		if (ok) return true;
 		if (asState) return false;
@@ -949,12 +971,15 @@ export default class GSDOM {
 	/**
 	 * Check against provided list, if child elements allowed inside provided element
 	 * @param {HTMLElement|Array<HTMLElement>} el Element which childs to validate against provided list
-	 * @param {string} whiteList Uppercase list of tag names allowed as child nodes
-	 * @returns {boolean} return tr ue if validation is ok.
+	 * @param {String} whiteList Uppercase list of tag names allowed as child nodes
+	 * @param {String} slotList List of elements with named  slots allowed
+	 * @returns {Boolean} return tr ue if validation is ok.
 	 */
 	static isAllowed(el, whiteList) {
 		if (Array.isArray(el)) return el.filter(el => GSDOM.isAllowed(el, whiteList)).length === 0;
-		return !(el instanceof Text || el instanceof Comment) && (!whiteList.includes(el.tagName));
+		const allowElement = !(el instanceof Text || el instanceof Comment);
+		const allowTag = !whiteList.includes(el.tagName);
+		return allowElement && allowTag;
 	}
 
 	static toValidationError(own, whiteList) {
@@ -967,7 +992,7 @@ export default class GSDOM {
 	 * 
 	 * @async
 	 * @param {HTMLElement} own 
-	 * @param {string} url 
+	 * @param {String} url 
 	 * @returns {Promise<boolean>}
 	 */
 	static async injectCSS(own, url) {

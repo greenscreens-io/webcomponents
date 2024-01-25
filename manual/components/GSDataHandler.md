@@ -1,6 +1,6 @@
 # GSDataHandler WebComponent
 
-GSDataHandler WebComponent is a non-UI element for loading external data through reference to GSReadWrite.
+GSDataHandler WebComponent is a non-UI element for loading external data through reference to [GSReadWrite](../data/GSReadWrite.md).
 
 <br>
 
@@ -9,14 +9,20 @@ GSDataHandler WebComponent is a non-UI element for loading external data through
 
 | Name               | Description                                              |
 |--------------------|----------------------------------------------------------|
+| autoload           | Data will be auto laoded on component init into DOM      |
+| autorefresh        | Data auto-refresh in seconds (must be GT 0)              |
+| action             | String format for operational mode  (see below)          |
 | mode               | Remote call operatoin mode (rest,query,quark)            |
-| action             | Strign format for operational mode  (see below)          |
-| src                | URL address for remote service for data retrieval        | 
 | limit              | Number of records to return                              | 
 | skip               | Number fo records to initially skip                      | 
+| filter             | JSON filter definition                                   | 
+| sort               | JSON sort definition                                     | 
+| src                | URL address for remote service for data retrieval        | 
 | reader             | Operation for read (GET or quark object path)            | 
 | writer             | Operation for write (GET or quark object path)           | 
+| type               | Data reader/writer type (default 'remote')               | 
 
+NOTE: Available data handler types: 'remote', 'tree', etc.. Check reders in [Data modules](../../modules/data)
 
 <br>
 
@@ -60,4 +66,4 @@ Custom class must be initialized with id="handler".
 
  <br>
 
-&copy; Green Screens Ltd. 2016 - 2023
+&copy; Green Screens Ltd. 2016 - 2024

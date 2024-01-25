@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Bootstrap-Lit</title>
+    <meta charset="utf-8">
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0">
+
+    <meta name="subject" content="Green Scereens Ltd.">
+    <meta name="author" content="www.greenscreens.ltd">
+    <meta name="keywords" content="JavaScript,WebComponents">
+    <meta name="robots" content="index, follow">
+    <meta name="revisit-after" content="3 month">
+    <meta name="description" content="WebComponents UI library based on Bootstrap.">
+
+    <script>
+        globalThis.GS_TEMPLATE_URL='/bootstrap-lit/demos/templates/';
+    </script>
+
+    <!-- Optimized CSS loading -->
+    <link rel="preload" href="/bootstrap-lit/assets/css/bootstrap.css" as="style"  data-adoptable="true">
+    <link rel="preload" href="/bootstrap-lit/assets/themes/default.css" as="style" data-adoptable="true">
+    <link rel="preload" href="/bootstrap-lit/assets/icons/bootstrap-icons.css" as="style" data-adoptable="true">
+
+    <script type="module" src="/bootstrap-lit/modules/base/GSAdoptedEngine.mjs"></script>
+    <script type="module" src="/bootstrap-lit/modules/base/GSTheme.mjs"></script>
+    <script type="module" src="/bootstrap-lit/modules/components/Template.mjs"></script>
+    <script type="module" src="/bootstrap-lit/modules/components/Card.mjs"></script>
+    <script type="module" src="/bootstrap-lit/modules/components/Button.mjs"></script>
+    <script type="module" src="/bootstrap-lit/modules/components/Icon.mjs"></script>
+
+</head>
+<body>
+
+    <gs-template url="//header.html"></gs-template>
+
+    <div class="container d-flex justify-content-evenly p-3">
+
+        <gs-card css="mx-1" bordered align="start" css-header="fw-bold fs-2" header="Header" title="Primary card title" text="Some quick example text to build on the card title and make up the bulk of the card's content.">
+            <gs-button slot="body" title="Go somewhere" color="primary" icon="clock"></gs-button>
+        </gs-card>
+        <gs-card css="mx-1" bordered align="center" css-header="bg-dark text-secondary fw-bold fs-2" header="Header" title="Secondary card title" text="Some quick example text to build on the card title and make up the bulk of the card's content.">
+            <gs-button slot="body" title="Go somewhere" color="primary" icon="clock"></gs-button>
+        </gs-card>
+        <gs-card css="mx-1" bordered align="end" css-header="fw-bold fs-2" header="Header" title="Success card title" text="Some quick example text to build on the card title and make up the bulk of the card's content.">
+            <gs-button slot="body" title="Go somewhere" color="primary" icon="clock"></gs-button>
+        </gs-card>
+    
+    </div>
+
+    <div class="container d-flex justify-content-evenly p-3">
+
+        <gs-card css="mx-1" color-text="white" color-back="primary"   header="Header" title="Primary card title" text="Some quick example text to build on the card title and make up the bulk of the card's content."></gs-card>
+        <gs-card css="mx-1" color-text="white" color-back="secondary" header="Header" title="Secondary card title" text="Some quick example text to build on the card title and make up the bulk of the card's content."></gs-card>
+        <gs-card css="mx-1" color-text="white" color-back="success"   header="Header" title="Success card title" text="Some quick example text to build on the card title and make up the bulk of the card's content."></gs-card>
+        <gs-card css="mx-1" color-text="white" color-back="danger"    header="Header" title="Danger card title" text="Some quick example text to build on the card title and make up the bulk of the card's content."></gs-card>
+    
+    </div>
+
+    <div class="container d-flex justify-content-evenly p-3">        
+        <gs-card css="mx-1" color-text="dark"  color-back="warning"   header="Header" title="Warning card title" text="Some quick example text to build on the card title and make up the bulk of the card's content."></gs-card>
+        <gs-card css="mx-1" color-text="dark"  color-back="info"      header="Header" title="Info card title" text="Some quick example text to build on the card title and make up the bulk of the card's content."></gs-card>
+        <gs-card css="mx-1" color-text="dark"  color-back="light"     header="Header" title="Light card title" text="Some quick example text to build on the card title and make up the bulk of the card's content."></gs-card>
+        <gs-card css="mx-1" color-text="white" color-back="dark"      header="Header" title="Dark card title" text="Some quick example text to build on the card title and make up the bulk of the card's content."></gs-card>
+    </div>
+
+    <div class="container d-flex justify-content-evenly p-3">        
+        <gs-card css="mx-1" color-border="primary"   css-body="text-primary"   header="Header" title="Primary card border" text="Some quick example text to build on the card title and make up the bulk of the card's content."></gs-card>
+        <gs-card css="mx-1" color-border="secondary" css-body="text-secondary" header="Header" title="Secondary card border" text="Some quick example text to build on the card title and make up the bulk of the card's content."></gs-card>
+        <gs-card css="mx-1" color-border="success"   css-body="text-success"   header="Header" title="Success card border" text="Some quick example text to build on the card title and make up the bulk of the card's content."></gs-card>
+        <gs-card css="mx-1" color-border="danger"    css-body="text-danger"    header="Header" title="Danger card border" text="Some quick example text to build on the card title and make up the bulk of the card's content."></gs-card>
+    </div>
+
+    <div class="container d-flex justify-content-evenly p-3">        
+        <gs-card css="mx-1" color-border="warning"   header="Header" title="Warning card border" text="Some quick example text to build on the card title and make up the bulk of the card's content."></gs-card>
+        <gs-card css="mx-1" color-border="info"      header="Header" title="Info card border" text="Some quick example text to build on the card title and make up the bulk of the card's content."></gs-card>
+        <gs-card css="mx-1" color-border="light"     header="Header" title="Light card border" text="Some quick example text to build on the card title and make up the bulk of the card's content."></gs-card>
+        <gs-card shadow bordered css="mx-1" color-border="dark"      header="Header" title="Dark card border" text="Some quick example text to build on the card title and make up the bulk of the card's content."></gs-card>
+    </div>
+
+
+    <!-- CARDS WITH IMAGES -->
+
+    <div class="container d-flex justify-content-evenly p-3">
+        <gs-card css="mx-1" placement="top"    image="" title="Top card image" text="Some quick example text to build on the card title and make up the bulk of the card's content.">
+            <svg slot="image" width="100%" height="180" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Image cap" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#868e96"></rect><text x="50%" y="50%" fill="#dee2e6" dy=".3em">Image cap</text></svg>            
+        </gs-card>
+        <gs-card css="mx-1" placement="bottom" image="" title="Bottom card image" text="Some quick example text to build on the card title and make up the bulk of the card's content.">
+            <svg slot="image" width="100%" height="180" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Image cap" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#868e96"></rect><text x="50%" y="50%" fill="#dee2e6" dy=".3em">Image cap</text></svg>            
+        </gs-card>
+    </div>
+
+    <div class="container d-flex justify-content-evenly p-3">
+        <gs-card css="mx-1" placement="start"  image="" title="Left card image" text="Some quick example text to build on the card title and make up the bulk of the card's content.">
+            <svg slot="image" width="100%" height="180" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Image cap" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#868e96"></rect><text x="50%" y="50%" fill="#dee2e6" dy=".3em">Image cap</text></svg>            
+        </gs-card>
+        <gs-card css="mx-1" placement="end"    image="" title="Right card image" text="Some quick example text to build on the card title and make up the bulk of the card's content.">
+            <svg slot="image" width="100%" height="180" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Image cap" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#868e96"></rect><text x="50%" y="50%" fill="#dee2e6" dy=".3em">Image cap</text></svg>            
+        </gs-card>    
+    </div>
+
+    
+    <div class="container d-flex justify-content-evenly p-3">
+        <gs-card overlay css="mx-1" placement="top" image-style="{&quot;min-height&quot;:&quot;101px&quot;,&quot;max-width&quot;:&quot;350px&quot;}" image="/bootstrap-lit/assets/img/logo.png" title="Overlay card " text="Some quick example text to build on the card title and make up the bulk of the card's content."></gs-card>
+        <gs-card overlay css="mx-1" placement="top"  title="Overlay card" text="Some quick example text to build on the card title and make up the bulk of the card's content.">
+            <svg slot="image" width="100%" height="180" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Image cap" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#868e96"></rect><text x="50%" y="50%" fill="#dee2e6" dy=".3em">Image cap</text></svg>            
+        </gs-card>
+    </div>
+
+</body>
+
+</html>

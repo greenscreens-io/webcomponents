@@ -1,24 +1,24 @@
 /*
- * Copyright (C) 2015, 2022 Green Screens Ltd.
+ * Copyright (C) 2015, 2024 Green Screens Ltd.
  */
 
 /**
  * A module loading GSFunction class
  * @module base/GSFunction
  */
-import GSUtil from "./GSUtil.mjs";
+import { GSUtil } from "./GSUtil.mjs";
 
 /**
  * A set of static functions used for processing functions
  * @class
  */
-export default class GSFunction {
+export class GSFunction {
 
     /**
      * Check if object is of type function
      * 
      * @param {function} fn 
-     * @returns {boolean}
+     * @returns {Boolean}
      */
     static isFunction = (fn) => typeof fn === 'function';
 
@@ -29,12 +29,32 @@ export default class GSFunction {
     /**
      * Check if object has function
      * 
-     * @param {object} o 
+     * @param {Object} o 
      * @param {function} fn 
-     * @returns {boolean}
+     * @returns {Boolean}
      */
     static hasFunction(o, fn) {
         return o && GSFunction.isFunction(o[fn]);
+    }
+
+    /**
+     * Check if class has defined getter
+     * @param {*} own 
+     * @param {*} name 
+     * @returns 
+     */
+    static hasGetter(own, name) {
+        return GSFunction.isFunctionDefined(own, name, 'get');
+    }
+
+    /**
+     * * Check if class has defined setter
+     * @param {*} own 
+     * @param {*} name 
+     * @returns 
+     */
+    static hasSetter(own, name) {
+        return GSFunction.isFunctionDefined(own, name, 'set');
     }
 
     /**
@@ -53,7 +73,7 @@ export default class GSFunction {
      * Check if object is of type async function
      * 
      * @param {function} fn 
-     * @returns  {boolean}
+     * @returns  {Boolean}
      */
     static isFunctionAsync(fn) {
         if (!GSFunction.isFunction(fn)) return false;
@@ -68,7 +88,7 @@ export default class GSFunction {
      * 
      * @async
      * @param {function} fn 
-     * @param {object} owner 
+     * @param {Object} owner 
      * @returns  {Promise}
      * @throws {Error} 
      */
@@ -81,8 +101,8 @@ export default class GSFunction {
      * Generic synchronous function caller
      * 
      * @param {function} fn 
-     * @param {object} owner 
-     * @returns {object}
+     * @param {Object} owner 
+     * @returns {Object}
      * @throws {Error}
      */
     static callFunctionSync(fn, owner) {
@@ -94,8 +114,8 @@ export default class GSFunction {
      * Generic function caller
      * 
      * @param {function} fn 
-     * @param {object} owner 
-     * @returns {object}
+     * @param {Object} owner 
+     * @returns {Object}
      */
     static async callFunction(fn, owner, native = true) {
         fn = GSUtil.isString(fn) ? GSFunction.parseFunction(fn) : fn;
@@ -111,7 +131,7 @@ export default class GSFunction {
     /**
      * Convert string pointer to function call
      * 
-     * @param {string} value 
+     * @param {String} value 
      * @returns  {function}
      */
     static parseFunction(value) {
@@ -131,9 +151,9 @@ export default class GSFunction {
 
     /**
      * Wrap function into a single call - loop first call executed
-     * @param {function} fn 
-     * @param {*} context 
-     * @returns 
+     * @param {function} fn Function to be called
+     * @param {*} context Instance at which to call the function
+     * @returns {*} Function result
      */
     static callOnceFifo(fn, context) {
         let cnt = false;
@@ -147,9 +167,9 @@ export default class GSFunction {
 
     /**
      * Wrap function into a single call - loop last call executed
-     * @param {*} fn 
-     * @param {*} ctx 
-     * @returns 
+     * @param {function} fn Function to be called
+     * @param {*} context Instance at which to call the function
+     * @returns {*} Function result
      */
     static callOnceLifo(fn, context) {
         let cnt = 0;

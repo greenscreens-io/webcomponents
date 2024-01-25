@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015, 2022 Green Screens Ltd.
+ * Copyright (C) 2015, 2024 Green Screens Ltd.
  */
 
 /**
@@ -7,19 +7,21 @@
  * @module base/GSUtil
  */
 
-import GSLog from "./GSLog.mjs";
+import { GSLog } from "./GSLog.mjs";
 
 /**
  * A generic set of static functions used across GS WebComponents framework
  * @class
  */
-export default class GSUtil {
+export class GSUtil {
 
 	static FLAT = globalThis.GS_FLAT == true;
 	static ALPHANUM = /^[a-zA-Z0-9-_]+$/;
 	static #JSON_NORMALIZE = /(['"])?([a-z0-9A-Z_]+)(['"])?\s*:/g;
 
 	static isNumber = (n) => { return !isNaN(parseFloat(n)) && isFinite(n); };
+
+	static isDate = (v) => { return v instanceof Date };
 
 	static isBool = (v) => { return typeof v === 'boolean' || v instanceof Boolean };
 
@@ -29,11 +31,11 @@ export default class GSUtil {
 
 	static toBinary = (value = 0) => value.toString(2);
 
-	static asNum = (val = 0, dft = 0) => GSUtil.isNumber(val) ? parseFloat(val) : dft;
-
 	static asBool = (val = false) => val?.toString().trim().toLowerCase() === 'true';
 
 	static fromLiteral = (str = '', obj) => str.replace(/\${(.*?)}/g, (x, g) => obj[g]);
+
+	static reverse = (str) => (str || "").split("").reverse().join("");
 
 	static capitalize = (word = '') => word ? word[0].toUpperCase() + word.slice(1).toLowerCase() : '';
 
@@ -45,10 +47,24 @@ export default class GSUtil {
 
 	static isInstance = (el) => el instanceof el.constructor;
 
+	static range = (val = 0, min = 10, max = 100) => (Math.max(Math.min(max, val), min));
+
+	static extractNumber = (val = '') => val.match(/[\d,\.]*\d/)?.[0];
+
+	static asNum(val = 0, dft = 0, locale) {
+		locale = locale || GSUtil.locale;
+		if (GSUtil.isString(val)) {
+			const sep = GSUtil.numberSeparator(locale);
+			val = GSUtil.extractNumber(val)?.replaceAll(sep, '') || val;
+		}
+		return GSUtil.isNumber(val) ? parseFloat(val) : dft;
+	}
+
+
 	/**
 	 * Validate string for url format
-	 * @param {string} url 
-	 * @returns {boolean}
+	 * @param {String} url 
+	 * @returns {Boolean}
 	 */
 	static isURL = (url = '') => /^(https?:\/\/|\/{1,2}|\.\/{1})(\S*\/*){1,}/i.test(url.trim());
 
@@ -56,18 +72,62 @@ export default class GSUtil {
 
 	/**
 	 * Generate random set of characters
-	 * @param {*} pattern 
-	 * @param {*} charset 
-	 * @returns 
+	 * @param {String} pattern 
+	 * @param {String} charset 
+	 * @returns {String}
 	 */
 	static generateUUID = (pattern = "xxxx-xxxx-xxxx-xxxx-xxxx", charset = "abcdef0123456789") => pattern.replace(/[x]/g, () => charset[Math.floor(Math.random() * charset.length)]);
 
 	/**
 	 * Get browser default locale
-	 * @returns {string}
+	 * @returns {String}
 	 */
 	static get locale() {
 		return navigator.language ? navigator.language : navigator.languages[0];
+	}
+
+	/**
+	 * Convert string to regex isntance
+	 * @param {*} val 
+	 * @param {*} flags 
+	 * @returns 
+	 */
+	static toRegex(val, flags) {
+		if (val instanceof RegExp) return val;
+		return GSUtil.isStringEmpty(val) ? undefined : new RegExp(val, flags);
+	}
+
+	/**
+	 * Find number separator for given locale
+	 * @param {string} locale 
+	 * @returns 
+	 */
+	static decimalSeparator(locale) {
+		return Intl.NumberFormat(locale).format(1.1)[1];
+	}
+
+	/**
+	 * Find decimal separator for given locale
+	 * @param {string} locale 
+	 * @returns 
+	 */
+	static numberSeparator(locale) {
+		return Intl.NumberFormat(locale).format(1000)[1];
+	}
+
+	/**
+	 * Try to find data format based on locale
+	 * @param {string} locale 
+	 * @returns 
+	 */
+	static getDateFormat(locale = undefined) {
+		const formatted = new Intl.DateTimeFormat(locale).format(new Date(2000, 0, 2));
+		return formatted
+			.replace('2000', 'YYYY')
+			.replace('01', 'MM')
+			.replace('1', 'M')
+			.replace('02', 'DD')
+			.replace('2', 'D');
 	}
 
 	static isJsonString(val = '') {
@@ -76,8 +136,8 @@ export default class GSUtil {
 
 	/**
 	 * Check if provided parameter is of JSON type
-	 * @param {string|object} val 
-	 * @returns {boolean}
+	 * @param {String|object} val 
+	 * @returns {Boolean}
 	 */
 	static isJsonType(val = '') {
 		return val && Array.isArray(val) || typeof val == "object";
@@ -85,8 +145,8 @@ export default class GSUtil {
 
 	/**
 	 * Check if provided paramter is JSON
-	 * @param {string|object} val 
-	 * @returns {boolean}
+	 * @param {String|object} val 
+	 * @returns {Boolean}
 	 */
 	static isJson(val = '') {
 		return GSUtil.isJsonString(val) || GSUtil.isJsonType(val);
@@ -94,8 +154,8 @@ export default class GSUtil {
 
 	/**
 	 * Convert provided paramter to JSON
-	 * @param {string|object} val 
-	 * @returns {boolean}
+	 * @param {String|object} val 
+	 * @returns {Boolean}
 	 */
 	static toJson(val = '', dft = {}, normalize = true) {
 		if (GSUtil.isJsonString(val)) return JSON.parse(normalize ? GSUtil.normalizeJson(val) : val);
@@ -106,8 +166,8 @@ export default class GSUtil {
 
 	/**
 	 * Normalize unquoted JSON
-	 * @param {*} val 
-	 * @returns 
+	 * @param {String} val 
+	 * @returns {String}
 	 */
 	static normalizeJson(val = '') {
 		return val?.replace(GSUtil.#JSON_NORMALIZE, '"$2": ');
@@ -115,18 +175,28 @@ export default class GSUtil {
 
 	/**
 	 * Makes string value safe, always return value
-	 * @param {string|object} val 
-	 * @returns {string}
+	 * @param {String|object} val 
+	 * @returns {String}
 	 */
 	static normalize(val, def = '') {
 		return (val ?? def).toString().trim();
 	}
 
 	/**
+	 * Convert string separated values into an array
+	 * @param {String} val 
+	 * @param {String} separator 
+	 * @returns {Array<String>}
+	 */
+	static toStringArray(val = '', separator = ' ') {
+		return val.split(separator).map(v => v.trim()).filter(v => v.length > 0);
+	}
+
+	/**
 	 * Transform text based on CSS text attribute format
-	 * @param {string} format 
-	 * @param {string} value 
-	 * @returns 
+	 * @param {String} format 
+	 * @param {String} value 
+	 * @returns {String}
 	 */
 	static textTransform(format = '', value = '') {
 		switch (format) {
@@ -149,7 +219,7 @@ export default class GSUtil {
 	 * 	 const template = 'Example text: ${text}';
 	 *   const result = interpolate(template, {text: 'Foo Boo'});
 	 * 
-	 * @param {string} tpl 
+	 * @param {String} tpl 
 	 * @param {Object} params 
 	 * @returns {function}
 	 */
@@ -160,9 +230,20 @@ export default class GSUtil {
 	}
 
 	/**
+	 * Decode HTML entities (&nbsp; &laquot; etc...)
+	 * @param {string} text 
+	 * @returns {string}
+	 */
+	static decodeHTMLEntities(text) {
+		const textArea = document.createElement('textarea');
+		textArea.innerHTML = text;
+		return textArea.value;
+	}
+
+	/**
 	 * Convert string pointer to object
-	 * @param {string} value 
-	 * @returns  {*}
+	 * @param {String} value 
+	 * @returns {*}
 	 */
 	static parseValue(value) {
 		if (!GSUtil.isString(value)) return;
@@ -182,8 +263,8 @@ export default class GSUtil {
 	/**
 	 * Check if strings has data
 	 * 
-	 * @param {string} val 
-	 * @returns {boolean}
+	 * @param {String} val 
+	 * @returns {Boolean}
 	 */
 	static isStringNonEmpty(val = '') {
 		return !GSUtil.isStringEmpty(val);
@@ -192,8 +273,8 @@ export default class GSUtil {
 	/**
 	 * Check if strings is empty
 	 * 
-	 * @param {string} val 
-	 * @returns {boolean}
+	 * @param {String} val 
+	 * @returns {Boolean}
 	 */
 	static isStringEmpty(val = '') {
 		return GSUtil.normalize(val).trim().length === 0;
@@ -202,9 +283,9 @@ export default class GSUtil {
 	/**
 	 * match two strings, or first is not set
 	 * 
-	 * @param {string} left 
-	 * @param {string} right 
-	 * @returns {boolean}
+	 * @param {String} left 
+	 * @param {String} right 
+	 * @returns {Boolean}
 	 */
 	static isStringMatch(left, right) {
 		const lmatch = GSUtil.isStringNonEmpty(left);
@@ -219,15 +300,15 @@ export default class GSUtil {
 	 * Async version of timeout
 	 * 
 	 * @async
-	 * @param {number} time 
+	 * @param {Number} time 
 	 * @param {number|AbortSignal} signal Abort object
 	 * @returns {Promise<void>}
 	 */
 	static async timeout(time = 0, signal) {
-        signal = GSUtil.isNumber(signal) ? AbortSignal.timeout(signal) : signal;
+		signal = GSUtil.isNumber(signal) ? AbortSignal.timeout(signal) : signal;
 		return new Promise((resolve, reject) => {
 			const iid = setTimeout(resolve.bind(null, true), time);
-			if(signal instanceof AbortSignal) {
+			if (signal instanceof AbortSignal) {
 				signal.addEventListener('abort', () => {
 					clearTimeout(iid);
 					reject(new Error('aborted timeout'));
@@ -241,8 +322,8 @@ export default class GSUtil {
 	 * 
 	 * @async
 	 * @param {Array} data 
-	 * @param {string} name File name
-	 * @param {string} type Mime type, default octet/stream
+	 * @param {String} name File name
+	 * @param {String} type Mime type, default octet/stream
 	 */
 	static async export(data, name, type = 'octet/stream') {
 
@@ -267,12 +348,12 @@ export default class GSUtil {
 	 * 
 	 * GSUtil.register(null, GSUtil, null, true, false, true);
 	 * 
-	 * @param {string} name Custom element name
-	 * @param {HTMLElement} clazz Class extensing at leas HTMLElement
-	 * @param {string} ext If existing tag extended, this is tagName
-	 * @param {boolean} seal Should class be sealed
-	 * @param {boolean} freeze Should class be freezed
-	 * @param {boolean} expose Should class be exposed to "self"
+	 * @param {String} name Custom element name
+	 * @param {HTMLElement} clazz Class extensing at least HTMLElement
+	 * @param {String} ext If existing tag extended, this is tagName
+	 * @param {Boolean} seal Should class be sealed
+	 * @param {Boolean} freeze Should class be freezed
+	 * @param {Boolean} expose Should class be exposed to "self"
 	 * 
 	 * @returns {void}
 	 */
@@ -286,10 +367,10 @@ export default class GSUtil {
 	}
 
 	/**
-	 * Inport and initialize source in JavaScript modules
+	 * Import and initialize source in JavaScript modules
 	 * Standard eval or new Function can not be used
-	 * @param {*} src 
-	 * @returns 
+	 * @param {String} src 
+	 * @returns {*}
 	 */
 	static async importSource(src) {
 		const blob = new Blob([src], { type: "text/javascript" });

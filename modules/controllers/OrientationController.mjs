@@ -1,41 +1,43 @@
-import GSEvents from "../base/GSEvents.mjs";
+/*
+ * Copyright (C) 2015, 2024 Green Screens Ltd.
+ */
 
-export default class OrientationController {
+/**
+ * Handle screen orientation events.
+ * Trigger rerender to optionally hide element if 
+ * screen orientation is not supported
+ */
+export class OrientationController {
 
-    static #controllers = new Set();
-
+    static #hosts = new Set();
     #host;
-
-    constructor(host) {
-        const me = this;
-        me.#host = host;
-        me.#host.addController(me);
-    }
-
-    hostConnected() {
-        OrientationController.#controllers.add(this);
-    }
-
-    hostDisconnected() {
-        OrientationController.#controllers.delete(this);
-    }
-
-    attributeCallback(name, oldValue, newValue) {
-        if (name === 'orientation') this.handle();
-	}
     
-    handle() {
-		const me = this.#host;
-        if (!me.offline) me.isValidOrientation ? me.show(true) : me.hide(true)
+    constructor(host) {
+      this.#host = host;
+      host.addController(this);
+    }
+    
+    hostConnected() {
+      OrientationController.#hosts.add(this);
+      this.update();
+    }
+    
+    hostDisconnected() {
+      const me = this;
+      OrientationController.#hosts.delete(me.#host);
+      me.#host.removeController(me);      
+      me.#host = null;
     }
 
-    static #callback(e) {
-        requestAnimationFrame(() => {
-            OrientationController.#controllers.forEach(c => c.handle());
-        });
+    update() {
+      this.#host.requestUpdate();
     }
- 
+
+    static #onOrientation(e) {
+      Array.from(OrientationController.#hosts).forEach(h => h.update());
+    }
+    
     static {
-        GSEvents.attach(window, screen.orientation, 'change', OrientationController.#callback);
+      screen.orientation.addEventListener('change', OrientationController.#onOrientation);
     }
-}
+}  

@@ -4,4 +4,4 @@ GSData Class is a generic set of static functions used mostly for processing arr
 
 <br>
 
-&copy; Green Screens Ltd. 2016 - 2023
+&copy; Green Screens Ltd. 2016 - 2024

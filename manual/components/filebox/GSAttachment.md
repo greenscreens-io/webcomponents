@@ -4,4 +4,4 @@ GSAttachment Class is a internal class used by [GSFileBox](./GSFileBox.md) WebCo
 
 <br>
 
-&copy; Green Screens Ltd. 2016 - 2023
+&copy; Green Screens Ltd. 2016 - 2024

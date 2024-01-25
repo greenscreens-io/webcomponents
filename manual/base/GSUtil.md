@@ -8,4 +8,4 @@ NOTE: Please see [Install](../install.md) document for instructions on how to ge
 
 <br>
 
-&copy; Green Screens Ltd. 2016 - 2023
+&copy; Green Screens Ltd. 2016 - 2024

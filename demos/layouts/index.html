@@ -1,15 +1,14 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-    <title>Layouts test</title>
+    <title>Bootstrap-Lit</title>
     <meta charset="utf-8">
 
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
-    <meta name="viewport"
-        content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0">
 
     <meta name="subject" content="Green Scereens Ltd.">
     <meta name="author" content="www.greenscreens.ltd">
@@ -18,16 +17,26 @@
     <meta name="revisit-after" content="3 month">
     <meta name="description" content="WebComponents UI library based on Bootstrap.">
 
-    <script type="module" src="/webcomponents/modules/index.mjs"></script>
-    <gs-css url="/webcomponents/assets/css/io.greenscreens.bootstrap.css"></gs-css>
-    <gs-css url="/webcomponents/assets/icons/bootstrap-icons.css" notheme="true"></gs-css>
+    <script>
+        globalThis.GS_TEMPLATE_URL='/bootstrap-lit/demos/templates/';
+    </script>
+    
+    <!-- Optimized CSS loading -->
+    <link rel="preload" href="/bootstrap-lit/assets/css/bootstrap.css" as="style"  data-adoptable="true" data-id="1">
+    <link rel="preload" href="/bootstrap-lit/assets/themes/default.css" as="style" data-adoptable="true" data-id="2">
+    <link rel="preload" href="/bootstrap-lit/assets/icons/bootstrap-icons.css" as="style" data-adoptable="true" data-id="4">
+
+    <script type="module" src="/bootstrap-lit/modules/base/GSAdoptedEngine.mjs"></script>
+    <script type="module" src="/bootstrap-lit/modules/base/GSTheme.mjs"></script>
+    <script type="module" src="/bootstrap-lit/modules/components/Template.mjs"></script>
+
 </head>
 
 <body>
+    <gs-template url="//header.html"></gs-template>
 
-    <gs-template href="../../assets/header.tpl"></gs-template>
 
-    <div class="m-4 p-1 bg-light border shadow-sm">
+    <div class="m-4 p-1 bg-light bordered shadow-sm">
         <a class="btn btn-primary m-1" target="_blank" href="vertical.html">Vertical</a>
         <a class="btn btn-primary m-1" target="_blank" href="horizontal.html">Horizontal</a>
         <a class="btn btn-primary m-1" target="_blank" href="nested.html">Nested</a>

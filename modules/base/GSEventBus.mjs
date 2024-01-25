@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015, 2022 Green Screens Ltd.
+ * Copyright (C) 2015, 2024 Green Screens Ltd.
  */
 
 /**
@@ -7,7 +7,7 @@
  * @module base/GSEventBus
  */
 
-import GSEvent from './GSEvent.mjs';
+import { GSEvent } from './GSEvent.mjs';
 
 /**
  * Class for handling shared events among components
@@ -16,16 +16,16 @@ import GSEvent from './GSEvent.mjs';
  *  - does not work across different pages
  * @Class
  */
-export default class GSEventBus  {
+export class GSEventBus {
 
     static #registry = new Map();
 
     /**
      * Static event emiter. If named event does not exist, create a new one
      * 
-     * @param {string} name EventBus name
-     * @param {string} type Event name
-     * @param {object} data Dat to send
+     * @param {String} name EventBus name
+     * @param {String} type Event name
+     * @param {Object} data Dat to send
      * 
      * @returns {boolean|object}
      */
@@ -36,8 +36,8 @@ export default class GSEventBus  {
     /**
      * Check if named event bus already exists
      * 
-     * @param {string} name 
-     * @returns {boolean}
+     * @param {String} name 
+     * @returns {Boolean}
      */
     static exist(name = '') {
         return name && GSEventBus.#registry.has(name);
@@ -45,7 +45,7 @@ export default class GSEventBus  {
 
     /**
      * Register a named event bus. If already exists, will return existsing instance.
-     * @param {string} name unique bus name
+     * @param {String} name unique bus name
      * @returns {GSEventBus}
      */
     static register(name = '') {
@@ -57,8 +57,8 @@ export default class GSEventBus  {
 
     /**
      * Unregister named event bus from registry.
-     * @param {string} name unique buss name
-     * @returns {boolean} State of removal.
+     * @param {String} name unique buss name
+     * @returns {Boolean} State of removal.
      */
     static unregister(name = '') {
         const bus = GSEventBus.#registry.get(name);

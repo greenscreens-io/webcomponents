@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Bootstrap-Lit</title>
+  <meta charset="utf-8">
+
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0">
+
+  <meta name="subject" content="Green Scereens Ltd.">
+  <meta name="author" content="www.greenscreens.ltd">
+  <meta name="keywords" content="JavaScript,WebComponents">
+  <meta name="robots" content="index, follow">
+  <meta name="revisit-after" content="3 month">
+  <meta name="description" content="WebComponents UI library based on Bootstrap.">
+
+  <script>
+    globalThis.GS_TEMPLATE_URL = '/bootstrap-lit/demos/templates/';
+  </script>
+
+  <!-- Optimized CSS loading -->
+  <link rel="preload" href="/bootstrap-lit/assets/css/bootstrap.css" as="style" data-adoptable="true" data-id="1">
+  <link rel="preload" href="/bootstrap-lit/assets/themes/default.css" as="style" data-adoptable="true" data-id="2">
+  <link rel="preload" href="/bootstrap-lit/assets/icons/bootstrap-icons.css" as="style" data-adoptable="true"
+    data-id="4">
+
+  <script type="module" src="/bootstrap-lit/modules/base/GSDOM.mjs"></script>
+  <script type="module" src="/bootstrap-lit/modules/base/GSAdoptedEngine.mjs"></script>
+  <script type="module" src="/bootstrap-lit/modules/base/GSTheme.mjs"></script>
+  <script type="module" src="/bootstrap-lit/modules/components/Template.mjs"></script>
+  <script type="module" src="/bootstrap-lit/modules/components/Icon.mjs"></script>
+  <script type="module" src="/bootstrap-lit/modules/components/Center.mjs"></script>
+  <script type="module" src="/bootstrap-lit/modules/components/Form.mjs"></script>
+  <script type="module" src="/bootstrap-lit/modules/components/FormGroup.mjs"></script>
+  <script type="module" src="/bootstrap-lit/modules/components/Image.mjs"></script>
+
+</head>
+
+<body>
+  <gs-template url="//header.html"></gs-template>
+
+  <gs-center css="m-4 p-4 bg-light bordered shadow-sm">
+    <gs-image blur="0" sepia="0" invert="0"  opacity="0" contrast="0" grayscale="0" brightness="0" hue="-1" sepia="0" saturate="-1"
+         src="https://images.unsplash.com/photo-1682687220208-22d7a2543e88?q=80&w=800&h=550&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D">
+    </gs-image>
+  </gs-center>
+
+  <!--
+      Seting the "data-gs-target" attribute will activate automatic data binding on form data changes.
+      Form element name is mapped to target property.
+  -->      
+  <gs-form data-gs-target="gs-image">
+    <div class="position-absolute translate-middle-y top-50 start-25 justify-content-center bordered p-4 shadow-sm bg-light">
+        <gs-form-group css="mt-2" name="hue" label="Hue" type="range" min="0" max="360" step="1" value="0"></gs-form-group>
+        <gs-form-group css="mt-2" name="blur" label="Blur" type="range" min="0" max="10" step="1" value="0"></gs-form-group>
+        <gs-form-group css="mt-2" name="sepia" label="Sepia" type="range" min="0" max="100" step="1" value="0"></gs-form-group>
+        <gs-form-group css="mt-2" name="invert" label="Invert" type="range" min="0" max="1" step="0.1" value="0"></gs-form-group>
+        <gs-form-group css="mt-2" name="opacity" label="Opacity" type="range" min="0" max="1" step="0.1" value="1" reverse></gs-form-group>
+        <gs-form-group css="mt-2" name="saturate" label="Saturate" type="range" min="0" max="100" step="1" value="0"></gs-form-group>
+        <gs-form-group css="mt-2" name="contrast" label="Contrast" type="range" min="0" max="100" step="1" value="1"></gs-form-group>
+        <gs-form-group css="mt-2" name="grayscale" label="Grayscale" type="range" min="0" max="1" step="0.1" value="0"></gs-form-group>
+        <gs-form-group css="mt-2" name="brightness" label="Brightness" type="range" min="0" max="10" step="0.1" value="0"></gs-form-group>
+    </div>        
+  </gs-form>
+
+</body>
+</html>

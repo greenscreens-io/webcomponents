@@ -11,13 +11,19 @@ GSTag WebComponent extends [GSElement](../base/GSElement.md) and all its attribu
 
 | Name               | Description                                              |
 |--------------------|----------------------------------------------------------|
-| css                | CSS classes for alert content                            |
 | css-close          | CSS close button for a tag                               | 
 | css-tag            | CSS for a tag                                            | 
-| allowadd           | Allow custom values                                      | 
-| max                | Maximum nuimber of entries                               | 
-| palceholder        | Text to display in input field                           | 
+| color              | CSS for a tag                                            | 
+| close-color        | Tag close button color                                   | 
+
+| max                | Maximum number of entries                                | 
+| size               | Tag icon size                                            | 
+| name               | input element bname - used on forms                      | 
+| appendable         | Allow custom values                                      | 
+| placeholder        | Text to display in input field                           | 
+
 | values             | List of default or selected tag values                   | 
+| data               | List values available in select box                      | 
 
 <br>
 
@@ -39,4 +45,4 @@ For more details, check [tags.html](../../demos/tags.html)
 
 <br>
 
-&copy; Green Screens Ltd. 2016 - 2023
+&copy; Green Screens Ltd. 2016 - 2024

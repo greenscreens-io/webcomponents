@@ -11,26 +11,37 @@ GSButton WebComponent extends [GSElement](../base/GSElement.md) and all its attr
  
 | Name               | Description                                                   |
 |--------------------|---------------------------------------------------------------|
-| css                | CSS classes for button                                        |
-| comment            | Info message on mouse hover                                   |
-| disable            | Render button disabled, ignore click events                   |
+| type               | Button type (button,reset,submit)                             |
+| size               | Button size (small,large,normal(default) )                    |
+| color              | Button color - Bootstrap colors                               |
+| disabled           | Render button disabled, ignore click events                   |
+| outline            | Render button ouotlined                                       |
+| active             | Render butto nselected                                        |
 | icon               | Button icon, can be combined with title                       |
 | title              | Button text                                                   |
-| select             | If false, blur the element - prevent selection focus          |
-| target             | CSS selector to element which will be affected by click event |
-| toggle             | *Type of target, defines different behavior                   |
-| dismiss            | *Type of target, defines different behavior                   |
+| tooltip            | Info message on mouse hover                                   |
+| text               | Button text color - Bootstrap colors                          |
+| toggling           | Enable button active state changes                            |
+| toggle-color       | Button Bootstrap color when in active state (toggled)         |
  
 <br>
  
 **NOTE:**
+
+AttributeController is attached to the button. 
  
-Attributes **toggle** and **dismiss** are shorthand for Bootstrap **data-bs-toggle** and **data-bs-dismiss** attributes.
- 
-Please refer to the [GSDataAttr](./ext/GSDataAttr.md) for attributes values required to select target type.
+Please refer to the [AttributeController](../base/AttributeController.md) for attributes click handling options.
  
 <br>
  
+ 
+## Slots
+| Name               | Description                                              |
+|--------------------|----------------------------------------------------------|
+| icon               | Place custom icon content                                |
+
+<br>
+
 ## Example
 ---
 
@@ -39,25 +50,25 @@ For more details, check [button.html](../../demos/button.html)
  
 ```html
 <!-- Example with icon -->
-<gs-button css="btn-primary" title="Icon" icon="bi-alarm me-1" comment="Test"></gs-button>
+<gs-button color="primary" title="Icon" icon="alarm me-1" tooltip="Test"></gs-button>
  
 <!-- Test disabled button -->
-<gs-button css="btn-primary" title="Disabled" disable="true" comment="Test"></gs-button>
+<gs-button color="primary" title="Disabled" disabled tooltip="Test"></gs-button>
  
 <!-- Toggle (show/hide) single target -->
-<gs-button css="btn-primary" title="Toggle" toggle="button" target="#b1" comment="test"></gs-button>
+<gs-button color="primary" title="Toggle" gs-toggle="d-none" gs-target="#b1" tooltip="test"></gs-button>
  
 <!-- Toggle (show/hide) multiple targets -->
-<gs-button css="btn-primary" title="Toggle" toggle="button" target="#b1,#b2" comment="Test"></gs-button>
+<gs-button color="primary" title="Toggle" gs-toggle="d-none" gs-target="#b1,#b2" tooltip="Test"></gs-button>
  
 <!-- Example to dismiss target -->
-<gs-button css="btn-primary" title="Close and toggle"  dismiss="alert" target="#b1,#b2" comment="Test"></gs-button>
+<gs-button color="primary" title="Close and toggle"  gs-call="close" gs-target="#b1,#b2" tooltip="Test"></gs-button>
  
 <!-- Toggle self state with 'active' class -->
-<gs-button css="btn-primary" title="Toggler" comment="Test"></gs-button>
+<gs-button color="primary" title="Toggler" tooltip="Test"></gs-button>
  
 ```
 
 <br>
 
-&copy; Green Screens Ltd. 2016 - 2023
+&copy; Green Screens Ltd. 2016 - 2024

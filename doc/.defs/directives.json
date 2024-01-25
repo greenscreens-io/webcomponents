@@ -1,0 +1,16 @@
+{
+    "source" : {
+        "include" : ["modules/directives"],
+        "includePattern" : ".mjs",
+        "excludePattern": "index.mjs"
+    },
+    "plugins" : ["plugins/markdown"],
+    "tempales" : {
+        "cleverLinks" : true,
+        "monospaceLinks" : true
+    },
+    "opts" : {
+        "recurse":true,
+        "destination" : "./doc/directives"
+    }
+}

@@ -2,14 +2,12 @@
 <html lang="en">
 
 <head>
-    <title>Inputmask Test</title>
+    <title>Bootstrap-Lit</title>
     <meta charset="utf-8">
 
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
-    <meta name="viewport"
-        content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0">
 
     <meta name="subject" content="Green Scereens Ltd.">
     <meta name="author" content="www.greenscreens.ltd">
@@ -18,19 +16,26 @@
     <meta name="revisit-after" content="3 month">
     <meta name="description" content="WebComponents UI library based on Bootstrap.">
 
-    <script type="module" src="/webcomponents/modules/index.mjs"></script>
-    <script type="module" src="/webcomponents/modules/components/ext/GSInputExt.mjs"></script>
+    <script>
+        globalThis.GS_TEMPLATE_URL='/bootstrap-lit/demos/templates/';
+    </script>
 
-    <gs-css url="/webcomponents/assets/css/io.greenscreens.bootstrap.css"></gs-css>
-    <gs-css url="/webcomponents/assets/icons/bootstrap-icons.css" notheme="true"></gs-css>
+    <!-- Optimized CSS loading -->
+    <link rel="preload" href="/bootstrap-lit/assets/css/bootstrap.css" as="style"  data-adoptable="true" data-id="1">
+    <link rel="preload" href="/bootstrap-lit/assets/themes/default.css" as="style" data-adoptable="true" data-id="2">
+    <link rel="preload" href="/bootstrap-lit/assets/icons/bootstrap-icons.css" as="style" data-adoptable="true" data-id="4">
+
+    <script type="module" src="/bootstrap-lit/modules/base/GSAdoptedEngine.mjs"></script>
+    <script type="module" src="/bootstrap-lit/modules/base/GSTheme.mjs"></script>
+    <script type="module" src="/bootstrap-lit/modules/components/Template.mjs"></script>
+    <script type="module" src="/bootstrap-lit/modules/components/ext/GSInputExt.mjs"></script>
 
 </head>
-
 <body>
 
-    <gs-template href="/webcomponents/demos/header.tpl"></gs-template>
+    <gs-template url="//header.html"></gs-template>
 
-    <div class="m-4 p-1 bg-light border shadow-sm row">
+    <div class="m-4 p-1 bg-light bordered shadow-sm row">
         <div class="col-auto">
             Conditional toggle based on input selection; sublist is also filtered
         </div>
@@ -38,7 +43,7 @@
 
     <form>
 
-        <div class="m-4 p-1 bg-light border shadow-sm">
+        <div class="m-4 p-1 bg-light bordered shadow-sm">
             <div class="row form-group m-1">
                 <div class="col-md-4 col-sm-4 col-xs-12 text-md-end ">
                     <label class="control-label">Select GROUP</label>
@@ -53,7 +58,7 @@
             </div>
         </div>
 
-        <div class="m-4 p-1 bg-light border shadow-sm">
+        <div class="m-4 p-1 bg-light bordered shadow-sm">
             <div class="row form-group m-1">
                 <div class="col-md-4 col-sm-4 col-xs-12 text-md-end ">
                     <label class="control-label">Seelct SUB-GROUP</label>
@@ -78,7 +83,7 @@
             </div>
         </div>
 
-        <div class="m-4 p-1 bg-light border shadow-sm">
+        <div class="m-4 p-1 bg-light bordered shadow-sm">
             <div class="row form-group m-1">
                 <div class="col-md-4 col-sm-4 col-xs-12 text-md-end ">
                     <label class="control-label">Data input FLAG 1</label>
@@ -89,7 +94,7 @@
             </div>
         </div>
         
-        <div class="m-4 p-1 bg-light border shadow-sm">
+        <div class="m-4 p-1 bg-light bordered shadow-sm">
             <div class="row form-group m-1">
                 <div class="col-md-4 col-sm-4 col-xs-12 text-md-end ">
                     <label class="control-label">Data input FLAG 2</label>
@@ -100,7 +105,7 @@
             </div>
         </div>        
 
-        <div class="m-4 p-1 bg-light border shadow-sm" data-code="CODABAR,CODE_11,CODE25_MATRIX,CODE39,CODE_128">
+        <div class="m-4 p-1 bg-light bordered shadow-sm" data-code="CODABAR,CODE_11,CODE25_MATRIX,CODE39,CODE_128">
             <div class="row form-group m-1">
                 <div class="col-md-4 col-sm-4 col-xs-12 text-md-end ">
                     <label class="control-label">Data input GROUP 1 (CODE)</label>
@@ -111,7 +116,7 @@
             </div>
         </div>
 
-        <div class="m-4 p-1 bg-light border shadow-sm" data-code="EAN,UPC_A">
+        <div class="m-4 p-1 bg-light bordered shadow-sm" data-code="EAN,UPC_A">
             <div class="row form-group m-1">
                 <div class="col-md-4 col-sm-4 col-xs-12 text-md-end ">
                     <label class="control-label">Data input GROUP 1 (EAN/UPC)</label>
@@ -122,7 +127,7 @@
             </div>
         </div>        
 
-        <div class="m-4 p-1 bg-light border shadow-sm" data-code="DATAMATRIX,MAXICODE,QR,QR_MICRO">
+        <div class="m-4 p-1 bg-light bordered shadow-sm" data-code="DATAMATRIX,MAXICODE,QR,QR_MICRO">
             <div class="row form-group m-1">
                 <div class="col-md-4 col-sm-4 col-xs-12 text-md-end ">
                     <label class="control-label">Data input GROUP 2</label>

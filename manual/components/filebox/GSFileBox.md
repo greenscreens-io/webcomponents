@@ -39,16 +39,16 @@ For more details, check [filebox.html](../../../demos/filebox.html)
 
 ```html
 <gs-filebox name="file"></gs-filebox>
-<gs-filebox name="file" multiple="true"></gs-filebox>
-<gs-filebox name="file" directory="true"></gs-filebox>
+<gs-filebox name="file" multiple></gs-filebox>
+<gs-filebox name="file" directory></gs-filebox>
 ```
 
 <br>
 
 ```JavaScript
-const fileBox = document.querySelector('gs-filebox');
+const fileBox = GSDOM.query('gs-filebox');
 fileBox.listen('accept', e => console.log(e));
 ```
 <br>
 
-&copy; Green Screens Ltd. 2016 - 2023
+&copy; Green Screens Ltd. 2016 - 2024

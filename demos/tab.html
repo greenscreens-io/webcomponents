@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Bootstrap-Lit</title>
+    <meta charset="utf-8">
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0">
+
+    <meta name="subject" content="Green Scereens Ltd.">
+    <meta name="author" content="www.greenscreens.ltd">
+    <meta name="keywords" content="JavaScript,WebComponents">
+    <meta name="robots" content="index, follow">
+    <meta name="revisit-after" content="3 month">
+    <meta name="description" content="WebComponents UI library based on Bootstrap.">
+
+    <script>
+        globalThis.GS_TEMPLATE_URL = '/bootstrap-lit/demos/templates/';
+    </script>
+
+    <!-- Optimized CSS loading -->
+    <link rel="preload" href="/bootstrap-lit/assets/css/bootstrap.css" as="style" data-adoptable="true">
+    <link rel="preload" href="/bootstrap-lit/assets/themes/default.css" as="style" data-adoptable="true">
+    <link rel="preload" href="/bootstrap-lit/assets/icons/bootstrap-icons.css" as="style" data-adoptable="true">
+
+
+    <script type="module" src="/bootstrap-lit/modules/base/GSAdoptedEngine.mjs"></script>
+    <script type="module" src="/bootstrap-lit/modules/base/GSTheme.mjs"></script>
+    <script type="module" src="/bootstrap-lit/modules/components/Template.mjs"></script>
+    <script type="module" src="/bootstrap-lit/modules/components/Link.mjs"></script>
+    <script type="module" src="/bootstrap-lit/modules/components/Button.mjs"></script>
+    <script type="module" src="/bootstrap-lit/modules/components/Icon.mjs"></script>
+    <script type="module" src="/bootstrap-lit/modules/components/tab/Tab.mjs"></script>
+    <script type="module" src="/bootstrap-lit/modules/components/tab/TabPanel.mjs"></script>
+    <script type="module" src="/bootstrap-lit/modules/components/tab/TabGroup.mjs"></script>
+    
+</head>
+
+<body>
+    
+    <gs-template url="//header.html"></gs-template>
+    
+    <br><br>
+    
+    <div class="border p-3 m-4 shadow-sm text-nowrap text-bg-light">
+        <gs-tab-group type="pills">
+            <gs-tab name="tab1" slot="tabs" autofocus title="Link 1"></gs-tab>
+            <gs-tab name="tab2" slot="tabs" title="Link 2"></gs-tab>
+            <gs-tab name="tab3" slot="tabs" title="Link 3"></gs-tab>
+            <gs-tab name="tab4" slot="tabs" title="Link 4"></gs-tab>
+            <gs-tab name="tab5" slot="tabs" title="Link 5"></gs-tab>
+
+            <gs-tab-panel name="tab1" slot="panels">Panel 1</gs-tab-panel>
+            <gs-tab-panel name="tab2" slot="panels">Panel 2</gs-tab-panel>
+            <gs-tab-panel name="tab3" slot="panels">Panel 3</gs-tab-panel>
+            <gs-tab-panel name="tab4" slot="panels">Panel 4</gs-tab-panel>
+            <gs-tab-panel name="tab5" slot="panels">Panel 5</gs-tab-panel>
+        </gs-tab-group>
+    </div> 
+
+
+    <div class="border p-3 m-4 shadow-sm text-nowrap text-bg-light">
+        <gs-tab-group type="pills" placement="end">
+            <gs-tab name="tab1" slot="tabs" autofocus title="Link 1"></gs-tab>
+            <gs-tab name="tab2" slot="tabs" title="Link 2"></gs-tab>
+            <gs-tab name="tab3" slot="tabs" title="Link 3"></gs-tab>
+            <gs-tab name="tab4" slot="tabs" title="Link 4"></gs-tab>
+            <gs-tab name="tab5" slot="tabs" title="Link 5"></gs-tab>
+
+            <gs-tab-panel name="tab1" slot="panels">Panel 1</gs-tab-panel>
+            <gs-tab-panel name="tab2" slot="panels">Panel 2</gs-tab-panel>
+            <gs-tab-panel name="tab3" slot="panels">Panel 3</gs-tab-panel>
+            <gs-tab-panel name="tab4" slot="panels">Panel 4</gs-tab-panel>
+            <gs-tab-panel name="tab5" slot="panels">Panel 5</gs-tab-panel>
+        </gs-tab-group>
+    </div> 
+
+    <div class="border p-3 m-4 shadow-sm text-nowrap text-bg-light">
+        <gs-tab-group type="underline">
+            <gs-tab name="tab1" slot="tabs" autofocus title="Link 1"></gs-tab>
+            <gs-tab name="tab2" slot="tabs" title="Link 2"></gs-tab>
+            <gs-tab name="tab3" slot="tabs" title="Link 3"></gs-tab>
+            <gs-tab name="tab4" slot="tabs" title="Link 4"></gs-tab>
+            <gs-tab name="tab5" slot="tabs" title="Link 5"></gs-tab>
+
+            <gs-tab-panel name="tab1" slot="panels">Panel 1</gs-tab-panel>
+            <gs-tab-panel name="tab2" slot="panels">Panel 2</gs-tab-panel>
+            <gs-tab-panel name="tab3" slot="panels">Panel 3</gs-tab-panel>
+            <gs-tab-panel name="tab4" slot="panels">Panel 4</gs-tab-panel>
+            <gs-tab-panel name="tab5" slot="panels">Panel 5</gs-tab-panel>
+        </gs-tab-group>
+    </div>
+    
+    <div class="border p-3 m-4 shadow-sm text-nowrap text-bg-light">
+        <gs-tab-group type="underline" placement="end">
+            <gs-tab name="tab1" slot="tabs" autofocus title="Link 1"></gs-tab>
+            <gs-tab name="tab2" slot="tabs" title="Link 2"></gs-tab>
+            <gs-tab name="tab3" slot="tabs" title="Link 3"></gs-tab>
+            <gs-tab name="tab4" slot="tabs" title="Link 4"></gs-tab>
+            <gs-tab name="tab5" slot="tabs" title="Link 5"></gs-tab>
+
+            <gs-tab-panel name="tab1" slot="panels">Panel 1</gs-tab-panel>
+            <gs-tab-panel name="tab2" slot="panels">Panel 2</gs-tab-panel>
+            <gs-tab-panel name="tab3" slot="panels">Panel 3</gs-tab-panel>
+            <gs-tab-panel name="tab4" slot="panels">Panel 4</gs-tab-panel>
+            <gs-tab-panel name="tab5" slot="panels">Panel 5</gs-tab-panel>
+        </gs-tab-group>
+    </div>    
+
+    <div class="border p-3 m-4 shadow-sm text-nowrap text-bg-light">
+        <gs-tab-group type="tabs" data-css-active="text-bg-primary">
+            <gs-tab name="tab1" slot="tabs" autofocus title="Link 1"></gs-tab>
+            <gs-tab name="tab2" slot="tabs" title="Link 2"></gs-tab>
+            <gs-tab name="tab3" slot="tabs" title="Link 3"></gs-tab>
+            <gs-tab name="tab4" slot="tabs" title="Link 4"></gs-tab>
+            <gs-tab name="tab5" slot="tabs" title="Link 5"></gs-tab>
+
+            <gs-tab-panel name="tab1" slot="panels">Panel 1</gs-tab-panel>
+            <gs-tab-panel name="tab2" slot="panels">Panel 2</gs-tab-panel>
+            <gs-tab-panel name="tab3" slot="panels">Panel 3</gs-tab-panel>
+            <gs-tab-panel name="tab4" slot="panels">Panel 4</gs-tab-panel>
+            <gs-tab-panel name="tab5" slot="panels">Panel 5</gs-tab-panel>
+        </gs-tab-group>
+    </div> 
+
+    <div class="border p-3 m-4 shadow-sm text-nowrap text-bg-light">
+        <gs-tab-group type="tabs" placement="end">
+            <gs-tab name="tab1" slot="tabs" autofocus title="Link 1"></gs-tab>
+            <gs-tab name="tab2" slot="tabs" title="Link 2"></gs-tab>
+            <gs-tab name="tab3" slot="tabs" title="Link 3"></gs-tab>
+            <gs-tab name="tab4" slot="tabs" title="Link 4"></gs-tab>
+            <gs-tab name="tab5" slot="tabs" title="Link 5"></gs-tab>
+
+            <gs-tab-panel name="tab1" slot="panels">Panel 1</gs-tab-panel>
+            <gs-tab-panel name="tab2" slot="panels">Panel 2</gs-tab-panel>
+            <gs-tab-panel name="tab3" slot="panels">Panel 3</gs-tab-panel>
+            <gs-tab-panel name="tab4" slot="panels">Panel 4</gs-tab-panel>
+            <gs-tab-panel name="tab5" slot="panels">Panel 5</gs-tab-panel>
+        </gs-tab-group>
+    </div>     
+
+
+    <!-- VERICAL ORIENTATION -->
+
+
+    <div class="border p-3 m-4 shadow-sm text-nowrap text-bg-light">
+        <gs-tab-group type="pills" vertical>
+            <gs-tab name="tab1" slot="tabs" autofocus title="Link 1"></gs-tab>
+            <gs-tab name="tab2" slot="tabs" title="Link 2"></gs-tab>
+            <gs-tab name="tab3" slot="tabs" title="Link 3"></gs-tab>
+            <gs-tab name="tab4" slot="tabs" title="Link 4"></gs-tab>
+            <gs-tab name="tab5" slot="tabs" title="Link 5"></gs-tab>
+
+            <gs-tab-panel name="tab1" slot="panels">Panel 1</gs-tab-panel>
+            <gs-tab-panel name="tab2" slot="panels">Panel 2</gs-tab-panel>
+            <gs-tab-panel name="tab3" slot="panels">Panel 3</gs-tab-panel>
+            <gs-tab-panel name="tab4" slot="panels">Panel 4</gs-tab-panel>
+            <gs-tab-panel name="tab5" slot="panels">Panel 5</gs-tab-panel>
+        </gs-tab-group>
+    </div> 
+    
+    <div class="border p-3 m-4 shadow-sm text-nowrap text-bg-light">
+        <gs-tab-group type="underline" vertical>
+            <gs-tab name="tab1" slot="tabs" autofocus title="Link 1"></gs-tab>
+            <gs-tab name="tab2" slot="tabs" title="Link 2"></gs-tab>
+            <gs-tab name="tab3" slot="tabs" title="Link 3"></gs-tab>
+            <gs-tab name="tab4" slot="tabs" title="Link 4"></gs-tab>
+            <gs-tab name="tab5" slot="tabs" title="Link 5"></gs-tab>
+
+            <gs-tab-panel name="tab1" slot="panels">Panel 1</gs-tab-panel>
+            <gs-tab-panel name="tab2" slot="panels">Panel 2</gs-tab-panel>
+            <gs-tab-panel name="tab3" slot="panels">Panel 3</gs-tab-panel>
+            <gs-tab-panel name="tab4" slot="panels">Panel 4</gs-tab-panel>
+            <gs-tab-panel name="tab5" slot="panels">Panel 5</gs-tab-panel>
+        </gs-tab-group>
+    </div>    
+
+    <div class="border p-3 m-4 shadow-sm text-nowrap text-bg-light">
+        <gs-tab-group type="tabs" vertical>
+            <gs-tab name="tab1" slot="tabs" autofocus title="Link 1"></gs-tab>
+            <gs-tab name="tab2" slot="tabs" title="Link 2"></gs-tab>
+            <gs-tab name="tab3" slot="tabs" title="Link 3"></gs-tab>
+            <gs-tab name="tab4" slot="tabs" title="Link 4"></gs-tab>
+            <gs-tab name="tab5" slot="tabs" title="Link 5"></gs-tab>
+
+            <gs-tab-panel name="tab1" slot="panels">Panel 1</gs-tab-panel>
+            <gs-tab-panel name="tab2" slot="panels">Panel 2</gs-tab-panel>
+            <gs-tab-panel name="tab3" slot="panels">Panel 3</gs-tab-panel>
+            <gs-tab-panel name="tab4" slot="panels">Panel 4</gs-tab-panel>
+            <gs-tab-panel name="tab5" slot="panels">Panel 5</gs-tab-panel>
+        </gs-tab-group>
+    </div>  
+
+</body>
+
+</html>

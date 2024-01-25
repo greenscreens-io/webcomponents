@@ -11,11 +11,14 @@ Menu items can be loaded from an external **template** or can be added as compon
  
 | Name               | Description                                              |
 |--------------------|----------------------------------------------------------|
-| css                | CSS classes for button containing dropdown menu          |
-| dark               | Is menu light or dark mode                               |
-| template           | For loading menu item from remote html template          |
+| icon               | Bootstrap icon name                                      |
+| color              | Bootstrap color for dropdown button                      |
+| text               | Bootstrap color button text                              |
+| size               | Icon size (1..5)                                         |
 | title              | Button title                                             |
  
+ NOTE: All attributes from [GS-MENU](./GSMenu.md) applies.
+
 <br>
  
 ## Example
@@ -25,7 +28,7 @@ Menu items can be loaded from an external **template** or can be added as compon
 For more details, check [dropdown.html](../../demos/dropdown.html)
  
 ```html
-<gs-dropdown title="Dropdown 1" css="btn-primary me-1" dark="false" template="">
+<gs-dropdown title="Dropdown 1" color="primary" css="me-1">
     <gs-item header="Menu group"></gs-item>
     <gs-item name="Open" action="open"></gs-item>
     <gs-item></gs-item>
@@ -50,10 +53,10 @@ For more details, check [dropdown.html](../../demos/dropdown.html)
 This example shows how to catch menu click events.
  
 ```JavaScript
-const menu = GSComponents.find('gs-dropdown');
+const menu = GSDOM.query('gs-dropdown');
 menu.listen('action', (e) => console.log(e.detail));
 ```
 
 <br>
 
-&copy; Green Screens Ltd. 2016 - 2023
+&copy; Green Screens Ltd. 2016 - 2024

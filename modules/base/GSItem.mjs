@@ -1,72 +1,65 @@
 /*
- * Copyright (C) 2015, 2022 Green Screens Ltd.
+ * Copyright (C) 2015, 2024 Green Screens Ltd.
  */
+
+import { GSAttr } from "./GSAttr.mjs";
+import { GSDOM } from "./GSDOM.mjs";
 
 /**
  * A module loading GSItem class
  * @module base/GSItem
  */
 
-import GSUtil from "./GSUtil.mjs";
-import GSAttr from "./GSAttr.mjs";
-import GSDOM from "./GSDOM.mjs";
-import GSID from "./GSID.mjs";
-
 /**
  * Static class for handling generic configurable tag GS-ITEM
  */
-export default class GSItem extends HTMLElement {
-
-	// static #BOOL = ['active', 'flat', 'selectable'];
-
-	static #dismiss = 'data-bs-dismiss';
-
-	static #target = 'data-bs-target';
-
-	static #toggle = 'data-bs-toggle';
-
-	static #action = 'data-action';
-
-	static #inject = 'data-inject';
-
-	static #attrs = 'data-attr';
-
-	static #selectable = 'data-selectable';
+export class GSItem extends HTMLElement {
 
 	static #tags = ['GS-ITEM', 'TEMPLATE']
-
-	static {
-		customElements.define('gs-item', GSItem);
-		Object.seal(GSItem);
-	}
-
-	#proxy;
 
 	constructor() {
 		super();
 		GSItem.validate(this);
-		//this.#proxy = GSAttr.proxify(this, {"bool":GSItem.#BOOL});
-	}
-
-	static validate(own, tagName = 'GS-ITEM') {
-		return GSDOM.validate(own, tagName, GSItem.#tags);
 	}
 
 	/**
-	 * Return content of HTMLTemplate child element
+	 * Return template content of GS-ITEM element (if exists)
 	 * 
 	 * @param {HTMLElement} el 
-	 * @returns {string}
+	 * @returns {String}
 	 */
-	static getBody(el, flat = false) {
-		let tpl = GSItem.getTemplate(el);
-		const isFlat = GSItem.getFlat(el);
-		const anchor = GSItem.getAnchor(el);
-		const acss = isFlat || flat ? `anchor="${anchor}" flat="true"` : '';
-		const cls = GSAttr.get(el, 'css-template', '');
-		if (tpl) return `<gs-template ${acss} href="${tpl}" class="${cls}"></gs-template>`;
-		tpl = el.querySelector('template');
+	get body() {
+		let tpl = GSAttr.get(this, 'template');
+		if (tpl) return `<gs-template href="${tpl}"></gs-template>`;
+		tpl = this.querySelector('template');
 		return tpl?.innerHTML || '';
+	}
+
+	/**
+	 * Get first level of generic gs-item elements
+	 * @param {HTMLElement} root 
+	 * @returns {Array<HTMLElement>} 
+	 */
+	get items() {
+		return Array.from(this.children).filter(el => el.tagName == 'GS-ITEM')
+	}
+
+	get name() {
+		return GSAttr.get(this, 'name', '');
+	}
+
+	asJSON(recursive = true) {
+		return GSDOM.toJson(this, recursive);
+	}
+
+	/**
+	 * Validate that parent element contains only specific childrens
+	 * @param {*} own 
+	 * @param {*} tagName 
+	 * @returns 
+	 */
+	static validate(own, tagName = 'GS-ITEM') {
+		return GSDOM.validate(own, tagName, GSItem.#tags);
 	}
 
 	/**
@@ -74,230 +67,32 @@ export default class GSItem extends HTMLElement {
 	 * @param {HTMLElement} root 
 	 * @returns {Array<HTMLElement>} 
 	 */
-	static genericItems(root) {
+	static collect(root) {
 		if (!GSDOM.isHTMLElement(root)) return [];
 		return Array.from(root.children).filter(el => el.tagName == 'GS-ITEM')
 	}
+		
+	/**
+	 * Convert GS-ITEM list to JSON
+	 * @param {HTMLElement} root Element containing GS-ITEM childs 
+	 * @returns {Array} Arary of JSON objects
+	 */
+	static toJSON(root) {
+		return GSItem.collect(root).map(el => el.asJSON(true));
+	}
 
 	/**
-	 * Hepler to join all base data-bs related attributes
-	 * @param {*} el 
+	 * Make GS-ITEM attributes JSON compatible 
+	 * @param {*} root 
+	 * @param {*} definition 
 	 * @returns 
 	 */
-	static getAttrs(el) {
-		return [GSItem.getDismissAttr(el), GSItem.getTargetAttr(el),
-		GSItem.getToggleAttr(el), GSItem.getActionAttr(el),
-		GSItem.getInjectAttr(el), GSItem.getInjectAttributesAttr(el)].join(' ');
-	}
+    static proxify(root, definition) {        
+        return GSItem.collect(root).map(el => GSAttr.proxify(el, definition));
+    }
 
-	static getDismissAttr(el) {
-		const v = GSItem.getDismiss(el);
-		return v ? `${GSItem.#dismiss}="${v}"` : '';
-	}
-
-	static getTargetAttr(el) {
-		const v = GSItem.getTarget(el);
-		return v ? `${GSItem.#target}="${v}"` : '';
-	}
-
-	static getToggleAttr(el) {
-		const v = GSItem.getToggle(el);
-		return v ? `${GSItem.#toggle}="${v}"` : '';
-	}
-
-	static getActionAttr(el) {
-		const v = GSItem.getAction(el);
-		return v ? `${GSItem.#action}="${v}"` : '';
-	}
-
-	static getInjectAttr(el) {
-		const v = GSItem.getInject(el);
-		return v ? `${GSItem.#inject}="${v}"` : '';
-	}
-
-	static getInjectAttributesAttr(el) {
-		const v = el?.dataset?.attr;
-		return v ? `${GSItem.#attrs}="${v}"` : '';
-	}
-
-	static getSelectableAttr(el) {
-		const v = GSItem.getSelectable(el);
-		return v ? '' : `${GSItem.#selectable}="${v}"`;
-	}
-
-	static getActive(el) {
-		return GSAttr.getAsBool(el, 'active');
-	}
-
-	static getAction(el) {
-		return GSAttr.get(el, 'action');
-	}
-
-	static getDismiss(el) {
-		return GSAttr.get(el, 'dismiss');
-	}
-
-	static getTarget(el) {
-		return GSAttr.get(el, 'target');
-	}
-
-	static getToggle(el) {
-		return GSAttr.get(el, 'toggle');
-	}
-
-	static getInject(el) {
-		return GSAttr.get(el, 'inject');
-	}
-
-	static getIcon(el, dft = '') {
-		return GSAttr.get(el, 'icon', dft);
-	}
-
-	static getSelectable(el) {
-		return GSAttr.getAsBool(el, 'selectable', true);
-	}
-
-	static getAnchor(el) {
-		return GSAttr.get(el, 'anchor', 'afterend@self');
-	}
-
-	static getFlat(el) {
-		return GSAttr.getAsBool(el, 'flat', false);
-	}
-
-	static getName(el) {
-		return GSAttr.get(el, 'name', '');
-	}
-
-	static getHref(el) {
-		return GSAttr.get(el, 'href', '#');
-	}
-
-	static getGroup(el) {
-		return GSAttr.get(el, 'group');
-	}
-
-	static getSelected(el) {
-		return el.hasAttribute('selected');
-	}
-
-	static getCSS(el) {
-		return GSAttr.get(el, 'css', '');
-	}
-
-	static getTemplate(el) {
-		return GSAttr.get(el, 'template', '');
-	}
-
-	static getType(el) {
-		return GSAttr.get(el, 'type');
-	}
-
-	get proxy() {
-		return this.#proxy;
-	}
-
-	get dismissAttr() {
-		return GSItem.getDismissAttr(this);
-	}
-
-	get targetAttr() {
-		return GSItem.getTargetAttr(this);
-	}
-
-	get toggleAttr() {
-		return GSItem.getToggleAttr(this);
-	}
-
-	get type() {
-		return GSItem.getType(this);
-	}
-
-	get actionAttr() {
-		return GSItem.getActionAttr(this);
-	}
-
-	get injectAttr() {
-		return GSItem.getInjectAttr(this);
-	}
-
-	get injectAttributesAttr() {
-		return GSItem.getInjectAttributesAttr(this);
-	}
-
-	get action() {
-		return GSItem.getAction(this);
-	}
-
-	get dismiss() {
-		return GSItem.getDismiss(this);
-	}
-
-	get target() {
-		return GSItem.getTarget(this);
-	}
-
-	get toggle() {
-		return GSItem.getToggle(this);
-	}
-
-	get inject() {
-		return GSItem.getInject(this);
-	}
-
-	get injectAttributes() {
-		return this.dataset.attr;
-	}
-
-	get selectable() {
-		return GSItem.getSelectable(this);
-	}
-
-	get flat() {
-		return GSItem.getFlat(this);
-	}
-
-	get name() {
-		return GSItem.getName(this);
-	}
-
-	get css() {
-		return GSItem.getCSS(this);
-	}
-
-	get active() {
-		return GSItem.getActive(this);
-	}
-
-	get template() {
-		return GSItem.getTemplate(this);
-	}
-
-	get body() {
-		return GSItem.getBody(this);
-	}
-
-	get href() {
-		return GSItem.getHref(this);
-	}
-
-	get group() {
-		return GSItem.getGroup(this);
-	}
-
-	get selected() {
-		return GSItem.getSelected(this);
-	}
-
-	get html() {
-		const me = this;		
-		if  (GSUtil.isStringEmpty(me.group)) return me.name;
-		const id = GSID.id;
-		const c = me.selected ? 'checked' : '';
-		return `<input id="${id}" ${c} type="radio" name="${me.group}"><label class="ms-2" for="${id}">${me.name}</label>`;
-	}
-
-	asJSON(recursive = true) {
-		return GSDOM.toJson(this, recursive);
+	static {
+		customElements.define('gs-item', GSItem);
+		Object.seal(GSItem);
 	}
 }

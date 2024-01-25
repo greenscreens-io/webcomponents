@@ -1,15 +1,14 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-    <title>Layouts test</title>
+    <title>Bootstrap-Lit</title>
     <meta charset="utf-8">
 
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
-    <meta name="viewport"
-        content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0">
 
     <meta name="subject" content="Green Scereens Ltd.">
     <meta name="author" content="www.greenscreens.ltd">
@@ -18,33 +17,37 @@
     <meta name="revisit-after" content="3 month">
     <meta name="description" content="WebComponents UI library based on Bootstrap.">
 
-    <script type="text/javascript">
-        self.GS_TEMPLATE_URL = '../../demos/layout/templates';
+    <script>
+        globalThis.GS_TEMPLATE_URL='/bootstrap-lit/demos/templates/';
     </script>
-    <script type="module" src="/webcomponents/modules/index.mjs"></script>
-    <script type="module" src="/webcomponents/modules/components/GSSplitter.mjs"></script>
-    <script type="module" src="/webcomponents/modules/components/GSLayout.mjs"></script>
-    <gs-css url="/webcomponents/assets/css/io.greenscreens.bootstrap.css"></gs-css>
 
-    <template id="center">centered data</template>
+    <!-- Optimized CSS loading -->
+    <link rel="preload" href="/bootstrap-lit/assets/css/bootstrap.css" as="style"  data-adoptable="true" data-id="1">
+    <link rel="preload" href="/bootstrap-lit/assets/themes/default.css" as="style" data-adoptable="true" data-id="2">
+    <link rel="preload" href="/bootstrap-lit/assets/icons/bootstrap-icons.css" as="style" data-adoptable="true" data-id="4">
+
+    <script type="module" src="/bootstrap-lit/modules/base/GSAdoptedEngine.mjs"></script>
+    <script type="module" src="/bootstrap-lit/modules/base/GSTheme.mjs"></script>
+    <script type="module" src="/bootstrap-lit/modules/components/Layout.mjs"></script>
+    <script type="module" src="/bootstrap-lit/modules/components/Splitter.mjs"></script>
+    <script type="module" src="/bootstrap-lit/modules/components/Template.mjs"></script>
+    
+    <template id="sidebar">sidebar</template>
+    <template id="center">template centered data</template>
 </head>
+<body class="vh-100">
 
-<body>
-
-    <!-- header main footer -->
+    <!-- left-sidebar main right-sidebar -->
     <gs-layout type="vertical">
-        <gs-item css="text-bg-light" resizable="true" id="header">
-            <template>
-                header
-            </template>
+        <gs-item css="text-bg-secondary" id="left-sidebar" resizable min="60" max="280" size="120" template="#sidebar"></gs-item>
+        <gs-item css="text-bg-primary" id="content" v-pos="top" h-pos="center">
+            <template>content</template>
         </gs-item>
-        <gs-item css="text-bg-primary" id="main" template="#center">centerd data</gs-item>
-        <gs-item css="text-bg-dark" resizable="true" id="footer">
-            <template>
-                footer
-            </template>
+        <gs-item css="text-bg-secondary" id="right-sidebar" resizable min="60" max="280" template="#sidebar">
         </gs-item>
     </gs-layout>
+
+
 
 </body>
 

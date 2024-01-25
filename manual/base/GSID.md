@@ -8,4 +8,4 @@ When extending GSElement, there is no need to use GSID unless it is required to 
 
 <br>
 
-&copy; Green Screens Ltd. 2016 - 2023
+&copy; Green Screens Ltd. 2016 - 2024

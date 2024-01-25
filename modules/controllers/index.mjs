@@ -1,6 +1,13 @@
 /*
- * Copyright (C) 2015, 2022 Green Screens Ltd.
+ * Copyright (C) 2015, 2024 Green Screens Ltd.
  */
 
-export { default as OrientationController } from "./OrientationController.mjs";
-export { default as StyleController } from "./StyleController.mjs";
+export * from "./AdoptedController.mjs";
+export * from "./AttributeController.mjs";
+export * from "./ContentController.mjs";
+export * from "./DataController.mjs";
+export * from "./ElementMoveController.mjs";
+export * from "./ElementNavigationController.mjs";
+export * from "./OrientationController.mjs";
+export * from "./ThemeController.mjs";
+export * from "./TemplateController.mjs";

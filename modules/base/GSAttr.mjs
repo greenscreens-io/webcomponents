@@ -1,24 +1,24 @@
 /*
- * Copyright (C) 2015, 2022 Green Screens Ltd.
+ * Copyright (C) 2015, 2024 Green Screens Ltd.
  */
 
-import GSUtil from "./GSUtil.mjs";
+import { GSUtil } from "./GSUtil.mjs";
 
 /**
  * A module loading GSAttr class
- * @module base/GSDOM
+ * @module base/GSAttr
  */
 
 /**
  * A generic set of static functions to handle DOM Attributes
  * @class
  */
-export default class GSAttr {
+export class GSAttr {
 
 	/**
 	 * Check if given element is of type HTMLElement
 	 * NOTE: GSDOM.isHTMLElement duplicate - prevent circular import
-	 * @returns {boolean}
+	 * @returns {Boolean}
 	 */
 	static isHTMLElement(el) {
 		return el instanceof HTMLElement;
@@ -28,8 +28,8 @@ export default class GSAttr {
 	  * Generic function to change element node attribute
 	  * 
 	  * @param {HTMLElement} el Target to receive attribute value
-	  * @param {string} name Attribite name
-	  * @param {boolean} val Attribute value
+	  * @param {String} name Attribite name
+	  * @param {Boolean} val Attribute value
 	  */
 	static toggle(el, name, val = false) {
 		if (!GSAttr.isHTMLElement(el)) return;
@@ -44,8 +44,8 @@ export default class GSAttr {
 	 * Generic function to change elment node attribute
 	 * 
 	 * @param {HTMLElement} el Target to receive attribute value
-	 * @param {string} name Attribite name
-	 * @param {string} val Attribute value
+	 * @param {String} name Attribite name
+	 * @param {String} val Attribute value
 	 */
 	static set(el, name, val) {
 		if (!GSAttr.isHTMLElement(el)) return;
@@ -60,9 +60,9 @@ export default class GSAttr {
 	 * Generic function to get element node attribute
 	 * 
 	 * @param {HTMLElement} el Element containing attribute
-	 * @param {string} name Attribute name
-	 * @param {string} val Default value
-	 * @returns {string}
+	 * @param {String} name Attribute name
+	 * @param {String} val Default value
+	 * @returns {String}
 	 */
 	static get(el, name = '', val = '') {
 		if (!GSAttr.isHTMLElement(el)) return val;
@@ -75,9 +75,9 @@ export default class GSAttr {
 	 * Get attribute as boolean type
 	 * 
 	 * @param {HTMLElement} el Element containing attribute
-	 * @param {string} name Attribute name
-	 * @param {string} val Default value
-	 * @returns {boolean}
+	 * @param {String} name Attribute name
+	 * @param {String} val Default value
+	 * @returns {Boolean}
 	 */
 	static getAsBool(el, name = '', val = 'false') {
 		const attr = GSAttr.get(el, name, val);
@@ -88,9 +88,9 @@ export default class GSAttr {
 	 * Get attribute as numberic type
 	 * 
 	 * @param {HTMLElement} el Element containing attribute
-	 * @param {string} name Attribute name
-	 * @param {string} val Default value
-	 * @returns {number}
+	 * @param {String} name Attribute name
+	 * @param {String} val Default value
+	 * @returns {Number}
 	 */
 	static getAsNum(el, name = '', val = '0') {
 		const attr = GSAttr.get(el, name, val);
@@ -101,8 +101,8 @@ export default class GSAttr {
 	 * Get attribute as JSON object type
 	 * 
 	 * @param {HTMLElement} el Element containing attribute
-	 * @param {string} name Attribute name
-	 * @param {string} val Default value
+	 * @param {String} name Attribute name
+	 * @param {String} val Default value
 	 * @returns {JSON}
 	 */
 	static getAsJson(el, name = '', val = '0') {
@@ -113,19 +113,23 @@ export default class GSAttr {
 	/**
 	 * Store data into attribute as boolean
 	 * @param {HTMLElement} el Element containing attribute
-	 * @param {string} name Attribute name
-	 * @param {boolean} val Default value
+	 * @param {String} name Attribute name
+	 * @param {Boolean} val Default value
 	 */
 	static setAsBool(el, name = '', val = 'false') {
 		GSAttr.set(el, name, GSUtil.asBool(val), false);
+		/*
+		if (!GSAttr.isHTMLElement(el)) return;
+		el.toggleAttribute(name, GSUtil.asBool(val));
+		*/
 	}
 
 	/**
 	 * Store data into attribute as numeric
 	 * @param {HTMLElement} el Element containing attribute
-	 * @param {string} name Attribute name
+	 * @param {String} name Attribute name
 	 * @param {Number} val Default value
-	 */	
+	 */
 	static setAsNum(el, name = '', val = '0') {
 		GSAttr.set(el, name, GSUtil.asNum(val), NaN);
 	}
@@ -133,7 +137,7 @@ export default class GSAttr {
 	/**
 	 * Store data into attribute as JSON string
 	 * @param {HTMLElement} el Element containing attribute
-	 * @param {string} name Attribute name
+	 * @param {String} name Attribute name
 	 * @param {string val Default value
 	 */
 	static setAsJson(el, name = '', val = '0') {
@@ -143,26 +147,25 @@ export default class GSAttr {
 	/**
 	 * Convert JSON object to attribute string 
 	 * @param {*} obj 
-	 * @returns 
+	 * @returns {String}
 	 */
 	static flattenJson(obj) {
-		return Object.entries(obj||{}).map(kv => `${kv[0]}=${kv[1]}`).join(' ');
+		return Object.entries(obj || {}).map(kv => `${kv[0]}=${kv[1]}`).join(' ');
 	}
 
 	/**
-	 * Apply JSON object to elemtn attributes
+	 * Apply JSON object to element attributes
 	 * @param {*} obj 
-	 * @returns 
 	 */
 	static jsonToAttr(obj, el) {
 		if (!GSAttr.isHTMLElement(el)) return;
-		Object.entries(obj||{}).map(kv => GSAttr.set(el, kv[0], kv[1]));
+		Object.entries(obj || {}).map(kv => GSAttr.set(el, kv[0], kv[1]));
 	}
-	
+
 	/**
 	 * Convert list of data attributes into a string list
 	 * @param {HTMLElement} el 
-	 * @returns {string}
+	 * @returns {String}
 	 */
 	static dataToString(el) {
 		return Array.from(el.attributes)
@@ -181,20 +184,23 @@ export default class GSAttr {
 		return Array.from(el?.attributes || []).map(a => `${a.name}="${a.value}"`).join(sep);
 	}
 
-
 	/**
 	 * Generic attribute retriever 
 	 * opt format { prop: {type:Number, attribute: 'alt-prop-name'}}
-	 * @returns 
+	 * @returns {Proxy}
 	 */
-	static proxify(host, opt = {}) {
-		return new Proxy(host, {
+	static proxify(host, opt = {}, recursive = 'items') {
+
+		const instance = new Proxy(host, {
 			
 			set(target, prop, value) {
+				
 				if (prop === 'self') return;
 				if (prop === 'dataset') return target.dataset = value;
+
 				const type = opt[prop]?.type;
 				prop = opt[prop]?.attribute || prop;
+				
 				switch(type) {
 					case Boolean :
 						GSAttr.toggle(target, prop,  GSUtil.asBool(value));
@@ -209,16 +215,24 @@ export default class GSAttr {
 						GSAttr.set(target, prop, value);
 						break;
 				}
+
 				return true;
 			},
 
 			get(target, prop) {
-				if (prop === 'dataset') return target.dataset;
+				
 				if (prop === 'self') return target;
+				if (prop === 'dataset') return target.dataset;
+				if (prop === recursive) return Array.from(target.children).map(el => GSAttr.proxify(el, opt, recursive)); 
+
 				const type = opt[prop]?.type;
+				const safe = opt[prop]?.unsafe ? true : false;
+				const dflt = opt[prop]?.default;
 				const multi = opt[prop]?.multi === true;
+				
 				prop = opt[prop]?.attribute || prop;
 				let val = GSAttr.get(target, prop);
+				
 				switch(type) {
 					case Boolean :
 						return target.hasAttribute(prop);
@@ -229,11 +243,13 @@ export default class GSAttr {
 					case Array :
 						return GSUtil.toJson(val, []);
 					default:					
-						val = val || '';
+						val = safe ? (val || dflt || '') : (val || dflt || undefined);
 						return multi ? GSUtil.toStringArray(val) : val;
 				}
 			}
 		});
+		
+		return instance;
 	}
 
 	static {
@@ -241,5 +257,3 @@ export default class GSAttr {
 		globalThis.GSAttr = GSAttr;
 	}
 }
-
-

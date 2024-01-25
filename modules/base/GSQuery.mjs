@@ -1,9 +1,9 @@
 /*
- * Copyright (C) 2015, 2022 Green Screens Ltd.
+ * Copyright (C) 2015, 2024 Green Screens Ltd.
  */
 
-import GSDOM from "./GSDOM.mjs";
-import GSQueryCSS from "./GSQueryCSS.mjs";
+import { GSDOM } from "./GSDOM.mjs";
+import { GSQueryCSS } from "./GSQueryCSS.mjs";
 
 /**
  * Proxy class for wrapping HTMLElement, allowing to use GS query across shadow dom
@@ -20,7 +20,7 @@ import GSQueryCSS from "./GSQueryCSS.mjs";
  * console.log(el.css.background)
  * console.log(el.css.asNum('width'))
  */
-export default class GSQuery {
+export class GSQuery {
 
     #css = null;
 
@@ -41,7 +41,7 @@ export default class GSQuery {
                 const el = GSDOM.queryAll(object, value, all, shadow);
                 return GSQuery.wrap(el);
             }
-        }        
+        }
         return object[property];
     }
 
@@ -49,7 +49,7 @@ export default class GSQuery {
         switch (property) {
             case 'css':
                 if (Array.isArray(object)) {
-                    object.forEach(element => element[property] = value); 
+                    object.forEach(element => element[property] = value);
                 } else {
                     GSDOM.css(object, value);
                 }
@@ -70,7 +70,7 @@ export default class GSQuery {
         node = node.map(element => GSQuery.instance(element));
         return GSQuery.instance(node);
     }
-    
+
     static all(own, qry, all, shadow) {
         return GSQuery.wrap(GSDOM.queryAll(own, qry, all, shadow));
     }
@@ -82,5 +82,5 @@ export default class GSQuery {
     static {
         Object.freeze(GSQuery);
         globalThis.GSQuery = GSQuery;
-    }    
+    }
 }

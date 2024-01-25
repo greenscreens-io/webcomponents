@@ -1,9 +1,9 @@
 /*
- * Copyright (C) 2015, 2022 Green Screens Ltd.
+ * Copyright (C) 2015, 2024 Green Screens Ltd.
  */
 
-import GSPromise from "./GSPromise.mjs";
-import GSUtil from "./GSUtil.mjs";
+import { GSPromise } from "./GSPromise.mjs";
+import { GSUtil } from "./GSUtil.mjs";
 
 /**
  * A module loading GSEvent class
@@ -14,7 +14,7 @@ import GSUtil from "./GSUtil.mjs";
  * Class extending native event with additional features
  * @Class
  */
-export default class GSEvent extends EventTarget {
+export class GSEvent extends EventTarget {
 
     #listeners = new Set();
 
@@ -34,7 +34,7 @@ export default class GSEvent extends EventTarget {
     /**
      * Listen for events
      * 
-     * @param {string} type Event name to be listened
+     * @param {String} type Event name to be listened
      * @param {Function} listener  Callback to be called on event trigger
      * @param {Number} timeout It event timeout set, return AbortSignal
      * @param {boolean|AbortController} abortable If abortable set, return AbortController
@@ -47,15 +47,15 @@ export default class GSEvent extends EventTarget {
         } else {
             controller = abortable ? new GSAbortController(timeout) : null;
         }
-        const signal = controller || timeout == 0 ? controller?.signal : AbortSignal.timeout(timeout); 
-        this.addEventListener(type, listener,  { signal:signal });
+        const signal = controller || timeout == 0 ? controller?.signal : AbortSignal.timeout(timeout);
+        this.addEventListener(type, listener, { signal: signal });
         return controller || signal;
     }
 
     /**
      * Listen for events only once
      * 
-     * @param {string} type Event name to be listened
+     * @param {String} type Event name to be listened
      * @param {Function} listener  Callback to be called on event trigger
      * @param {Number} timeout It event timeout set, return AbortSignal
      * @param {boolean|AbortController} abortable If abortable set, return AbortController
@@ -75,7 +75,7 @@ export default class GSEvent extends EventTarget {
         } else {
             wrap.controller = abortable ? new GSAbortController(timeout) : null;
         }
-        wrap.signal = wrap.controller || timeout == 0 ? wrap.controller?.signal : AbortSignal.timeout(timeout); 
+        wrap.signal = wrap.controller || timeout == 0 ? wrap.controller?.signal : AbortSignal.timeout(timeout);
         me.addEventListener(type, wrap, { once: true, signal: wrap.signal });
         return wrap.controller || wrap.signal;
     }
@@ -83,7 +83,7 @@ export default class GSEvent extends EventTarget {
     /**
      * Stop listening for events
      * 
-     * @param {string} type Event name to be listened
+     * @param {String} type Event name to be listened
      * @param {Function} listener  Callback to be called on event trigger
      */
     off(type = '', listener) {
@@ -93,35 +93,38 @@ export default class GSEvent extends EventTarget {
     /**
      * Send event to listeners
      * 
-     * @param {string} type Event name to be listened
-     * @param {object} data  Data to send 
-     * @param {number} delayed Emit event delay in miliseconds
+     * @param {String} type Event name to be listened
+     * @param {Object} data  Data to send 
+     * @param {Number} delayed Emit event delay in miliseconds
      */
     emit(type = '', data, delayed = 0) {
         const me = this;
+        if (delayed === true) {
+            return queueMicrotask(() => me.#send(type, data));
+        }
         delayed = GSUtil.asNum(delayed, 0);
         if (delayed <= 0) return me.#send(type, data);
         return setTimeout(() => me.#send(type, data), delayed);
     }
 
-    #send(type = '', data) {     
+    #send(type = '', data) {
         const evt = new CustomEvent(type, { detail: data });
         return this.dispatchEvent(evt);
     }
 
     /**
      * Wait for an event using GSPromise wrapper
-     * @param {string} type Event name to be listened
+     * @param {String} type Event name to be listened
      * @param {AbortSignal} signal Used to abort listener
      * @returns {Event}
     */
-   wait(type = '', signal) {
-       const me = this;
-       const callback = (resolve, reject) => {
-           me.once(type, resolve);
+    wait(type = '', signal) {
+        const me = this;
+        const callback = (resolve, reject) => {
+            me.once(type, resolve);
         }
         return new GSPromise(callback, signal).await();
-    }    
+    }
 
     listen(type, listener) { this.on(type, listener); }
     unlisten(type, listener) { this.off(type, listener); }

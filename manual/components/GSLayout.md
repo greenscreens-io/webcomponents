@@ -13,7 +13,6 @@ Layout elements are defined with generic ```<gs-item>``` tag.
  
 | Name               | Description                                              |
 |--------------------|----------------------------------------------------------|
-| css                | CSS classes for alert content                            |
 | type               | Orientation type (vertical, horizontal)                  |
  
 <br>
@@ -23,13 +22,12 @@ Layout elements are defined with generic ```<gs-item>``` tag.
  
 | Name               | Description                                              |
 |--------------------|----------------------------------------------------------|
-| css                | CSS classes for layout item                              |
 | resizable          | Is layout item resizable or fixed width / height (bool)  |
 | max                | Layout item max height/width                             |
 | min                | Layout item min height/width                             |
 | h-pos              | Layout item child elements horizontal positioning        |
 | v-pos              | Layout item child elements vertical positioning          |
-| template           | Load layout item content from external resource          |
+| type               | Orientation type (vertical, horizontal)                  |
  
 **NOTE:**
 Values for **h-pos** and **v-pos** are: **start**, **end**, **top**, **bottom**, **center**.
@@ -48,26 +46,23 @@ For more details, check [Layouts Demo](../../demos/layouts/)
 <!-- header main footer -->
 <gs-layout type="vertical" css="">
     <!-- header - tries to load template, if not found, show text-->
-    <gs-item css="text-bg-light" resizable="true" id="hdr1" template="head" v-pos="center" h-pos="center" min="5">header</gs-item>
+    <gs-item css="text-bg-light" resizable id="hdr1" template="head" v-pos="center" h-pos="center" min="5">header</gs-item>
     <!-- main - central panel containing another elements as template or child components  -->
-    <gs-item css="text-bg-info">
+    <gs-item css="text-bg-info" type="horizontal">
  
-        <!-- left-sidebar main right-sidebar -->
-        <gs-layout type="horizontal">
-            <!-- left sidebar panel -->
-            <gs-item css="text-bg-secondary" id="sb1" resizable="true" min="60" max="280" template="">left-sidebar</gs-item>
-            <!-- central panel -->
-            <gs-item css="text-bg-primary" id="content" v-pos="top" h-pos="center">centered data</gs-item>
-            <!-- right sidebar panel -->
-            <gs-item css="text-bg-secondary" id="sb2" resizable="true" min="60" max="280" template="" v-pos="top" h-pos="end">right-sidebar</gs-item>
-        </gs-layout>
+        <!-- left sidebar panel -->
+        <gs-item css="text-bg-secondary" id="sb1" resizable min="60" max="280">left-sidebar</gs-item>
+        <!-- central panel -->
+        <gs-item css="text-bg-primary" id="content" v-pos="top" h-pos="center">centered data</gs-item>
+        <!-- right sidebar panel -->
+        <gs-item css="text-bg-secondary" id="sb2" resizable min="60" max="280" v-pos="top" h-pos="end">right-sidebar</gs-item>
        
     </gs-item>
     <!-- footer - tries to load template, if not found, show text-->
-    <gs-item css="text-bg-dark" resizable="true" id="ftr1" template="foot" v-pos="center" h-pos="center" min="5">footer</gs-item>
+    <gs-item css="text-bg-dark" resizable id="ftr1" template="foot" v-pos="center" h-pos="center" min="5">footer</gs-item>
 </gs-layout>
 ```
 
 <br>
 
-&copy; Green Screens Ltd. 2016 - 2023
+&copy; Green Screens Ltd. 2016 - 2024

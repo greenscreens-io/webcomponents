@@ -1,8 +1,8 @@
 /*
- * Copyright (C) 2015, 2022 Green Screens Ltd.
+ * Copyright (C) 2015, 2024 Green Screens Ltd.
  */
 
-import "./GSStep.mjs"
-import "./GSSteps.mjs"
-
+export * from  "./StepStyle.mjs"
+export * from  "./Step.mjs"
+export * from  "./Steps.mjs"
 

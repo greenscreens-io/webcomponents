@@ -1,9 +1,9 @@
 /*
- * Copyright (C) 2015, 2022 Green Screens Ltd.
+ * Copyright (C) 2015, 2024 Green Screens Ltd.
  */
 
-import GSUtil from "./GSUtil.mjs";
-import GSFunction from "./GSFunction.mjs";
+import { GSUtil } from "./GSUtil.mjs";
+import { GSFunction } from "./GSFunction.mjs";
 
 /**
  * A module loading GSCSSMap class
@@ -14,7 +14,7 @@ import GSFunction from "./GSFunction.mjs";
  * Wrapper around computesdStyledMap to support Firefox and WebKit Mode
  * @class
  */
-export default class GSCSSMap {
+export class GSCSSMap {
 
     static #modern = globalThis.document?.body?.computedStyleMap ? true : false;
 
@@ -45,7 +45,7 @@ export default class GSCSSMap {
         if (GSCSSMap.#modern && GSFunction.isFunction(val?.to)) {
             if (val.unit !== 'number') val = val.to('px');
         }
-        return GSUtil.asNum(GSCSSMap.#modern ? val?.value : val.match(/\d*(\.\d*)?/g).filter(v=> GSUtil.isNumber(v)).shift());
+        return GSUtil.asNum(GSCSSMap.#modern ? val?.value : val.match(/\d*(\.\d*)?/g).filter(v => GSUtil.isNumber(v)).shift());
     }
 
     matches(name, value) {
@@ -55,7 +55,7 @@ export default class GSCSSMap {
     /**
      * Support for Firefox/Gecko to get element computedStyledMap
      * @param {HTMLElement} el 
-     * @returns {}
+     * @returns {CSSStyleDeclaration}
      */
     static #getMap(el) {
         if (GSCSSMap.#modern) return el.computedStyleMap();
@@ -75,33 +75,33 @@ export default class GSCSSMap {
     /**
      * Support for Firefox/Gecko to get element computedStyledMap
      * @param {HTMLElement} element 
-     * @returns {}
+     * @returns {GSCSSMap}
      */
     static getComputedStyledMap(element) {
         return new GSCSSMap(element);
     }
 
     static #normalize(str) {
-        if (!str)  return '';
+        if (!str) return '';
         str = String(str).replace(/\s*([>~+])\s*/g, ' $1 ');
-        return str.replace(/(\s+)/g, ' ').trim();           
+        return str.replace(/(\s+)/g, ' ').trim();
     }
-    
-	static #split(str, on) {
+
+    static #split(str, on) {
         return str.split(on).map(x => x.trim()).filter(x => x);
     }
-	
+
     static #containsAny(selText, ors) {
         return selText ? ors.some(x => selText.includes(x)) : false;
     }
-    
+
     /**
      * Find css defined rules by css selector
-     * @param {string} selector 
-     * @returns 
+     * @param {String} selector 
+     * @returns {CSSStyleRule}
      */
-	static findRule(selector) {
-		const me =  GSCSSMap;
+    static findRule(selector) {
+        const me = GSCSSMap;
         const logicalORs = me.#split(me.#normalize(selector), ',');
         const sheets = Array.from(globalThis.document.styleSheets);
         const ruleArrays = sheets.map(x => Array.from(x.cssRules || []));

@@ -1,7 +1,7 @@
 # GSFormGroup WebComponent
  
 GSFormGroup WebComponent renders input and label vertically or horizontally wrapped into Bootstrap form control.
-
+ 
 <br>
  
 ## Attributes ```<gs-form-group>```
@@ -12,22 +12,40 @@ Except all standard ```<input>``` [tag attributes](https://developer.mozilla.org
  
 | Name               | Description                                              |
 |--------------------|----------------------------------------------------------|
-| autocopy           | Copy all text on click into a field                      |
-| autoselect         | Select all tect on click into a field                    |
-| css                | CSS classes for main content                             |
 | css-label          | CSS classes for field label                              |
 | css-field          | CSS classes for field element                            |
 | cell-label         | CSS classes for label wrapper (col)                      |
 | cell-field         | CSS classes for field wrapper (col)                      |
-| layout             | Orientation type (vertical, horizontal, floating)        |
-| label              | Input field visible label                                |
-| placement          | Tooltip placement (deafult right)                        |
-| description        | Tooltip content - describe field purpose                 |
+| autoid             | If enabled, id set to field name if not already set      |
+| autocopy           | Copy all text on click into a field                      |
+| autoselect         | Select all text on click into a field                    |
 | icon               | Tooltip icon                                             |
 | mask               | When masked input required (refer to GSInputExt)         |
+| label              | Input field visible label                                |
+| layout             | Orientation type (vertical, horizontal, floating)        |
+| reveal             | Allow password reveal on shortcut                        |
+| reverse            | Only for "range type" to display max value first         |
+| placement          | Tooltip placement (deafult right)                        |
+| description        | Tooltip content - describe field purpose                 |
+
+**NOTE**: All HTML input element attributes are allowed.
+
+**NOTE**: Attribute "reverse" is usefull when default value is max and need to decrement to min value.
 
 <br>
  
+## Slots
+---
+
+| Name               | Description                                              |
+|--------------------|----------------------------------------------------------|
+| icon               | Place HTML content into icon position                    |
+| body               | Place HTML content into body position                    |
+| header             | Place HTML content into header position                  |
+| footer             | Place HTML content into footer position                  |
+
+<br>
+
 ## Example
 ---
  
@@ -60,4 +78,4 @@ Custom element injected
 
 <br>
 
-&copy; Green Screens Ltd. 2016 - 2023
+&copy; Green Screens Ltd. 2016 - 2024

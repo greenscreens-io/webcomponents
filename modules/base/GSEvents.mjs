@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015, 2022 Green Screens Ltd.
+ * Copyright (C) 2015, 2024 Green Screens Ltd.
  */
 
 /**
@@ -7,19 +7,20 @@
  * @module base/GSEvents
  */
 
-import GSFunction from "./GSFunction.mjs";
-import GSID from "./GSID.mjs";
-import GSUtil from "./GSUtil.mjs";
-import GSAttr from "./GSAttr.mjs";
-import GSDOM from "./GSDOM.mjs";
-import GSLog from "./GSLog.mjs";
+import { GSFunction } from "./GSFunction.mjs";
+import { GSID } from "./GSID.mjs";
+import { GSUtil } from "./GSUtil.mjs";
+import { GSAttr } from "./GSAttr.mjs";
+import { GSDOM } from "./GSDOM.mjs";
+import { GSLog } from "./GSLog.mjs";
 
 /**
  * Class for handling events, also a registry of all GS-* element listeners
  * @Class
  */
-export default class GSEvents {
+export class GSEvents {
 
+	static #rid = 0;
 	static #protect = false;
 	static #cache = new Map();
 
@@ -60,16 +61,16 @@ export default class GSEvents {
 	 * DOMContentLoaded vs load ?!
 	 * @async
 	 * @param {HTMLElement} target 
-	 * @param {string} name 
+	 * @param {String} name 
 	 * @param {function} callback 
 	 * @param {Promise<number>} timeout 
 	 */
 	static async waitPageLoad(target, name = 'loaded', callback, timeout = 100, prevent = true) {
 		if (!GSEvents.#loaded) {
 			try {
-				await GSEvents.wait(globalThis.window, 'load', timeout, prevent); 
+				await GSEvents.wait(globalThis.window, 'load', timeout, prevent);
 				GSEvents.#loaded = true;
-			} catch(e) {
+			} catch (e) {
 				console.log(e);
 			}
 		}
@@ -88,7 +89,7 @@ export default class GSEvents {
 	 * @param {Boolean} prevent 
 	 * @returns {Promise}
 	 */
-	static wait(own, name = '', timeout = 0, prevent = true) {		
+	static wait(own, name = '', timeout = 0, prevent = true) {
 		if (GSUtil.isStringEmpty(name)) throw new Error('Event undefined!');
 		if (!GSUtil.isNumber(timeout)) throw new Error('Invalid timeout value!');
 		if (timeout > 0) return GSEvents.once(own, null, name, null, timeout);
@@ -99,13 +100,13 @@ export default class GSEvents {
 			}, timeout);
 		});
 	}
- 	
+
 	/**
 	 * Async version of animation frame
 	 * 
 	 * @async
 	 * @param {function} callback 
-	 * @param {boolean} chaind Prevent consequtive chained calls.
+	 * @param {Boolean} chaind Prevent consequtive chained calls.
 	 * @returns {Promise}
 	 */
 	static async waitAnimationFrame(callback, chained = false) {
@@ -163,21 +164,21 @@ export default class GSEvents {
 	/**
 	 * Wait for an event. Also, trigger on timeout if event not triggered.
 	 * @param {HTMLElement} own 
-	 * @param {string} qry Optional selector within owner
-	 * @param {string} event Event name to wait for
+	 * @param {String} qry Optional selector within owner
+	 * @param {String} event Event name to wait for
 	 * @param {*} callback Function to call 
 	 * @param {Number | AbortSignal} timeout If GT 0, retrun Promise
-	 * @returns {boolean}
+	 * @returns {Boolean}
 	 */
 	static once(own, qry, event, callback, timeout = 0) {
 		const signal = GSEvents.#toSignal(timeout);
 		if (signal && signal.internal) {
 			return new Promise((resolve, reject) => {
-				GSEvents.listen(own, qry, event, callback || resolve, { once: true, signal : signal });
+				GSEvents.listen(own, qry, event, callback || resolve, { once: true, signal: signal });
 				signal.addEventListener('abort', reject);
 			});
 		}
-		return GSEvents.listen(own, qry, event, callback, { once: true, signal : signal });
+		return GSEvents.listen(own, qry, event, callback, { once: true, signal: signal });
 	}
 
 	/**
@@ -196,12 +197,12 @@ export default class GSEvents {
 	 * NOTE: If expecting to catch return value, do not use async in listeners
 	 * 
 	 * @param {HTMLElement} sender element that send event
-	 * @param {string} name  Event name to trigger 
-	 * @param {object} obj Data object to send 
-	 * @param {boolean} bubbles Send event to parent
-	 * @param {boolean} composed Send event across shadowDom
-	 * @param {boolean} cancelable Event is cancelable
-	 * @returns {boolean} false if event is cancelable, and at least one of the event handlers which received event called Event.preventDefault(). Otherwise true.
+	 * @param {String} name  Event name to trigger 
+	 * @param {Object} obj Data object to send 
+	 * @param {Boolean} bubbles Send event to parent
+	 * @param {Boolean} composed Send event across shadowDom
+	 * @param {Boolean} cancelable Event is cancelable
+	 * @returns {Boolean} false if event is cancelable, and at least one of the event handlers which received event called Event.preventDefault(). Otherwise true.
 	 */
 	static send(sender = document, name, obj = '', bubbles = false, composed = false, cancelable = false) {
 		const opt = { detail: obj, bubbles: bubbles, composed: composed, cancelable: cancelable };
@@ -211,78 +212,78 @@ export default class GSEvents {
 
 	/**
 	 * Convert event type to native event
-	 * @param {string} type 
-	 * @param {object} opt 
+	 * @param {String} type 
+	 * @param {Object} opt 
 	 * @returns {Event}
 	 */
 	static toEvent(type, opt) {
-		let evt  = null;
-		switch(type) {
-			case 'copy' : 
-			case 'cut' : 
-			case 'paste' : 
+		let evt = null;
+		switch (type) {
+			case 'copy':
+			case 'cut':
+			case 'paste':
 				evt = new ClipboardEvent(type, opt);
 				break;
-			case 'blur' : 
-			case 'focus' : 
-			case 'focusin' : 
-			case 'focusout' : 
+			case 'blur':
+			case 'focus':
+			case 'focusin':
+			case 'focusout':
 				evt = new FocusEvent(type, opt);
 				break;
-			case 'input' : 
-			case 'beforeinput' : 
+			case 'input':
+			case 'beforeinput':
 				evt = new InputEvent(type, opt);
 				break;
-			case 'keydown' : 
-			case 'keyup' : 
-			case 'keypress' : 						
+			case 'keydown':
+			case 'keyup':
+			case 'keypress':
 				evt = new KeyboardEvent(type, opt);
 				break;
-			case 'dblclick' : 
-			case 'mousedown' : 
-			case 'mouseenter' : 
-			case 'mouseleave' : 
-			case 'mousemove' : 
-			case 'mouseout' : 
-			case 'mouseover' : 
-			case 'mouseup' : 																					
+			case 'dblclick':
+			case 'mousedown':
+			case 'mouseenter':
+			case 'mouseleave':
+			case 'mousemove':
+			case 'mouseout':
+			case 'mouseover':
+			case 'mouseup':
 				evt = new MouseEvent(type, opt);
 				break;
-			case 'submit' : 
+			case 'submit':
 				evt = new SubmitEvent(type, opt);
 				break;
-			case 'touchstart' : 
-			case 'touchend' : 
-			case 'touchmove' : 
-			case 'touchcancel' : 									
+			case 'touchstart':
+			case 'touchend':
+			case 'touchmove':
+			case 'touchcancel':
 				evt = new TouchEvent(type, opt);
 				break;
-			case 'whell' : 
+			case 'whell':
 				evt = new WheelEvent(type, opt);
 				break;
-			case 'pointerover' : 
-			case 'pointerenter' :
-			case 'pointerdown' :
-			case 'pointermove' :
-			case 'pointerup' :
-			case 'pointercancel' :
-			case 'pointerout' :
-			case 'pointerleave' :
-			case 'pointerrawupdate' :
-			case 'gotpointercapture' :
-			case 'lostpointercapture' :				
+			case 'pointerover':
+			case 'pointerenter':
+			case 'pointerdown':
+			case 'pointermove':
+			case 'pointerup':
+			case 'pointercancel':
+			case 'pointerout':
+			case 'pointerleave':
+			case 'pointerrawupdate':
+			case 'gotpointercapture':
+			case 'lostpointercapture':
 				evt = new PointerEvent(type, opt);
 				break;
 			default:
 				evt = new CustomEvent(type, opt);
 		}
-		return evt;		
+		return evt;
 	}
 
 	/**
 	 * Helper to fix some Firefox issues, detect event
 	 * @param {Event} e 
-	 * @returns {boolean}
+	 * @returns {Boolean}
 	 */
 	static isMouseOrPointerEvent(e) {
 		return e instanceof MouseEvent || e instanceof PointerEvent;
@@ -292,11 +293,11 @@ export default class GSEvents {
 	 * Generic event disaptcher in suspended rendering
 	 * 
 	 * @param {HTMLElement} sender element that send event
-	 * @param {string} name  Event name to trigger
-	 * @param {object} obj Data object to send 
-	 * @param {boolean} bubbles Send event to parent
-	 * @param {boolean} composed Send event across shadowDom
-	 * @param {boolean} cancelable Event is cancelable
+	 * @param {String} name  Event name to trigger
+	 * @param {Object} obj Data object to send 
+	 * @param {Boolean} bubbles Send event to parent
+	 * @param {Boolean} composed Send event across shadowDom
+	 * @param {Boolean} cancelable Event is cancelable
 	 * @returns {void} 
 	 */
 	static sendSuspended(sender = document, name, obj = '', bubbles = false, composed = false, cancelable = false) {
@@ -308,14 +309,14 @@ export default class GSEvents {
 	/** 
 	 * Generic event disaptcher delayed in miliseconds
 	 * 
-	 * @param {number} timeout Time to delay event
+	 * @param {Number} timeout Time to delay event
 	 * @param {HTMLElement} sender element that send event
-	 * @param {string} name  Event name to trigger
-	 * @param {object} obj Data object to send 
-	 * @param {boolean} bubbles Send event to parent
-	 * @param {boolean} composed Send event across shadowDom
-	 * @param {boolean} cancelable Event is cancelable
-	 * @returns {number} setTimeout id for cancelation
+	 * @param {String} name  Event name to trigger
+	 * @param {Object} obj Data object to send 
+	 * @param {Boolean} bubbles Send event to parent
+	 * @param {Boolean} composed Send event across shadowDom
+	 * @param {Boolean} cancelable Event is cancelable
+	 * @returns {Number} setTimeout id for cancelation
 	 */
 	static sendDelayed(timeout = 1, sender = document, name, obj = '', bubbles = false, composed = false, cancelable = false) {
 		return setTimeout(() => GSEvents.send(sender, name, obj, bubbles, composed, cancelable), timeout);
@@ -325,15 +326,14 @@ export default class GSEvents {
 	* Generic event listener appender
 	 * @param {HTMLElement} own Event owner
 	 * @param {HTMLElement} el Owner element to monitor
-	 * @param {string} name Event name to monitor
+	 * @param {String} name Event name to monitor
 	 * @param {Function} fn Callback to trigger on event
-	 * @param {boolean} once Monitor event only once
-	 * @param {boolean} capture Allow event capture
-	 * @returns {boolean}
+	 * @param {Boolean} once Monitor event only once
+	 * @param {Boolean} capture Allow event capture
+	 * @returns {Boolean}
 	 */
 	static attach(own, el, name = '', fn, once = false, capture = false) {
 		if (!el) return false;
-		//if (el.offline) return false;
 		if (!(window instanceof Window || el.isConnected)) return false;
 		if (!GSFunction.isFunction(fn)) return false;
 		if (!GSFunction.hasFunction(el, 'addEventListener')) return false;
@@ -361,7 +361,7 @@ export default class GSEvents {
 	* Generic event listener remover
 	 * @param {HTMLElement} own Event owner
 	 * @param {HTMLElement} el Owner element to monitor
-	 * @param {string} name Event name to moinitor
+	 * @param {String} name Event name to moinitor
 	 * @param {Function} fn Callback to trigger on event
 	 */
 	static remove(own, el, name = '', fn) {
@@ -407,7 +407,7 @@ export default class GSEvents {
 	 * @param {*} el 
 	 * @param {*} name 
 	 * @param {*} fn 
-	 * @returns {object}
+	 * @returns {Object}
 	 */
 	static #eventKey(own, el, name = '', fn = '') {
 		if (!el) return false;
@@ -442,15 +442,10 @@ export default class GSEvents {
 	}
 
 	static #getElementID(el) {
-		const isWin = el instanceof Window;
-		let elid = isWin ? el.gselid : GSAttr.get(el, 'data-gselid');
+		let elid = el[Symbol.for('gs-event-id')];
 		if (!elid) {
 			elid = GSID.id;
-			if (isWin)  {
-				el.gselid = elid; 
-			} else {
-				GSAttr.set(el, 'data-gselid', elid);
-			}
+			el[Symbol.for('gs-event-id')] = elid;
 		}
 		return elid;
 	}
@@ -486,10 +481,10 @@ export default class GSEvents {
 	 */
 	static #toSignal(timeout = 0) {
 		if (GSUtil.isNumber(timeout) && timeout > 0) {
-			timeout = AbortSignal.timeout(timeout); 
+			timeout = AbortSignal.timeout(timeout);
 			timeout.internal = true;
 			return timeout;
-		} 
+		}
 		if (timeout instanceof AbortSignal) return timeout;
 		return undefined;
 	}
@@ -502,7 +497,7 @@ export default class GSEvents {
 	static monitorAction(owner, type) {
 		owner.on('action', async (e) => {
 			const me = owner;
-			const data = e.detail;	
+			const data = e.detail;
 			const action = data.action || data.data?.action;
 			await GSEvents.onAction(me, action, type, e);
 		});
@@ -511,13 +506,13 @@ export default class GSEvents {
 	/**
 	 * Trigger class function defined in 'action' attribute
 	 * @param {HTMLElement} owner 
-	 * @param {string} action 
-	 * @param {string} prefix 
+	 * @param {String} action 
+	 * @param {String} prefix 
 	 * @param {Event} evt 
 	 * @returns {*} Action result or false
 	 */
 	static async onAction(owner, action, prefix, evt) {
-		
+
 		const callback = GSEvents.findAction(owner, action, prefix);
 		if (!callback) return;
 
@@ -536,7 +531,7 @@ export default class GSEvents {
 		}
 		return sts;
 	}
-	
+
 
 	/**
 	 * Find object instance action by name
@@ -558,7 +553,30 @@ export default class GSEvents {
 		return sts ? me[name].bind(me) : null
 	}
 
+	static #onResize() {
+		clearTimeout(GSEvents.#rid);			
+		GSEvents.#rid = setTimeout(async () => {
+			await GSEvents.waitAnimationFrame();
+			GSEvents.send(window, 'resized');
+		}, 100);
+	}
+
+	/**
+	 * Helper tool to notify when window resized. 
+	 * Can be activated only once.
+	 * Trigger 'resized' event on window on resize timeout.
+	 */
+	static resizeMonitor() {
+		const me = GSEvents;
+		const own = document.documentElement;
+		const obj = me.#eventKey(own, window, 'resize', me.#onResize);
+		const elmap = me.#getElementMap(own);
+		const def = elmap.get(obj.key)?.get(obj.fnkey);
+		if (!def) me.attach(own, window, 'resize', me.#onResize);
+	}
+
 	static {
+		//GSEvents.resizeMonitor();
 		Object.freeze(GSEvents);
 		globalThis.GSEvents = GSEvents;
 	}

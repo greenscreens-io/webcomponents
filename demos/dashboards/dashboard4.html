@@ -5,7 +5,6 @@
     <title>Dashboard test</title>
     <meta charset="utf-8">
 
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="viewport"
@@ -18,18 +17,19 @@
     <meta name="revisit-after" content="3 month">
     <meta name="description" content="WebComponents UI library based on Bootstrap.">
 
-    <script type="text/javascript">
-        self.GS_TEMPLATE_URL = './templates';
+    <script>
+        globalThis.GS_TEMPLATE_URL = '/bootstrap-lit/demos/templates/';
     </script>
-    <script type="module" src="/webcomponents/modules/index.mjs"></script>
-    <script type="module" src="/webcomponents/modules/components/GSTooltip.mjs"></script>
-    <script type="module" src="/webcomponents/modules/components/ext/GSDataAttr.mjs"></script>
 
+    <!-- Optimized CSS loading -->
+    <link rel="preload" href="/bootstrap-lit/assets/css/bootstrap.css" as="style"  data-adoptable="true" data-id="1">
+    <link rel="preload" href="/bootstrap-lit/assets/themes/default.css" as="style" data-adoptable="true" data-id="2">
+    <link rel="preload" href="/bootstrap-lit/assets/icons/bootstrap-icons.css" as="style" data-adoptable="true" data-id="4">
 
-    <gs-css url="/webcomponents/assets/css/io.greenscreens.bootstrap.css"></gs-css>
-    <gs-css url="/webcomponents/assets/icons/bootstrap-icons.css" notheme="true"></gs-css>
-</head>
+    <script type="module" src="/bootstrap-lit/modules/base/GSAdoptedEngine.mjs"></script>
+    <script type="module" src="/bootstrap-lit/modules/base/GSTheme.mjs"></script>
 
+    <script type="module" src="/bootstrap-lit/modules/components/Tooltip.mjs"></script>
 <body>
 
     <div class="container-fluid">
@@ -81,7 +81,7 @@
                 <p>Use with combination of GS Elements to add some interactivity.</p>
                 <p>GSTooltip added for sidebar through GSDataAttr observer.</p>
                 <p>Content injection added for sidebar actions through GSDataAttr observer.</p>
-                <p>Injected is a custom WebComponent bsaed oNGSElement, responsible for loading template and rendering UI.</p>
+                <p>Injected is a custom WebComponent bsaed on GSElement, responsible for loading template and rendering UI.</p>
 
                 <!-- injection point ; check sidebar data-bs-inject attributes -->
                 <div id="content"></div>

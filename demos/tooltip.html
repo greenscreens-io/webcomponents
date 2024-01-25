@@ -2,63 +2,68 @@
 <html lang="en">
 
 <head>
-    <title>Tooltip Test</title>
-    <meta charset="utf-8">
+  <title>Bootstrap-Lit</title>
+  <meta charset="utf-8">
 
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="viewport"
-        content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0">
 
-    <meta name="subject" content="Green Scereens Ltd.">
-    <meta name="author" content="www.greenscreens.ltd">
-    <meta name="keywords" content="JavaScript,WebComponents">
-    <meta name="robots" content="index, follow">
-    <meta name="revisit-after" content="3 month">
-    <meta name="description" content="WebComponents UI library based on Bootstrap.">
+  <meta name="subject" content="Green Scereens Ltd.">
+  <meta name="author" content="www.greenscreens.ltd">
+  <meta name="keywords" content="JavaScript,WebComponents">
+  <meta name="robots" content="index, follow">
+  <meta name="revisit-after" content="3 month">
+  <meta name="description" content="WebComponents UI library based on Bootstrap.">
 
-    <script type="module" src="/webcomponents/modules/index.mjs"></script>
-    <script type="module" src="/webcomponents/modules/components/ext/GSNavLinkExt.mjs"></script>
-    <script type="module" src="/webcomponents/modules/components/GSTooltip.mjs"></script>
+  <script>
+    globalThis.GS_TEMPLATE_URL = '/bootstrap-lit/demos/templates/';
+  </script>
 
-    <gs-css url="/webcomponents/assets/css/io.greenscreens.bootstrap.css"></gs-css>
-    <gs-css url="/webcomponents/assets/icons/bootstrap-icons.css" notheme="true"></gs-css>
+    <!-- Optimized CSS loading -->
+    <link rel="preload" href="/bootstrap-lit/assets/css/bootstrap.css" as="style"  data-adoptable="true" data-id="1">
+    <link rel="preload" href="/bootstrap-lit/assets/themes/default.css" as="style" data-adoptable="true" data-id="2">
+    <link rel="preload" href="/bootstrap-lit/assets/icons/bootstrap-icons.css" as="style" data-adoptable="true" data-id="4">
 
-</head>
+    <script type="module" src="/bootstrap-lit/modules/base/GSAdoptedEngine.mjs"></script>
+    <script type="module" src="/bootstrap-lit/modules/base/GSTheme.mjs"></script>
+    <script type="module" src="/bootstrap-lit/modules/components/Template.mjs"></script>
+    <script type="module" src="/bootstrap-lit/modules/components/Tooltip.mjs"></script>
+    <script type="module" src="/bootstrap-lit/modules/components/Mouse.mjs"></script>
 
+ </head>
 <body>
-    <gs-template href="/webcomponents/demos/header.tpl" ></gs-template>
 
-    <!-- auto-generated gs-tooltip based on data-bs-toggle="tooltip" and title attribute -->
-    <div class="m-4 p-1 bg-light border shadow-sm">
-        <label id="l1" class="form-label" data-bs-toggle="tooltip" data-bs-placement="top" title="Top">Top</label>
-        <label id="l2" class="form-label" data-bs-toggle="tooltip" data-bs-placement="bottom"
-            title="Bottom">Bottom</label>
-        <label id="l3" class="form-label" data-bs-toggle="tooltip" data-bs-placement="left" title="Left">Left</label>
-        <label id="l4" class="form-label" data-bs-toggle="tooltip" data-bs-placement="right" title="Right">Right</label>
-    </div>
+  <gs-template url="//header.html"></gs-template>
 
-    <!-- attach to ref targeted element -->
-    <div class="m-4 p-1 bg-light border shadow-sm">
-        <label id="l5" class="form-label">Bottom</label>
-    </div>
-    <gs-tooltip placement="bottom" title="Bottom" ref="#l5"></gs-tooltip>
+  <!-- attach to ref targeted element -->
+  <div class="m-4 p-1 bg-light bordered shadow-sm">
+    <label id="l5" class="form-label">Bottom</label>
+  </div>
+  <gs-tooltip placement="bottom" title="Bottom" target="#l5"></gs-tooltip>
 
-    <!-- attach to parent element sibling -->
-    <div class="m-4 p-1 bg-light border shadow-sm">
-        <label id="l6" class="form-label">
-            Left
-            <gs-tooltip placement="left" title="Left"></gs-tooltip>
-        </label>
-    </div>
 
-    <!-- attach to previous element sibling -->
-    <div class="m-4 p-1 bg-light border shadow-sm">
-        <label id="l7" class="form-label">Right</label>
-        <gs-tooltip placement="right" title="Right"></gs-tooltip>
-    </div>
+  <!-- attach to ref targeted element -->
+  <div class="m-4 p-1 bg-light bordered shadow-sm">
+    <label id="l4" class="form-label">Top</label>
+    <gs-tooltip placement="top" title="Top" target="#l4"></gs-tooltip>
+  </div>
 
+  <!-- attach to parent element sibling -->
+  <div class="m-4 p-1 bg-light bordered shadow-sm">
+    <label id="l6" class="form-label">
+      Left
+      <gs-tooltip placement="left" title="Left" target="@parent"></gs-tooltip>
+    </label>
+  </div>
+
+  <!-- attach to previous element sibling -->
+  <div class="m-4 p-1 bg-light bordered shadow-sm">
+    <label id="l7" class="form-label">Right</label>
+    <gs-tooltip placement="right" title="Right" target="@previous"></gs-tooltip>
+  </div>
+
+  <gs-mouse></gs-mouse>
 </body>
 
 </html>

@@ -1,6 +1,7 @@
 # GSAlert WebComponent
 
 GSAlert WebComponent is a Bootstrap Alert renderer which allows template injection from external source.
+If multiple gs-item elements , billboard is activated to automatically switch text messages.
 
 GSAlert WebComponent extends [GSElement](../base/GSElement.md) and all its attributes and functions.
 
@@ -11,10 +12,10 @@ GSAlert WebComponent extends [GSElement](../base/GSElement.md) and all its attri
 
 | Name               | Description                                              |
 |--------------------|----------------------------------------------------------|
-| css                | CSS classes for alert content                            |
-| css-active         | CSS classes for visible alert                            |
-| delay              | If billboad mode, text iteration delay in seconds        | 
-| dismisaable        | Add / remove dismiss button, to close alert              |
+| color              | Alert color (bootstrap colors)                           |
+| delay              | If billboard mode, text iteration delay in seconds       | 
+| closed             | Hide alert                                               |
+| closable           | Add / remove dismiss button, to close alert              |
 | message            | Content message                                          | 
 
 <br>
@@ -44,12 +45,12 @@ For more details, check [alert.html](../../demos/alert.html)
 </gs-alert>
 
 <gs-alert css="btn-primary" css-active="fade" message="focus hover" dismissable="true" delay="5">
-    <gs-item title="Message 1"></gs-item>
-    <gs-item title="Message 2"></gs-item>
-    <gs-item title="Message 3"></gs-item>
+    <gs-item message="Message 1"></gs-item>
+    <gs-item message="Message 2"></gs-item>
+    <gs-item message="Message 3"></gs-item>
 </gs-alert>
 ```
 
 <br>
 
-&copy; Green Screens Ltd. 2016 - 2023
+&copy; Green Screens Ltd. 2016 - 2024

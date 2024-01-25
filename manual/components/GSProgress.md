@@ -2,6 +2,20 @@
  
 GSProgress WebComponent is a renderer for Bootstrap Progress.
  
+<br>
+ 
+## Attributes
+ 
+| Name               | Description                                              |
+|--------------------|----------------------------------------------------------|
+| label              | Progrs label expression                                  | 
+| value              | Current progress value                                   | 
+| step               | Increment by                                             | 
+| min                | Minimum value allowed                                    | 
+| max                | Maximum value allowd                                     | 
+
+<br>
+
 ## Example
 ---
  
@@ -15,10 +29,10 @@ For more details, check [progress.html](../../demos/progress.html)
 Example from JavaScript.
  
 ```JavaScript
-GSComponents.find('gs-progress').increase();
-GSComponents.find('gs-progress').decrease();
+GSDOM.query('gs-progress').increase();
+GSDOM.query('gs-progress').decrease();
 ```
 
 <br>
 
-&copy; Green Screens Ltd. 2016 - 2023
+&copy; Green Screens Ltd. 2016 - 2024

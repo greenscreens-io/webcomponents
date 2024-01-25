@@ -3,19 +3,18 @@
 GSPopup WebComponent is a component similar to GSContext except it is generic popup element that will open a custom popup box.
 
 <br>
-
+ 
 ## Attributes
----
-
+ 
 | Name               | Description                                              |
 |--------------------|----------------------------------------------------------|
+| placement          | Where to place it (top,bottom,start,end)                 |
+| position           | Where to place it (top,bottom,start,end)                 |
+| target             | Element to which popover is atached                      |
+| trigger            | Mouse event to trigger popover (mouseove,click etc)      |
 | autoclose          | Close popup on mouseleave                                |
-| css                | CSS classes for popup content                            |
-| placement          | Where to popup element (start,end,top,bottom)            |
-| target             | Element on which to popup                                | 
-| template           | Popup content template                                   | 
-| trigger            | Terget element event to trigger popup (click)            |
-| visible            | Show or hide popup (bool)                                | 
+| autofocus          | First focusable element o focus                          |
+| opened             | If set, will render popover visible                      |
 | hPos               | Postion popup on X-Axis                                  | 
 | vPos               | Postion popup on Y-Axis                                  | 
 | hMax               | Popup height max in pixels                               | 
@@ -54,4 +53,4 @@ Visible on load at specified location
 
 <br>
 
-&copy; Green Screens Ltd. 2016 - 2023
+&copy; Green Screens Ltd. 2016 - 2024

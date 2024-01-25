@@ -1,6 +1,6 @@
 /*
- * Copyright (C) 2015, 2022 Green Screens Ltd.
+ * Copyright (C) 2015, 2024 Green Screens Ltd.
  */
 
-import "./GSNotification.mjs"
-import "./GSToast.mjs"
+export * from './Toast.mjs';
+export * from './Notification.mjs';

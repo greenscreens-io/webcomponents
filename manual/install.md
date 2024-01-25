@@ -115,4 +115,4 @@ When using library built with WebPack, use the following template.
 
 <br>
 
-&copy; Green Screens Ltd. 2016 - 2023
+&copy; Green Screens Ltd. 2016 - 2024

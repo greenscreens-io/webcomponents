@@ -1,37 +1,55 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-  <title>Date test</title>
-  <meta charset="utf-8">
+    <title>Bootstrap-Lit</title>
+    <meta charset="utf-8">
 
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="mobile-web-app-capable" content="yes">
-  <meta name="viewport"
-    content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0">
 
-  <meta name="subject" content="Green Scereens Ltd.">
-  <meta name="author" content="www.greenscreens.ltd">
-  <meta name="keywords" content="JavaScript,WebComponents">
-  <meta name="robots" content="index, follow">
-  <meta name="revisit-after" content="3 month">
-  <meta name="description" content="WebComponents UI library based on Bootstrap.">
+    <meta name="subject" content="Green Scereens Ltd.">
+    <meta name="author" content="www.greenscreens.ltd">
+    <meta name="keywords" content="JavaScript,WebComponents">
+    <meta name="robots" content="index, follow">
+    <meta name="revisit-after" content="3 month">
+    <meta name="description" content="WebComponents UI library based on Bootstrap.">
 
-  <script type="module" src="/webcomponents/modules/index.mjs"></script>
-  <script type="module" src="/webcomponents/modules/components/intl/GSDateFormat.mjs"></script>
+    <script>
+        globalThis.GS_TEMPLATE_URL='/bootstrap-lit/demos/templates/';
+    </script>
 
-  <gs-css url="/webcomponents/assets/css/io.greenscreens.bootstrap.css"></gs-css>
-  <gs-css url="/webcomponents/assets/icons/bootstrap-icons.css" notheme="true"></gs-css>
+    <!-- Optimized CSS loading -->
+    <link rel="preload" href="/bootstrap-lit/assets/css/bootstrap.css" as="style"  data-adoptable="true" data-id="1">
+    <link rel="preload" href="/bootstrap-lit/assets/themes/default.css" as="style" data-adoptable="true" data-id="2">
+    <link rel="preload" href="/bootstrap-lit/assets/icons/bootstrap-icons.css" as="style" data-adoptable="true" data-id="4">
+
+    <script type="module" src="/bootstrap-lit/modules/base/GSAdoptedEngine.mjs"></script>
+    <script type="module" src="/bootstrap-lit/modules/base/GSTheme.mjs"></script>
+    <script type="module" src="/bootstrap-lit/modules/components/Template.mjs"></script>
+    <script type="module" src="/bootstrap-lit/modules/components/intl/DateFormat.mjs"></script>
 
 </head>
-
 <body>
 
-  <gs-template href="/webcomponents/demos/header.tpl" ></gs-template>
+  <gs-template url="//header.html"></gs-template>
 
-  <div class="m-4 p-1 bg-light border shadow-sm">
-    <gs-date-format locale="hr-HR"></gs-date-format>
+  <div class="m-4 p-1 bg-light bordered shadow-sm">
+    (hr-HR) ==> <gs-date-format locale="hr-HR"></gs-date-format>
+  </div>
+
+  <div class="m-4 p-1 bg-light bordered shadow-sm">
+    (en-US) ==> <gs-date-format locale="en-US"></gs-date-format>
+  </div>
+
+  <div class="m-4 p-1 bg-light bordered shadow-sm">
+    (de-DE) ==> <gs-date-format locale="de-DE"></gs-date-format>
+  </div>
+
+  <div class="m-4 p-1 bg-light bordered shadow-sm">
+    (ja-JP) ==> <gs-date-format locale="ja-JP"></gs-date-format>
   </div>
 
 </body>

@@ -1,4 +1,4 @@
-<form class="text-start" is="gs-ext-form">
+<gs-form css="text-start">
     <div class="mb-3">
         <label for="email" class="form-label">Email address</label>
         <input name="email" type="email" class="form-control" placeholder="email" required="">
@@ -22,11 +22,11 @@
     <div class="row m-1">
         <div class="col"></div>
         <div class="col d-flex">
-            <button type="submit" class="btn btn-primary me-1">Submit</button>
-            <button type="button" class="btn btn-secondary ms-1" data-bs-dismiss="dialog">Cancel</button>
+            <gs-button type="submit" color="primary" css="me-1" title="Submit"></gs-button>
+            <gs-button type="button" color="secondary" css="ms-1" title="Cancel"></gs-button>
         </div>
         <div class="col d-flex justify-content-end">
-            <button type="reset" class="btn btn-light ms-1">Reset</button>
+            <gs-button type="reset" color="light" css="ms-1" title="Reset"></gs-button>
         </div>
     </div>
-</form>
+</gs-form>

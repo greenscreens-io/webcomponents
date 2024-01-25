@@ -4,12 +4,15 @@
     "scripts": {
         "build": "rollup -c",
         "manual": "jsdoc -c ./jsdoc.json",
-        "doc1": "jsdoc -c ./doc/.defs/jsdoc1.json",
-        "doc2": "jsdoc -c ./doc/.defs/jsdoc2.json",
-        "doc3": "jsdoc -c ./doc/.defs/jsdoc3.json",
-        "doc": "npm run doc1 && npm run doc2 && npm run doc3"
+        "doc1": "jsdoc -c ./doc/.defs/base.json",
+        "doc2": "jsdoc -c ./doc/.defs/components.json",
+        "doc3": "jsdoc -c ./doc/.defs/controllers.json",
+        "doc4": "jsdoc -c ./doc/.defs/directives.json",
+        "doc5": "jsdoc -c ./doc/.defs/properties.json",
+        "doc": "npm run doc1 && npm run doc2 && npm run doc3 && npm run doc4 && npm run doc5"
     },
     "devDependencies": {
+        "rollup-plugin-gzip": "^3.1.1",
         "rollup-plugin-sourcemaps": "^0.6.3",
         "rollup-plugin-terser": "^7.0.2"
     }

@@ -12,4 +12,4 @@ Main support added is masked input through **mask** attribute, validation, datal
  ```
 <br>
 
-&copy; Green Screens Ltd. 2016 - 2023
+&copy; Green Screens Ltd. 2016 - 2024

@@ -1,8 +1,8 @@
 /*
- * Copyright (C) 2015, 2023 Green Screens Ltd.
+ * Copyright (C) 2015, 2024 Green Screens Ltd.
  */
-import GSEvents from "./GSEvents.mjs";
-import GSUtil from "./GSUtil.mjs";
+import { GSEvents } from "./GSEvents.mjs";
+import { GSUtil } from "./GSUtil.mjs";
 
 
 /**
@@ -14,7 +14,7 @@ import GSUtil from "./GSUtil.mjs";
  * Extend native AbortController with timeout 
  * @class
  */
-export default class GSAbortController extends AbortController {
+export class GSAbortController extends AbortController {
 
     #iid = 0;
 

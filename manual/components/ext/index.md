@@ -8,12 +8,9 @@ Also, this library contains replacement for Bootstrap Javascript support for **d
 
 1. [GSAccessibility](./GSAccessibility.md)
 2. [GSComboExt](./GSComboExt.md)
-3. [GSDataAttr](./GSDataAttr.md)
-4. [GSDataListExt](./GSDataListExt.md)
-5. [GSFormExt](./GSFormExt.md)
-6. [GSInputExt](./GSInputExt.md)
-7. [GSNavLinkExt](./GSNavLinkExt.md)
-8. [GSUListExt](./GSUListExt.md)
+3. [GSDataListExt](./GSDataListExt.md)
+4. [GSFormExt](./GSFormExt.md)
+5. [GSInputExt](./GSInputExt.md)
 <br>
 
-&copy; Green Screens Ltd. 2016 - 2023
+&copy; Green Screens Ltd. 2016 - 2024

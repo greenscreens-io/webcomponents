@@ -3,9 +3,9 @@
  */
 
 /**
- * Rollup plugin to preven inclusion of external libraryies into final build.
+ * Rollup plugin to prevent inclusion of external libraryies into final build.
  */
-export default function gsExtern () {
+export function gsExtern () {
 
     const isString = (val) => (typeof val == 'string');
     
@@ -32,4 +32,17 @@ export default function gsExtern () {
       }
 
     };
+  }
+
+  export function gsCleanup () {
+
+    return {
+      name: 'gs-cleanup', 
+
+      generateBundle(source) {
+        debugger;
+        console.log('==== >>', source);
+        return source;
+      }
+    }
   }

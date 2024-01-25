@@ -11,14 +11,16 @@ Menu items can be loaded from an external **template** or can be added as compon
 ## Attributes
 ---
  
-| Name               | Description                                              |
-|--------------------|----------------------------------------------------------|
-| css                | CSS classes for button containing dropdown menu          |
-| dark               | Is menu light or dark mode                               |
-| disabled           | If exists, disable context menu click activation         |
-| title              | Button title                                             |
+| Name               | Description                                                      |
+|--------------------|------------------------------------------------------------------|
+| target             | CSS selector for element context used for                        |
+| altContext         | Is set, allow opening native context menu when shift key pressed |
+| disabled           | If set, disable context menu click activation                    |
+
  
 <br>
+
+NOTE: All attributes from [GS-MENU](./GSMenu.md) applies.
 
 ## Example
 ---
@@ -51,10 +53,10 @@ For more details, check [contextmenu.html](../../demos/contextmenu.html)
 This example shows how to catch menu click events.
  
 ```JavaScript
-const ctx = GSComponents.find('gs-context');
-ctx.listen('action', (e) => console.log(e.detail));
+const ctx = GSDOM.query('gs-context');
+ctx.on('action', (e) => console.log(e.detail));
 ```
 
 <br>
 
-&copy; Green Screens Ltd. 2016 - 2023
+&copy; Green Screens Ltd. 2016 - 2024

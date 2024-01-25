@@ -1,0 +1,35 @@
+{
+    "title": "/",
+    "data": { "path": "/", "files" : 2, "size" : 2093485748},
+    "items": [
+        {
+            "title": "boot",
+            "leaf": false,
+            "data": {"path": "/boot", "files" : 11, "size" : 4453},
+            "items": [
+                {
+                    "title": "loader.bin",
+                    "leaf": true,
+                    "data": {"path": "/boot/loader.bin", "size" : 4453}
+                },
+                {
+                    "title": "config",
+                    "leaf": true,
+                    "data": {"path": "/boot/config", "size" : 445311}
+                }
+            ]
+        },
+        {
+            "title": "home",
+            "data": { "path": "/home", "files" : 7, "size" : 63456244453},
+            "items": [
+                {
+                    "title": "greenscreens",
+                    "leaf": false,
+                    "data": { "path": "/home/greenscreens", "files" : 20, "size" : 1233455},
+                    "items": []
+                }
+            ]
+        }
+    ]
+}

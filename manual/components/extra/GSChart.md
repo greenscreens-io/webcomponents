@@ -21,8 +21,9 @@ Utiltiy **GSItem.toJson** and **GSItem.toDom** are used to convert JSON object t
 | css                | CSS classes for chart canvas element                |
 | width              | Chart widht in pixels                               |
 | height             | Chart height in pixels                              |
-| data               | URL location for data                               |
-| options            | URL locationm for JSON configurtion                 |
+| data               | JSON Array with chart data                          |
+| options            | JSON configurtion object                            |
+| config             | URL location for JSON configurtion                  |
 
 
 <br>
@@ -36,13 +37,13 @@ For more details, check [chart.html](../../demos/extra/GSChart.html)
 Loading data and options from remote resource
 
 ```html
-<gs-chart width="800" height="600" css="" options="data/options.json" data="data/data.json"></gs-chart>
+<gs-chart width="800" height="600" css="" config="data/options.json" url="data/data.json"></gs-chart>
 ```
 
 Loading options from remote resource and applying overrides (bar -> pie) from config structure.
 
 ```html
-<gs-chart width="800" height="600" options="data/options.json" data="data/data.json">
+<gs-chart width="800" height="600" config="data/options.json" url="data/data.json">
     <gs-item group="options">
         <gs-item name="type" value="pie" type="string"></gs-item>
     </gs-item>
@@ -52,7 +53,7 @@ Loading options from remote resource and applying overrides (bar -> pie) from co
 Loading complete options from config structure.
 
 ```html
-<gs-chart width="800" height="600" data="data/data.json">
+<gs-chart width="800" height="600" url="data/data.json">
     <gs-item group="options" type="object">
         <gs-item name="type" value="bar" type="string"></gs-item>
         <gs-item name="data" type="object">
@@ -114,4 +115,4 @@ Loading complete options from config structure.
 
 <br>
 
-&copy; Green Screens Ltd. 2016 - 2023
+&copy; Green Screens Ltd. 2016 - 2024
