@@ -8,6 +8,7 @@ import { GSAttr } from "../../base/GSAttr.mjs";
 import { GSDOM } from "../../base/GSDOM.mjs";
 import { GSUtil } from "../../base/GSUtil.mjs";
 import { GSCSSMap } from "../../base/GSCSSMap.mjs";
+import { GSDate } from "../../base/GSDate.mjs";
 
 /**
  * A module loading GSInputExt class
@@ -63,6 +64,7 @@ export class GSInputExt extends HTMLInputElement {
         me.#toPattern();
         me.#attachEvents();
         if (me.autofocus) me.focus();
+        if (me.type === 'date') me.dataset.value = me.placeholder;
         setTimeout(me.#onDataChange.bind(me), 250);
     }
 
@@ -101,7 +103,9 @@ export class GSInputExt extends HTMLInputElement {
     }
 
     get mask() {
-        return GSAttr.get(this, 'mask', '');
+        const me = this;
+        const dft = me.type === 'date' ? GSUtil.getDateFormat(me.lang || GSUtil.locale) : '';
+        return GSAttr.get(me, 'mask', dft);
     }
 
     get strict() {
@@ -139,6 +143,21 @@ export class GSInputExt extends HTMLInputElement {
      */
     get reveal() {
         return this.hasAttribute('reveal');
+    }
+
+    get value() {
+        if (this.type === 'date') {
+            return this.dataset.value || super.value;
+        }
+        return super.value;
+    }
+
+    set value(val) {
+        if (this.type === 'date') {
+            val = new GSDate(GSDate.parse(val, this.mask)).format('YYYY-MM-DD');
+        }
+        super.value = val;
+        this.#onChange();
     }
 
     #toPattern() {
@@ -187,7 +206,7 @@ export class GSInputExt extends HTMLInputElement {
         GSEvents.attach(me, me, 'paste', me.#onPaste.bind(me));
         GSEvents.attach(me, me, 'blur', me.#onBlur.bind(me));
         GSEvents.attach(me, me, 'click', me.#onClick.bind(me));
-        requestAnimationFrame(() => {
+        queueMicrotask(() => {
             const list = me.list;
             if (!list) return;
             GSEvents.attach(me, me, 'change', me.#onDataChange.bind(me));
@@ -287,6 +306,9 @@ export class GSInputExt extends HTMLInputElement {
         const val = e.clipboardData.getData('text');
         const me = this;
         me.value = me.formatMask(val);
+        if (me.type === 'date') {
+            me.dataset.value = new GSDate(this.valueAsDate).format(me.mask);
+        }
     }
 
     #isReveal(e) {
@@ -335,9 +357,20 @@ export class GSInputExt extends HTMLInputElement {
                 if (copycut && !me.validate()) {
                     return GSEvents.prevent(e);
                 }
+
+                if (me.type === 'date') {
+                    if (copycut) {
+                        GSUtil.writeToClipboard(me.value);
+                    } else {
+                        GSUtil.readFromClipboard().then(val => me.value = val);
+                    }
+                }
                 return;
             }
+
         }
+
+        if (me.type === 'date') return;
 
         const tmp = me.value.split('');
         let pos1 = me.selectionStart;
@@ -375,9 +408,12 @@ export class GSInputExt extends HTMLInputElement {
     }
 
     #onKeyPress(e) {
+
         const me = this;
+        
         if (!me.mask) return;
         if (e.ctrlKey || e.altKey || e.shiftKey || e.metaKey || e.key.length !== 1) return;
+        if (me.type === 'date') return;
 
         const tmp = me.value.split('');
         let pos1 = me.selectionStart;
@@ -411,6 +447,9 @@ export class GSInputExt extends HTMLInputElement {
     #onChange(e) {
         const me = this;
         if (me.type == 'range') me.title = me.value;
+        if (me.type == 'date') {
+            me.dataset.value = new GSDate(this.valueAsDate).format(me.mask);
+        }
         //GSEvents.send(me, 'changed', {}, true, true);
     }
 

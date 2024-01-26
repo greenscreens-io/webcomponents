@@ -20,8 +20,9 @@ export class GSTableElement extends GSElement {
   static styles = css`th:hover { opacity: 50% !important; }`;
 
   static CELLS = {
-    align : {},
-    width : {},
+    align: {},
+    width: {},
+    filter: { type: Boolean },
     ...GSData.PROPERTIES
   }
 
@@ -87,6 +88,12 @@ export class GSTableElement extends GSElement {
     super.connectedCallback();
   }
 
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    this.data = [];
+    this.selections = [];
+  }
+
   renderClass() {
     const me = this;
     const css = {
@@ -130,6 +137,7 @@ export class GSTableElement extends GSElement {
        @keydown="${me.#onKeyDown}"
        class="${classMap(me.renderClass())}">
         <thead class="${ifDefined(headColor)}">
+          ${me.#renderFilters()}
           <tr @click=${me.#onSort}>
             ${me.columns.map((entry, index) => me.#renderColumn(entry, index))}
           </tr>
@@ -145,6 +153,21 @@ export class GSTableElement extends GSElement {
   onDataRead(data) {
     this.data = data;
     this.selections = [];
+  }
+
+  #renderFilters() {
+    const me = this;
+    const hasFilters = me.#config.filter(o => o.filter).length > 0;
+    if (!hasFilters) return '';
+    return html`<tr>${me.columns.map((entry, index) => me.#renderFilter(entry, index))}</tr>`
+  }
+
+  #renderFilter(cell, index) {
+    const me = this;
+    const cfg = me.#config[index];
+    if (!cfg?.filter) return html`<th></th>`;
+    const type = { 'string' : 'text', 'currency': 'number', 'timestamp' : 'datetime-local' }[cfg.type] || cfg.type;
+    return html`<th><input is="gs-ext-input" class="form-control" name="${cell}" type="${type}"></th>`;
   }
 
   #renderColumn(cell, index) {
@@ -204,7 +227,7 @@ export class GSTableElement extends GSElement {
     me.sort[idx] = sortType;
 
     const sort = me.#prepareSorter(me.sort, me.#sortOrder);
-    
+
     if (me.storage) {
       return me.dataController.sort(sort);
     }
@@ -223,13 +246,13 @@ export class GSTableElement extends GSElement {
 
     // if data record is object (not simple array)
     const isComplex = me.data[0] && !Array.isArray(me.data[0]);
-    
+
     // sort list 
-    const list = sort.map((v, i) => v ? { name: isComplex ? me.columns[i] : undefined,  col: i, ord: v, idx: sortOrder.indexOf(i) } : null).filter(v => v);
-    
+    const list = sort.map((v, i) => v ? { name: isComplex ? me.columns[i] : undefined, col: i, ord: v, idx: sortOrder.indexOf(i) } : null).filter(v => v);
+
     // order sort list by idx
     sort = GSData.sortData(list, [{ name: 'idx', ord: 1 }]);
-        
+
     return sort;
   }
 

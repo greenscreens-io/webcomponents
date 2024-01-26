@@ -11,7 +11,7 @@ import { GSDOM } from '../base/GSDOM.mjs';
 
 export class GSFormGroupElement extends GSElement {
 
-  static CSS_LABEL_CELL = 'col-md-4 col-sm-4 col-xs-2 text-md-end';
+  static CSS_LABEL_CELL = 'col-md-4 col-sm-4 col-xs-2';
   static CSS_LABEL = 'user-select-none fw-small fw-light text-secondary';
   static CSS_ICON = 'text-primary me-2 fs-5';
   static ICON = 'info-circle-fill';
@@ -32,6 +32,7 @@ export class GSFormGroupElement extends GSElement {
     list: {},
     accept: {},
 
+    lang : {},
     step: { type: Number, reflect: true, hasChanged: numGT0 },
     min: { type: Number, reflect: true, hasChanged: numGE0 },
     max: { type: Number, reflect: true, hasChanged: numGT0 },
@@ -124,7 +125,7 @@ export class GSFormGroupElement extends GSElement {
     const me = this;
     return html`
     <div  dir="${ifDefined(me.direction)}" class="row ${classMap(me.renderClass())}">
-      <div class="col-12  ${me.cellLabel}">
+      <div class="col-12 text-md-start ${me.cellLabel}">
           ${me.#renderLabel()}
       </div>
        <div class="${me.#cssCheck} ${me.#cellField}">
@@ -155,7 +156,7 @@ export class GSFormGroupElement extends GSElement {
 
   #renderLabelWrap() {
     const me = this;
-    return html`<div class="${me.cellLabel}">${me.#renderLabel()}</div>`;
+    return html`<div class=" text-md-end ${me.cellLabel}">${me.#renderLabel()}</div>`;
   }
 
   #renderIcon() {
@@ -249,6 +250,7 @@ export class GSFormGroupElement extends GSElement {
             step="${ifDefined(me.step)}"
             min="${ifDefined(me.min)}"
             max="${ifDefined(me.max)}"
+            lang="${ifDefined(me.lang)}"
 
             minlength="${ifDefined(me.minLength)}"
             maxlength="${ifDefined(me.maxLength)}"

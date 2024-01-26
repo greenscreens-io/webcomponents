@@ -129,11 +129,11 @@
             <gs-item name="Start date" type="date" format="yyyy/mm/dd"></gs-item>
         </gs-data-handler>            
         <gs-table id="grid" storage="employees" color="light" bordered shadow divider sortable multisort>
-            <gs-item name="Office"></gs-item>
-            <gs-item name="Position"></gs-item>
-            <gs-item name="Age" type="number" align="center" width="70"></gs-item>
-            <gs-item name="Salary" type="currency" align="end" currency="USD" locale="hr-HR" width="200"></gs-item>
-            <gs-item name="Start date" type="string" align="center" locale="hr-HR" width="150"></gs-item>
+            <gs-item name="Office" filter></gs-item>
+            <gs-item name="Position" filter></gs-item>
+            <gs-item name="Age" type="number" align="center" width="70" filter></gs-item>
+            <gs-item name="Salary" type="currency" align="end" currency="USD" locale="hr-HR" width="200" filter></gs-item>
+            <gs-item name="Start date" type="text" align="center" locale="hr-HR" width="150" filter></gs-item>
         </gs-table>        
         <gs-pagination storage="employees" pages="5" css="justify-content-center" first last previous next></gs-pagination>
     </div>

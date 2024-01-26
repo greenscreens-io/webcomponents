@@ -15,4 +15,7 @@ gs-group>gs-button:not(:last-child)::part(button) {border-top-right-radius: 0;bo
 gs-group>gs-button:not(:first-child)::part(button) {margin-left: calc(var(--bs-border-width) * -5);border-top-left-radius: 0;border-bottom-left-radius: 0;}
 gs-layout {width: 100%;height: 100%;}
 gs-split-panel{flex: 1 1 auto !important;}
+input[is="gs-ext-input"][type="date"]:before {content: attr(data-value);}
+input[is="gs-ext-input"][type="date"]::-webkit-datetime-edit, input::-webkit-inner-spin-button, input::-webkit-clear-button {visibility: hidden;display: inline-block;}
+input[is="gs-ext-input"][type="date"]::-webkit-calendar-picker-indicator {position: relative;top: 0px;right: 0;color: black;opacity: 0.5;}
 `;

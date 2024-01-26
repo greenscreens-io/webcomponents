@@ -382,6 +382,30 @@ export class GSUtil {
 		}
 	}
 
+	/**
+	 * Use Clipboard API to write to the clipboard
+	 * @returns 
+	 */
+	static async writeToClipboard(value = '') {
+		const result = await navigator.permissions.query({ name: "clipboard-write" })
+		if (result.state === "granted" || result.state === "prompt") {
+		   return navigator.clipboard.writeText(value);
+		}
+		return '';
+	}
+
+	/**
+	 * Use Clipboard API to read from the clipboard
+	 * @returns 
+	 */
+	static async readFromClipboard() {
+		const result = await navigator.permissions.query({ name: "clipboard-read" })
+		if (result.state === "granted" || result.state === "prompt") {
+		   return navigator.clipboard.readText();
+		}
+		return '';
+	}	
+
 	static {
 		Object.seal(GSUtil);
 		globalThis.GSUtil = GSUtil;

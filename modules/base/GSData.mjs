@@ -92,6 +92,7 @@ export class GSData {
                 if (GSUtil.isString(val)) return GSDate.parse(val, fmt, locale);
                 return val && val != 0 ? new GSDate(val).format(fmt, locale) : val;
             case 'string':
+            case 'text':   
                 if (val instanceof Date) {
                     const fmt = cfg.format || GSUtil.getDateFormat(locale);
                     return new GSDate(val).format(fmt, locale);

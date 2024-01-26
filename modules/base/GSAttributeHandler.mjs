@@ -230,8 +230,9 @@ export class GSAttributeHandler {
 
     deattach(name = 'click') {
         //GSEvents.deattachListeners(this.#host);
+        const me = this;
         GSEvents.off(me.#host, null, name, me.#callback);
-        this.#active = false;
+        me.#active = false;
     }
 
     get #symbol() {
