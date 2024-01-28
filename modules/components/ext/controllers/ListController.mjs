@@ -73,6 +73,10 @@ export class ListController {
     return GSDOM.getByID(me.#host.owner, filter);
   }
 
+  get owner() {
+    return this.#host.owner;
+  }
+
   get strict() {
     return GSAttr.get(this.#host, 'strict', '');
   }
