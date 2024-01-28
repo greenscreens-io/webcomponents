@@ -1,0 +1,89 @@
+
+<!DOCTYPE html>
+<html lang="hr">
+
+<head>
+    <title>Bootstrap-Lit</title>
+    <meta charset="utf-8">
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0">
+
+    <meta name="subject" content="Green Scereens Ltd.">
+    <meta name="author" content="www.greenscreens.ltd">
+    <meta name="keywords" content="JavaScript,WebComponents">
+    <meta name="robots" content="index, follow">
+    <meta name="revisit-after" content="3 month">
+    <meta name="description" content="WebComponents UI library based on Bootstrap.">
+
+    <script>
+        globalThis.GS_TEMPLATE_URL='/bootstrap-lit/demos/templates/';
+    </script>
+
+    <!-- Optimized CSS loading -->
+    <link rel="preload" href="/bootstrap-lit/assets/css/bootstrap.css" as="style"  data-adoptable="true">
+    <link rel="preload" href="/bootstrap-lit/assets/themes/default.css" as="style" data-adoptable="true">
+    <link rel="preload" href="/bootstrap-lit/assets/icons/bootstrap-icons.css" as="style" data-adoptable="true">
+
+    <script type="module" src="/bootstrap-lit/modules/base/GSAdoptedEngine.mjs"></script>
+    <script type="module" src="/bootstrap-lit/modules/base/GSTheme.mjs"></script>
+    <script type="module" src="/bootstrap-lit/modules/components/Template.mjs"></script>
+    <script type="module" src="/bootstrap-lit/modules/components/Table.mjs"></script>
+    <script type="module" src="/bootstrap-lit/modules/components/Icon.mjs"></script>
+    
+    <script type="module" src="/bootstrap-lit/modules/components/Center.mjs"></script>
+    <script type="module" src="/bootstrap-lit/modules/components/FormGroup.mjs"></script>
+    <script type="module" src="/bootstrap-lit/modules/components/Form.mjs"></script>
+    
+    <script type="module" src="/bootstrap-lit/modules/data/CachedReader.mjs"></script>
+    <script type="module" src="/bootstrap-lit/modules/components/Pager.mjs"></script>
+    <script type="module" src="/bootstrap-lit/modules/components/DataHandler.mjs"></script>
+    <script type="module" src="/bootstrap-lit/modules/components/ext/index.mjs"></script>
+
+</head>
+<body>
+
+    <gs-template url="//header.html"></gs-template>
+
+    <div class="m-4 p-3 bordered shadow-sm text-bg-light">
+        <div class="row my-2">
+            <div class="col-auto">
+                <gs-form-group cell-label="col-auto" cell-field="col-auto" name="limit" label="Limit" data-gs-target="gs-data-handler#employees" data-gs-call="read">
+                    <template>
+                        <select class="form-select form-select-sm rounded-0" name="limit" >
+                            <option value="5">5</option>
+                            <option value="10" selected>10</option>
+                            <option value="15">15</option>
+                            <option value="25">25</option>
+                            <option value="50">50</option>
+                        </select>
+                    </template>            
+                </gs-form-group>
+            </div>
+            <div class="col d-flex justify-content-end">
+                <gs-form-group cell-label="col-auto" cell-field="col-auto" css-field="form-control-sm rounded-0" name="search" label="Search" data-gs-target="gs-data-handler#employees"></gs-form-group>
+            </div>
+        </div>
+        <!-- Defiend items will be converted into desired type if possible -->
+        <gs-data-handler id="employees" type="cached" limit="10" src="/bootstrap-lit/demos/helpers/data/data2.json">
+            <gs-item name="Age" type="number"></gs-item>
+            <!-- Convert curency into number; table UI column definition defines the output format -->
+            <gs-item name="Salary" type="number" locale="en-US"></gs-item>
+            <gs-item name="Start date" type="date" format="yyyy/mm/dd"></gs-item>
+        </gs-data-handler>
+
+        <!-- Defiend items will render data as defiend type -->
+        <gs-table id="grid" storage="employees" color="light" css-filter="rounded-0" bordered shadow divider sortable multisort>
+            <gs-item name="Office" filter></gs-item>
+            <gs-item name="Position" filter></gs-item>
+            <gs-item name="Age" type="number" align="center" width="100" filter></gs-item>
+            <gs-item name="Salary" type="currency" align="end" currency="USD" locale="hr-HR" width="200" filter></gs-item>
+            <gs-item name="Start date" title="Date" type="text" align="center" locale="hr-HR" width="180" filter-type="text" filter></gs-item>
+        </gs-table>
+
+        <gs-pagination storage="employees" pages="5" css="justify-content-center" first last previous next></gs-pagination>
+    </div>
+
+</body>
+</html>

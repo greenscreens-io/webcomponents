@@ -64,7 +64,7 @@ export class GSDataListExt extends HTMLDataListElement {
 
         const me = this;
 
-        requestAnimationFrame(() => {
+        queueMicrotask(() => {
 
             const list = [];
             data.forEach(o => {

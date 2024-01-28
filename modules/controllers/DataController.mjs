@@ -64,7 +64,7 @@ export class DataController {
 
   filter(val) {
     if (!this.store) return;
-    this.store.sort = val;
+    this.store.filter = val;
     return this.store.read();
   }
 

@@ -92,7 +92,7 @@ export class GSData {
                 if (GSUtil.isString(val)) return GSDate.parse(val, fmt, locale);
                 return val && val != 0 ? new GSDate(val).format(fmt, locale) : val;
             case 'string':
-            case 'text':   
+            case 'text':
                 if (val instanceof Date) {
                     const fmt = cfg.format || GSUtil.getDateFormat(locale);
                     return new GSDate(val).format(fmt, locale);
@@ -126,10 +126,31 @@ export class GSData {
      * @param {Array<String>} fields List of Object properties to check, if not set, all are checked
      * @returns {Array}
      */
-    static filterData(data = [], filter = [], fields) {
+    static *filter(data = [], filter = [], fields, limit = 0) {
+        let cnt = 0;
+        let sts = false;
+        for (let rec of data) {
+            sts = GSData.filterRecord(rec, filter, fields);
+            if (sts) {
+                cnt++
+                yield rec;
+            }
+            if (limit > 0 && cnt >= limit) break;
+        }
+    }
+
+    /**
+     * Filter array of records 
+     * @param {Array} data Array of JSON objects or array of array of primitive types
+     * @param {Array<object>|String} filter Check filterComplex function for details
+     * @param {Array<String>} fields List of Object properties to check, if not set, all are checked
+     * @returns {Array}
+     */
+    static filterData(data = [], filter = [], fields, limit = 0) {
         data = Array.isArray(data) ? data : [];
         filter = Array.isArray(filter) ? filter : [];
-        return filter.length === 0 ? data : data.filter(rec => GSData.filterRecord(rec, filter, fields));
+        if (filter.length === 0) return data;
+        return [...GSData.filter(data, filter, fields, limit)];
     }
 
     /**
@@ -157,7 +178,7 @@ export class GSData {
         let value = null;
         for (let key of fields) {
             value = rec[key];
-            if (value?.toString().toLowerCase().includes(filter)) return true;
+            if (GSData.filterValue(value, filter)) return true;
         }
         return false;
     }
@@ -176,12 +197,12 @@ export class GSData {
     static filterComplex(rec, filter) {
 
         let found = true;
-        let match = null;
+        let value = null;
 
         for (let flt of filter) {
-            match = flt?.value?.toString().toLowerCase();
+            value = rec[flt.name];
             if (flt.name) {
-                found = found && ('' + rec[flt.name]).toLocaleLowerCase().includes(match);
+                found = found && GSData.filterValue(value, flt)
             } else {
                 found = found && GSData.filterSimple(rec, flt.value);
             }
@@ -189,6 +210,55 @@ export class GSData {
         }
 
         return found;
+    }
+
+    static filterValue(value, filter) {
+        if (value instanceof Date) {
+            return GSData.matchDate(value, filter);
+        } else if (value instanceof Date) {
+            return GSData.matchNumber(value, GSUtil.asNum(filter.value), filter.op);
+        } else {
+            return ('' + value).toLocaleLowerCase().includes(('' + filter.value).toLocaleLowerCase());
+        }
+    }
+
+    static matchDate(val, filter, locale) {
+
+        if (typeof filter === 'string') {
+            const value = '' + filter;
+            const local = val.toLocaleDateString(locale);
+            const iso = val.toISOString();
+            return local.includes(value) || iso.includes(value);
+        }
+
+        if (!filter.value) return false;
+
+        const qry = filter.value instanceof Date ? 'date' : typeof filter.value;
+
+        switch (qry) {
+            case 'number':
+                return GSData.matchNumber(val.getTime(), filter.value, filter.op);
+            case 'date':
+                return GSData.matchNumber(val.getTime(), filter.value.getTime(), filter.op);
+        }
+
+        return GSData.matchDate(val, '' + filter.value, filter.locale);
+    }
+
+    /**
+     * Match number by operator
+     * @param {*} value 
+     * @param {*} query 
+     * @param {*} operator 
+     */
+    static matchNumber(value = 0, query = 0, operator = 'eq') {
+        switch (operator) {
+            case 'gt': return query > value;
+            case 'lt': return query < value;
+            case 'ge': return query >= value;
+            case 'le': return query <= value;
+        }
+        return value === query;
     }
 
     /**
@@ -237,7 +307,6 @@ export class GSData {
      * @returns {Number} -1 | 0 | 1
      */
     static compare(v1, v2, order, sts) {
-        const me = this;
         if (GSUtil.isNumber(v1) && GSUtil.isNumber(v2)) {
             return sts || GSData.compareNum(v1, v2, order);
         } else if (GSUtil.isString(v1) || GSUtil.isString(v2)) {

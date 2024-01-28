@@ -68,7 +68,7 @@ export class GSComboExt extends HTMLSelectElement {
 
         const me = this;
 
-        requestAnimationFrame(() => {
+        queueMicrotask(() => {
 
             const list = [];
             data.forEach(o => {

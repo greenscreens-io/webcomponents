@@ -82,6 +82,10 @@ export class GSDataHandler extends GSElement {
         clearTimeout(this.#iid);
     }
 
+    firstUpdated() {
+        this.dataController?.read();
+    }
+
     willUpdate(changed) {
         super.willUpdate(changed);
         const me = this;

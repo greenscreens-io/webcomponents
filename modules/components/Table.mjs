@@ -8,6 +8,8 @@ import { color } from '../properties/color.mjs';
 import { GSData } from '../base/GSData.mjs';
 import { GSItem } from '../base/GSItem.mjs';
 import { GSDOM } from '../base/GSDOM.mjs';
+import { GSUtil } from '../base/GSUtil.mjs';
+import { GSDate } from '../base/GSDate.mjs';
 
 /**
  * A simple HTML Table rederer for read-only tabular data representation
@@ -22,7 +24,13 @@ export class GSTableElement extends GSElement {
   static CELLS = {
     align: {},
     width: {},
+    width: {},
+    css: {},
+    title: {},
     filter: { type: Boolean },
+    filterType: { attribute: 'filter-type' },
+    cssFilter: { attribute: 'css-filter' },
+    cssHeader: { attribute: 'css-header' },
     ...GSData.PROPERTIES
   }
 
@@ -32,6 +40,8 @@ export class GSTableElement extends GSElement {
     colorHead: { ...color, attribute: 'head-color' },
     colorSelect: { ...color, attribute: 'select-color' },
     stripedColumn: { type: Boolean, attribute: 'striped-column' },
+    cssFilter: { attribute: 'css-filter' },
+    cssHeader: { attribute: 'css-header' },
     divider: { type: Boolean },
     striped: { type: Boolean },
     hover: { type: Boolean },
@@ -39,7 +49,6 @@ export class GSTableElement extends GSElement {
     grid: { type: Boolean },
     borderless: { type: Boolean },
 
-    filter: { type: Array, state: true },
     sort: { type: Array, state: true },
     columns: { type: Array, state: true },
     selections: { type: Array, state: true },
@@ -64,7 +73,6 @@ export class GSTableElement extends GSElement {
     this.columns = [];
     this.selections = [];
     this.data = [];
-    this.filter = [];
     this.sort = [];
     this.key = 0;
   }
@@ -111,6 +119,10 @@ export class GSTableElement extends GSElement {
     return css;
   }
 
+  firstUpdated() {
+    this.dataController?.read();
+  }
+
   willUpdate(changed) {
     const me = this;
     if (me.columns.length != me.sort.length) me.sort = Array(me.columns.length).fill(0);
@@ -124,6 +136,7 @@ export class GSTableElement extends GSElement {
       me.sort = Array(me.columns.length).fill(0);
       me.#sortOrder = [];
     }
+
     super.willUpdate(changed);
   }
 
@@ -151,31 +164,77 @@ export class GSTableElement extends GSElement {
   }
 
   onDataRead(data) {
-    this.data = data;
-    this.selections = [];
+    const me = this;
+    me.data = data;
+    me.selections = [];
+
+    // update filtering
+    if (data.length > 0 && me.#hasFilters) {
+      me.#config.forEach((entry, index) => {
+        entry.columnType = me.#columType(index);
+      });
+    }
+  }
+
+  clear() {
+    this.#input.forEach(el => el.value = '');
+    this.dataController?.filter([]);
+  }
+
+  valueAt(row, cell) {
+    return this.data.length > row ? this.data[row][cell] : undefined;
+  }
+
+  get #input() {
+    return this.queryAll('th > input', true);
+  }
+
+  get #hasFilters() {
+    return this.#config.filter(o => o.filter).length > 0;
+  }
+
+  #columType(index) {
+    const me = this;
+    const cfg = me.#config[index];
+    const cell = me.valueAt(0, me.columns[index]);
+    cfg.type = cfg.type || 'text';
+    const cfgType = { 'string': 'text', 'currency': 'number', 'timestamp': 'datetime-local' }[cfg.type]
+    const dataType = cell instanceof Date ? 'date' : typeof cell;
+    return cell ? dataType : cfgType || cfg.type;
   }
 
   #renderFilters() {
     const me = this;
-    const hasFilters = me.#config.filter(o => o.filter).length > 0;
-    if (!hasFilters) return '';
-    return html`<tr>${me.columns.map((entry, index) => me.#renderFilter(entry, index))}</tr>`
+    return me.#hasFilters ? html`<tr>${me.columns.map((entry, index) => me.#renderFilter(entry, index))}</tr>` : '';
   }
 
   #renderFilter(cell, index) {
     const me = this;
     const cfg = me.#config[index];
     if (!cfg?.filter) return html`<th></th>`;
-    const type = { 'string' : 'text', 'currency': 'number', 'timestamp' : 'datetime-local' }[cfg.type] || cfg.type;
-    return html`<th><input is="gs-ext-input" class="form-control" name="${cell}" type="${type}"></th>`;
+    let mask = '';
+    const isDate = cfg.columnType === 'date';
+    if (isDate) mask = cfg.format || GSUtil.getDateFormat(cfg.locale || GSUtil.locale);
+    const css = `${GSUtil.normalize(me.cssFilter)} ${GSUtil.normalize(cell.cssFilter)}`; 
+
+    return html`<th .index=${index} @change="${me.#onFilter}">
+        <input is="gs-ext-input" .index=${index}
+            class="form-control ${css}" 
+            mask="${ifDefined(mask)}"
+            name="${cell}" 
+            type="${cfg.filterType || cfg.columnType}"
+            data-slots="${ifDefined(isDate ? 'DMY' : undefined)}">
+        </th>`;
   }
 
   #renderColumn(cell, index) {
     const me = this;
+    const cfg = me.#config[index];
+    const css = `${GSUtil.normalize(me.cssHeader)} ${GSUtil.normalize(cell.cssHeader)}`; 
     return html`
-      <th .index=${index} width="${ifDefined(me.#config[index]?.width)}">
+      <th .index=${index} class="${css}" width="${ifDefined(me.#config[index]?.width)}">
         <div class="d-flex justify-content-between"> 
-          <span>${cell}</span>
+          <span>${cfg?.title || cell}</span>
           ${me.#renderIcon(index)}
         </div>
       </th>
@@ -202,6 +261,20 @@ export class GSTableElement extends GSElement {
         </tr>
       `;
   }
+
+  #onFilter(e) {
+    const me = this;
+    const filter = me.#input
+      .map(el => {
+        if (!el.value) return undefined;
+        const isDate = el.type === 'date';
+        const val = isDate ? el.valueAsDate : el.value;
+        const cfg = me.#config[el.index];
+        return { name: el.name, value: val, locale : cfg?.locale }
+      })
+      .filter(el => el?.value);
+    me.dataController.filter(filter);
+  }  
 
   #onSort(e) {
     const me = this;

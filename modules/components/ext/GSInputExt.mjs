@@ -154,7 +154,7 @@ export class GSInputExt extends HTMLInputElement {
 
     set value(val) {
         if (this.type === 'date') {
-            val = new GSDate(GSDate.parse(val, this.mask)).format('YYYY-MM-DD');
+            val =val ? new GSDate(GSDate.parse(val, this.mask)).format('YYYY-MM-DD') : val;
         }
         super.value = val;
         this.#onChange();
@@ -370,7 +370,12 @@ export class GSInputExt extends HTMLInputElement {
 
         }
 
-        if (me.type === 'date') return;
+        if (me.type === 'date') {
+            if (e.code === 'Delete') {
+                me.value = '';
+            }
+            return;
+        }
 
         const tmp = me.value.split('');
         let pos1 = me.selectionStart;

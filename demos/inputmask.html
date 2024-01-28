@@ -29,7 +29,7 @@
     <script type="module" src="/bootstrap-lit/modules/base/GSTheme.mjs"></script>
     <script type="module" src="/bootstrap-lit/modules/components/Template.mjs"></script>
     <script type="module" src="/bootstrap-lit/modules/components/Button.mjs"></script>
-    <script type="module" src="/bootstrap-lit/modules/components/ext/GSInputExt.mjs"></script>
+    <script type="module" src="/bootstrap-lit/modules/components/ext/GSInputElement.mjs"></script>
 
 </head>
 <body>
@@ -40,6 +40,7 @@
         <div class="col-auto">
             <gs-button color="primary" data-gs-target="form" data-gs-call="reset" title="Reset form"></gs-button>
             <gs-button color="primary" data-gs-target="input" data-gs-attribute="disabled" title="Toggle fields"></gs-button>
+            <gs-button color="primary" data-gs-target="input" data-gs-attribute="required" title="Toggle required"></gs-button>
         </div>
     </div>
 
@@ -48,13 +49,35 @@
         <div class="m-4 p-1 bg-light bordered shadow-sm">
             <div class="row form-group m-1">
                 <div class="col-md-4 col-sm-4 col-xs-12 text-md-end ">
-                    <label class="control-label">Date input with</label>
+                    <label class="control-label">Date input</label>
                 </div>
                 <div class="col-md-6 col-sm-6 col-xs-11">
                     <input class="form-control font-monospace" is="gs-ext-input" type="text" mask="DD-MM-YYYY">
                 </div>
             </div>
         </div>
+
+        <div class="m-4 p-1 bg-light bordered shadow-sm">
+            <div class="row form-group m-1">
+                <div class="col-md-4 col-sm-4 col-xs-12 text-md-end ">
+                    <label class="control-label">Date input</label>
+                </div>
+                <div class="col-md-6 col-sm-6 col-xs-11">
+                    <input class="form-control font-monospace" is="gs-ext-input" type="text" mask="DD. MM. YYYY." data-slots="DMY">
+                </div>
+            </div>
+        </div>
+
+        <div class="m-4 p-1 bg-light bordered shadow-sm">
+            <div class="row form-group m-1">
+                <div class="col-md-4 col-sm-4 col-xs-12 text-md-end ">
+                    <label class="control-label">Date time input</label>
+                </div>
+                <div class="col-md-6 col-sm-6 col-xs-11">
+                    <input class="form-control font-monospace" is="gs-ext-input" type="text" mask="dd/mm/yyyy hh:mm" data-slots="dmyh">
+                </div>
+            </div>
+        </div>        
 
         <div class="m-4 p-1 bg-light bordered shadow-sm">
             <div class="row form-group m-1">
@@ -67,6 +90,17 @@
             </div>
         </div>
 
+        <div class="m-4 p-1 bg-light bordered shadow-sm">
+            <div class="row form-group m-1">
+                <div class="col-md-4 col-sm-4 col-xs-12 text-md-end ">
+                    <label class="control-label">MAC Address</label>
+                </div>
+                <div class="col-md-6 col-sm-6 col-xs-11">
+                    <!-- if data-slot and data-accept not defined, engine will try t odetect on its own   -->
+                    <input class="form-control font-monospace" is="gs-ext-input" type="text" mask="XX:XX:XX:XX:XX:XX" data-slots="X" data-accept="[\dA-H]">
+                </div>
+            </div>
+        </div>
 
         <div class="m-4 p-1 bg-light bordered shadow-sm">
             <div class="row form-group m-1">
@@ -96,10 +130,44 @@
                     <label class="control-label">Alphanumeric input with</label>
                 </div>
                 <div class="col-md-6 col-sm-6 col-xs-11">
-                    <input class="form-control font-monospace" is="gs-ext-input" type="text" mask="***-***-****">
+                    <input class="form-control font-monospace" is="gs-ext-input" type="text" mask="***-***-****" data-slots="*" data-accept="\w">
                 </div>
             </div>
         </div>
+
+        <div class="m-4 p-1 bg-light bordered shadow-sm">
+            <div class="row form-group m-1">
+                <div class="col-md-4 col-sm-4 col-xs-12 text-md-end ">
+                    <label class="control-label">Credit card</label>
+                </div> 
+                <div class="col-md-6 col-sm-6 col-xs-11">
+                    <input class="form-control font-monospace" is="gs-ext-input" type="text" mask=".... .... .... ...." data-slots="." data-accept="\d">
+                </div>
+            </div>
+        </div>  
+
+        <div class="m-4 p-1 bg-light bordered shadow-sm">
+            <div class="row form-group m-1">
+                <div class="col-md-4 col-sm-4 col-xs-12 text-md-end ">
+                    <label class="control-label">Numeric input (max 5)</label>
+                </div> 
+                <div class="col-md-6 col-sm-6 col-xs-11">
+                    <input class="form-control font-monospace" is="gs-ext-input" type="number" maxlength="5">
+                </div>
+            </div>
+        </div>  
+        
+        <div class="m-4 p-1 bg-light bordered shadow-sm">
+            <div class="row form-group m-1">
+                <div class="col-md-4 col-sm-4 col-xs-12 text-md-end ">
+                    <label class="control-label">Password with reveal (Alt + Shift)</label>
+                </div> 
+                <div class="col-md-6 col-sm-6 col-xs-11">
+                    <input class="form-control font-monospace" is="gs-ext-input" type="password" reveal title="Press ALT + Shift to reveal password">
+                </div>
+            </div>
+        </div>  
+
     </form>
 
 </body>

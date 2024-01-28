@@ -56,7 +56,7 @@ export class GSCachedReader extends GSReadWrite {
             me.#data = me.#reformat(data);
         }
 
-        let data = GSData.filterData(me.#data, me.filter, me.fields);
+        let data = GSData.filterData(me.#data, me.filter, me.fields, me.limit);
         data = me.#postFilter(data);
         return data;
     }
