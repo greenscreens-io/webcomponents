@@ -11,6 +11,8 @@ import { CopySelectController } from './controllers/CopySelectController.mjs';
 import { MaskController } from './controllers/MaskController.mjs';
 import { PasswordController } from './controllers/PasswordController.mjs';
 import { NumberController } from './controllers/NumberController.mjs';
+import { TextController } from './controllers/TextController.mjs';
+import { ListController } from './controllers/ListController.mjs';
 
 import { ReactiveInput } from './ReactiveInput.mjs';
 
@@ -22,7 +24,9 @@ export class GSInputElement extends ReactiveInput {
 
   static properties = {
     autocopy: { type: Boolean },
+    autofocus: { type: Boolean },
     autoselect: { type: Boolean },
+    reveal: { type: Boolean },
     mask: { reflect: true }
   }
 
@@ -33,6 +37,8 @@ export class GSInputElement extends ReactiveInput {
   #maskController;
   #passwordController;
   #numberController;
+  #textController;
+  #listController;
 
   constructor() {
     super();
@@ -50,18 +56,35 @@ export class GSInputElement extends ReactiveInput {
   }
 
   willUpdate(changed) {
+
     super.willUpdate(changed);
+
     if (changed.has('mask') && this.mask) {
       this.placeholder = this.mask;
       this.#maskController ??= new MaskController(this);
       this.#maskController.initRules();
     }
-    if (this.type === 'password') {
-      this.#passwordController ??= new PasswordController(this);
+
+    if (this.list) {
+      this.#listController ??= new ListController(this);
     }
-    if (this.type === 'number') {
-      this.#numberController ??= new NumberController(this);
+
+    switch (this.type) {
+      case 'text':
+        this.#textController ??= new TextController(this);
+        break;
+      case 'password':
+        this.#passwordController ??= new PasswordController(this);
+        break;
+      case 'number':
+        this.#numberController ??= new NumberController(this);
+        break;
     }
+  }
+
+  firstUpdated(changed) {
+    super.firstUpdated(changed);
+    if (this.autofocus) this.focus();
   }
 
   /**
