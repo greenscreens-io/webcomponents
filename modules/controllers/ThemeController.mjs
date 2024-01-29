@@ -32,7 +32,7 @@ export class ThemeController {
     me.#host.removeController(me);
   }
 
-  hostUpdate(changes) {
+  hostUpdate() {
     const me = this;
     if (me.#theme !== me.#host?.theme) {
       me.#theme === me.#host?.theme;

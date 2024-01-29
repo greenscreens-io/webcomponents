@@ -26,7 +26,7 @@ export class ContentController {
     me.#ref = null;
   }
 
-  hostUpdated(changedProperties) {
+  hostUpdated() {
     const me = this;
     if (!me.#isSelf()) me.#refs.add(me.#target);
   }

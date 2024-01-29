@@ -11,6 +11,7 @@ export * from "./Card.mjs";
 export * from "./Center.mjs";
 export * from "./Context.mjs";
 export * from "./Compare.mjs";
+export * from "./Controller.mjs";
 export * from "./Copyright.mjs";
 export * from "./DataHandler.mjs";
 export * from "./Dialog.mjs";
