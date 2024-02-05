@@ -157,6 +157,7 @@ export class GSTableElement extends GSElement {
         </thead>
         <tbody @click=${me.#onSelect} class="${me.divider ? 'table-group-divider' : ''}">
           ${me.data.map((entry, index) => me.#renderRecord(entry, index))}
+          ${me.#renderEmpty()}
         </tbody>
       </table>
       <slot name="extra"></slot>
@@ -260,6 +261,13 @@ export class GSTableElement extends GSElement {
           ${entry.map((cell, i) => html`<td class="text-${me.#config[i]?.align}"><span>${cell}</span></td>`)}
         </tr>
       `;
+  }
+
+  #renderEmpty() {
+    const me = this;
+    if (me.data.length > 0 ) return '';
+    return html`<tr data-ignore="true"><td colspan="${me.columns.length}" class="text-center fw-bold text-muted">${me.translate('No Data')}</td></tr>`;
+
   }
 
   #onFilter(e) {

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Dashboard test</title>
+    <meta charset="utf-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="viewport"
+        content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+
+    <meta name="subject" content="Green Scereens Ltd.">
+    <meta name="author" content="www.greenscreens.ltd">
+    <meta name="keywords" content="JavaScript,WebComponents">
+    <meta name="robots" content="index, follow">
+    <meta name="revisit-after" content="3 month">
+    <meta name="description" content="WebComponents UI library based on Bootstrap.">
+    
+    <script type="text/javascript">
+        self.GS_TEMPLATE_URL = '/bootstrap-lit/demos/ipp/templates';
+    </script>
+        
+    <script type="module" src="/bootstrap-lit/modules/index.all.mjs"></script>
+    <script type="module" src="./modules/index.mjs"></script>
+        
+    <link rel="preload" href="/bootstrap-lit/assets/css/bootstrap.css" as="style"  data-adoptable="true">
+    <link rel="preload" href="/bootstrap-lit/assets/themes/default.css" as="style" data-adoptable="true">
+    <link rel="preload" href="/bootstrap-lit/assets/icons/bootstrap-icons.css" as="style" data-adoptable="true">
+    
+</head>
+<body>
+
+    <gs-template src="//header.html"></gs-template>
+
+    <div id="content" class="container-fluid my-2">
+        <gs-ipp-view></gs-ipp-view>
+    </div>
+
+    <!-- Application toast notification -->
+    <gs-notification id="notification"></gs-notification>
+
+    <gs-copyright company="Green Screns Ltd." year="2015"></gs-copyright>
+
+    <script>
+
+        async function demo() {
+            let r = await fetch('./data/printer-attributes.json')
+            r = await r.json()
+
+            let el = GSDOM.query('gs-ipp-attributes')
+            el.load(r)
+
+            r = await fetch('./data/jobs.json')
+            const jd = await r.json()
+
+            r = await fetch('./data/job-attributes.json')
+            const ja = await r.json()
+
+            el = GSDOM.query('gs-ipp-jobs')
+            el.load(jd)
+            el.load(ja)
+
+        }
+
+        // setTimeout(demo, 2000);
+    </script>
+</body>
+
+</html>

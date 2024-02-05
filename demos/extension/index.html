@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Green Screens IPP Print</title>
+    <meta charset="utf-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="viewport"
+        content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+
+    <meta name="subject" content="Green Scereens Ltd.">
+    <meta name="author" content="www.greenscreens.ltd">
+    <meta name="keywords" content="JavaScript,WebComponents">
+    <meta name="robots" content="index, follow">
+    <meta name="revisit-after" content="3 month">
+    <meta name="description" content="WebComponents UI library based on Bootstrap.">
+
+    <script type="text/javascript">
+        self.GS_TEMPLATE_URL = './templates';
+        self.GS_NO_CACHE = true;
+    </script>
+    <script type="module" src="/bootstrap-lit/modules/index.all.mjs"></script>
+    <script type="module" src="./scripts/index.mjs"></script>
+
+    <link rel="preload" href="/bootstrap-lit/assets/css/bootstrap.css" as="style"  data-adoptable="true">
+    <link rel="preload" href="/bootstrap-lit/assets/themes/default.css" as="style" data-adoptable="true">
+    <link rel="preload" href="/bootstrap-lit/assets/icons/bootstrap-icons.css" as="style" data-adoptable="true">
+    <link rel="preload" href="./style.css" as="style" data-adoptable="true">
+
+</head>
+
+<body class="overflow-hidden">
+
+    <!-- Header info -->
+    <gs-template src="//shell/header.html" class="_fixed-top zindex-10k"></gs-template>
+
+    <gs-layout type="vertical">
+        <gs-item css="flex-fill p-3" id="left-sidebar" min="260" max="260" size="260" template="//shell/sidebar.html"></gs-item>
+        <gs-item css="flex-fill p-3" id="content" v-pos="top" h-pos="center">
+            <template>
+                <!-- default page the same as sidebar selected item -->
+                <gs-ext-settings></gs-ext-settings>                
+            </template>
+        </gs-item>
+    </gs-layout>
+    
+    <!-- APP FOOTER WITH Copyright notice -->
+    <gs-copyright year="2015" company="Green Screens Ltd."></gs-copyright>
+
+    <!-- Application toast notification -->
+    <gs-notification id="notification"></gs-notification>
+
+</body>
+</html>

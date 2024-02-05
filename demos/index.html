@@ -21,12 +21,9 @@
   </script>
 
   <!-- Optimized CSS loading -->
-  <link rel="preload" target="_blank" href="/bootstrap-lit/assets/css/bootstrap.css" as="style" data-adoptable="true"
-    data-id="1">
-  <link rel="preload" target="_blank" href="/bootstrap-lit/assets/themes/default.css" as="style" data-adoptable="true"
-    data-id="2">
-  <link rel="preload" target="_blank" href="/bootstrap-lit/assets/icons/bootstrap-icons.css" as="style"
-    data-adoptable="true" data-id="4">
+  <link rel="preload" href="/bootstrap-lit/assets/css/bootstrap.css" as="style" data-adoptable="true" data-id="1">
+  <link rel="preload" href="/bootstrap-lit/assets/themes/default.css" as="style" data-adoptable="true" data-id="2">
+  <link rel="preload" href="/bootstrap-lit/assets/icons/bootstrap-icons.css" as="style" data-adoptable="true" data-id="4">
 
   <script type="module" src="/bootstrap-lit/modules/base/GSAdoptedEngine.mjs"></script>
   <script type="module" src="/bootstrap-lit/modules/base/GSTheme.mjs"></script>
@@ -36,7 +33,7 @@
 </head>
 
 <body class="user-select-none">
-  <gs-template url="//header.html"></gs-template>
+  <gs-template src="//header.html"></gs-template>
 
   <!-- General -->
   <div class="row m-4 p-1 bg-light bordered shadow-sm">
@@ -193,8 +190,8 @@
   <div class="row m-4 p-1 bg-light bordered shadow-sm">
     <div class="col-2">SPA Applications</div>
     <div class="col">
-      <a class="btn btn-danger m-1" target="_blank" href="shell/index.html">SPA Shell</a>
-      <a class="btn btn-danger m-1" target="_blank" href="ipp/index.html" title="UI for IPP Printer browsing">SPA
+      <a class="btn btn-primary m-1" target="_blank" href="shell/index.html">SPA Shell</a>
+      <a class="btn btn-primary m-1" target="_blank" href="ipp/index.html" title="UI for IPP Printer browsing">SPA
         IPP</a>
       <a class="btn btn-danger m-1" target="_blank" href="extension/index.html" target="_blank"
         title="UI for Green Screens Terminal for IBM i browser extension ">SPA Simple</a>

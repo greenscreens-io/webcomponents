@@ -94,7 +94,7 @@ export class GSLayoutElement extends GSElement {
         const src = html`<div class="d-flex ${classMap(css)}" style="${styleMap(style)}">
             ${list}
             ${templateContent(tplEl)}
-            ${template && tc ? html`<gs-template url="${template}"></gs-template>` : ''}
+            ${template && tc ? html`<gs-template src="${template}"></gs-template>` : ''}
             ${slot}
             </div>`;
 

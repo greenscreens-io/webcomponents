@@ -9,7 +9,7 @@ import { notEmpty } from '../properties/index.mjs';
 export class GSTemplateElement extends GSElement {
 
   static properties = {
-    url: { reflect: true, hasChanged: notEmpty }
+    src: { reflect: true, hasChanged: notEmpty }
   }
 
   constructor() {

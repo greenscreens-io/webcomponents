@@ -1,0 +1,33 @@
+<gs-data-handler id="jobs" type="cached" limit="10">
+    <gs-item name="job-uri"></gs-item>
+    <gs-item name="job-id"></gs-item>
+</gs-data-handler>
+
+<gs-data-handler id="job-attributes" type="cached" limit="10">
+    <gs-item name="key"></gs-item>
+    <gs-item name="value"></gs-item>
+</gs-data-handler>
+
+<gs-table storage="jobs" id="table-jobs" index=false
+    css="border table table-light table-hover table-striped user-select-none m-0"
+    css-select="table-active table-dark _fw-bold" css-header="user-select-none table-light">
+    <gs-item title="Job ID" width="200px" name="job-id"></gs-item>
+    <gs-item title="Job URI" name="job-uri"></gs-item>
+    <gs-context slot="extra" target="tbody tr" anchor="self">
+        <gs-item name="Details" action="details"></gs-item>
+        <gs-item name="Cancel Job" action="cancelJob"></gs-item>
+        <gs-item></gs-item>
+        <gs-item name="Print Sample" action="printUri"></gs-item>
+        <gs-item name="Clear Queue" action="purgeJobs"></gs-item>
+        <gs-item></gs-item>
+        <gs-item name="Refresh" action="refresh"></gs-item>
+    </gs-context>
+    <gs-pagination slot="extra" storage="jobs" pages="5" label-previous="&laquo;" label-next="&raquo;" css="justify-content-center m-2" previous next></gs-pagination>
+</gs-table>
+
+<gs-table storage="job-attributes" id="table-job-attributes" index=false
+    css="border table table-light table-hover table-striped user-select-none m-0" css-select="table-active"
+    css-header="user-select-none table-light">
+    <gs-item title="Property" width="500px" name="key"></gs-item>
+    <gs-item title="Value" name="value"></gs-item>
+</gs-table>

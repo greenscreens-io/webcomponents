@@ -1,0 +1,40 @@
+<div class="container-fluid"> 
+<div class="row">
+    <gs-alert color="primary" bordered shadow delay="3">
+        <gs-item message="When running on HTTPS, printer URI schema must be HTTPS and printer must support IPPS."></gs-item>
+        <gs-item message="If HTTPS not supported by printer, use HTTP for this page and HTTP for printer URI."></gs-item>
+        <gs-item message="If CORS not supported by printer, start browser with --disable-web-security  --user-data-dir=&quot;c:\\temp&quot;"></gs-item>
+    </gs-alert>
+</div>
+
+<div class="row pb-2">
+    <div class="col-md-12 p-2">
+        <div class="input-group">
+            <input class="form-control fw-bold" id="printerURI" name="uri" title="IPP Printer URI address" placeholder="http://printer.local:631/printers/Laserjet" value="http://printer.local:631/printers/Laserjet">
+            <gs-button css="btn btn-outline-secondary fw-bold" action="register" id="btnReg" title="Register"></gs-button>
+          </div>
+    </div>
+</div>
+
+<div class="row border p-2 m-1 shadow-sm text-nowrap text-bg-light">    
+
+    <gs-tab-group type="tabs" placement="top">
+        <gs-tab name="tab1" slot="tabs" autofocus title="Printer Attributes"></gs-tab>
+        <gs-tab name="tab2" slot="tabs" title="Printer Jobs"></gs-tab>
+        <gs-tab name="tab3" slot="tabs" title="Printer Console"></gs-tab>
+
+        <gs-tab-panel name="tab1" slot="panels">            
+            <gs-ipp-attributes id="ippattr"></gs-ipp-attributes>
+        </gs-tab-panel>
+
+        <gs-tab-panel name="tab2" slot="panels">
+            <gs-ipp-jobs></gs-ipp-jobs>
+        </gs-tab-panel>
+
+        <gs-tab-panel name="tab3" slot="panels">
+            <gs-ipp-console id="log"></gs-ipp-console>
+        </gs-tab-panel>
+    </gs-tab-group>
+
+</div>
+</div>

@@ -44,7 +44,7 @@
 </head>
 <body>
 
-    <gs-template url="//header.html"></gs-template>
+    <gs-template src="//header.html"></gs-template>
 
     <div class="m-4 p-3 bordered shadow-sm text-bg-light">
         <div class="row my-2">
@@ -65,7 +65,7 @@
                 <gs-form-group cell-label="col-auto" cell-field="col-auto" css-field="form-control-sm rounded-0" name="search" label="Search" data-gs-target="gs-data-handler#employees"></gs-form-group>
             </div>
         </div>
-        <!-- Defiend items will be converted into desired type if possible -->
+        <!-- Defined items will be converted into desired type if possible -->
         <gs-data-handler id="employees" type="cached" limit="10" src="/bootstrap-lit/demos/helpers/data/data2.json">
             <gs-item name="Age" type="number"></gs-item>
             <!-- Convert curency into number; table UI column definition defines the output format -->

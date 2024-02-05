@@ -175,6 +175,13 @@ export class GSElement extends LitElement {
   }
 
   /**
+   * Called when asynchronnous template is injected into component
+   */
+  templateInjected() {
+    
+	}
+
+  /**
    * Attach bindings
    */
   binded() {

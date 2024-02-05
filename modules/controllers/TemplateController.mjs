@@ -14,6 +14,7 @@ export class TemplateController {
   #host;
   #template;
   #lastRef;
+  #injected;
 
   static #scheduled = false;
   static #tasks = new Set();
@@ -25,6 +26,7 @@ export class TemplateController {
 
   hostConnected() {
     const me = this;
+    me.#injected = false;
     me.#request();    
   }
 
@@ -44,22 +46,28 @@ export class TemplateController {
     this.#host.requestUpdate();
   }
 
+  hostUpdated() {
+    if (this.#injected) this.#host.templateInjected?.();
+  }
+
   #request() {
     const me = this;
     const ref = me.templateRef;
     if (me.#lastRef !== ref) {
       me.#lastRef = ref;
-      TemplateController.#schedule(this);
+      if (ref) TemplateController.#schedule(this);
     }
   }
 
   async #load() {
     const me = this;
     const ref = me.templateRef;
+    if (!ref) return;
     const isTplEl = ref instanceof HTMLTemplateElement;
     const template = isTplEl ? ref : await GSTemplateCache.loadTemplate(true, ref, ref);
     if (template) {
       me.#template = template;
+      me.#injected = true;
       me.#host.requestUpdate();
     }
   }
@@ -74,7 +82,8 @@ export class TemplateController {
 
   get templateRef() {
     const host = this.#host;
-    if(this.isTemplateElement) return host.url;
+    if (!host) return;
+    if(this.isTemplateElement) return host.src;
     return host.template || host.query('template', false);
   }
 
@@ -92,7 +101,7 @@ export class TemplateController {
     me.#tasks.add(task);
     if (!me.#scheduled) {
       me.#scheduled = true;
-      queueMicrotask(() => me.#process(me.#tasks).finally(me.#scheduled = true));
+      queueMicrotask(() => me.#process(me.#tasks).finally(me.#scheduled = false));
     }
   }
 

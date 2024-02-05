@@ -19,14 +19,15 @@ export class GSTabPanelElement extends GSElement {
   }
 
   shouldUpdate(changedProperties) {
-    return GSDOM.component(this)?.tagName === 'GS-TAB-GROUP';
+    return this.owner?.tagName === 'GS-TAB-GROUP';
   }
 
   renderUI() {
+    const me = this;
     return html`<div  dir="${ifDefined(me.direction)}" 
       class="${classMap(this.renderClass())}">
       <slot>
-      ${this.template ? html`<gs-template url="${this.template}"></gs-template>` : ''}
+      ${this.template ? html`<gs-template src="${this.template}"></gs-template>` : ''}
       </slot></div>`;
   }
 
@@ -38,6 +39,10 @@ export class GSTabPanelElement extends GSElement {
       'd-none' : !me.active,
     }
     return css;
+  }
+
+  get owner() {
+    return this.closest('gs-tab-group') || GSDOM.component(this);
   }
 
   static {

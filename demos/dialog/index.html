@@ -36,7 +36,7 @@
 </head>
 
 <body>
-    <gs-template url="//header.html"></gs-template>
+    <gs-template src="//header.html"></gs-template>
        
     <div class="m-4 p-1 bg-light bordered shadow-sm">
         <gs-button icon="alarm me-1" css="btn-primary" title="Open dialog" data-gs-call="open" data-gs-target="#dialog1"></gs-button>
@@ -46,7 +46,7 @@
 
     <gs-dialog id="dialog1" css="shadow-sm rounded p-3" onready="initialize" opened escapable closable cancelable>
         <h4 slot="title">Login</h4>
-        <gs-template slot="body" url="./dialog.tpl"></gs-template>
+        <gs-template slot="body" src="./dialog.tpl"></gs-template>
     </gs-dialog>
 
     <gs-dialog id="dialog2" button-align="center" shadow rounded css="p-3" escapable closable cancelable></gs-dialog>

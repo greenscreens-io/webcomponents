@@ -1,0 +1,29 @@
+<div class="mt-4">
+	<h4>General Settings</h4>
+	<div class="list-group text-bg-light shadow-sm">
+
+		<div class="list-group-item" ignore>
+			<div class="d-flex w-100 justify-content-between">
+				<label class="form-check-label fw-bold" for="service">Service Access Point</label>
+				<div class="form-check form-switch fs-4">
+					<input class="form-control  required" id="service" name="service" required="required" type="url"
+						placeholder="http(s)://...">
+				</div>
+			</div>
+			<p class="mb-1 text-muted">Enter Green Screen Server access point URL address.</p>
+		</div>
+
+		<div class="list-group-item" ignore>
+			<div class="d-flex w-100 justify-content-between">
+				<label class="form-check-label fw-bold" for="service">Configuration ID</label>
+				<div class="form-check form-switch fs-4">
+					<input class="form-control upper" id="confid" name="confid" pattern="[0-9]*"
+						title="Numeric values only" type="text">
+				</div>
+			</div>
+			<p class="mb-1 text-muted">If provided by Admin, enter your user configuration ID to pickup remote settings.
+			</p>
+		</div>
+
+	</div>
+</div>
