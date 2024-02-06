@@ -50,7 +50,7 @@ export class GSDataHandler extends GSElement {
         const me = this;
         if (!me.id) throw new Error('Element ID is required attribute!');
         GSItem.validate(me, me.tagName);
-        me.autorefresh = true;
+        me.autorefresh = 0;
         me.autoload = false;
         me.flat = true;
         me.filter = [];

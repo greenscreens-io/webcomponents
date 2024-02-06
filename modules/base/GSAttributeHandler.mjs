@@ -111,7 +111,7 @@ export class GSAttributeHandler {
 
     #handleAction(target) {
         const me = this;
-        GSEvents.send(target, 'action', me.action);
+        GSEvents.send(target, 'action', me.action, true, true);
     }
 
     #handleAttribute(target) {
@@ -193,13 +193,18 @@ export class GSAttributeHandler {
 
     #handleInject(host, target) {
         if (this.inject) {
-            const content = GSDOM.parse(this.inject, true);
+            const src = this.#toHTML(this.inject);
+            const content = GSDOM.parse(src, true);
             this.#applyContent(host, target, content);
         }
     }
 
     #handleSwap(target) {
-        if (this.swap) target.innerHTML = this.swap;
+        if (this.swap) target.innerHTML =  this.#toHTML(this.swap);
+    }
+
+    #toHTML(value = '') {
+        return value.indexOf('/') < 0 ? `<${value}></${value}>` : `<gs-template flat src="${value}"></gs-template>`;
     }
 
     async #handleTemplate(host, target) {
@@ -250,7 +255,9 @@ export class GSAttributeHandler {
             case 'parent':
                 return [me.#host.parentElement];
         }
-        return GSDOM.queryAll(document.body, me.target, false, true) || [me.#host];
+        const list = GSDOM.queryAll(document.body, me.target, false, true).filter(el => el.tagname !== 'GS-ITEM'); 
+        if (list.length === 0) list.push(me.#host);
+        return list;
     }
 
     get host() { return this.#host; }

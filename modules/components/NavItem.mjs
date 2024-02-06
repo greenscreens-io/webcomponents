@@ -13,8 +13,9 @@ export class GSNavItemElement extends GSElement {
     href: {},
     target: {},
     title: {},
-    autofocus: { type: Boolean },
+    icon: {},
     disabled: { type: Boolean },
+    autofocus: { type: Boolean },
     active: { type: Boolean, reflect: true },
     generated: { state: true, type : Boolean }
   }

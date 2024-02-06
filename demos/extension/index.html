@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <title>Green Screens IPP Print</title>
+    <title>Green Screens Extension</title>
     <meta charset="utf-8">
 
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -38,8 +38,8 @@
     <gs-template src="//shell/header.html" class="_fixed-top zindex-10k"></gs-template>
 
     <gs-layout type="vertical">
-        <gs-item css="flex-fill p-3" id="left-sidebar" min="260" max="260" size="260" template="//shell/sidebar.html"></gs-item>
-        <gs-item css="flex-fill p-3" id="content" v-pos="top" h-pos="center">
+        <gs-item css="flex-fill pt-3 border-end" id="left-sidebar" min="260" max="260" size="260" template="//shell/sidebar.html"></gs-item>
+        <gs-item css="flex-fill p-3 overflow-auto" id="content" v-pos="top" h-pos="center">
             <template>
                 <!-- default page the same as sidebar selected item -->
                 <gs-ext-settings></gs-ext-settings>                

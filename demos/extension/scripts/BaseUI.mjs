@@ -32,7 +32,7 @@ export class BaseUI extends GSElement {
     }
 
     get #store() {
-        return this.#table.store;
+        return this.#table.dataController.store;
     }
 
     get #table() {
@@ -55,7 +55,7 @@ export class BaseUI extends GSElement {
      * @param {Event} e 
      */
     #onAction(e) {
-        const action = e.detail.action;
+        const action = e.detail.action || e.detail;
         if (GSFunction.isFunction(this[action])) this[action](e);
     }
 
@@ -142,7 +142,7 @@ export class BaseUI extends GSElement {
             modal.reset();
             // update locally to refresh ui
             Object.assign(data, result.detail.data);
-            me.#store.reload();
+            me.#store.reaad();
             me.#notify.warn('', 'Record updated!');
 
         } catch (e) {
@@ -174,7 +174,7 @@ export class BaseUI extends GSElement {
             modal.reset();
             // update locally to refresh ui
             me.#store.data.push(result.detail.data);
-            me.#store.reload();
+            me.#store.read();
             me.#notify.primary('', 'Record created!');
 
         } catch (e) {
@@ -191,8 +191,9 @@ export class BaseUI extends GSElement {
     refresh(e) {
         // get data from extension and populate table;
         const me = this;
-        me.#store.clear();
-        me.#store.reload();
+        const store = me.#store;
+        store.clear?.();
+        store.read();
     }
 
     /**
@@ -200,7 +201,9 @@ export class BaseUI extends GSElement {
      * @param {Event} val 
      */
     search(e) {
-        this.#store.filter = e.detail.value;
+        const store = this.#store;
+        store.filter = e.detail.value;
+        store.read();
     }
 
     /**

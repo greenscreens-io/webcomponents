@@ -151,7 +151,10 @@ export class GSDialogElement extends GSElement {
                   </div>
                 </div>
                 <div class="card-body ${me.cssBody}">
-                  <slot name="body">${me.translate(me.message)}</slot>
+                  <slot name="body">
+                  ${me.translate(me.message)}
+                  ${me.renderTemplate()}
+                  </slot>
                 </div>
                 ${me.#renderFooter()}
             </div>
@@ -265,8 +268,7 @@ export class GSDialogElement extends GSElement {
   }
 
   static #updateStack() {
-    const stack = GSDialogElement.#STACK;
-    stack = stack.filter(v => v.isConnected);
+    GSDialogElement.#STACK = GSDialogElement.#STACK.filter(v => v.isConnected);
   }
 
   static get top() {

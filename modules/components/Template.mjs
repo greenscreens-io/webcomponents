@@ -16,6 +16,15 @@ export class GSTemplateElement extends GSElement {
     super();
   }
 
+  createRenderRoot() {
+    const me = this;
+    if (me.flat) {
+      me.renderOptions.renderBefore = me;
+      return me.parentElement;
+    }
+    return super.createRenderRoot();
+  }
+
   renderUI() {
     return html`${this.renderTemplate()}`;
   }

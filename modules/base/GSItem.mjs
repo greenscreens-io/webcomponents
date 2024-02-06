@@ -30,7 +30,7 @@ export class GSItem extends HTMLElement {
 	 */
 	get body() {
 		let tpl = GSAttr.get(this, 'template');
-		if (tpl) return `<gs-template src="${tpl}"></gs-template>`;
+		if (tpl) return `<gs-template flat src="${tpl}"></gs-template>`;
 		tpl = this.querySelector('template');
 		return tpl?.innerHTML || '';
 	}

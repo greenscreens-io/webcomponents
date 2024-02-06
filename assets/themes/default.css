@@ -453,9 +453,10 @@
     border-color: rgb(90, 141, 238);
 }
 
-.form-range::-webkit-range-thumb, .form-range::-webkit-slider-thumb {
+.form-range::-webkit-range-thumb,
+.form-range::-webkit-slider-thumb {
     background-color: rgb(90, 141, 238);
-  }
+}
 
 .form-control::placeholder {
     color: rgba(67, 89, 113, .6);
@@ -518,4 +519,26 @@
     --bs-list-group-bg: var(--bs-body-bg);
     --bs-list-group-active-bg: #5A8DEE;
     --bs-list-group-active-border-color: #5A8DEE;
+}
+
+input:required:invalid:not(:focus) {
+    animation: 1s linear 0s infinite normal none running blinker-warn;
+}
+
+input:invalid:not(:placeholder-shown):not(:focus) {
+    color: var(--bs-danger);
+    animation: blinker-danger 1s linear infinite
+}
+
+@keyframes blinker-warn {
+    50% {
+        border: 1px #435971 dashed
+    }
+}
+
+@keyframes blinker-danger {
+    50% {
+        opacity: 0;
+        border: 1px red dashed
+    }
 }

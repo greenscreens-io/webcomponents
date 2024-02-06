@@ -27,6 +27,7 @@ export class GSLayoutElement extends GSElement {
 
     // GS-ITEM attributes mapping
     static options = {
+        id : {},
         type: {},
         min: { type: Number },
         max: { type: Number },
@@ -91,10 +92,10 @@ export class GSLayoutElement extends GSElement {
         const style = me.#panelStyle(el, horizontal);
 
         const slot = el.name ? html`<slot name="${el.name}"></slot>` : '';
-        const src = html`<div class="d-flex ${classMap(css)}" style="${styleMap(style)}">
+        const src = html`<div id="${ifDefined(el.id)}" class="d-flex ${classMap(css)}" style="${styleMap(style)}">
             ${list}
             ${templateContent(tplEl)}
-            ${template && tc ? html`<gs-template src="${template}"></gs-template>` : ''}
+            ${template && tc ? html`<gs-template flat src="${template}"></gs-template>` : ''}
             ${slot}
             </div>`;
 

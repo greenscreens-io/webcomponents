@@ -43,6 +43,10 @@ export class GSCachedReader extends GSReadWrite {
         return data;
     }
 
+    clear() {
+        this.#data = [];
+    }
+
     /**
      * Override in inherited class
      * @param {} owner Calling HTMLElement

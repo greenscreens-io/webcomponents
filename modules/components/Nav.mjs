@@ -73,7 +73,7 @@ export class GSNavElement extends GSGroupElement {
    * @param {*} el 
    */
   onFocused(el) {
-    el?.click();
+    // el?.click();
   }
 
   static {

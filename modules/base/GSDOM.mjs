@@ -188,6 +188,14 @@ export class GSDOM {
 	}
 
 	/**
+	 * Check if given element is of type HTMLSlotElement
+	 * @returns {Boolean}
+	 */	
+	static isSlotElement(el) {
+		return el instanceof HTMLSlotElement;
+	}
+
+	/**
 	 * Check if given element is of type HTMLElement
 	 * @returns {Boolean}
 	 */

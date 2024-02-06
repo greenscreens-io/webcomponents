@@ -43,7 +43,7 @@ class GSColorCombo extends HTMLSelectElement {
     }
 
     get #form() {
-        return this.closest('form');
+        return this.closest('form,gs-form');
     }
 
     static {

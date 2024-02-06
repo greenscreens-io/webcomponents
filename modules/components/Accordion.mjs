@@ -78,7 +78,8 @@ export class GSAccordionElement extends GSElement {
   }
 
   #onClick(e) {
-    e.target.toggle?.();
+    const isItemCloser = e?.composedPath()[0]?.matches('.accordion-button');
+    if(isItemCloser) e.target.toggle?.();
   }
 
   #onKeyUp(e) {

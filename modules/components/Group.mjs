@@ -9,7 +9,6 @@
 
 import { GSElement } from '../GSElement.mjs';
 import { GSAttr } from '../base/GSAttr.mjs';
-import { GSItem } from '../base/GSItem.mjs';
 import { ElementNavigationController } from '../controllers/ElementNavigationController.mjs';
 import { classMap, createRef, html, ifDefined, ref } from '../lib.mjs';
 
@@ -39,6 +38,7 @@ export class GSGroupElement extends GSElement {
   }
 
   firstUpdated(changed) {
+    this.#controller.init();
     this.#controller.attach(this.#elRef.value);
     super.firstUpdated(changed);
   }  
@@ -110,7 +110,7 @@ export class GSGroupElement extends GSElement {
 
   settings(el) {
     const cfg = el instanceof GSElement ? el.definitions : GSElement.allProperties(el);
-    const items = GSItem.collect(this).map(el => GSAttr.proxify(el, cfg));
+    const items = Array.from(this.children).filter(e => e.tagName === 'GS-NAV-ITEM' ).map(el => GSAttr.proxify(el, cfg));
     const active = items.filter(el => el.active);
     active.forEach((el, idx) => el.active = idx === 0);
     return items;

@@ -42,6 +42,11 @@ export class ElementNavigationController {
     return this.multiple ? [...this.#multiselect.values()] : this.#selected;
   }
 
+  init() {
+    const me = this;
+    me.#selected = me.#host.data?.filter(o => o.active).pop();
+  }
+
   attach(el) {
     const me = this;
     if (me.#attached) return;
@@ -201,6 +206,7 @@ export class ElementNavigationController {
   onKeyUp(e) {
     const me = this;
     switch (e.code) {
+      case 'Space':
       case 'Enter':
         me.#focused?.click();
         break;

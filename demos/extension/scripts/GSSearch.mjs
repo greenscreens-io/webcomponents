@@ -8,7 +8,8 @@
  */
 import { GSElement } from "../../../modules/GSElement.mjs";
 import { GSEnvironment } from "../../../modules/base/GSEnvironment.mjs";
-import { GSEvent } from "../../../modules/base/GSEvent.mjs";
+import { GSEvents } from "../../../modules/base/GSEvents.mjs";
+import { html } from "../../../modules/lib.mjs";
 
 /**
  * Search input box WebComponent which emits searh event to upper tree.
@@ -55,15 +56,14 @@ class GSSearch extends GSElement {
         } else {
             me.attachEvent(me.#searchEl, 'keydown', me.#onSearch.bind(me));
         }
-        super.onReady();
     }
 
     #onSearch(e) {
         if (!GSEnvironment.isWebkit && e.which != 13) return;
         const me = this;
-        GSEvent.prevent(e);
+        GSEvents.prevent(e);
         const opt = { type: 'search', action: 'search', value: me.#searchEl.value };
-        GSEvent.send(me, 'action', opt, true, true, true);
+        GSEvents.send(me, 'action', opt, true, true, true);
     }
 
     get #searchEl() {

@@ -19,6 +19,12 @@ export class GSTabGroupElement extends GSNavElement {
     return this.settings(GSTabItemElement);
   }
 
+  firstUpdated(changed) {
+    super.firstUpdated(changed);
+    const tabEl = this.query('gs-tab[active],gs-tab[autofocus],gs-tab')
+    this.onSelected(tabEl);
+  }
+
   shouldUpdate(changed) {
     return this.data.length > 0 || this.query('gs-tab');
   }
@@ -57,9 +63,9 @@ export class GSTabGroupElement extends GSNavElement {
     return this.data.map(o => {
       if (!o.name) o.name = GSID.id;
         return html`<gs-tab generated
-        .active="${o.active === true}"
+        .active="${o.active}"
         .autofocus="${o.autofocus || o.active}"
-        .disabled="${ifDefined(o.disabled === true)}" 
+        .disabled="${ifDefined(o.disabled)}" 
         icon="${ifDefined(o.icon)}"    
         title="${ifDefined(o.title)}"
         name="${o.name}"></gs-tab>`;
