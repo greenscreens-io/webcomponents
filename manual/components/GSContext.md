@@ -11,11 +11,12 @@ Menu items can be loaded from an external **template** or can be added as compon
 ## Attributes
 ---
  
-| Name               | Description                                                      |
-|--------------------|------------------------------------------------------------------|
-| target             | CSS selector for element context used for                        |
-| altContext         | Is set, allow opening native context menu when shift key pressed |
-| disabled           | If set, disable context menu click activation                    |
+| Name               | Description                                                       |
+|--------------------|-------------------------------------------------------------------|
+| filter             | CSS selector for clicked element to accept                        |
+| target             | CSS selector for element context used for                         |
+| altContext         | Is set, allow opening native context menu when shift key pressed  |
+| disabled           | If set, disable context menu click activation                     |
 
  
 <br>
@@ -29,7 +30,7 @@ NOTE: All attributes from [GS-MENU](./GSMenu.md) applies.
 For more details, check [contextmenu.html](../../demos/contextmenu.html)
 
 ```html
-    <gs-context target="body" css="" template="">
+    <gs-context target="body" filter="div" css="" template="">
         <gs-item name="Open" action="open"></gs-item>
         <gs-item></gs-item>
         <gs-item name="Submenu 1">

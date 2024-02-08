@@ -17,17 +17,15 @@ This is browser native version t oBootstrap Modal. If ```<dialog>``` si not supp
 | opened             | Is dialog visible                                            |
 | rounded            | Render roudned corners                                       |
 | shadow             | Render dialog shadow                                         |
-
 | title              | Modal title message                                          |
 | message            | Modal message                                                |
 | cancelText         | Cancel button text                                           |
 | confirmText        | Confirm button text                                          |
-
-
 | button-align       | Align modal buttons (start, end, center)                     |
+| color-cancel       | Bootstrap color for cacnel button                            |
+| color-confirm      | Bootstrap color for confirm button                           |
 | icon-cancel        | Bootstrap icon for cacnel button                             |
 | icon-confirm       | Bootstrap icon for confirm button                            |
-
 | css-content        | CSS classes for modal frame                                  |
 | css-header         | CSS classes for modal header block                           |
 | css-title          | CSS classes for modal title block                            |

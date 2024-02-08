@@ -255,7 +255,7 @@ export class GSAttributeHandler {
             case 'parent':
                 return [me.#host.parentElement];
         }
-        const list = GSDOM.queryAll(document.body, me.target, false, true).filter(el => el.tagname !== 'GS-ITEM'); 
+        const list = GSDOM.queryAll(document.body, me.target, false, true).filter(el => el.tagName !== 'GS-ITEM'); 
         if (list.length === 0) list.push(me.#host);
         return list;
     }

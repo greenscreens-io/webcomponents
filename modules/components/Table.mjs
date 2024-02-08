@@ -155,7 +155,7 @@ export class GSTableElement extends GSElement {
             ${me.columns.map((entry, index) => me.#renderColumn(entry, index))}
           </tr>
         </thead>
-        <tbody @click=${me.#onSelect} class="${me.divider ? 'table-group-divider' : ''}">
+        <tbody @click=${me.#onSelect} class="${me.divider ? 'table-group-divider' : ''}" role="button">
           ${me.data.map((entry, index) => me.#renderRecord(entry, index))}
           ${me.#renderEmpty()}
         </tbody>

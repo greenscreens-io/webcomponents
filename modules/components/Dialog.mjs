@@ -40,6 +40,9 @@ export class GSDialogElement extends GSElement {
     iconCancel: { refelct: true, attribute: 'icon-cancel' },
     iconConfirm: { refelct: true, attribute: 'icon-confirm' },
 
+    colorCancel: { attribute: 'color-cancel' },
+    colorConfirm: { attribute: 'color-confirm' },
+
     cssCancel: { attribute: 'css-cancel' },
     cssConfirm: { attribute: 'css-confirm' },
 
@@ -74,6 +77,8 @@ export class GSDialogElement extends GSElement {
     me.buttonAlign = clazz.ALIGN;
     me.cancelText = clazz.CANCEL;
     me.confirmText = clazz.CONFIRM;
+    me.colorCancel = 'secondary';
+    me.colorConfirm = 'primary';
   }
 
   disconnectedCallback() {
@@ -107,8 +112,8 @@ export class GSDialogElement extends GSElement {
       icon="${ifDefined(me.iconConfirm)}"
       locale="${ifDefined(me.locale)}"
       .disabled="${me.disabled}"  
-      css="${me.cssConfirm}" 
-      color="primary" 
+      css="${ifDefined(me.cssConfirm)}" 
+      color="${ifDefined(me.colorConfirm)}" 
       title="${me.confirmText}">
       </gs-button>`;
   }
@@ -120,8 +125,8 @@ export class GSDialogElement extends GSElement {
       @click="${me.#onCancel.bind(me)}" 
       icon="${ifDefined(me.iconCancel)}"
       locale="${ifDefined(me.locale)}"
-      css="${me.cssCancel}" 
-      color="primary" 
+      css="${ifDefined(me.cssCancel)}" 
+      color="${ifDefined(me.colorCancel)}" 
       title="${me.cancelText}">
       </gs-button>`;
   }

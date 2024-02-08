@@ -23,6 +23,7 @@ import { DataController } from './controllers/DataController.mjs';
 import { GSDOM } from './base/GSDOM.mjs';
 import { GSData } from './base/GSData.mjs';
 import { GSUtil } from './base/GSUtil.mjs';
+import { SlotController } from './controllers/SlotController.mjs';
 
 /**
  * Main WebComponent used by all other GS-* components
@@ -59,6 +60,7 @@ export class GSElement extends LitElement {
   #orientation;
   #localization;
   #dataController;
+  #slotController;
   #themes
   #template;
   #content;
@@ -74,6 +76,7 @@ export class GSElement extends LitElement {
     me.#orientation = new OrientationController(me);
     me.#template = new TemplateController(me);
     me.#themes = new ThemeController(me);
+    me.#slotController = new SlotController(me);
   }
 
   attributeChangedCallback(name, oldValue, newValue) {
@@ -132,6 +135,14 @@ export class GSElement extends LitElement {
         me.#dataController = undefined;
       }
     }
+  }
+
+  /**
+   * Caleld when this element injected in some slot
+   * @param {*} slot 
+   */
+  onSlotInjected(slot) {
+
   }
 
   /**

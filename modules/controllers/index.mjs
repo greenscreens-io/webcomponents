@@ -11,3 +11,4 @@ export * from "./ElementNavigationController.mjs";
 export * from "./OrientationController.mjs";
 export * from "./ThemeController.mjs";
 export * from "./TemplateController.mjs";
+export * from "./SlotController.mjs";

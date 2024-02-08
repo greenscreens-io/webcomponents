@@ -1,10 +1,10 @@
-/*
+/*GSContextElement
  * Copyright (C) 2015, 2024 Green Screens Ltd.
  */
 
 /**
- * A module loading GSDContextElement class
- * @module components/GSDContextElement
+ * A module loading GSContextElement class
+ * @module components/GSContextElement
  */
 
 import { GSDOM } from '../base/GSDOM.mjs';
@@ -16,36 +16,43 @@ import { GSMenuElement } from './Menu.mjs';
  * @class
  * @extends {GSMenuElement}
  */
-export class GSDContextElement extends GSMenuElement {
+export class GSContextElement extends GSMenuElement {
 
     static properties = {
         target: {},
+        filter: {},
         altContext: { type: Boolean },
         disabled: { type: Boolean },
     }
 
     constructor() {
-        super();
+        super();        
         this.auto = true;
     }
 
     connectedCallback() {
         super.connectedCallback();
         const me = this;
-        me.attachEvent(window, 'resize', me.close.bind(me));
-        me.#attachTarget();
+        me.attachEvent(window, 'resize', me.close.bind(me));        
+        if (!me.slot) me.#attachTarget();
     }
     
+    onSlotInjected(slot) {
+        this.#attachTarget();
+    }
+
     #attachTarget() {
-        const me = this;
-        const targets = GSDOM.queryAll(document.documentElement, me.target);
+        const me = this;        
+        const owner = GSDOM.parent(me.assignedSlot || me);
+        let targets = me.target ? GSDOM.queryAll(owner, me.target) : [owner];
+        if (!targets.length) targets = GSDOM.queryAll(document.documentElement, me.target);
         targets.forEach(target => me.attachEvent(target, 'contextmenu', me.#onPopup.bind(me)));
     }
 
     #match(e) {
         const me = this;
         return e.composedPath().filter(el => el.matches)
-            .filter(el => el.matches(me.target));
+            .filter(el => el.matches(me.target || me.filter));
     }
 
     #onPopup(e) {
