@@ -66,6 +66,14 @@ export class GSFormElement extends GSElement {
     return this.queryAll('input,select,output,textarea', true);
   }
 
+  get fields() {
+    return this.elements;
+  }
+
+  get inputs() {
+    return this.elements;
+  }
+
   get asJSON() {
     return GSDOM.toObject(this);
   }
@@ -98,6 +106,7 @@ export class GSFormElement extends GSElement {
       me.dataController?.read(me.asJSON);
     } else {
       me.form.reset();
+      me.elements.forEach(el => el.value = el.defaultValue);
     }
   }
 

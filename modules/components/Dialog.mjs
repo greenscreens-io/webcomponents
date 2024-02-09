@@ -2,7 +2,7 @@
  * Copyright (C) 2015, 2024 Green Screens Ltd.
  */
 
-import { classMap, createRef, css, html, ifDefined, ref } from '../lib.mjs';
+import { classMap, createRef, css, html, ifDefined, ref, styleMap } from '../lib.mjs';
 import { GSElement } from '../GSElement.mjs';
 import { GSEvents } from '../base/GSEvents.mjs';
 import { GSDOM } from '../base/GSDOM.mjs';
@@ -23,22 +23,24 @@ export class GSDialogElement extends GSElement {
 
   static properties = {
 
-    standard: { refelct: true, type: Boolean },
-    opened: { refelct: true, type: Boolean },
-    cancelable: { refelct: true, type: Boolean },
-    closable: { refelct: true, type: Boolean },
-    escapable: { refelct: true, type: Boolean },
-    disabled: { refelct: true, type: Boolean },
+    standard: { reflect: true, type: Boolean },
+    opened: { reflect: true, type: Boolean },
+    cancelable: { reflect: true, type: Boolean },
+    closable: { reflect: true, type: Boolean },
+    escapable: { reflect: true, type: Boolean },
+    disabled: { reflect: true, type: Boolean },
 
-    title: { refelct: true },
-    message: { refelct: true },
-    cancelText: { refelct: true, },
-    confirmText: { refelct: true, },
+    
+    title: { reflect: true },
+    message: { reflect: true },
+    cancelText: { reflect: true, },
+    confirmText: { reflect: true, },
+    
+    minWidth: { reflect: true, type: Number, attribute: 'min-width'  },
+    buttonAlign: { reflect: true, attribute: 'button-align' },
 
-    buttonAlign: { refelct: true, attribute: 'button-align' },
-
-    iconCancel: { refelct: true, attribute: 'icon-cancel' },
-    iconConfirm: { refelct: true, attribute: 'icon-confirm' },
+    iconCancel: { reflect: true, attribute: 'icon-cancel' },
+    iconConfirm: { reflect: true, attribute: 'icon-confirm' },
 
     colorCancel: { attribute: 'color-cancel' },
     colorConfirm: { attribute: 'color-confirm' },
@@ -71,6 +73,7 @@ export class GSDialogElement extends GSElement {
     me.shadow = false;
     me.rounded = false;
 
+    me.minWidth = 0;
     me.css = clazz.CSS;
     me.cssTitle = clazz.TITLE_CSS;
     me.cssHeader = clazz.HEADER_CSS;
@@ -142,12 +145,14 @@ export class GSDialogElement extends GSElement {
 
   renderUI() {
     const me = this;
+    const styles = {'min-width' : me.minWidth > 0 ? `${me.minWidth}px` : undefined}
     return html`
         <dialog tabindex="-1" ${ref(me.#dialogRef)} 
             dir="${ifDefined(me.direction)}"
             @close="${me.#onCancel.bind(me)}"
             @cancel="${me.#onCancel.bind(me)}"
             @keydown="${me.#onKeyDown.bind(me)}"
+            style="${styleMap(styles)}"
             class="dialog p-0 border-0 ${classMap(me.renderClass())}">
             <div class="card ${me.cssContent}">
                 <div class="card-header user-select-none ${me.cssHeader}">

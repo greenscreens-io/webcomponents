@@ -193,7 +193,9 @@ export class GSMenuElement extends GSElement {
                     title="${el.name}" 
                     locale="${ifDefined(this.locale)}" 
                     icon="${ifDefined(el.icon)}" 
-                    text="${ifDefined(el.color)}">
+                    text="${ifDefined(el.color)}"
+                    data-gs-target="${ifDefined(el.target || 'self')}"
+                    data-gs-action="${ifDefined(el.action)}">
                 </gs-button></li>`;
     }
 

@@ -79,7 +79,7 @@ export class GSTableElement extends GSElement {
 
   get selected() {
     const me = this;
-    return me.data.filter((v, i) => me.selectable.includes(i));
+    return me.data.filter((v, i) => me.selections.includes(i));
   }
 
   set search(val) {

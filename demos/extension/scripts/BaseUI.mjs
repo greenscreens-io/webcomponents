@@ -47,6 +47,10 @@ export class BaseUI extends GSElement {
         return GSDOM.query('notification');
     }
 
+    get #selected() {
+        return this.#table.selected[0];
+    }
+
     /**
      * Listener for lower componets "action" events
      * wihch might come from table fitlering, table context menut etc.
@@ -67,7 +71,7 @@ export class BaseUI extends GSElement {
     async clone(e) {
 
         const me = this;
-        const data = e.detail.data.pop();
+        const data = me.#selected;
         if (!data) return;
 
         const rec = Object.assign({}, data);
@@ -97,7 +101,7 @@ export class BaseUI extends GSElement {
     async remove(e) {
 
         const me = this;
-        const data = e.detail.data.pop();
+        const data = me.#selected;
         if (!data) return;
 
         try {
@@ -125,12 +129,16 @@ export class BaseUI extends GSElement {
     async details(e) {
 
         const me = this;
-        const data = e.detail.data.pop();
+        const data = me.#selected;
         if (!data) return;
 
         const modal = me.#modal;
-        const tab = modal.query('GS-TAB');
+        const tab = modal.query('gs-tab', true);
         if (tab) tab.index = 0;
+
+        const frm = modal.query('gs-form', true);
+        if(frm) frm.data = data;
+
         modal.open();
         const result = await modal.waitEvent('data');
 
@@ -162,8 +170,12 @@ export class BaseUI extends GSElement {
         const me = this;
 
         const modal = me.#modal;
-        const tab = modal.query('GS-TAB');
+        const tab = modal.query('GS-TAB', true);
         if (tab) tab.index = 0;
+
+        const frm = modal.query('gs-form', true);
+        if(frm) frm.reset();
+
         modal.open();
         const result = await modal.waitEvent('data');
 
