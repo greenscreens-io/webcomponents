@@ -30,13 +30,13 @@ export class GSDialogElement extends GSElement {
     escapable: { reflect: true, type: Boolean },
     disabled: { reflect: true, type: Boolean },
 
-    
+
     title: { reflect: true },
     message: { reflect: true },
     cancelText: { reflect: true, },
     confirmText: { reflect: true, },
-    
-    minWidth: { reflect: true, type: Number, attribute: 'min-width'  },
+
+    minWidth: { reflect: true, type: Number, attribute: 'min-width' },
     buttonAlign: { reflect: true, attribute: 'button-align' },
 
     iconCancel: { reflect: true, attribute: 'icon-cancel' },
@@ -89,8 +89,8 @@ export class GSDialogElement extends GSElement {
     GSDialogElement.#updateStack();
   }
 
-  updated() {
-    super.updated();
+  updated(changed) {
+    super.updated(changed);
     const me = this;
     if (me.opened) {
       GSDialogElement.#STACK.push(me);
@@ -145,13 +145,15 @@ export class GSDialogElement extends GSElement {
 
   renderUI() {
     const me = this;
-    const styles = {'min-width' : me.minWidth > 0 ? `${me.minWidth}px` : undefined}
+    const styles = { 'min-width': me.minWidth > 0 ? `${me.minWidth}px` : undefined }
     return html`
         <dialog tabindex="-1" ${ref(me.#dialogRef)} 
             dir="${ifDefined(me.direction)}"
             @close="${me.#onCancel.bind(me)}"
             @cancel="${me.#onCancel.bind(me)}"
             @keydown="${me.#onKeyDown.bind(me)}"
+            @form="${me.#onForm.bind(me)}"
+            @submit="${me.#onSubmit.bind(me)}"
             style="${styleMap(styles)}"
             class="dialog p-0 border-0 ${classMap(me.renderClass())}">
             <div class="card ${me.cssContent}">
@@ -203,7 +205,7 @@ export class GSDialogElement extends GSElement {
   reset(data, index = 0) {
     index = GSUtil.asNum(index, 0);
     const me = this;
-    me.forms.forEach(f => {f.reset(); f.values = data;});
+    me.forms.forEach(f => { f.reset(); f.values = data; });
     const tab = me.tab;
     if (tab && index > -1) tab.index = index;
   }
@@ -221,11 +223,11 @@ export class GSDialogElement extends GSElement {
   }
 
   get form() {
-    return this.query('form', true);
+    return this.query('gs-form', true);
   }
 
   get forms() {
-    return this.queryAll('form', true);
+    return this.queryAll('gs-form', true);
   }
 
   get tab() {
@@ -258,13 +260,15 @@ export class GSDialogElement extends GSElement {
   }
 
   #onConfirm(e) {
-    this.close();
-    this.emit('click-action');
+    const me = this;
+    if (me.disabled) return;
+    me.forms.forEach(form => form.submit());
+    me.close();
   }
 
   #onCancel(e) {
-    this.close();
-    this.emit('click-action');
+    const me = this;
+    me.close();
   }
 
   #onKeyDown(e) {
@@ -275,6 +279,28 @@ export class GSDialogElement extends GSElement {
         me.close();
       }
     }
+  }
+
+  /**
+   * Handle injected form events
+   * @param {*} e 
+   */
+  #onForm(e) {
+    const me = this;
+    const data = e.detail;
+    switch (data.type) {
+      case 'submit':
+        me.emit('data', data.data);
+        me.opened = false;
+        break;
+      case 'valid':
+        me.disabled = data.data === false;
+        break;
+    }
+  }
+
+  #onSubmit(e) {
+    debugger;
   }
 
   static #updateStack() {

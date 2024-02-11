@@ -29,9 +29,15 @@ export class GSFormElement extends GSElement {
       dir="${ifDefined(me.direction)}"
       @change="${me.#onChange}"
       @submit="${me.submit}"
-      @reset="${me.reset}">
+      @reset="${me.reset}"
+      method="dialog">
       <slot></slot>
     </form>`;
+  }
+
+  firstUpdated(changed) {
+    super.firstUpdated(changed);
+    this.dataController?.read();
   }
 
   updated(changed) {
@@ -53,7 +59,7 @@ export class GSFormElement extends GSElement {
   }
 
   get isValid() {
-    return this.queryAll('input,select,textarea', true)
+    return this.elements
       .filter(el => GSDOM.isVisible(el))
       .map(el => el.checkValidity())
       .filter(v => v === false).length === 0;
@@ -97,23 +103,33 @@ export class GSFormElement extends GSElement {
   }
 
   reportValidity() {
+    this.elements
+      .filter(el => GSDOM.isVisible(el))
+      .filter(el => !el.checkValidity())
+      .forEach(el => el.reportValidity() );
     return this.form.reportValidity();
   }
 
   reset(e) {
     const me = this;
-    if (e?.target === me.form) {
+    const internal = e?.target === me.form;
+
+    if (internal) {
+      me.elements.forEach(el => el.value = el.defaultValue);
       me.dataController?.read(me.asJSON);
     } else {
       me.form.reset();
-      me.elements.forEach(el => el.value = el.defaultValue);
     }
   }
 
   submit(e) {
     GSEvents.prevent(e);
     const me = this;
-    if (me.validate()) me.dataController?.write(me.asJSON);
+    if (!me.validate()) return;
+    const json = me.asJSON;
+    me.dataController?.write(json);
+    const data = { type: 'submit', data: json, source: e};
+    me.emit('form', data, true, true);
   }
 
   onDataRead(data) {
@@ -132,12 +148,15 @@ export class GSFormElement extends GSElement {
     const me = this;
     const isValid = me.checkValidity() && me.isValid;
     if (!isValid) me.reportValidity();
+    const data = { type: 'valid', data: isValid};
+    me.emit('form', data, true, true);
     return isValid;
   }
 
   #onChange(e) {
     const me = this;
     if (me.isBindable) me.handle(e);
+    me.validate();
   }
 
   static {

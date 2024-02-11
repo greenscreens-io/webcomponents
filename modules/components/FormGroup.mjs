@@ -323,15 +323,9 @@ export class GSFormGroupElement extends GSElement {
 
     if (el.value.length === 0 || me.#patterns.length === 0) return;
 
-    let isValid = false;
-    for (const r of me.#patterns) {
-      isValid = r.test(el.value);
-      if (isValid) break;
-    }
-
+    const isValid = me.checkValidity();
     if (!isValid) {
-      el.setCustomValidity('Invalid input');
-      el.reportValidity();
+      me.reportValidity();
       el.focus();
       await GSUtil.timeout(2000);
       el.setCustomValidity('');
@@ -359,11 +353,25 @@ export class GSFormGroupElement extends GSElement {
   }
 
   checkValidity() {
-    return this.field?.checkValidity();
+
+    const me = this;
+    const el = me.field;
+
+    let isValid = el.checkValidity();
+    for (const r of me.#patterns) {
+      isValid = r.test(el.value);
+      if (!isValid) break;
+    }
+
+    return isValid;
   }
 
   reportValidity() {
-    return this.field?.reportValidity();
+    const me = this;
+    const el = me.field;
+    const msg = me.#patterns.length > 0 ? 'Invalid input' : '';
+    el.setCustomValidity(msg);
+    return el.reportValidity();
   }
 
   get value() {

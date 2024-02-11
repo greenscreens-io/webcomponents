@@ -57,11 +57,11 @@
         function initialize() {
             const dialog = GSDOM.query('gs-dialog');
             dialog?.on('error', (e) => {
-                const obj = e.detail.data;
+                const obj = e.detail;
                 console.log('error => ', obj);
             });
             dialog?.on('data', (e) => {
-                const obj = e.detail.data;
+                const obj = e.detail;
                 console.log('data => ', obj);
                 const sts = obj.password?.length > 5;
                 if (!sts) alert('Invalid password length');

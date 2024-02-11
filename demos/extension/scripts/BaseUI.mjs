@@ -44,7 +44,7 @@ export class BaseUI extends GSElement {
     }
 
     get #notify() {
-        return GSDOM.query('notification');
+        return GSDOM.query('gs-notification');
     }
 
     get #selected() {
@@ -150,7 +150,7 @@ export class BaseUI extends GSElement {
             modal.reset();
             // update locally to refresh ui
             Object.assign(data, result.detail.data);
-            me.#store.reaad();
+            me.#store.read();
             me.#notify.warn('', 'Record updated!');
 
         } catch (e) {
