@@ -31,7 +31,7 @@ export class BaseUI extends GSElement {
         me.attachEvent(me, 'action', me.#onAction.bind(me));
     }
 
-    get #store() {
+    get store() {
         return this.#table.dataController.store;
     }
 
@@ -83,7 +83,8 @@ export class BaseUI extends GSElement {
             if (!sts) throw new Error('Record not cloned!');
 
             // update locally to refresh ui
-            me.#store.setData(rec, true);
+            me.store.append?.(rec);
+            me.store.read();
             me.#notify.secondary('', 'Record cloned!');
 
         } catch (e) {
@@ -110,8 +111,8 @@ export class BaseUI extends GSElement {
             if (!sts) throw new Error('Record not removed!');
 
             // update locally to refresh ui
-            const subset = me.#store.data.filter(o => o.name !== data.name);
-            me.#store.setData(subset);
+            me.store.remove?.(data);
+            me.store.read();
             me.#notify.danger('', 'Record removed!');
 
         } catch (e) {
@@ -144,13 +145,13 @@ export class BaseUI extends GSElement {
 
         try {
 
-            const sts = await me.onUpdate(result.detail.data);
+            const sts = await me.onUpdate(result.detail);
             if (!sts) throw new Error('Record not updated!');
 
             modal.reset();
             // update locally to refresh ui
-            Object.assign(data, result.detail.data);
-            me.#store.read();
+            Object.assign(data, result.detail);
+            me.store.read();
             me.#notify.warn('', 'Record updated!');
 
         } catch (e) {
@@ -185,8 +186,8 @@ export class BaseUI extends GSElement {
             if (!sts) throw new Error('Record not created!');
             modal.reset();
             // update locally to refresh ui
-            me.#store.data.push(result.detail.data);
-            me.#store.read();
+            me.store.data.push(result.detail.data);
+            me.store.read();
             me.#notify.primary('', 'Record created!');
 
         } catch (e) {
@@ -203,7 +204,7 @@ export class BaseUI extends GSElement {
     refresh(e) {
         // get data from extension and populate table;
         const me = this;
-        const store = me.#store;
+        const store = me.store;
         store.clear?.();
         store.read();
     }
@@ -213,7 +214,7 @@ export class BaseUI extends GSElement {
      * @param {Event} val 
      */
     search(e) {
-        const store = this.#store;
+        const store = this.store;
         store.filter = e.detail.value;
         store.read();
     }

@@ -21,8 +21,6 @@ export class GSCachedReader extends GSReadWrite {
 
     #reformat(data = []) {
 
-        const me = this;
-
         let records = [];
         if (Array.isArray(data)) {
             records = data;
@@ -45,6 +43,20 @@ export class GSCachedReader extends GSReadWrite {
 
     clear() {
         this.#data = [];
+    }
+
+    append(data) {
+        if(!data) return false;
+        const me = this;
+        data = me.#reformat(data);
+        me.#data = me.#data.concat(data);
+        return me.#data;
+    }
+
+    remove(data) {
+        const me = this;
+        me.#data = me.#data.filter(o => o =! data);
+        return me.#data;
     }
 
     /**
