@@ -6,7 +6,7 @@ import { GSElement } from '../GSElement.mjs';
 import { GSLoader } from '../base/GSLoader.mjs';
 
 /**
- * Helper component to enable HTML based controller attachment to the parent element.
+ * Helper component to enable controller attachment to the GS WebComponent.
  * It is used to simplify and separate templates from logic.
  */
 export class GSControllerElement extends GSElement {
@@ -51,6 +51,7 @@ export class GSControllerElement extends GSElement {
     if (clazz) {
       new clazz(host);
       me.#clazz = clazz;
+      globalThis[me.controller] = clazz;
     }
 
   }
