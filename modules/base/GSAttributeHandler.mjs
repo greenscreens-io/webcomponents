@@ -110,8 +110,7 @@ export class GSAttributeHandler {
     }
 
     #handleAction(target) {
-        const me = this;
-        GSEvents.send(target, 'action', me.action, true, true);
+        GSEvents.send(target, 'action', this.action, true, true);
     }
 
     #handleAttribute(target) {

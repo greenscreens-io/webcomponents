@@ -138,7 +138,10 @@ export class BaseUI extends GSElement {
         if (tab) tab.index = 0;
 
         const frm = modal.query('gs-form', true);
-        if(frm) frm.data = data;
+        if(frm)  {
+            frm.data = {};
+            frm.data = data;
+        }
 
         modal.open();
         const result = await modal.waitEvent('data');

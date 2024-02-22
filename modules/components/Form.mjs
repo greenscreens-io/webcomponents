@@ -20,7 +20,7 @@ export class GSFormElement extends GSElement {
 
   constructor() {
     super();
-    this.data = [];
+    this.data = {};
   }
 
   renderUI() {
@@ -118,6 +118,7 @@ export class GSFormElement extends GSElement {
       me.elements.forEach(el => el.value = el.defaultValue);
       me.dataController?.read(me.asJSON);
     } else {
+      me.data = {};
       me.form.reset();
     }
   }
