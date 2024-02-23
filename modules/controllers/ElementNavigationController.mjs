@@ -19,6 +19,11 @@ export class ElementNavigationController {
     host.addController(me);
   }
 
+  hostConnected() {
+    const me = this;
+    me.init();
+  }
+
   hostDisconnected() {
     const me = this;
     me.#host.removeController(me);
@@ -185,6 +190,7 @@ export class ElementNavigationController {
   onClick(e) {
     const me = this;
     if (e.ctrlKey) me.reset();
+    me.#onDeselected(me.#selected);
     me.#select(e.target);
   }
 

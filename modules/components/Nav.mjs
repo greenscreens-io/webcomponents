@@ -48,7 +48,7 @@ export class GSNavElement extends GSGroupElement {
   }
 
   /**
-   * Render items based on data proeprty (might be from gs-item)
+   * Render items based on data propprty (might be from gs-item)
    * @returns 
    */
   renderItems() {

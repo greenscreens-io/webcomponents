@@ -109,8 +109,9 @@ export class GSGroupElement extends GSElement {
   }
 
   settings(el) {
-    const cfg = el instanceof GSElement ? el.definitions : GSElement.allProperties(el);
-    const items = Array.from(this.children).filter(e => e.tagName === 'GS-NAV-ITEM' ).map(el => GSAttr.proxify(el, cfg));
+    const tagName = customElements.getName(el).toUpperCase() || 'GS-ITEM';
+    const cfg = GSElement.allProperties(el);
+    const items = Array.from(this.children).filter(e => e.tagName === tagName ).map(el => GSAttr.proxify(el, cfg));
     const active = items.filter(el => el.active);
     active.forEach((el, idx) => el.active = idx === 0);
     return items;

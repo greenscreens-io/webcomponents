@@ -15,14 +15,22 @@ export class GSTabGroupElement extends GSNavElement {
     tabCSS: { attribute: 'css-tab' },
   }
 
+  constructor() {
+    super();
+    const me = this;
+    // link tabs and panels
+    me.queryAll('gs-tab').forEach(el => me.#findPanel(el));
+  }
+
   initData() {
     return this.settings(GSTabItemElement);
   }
 
   firstUpdated(changed) {
     super.firstUpdated(changed);
-    const tabEl = this.query('gs-tab[active],gs-tab[autofocus],gs-tab')
-    this.onSelected(tabEl);
+    const me = this;
+    const tabEl = me.query('gs-tab[active],gs-tab[autofocus],gs-tab')
+    me.onSelected(tabEl);
   }
 
   shouldUpdate(changed) {
@@ -42,11 +50,11 @@ export class GSTabGroupElement extends GSNavElement {
     const me = this;
     const reverse = PlacementTypes.isAfter(me.placement);
     const list = [super.renderWrappedUI('tabs'),
-     html`<div class="tab-content flex-fill ${me.panelCSS}"  dir="${ifDefined(me.direction)}">
-        <slot name="panels">${me.renderPanels()}</slot>
+    html`<div class="tab-content flex-fill ${me.panelCSS}"  dir="${ifDefined(me.direction)}">
+        <slot name="panels"></slot>
       </div>
       <slot class="d-none"></slot>`];
-      return reverse ? list.reverse() : list;
+    return reverse ? list.reverse() : list;
   }
 
   renderWrappedClass() {
@@ -62,7 +70,7 @@ export class GSTabGroupElement extends GSNavElement {
   renderItems() {
     return this.data.map(o => {
       if (!o.name) o.name = GSID.id;
-        return html`<gs-tab generated
+      return html`<gs-tab generated
         .active="${o.active}"
         .autofocus="${o.autofocus || o.active}"
         .disabled="${ifDefined(o.disabled)}" 
@@ -70,8 +78,8 @@ export class GSTabGroupElement extends GSNavElement {
         title="${ifDefined(o.title)}"
         name="${o.name}"></gs-tab>`;
     });
-  }  
- 
+  }
+
   /**
    * Render items based on data proeprty (might be from gs-item)
    * @returns 
@@ -119,7 +127,7 @@ export class GSTabGroupElement extends GSNavElement {
   #findPanel(el) {
     const me = this;
     const key = Symbol.for('gs-element');
-    const generated = me.data?.length > 0;
+    const generated = false; // me.data?.length > 0;
     let panel = el[key] || me.query(`gs-tab-panel[name="${el.name}"]`, generated);
     if (!el[key]) el[key] = panel;
     return panel;

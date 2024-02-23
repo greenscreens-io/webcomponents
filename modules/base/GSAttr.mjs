@@ -223,7 +223,9 @@ export class GSAttr {
 				
 				if (prop === 'self') return target;
 				if (prop === 'dataset') return target.dataset;
+				if (typeof prop === 'symbol') return target[prop];
 				if (prop === recursive) return Array.from(target.children).map(el => GSAttr.proxify(el, opt, recursive)); 
+
 
 				const type = opt[prop]?.type;
 				const safe = opt[prop]?.unsafe ? true : false;

@@ -11,11 +11,12 @@ export class GSTabPanelElement extends GSElement {
   static properties = {
     name: {},
     template: {},
-    active: { type: Boolean }
+    active: { type: Boolean, reflect : true }
   }
 
   constructor() {
     super();
+    this.active = false;
   }
 
   shouldUpdate(changedProperties) {
