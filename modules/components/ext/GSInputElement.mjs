@@ -59,7 +59,7 @@ export class GSInputElement extends ReactiveInput {
 
     super.willUpdate(changed);
 
-    if (changed.has('mask') && this.mask) {
+    if (changed.has('mask') && this.mask && this.type === 'text') {
       this.placeholder = this.mask;
       this.#maskController ??= new MaskController(this);
       this.#maskController.initRules();

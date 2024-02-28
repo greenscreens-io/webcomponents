@@ -7,6 +7,7 @@
  * @module BaseUI
  */
 import { GSElement } from "../../../modules/GSElement.mjs";
+import { GSDOM } from "../../../modules/base/GSDOM.mjs";
 import { GSFunction } from "../../../modules/base/GSFunction.mjs";
 
 /**
@@ -44,7 +45,7 @@ export class BaseUI extends GSElement {
     }
 
     get #notify() {
-        return GSDOM.query('gs-notification');
+        return GSDOM.query('#notification');
     }
 
     get #selected() {

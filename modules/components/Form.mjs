@@ -129,7 +129,7 @@ export class GSFormElement extends GSElement {
     if (!me.validate()) return;
     const json = me.asJSON;
     me.dataController?.write(json);
-    const data = { type: 'submit', data: json, source: e};
+    const data = { type: 'submit', data: json, source: e, owner : me};
     me.emit('form', data, true, true);
   }
 
@@ -145,11 +145,15 @@ export class GSFormElement extends GSElement {
     GSLog.error(this, e);
   }
 
+  onFieldChange(el) {
+
+  }
+
   validate() {
     const me = this;
     const isValid = me.checkValidity() && me.isValid;
     if (!isValid) me.reportValidity();
-    const data = { type: 'valid', data: isValid};
+    const data = { type: 'valid', data: isValid, owner : me};
     me.emit('form', data, true, true);
     return isValid;
   }
@@ -157,7 +161,7 @@ export class GSFormElement extends GSElement {
   #onChange(e) {
     const me = this;
     if (me.isBindable) me.handle(e);
-    me.validate();
+    if (me.validate()) me.onFieldChange(e.detail);
   }
 
   static {
