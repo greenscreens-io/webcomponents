@@ -13,7 +13,7 @@ import { GSID } from "./GSID.mjs";
 import { gsstyles } from "./style.mjs";
 
 /**
- * Cache for dyamically loaded styles.
+ * Cache for dynaamically loaded styles.
  * Used to sharestyles among GS-* WebComponents
  * @class
  */

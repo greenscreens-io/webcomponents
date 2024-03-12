@@ -3,6 +3,8 @@
  */
 import { GSEvents } from '../base/GSEvents.mjs';
 import { GSDynamicStyle } from '../base/GSDynamicStyle.mjs';
+import { GSID } from '../base/GSID.mjs';
+import { GSCacheStyles } from '../base/GSCacheStyles.mjs';
 
 /**
  * Controller register self to gs-adopted event listener list.
@@ -45,10 +47,17 @@ export class AdoptedController {
    * @param {Object|String} values CSS class styles to be applied
    * @returns {CSSStyleRule} An instance of a CSS class
    */
-  style(name, values) {
+  style(name, values, isGlobal = false) {
     const me = this;
-    me.#dynamic = me.#dynamic ?? new GSDynamicStyle('dynamic');
-    return me.#dynamic.setRule(name, values, true);
+    let style = null;
+    if (isGlobal) {
+      style = GSCacheStyles.dynamic;
+    } else {
+      me.#dynamic = me.#dynamic ?? new GSDynamicStyle('dynamic');      
+      style = me.#dynamic;
+    }    
+    if (!values && style.rules.length > 0 ) return style.removeRule(name);
+    return style.setRule(name, values, true);
   }
 
   #adopt(forced = false) {

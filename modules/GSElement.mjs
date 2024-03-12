@@ -228,10 +228,11 @@ export class GSElement extends LitElement {
    * Creates a dynamic StyleSheet which holds dynamic StyleRules for template elements
    * @param {String} id 
    * @param {String|Object} value 
+   * @param {boolean} isGlobal 
    * @returns {CSSStyleRule}
    */
-  dynamicStyle(id, value) {
-    return this.#adopted.style(id, value);
+  dynamicStyle(id, value, isGlobal = false) {
+    return this.#adopted.style(id, value, isGlobal);
   }
 
   /**

@@ -28,12 +28,13 @@ export class GSSplitterElement extends GSElement {
         // Check if splitter use vertical or horizontal splitting
         split: { reflect: true },
         // start|end|top|bottom
-        resize: { ...placement, hasChanged : notEmpty },
+        resize: { ...placement, hasChanged: notEmpty },
         size: { type: Number, hasChanged: numGT0 }
     }
 
     #cursor = 0;
     #styleID = GSID.id;
+    #styleTGT = GSID.id;
     #elRef = createRef();
     #mouseController;
 
@@ -47,9 +48,17 @@ export class GSSplitterElement extends GSElement {
         me.#mouseController = new ElementMoveController(me);
     }
 
+    disconnectedCallback() {
+        super.disconnectedCallback();
+        //this.dynamicStyle(this.#styleTGT, null, true);
+    }
+
     firstUpdated(changed) {
-        this.#mouseController.attach(this.#splitter);
         super.firstUpdated(changed);
+        const me = this;
+        me.#mouseController.attach(me.#splitter);
+        //const shadow = GSDOM.root(me.target) instanceof ShadowRoot;
+        //me.dynamicStyle(me.#styleTGT, {}, !shadow);
     }
 
     renderUI() {
@@ -150,6 +159,7 @@ export class GSSplitterElement extends GSElement {
             // no firefox support
             el = Array.from(el.children).filter(o => !GSDOM.isStyleValue(o, 'display', 'none')).pop();
         }
+        el.classList?.add(me.#styleTGT);
         return el;
     }
 
@@ -273,6 +283,7 @@ export class GSSplitterElement extends GSElement {
         dx = dx + target.clientWidth;
         dx = dx < 0 ? 0 : dx;
         me.#styleDynamic.width = dx + "px";
+        //me.dynamicStyle(me.#styleTGT, { width: dx + "px" }, true);
         me.#cursor = pos;
     }
 
@@ -288,6 +299,7 @@ export class GSSplitterElement extends GSElement {
         dx = dx + target.clientHeight;
         dx = dx < 0 ? 0 : dx;
         me.#styleDynamic.height = dx + "px";
+        //me.dynamicStyle(me.#styleTGT, { height: dx + "px" }, true);
         me.#cursor = pos;
     }
 
@@ -295,11 +307,9 @@ export class GSSplitterElement extends GSElement {
         if (val <= 0) return
         const me = this;
         me.#cursor = val;
-        if (me.isVertical) {
-            me.#styleDynamic.width = val + "px";
-        } else {
-            me.#styleDynamic.height = val + "px";
-        }
+        const key = me.isVertical ? 'width' : 'height';
+        me.#styleDynamic[key] = val + "px";
+        //me.dynamicStyle(me.#styleTGT, { [key]: val + "px" }, true);
     }
 
     #cssUpdate() {
