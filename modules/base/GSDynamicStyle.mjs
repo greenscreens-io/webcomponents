@@ -80,7 +80,7 @@ export class GSDynamicStyle extends CSSStyleSheet {
     }
 
     #updateRule(rule, prop = '', style = '') {
-        style = style || '';
+        style = (style || '').toString();
         const isImportant = style.includes('!important');
         style = style.replace('!important', '');
         prop = prop.trim();

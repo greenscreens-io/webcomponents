@@ -7,12 +7,13 @@
  * @module components/GSLayoutElement
  */
 
-import { classMap, css, html, ifDefined, styleMap, templateContent } from '../lib.mjs';
+import { classMap, html, ifDefined, templateContent } from '../lib.mjs';
 import { orientation, OrientationTypes } from '../properties/orientation.mjs';
 import { GSElement } from '../GSElement.mjs';
 import { GSItem } from '../base/GSItem.mjs';
 import { GSAttr } from '../base/GSAttr.mjs';
 import { GSDOM } from '../base/GSDOM.mjs';
+import { GSID } from '../base/GSID.mjs';
 
 /**
  * Renderer for panel layout 
@@ -37,9 +38,12 @@ export class GSLayoutElement extends GSElement {
         hPos: { attribute: 'v-pos' },
     }
 
+    #styleID = GSID.id;
+
     constructor() {
         super();
         this.autofit = true;
+        this.dynamicStyle(this.#styleID);
     }
 
     connectedCallback() {
@@ -90,9 +94,10 @@ export class GSLayoutElement extends GSElement {
 
         const css = me.#panelCSS(el, col);
         const style = me.#panelStyle(el, horizontal);
+        me.dynamicStyle(me.#styleID, style);
 
         const slot = el.name ? html`<slot name="${el.name}"></slot>` : '';
-        const src = html`<div id="${ifDefined(el.id)}" class="d-flex ${classMap(css)}" style="${styleMap(style)}">
+        const src = html`<div id="${ifDefined(el.id)}" class="d-flex ${classMap(css)}">
             ${list}
             ${templateContent(tplEl)}
             ${template && tc ? html`<gs-template flat src="${template}"></gs-template>` : ''}
@@ -125,6 +130,7 @@ export class GSLayoutElement extends GSElement {
         vpos = vpos ? `justify-content-${vpos}` : '';
 
         const css = this.mapCSS(el.css, {
+            [this.#styleID] : el.resizable,
             [col] : col,
             [grow] : grow,
             [hpos] : hpos,

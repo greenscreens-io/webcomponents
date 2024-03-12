@@ -12,9 +12,10 @@ export class GSCenterElement extends GSElement {
   }
 
   renderUI() {
+    const me = this;
     return html`<div  dir="${ifDefined(me.direction)}"
-      class="position-absolute top-50 start-50 translate-middle ${classMap(this.renderClass())}">
-    ${this.renderTemplate()}<slot></slot></div>`;
+      class="position-absolute top-50 start-50 translate-middle ${classMap(me.renderClass())}">
+    ${me.renderTemplate()}<slot></slot></div>`;
   }
 
   static {

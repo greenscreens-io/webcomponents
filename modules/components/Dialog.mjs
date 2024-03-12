@@ -2,11 +2,12 @@
  * Copyright (C) 2015, 2024 Green Screens Ltd.
  */
 
-import { classMap, createRef, css, html, ifDefined, ref, styleMap } from '../lib.mjs';
+import { classMap, createRef, css, html, ifDefined, ref } from '../lib.mjs';
 import { GSElement } from '../GSElement.mjs';
 import { GSEvents } from '../base/GSEvents.mjs';
 import { GSDOM } from '../base/GSDOM.mjs';
 import { GSUtil } from '../base/GSUtil.mjs';
+import { GSID } from '../base/GSID.mjs';
 
 export class GSDialogElement extends GSElement {
 
@@ -56,6 +57,7 @@ export class GSDialogElement extends GSElement {
 
   }
 
+  #styleID = GSID.id;
   #dialogRef = createRef();
   #btnConfirmRef = createRef();
   #btnCancelRef = createRef();
@@ -82,6 +84,7 @@ export class GSDialogElement extends GSElement {
     me.confirmText = clazz.CONFIRM;
     me.colorCancel = 'secondary';
     me.colorConfirm = 'primary';
+    me.dynamicStyle(me.#styleID);
   }
 
   disconnectedCallback() {
@@ -145,7 +148,8 @@ export class GSDialogElement extends GSElement {
 
   renderUI() {
     const me = this;
-    const styles = { 'min-width': me.minWidth > 0 ? `${me.minWidth}px` : undefined }
+    const styles = { 'min-width': me.minWidth > 0 ? `${me.minWidth}px` : undefined };
+    me.dynamicStyle(me.#styleID, styles);
     return html`
         <dialog tabindex="-1" ${ref(me.#dialogRef)} 
             dir="${ifDefined(me.direction)}"
@@ -154,8 +158,7 @@ export class GSDialogElement extends GSElement {
             @keydown="${me.#onKeyDown.bind(me)}"
             @form="${me.#onForm.bind(me)}"
             @submit="${me.#onSubmit.bind(me)}"
-            style="${styleMap(styles)}"
-            class="dialog p-0 border-0 ${classMap(me.renderClass())}">
+            class="${classMap(me.renderClass())}">
             <div class="card ${me.cssContent}">
                 <div class="card-header user-select-none ${me.cssHeader}">
                   <div class="card-title ${me.cssTitle}">
@@ -173,6 +176,18 @@ export class GSDialogElement extends GSElement {
             <slot name="extra"></slot>
             <div class="toast-container position-fixed"></slot></div>
         </dialog>`
+  }
+
+  renderClass() {
+    const me = this;
+    const css = {
+      ...super.renderClass(),
+      'dialog': true,
+      'p-0': true,
+      'border-0': true,
+      [me.#styleID]: true
+    }
+    return css;
   }
 
   /**

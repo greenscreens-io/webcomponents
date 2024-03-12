@@ -17,9 +17,26 @@ import { GSFunction } from "../../../modules/base/GSFunction.mjs";
  */
 export class BaseUI extends GSElement {
 
+    #listener = null;
+    #data = null;
+
     constructor() {
         super();
         this.className = 'd-flex flex-fill';
+    }
+
+    connectedCallback() {
+        const me = this;
+        me.#listener = me.#onRuntimeMessage.bind(me);
+        chrome?.runtime?.onMessage?.addListener(me.#listener);
+        super.connectedCallback();
+    }
+
+    disconnectedCallback() {
+        const me = this;
+        chrome?.runtime?.onMessage?.removeListener(me.#listener);
+        me.#listener = null;
+        super.disconnectedCallback();
     }
 
     renderUI() {
@@ -64,6 +81,23 @@ export class BaseUI extends GSElement {
         if (GSFunction.isFunction(this[action])) this[action](e);
     }
 
+    #onRuntimeMessage(req) {
+        const me = this;
+        if (req.key === 'conf' && req.cmd === 'refresh' && req.data) {
+            me.#data = req.data;
+            me.onData(req.data);
+            me.#notify.secondary('', 'Data refreshed!');
+        }
+    }
+
+    get service() {
+        return this.#data.settings?.service;
+    }
+
+    get data() {
+        return this.#data;
+    }
+    
     /**
      * Table record action - clone record
      * @param {Event} e 
@@ -122,6 +156,17 @@ export class BaseUI extends GSElement {
         }
 
     }
+
+    /**
+     * Generic function to be overriden by inherited class
+     * Used to handle record received from backend.
+     * @param {Object} data 
+     * @returns {boolean}
+     * @throws {Error}
+     */
+    onData(data) {
+        return true;
+    }    
 
     /**
      * Table record action - edit data
@@ -211,6 +256,7 @@ export class BaseUI extends GSElement {
         const store = me.store;
         store.clear?.();
         store.read();
+        Messenger.load();
     }
 
     /**

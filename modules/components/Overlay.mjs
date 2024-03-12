@@ -20,14 +20,17 @@ export class GSOverlayElement extends GSElement {
     }
 
     #styleID = GSID.id;
+    #styleID2 = GSID.id;
 
     constructor() {
         super();
-        this.color = 'rgb(0,0,0)';
+        //this.color = 'rgb(0,0,0)';
+        this.color = '#000';
         this.opacity = 0.7;
         this.padding = 1;
         this.radius = 6;
         this.dynamicStyle(this.#styleID);
+        this.dynamicStyle(this.#styleID2);
     }
 
     connectedCallback() {
@@ -90,7 +93,9 @@ export class GSOverlayElement extends GSElement {
         const el = GSDOM.query(me.target);
         if (!me.target) return '';
         const pathStr = me.#createSVGPathString(el);
-        return svg`<path style="fill:${me.color};opacity:${me.opacity};pointerEvents:auto;cursor:auto;" d="${pathStr}"></path>`;
+        const opt = { fill: me.color, opacity: me.opacity, pointerEvents: 'auto', cursor: 'auto' };
+        me.dynamicStyle(me.#styleID2, opt);
+        return svg`<path class="${me.#styleID2}"  d="${pathStr}"></path>`;
     }
 
     #createSVGPathString(target) {

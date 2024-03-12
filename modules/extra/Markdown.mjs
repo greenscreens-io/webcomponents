@@ -2,13 +2,14 @@
  * Copyright (C) 2015, 2024 Green Screens Ltd.
  */
 
-import { classMap, createRef, html, ref, styleMap } from '../lib.mjs';
+import { classMap, createRef, html, ref } from '../lib.mjs';
 import { GSElement } from '../GSElement.mjs';
 import { GSLoader } from '../base/GSLoader.mjs';
 import { GSDOM } from '../base/GSDOM.mjs';
 import { GSUtil } from '../base/GSUtil.mjs';
 import { GSEvents } from '../base/GSEvents.mjs';
 import { GSAttr } from '../base/GSAttr.mjs';
+import { GSID } from '../base/GSID.mjs';
 
 export class GSMarkdownElement extends GSElement {
 
@@ -30,9 +31,12 @@ export class GSMarkdownElement extends GSElement {
     #path = null;
     #cache = [];
 
+    #styleID = GSID.id;
+
     constructor() {
         super();
         this.history = 10;
+        this.dynamicStyle(this.#styleID);
     }
 
     async connectedCallback() {
@@ -57,13 +61,15 @@ export class GSMarkdownElement extends GSElement {
         const me = this;
         const height = me.maxHeight > 0 ? `${me.maxHeight}px;` : false;
         const opt = { 'max-height': height }
-        return html`<div ${ref(me.#containerRef)} class="overflow-auto ${classMap(me.renderClass())}" style="${styleMap(opt)}"><div/>`;
+        me.dynamicStyle(me.#styleID, opt);
+        return html`<div ${ref(me.#containerRef)} class="overflow-auto ${classMap(me.renderClass())}"><div/>`;
     }
 
     renderClass() {
         const me = this;
         const hasLangauge = GSUtil.isStringNonEmpty(me.language);
         const css = {
+            [me.#styleID] : true,
             [`language-${me.language}`]: hasLangauge
         }
         return css;

@@ -8,6 +8,7 @@ import { GSElement } from '../GSElement.mjs';
 import { GSItem } from '../base/GSItem.mjs';
 import { GSUtil } from '../base/GSUtil.mjs';
 import { GSDOM } from '../base/GSDOM.mjs';
+import { GSID } from '../base/GSID.mjs';
 
 export class GSFormGroupElement extends GSElement {
 
@@ -63,6 +64,7 @@ export class GSFormGroupElement extends GSElement {
 
   }
 
+  #styleID = GSID.id;
   #inputRef = createRef();
   #ouptutRef = createRef();
   #patterns = [];
@@ -70,10 +72,11 @@ export class GSFormGroupElement extends GSElement {
   constructor() {
     super();
     this.#validateAllowed();
+    this.dynamicStyle(this.#styleID);
     this.type = 'text';
-    this.icon = GSFormGroupElement.ICON;
     this.placement = 'top';
     this.layout = 'horizontal';
+    this.icon = GSFormGroupElement.ICON;
     this.cssLabel = GSFormGroupElement.CSS_LABEL;
     this.cellLabel = GSFormGroupElement.CSS_LABEL_CELL;
   }
@@ -225,6 +228,12 @@ export class GSFormGroupElement extends GSElement {
   #inputHTML(id, name, value) {
     const me = this;
     const type = me.isSwitch ? 'checkbox' : me.type;
+    
+    const style = {
+      transform : me.reverse && me.isRange ? 'rotateY(180deg)' : ''
+    }
+    me.dynamicStyle(me.#styleID, style);
+
     return html`<input is="gs-ext-input" 
             ${ref(me.#inputRef)}
             id=${ifDefined(id)} 
@@ -236,8 +245,7 @@ export class GSFormGroupElement extends GSElement {
             value="${value}"
             type="${type}" 
     
-            style="${me.reverse && me.isRange ? 'transform: rotateY(180deg);' : ''}"
-            class="${me.#cssField} ${me.cssField}" 
+            class="${me.#cssField} ${me.cssField} ${me.#styleID}" 
 
             placeholder="${ifDefined(me.translate(me.placeholder))}"
             description="${ifDefined(me.translate(me.description))}"

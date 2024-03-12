@@ -69,7 +69,6 @@ export class GSCompareElement extends GSElement {
 
   renderUI() {
     const me = this;
-    // style="-display:contents;width:${me.width}px !important;height:${me.height}px !important;"
     return html`<div ${ref(me.#elRef)} 
          dir="${ifDefined(me.direction)}"
          @loaded="${me.#onLoad}" 

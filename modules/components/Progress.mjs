@@ -2,10 +2,11 @@
  * Copyright (C) 2015, 2024 Green Screens Ltd.
  */
 
-import { html, classMap, styleMap, ifDefined } from '../lib.mjs';
+import { html, classMap, ifDefined } from '../lib.mjs';
 import { literalTemplate } from '../directives/literal.mjs';
 import { GSElement } from '../GSElement.mjs';
 import { GSUtil } from '../base/GSUtil.mjs';
+import { GSID } from '../base/GSID.mjs';
 
 export class GSProgressElement extends GSElement {
 
@@ -17,6 +18,8 @@ export class GSProgressElement extends GSElement {
     label: { reflect: true }
   }
 
+  #styleID = GSID.id;
+
   constructor() {
     super();
     this.min = 0;
@@ -24,7 +27,18 @@ export class GSProgressElement extends GSElement {
     this.max = 100;
     this.value = 0;
     this.styles = { width: '0%' };
+    this.dynamicStyle(this.#styleID);
   }
+
+  renderClass() {
+    const me = this;
+    const css = {
+      ...super.renderClass(),
+      'progress-bar' : true,
+      [me.#styleID] : true
+    }
+    return css;
+  }  
 
   renderUI() {
     const me = this;
@@ -32,8 +46,8 @@ export class GSProgressElement extends GSElement {
     const obj = {min :me.min, max:me.max, step:me.step, value:me.value, percentage:me.percentage};
     return html`
     <div class="progress" @keydown="${me.#onKeySelect}" dir="${ifDefined(me.direction)}">
-        <div class="progress-bar ${classMap(me.renderClass())}" 
-             style=${styleMap(me.styles)} 
+        <div class="${classMap(me.renderClass())}" 
+             
              role="progressbar"
              tabindex="0">
              ${literalTemplate(me.label, obj)}
@@ -42,18 +56,18 @@ export class GSProgressElement extends GSElement {
     `;
   }
 
-  willUpdate(changedProperties) {
+  willUpdate(changed) {
     super.willUpdate(changed);
     const me = this;
-    if (changedProperties.has('value')) {
-      let val = me.step + changedProperties.get('value');
+    if (changed.has('value')) {
+      let val = me.step + changed.get('value');
       val = me.#update(val, val);
-      changedProperties.set('value', val);
+      changed.set('value', val);
     }
   }
 
-  updated(changedProperties) {
-    if (changedProperties.has('value')) {
+  updated(changed) {
+    if (changed.has('value')) {
       this.notify();
     }
   }
@@ -78,7 +92,9 @@ export class GSProgressElement extends GSElement {
   }
 
   #updateStyle() {
-    this.styles.width = `${this.percentage}%`;
+    const me = this;
+    me.styles.width = `${me.percentage}%`;
+    me.dynamicStyle(me.#styleID, me.styles);
   }
 
   #update(val, old = 0) {

@@ -2,9 +2,10 @@
  * Copyright (C) 2015, 2024 Green Screens Ltd.
  */
 
-import { classMap, css, html, ifDefined, styleMap } from '../lib.mjs';
+import { classMap, css, html, ifDefined } from '../lib.mjs';
 import { GSElement } from '../GSElement.mjs';
 import { placement, PlacementTypes } from '../properties/placement.mjs';
+import { GSID } from '../base/GSID.mjs';
 
 export class GSCardElement extends GSElement {
 
@@ -39,6 +40,8 @@ export class GSCardElement extends GSElement {
 
   }
 
+  #styleID = GSID.id;
+
   constructor() {
     super();
     this.border = false;
@@ -46,6 +49,7 @@ export class GSCardElement extends GSElement {
     this.align = 'start';
     this.placement = 'top';
     this.imageStyle = this.imageStyle || {};
+    this.dynamicStyle(this.#styleID);
   }
 
   renderUI() {
@@ -121,8 +125,10 @@ export class GSCardElement extends GSElement {
   }
 
   get #image() {
-    const css = this.isHorizontal ? 'img-fluid' : 'card-img';
-    return html`<img src="${this.image}" class="rounded-${this.placement} ${css} ${this.cssImage}" style=${styleMap(this.imageStyle)} alt="...">`;
+    const me = this;
+    const css = me.isHorizontal ? 'img-fluid' : 'card-img';
+    me.dynamicStyle(me.#styleID, me.imageStyle);
+    return html`<img src="${me.image}" class="rounded-${me.placement} ${css} ${me.cssImage} ${me.#styleID}" alt="...">`;
   }
 
   get #images() {
