@@ -38,12 +38,12 @@ export class GSLayoutElement extends GSElement {
         hPos: { attribute: 'v-pos' },
     }
 
-    #styleID = GSID.id;
-
     constructor() {
         super();
-        this.autofit = true;
-        this.dynamicStyle(this.#styleID);
+        const me = this;
+        me.autofit = true;  
+        me.#items(me).forEach((el, idx) => { if(el.resizable) me.dynamicStyle(`gsd-${idx}`)});
+        
     }
 
     connectedCallback() {
@@ -92,9 +92,10 @@ export class GSLayoutElement extends GSElement {
         
         const col = list.length > 0 && horizontal ? 'flex-column' : '';
 
-        const css = me.#panelCSS(el, col);
+        const did = `gsd-${idx}`;
+        const css = me.#panelCSS(el, col, did);
         const style = me.#panelStyle(el, horizontal);
-        me.dynamicStyle(me.#styleID, style);
+        me.dynamicStyle(did, style);
 
         const slot = el.name ? html`<slot name="${el.name}"></slot>` : '';
         const src = html`<div id="${ifDefined(el.id)}" class="d-flex ${classMap(css)}">
@@ -118,7 +119,7 @@ export class GSLayoutElement extends GSElement {
         return tplEl instanceof HTMLTemplateElement ? tplEl : undefined;
     }
 
-    #panelCSS(el, col) {
+    #panelCSS(el, col, did) {
 
         const resizable = el.min > 0 || el.max > 0 || el.resizable;
         const grow = resizable ? '' : 'flex-grow-1';
@@ -130,7 +131,7 @@ export class GSLayoutElement extends GSElement {
         vpos = vpos ? `justify-content-${vpos}` : '';
 
         const css = this.mapCSS(el.css, {
-            [this.#styleID] : el.resizable,
+            [did] : el.resizable,
             [col] : col,
             [grow] : grow,
             [hpos] : hpos,
