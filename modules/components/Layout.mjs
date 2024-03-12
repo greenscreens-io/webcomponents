@@ -42,8 +42,7 @@ export class GSLayoutElement extends GSElement {
         super();
         const me = this;
         me.autofit = true;  
-        me.#items(me).forEach((el, idx) => { if(el.resizable) me.dynamicStyle(`gsd-${idx}`)});
-        
+        me.#items(me).map((el, idx, els) => me.#dyncss(el, idx, els, 0));
     }
 
     connectedCallback() {
@@ -73,12 +72,18 @@ export class GSLayoutElement extends GSElement {
         return GSItem.collect(root).map(el => GSAttr.proxify(el, GSLayoutElement.options));
     }
 
-    #build(el, idx, els) {
+    #dyncss(el, idx, els, lev = 0) {
+        const me = this;
+        me.#items(el.self).map((it, idx, items) => me.#dyncss(it, idx, items, lev+1));
+        if(el.resizable) me.dynamicStyle(`gsd-${lev}-${idx}`);
+    }
+
+    #build(el, idx, els, lev = 0) {
 
         const me = this;
         const type = el.self.parentElement.type || 'vertical';
 
-        const list = me.#items(el.self).map((it, idx, items) => me.#build(it, idx, items));
+        const list = me.#items(el.self).map((it, idx, items) => me.#build(it, idx, items, lev+1));
         
         const min = el.min;
         const max = el.max;
@@ -92,7 +97,7 @@ export class GSLayoutElement extends GSElement {
         
         const col = list.length > 0 && horizontal ? 'flex-column' : '';
 
-        const did = `gsd-${idx}`;
+        const did = `gsd-${lev}-${idx}`;
         const css = me.#panelCSS(el, col, did);
         const style = me.#panelStyle(el, horizontal);
         me.dynamicStyle(did, style);
