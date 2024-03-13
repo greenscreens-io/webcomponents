@@ -39,6 +39,7 @@ export class GSTableElement extends GSElement {
     color: { ...color },
     colorHead: { ...color, attribute: 'head-color' },
     colorSelect: { ...color, attribute: 'select-color' },
+    colorSort: { ...color, attribute: 'sort-color' },
     stripedColumn: { type: Boolean, attribute: 'striped-column' },
     cssFilter: { attribute: 'css-filter' },
     cssHeader: { attribute: 'css-header' },
@@ -248,7 +249,7 @@ export class GSTableElement extends GSElement {
     const icons = GSTableElement.#icons;
     const sortType = me.sort[index];
     const order = me.multisort ? me.#sortOrder.indexOf(index) + 1 : '';
-    return html`<gs-icon name="${icons[sortType + 1]}" super="${order > 0 ? order : ''}"></gs-icon>`;
+    return html`<gs-icon name="${icons[sortType + 1]}" super="${order > 0 ? order : ''}" color="${ifDefined(me.colorSort)}"></gs-icon>`;
   }
 
   #renderRecord(entry, index) {

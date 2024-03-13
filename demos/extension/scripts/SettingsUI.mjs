@@ -34,9 +34,9 @@ class SettingsUI extends GSElement {
 	}
 
     async #onForm(e) {
-        const data = e.detail.data;
         const form = e.detail.owner;
-
+        const data = form.asJSON;
+        
         if (!data) {
             return this.notify?.danger('', 'Not all required fields valid!');
         }

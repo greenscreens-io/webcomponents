@@ -29,6 +29,10 @@ export class GSTemplateElement extends GSElement {
     return html`${this.renderTemplate()}`;
   }
 
+	templateInjected() {
+		this.emit('template-injected', null, true, true);
+	}
+
   static {
     this.define('gs-template');
   }
