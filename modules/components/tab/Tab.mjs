@@ -2,6 +2,7 @@
  * Copyright (C) 2015, 2024 Green Screens Ltd.
  */
 
+import { GSUtil } from '../../base/GSUtil.mjs';
 import { GSNavItemElement } from '../NavItem.mjs';
 
 /**
@@ -13,7 +14,17 @@ export class GSTabItemElement extends GSNavItemElement {
     name: {}
   }
 
-  shouldUpdate(changedProperties) {
+  constructor() {
+    super();
+    this.css = this.#updateCSS + this.css;
+  }
+
+  get #updateCSS() {
+    const me = this;
+    return me.shouldUpdate() ? GSUtil.normalize(me.parentElement?.tabCSS) : '';
+  }
+
+  shouldUpdate(changed) {
     return this.owner?.tagName === 'GS-TAB-GROUP';
   }
 
