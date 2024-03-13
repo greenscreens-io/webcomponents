@@ -6,6 +6,9 @@ import { GSElement } from '../../GSElement.mjs';
 import { GSDOM } from '../../base/GSDOM.mjs';
 import { classMap, html, ifDefined } from '../../lib.mjs';
 
+/**
+ * Container for individual tab; part of tabed panel
+ */
 export class GSTabPanelElement extends GSElement {
 
   static properties = {

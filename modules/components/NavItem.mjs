@@ -56,6 +56,10 @@ export class GSNavItemElement extends GSElement {
     requestAnimationFrame(() => this.#refEl.value?.focus());
   }
 
+  get isNav() {
+    return true;
+  }
+
   get vertical() {
     return this.parentElement.vertical || false;
   }

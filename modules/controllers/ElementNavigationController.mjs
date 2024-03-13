@@ -188,7 +188,8 @@ export class ElementNavigationController {
   }
 
   onClick(e) {
-    const me = this;
+    if (!e.target.isNav) return;
+    const me = this;    
     if (e.ctrlKey) me.reset();
     me.#onDeselected(me.#selected);
     me.#select(e.target);

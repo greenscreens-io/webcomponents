@@ -8,6 +8,9 @@ import { PlacementTypes } from '../../properties/placement.mjs';
 import { GSNavElement } from '../Nav.mjs';
 import { GSTabItemElement } from './Tab.mjs';
 
+/**
+ * Panel with tabs component (gs-tab-group), generate childrens gs-tab and gs-tab-panel 
+ */
 export class GSTabGroupElement extends GSNavElement {
 
   static properties = {
@@ -125,6 +128,7 @@ export class GSTabGroupElement extends GSNavElement {
    * @param {GSTabElement} el 
    */
   #findPanel(el) {
+    if (!el) return null;
     const me = this;
     const key = Symbol.for('gs-element');
     const generated = false; // me.data?.length > 0;

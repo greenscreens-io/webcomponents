@@ -4,6 +4,9 @@
 
 import { GSNavItemElement } from '../NavItem.mjs';
 
+/**
+ * Tab component (gs-tab), generate selectable/switchable tabs on a panel
+ */
 export class GSTabItemElement extends GSNavItemElement {
 
   static properties = {
