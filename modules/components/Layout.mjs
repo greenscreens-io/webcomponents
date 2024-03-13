@@ -127,7 +127,7 @@ export class GSLayoutElement extends GSElement {
     #panelCSS(el, col, did) {
 
         const resizable = el.size > 0 || el.min > 0 || el.max > 0 || el.resizable;
-        const grow = resizable ? '' : 'flex-grow-1';
+        const grow = el.resizable ? '' : 'flex-grow-1';
 
         let vpos = el.vPos;
         let hpos = el.hPos;
@@ -148,7 +148,7 @@ export class GSLayoutElement extends GSElement {
 
     #panelStyle(el, horizontal) {
         const min = el.size || el.min;
-        const max = el.max;
+        const max = el.max || el.size;
         const style = {};
         if (horizontal) {
             style['min-height'] = min > 0 ? `${min}px` : undefined;
