@@ -13,7 +13,6 @@ import { GSElement } from '../GSElement.mjs';
 import { GSItem } from '../base/GSItem.mjs';
 import { GSAttr } from '../base/GSAttr.mjs';
 import { GSDOM } from '../base/GSDOM.mjs';
-import { GSID } from '../base/GSID.mjs';
 
 /**
  * Renderer for panel layout 
@@ -32,6 +31,7 @@ export class GSLayoutElement extends GSElement {
         type: {},
         min: { type: Number },
         max: { type: Number },
+        size: { type: Number },
         resizable: { type: Boolean },
         autofit: { type: Boolean },
         vPos: { attribute: 'h-pos' },
@@ -126,7 +126,7 @@ export class GSLayoutElement extends GSElement {
 
     #panelCSS(el, col, did) {
 
-        const resizable = el.min > 0 || el.max > 0 || el.resizable;
+        const resizable = el.size > 0 || el.min > 0 || el.max > 0 || el.resizable;
         const grow = resizable ? '' : 'flex-grow-1';
 
         let vpos = el.vPos;
@@ -136,7 +136,7 @@ export class GSLayoutElement extends GSElement {
         vpos = vpos ? `justify-content-${vpos}` : '';
 
         const css = this.mapCSS(el.css, {
-            [did] : el.resizable,
+            [did] : resizable,
             [col] : col,
             [grow] : grow,
             [hpos] : hpos,
@@ -147,7 +147,7 @@ export class GSLayoutElement extends GSElement {
     }
 
     #panelStyle(el, horizontal) {
-        const min = el.min;
+        const min = el.size || el.min;
         const max = el.max;
         const style = {};
         if (horizontal) {
