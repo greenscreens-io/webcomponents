@@ -138,7 +138,7 @@ export class GSElement extends LitElement {
   }
 
   /**
-   * Caleld when this element injected in some slot
+   * Called when this element injected in some slot
    * @param {*} slot 
    */
   onSlotInjected(slot) {
@@ -508,6 +508,33 @@ export class GSElement extends LitElement {
     const list = [...GSDOM.inheritance(this)].map(o => o.constructor?.properties).filter(o => o);
     list.push(this.constructor?.properties);
     return GSData.mergeObjects(list);
+  }
+
+  /**
+   * Get instance of internal styles
+   */
+  get elementStyles() {
+    return this.constructor.elementStyles.map(s => Object.values(s).filter(o => o instanceof CSSStyleSheet).pop()).pop();
+  }
+
+  /**
+   * Internal shadow styles rule
+   * @param {*} name 
+   * @returns 
+   */
+  cssRule(name) {
+    return Array.from(this.elementStyles.rules).filter(r => r.selectorText === name).pop();
+  }
+
+  /**
+   * Set dynamic CSS rule 
+   * See GSIcon hot it is done
+   * @param {*} rule 
+   * @param {*} name 
+   * @param {*} value 
+   */
+  setCSSProperty(rule, name, value) {
+    this.cssRule(rule).style.setProperty(name, value);
   }
 
   /**

@@ -38,8 +38,8 @@ export class GSIconElement extends GSElement {
 
   renderUI() {
     const me = this;
-    const superColor = me.superColor ? `--gs-icon-super-color:${me.superColor};` : '';
-    return html`<i class="bi ${classMap(me.renderClass())}" data-super="${ifDefined(me.super)}" style="${ifDefined(superColor)}"></i>`;
+    me.setCSSProperty(':host', '--gs-icon-super-color', me.superColor);
+    return html`<i class="bi ${classMap(me.renderClass())}" data-super="${ifDefined(me.super)}"></i>`;
   }
 
   renderClass() {
