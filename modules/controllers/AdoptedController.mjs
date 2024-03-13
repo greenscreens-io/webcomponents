@@ -56,7 +56,7 @@ export class AdoptedController {
       me.#dynamic = me.#dynamic ?? new GSDynamicStyle('dynamic');      
       style = me.#dynamic;
     }    
-    if (!values && style.rules.length > 0 ) return style.removeRule(name);
+    if (values === null && style.rules.length > 0 ) return style.removeRule(name);
     return style.setRule(name, values, true);
   }
 

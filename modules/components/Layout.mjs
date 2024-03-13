@@ -72,10 +72,14 @@ export class GSLayoutElement extends GSElement {
         return GSItem.collect(root).map(el => GSAttr.proxify(el, GSLayoutElement.options));
     }
 
+    #resizable(el) {
+        return el.size > 0 || el.min > 0 || el.max > 0 || el.resizable;
+    }
+
     #dyncss(el, idx, els, lev = 0) {
         const me = this;
         me.#items(el.self).map((it, idx, items) => me.#dyncss(it, idx, items, lev+1));
-        if(el.resizable) me.dynamicStyle(`gsd-${lev}-${idx}`);
+        if(me.#resizable(el)) me.dynamicStyle(`gsd-${lev}-${idx}`);
     }
 
     #build(el, idx, els, lev = 0) {
@@ -126,8 +130,8 @@ export class GSLayoutElement extends GSElement {
 
     #panelCSS(el, col, did) {
 
-        const resizable = el.size > 0 || el.min > 0 || el.max > 0 || el.resizable;
-        const grow = el.resizable ? '' : 'flex-grow-1';
+        const resizable = this.#resizable(el);
+        const grow = resizable ? '' : 'flex-grow-1';
 
         let vpos = el.vPos;
         let hpos = el.hPos;

@@ -25,7 +25,7 @@ export class GSListItemElement extends GSElement {
 
   constructor() {
     super();
-    this.bind();
+    this.binded();
   }
 
   connectedCallback() {

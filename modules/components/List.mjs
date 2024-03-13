@@ -4,6 +4,7 @@
 
 import { html, ifDefined } from '../lib.mjs';
 import { GSGroupElement } from './Group.mjs';
+import { GSListItemElement } from './ListItem.mjs';
 
 export class GSListElement extends GSGroupElement {
 
@@ -17,7 +18,10 @@ export class GSListElement extends GSGroupElement {
     super();
     this.circular = false;
     this.multiple = false;
-    this.data = this.settings;
+  }
+
+  initData() {
+    return this.settings(GSListItemElement);
   }
 
   shouldUpdate(changed) {

@@ -105,24 +105,11 @@
         <div slot="header"><img src="/webcomponents/assets/img/icon.png" height="32"></div>
         -->
 
-        <gs-list slot="body" css="overflow-hidden" selectable="false">
-            <gs-item css="border-0 p-1">
-                <template>
-                    <div class="d-flex w-100 justify-content-start align-items-center fs-5">
-                        <span class="bi-house fs-2 pe-4"></span>
-                        <span><b>Home</b></span>
-                    </div>
-                </template>
-            </gs-item>
-            <gs-item css="border-0 p-1">
-                <template>
-                    <div class="d-flex w-100 justify-content-start align-items-center  fs-5">
-                        <span class="bi-person fs-2 pe-3"></span>
-                        <span><b>Contact</b></span>
-                    </div>
-                </template>
-            </gs-item>
-        </gs-list>
+        <gs-nav slot="body" class="flex-fill px-3" css-nav="fw-bold" type="pills" vertical>
+            <gs-nav-item title="Home" icon="house me-2 fs-5" css="flex-fill" css-nav="nav-pill"  active></gs-nav-item>
+            <gs-nav-item title="Contact" icon="person me-2 fs-5" css="flex-fill"></gs-nav-item>
+        </gs-nav>
+
     </gs-drawer>
 
     <gs-copyright year="2015" company="Green Screens Ltd."></gs-copyright>
