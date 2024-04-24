@@ -277,8 +277,9 @@ export class GSDialogElement extends GSElement {
   #onConfirm(e) {
     const me = this;
     if (me.disabled) return;
-    me.forms.forEach(form => form.submit());
-    me.close();
+    //me.forms.forEach(form => form.submit());
+    const ret = me.forms.map(form => form.submit());
+    if (ret.indexOf(false) < 0) me.close();
   }
 
   #onCancel(e) {
@@ -289,8 +290,8 @@ export class GSDialogElement extends GSElement {
   #onKeyDown(e) {
     const me = this;
     if (e.key === 'Escape') {
+      GSEvents.prevent(e);
       if (me.cancelable || me.escapable) {
-        GSEvents.prevent(e);
         me.close();
       }
     }
@@ -305,8 +306,9 @@ export class GSDialogElement extends GSElement {
     const data = e.detail;
     switch (data.type) {
       case 'submit':
-        me.emit('data', data.data);
-        me.opened = false;
+        const sts = me.emit('data', data.data, false, false, true);
+        if (!sts) GSEvents.prevent(e);
+        //me.opened = false;
         break;
       case 'valid':
         me.disabled = data.data === false;

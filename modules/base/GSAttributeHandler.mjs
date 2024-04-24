@@ -20,7 +20,7 @@ import { GSTemplateCache } from "./GSTemplateCache.mjs";
  * Used for meta linking between UI elements
  * 
  * Attributes handled:
- * - data-gs-attribute - togle element attribute (receive k=v;k1=v1 or JSON format)
+ * - data-gs-attribute - toggle element attribute (receive k=v;k1=v1 or JSON format)
  * - data-gs-action - trigger action event
  * - data-gs-anchor - where to anchor injected html (self, beforebegin, afterbegin, etc.)
  * - data-gs-call - calls a function on a given target (multipel functions supported)
@@ -35,8 +35,13 @@ import { GSTemplateCache } from "./GSTemplateCache.mjs";
  * - data-gs-trigger - triggers an event on a given target
  * - data-gs-value - value to pass to a gs-call or gs-trigger
  *
- * NOTE: data-gs-swap and gs-inject uses data-gs-anchor to determine 
+ * NOTE: 
+ * data-gs-swap and gs-inject uses data-gs-anchor to determine 
  * where to inject html. If not, set, innerHTML is used
+ * 
+ * data-gs-target determine element on which to execute,
+ * if not specified, it means current element
+ * 
  * @class
  */
 export class GSAttributeHandler {

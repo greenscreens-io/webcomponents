@@ -130,7 +130,7 @@ export class GSFormElement extends GSElement {
     const json = me.asJSON;
     me.dataController?.write(json);
     const data = { type: 'submit', data: json, source: e, owner : me};
-    me.emit('form', data, true, true);
+    return me.emit('form', data, true, true, true);
   }
 
   onDataRead(data) {

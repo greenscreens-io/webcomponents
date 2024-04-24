@@ -104,7 +104,7 @@ export class GSCardElement extends GSElement {
   get #body() {
     const me = this;
     return html`<div class="${me.overlay ? 'card-img-overlay' : 'card-body'} ${me.cssBody}">
-      <h5 class="card-title  ${me.cssTitle}"><slot name="title">${me.translate(title)}</slot></h5>
+      <h5 class="card-title  ${me.cssTitle}"><slot name="title">${me.translate(me.title)}</slot></h5>
       <h6 class="card-subtitle  ${me.cssSubtitle}"><slot name="subtitle">${me.translate(me.subtitle)}</slot></h6>
       <p class="card-text ${me.cssText}"><slot name="text">${me.translate(me.text)}</slot></p>
       <slot name="body"></slot>
