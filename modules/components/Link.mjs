@@ -51,7 +51,7 @@ export class GSLinklement extends GSElement {
         class="${classMap(me.renderClass())}" 
         ?disabled=${me.disabled} 
         @click="${me.#onClick}">
-        ${me.#first} ${me.#second}
+        ${me.#first}${me.#second}
         </a>`;
   }
 
@@ -80,7 +80,7 @@ export class GSLinklement extends GSElement {
     me.notify();
     if (me.url === '#' || GSUtil.isStringEmpty(me.url)) {
       GSEvents.prevent(e);
-      this.handle(e);
+      me.handle(e);
       return false;
     }
   }
@@ -93,7 +93,7 @@ export class GSLinklement extends GSElement {
 
   get #second() { return this.rtl ? this.#icon : this.#title; };
 
-  get #icon() { return this.icon ? html`<gs-icon name="${this.icon}" size="${this.size}"></gs-icon>` : html`<slot name="icon"></slot>`; }
+  get #icon() { return this.icon ? html`<gs-icon css="mx-1" name="${this.icon}" size="${this.size}"></gs-icon>` : html`<slot name="icon"></slot>`; }
 
   /**
    * Generate clickable link

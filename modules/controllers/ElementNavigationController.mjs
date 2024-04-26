@@ -188,11 +188,12 @@ export class ElementNavigationController {
   }
 
   onClick(e) {
-    if (!e.target.isNav) return;
-    const me = this;    
+    const me = this;
+    const el = e.composedPath().filter(el => el.parentElement === me.#host).pop();
+    if (!el) return;
     if (e.ctrlKey) me.reset();
     me.#onDeselected(me.#selected);
-    me.#select(e.target);
+    me.#select(el);
   }
 
   onKeyDown(e) {

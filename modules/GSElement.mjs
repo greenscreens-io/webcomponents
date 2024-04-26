@@ -158,7 +158,7 @@ export class GSElement extends LitElement {
    * @returns {*} Parsed lit html structure
    */
   renderUI() {
-    return noChange;
+    return this.renderTemplate();
   }
 
   /**
@@ -166,7 +166,7 @@ export class GSElement extends LitElement {
    * @returns {*}
    */
   renderTemplate() {
-    return this.templateRef ? templateContent(this.templateRef) : ''
+    return this.templateRef ? templateContent(this.templateRef) : noChange;
   }
 
   /**

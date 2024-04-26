@@ -13,6 +13,7 @@ export class GSListItemElement extends GSElement {
     target: {},
     title: {},
     icon: {},
+    size: { type: Number },
     autofocus: { type: Boolean, reflect: true },
     disabled: { type: Boolean, reflect: true },
     active: { type: Boolean, reflect: true },
@@ -39,7 +40,6 @@ export class GSListItemElement extends GSElement {
 
   renderUI() {
     const me = this;
-    let obj = me.mapCSS(me.#activeCSS, {});
     return html`<a  tabindex="0" ${ref(me.#refEl)}
        href="${ifDefined(me.url)}" 
        target="${ifDefined(me.target)}" 
@@ -56,22 +56,28 @@ export class GSListItemElement extends GSElement {
       ...super.renderClass(),
       'list-group-item': true,
       'list-group-item-action': true,
+      [`fs-${me.size}`]: me.size > 0,
       [me.#itemCSS] : true,
       'active': me.active
     }
-    return me.active ? me.mapCSS(me.#activeCSS, css) : css;
+    return me.mapCSS(me.#itemStatusCSS, css);
   }
 
   #renderIcon() {
-    return this.icon ? html`<gs-icon name="${this.icon}"></gs-icon>` : html`<slot name="icon"></slot>`;
+    const me = this;
+    return me.icon ? html`<gs-icon name="${me.icon}" size="${me.size}"></gs-icon>` : html`<slot name="icon"></slot>`;
+  }
+
+  #renderText() {
+    return this.title ? html`<span>${this.translate(this.title)}</span>` : html`<slot name="title"></slot>`;
   }
 
   #renderFirst() {
-    return this.rtl ? this.translate(this.title) : this.#renderIcon();
+    return this.rtl ? this.#renderText() : this.#renderIcon();
   }
 
   #renderSecond() {
-    return this.rtl ? this.#renderIcon() : this.translate(this.title);
+    return this.rtl ? this.#renderIcon() : this.#renderText();
   }
 
   toggle() {
@@ -102,8 +108,16 @@ export class GSListItemElement extends GSElement {
     return this.owner.dataset?.cssActive || '';
   }
 
+  get #inactiveCSS() {
+    return this.owner.dataset?.cssInactive || '';
+  }
+
   get #itemCSS() {
     return this.owner.dataset?.cssItem || '';
+  }
+
+  get #itemStatusCSS() {
+    return this.active ? this.#activeCSS : this.#inactiveCSS;
   }
 
   static {

@@ -10,7 +10,6 @@ export class GSListElement extends GSGroupElement {
 
   static properties = {
     selectable: { reflect: true, type: Boolean },
-    cssItem: { attribute: 'css-item' },
     data: { type: Array },
   }
 
@@ -29,7 +28,6 @@ export class GSListElement extends GSGroupElement {
   }
 
   renderClass() {
-    const me = this;
     const css = {
       ...super.renderClass(),
       'list-group': true,
@@ -67,8 +65,6 @@ export class GSListElement extends GSGroupElement {
   get items() {
     return this.queryAll('gs-list-item');
   }
-
-
 
   static {
     this.define('gs-list');

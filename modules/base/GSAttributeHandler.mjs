@@ -106,16 +106,16 @@ export class GSAttributeHandler {
         const source = evt.target.field || evt.target.form || evt.target;
         const isForm = source instanceof HTMLFormElement;
         const isField = GSDOM.isFormElement(source);
+        if (!(isField || isForm)) return;
         if (isField) {
             target[source.name] = GSDOM.getValue(source);
         } else {
             Object.assign(target, GSDOM.toObject(source));
         }
-        if (!(isField || isForm)) return;
     }
 
     #handleAction(target) {
-        GSEvents.send(target, 'action', this.action, true, true);
+        if (this.action) GSEvents.send(target, 'action', this.action, true, true);
     }
 
     #handleAttribute(target) {

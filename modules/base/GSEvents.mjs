@@ -498,7 +498,7 @@ export class GSEvents {
 		owner.on('action', async (e) => {
 			const me = owner;
 			const data = e.detail;
-			const action = data.action || data.data?.action;
+			const action = GSUtil.isString(data) ? data : data.action || data.data?.action;
 			await GSEvents.onAction(me, action, type, e);
 		});
 	}
