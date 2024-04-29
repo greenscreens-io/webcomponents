@@ -9,6 +9,7 @@ import { GSItem } from '../base/GSItem.mjs';
 import { GSUtil } from '../base/GSUtil.mjs';
 import { GSDOM } from '../base/GSDOM.mjs';
 import { GSID } from '../base/GSID.mjs';
+import { GSAttr } from '../base/GSAttr.mjs';
 
 export class GSFormGroupElement extends GSElement {
 
@@ -80,13 +81,16 @@ export class GSFormGroupElement extends GSElement {
     this.icon = GSFormGroupElement.ICON;
     this.cssLabel = GSFormGroupElement.CSS_LABEL;
     this.cellLabel = GSFormGroupElement.CSS_LABEL_CELL;
-  }
 
+  }
+  
   connectedCallback() {
     const me = this;
+    const form = GSDOM.closest(me, 'gs-form');
+    me.layout = GSAttr.get(form, 'layout', me.layout);
     me.#patterns = GSItem.collect(me)
-      .filter(el => el.dataset.pattern)
-      .map(el => new RegExp(el.dataset.pattern));
+    .filter(el => el.dataset.pattern)
+    .map(el => new RegExp(el.dataset.pattern));
     super.connectedCallback();
   }
 
