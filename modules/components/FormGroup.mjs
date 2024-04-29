@@ -372,9 +372,9 @@ export class GSFormGroupElement extends GSElement {
     const me = this;
     const el = me.field;
 
-    let isValid = el.checkValidity();
+    let isValid = el?.checkValidity();
     for (const r of me.#patterns) {
-      isValid = r.test(el.value);
+      isValid = r.test(el?.value);
       if (!isValid) break;
     }
 
@@ -385,8 +385,8 @@ export class GSFormGroupElement extends GSElement {
     const me = this;
     const el = me.field;
     const msg = me.#patterns.length > 0 ? 'Invalid input' : '';
-    el.setCustomValidity(msg);
-    return el.reportValidity();
+    el?.setCustomValidity(msg);
+    return el?.reportValidity();
   }
 
   get value() {
