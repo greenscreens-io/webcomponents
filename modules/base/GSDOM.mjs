@@ -715,7 +715,7 @@ export class GSDOM {
 				}
 				break;
 			default:
-				el.value = data;
+				el.value = GSUtil.normalize(data);
 		}
 	}
 
