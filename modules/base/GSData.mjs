@@ -406,7 +406,7 @@ export class GSData {
      * @param {String} name 
      * @returns {*}
      */
-    static readFromProperty(obj, name) {
+    static readFromProperty(obj, name, partial = false) {
         if (GSUtil.isNull(obj)) return;
         const r = /\[\d+\]$/g;
         const isArray = r.test(name);
@@ -417,9 +417,11 @@ export class GSData {
             n = name.replace(r, '')
             i = name.match(r).shift().match(/\d+/).shift();
             i = GSUtil.asNum(i);
-            obj = obj.hasOwnProperty(n) ? obj = obj[n][i] : null;
+            obj = obj.hasOwnProperty(n) ? obj[n][i] : null;
+        } else if (obj.hasOwnProperty(n)) {
+            obj = partial ? obj[n] || obj : obj[n];
         } else {
-            obj = obj.hasOwnProperty(n) ? obj = obj[n] : null;
+            obj = null;
         }
         return obj;
     }
@@ -447,7 +449,7 @@ export class GSData {
     static objectPathExist(obj, name) {
         if (!name) return false;
         return name.split('.')
-            .map(v => GSData.readFromProperty(obj, v))
+            .map(v => GSData.readFromProperty(obj, v, true))
             .filter(v => !GSUtil.isNull(v))
             .length > 0;
     }

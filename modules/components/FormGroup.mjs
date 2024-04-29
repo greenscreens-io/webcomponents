@@ -33,7 +33,8 @@ export class GSFormGroupElement extends GSElement {
     list: {},
     accept: {},
 
-    lang : {},
+    lang: {},
+    default: { reflect: true },
     step: { type: Number, reflect: true, hasChanged: numGT0 },
     min: { type: Number, reflect: true, hasChanged: numGE0 },
     max: { type: Number, reflect: true, hasChanged: numGT0 },
@@ -89,16 +90,22 @@ export class GSFormGroupElement extends GSElement {
     super.connectedCallback();
   }
 
+  firstUpdated() {
+    super.firstUpdated();
+    const me = this;
+    me.value = me.default;
+  }
+
   updated() {
     const me = this;
     me.#onRange();
-    if (me.templateRef && !me.field)  {
+    if (me.templateRef && !me.field) {
       const field = GSDOM.formElements(me.renderRoot).pop();
       me.#inputRef.value = field;
       if (field) {
         field.name = this.name;
         me.attachEvent(field, 'change', me.#onChange.bind(me));
-      } 
+      }
     }
   }
 
@@ -228,9 +235,9 @@ export class GSFormGroupElement extends GSElement {
   #inputHTML(id, name, value) {
     const me = this;
     const type = me.isSwitch ? 'checkbox' : me.type;
-    
+
     const style = {
-      transform : me.reverse && me.isRange ? 'rotateY(180deg)' : ''
+      transform: me.reverse && me.isRange ? 'rotateY(180deg)' : ''
     }
     me.dynamicStyle(me.#styleID, style);
 
@@ -242,8 +249,8 @@ export class GSFormGroupElement extends GSElement {
             @change="${me.#onChange.bind(me)}"
         
             name="${name}" 
-            value="${value}"
             type="${type}" 
+            value="${ifDefined(value)}"
     
             class="${me.#cssField} ${me.cssField} ${me.#styleID}" 
 
@@ -314,8 +321,8 @@ export class GSFormGroupElement extends GSElement {
     const me = this;
     if (me.isRange) {
       const el = me.#ouptutRef.value;
-      if (el) el.innerHTML = me.field?.value || '';
-      me.field.title = me.field.value;
+      if (el) el.innerHTML = me.value || '';
+      me.field.title = me.value;
     }
     me.emit('input', e);
   }
@@ -389,6 +396,7 @@ export class GSFormGroupElement extends GSElement {
   set value(val) {
     GSDOM.fromObject2Element(this.field, { [this.name]: val });
     this.validate();
+    this.#onRange();
   }
 
   get isFloating() {

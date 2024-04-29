@@ -19,6 +19,7 @@ Except all standard ```<input>``` [tag attributes](https://developer.mozilla.org
 | autoid             | If enabled, id set to field name if not already set      |
 | autocopy           | Copy all text on click into a field                      |
 | autoselect         | Select all text on click into a field                    |
+| default            | Default value                                            |
 | icon               | Tooltip icon                                             |
 | mask               | When masked input required (refer to GSInputExt)         |
 | label              | Input field visible label                                |
