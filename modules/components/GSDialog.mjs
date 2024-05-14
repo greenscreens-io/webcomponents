@@ -335,6 +335,10 @@ export default class GSDialog extends GSElement {
     return this.query('dialog');
   }
 
+  get active() {
+    return GSDialog.top;
+  }
+
   get form() {
     return GSDOM.query(this, 'form');
   }

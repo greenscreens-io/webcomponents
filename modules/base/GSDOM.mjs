@@ -738,7 +738,8 @@ export default class GSDOM {
 	 * @param {object} obj Data source key/value pairs
 	 */	
 	static fromObject2Element(el, obj) {
-		if (!GSData.objectPathExist(obj, el.name)) return;		
+		const has = GSData.objectPathExist(obj, el.name);		
+		if (GSUtil.isNull(has)) return;		
 		const val = GSData.readFromObject(obj, el.name);
 		if (el.type !== 'radio') {
 			//GSDOM.fromValue(el, obj[el.name]);
