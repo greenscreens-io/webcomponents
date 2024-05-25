@@ -72,6 +72,8 @@ export default class HeaderUI extends GSElement {
 
     // restart server
     async restart() {
+	const sts = globalThis.confirm('Are you sure? Action will restart server and terminate all connections.');
+        if (!sts) return true;
         const o = DEMO ? DEMO : await io.greenscreens.Server.restart();
         Utils.inform(o.success, 'Server is restarting! <br>Wait about 1min. then refresh browser.');
     }

@@ -269,7 +269,7 @@ export default class GSData {
      * @returns 
      */
     static readFromProperty(obj, name) {
-        if (GSUtil.isNull(obj)) return;
+        if (GSUtil.isNull(obj)) return undefined;
         const r = /\[\d+\]$/g;
         const isArray = r.test(name);
         let n = name;
@@ -294,10 +294,7 @@ export default class GSData {
      * @returns {*}
 	 */
 	static readFromObject(obj, name) {
-		name.split('.')
-        .filter(v => !GSUtil.isNull(v))
-        .forEach(v => obj = GSData.readFromProperty(obj, v));
-		return obj;
+		return name ? name.split('.').reduce((a, v) => GSData.readFromProperty(a, v), obj) : undefined;
 	}
 	
     /**
@@ -307,11 +304,7 @@ export default class GSData {
      * @returns {Boolean}
      */
 	static objectPathExist(obj, name) {
-        if (!name) return false;
-		name.split('.')
-        .filter(v => !GSUtil.isNull(v))
-        .forEach(v => obj = GSData.readFromProperty(obj, v));
-		return obj ? true : false;
+        return GSData.readFromObject(obj, name) !== undefined;
 	}
 
     static {

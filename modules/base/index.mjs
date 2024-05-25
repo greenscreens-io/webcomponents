@@ -2,6 +2,7 @@
  * Copyright (C) 2015, 2022 Green Screens Ltd.
  */
 
+export { default as GSVersion } from "./GSVersion.mjs";
 export { default as GSLog } from "./GSLog.mjs";
 export { default as GSID } from "./GSID.mjs";
 export { default as GSAbortController } from "./GSAbortController.mjs";

@@ -726,7 +726,6 @@ export default class GSDOM {
 	 */
 	static fromObject(owner, obj, qry = 'input, textarea, select, output') {
 		obj = GSUtil.toJson(obj);
-		if (Object.entries(obj).length === 0) return;
 		const root = GSDOM.unwrap(owner);
 		const list = GSDOM.queryAll(root, qry); // root.querySelectorAll(qry);
 		Array.from(list).forEach(el => GSDOM.fromObject2Element(el, obj));
@@ -738,8 +737,7 @@ export default class GSDOM {
 	 * @param {object} obj Data source key/value pairs
 	 */	
 	static fromObject2Element(el, obj) {
-		const has = GSData.objectPathExist(obj, el.name);		
-		if (GSUtil.isNull(has)) return;		
+		if (!GSData.objectPathExist(obj, el?.name)) return;
 		const val = GSData.readFromObject(obj, el.name);
 		if (el.type !== 'radio') {
 			//GSDOM.fromValue(el, obj[el.name]);

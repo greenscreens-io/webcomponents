@@ -1,6 +1,14 @@
 # [WebComponents](https://webcomponents.greenscreens.ltd/) for [Bootstrap 5.2.0+](https://getbootstrap.com/)
 
-# Development v1.9.1 (23.01.2024.)
+# Release v1.9.2 (23.01.2024.)
+ - Fix GSUtil json check function
+ - Fix GSData JSON object path 
+ - Fix GSDOM JSON data in/out for HTMLInputElements
+ - Fix GSDialog safe check
+ - Add version based cachgin for GSLaoder
+ - Add GSVersion class
+
+# Release v1.9.1 (23.01.2024.)
  - Fix - GSEvents callback timeout caller
  - Fix - GSModal wait events synced with GSDialog
  - Fix - GSData.readFromObject invalid variable
