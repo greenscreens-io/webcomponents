@@ -2,6 +2,7 @@
  * Copyright (C) 2015, 2024 Green Screens Ltd.
  */
 
+export * from "./GSVersion.mjs";
 export * from "./style.mjs";
 export * from "./GSAbortController.mjs";
 export * from "./GSAdoptedEngine.mjs";

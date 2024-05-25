@@ -433,26 +433,19 @@ export class GSData {
      * @param {String} name 
      * @returns {*}
      */
-    static readFromObject(obj, name) {
-        name.split('.')
-            .filter(v => !GSUtil.isNull(v))
-            .forEach(v => obj = GSData.readFromProperty(obj, v));
-        return obj;
-    }
-
+	static readFromObject(obj, name) {
+		return name ? name.split('.').reduce((a, v) => GSData.readFromProperty(a, v), obj) : undefined;
+	}
+	
     /**
      * Check if named path exist within the object
      * @param {Object} obj 
      * @param {String} name 
      * @returns {Boolean}
      */
-    static objectPathExist(obj, name) {
-        if (!name) return false;
-        return name.split('.')
-            .map(v => GSData.readFromProperty(obj, v, true))
-            .filter(v => !GSUtil.isNull(v))
-            .length > 0;
-    }
+	static objectPathExist(obj, name) {
+        return GSData.readFromObject(obj, name) !== undefined;
+	}
 
     static {
         Object.seal(GSData);

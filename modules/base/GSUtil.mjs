@@ -140,7 +140,7 @@ export class GSUtil {
 	 * @returns {Boolean}
 	 */
 	static isJsonType(val = '') {
-		return val && Array.isArray(val) || typeof val == "object";
+		return !GSUtil.isNull(val) && (Array.isArray(val) || typeof val == "object");
 	}
 
 	/**

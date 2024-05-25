@@ -11,6 +11,7 @@ import { GSDOM } from "./GSDOM.mjs";
 import { GSFunction } from "./GSFunction.mjs";
 import { GSLog } from "./GSLog.mjs";
 import { GSUtil } from "./GSUtil.mjs";
+import { GSVersion } from "./GSVersion.mjs";
 
 /**
  * A set of static functions used for loading resources
@@ -20,6 +21,7 @@ export class GSLoader {
 
     static TEMPLATE_URL = globalThis.GS_TEMPLATE_URL || location.origin;
     static NO_CACHE = false;
+    static UNIQUE = GSVersion.build;
 
     static {
         if (!globalThis.GS_TEMPLATE_URL) {
@@ -65,7 +67,11 @@ export class GSLoader {
         const uri = new URL(path);
 
         // to handle caching
-        if (!base && GSLoader.NO_CACHE) uri.searchParams.append('_dc', Date.now());
+        //if (!base && GSLoader.NO_CACHE) uri.searchParams.append('_dc', Date.now());
+        if (!base) {
+            const val = GSLoader.NO_CACHE ? Date.now() : GSLoader.UNIQUE;
+            uri.searchParams.append('_dc', val);
+        }
 
         return uri.href;
     }
@@ -225,3 +231,4 @@ export class GSLoader {
     }
 
 }
+
