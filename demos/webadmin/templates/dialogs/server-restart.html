@@ -1,0 +1,13 @@
+<form slot="body" is="gs-ext-form" id="form-main" class="flex-fill" novalidate="">
+    
+    <gs-form-group css="m-1" name="type" label="Restart type" 
+		description="If 'restart' selected, manual server start might be required.">
+    	<template>
+			<select class="form-select" id="type" name="type" required>
+                <option value="false">Reload</option>
+            	<option value="true">Restart</option>
+            </select>
+        </template>
+    </gs-form-group>
+    
+</form>

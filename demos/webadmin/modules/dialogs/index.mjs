@@ -1,6 +1,7 @@
 
 import './GSAsbtractDialog.mjs';
 import './GSAbout.mjs';
+import './GSRestart.mjs';
 import './GSCertClient.mjs';
 import './GSCertOpt.mjs';
 import './GSCertRevoke.mjs';

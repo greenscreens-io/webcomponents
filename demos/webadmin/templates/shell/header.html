@@ -23,10 +23,11 @@
             </gs-dropdown>
         </div>
         <div class="d-flex align-items-center fs-5">        
-            <gs-button id="action" action="restart" select="false" aria-label="Restart Server"
-            css="text-bg-light" icon="bi bi-arrow-repeat fs-3"></gs-button>            
+            <gs-button id="action" _action="restart" data-attr="{visible:true}" 
+            inject="gs-admin-dialog-restart"  target="#dialogs"
+            select="false" css="text-bg-light" icon="bi bi-arrow-repeat fs-3"></gs-button>            
             <gs-tooltip placement="bottom" title="Restart server"></gs-tooltip>
-        </div> 
+        </div>    
         <div class="d-flex align-items-center fs-5">        
             <a id="migrate" class="btn" data-attr="{visible:true}" data-inject="gs-admin-dialog-migrate" data-bs-target="#dialogs">
             		<i class="bi bi-database fs-3"></i>

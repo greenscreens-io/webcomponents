@@ -88,11 +88,8 @@ export default class GSButton extends GSElement {
         const icon = me.icon ? `<i class="${me.icon}"></i>` : '';
         // const content = me.rtl ? `${me.title} ${icon}` : `${icon} ${me.title}`;
         const content = `${icon} ${me.title}`;
-        const action = GSItem.getActionAttr(me);
-        const dissmis = GSItem.getDismissAttr(me);
-        const target = GSItem.getTargetAttr(me);
-        const toggle = GSItem.getToggleAttr(me);
-        return `<button type="${me.type}" class="btn ${me.css}" ${action} ${toggle} ${target} ${dissmis} ${disabled} title="${me.comment}" aria-label="${me.ariaLabel}">${content}</button>`;
+        const opts = GSItem.getAttrs(me);
+        return `<button type="${me.type}" class="btn ${me.css}" ${opts} ${disabled} title="${me.comment}" aria-label="${me.ariaLabel}">${content}</button>`;
     }
 
     get css() {
