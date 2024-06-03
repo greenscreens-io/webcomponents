@@ -9,6 +9,7 @@
 
 import { GSDynamicStyle } from "./GSDynamicStyle.mjs";
 import { GSID } from "./GSID.mjs";
+import { GSLog } from "./GSLog.mjs";
 
 import { gsstyles } from "./style.mjs";
 
@@ -135,7 +136,7 @@ export class GSCacheStyles {
 			GSCacheStyles.set(hash, css);
 			document.adoptedStyleSheets = GSCacheStyles.styles;
 		} catch (e) {
-			console.log(e);
+			GSLog.error(null, e);
 		}
 	}
 

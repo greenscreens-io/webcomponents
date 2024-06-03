@@ -195,7 +195,7 @@ export class GSLoader {
         try {
             if (url) return GSLoader.load(url, method, headers, asjson, body);
         } catch (e) {
-            GSLog.error(this, e);
+            GSLog.error(null, e);
         }
         if (dft) return dft;
         return asjson ? {} : '';

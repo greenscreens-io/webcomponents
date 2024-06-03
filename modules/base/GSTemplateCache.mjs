@@ -192,7 +192,7 @@ export class GSTemplateCache {
 			template = GSFunction.isFunctionAsync(fn) ? await fn() : fn();
 			return me.initTemplate(cached, name, template);
 		} catch (e) {
-			GSLog.error(me, e);
+			GSLog.error(null, e);
 		}
 		return fn;
 	}
