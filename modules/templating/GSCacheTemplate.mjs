@@ -167,7 +167,7 @@ export default class GSCacheTemplate {
 			template = await GSLoader.loadTemplate(tpl);
 			return me.initTemplate(cached, name, template);
 		} catch (e) {
-			GSLog.error(me, e);
+			GSLog.error(null, e);
 		}
 		return false;
 	}
@@ -192,7 +192,7 @@ export default class GSCacheTemplate {
 			template = GSFunction.isFunctionAsync(fn) ? await fn() : fn();
 			return me.initTemplate(cached, name, template);
 		} catch (e) {
-			GSLog.error(me, e);
+			GSLog.error(null, e);
 		}
 		return fn;
 	}

@@ -2,6 +2,8 @@
  * Copyright (C) 2015, 2022 Green Screens Ltd.
  */
 
+import GSLog from "../base/GSLog.mjs";
+
 /**
  * A module loading GSBase class
  * @module head/GSBase
@@ -313,7 +315,7 @@ export default class GSBase extends HTMLElement {
 				uri.searchParams.append('_dc', Date.now());
 				url = uri.href;
 			} catch (e) {
-				console.log(e);
+				GSLog.error(null, e);
 			}
 		}
 

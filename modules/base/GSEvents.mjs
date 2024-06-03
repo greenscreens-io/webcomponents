@@ -70,7 +70,7 @@ export default class GSEvents {
 				await GSEvents.wait(globalThis.window, 'load', timeout, prevent); 
 				GSEvents.#loaded = true;
 			} catch(e) {
-				console.log(e);
+				GSLog.error(null, e);
 			}
 		}
 		// await GSUtil.timeout(timeout);

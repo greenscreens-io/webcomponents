@@ -597,7 +597,7 @@ export default class GSElement extends HTMLElement {
 					try {
 						me.#scheduledAttributes(...me.#queue.shift());
 					} catch(e) {
-						console.log(e);
+						GSLog.error(null, e);
 					}
 				}
 				me.#queued = false;

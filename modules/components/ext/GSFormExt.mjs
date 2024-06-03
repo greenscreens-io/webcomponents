@@ -106,7 +106,7 @@ export default class GSFormExt extends HTMLFormElement {
                 try {
                     me.attributeCallback(...me.#queue.shift());
                 } catch(e) {
-                    console.log(e);
+                    GSLog.error(null, e);
                 }
             }
             me.#queued = false;

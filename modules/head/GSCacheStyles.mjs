@@ -7,6 +7,7 @@
  * @module head/GSCacheStyles
  */
 
+import GSLog from "../base/GSLog.mjs";
 import GSBase from "./GSBase.mjs";
 import GSDynamicStyle from "./GSDynamicStyle.mjs";
 
@@ -123,7 +124,7 @@ export default class GSCacheStyles {
 			GSCacheStyles.set(hash, css);
 			document.adoptedStyleSheets = GSCacheStyles.styles;
 		} catch (e) {
-			console.log(e);
+			GSLog.error(null, e);
 		}
 	}
 

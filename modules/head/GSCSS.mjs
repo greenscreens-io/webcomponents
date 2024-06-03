@@ -10,6 +10,7 @@
 /**
  * Adoptable CSS - css template for WebComponents
  */
+import GSLog from "../base/GSLog.mjs";
 import GSBase from "./GSBase.mjs";
 import GSCacheStyles from "./GSCacheStyles.mjs";
 
@@ -65,7 +66,7 @@ export default class GSCSS extends GSBase {
 			if (sheet) GSBase.sendSuspendedEvent(document, 'gs-style', sheet);
 		} catch (e) {
 			GSCacheStyles.remove(me.order);
-			console.log(e);
+			GSLog.error(null, e);
 		}
 
 	}
