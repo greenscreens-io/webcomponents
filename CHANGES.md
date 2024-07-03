@@ -5,6 +5,7 @@
  - Fix GSData JSON object path 
  - Fix GSDOM JSON data in/out for HTMLInputElements
  - Fix GSDialog safe check
+ - Add GSDialog opened list
  - Add version based cachgin for GSLaoder
  - Add GSVersion class
 
