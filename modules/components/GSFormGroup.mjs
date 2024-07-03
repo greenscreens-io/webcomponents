@@ -57,9 +57,9 @@ export default class GSFormGroup extends GSElement {
 
    attributeCallback(name = '', oldValue = '', newValue = '') {
       const me = this;
-      if (name === 'label') me.#labelEl.innerHTML = newValue;
-      if (name === 'value') me.#inputEl.value = newValue;
-      if (name === 'disabled') me.#inputEl.disabled = !GSUtil.isNull(newValue);
+      if (name === 'label' && me.#labelEl) me.#labelEl.innerHTML = newValue;
+      if (name === 'value' && me.#inputEl) me.#inputEl.value = newValue;
+      if (name === 'disabled' && me.#inputEl) me.#inputEl.disabled = !GSUtil.isNull(newValue);
    }
 
 
