@@ -10,7 +10,6 @@
 import GSUtil from "../base/GSUtil.mjs";
 import GSElement from "../base/GSElement.mjs";
 import GSDOM from "../base/GSDOM.mjs";
-import GSEvents from "../base/GSEvents.mjs";
 import GSAttr from "../base/GSAttr.mjs";
 import GSItem from "../base/GSItem.mjs";
 
@@ -84,7 +83,7 @@ export default class GSAlert extends GSElement {
 
     attributeCallback(name = '', oldValue = '', newValue = '') {
         const me = this;
-        const el = me.self.firstElementChild;
+        const el = me.self?.firstElementChild;
 
         if (name == 'message') GSDOM.setHTML(me.query('slot'), me.message);
 
