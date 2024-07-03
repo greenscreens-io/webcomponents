@@ -331,6 +331,11 @@ export class GSDialogElement extends GSElement {
     return stack[stack.length - 1];
   }
 
+  static get opened() {
+    GSDialogElement.#updateStack();
+    return Array.from(GSDialogElement.#STACK);
+  }
+
   static {
     this.define('gs-dialog');
   }
