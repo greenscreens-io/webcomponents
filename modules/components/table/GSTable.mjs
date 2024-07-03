@@ -272,7 +272,7 @@ export default class GSTable extends GSElement {
 
     #setCSS(qry, val) {
         if (!qry) return;
-        this.findAll(qry, true).forEach(el => {
+        this.queryAll(qry, true).forEach(el => {
             GSAttr.set(el, 'class', val);
         });
     }
