@@ -52,6 +52,11 @@ export default class GSDialog extends GSElement {
     return GSDialog.#STACK[GSDialog.#STACK.length - 1];
   }
 
+  static get opened() {
+    GSDialog.#updateStack();
+    return Array.from(GSDialog.#STACK);
+  }
+
   constructor() {
     super();
   }
