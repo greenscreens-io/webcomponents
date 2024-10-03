@@ -14,6 +14,7 @@ NOTE: Please see [Install](../install.md) document for instructions on how to ge
 | Name               | Description                                                   |
 |--------------------|---------------------------------------------------------------|
 | anchor             | Where to attach child elements when Shadow DOM not used       |
+| browser            | Browser type under which to render element                    |
 | environment        | Element will render only under specified environment          |
 | flat               | Element will not use Shadow DOMif set to 'true'               |
 | onready            | Function to be called afre render                             |
@@ -41,6 +42,11 @@ NOTE: Please see [Install](../install.md) document for instructions on how to ge
     *  apple - render on Mac OS            
     *  linux - render on Linux OS
     *  windows - render on MS Windows OS
+
+ - **browser** 
+    *  chrome - render only on Google Chrome
+    *  edge - render only on MS Edge
+    *  firefox - render only on Mozilla Firefox
 
 <br>
 
