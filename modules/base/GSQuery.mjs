@@ -67,7 +67,7 @@ export class GSQuery {
     static wrap(node) {
         if (GSDOM.isHTMLElement(node)) return GSQuery.instance(node);
         if (!Array.isArray(node)) return node;
-        node = node.map(element => GSQuery.instance(element));
+        node = node.map(element => GSQuery.wrap(element));
         return GSQuery.instance(node);
     }
 
