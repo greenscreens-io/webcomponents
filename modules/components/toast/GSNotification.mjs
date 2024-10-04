@@ -164,8 +164,7 @@ export default class GSNotification extends GSElement {
 
   #showWeb(title, message, css, closable, timeout, delay) {
     const me = this;
-    // NOT used, dialog issue delay="${delay}"
-    const tpl = `<gs-toast slot="content" css="${css}"  closable="${closable}" timeout="${timeout}" message="${message}" title="${title}"></gs-toast>`;
+    const tpl = `<gs-toast slot="content" css="${css}"  closable="${closable}" delay="${delay}" timeout="${timeout}" message="${message}" title="${title}"></gs-toast>`;
     const el = GSDOM.parse(tpl, true);
     requestAnimationFrame(async () => {
       await me.#delay(delay);
@@ -200,8 +199,12 @@ export default class GSNotification extends GSElement {
   #clearNative() {
     const me = this;
     me.notification.close();
-    me.owner.#list.delete(me.notification);
+    me.owner.removeNative(me.notification);
     if(me.notification.iid) clearTimeout(me.notification.iid);
+  }
+
+  removeNative(notification) {
+    this.#list.delete(notification);
   }
 
   /**
