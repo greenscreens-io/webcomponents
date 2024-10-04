@@ -249,7 +249,7 @@ export default class BaseViewUI extends GSElement {
 				await me.store.load();
 			}
 			if (e === true) me.#table.resize();
-			Utils.notify.info('', 'Data refreshed!', false, 2, 0);
+            if (e?.detail?.action === 'refresh') Utils.notify.info('', 'Data refreshed!', false, 2, 0);
 		} catch (e) {
 			me.onError(e);
 		} finally {

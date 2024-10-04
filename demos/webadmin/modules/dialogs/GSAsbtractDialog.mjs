@@ -111,12 +111,14 @@ export default class GSAsbtractDialog extends GSDialog {
         try {
             me.disable();
             sts = await me.onData(e.detail.data);
-            Utils.notify.secondary('', 'Changes applied!', false, 0.75, 0.2);
         } catch (e) {
             Utils.handleError(e);
         } finally {
             me.enable();
-            if (sts) me.close();
+            if (sts) {
+                me.close();
+                //Utils.notify.secondary('', 'Changes applied!', false, 0.75);
+            }
         }
     }
 
