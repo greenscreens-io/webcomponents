@@ -1,12 +1,21 @@
 # [WebComponents](https://webcomponents.greenscreens.ltd/) for [Bootstrap 5.2.0+](https://getbootstrap.com/)
 
+# Release v1.9.4 (04.10.2024.)
+ - SPA Admin demo improvements
+ - Fix GSNotification - delays
+ - Fix GSDialog visibility changes and notifications
+ - Add GSDialog onAfterOpen and onAfterClose functions
+ 
+ # Release v1.9.3 
+ - Minor fixes
+
 # Release v1.9.2 (23.01.2024.)
  - Fix GSUtil json check function
  - Fix GSData JSON object path 
  - Fix GSDOM JSON data in/out for HTMLInputElements
  - Fix GSDialog safe check
  - Add GSDialog opened list
- - Add version based cachgin for GSLaoder
+ - Add version based caching for GSLaoder
  - Add GSVersion class
 
 # Release v1.9.1 (23.01.2024.)
