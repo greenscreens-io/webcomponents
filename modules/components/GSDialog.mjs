@@ -71,18 +71,18 @@ export default class GSDialog extends GSElement {
     me.#update();
     if (name === 'visible') {
       const dlg = me.#dialog;
-      if (me.visible) {
-        if (dlg && !dlg.open) {
-          dlg.showModal();
-          GSDialog.#STACK.push(me);
-          me.emit('change');
-        }
-        me.focusable()?.focus();
-      } else {
+      if (!dlg) return;
+      const cfg = { type: 'dialog', ok: me.visible };
+      if (me.visible && !dlg.open) {
+        dlg.showModal();
+        GSDialog.#STACK.push(me);
+        me.emit('change');
+        me.#notify(cfg);
+      } else  if (!me.visible && dlg.open) {
         dlg?.close();
         GSDialog.#STACK.pop();
+        me.#notify(cfg);
       }
-      me.emit('visible', { type: 'dialog', ok: me.visible }, true, true);
     }
   }
 
@@ -93,6 +93,7 @@ export default class GSDialog extends GSElement {
     me.attachEvent(me, 'click', me.#onClick.bind(me));
     me.attachEvent(me, 'form', me.#onForm.bind(me));
     me.attachEvent(me, 'change', me.#onChange.bind(me));
+    me.attachEvent(me, 'visible', me.#onVisible.bind(me));
     me.attachEvent(me.#dialog, 'keydown', me.#onEscape.bind(me));
     me.attachEvent(me.#dialog, 'close', me.#onClose.bind(me));
     me.attachEvent(me.#dialog, 'cancel', me.#onCancel.bind(me));
@@ -104,9 +105,21 @@ export default class GSDialog extends GSElement {
     if (form && data) form.data = data;
   }
 
-  #onChange() {
+  #notify(cfg) {
+    const me = this;
+    GSEvents.waitAnimationFrame(() =>{
+      me.emit('visible', cfg, true, true);
+    });
+  }
+
+  #onChange(e) {
     const me = this;
     me.#buttonOkEl.disabled =  me.forms.filter(form => !form.isValid).length > 0;
+  }
+
+  #onVisible(e) {
+    const me = this;
+    me.visible ? me.afterOpen() : me.afterClose();
   }
 
   #onForm(e) {
@@ -125,8 +138,8 @@ export default class GSDialog extends GSElement {
   #onEscape(e) {
     const me = this;
     if (e.key === 'Escape') {
+      GSEvents.prevent(e);
       if (me.cancelable || me.escapable) {
-        GSEvents.prevent(e);
         me.close();
       }
     }
@@ -288,6 +301,14 @@ export default class GSDialog extends GSElement {
 
   async beforeClose(data, ok) {
     return true;
+  }
+
+  async afterOpen() {
+    
+  }
+
+  async afterClose() {
+    
   }
 
   get #buttonOkEl() {

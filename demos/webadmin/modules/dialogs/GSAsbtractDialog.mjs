@@ -17,6 +17,8 @@ export default class GSAsbtractDialog extends GSDialog {
         Object.seal(GSAsbtractDialog);
     }
 
+    #data = null;
+
     constructor() {
         super();
     }
@@ -62,10 +64,13 @@ export default class GSAsbtractDialog extends GSDialog {
      * Override parent class method
      * @param {*} data 
      */
-    open(data) {
-        const me = this;
-        me.#update(data);
-        super.open(data);
+	open(data) {
+		this.#data = data;
+		super.open(data);
+	}
+
+    afterOpen() {
+        this.#update(this.#data);
     }
 
     /**
