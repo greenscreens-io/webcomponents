@@ -9,11 +9,11 @@
 
 import GSID from "../base/GSID.mjs";
 import GSUtil from "../base/GSUtil.mjs";
-import GSElement from "../base/GSElement.mjs";
 import GSEvents from "../base/GSEvents.mjs";
 import GSAttr from "../base/GSAttr.mjs";
 import GSDOM from "../base/GSDOM.mjs";
 import GSCSSMap from "../base/GSCSSMap.mjs";
+import GSElement from "../base/GSElement.mjs";
 import GSCacheStyles from "../head/GSCacheStyles.mjs";
 
 /**
