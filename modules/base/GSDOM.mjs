@@ -21,6 +21,8 @@ export default class GSDOM {
 	static QUERY_FOCUSABLE = "a[href]:not([tabindex='-1']),area[href]:not([tabindex='-1']),input:not([disabled]):not([tabindex='-1']),select:not([disabled]):not([tabindex='-1']),textarea:not([disabled]):not([tabindex='-1']),button:not([disabled]):not([tabindex='-1']),iframe:not([tabindex='-1']),[tabindex]:not([tabindex='-1']),[contentEditable=true]:not([tabindex='-1'])";
 	static QUERY_INPUT = "input:not([type='hidden']):not(disabled):not(readonly),select:not([type='hidden']):not(disabled):not(readonly),textarea:not([type='hidden']):not(disabled):not(readonly)";
 	static #FORMEL = ['INPUT', 'SELECT', 'TEXTAREA', 'OUTPUT'];
+	//static #CLEANUP1 = /(\n*\t*)*(?=\n\t*)/g
+	static #CLEANUP1 = /(?:\n+\t*)+/g
 
 	// Timeout for removing element
 	static SPEED = 300;
@@ -920,7 +922,7 @@ export default class GSDOM {
 	static cleanHTML(root) {
 		const ts = GSDOM.textNodesUnder(root || document).filter(t => t.wholeText.trim().length === 0);
 		ts.filter(el => el.nextSibling instanceof Text).forEach(el => el.remove());
-		ts.forEach(t => t.nodeValue = t.wholeText.replaceAll(/\u0020{4}/g, '\t').replaceAll(/(\n*\t*)*(?=\n\t*)/g, ''));
+		ts.forEach(t => t.nodeValue = t.wholeText.replaceAll(/\u0020{4}/g, '\t').replaceAll(GSDOM.#CLEANUP1, ''));
 	}
 
 	/**

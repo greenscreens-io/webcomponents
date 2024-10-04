@@ -1,5 +1,8 @@
 # [WebComponents](https://webcomponents.greenscreens.ltd/) for [Bootstrap 5.2.0+](https://getbootstrap.com/)
 
+# Release v1.9.5 (TBD)
+ - GSDOM cleanup regex performance improvement
+
 # Release v1.9.4 (04.10.2024.)
  - SPA Admin demo improvements
  - Fix GSNotification - delays
