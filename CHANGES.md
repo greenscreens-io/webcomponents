@@ -2,6 +2,7 @@
 
 # Release v1.9.5 (TBD)
  - GSDOM cleanup regex performance improvement
+ - GSAbortController fix timeout function
 
 # Release v1.9.4 (04.10.2024.)
  - SPA Admin demo improvements
