@@ -27,6 +27,6 @@ export default class GSAbortController extends AbortController {
     }
 
     wait(timeout = 0) {
-        return GSEvents.wait(me.signal, 'abort', timeout);
+        return GSEvents.wait(this.signal, 'abort', timeout);
     }
 }
