@@ -14,7 +14,7 @@ import GSDOM from "../../base/GSDOM.mjs";
 import GSDate from "../../base/GSDate.mjs";
 
 /**
- * Bootstrap table bod renderer
+ * Bootstrap table body renderer
  * <tbody is="gs-tbody"></tbody>
  * @class
  * @extends {HTMLTableSectionElement}

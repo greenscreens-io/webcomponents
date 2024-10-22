@@ -46,10 +46,16 @@ export default class GSDialog extends GSElement {
     GSDialog.#STACK = GSDialog.#STACK.filter(v => v.isConnected);
   }
 
+  /**
+   * Return number of dialogs
+   */
+  static get size() {
+    return GSDialog.#STACK.length;
+  }
+
   static get top() {
     GSDialog.#updateStack();
-    if (GSDialog.#STACK.length === 0) return null;
-    return GSDialog.#STACK[GSDialog.#STACK.length - 1];
+    return  GSDialog.size === 0 ? null : GSDialog.#STACK[GSDialog.size - 1];
   }
 
   static get opened() {
