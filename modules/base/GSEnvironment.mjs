@@ -8,7 +8,7 @@
  */
 
 /**
- * A set of static functions used for detecting browser encironment
+ * A set of static functions used for detecting browser environment
  * such as OS, orientation, browser type etc.
  * @class
  */
