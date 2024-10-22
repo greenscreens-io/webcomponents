@@ -324,11 +324,17 @@ export class GSDialogElement extends GSElement {
     GSDialogElement.#STACK = GSDialogElement.#STACK.filter(v => v.isConnected);
   }
 
+  /**
+   * Return number of dialogs in a stack
+   */
+  static get size() {
+    return GSDialogElement.#STACK.length;
+  }
+
   static get top() {
     GSDialogElement.#updateStack();
-    const stack = GSDialogElement.#STACK;
-    if (stack.length === 0) return null;
-    return stack[stack.length - 1];
+    const size = GSDialogElement.size;
+    return size === 0 ? null :  GSDialogElement.#STACK[size - 1];
   }
 
   static get opened() {
