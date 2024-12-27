@@ -130,6 +130,24 @@ export class GSUtil {
 			.replace('2', 'D');
 	}
 
+	/**
+	 * Sanitize text for HTML generation
+	 * @param {string} string 
+	 * @returns 
+	 */
+	static sanitize(string = '') {
+		const map = {
+			'&': '&amp;',
+			'<': '&lt;',
+			'>': '&gt;',
+			'"': '&quot;',
+			"'": '&#x27;',
+			"/": '&#x2F;',
+		};
+		const reg = /[&<>"'/]/ig;
+		return string.replace(reg, (match) => (map[match]));
+	}
+		
 	static isJsonString(val = '') {
 		return typeof val == 'string' && (val.startsWith('{') || val.startsWith('['));
 	}
