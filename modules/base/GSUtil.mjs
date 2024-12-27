@@ -144,6 +144,24 @@ export default class GSUtil {
 	}
 
 	/**
+	 * Sanitize text for HTML generation
+	 * @param {string} string 
+	 * @returns 
+	 */
+	static sanitize(string = '') {
+		const map = {
+			'&': '&amp;',
+			'<': '&lt;',
+			'>': '&gt;',
+			'"': '&quot;',
+			"'": '&#x27;',
+			"/": '&#x2F;',
+		};
+		const reg = /[&<>"'/]/ig;
+		return string.replace(reg, (match) => (map[match]));
+	}
+
+	/**
 	 * Convert parameterized string literal as template to string 
 	 * 
 	 * 	 const template = 'Example text: ${text}';
@@ -224,10 +242,10 @@ export default class GSUtil {
 	 * @returns {Promise<void>}
 	 */
 	static async timeout(time = 0, signal) {
-        signal = GSUtil.isNumber(signal) ? AbortSignal.timeout(signal) : signal;
+		signal = GSUtil.isNumber(signal) ? AbortSignal.timeout(signal) : signal;
 		return new Promise((resolve, reject) => {
 			const iid = setTimeout(resolve.bind(null, true), time);
-			if(signal instanceof AbortSignal) {
+			if (signal instanceof AbortSignal) {
 				signal.addEventListener('abort', () => {
 					clearTimeout(iid);
 					reject(new Error('aborted timeout'));

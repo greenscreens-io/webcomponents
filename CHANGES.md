@@ -1,8 +1,9 @@
 # [WebComponents](https://webcomponents.greenscreens.ltd/) for [Bootstrap 5.2.0+](https://getbootstrap.com/)
 
-# Release v1.9.5 (TBD)
+# Release v1.9.5 (27.12.2204)
  - GSDOM cleanup regex performance improvement
  - GSAbortController fix timeout function
+ - GSUtil add text sanitize function
 
 # Release v1.9.4 (04.10.2024.)
  - SPA Admin demo improvements
