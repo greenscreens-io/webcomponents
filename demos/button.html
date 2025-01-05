@@ -21,8 +21,10 @@
     <script type="module" src="/webcomponents/modules/index.mjs"></script>
     <script type="module" src="/webcomponents/modules/components/ext/GSDataAttr.mjs"></script>
     <script type="module" src="/webcomponents/modules/components/GSButton.mjs"></script>
+    <script type="module" src="/webcomponents/modules/components/GSIcon.mjs"></script>
 
     <gs-css url="/webcomponents/assets/css/io.greenscreens.bootstrap.css"></gs-css>
+    <gs-css url="/webcomponents/assets/css/animate.css" notheme="true"></gs-css>
     <gs-css url="/webcomponents/assets/icons/bootstrap-icons.css" notheme="true"></gs-css>
 
 </head>
@@ -34,11 +36,11 @@
     <div class="m-4 p-1 bg-light border shadow-sm">
         <a class="btn btn-primary m-1" data-bs-toggle="button" href="#b1" title="Toggle button with A tag">Toggle
             (A)</a>
-        <gs-button css="btn-primary m-1" title="Toggle (GS-BUTTON)" toggle="button" target="#b1" icon="bi-alarm me-1"
+        <gs-button css="btn-primary m-1" title="Toggle (GS-BUTTON)" toggle="button" target="#b1" icon="alarm me-1"
             comment="Uses GS-BUTTON attribute to show/hide BUTTON 1"></gs-button>
         <gs-button css="btn-primary m-1" title="Toggle Both (GS-BUTTON)" toggle="button" target="#b1,#b2"
-            icon="bi-alarm me-1" comment="Uses GS-BUTTON attribute to show/hide BUTTON 1"></gs-button>
-        <gs-button css="btn-secondary m-1" title="Close (BUTTON 2)" dismiss="alert" target="#b2" icon="bi-alarm ms-1"
+            icon="alarm me-1" hover="gs-spin" comment="Uses GS-BUTTON attribute to show/hide BUTTON 1"></gs-button>
+        <gs-button css="btn-secondary m-1" title="Close (BUTTON 2)" dismiss="alert" target="#b2" icon="alarm ms-1"
             rtl="true" comment="Uses GS-BUTTON attribute to dismiss BUTTON 2"></gs-button>
         <gs-button css="btn-primary m-1" title="Close Both" dismiss="alert" toggle="button" target="#b1,#b2"
             comment="Uses GS-BUTTON attribute to show/hide both buttons"></gs-button>

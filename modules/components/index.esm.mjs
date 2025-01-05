@@ -16,6 +16,7 @@ export { default as GSCopyright } from "./GSCopyright.mjs";
 export { default as GSDialog } from "./GSDialog.mjs";
 export { default as GSDropdown } from "./GSDropdown.mjs";
 export { default as GSFormGroup } from "./GSFormGroup.mjs";
+export { default as GSIcon } from "./GSIcon.mjs";
 export { default as GSLayout } from "./GSLayout.mjs";
 export { default as GSList } from "./GSList.mjs";
 export { default as GSMenu } from "./GSMenu.mjs";

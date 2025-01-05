@@ -85,12 +85,32 @@ export default class GSButton extends GSElement {
     get template() {
         const me = this;
         const disabled = me.disable ? 'disabled' : '';
-        const icon = me.icon ? `<i class="${me.icon}"></i>` : '';
+        const icon = me.icon ? `<gs-icon icon="${me.icon}" hover="${me.hover}"></gs-icon>` : '';
         // const content = me.rtl ? `${me.title} ${icon}` : `${icon} ${me.title}`;
         const content = `${icon} ${me.title}`;
         const opts = GSItem.getAttrs(me);
         return `<button type="${me.type}" class="btn ${me.css}" ${opts} ${disabled} title="${me.comment}" aria-label="${me.ariaLabel}">${content}</button>`;
     }
+
+    // icon attributes
+    
+    get icon() {
+        return GSAttr.get(this, 'icon');
+    }
+
+    set icon(val = '') {
+        return GSAttr.set(this, 'icon', val);
+    }
+
+    get hover() {
+        return GSAttr.get(this, 'hover');
+    }
+
+    set hover(val = '') {
+        return GSAttr.set(this, 'hover', val);
+    }
+
+    // button attributes
 
     get css() {
         const active = this.#state ? 'active' : '';
@@ -115,14 +135,6 @@ export default class GSButton extends GSElement {
 
     set dismiss(val = '') {
         return GSAttr.set(this, 'dismiss', val);
-    }
-
-    get icon() {
-        return GSAttr.get(this, 'icon');
-    }
-
-    set icon(val = '') {
-        return GSAttr.set(this, 'icon', val);
     }
 
     get target() {
