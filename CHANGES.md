@@ -1,6 +1,12 @@
 # [WebComponents](https://webcomponents.greenscreens.ltd/) for [Bootstrap 5.2.0+](https://getbootstrap.com/)
 
-# Release v1.9.5 (27.12.2204)
+# Release v1.9.6 (06.01.2025.)
+ - GSIcon added
+ - GSButton update for GSIcon
+ - Demos updated for GSIcon
+ - Bootstrap icons updated
+
+# Release v1.9.5 (27.12.2024.)
  - GSDOM cleanup regex performance improvement
  - GSAbortController fix timeout function
  - GSUtil add text sanitize function
