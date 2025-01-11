@@ -9,6 +9,8 @@
 
 import GSElement from "../base/GSElement.mjs";
 import GSAttr from "../base/GSAttr.mjs";
+import GSDOM from "../base/GSDOM.mjs";
+import GSUtil from "../base/GSUtil.mjs";
 
 /**
  * 
@@ -39,10 +41,27 @@ export default class GSIcon extends GSElement {
             me.attachEvent(me.self, 'mouseover', me.#onMouseOver.bind(me));
             me.attachEvent(me.self, 'mouseout', me.#onMouseOut.bind(me));
         }
+        if (me.click) {
+            me.attachEvent(me.self, 'click', me.#onMouseClick.bind(me));         
+        }        
+    }
+
+    async #onMouseClick(e) {
+        const me = this;
+        const delay = GSUtil.asNum(me.dataset.delay, 0);
+        GSDOM.toggleClass(me.self, me.hover, false);
+        GSDOM.toggleClass(me.self, me.click, false);
+        GSDOM.toggleClass(me.self, me.click, true);
+        if (delay > 0) {
+            await GSUtil.timeout(delay * 1000);
+            GSDOM.toggleClass(me.self, me.click, false);
+        }
     }
 
     #onMouseOver(e) {
-        GSDOM.toggleClass(this.self, this.hover, true);
+        const me = this;
+        GSDOM.toggleClass(me.self, me.click, false);
+        GSDOM.toggleClass(me.self, me.hover, true);
     }
 
     #onMouseOut(e) {
@@ -92,6 +111,18 @@ export default class GSIcon extends GSElement {
     set hover(val = '') {
         return GSAttr.set(this, 'hover', val);
     }
+
+
+    /**
+     * Animation css when mouse click
+     */
+    get click() {
+        return GSAttr.get(this, 'click');
+    }
+
+    set click(val = '') {
+        return GSAttr.set(this, 'click', val);
+    }    
 
     /**
      * Prevent shadow dom
