@@ -12,6 +12,8 @@ import { dataset } from '../directives/dataset.mjs';
 export class GSLinklement extends GSElement {
 
   static properties = {
+    clickCss: { attribute : 'click-css'},
+    hoverCss: { attribute : 'hover-css'},
     autofocus: { type: Boolean },
     disabled: { type: Boolean, reflect: true },
     size: { type: Number },
@@ -26,6 +28,7 @@ export class GSLinklement extends GSElement {
   };
 
   #refEl = createRef();
+  #refIco = createRef();
 
   constructor() {
     super();
@@ -50,6 +53,8 @@ export class GSLinklement extends GSElement {
         target="${ifDefined(me.target)}"
         class="${classMap(me.renderClass())}" 
         ?disabled=${me.disabled} 
+        @mouseover="${me.#onMouseOver}"
+        @mouseout="${me.#onMouseOut}"        
         @click="${me.#onClick}">
         ${me.#first}${me.#second}
         </a>`;
@@ -75,8 +80,13 @@ export class GSLinklement extends GSElement {
     requestAnimationFrame(() => this.#refEl.value?.focus());
   }
 
+  get iconEl() {
+    return this.#refIco.value;
+  }
+
   #onClick(e) {
     const me = this;
+    me.iconEl?.animate();
     me.notify();
     if (me.url === '#' || GSUtil.isStringEmpty(me.url)) {
       GSEvents.prevent(e);
@@ -85,15 +95,33 @@ export class GSLinklement extends GSElement {
     }
   }
 
+  #onMouseOver() {
+    this.iconEl?.hover(true);
+  }
+
+  #onMouseOut() {
+    this.iconEl?.hover(false);
+  }
+
   get #title() {
     return this.translate(this.title);
   }
 
-  get #first() { return this.rtl ? this.#title : this.#icon; };
+  get #first() { return this.rtl ? this.#title : this.#iconHtml; };
 
-  get #second() { return this.rtl ? this.#icon : this.#title; };
+  get #second() { return this.rtl ? this.#iconHtml : this.#title; };
 
-  get #icon() { return this.icon ? html`<gs-icon css="mx-1" name="${this.icon}" size="${this.size}"></gs-icon>` : html`<slot name="icon"></slot>`; }
+  get #iconHtml() { return this.icon ? this.#renderIcon : html`<slot name="icon"></slot>`; }
+
+  get #renderIcon() {
+    return  html`
+    <gs-icon css="mx-1" ${ref(this.#refIco)} 
+    name="${this.icon}" 
+    size="${this.size}" 
+    click-css="${ifDefined(this.clickCss)}" 
+    hover-css="${ifDefined(this.hoverCss)}" 
+    data-delay="1"></gs-icon>`;
+  }
 
   /**
    * Generate clickable link

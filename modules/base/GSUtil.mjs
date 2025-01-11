@@ -51,7 +51,7 @@ export class GSUtil {
 
 	static extractNumber = (val = '') => val.match(/[\d,\.]*\d/)?.[0];
 
-	static asNum(val = 0, dft = 0, locale) {
+	static asNum(val, dft = 0, locale) {
 		locale = locale || GSUtil.locale;
 		if (GSUtil.isString(val)) {
 			const sep = GSUtil.numberSeparator(locale);

@@ -481,14 +481,18 @@ export class GSDOM {
 	 * Query DOM Tree up to find closest element across Shadow DOM
 	 * @param {HTMLElement} el Root node to start from
 	 * @param {String} qry CSS query
+	 * @param {Number} level How many levels to wal, 0 = all
 	 * @returns {HTMLElement} 
 	 */
-	static closest(el, qry) {
+	static closest(el, qry, levels = 0) {
 		if (typeof el === 'string') return GSDOM.closest(document.documentElement, qry);
 		if (!(el && qry)) return null;
+		levels = GSUtil.asNum(levels, 0);
+		const limit = levels > 0;
 		const it = GSDOM.walk(el, true);
 		for (let o of it) {
 			if (GSDOM.matches(o, qry)) return o;
+			if (limit && --levels == 0) return null;
 		}
 		return null;
 	}

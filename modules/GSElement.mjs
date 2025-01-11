@@ -247,10 +247,11 @@ export class GSElement extends LitElement {
   /**
    * Find closest top element by CSS selector
    * @param {String} query 
+   * @param {Number} levels - walk limit
    * @returns {HTMLElement}
    */
-  closest(query = '') {
-    return GSDOM.closest(this, query);
+  closest(query = '', levels = -1) {
+    return GSDOM.closest(this, query, levels);
   }
 
   /**
@@ -495,6 +496,13 @@ export class GSElement extends LitElement {
    */
   get isValidProtocol() {
     return GSEnvironment.isValidProtocol(this.protocol);
+  }
+
+  /**
+   * Get parent GS-* component
+   */
+  get parentComponent() {
+    return GSDOM.parentAll(this).filter(x => x instanceof GSElement).next()?.value;
   }
 
   /**

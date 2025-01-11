@@ -25,6 +25,7 @@
     <link rel="preload" href="/bootstrap-lit/assets/css/bootstrap.css" as="style"  data-adoptable="true">
     <link rel="preload" href="/bootstrap-lit/assets/themes/default.css" as="style" data-adoptable="true">
     <link rel="preload" href="/bootstrap-lit/assets/icons/bootstrap-icons.css" as="style" data-adoptable="true">
+    <link rel="preload" href="/bootstrap-lit/assets/css/animate.css" as="style"  data-adoptable="true">
 
     <script type="module" src="/bootstrap-lit/modules/base/GSAdoptedEngine.mjs"></script>
     <script type="module" src="/bootstrap-lit/modules/base/GSTheme.mjs"></script>
@@ -43,6 +44,14 @@
         <gs-icon name="terminal" size="3" color="info"></gs-icon>  
     </div>  
 
+    <div class="border p-3 m-4 shadow-sm text-nowrap text-bg-light">
+        <span class="m-2" title="VIBRATE">
+            <gs-icon name="alarm" size="3" hover-css="gs-vibrate" click-css="gs-shake2" ></gs-icon>        
+        </span>
+        <span class="m-2" title="PULSATE">
+            <gs-icon name="alarm" size="3" hover-css="gs-pulsate" click-css="gs-shake" data-delay="1"></gs-icon>        
+        </span>          
+    </div>
 </body>
 
 </html>

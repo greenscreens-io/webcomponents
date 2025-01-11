@@ -32,7 +32,7 @@ export class GSTabGroupElement extends GSNavElement {
   firstUpdated(changed) {
     super.firstUpdated(changed);
     const me = this;
-    const tabEl = me.query('gs-tab[active],gs-tab[autofocus],gs-tab')
+    const tabEl = me.query('gs-tab[active],gs-tab[autofocus],gs-tab');
     me.onSelected(tabEl);
   }
 
@@ -67,7 +67,7 @@ export class GSTabGroupElement extends GSNavElement {
   }
 
   /**
-   * Render items based on data proeprty (might be from gs-item)
+   * Render items based on data property (might be from gs-item)
    * @returns 
    */
   renderItems() {
@@ -84,7 +84,7 @@ export class GSTabGroupElement extends GSNavElement {
   }
 
   /**
-   * Render items based on data proeprty (might be from gs-item)
+   * Render items based on data property (might be from gs-item)
    * @returns 
    */
   renderPanels() {

@@ -162,7 +162,7 @@ export class GSMenuElement extends GSElement {
     }
 
     #renderHeader(el) {
-        return html`<li data-inert="true"><h6 class="dropdown-header">${el.header}</h6></li>`;
+        return html`<li data-inert="true"><h6 class="dropdown-header">${this.#renderIcon(el)}${el.header}</h6></li>`;
     }
 
     #renderDivider() {
@@ -173,7 +173,7 @@ export class GSMenuElement extends GSElement {
         const me = this;
         return html`<li>
             <a class="dropdown-item dropdown-toggle" data-toggle="true" href="#">
-                <div class="d-inline-block w-100">${el.name}</div>
+                <div class="d-inline-block w-100">${me.#renderIcon(el)}${el.name}</div>
             </a>
             <gs-menu auto 
                 .data=${el.items} 
@@ -183,6 +183,10 @@ export class GSMenuElement extends GSElement {
                 data-submenu="true">
             </gs-menu>
         </li>`;
+    }
+
+    #renderIcon(el) {
+        return el.icon ? html`<gs-icon css="mx-1" name="${el.icon}"></gs-icon>` : '';
     }
 
     #renderMenu(el) {

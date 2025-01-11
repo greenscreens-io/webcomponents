@@ -12,6 +12,8 @@ export class GSButtonElement extends GSElement {
     type: { ...buttonType }, // reset, submit
     size: { ...size }, // small, large, normal
     color: { ...color },
+    clickCss: { attribute : 'click-css'},
+    hoverCss: { attribute : 'hover-css'},
     toggleColor: { ...color, attribute : 'toggle-color' },
     autofocus: { type: Boolean },
     disabled: { type: Boolean, reflect: true },
@@ -25,6 +27,7 @@ export class GSButtonElement extends GSElement {
   };
 
   #refEl = createRef();
+  #refIco = createRef();
 
   constructor() {
     super();
@@ -43,7 +46,9 @@ export class GSButtonElement extends GSElement {
         type="${ifDefined(me.type)}" 
         class="btn ${classMap(me.renderClass())}" 
         title="${ifDefined(me.#tooltip)}"
-        ?disabled=${me.disabled} 
+        ?disabled=${me.disabled}
+        @mouseover="${me.#onMouseOver}"
+        @mouseout="${me.#onMouseOut}"
         @click="${me.#onClick}">
           ${me.#first} ${me.#second}</button>`;
   }
@@ -79,9 +84,18 @@ export class GSButtonElement extends GSElement {
   #onClick(e) {
     const me = this;
     if(me.toggling) me.toggle();
+    me.iconEl?.animate();
     if (me.isReset) return me.form?.reset();
     if (me.isSubmit) return me.form?.submit();
     me.notify();
+  }
+
+  #onMouseOver() {
+    this.iconEl?.hover(true);
+  }
+
+  #onMouseOut() {
+    this.iconEl?.hover(false);
   }
 
   get isReset() {
@@ -90,6 +104,10 @@ export class GSButtonElement extends GSElement {
 
   get isSubmit() {
     return ButtonTypes.isSubmit(this.type);
+  }
+
+  get iconEl() {
+    return this.#refIco.value;
   }
 
   get form() {
@@ -104,11 +122,20 @@ export class GSButtonElement extends GSElement {
     return this.translate(this.tooltip);
   }
 
-  get #first() { return this.rtl ? this.#title : this.#icon; };
+  get #first() { return this.rtl ? this.#title : this.#iconHtml; };
 
-  get #second() { return this.rtl ? this.#icon : this.#title; };
+  get #second() { return this.rtl ? this.#iconHtml : this.#title; };
 
-  get #icon() { return this.icon ? html`<gs-icon class="bi bi-${this.icon}"></gs-icon>` : html`<slot name="icon"></slot>`; }
+  get #iconHtml() { return this.icon ? this.#renderIcon : html`<slot name="icon"></slot>`; }
+
+  get #renderIcon() {
+    return  html`
+    <gs-icon ${ref(this.#refIco)} 
+    name="${this.icon}" 
+    click-css="${ifDefined(this.clickCss)}" 
+    hover-css="${ifDefined(this.hoverCss)}" 
+    data-delay="1"></gs-icon>`;
+  }
 
   static {
     this.define('gs-button');
