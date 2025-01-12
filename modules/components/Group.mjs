@@ -10,6 +10,7 @@
 import { GSElement } from '../GSElement.mjs';
 import { GSAttr } from '../base/GSAttr.mjs';
 import { ElementNavigationController } from '../controllers/ElementNavigationController.mjs';
+import { GroupController } from '../controllers/GroupController.mjs';
 import { classMap, createRef, html, ifDefined, ref } from '../lib.mjs';
 
 /**
@@ -22,7 +23,9 @@ import { classMap, createRef, html, ifDefined, ref } from '../lib.mjs';
 export class GSGroupElement extends GSElement {
 
   static properties = {
-    storage: {},
+    // multiple lists with single select across 
+    group : {},
+    storage: {},    
     circular: { type: Boolean },
     multiple: { type: Boolean },
     data: { type: Array },
@@ -30,16 +33,30 @@ export class GSGroupElement extends GSElement {
 
   #elRef = createRef();
   #controller;
+  #controllerGroup;
 
   constructor() {
     super();
-    this.data = this.initData();
-    this.#controller = new ElementNavigationController(this);
+    const me = this;
+    me.data = me.initData();
+    me.#controller = new ElementNavigationController(me);
+    me.#controllerGroup = new GroupController(me);
+  }
+
+  onBusEvent(e) {
+    if (e.detail.owner != this) {
+      this.reset();
+    }
+  }
+
+  onSelected(el) {
+    this.#controllerGroup.notify(el);
   }
 
   firstUpdated(changed) {
-    this.#controller.init();
-    this.#controller.attach(this.#elRef.value);
+    const me = this;
+    me.#controller.init();
+    me.#controller.attach(me.#elRef.value);
     super.firstUpdated(changed);
   }  
 

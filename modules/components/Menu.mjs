@@ -15,6 +15,7 @@ import { GSID } from '../base/GSID.mjs';
 import { GSEvents } from '../base/GSEvents.mjs';
 import { GSDOM } from '../base/GSDOM.mjs';
 import { dataset } from '../directives/dataset.mjs';
+import { GroupController } from '../controllers/GroupController.mjs';
 
 /**
  * Renderer for panel layout 
@@ -44,13 +45,21 @@ export class GSMenuElement extends GSElement {
 
     #menuRef = createRef();
     #styleID = GSID.id;
+    #controller = null;
 
     constructor() {
         super();
         const me = this;
         me.dynamicStyle(me.#styleID);
         me.data = me.#proxify(me);
+        me.#controller = new GroupController(this);
     }
+
+    onBusEvent(e) {
+       if (e.detail.owner != this) {
+            this.opened = false;
+       }
+     }
 
     willUpdate(changed) {
         super.willUpdate(changed);
@@ -61,6 +70,7 @@ export class GSMenuElement extends GSElement {
 
     updated() {
         this.#updatePosition();
+        if (this.opened) this.#controller.notify();
     }
 
     renderUI() {

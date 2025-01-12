@@ -2,6 +2,7 @@
  * Copyright (C) 2015, 2024 Green Screens Ltd.
  */
 
+import { GSFunction } from "./GSFunction.mjs";
 import { GSUtil } from "./GSUtil.mjs";
 
 /**
@@ -225,15 +226,18 @@ export class GSAttr {
 				if (prop === 'dataset') return target.dataset;
 				if (typeof prop === 'symbol') return target[prop];
 				if (prop === recursive) return Array.from(target.children).map(el => GSAttr.proxify(el, opt, recursive)); 
-
-
-				const type = opt[prop]?.type;
-				const safe = opt[prop]?.unsafe ? true : false;
-				const dflt = opt[prop]?.default;
-				const multi = opt[prop]?.multi === true;
 				
-				prop = opt[prop]?.attribute || prop;
-				let val = GSAttr.get(target, prop);
+				const tmp = opt; // Object.hasOwn(opt, prop) ? opt : target;
+				
+				const type = tmp[prop]?.type;
+				const safe = tmp[prop]?.unsafe ? true : false;
+				const dflt = tmp[prop]?.default;
+				const multi = tmp[prop]?.multi === true;
+				
+				prop = tmp[prop]?.attribute || prop;
+				let val = target.hasAttribute(prop) ? GSAttr.get(target, prop) : target[prop];
+
+				if (GSFunction.isFunction(val)) return val.bind(target);
 				
 				switch(type) {
 					case Boolean :

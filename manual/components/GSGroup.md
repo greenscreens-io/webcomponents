@@ -11,6 +11,9 @@ GSGroup WebComponent handles grouped elements navigation, selection and focus fo
 |--------------------|----------------------------------------------------------|
 | circular           | Allow circular rotation for selection                    |
 | multiple           | Allow multiple selections                                |
+| group              | Allow single selection across multiple lists.            |
+| storage            | Load list items from JSON storage.                       |
+| data               | Load list items from JSON data.                          |
 
 
 <br>

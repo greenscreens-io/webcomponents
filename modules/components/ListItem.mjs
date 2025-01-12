@@ -5,6 +5,7 @@
 import { classMap, ifDefined, html, createRef, ref } from '../lib.mjs';
 import { GSDOM } from '../base/GSDOM.mjs';
 import { GSElement } from '../GSElement.mjs';
+import { GSAttributeHandler } from '../base/GSAttributeHandler.mjs';
 
 export class GSListItemElement extends GSElement {
 
@@ -32,6 +33,8 @@ export class GSListItemElement extends GSElement {
   connectedCallback() {
     super.connectedCallback();
     this.#initial = this.active;
+    // allow single setting at the gs-list to applay to the child
+    GSAttributeHandler.clone(this.owner, this, false);
   }
 
   shouldUpdate(changedProperties) {

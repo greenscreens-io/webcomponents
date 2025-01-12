@@ -327,11 +327,13 @@ export class GSAttributeHandler {
      * Clone element attributes (GS-ITEM to real WebComponent)
      * @param {HTMLElement} from 
      * @param {HTMLElement} to 
+     * @param {boolean} override If 'false' will skip existing atributes
      */
-    static clone(from, to) {
+    static clone(from, to, override = true) {
         const def = GSAttributeHandler.DEFINITION;
         Object.values(def)
             .filter(o => from.hasAttribute(o.attribute))
+            .filter(o => override || !to.hasAttribute(o.attribute))          
             .forEach(o => to.setAttribute(o.attribute, from.getAttribute(o.attribute)));
     }
 

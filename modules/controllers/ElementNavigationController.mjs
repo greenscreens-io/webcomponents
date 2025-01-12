@@ -96,7 +96,7 @@ export class ElementNavigationController {
     me.#multiselect.clear();
     me.#focused = undefined;
     me.#selected = undefined;
-    this.#host?.emit('group-reset', undefined, true);
+    me.#host?.emit('group-reset', undefined, true);
   }
 
   /**
@@ -104,8 +104,9 @@ export class ElementNavigationController {
    * @param {*} el 
    */
   #onSelected(el) {
-    this.#host?.onSelected?.(el);
-    this.#host?.emit('group-selected', el, true);
+    const me = this;
+    me.#host?.onSelected?.(el);
+    me.#host?.emit('group-selected', el, true);
   }
 
   /**
