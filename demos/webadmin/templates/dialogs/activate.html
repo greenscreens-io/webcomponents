@@ -1,0 +1,24 @@
+<form slot="body" is="gs-ext-form"  class="flex-fill" novalidate="">
+
+    <gs-form-group css="m-1" name="license" label="License key" required
+        pattern="^(okey|lkey|ckey){1}(://){1}[\S]+$"
+        description="License key for IBM i server.">
+    </gs-form-group>
+
+    <hr class="text-secondary ms-4 me-4">
+
+    <gs-form-group css="m-1" name="ipAddress" label="Remote location" readonly disabled>
+    </gs-form-group>
+
+    <gs-form-group css="m-1" name="user" label="User name" css-field="text-uppercase" maxlength="10" required autofocus
+        description="High level permission user name to access IBM i for license and product installation. This user and password are not saved.">
+    </gs-form-group>
+
+    <gs-form-group css="m-1" name="password" label="Password" required type="password" maxlength="64" reveal
+        description="Password for given user. Password and user are not saved.">
+    </gs-form-group>
+
+    <gs-form-group css="m-1" name="usglimit" label="Limit" required type="number" min="0" max="999999"
+        description="Workstation limit for partition. Set 0 for license default.">
+    </gs-form-group>
+</form>

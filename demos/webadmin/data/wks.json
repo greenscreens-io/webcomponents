@@ -1,0 +1,38 @@
+{
+    "order": [
+        "certificate",
+        "user",
+        "uuid",
+        "host",
+        "proxy",
+        "display",
+        "ipAddress",
+        "sessionUUID",
+        "deviceID",
+        "deviceType",
+        "clientType",
+        "printCount",
+        "token",
+        "agent",
+        "lastActivityStr",
+        "createdStr"
+    ],
+    "data": {
+        "certificate": "Client (only SSL)",
+        "user": "User",
+        "uuid": "UUID Group",
+        "host": "Vitual Host",
+        "proxy": "Proxy",
+        "display": "Display name",
+        "ipAddress": "IP Address",
+        "sessionUUID": "Session UUID",
+        "deviceID": "Device ID",
+        "deviceType": "Device Type",
+        "clientType": "View Type",
+        "printCount": "Printed",
+        "token": "Token (mobile)",
+        "agent": "Description",
+        "lastActivity": "Last Activity",
+        "createdStr": "Created"
+    }
+}

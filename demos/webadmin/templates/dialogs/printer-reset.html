@@ -1,0 +1,14 @@
+<form slot="body" is="gs-ext-form"  class="flex-fill" novalidate="">
+
+    <gs-form-group css="m-1" name="uuid" label="UUID" readonly disabled>
+    </gs-form-group>
+
+    <gs-form-group css="m-1" name="host" label="Host" readonly disabled>
+    </gs-form-group>    
+
+    <gs-form-group css="m-1" name="printerName" label="Printer" required
+        maxlength="10" pattern="[0-9a-zA-Z_]+"
+        description="Virtual Printer Name">
+    </gs-form-group>    
+    
+</form>

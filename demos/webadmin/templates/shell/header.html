@@ -1,0 +1,42 @@
+<div class="d-flex  align-items-center">
+        <gs-link id="explorer" icon="folder-symlink" size="3" tooltip="Open resource explorer" text="secondary" data-gs-action="explorer" data-gs-src="/admin/explorer/"></gs-link>
+        <gs-dropdown group="header" icon="download fs-3" dark="false" id="menu1" css="px-1" tooltip="Downloads">
+            <!--   
+                <gs-item name="Download SAVF" action="download-savf"></gs-item>
+             -->
+            <gs-item name="Download Configuration" data-gs-action="download-config"></gs-item>
+            <gs-item name="Download Logs" data-gs-action="download-logs"></gs-item>
+        </gs-dropdown>
+        <gs-link id="restart" icon="arrow-repeat" size="3" tooltip="Restart server" text="secondary" data-gs-attr="{visible:true}" data-gs-inject="gs-admin-dialog-restart" data-gs-target="#dialogs"></gs-link>
+        <gs-link id="migrate" icon="database" size="3" tooltip="Migrate Storage from previous version" text="secondary" data-gs-attr="{visible:true}" data-gs-inject="gs-admin-dialog-migrate" data-gs-target="#dialogs"></gs-link>
+        <gs-dropdown group="header" icon="postcard fs-3" dark="false" id="menu2" css="px-1" tooltip="Digital Certificate Tools">
+            <gs-item name="Regenerate Terminal Keys" data-gs-action="cert-gen-term"></gs-item>
+            <gs-item></gs-item>
+            <gs-item name="Generate Timestamp Cert" data-gs-action="cert-gen-tsp"></gs-item>
+            <gs-item name="Generate Server Cert" data-gs-action="cert-gen-svr"></gs-item>
+            <gs-item name="Generate Client Cert" data-gs-attr="{visible:true}" data-gs-inject="gs-admin-dialog-certclient"  data-gs-target="#dialogs"></gs-item>
+            <gs-item name="Revoke Client" data-gs-attr="{visible:true}" data-gs-inject="gs-admin-dialog-certrevoke" target="#dialogs"></gs-item>
+            <gs-item></gs-item>
+            <gs-item name="Generate Server Req" data-gs-action="cert-gen-req"></gs-item>
+            <gs-item></gs-item>                
+            <gs-item name="Export Root CA" data-gs-action="cert-export"></gs-item>
+            <gs-item name="Import PFX/PEM" data-gs-attr="{visible:true}" data-gs-inject="gs-admin-dialog-certstoreimport" data-gs-target="#dialogs"></gs-item>
+            <gs-item></gs-item>                
+            <gs-item name="Toggle Client Verification" data-gs-action="cert-client-verify" title="Turn ON/OFF client certificate security."></gs-item>
+            <gs-item name="Reload certificates" data-gs-action="cert-server-refresh" title="Reload all certificates from storage to the server"></gs-item>
+            <gs-item name="Options" data-gs-attr="{visible:true}" data-gs-inject="gs-admin-dialog-certopt" data-gs-target="#dialogs"></gs-item>                
+        </gs-dropdown>
+        <gs-dropdown group="header" icon="gear fs-3" dark="false" id="menu3" css="px-1" tooltip="General preferences">
+            <gs-item name="Admin Login" data-gs-attr="{visible:true}" data-gs-inject="gs-admin-dialog-loginadm" data-gs-target="#dialogs"></gs-item>
+            <gs-item name="Login Defaults" data-gs-attr="{visible:true}" data-gs-inject="gs-admin-dialog-logindefs" data-gs-target="#dialogs"></gs-item>
+            <gs-item></gs-item>
+            <gs-item name="OTP Options" data-gs-attr="{visible:true}" data-gs-inject="gs-admin-dialog-otpopt" data-gs-target="#dialogs"></gs-item>
+            <gs-item name="Register Biometric" data-gs-attr="{visible:true}" data-gs-inject="gs-admin-dialog-bioreg" data-gs-target="#dialogs"></gs-item>
+            <gs-item name="Register OTP" data-gs-attr="{visible:true}" data-gs-inject="gs-admin-dialog-otpreg" data-gs-target="#dialogs"></gs-item>
+            <gs-item></gs-item>
+            <gs-item name="Kerberos" data-gs-attr="{visible:true}" data-gs-inject="gs-admin-dialog-kerberos" data-gs-target="#dialogs"></gs-item>
+            <gs-item name="Network" data-gs-attr="{visible:true}" data-gs-inject="gs-admin-dialog-network" data-gs-target="#dialogs"></gs-item>
+            <gs-item name="System" data-gs-attr="{visible:true}" data-gs-inject="gs-admin-dialog-system" data-gs-target="#dialogs"></gs-item>
+        </gs-dropdown>
+        <gs-link id="logout" icon="box-arrow-right fs-3" size="5" tooltip="Logout from Web Admin Console" text="secondary" data-gs-action="logout"></gs-link>
+</div>

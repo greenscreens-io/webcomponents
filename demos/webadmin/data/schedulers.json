@@ -1,0 +1,22 @@
+[
+    {
+        "id": 1619619498849,
+        "name": "service.update",
+        "data": null,
+        "type": 1,
+        "day": 9,
+        "time": "23:19",
+        "status": true,
+        "internal": false
+    },
+    {
+        "id": 1663856982524,
+        "name": "service.acme",
+        "data": null,
+        "type": 1,
+        "day": 7,
+        "time": "02:00",
+        "status": true,
+        "internal": false
+    }
+]

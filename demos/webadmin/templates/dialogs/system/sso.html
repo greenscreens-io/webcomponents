@@ -1,0 +1,25 @@
+<gs-form-group css="m-1" name="sso" label="SSO Status" autocomplete="off"
+    description="Enable Single Sign On. IBM system must be configured to use Kerberos for signon.">
+    <template>
+        <select class="form-select" id="sso" name="sso" required="" selected="false">
+            <option value="false">Disabled</option>
+            <option value="true">Enabled</option>
+      </select>        
+    </template>
+</gs-form-group>
+
+<gs-form-group css="m-1" name="ssoKDC" label="KDC" 
+    autocomplete="off"
+    description="Kerberos V5 service. If empty, auto discovery is used.  DNS SRV must be properly set. Useful if multiple KDC services used.">
+</gs-form-group>
+
+<gs-form-group css="m-1" name="ssoSPN" label="SPN" autocomplete="off"
+    description="SPN name for this service.">
+</gs-form-group>
+
+<gs-form-group css="m-1" name="btnKDC" label="" icon="false" placement="start"
+    description="Resync data from KDC">
+    <template>
+        <gs-button action="reloadKerberos" id="btnKDC" css="btn btn-sm btn-secondary d-inline" title="Reload"></gs-button>
+    </template>
+</gs-form-group>

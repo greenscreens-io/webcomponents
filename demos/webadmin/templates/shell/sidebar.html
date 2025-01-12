@@ -1,0 +1,139 @@
+<gs-drawer css="border-end shadow-sm" 
+	css-head="p-0 border-bottom user-select-none" 
+	css-body="p-0 overflow-hidden user-select-none" 
+        autoclose min="65" max="260">
+
+    <div slot="header" class="flex-fill p-0 m-0">
+        <a href="https://webcomponents.greenscreens.ltd" target="_blank"
+            class="m-3 d-flex justify-content-start align-items-center fs-6 text-secondary text-decoration-none">
+            <span><img src="/webcomponents/assets/img/icon.png" height="26" alt="Application icon"></span>
+            <span class="d-flex ms-4 overflow-hidden text-nowrap"><b>Admin Panel</b></span>
+        </a>
+    </div>
+
+    <gs-list slot="body" group="sidebar"  
+        data-gs-target="#content"
+        data-css-active="text-bg-secondary"
+        data-css-inactive="bg-transparent"
+        data-css-item="d-flex w-100 justify-content-start align-items-center border-0 text-nowrap">
+
+        <gs-list-item size="5" icon="card-list fs-4 pe-4" title="Configurations"
+                data-gs-swap="gs-admin-view-configuration">
+        </gs-list-item>
+
+        <gs-list-item size="5" icon="diagram-3 fs-4 pe-4" title="Tunnel"
+                data-gs-swap="gs-admin-view-tunnel">
+        </gs-list-item>
+
+        <gs-list-item size="5" icon="code-slash fs-4 pe-4" title="Customization"
+                data-gs-swap="gs-admin-view-customization">
+        </gs-list-item>
+    
+    </gs-list>
+
+    <hr slot="body">
+
+    <gs-list slot="body" group="sidebar"  
+        data-gs-target="#content"
+        data-css-active="text-bg-secondary"
+        data-css-inactive="bg-transparent"
+        data-css-item="d-flex w-100 justify-content-start align-items-center border-0 text-nowrap">
+        
+        <gs-list-item size="5" icon="pc fs-4 pe-4" title="FIDO Filter"
+                data-gs-swap="gs-admin-view-filterfido">
+        </gs-list-item>
+
+        <gs-list-item size="5" icon="shield-shaded fs-4 pe-4" title="IP Filter"
+                data-gs-target="#content" data-gs-swap="gs-admin-view-filterip">
+        </gs-list-item>
+
+        <gs-list-item size="5" icon="phone fs-4 pe-4" title="Mobile Filter"
+                data-gs-target="#content" data-gs-swap="gs-admin-view-filtermobile">
+        </gs-list-item>
+
+    </gs-list>
+
+    <hr slot="body">
+
+    <gs-list slot="body" group="sidebar"  
+        data-gs-target="#content"
+        data-css-active="text-bg-secondary"
+        data-css-inactive="bg-transparent"
+        data-css-item="d-flex w-100 justify-content-start align-items-center border-0 text-nowrap">
+
+        <gs-list-item size="5" icon="lock-fill fs-4 pe-4" title="API Keys"
+                data-gs-swap="gs-admin-view-apikeys">
+        </gs-list-item>
+
+        <gs-list-item size="5" icon="key-fill fs-4 pe-4" title="OTP Keys"
+                data-gs-swap="gs-admin-view-otp">
+        </gs-list-item>
+
+        <gs-list-item size="5" icon="fingerprint fs-4 pe-4" title="Biometrics"
+                data-gs-swap="gs-admin-view-biometrics">
+        </gs-list-item>
+    
+    </gs-list>
+
+    <hr slot="body">
+
+    <gs-list slot="body" group="sidebar"  
+        data-gs-target="#content"
+        data-css-active="text-bg-secondary"
+        data-css-inactive="bg-transparent"
+        data-css-item="d-flex w-100 justify-content-start align-items-center border-0 text-nowrap">
+
+        <gs-list-item size="5" icon="printer-fill fs-4 pe-4" title="Printing"
+                data-gs-swap="gs-admin-view-printing">
+        </gs-list-item>
+
+        <gs-list-item size="5" icon="hourglass-split fs-4 pe-4" title="Scheduler"
+                data-gs-swap="gs-admin-view-scheduler">
+        </gs-list-item>
+
+        <gs-list-item size="5" icon="people-fill fs-4 pe-4" title="Users"
+                data-gs-swap="gs-admin-view-users">
+        </gs-list-item>
+                  
+    </gs-list>    
+
+    <hr slot="body">
+
+    <gs-list slot="body" group="sidebar"  
+        data-gs-target="#content"
+        data-css-active="text-bg-secondary"
+        data-css-inactive="bg-transparent"
+        data-css-item="d-flex w-100 justify-content-start align-items-center border-0 text-nowrap">
+
+        <gs-list-item size="5" icon="fan fs-4 pe-4" title="Services"
+                data-gs-swap="gs-admin-view-services">
+        </gs-list-item>
+
+        <gs-list-item size="5" icon="display fs-4 pe-4" title="Workstations"
+                data-gs-swap="gs-admin-view-workstations">
+        </gs-list-item>
+
+        <gs-list-item size="5" icon="x-diamond-fill fs-4 pe-4" title="Services"
+                data-gs-swap="gs-admin-view-webmodules">
+        </gs-list-item>
+
+    </gs-list>  
+
+    <hr slot="body">
+    
+    <gs-list slot="body" group="sidebar"  
+        data-css-active="text-bg-secondary"
+        data-css-inactive="bg-transparent"
+        data-css-item="d-flex w-100 justify-content-start align-items-center border-0 text-nowrap">
+
+        <gs-list-item size="5" icon="question-circle-fill fs-4 pe-4" title="Documentation"
+                target="_blank" href="/doc">
+        </gs-list-item>
+
+        <gs-list-item size="5" icon="info-circle-fill fs-4 pe-4" title="About" 
+                data-gs-target="#dialogs" data-gs-attribute="{visible:true}" data-gs-inject="gs-admin-dialog-about">
+        </gs-list-item>        
+        
+    </gs-list>  
+
+</gs-drawer>

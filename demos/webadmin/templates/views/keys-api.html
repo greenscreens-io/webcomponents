@@ -1,0 +1,74 @@
+<div class="container-fluid ms-4">
+
+    <div class="row -border shadow-sm rounded-3 ms-4 ps-4 py-4 bg-light mb-4">
+        <div class="col">
+            <h4 class="text-muted user-select-none">API Key Records</h4>
+        </div>
+    </div>
+
+    <div class="row border shadow-sm rounded ms-4 pb-4 bg-light ">
+
+        <div class="col-12 border-bottom d-flex justify-content-end p-1 ">
+            <gs-button action="create" select="false" comment="Add new configuration" css="text-bg-light"
+                icon="bi bi-file-earmark fs-4 fw-bold"></gs-button>
+            <gs-button action="refresh" select="false" comment="Refresh data" css="text-bg-light"
+                icon="bi bi-arrow-repeat fs-4 fw-bold"></gs-button>
+        </div>
+
+        <div class="col-12 p-0">
+
+            <gs-table id="table-main" index=false class="flex-fill"
+                css="table table-light table-hover user-select-none m-0" css-select="table-active table-primary"
+                css-header="user-select-none" css-columns="table-secondary">
+                <gs-header>
+                    <gs-column title="UUID" name="uuid" filter="true"></gs-column>
+                    <gs-column title="Host" name="host" filter="true"></gs-column>
+                    <gs-column title="IP" name="ip" filter="true"></gs-column>
+                    <gs-column title="Key" name="key" filter="true"></gs-column>
+                    <gs-column title="Allow Overide" name="allowOveride" filter="true"></gs-column>
+                    <gs-column title="Service User" name="serviceUser" filter="true"></gs-column>
+                    <gs-column title="User" name="user" filter="true"></gs-column>
+                    <gs-column title="Service" name="service" filter="true"></gs-column>
+                    <gs-column title="Created" name="created" type="timestamp" format="HH:mm:ss DD.MM.YYYY"></gs-column>
+                    <gs-column title="Status" name="active" filter="true" list="fixed">
+                        <gs-item map="true" filter="true">
+                            <gs-item value="" map="All"></gs-item>
+                            <gs-item value="true" map="Enabled"></gs-item>
+                            <gs-item value="false" map="Disabled"></gs-item>
+                        </gs-item>
+                    </gs-column>
+                </gs-header>
+                <gs-store src="data/keys-api.json" id="sessions" limit=15>
+                    <gs-item name="uuid"></gs-item>
+                    <gs-item name="host"></gs-item>
+                    <gs-item name="ip"></gs-item>
+                    <gs-item name="key"></gs-item>
+                    <gs-item name="allowOveride"></gs-item>
+                    <gs-item name="serviceUser"></gs-item>
+                    <gs-item name="active"></gs-item>
+                    <gs-item name="user"></gs-item>
+                    <gs-item name="password"></gs-item>
+                    <gs-item name="service"></gs-item>
+                    <gs-item name="created"></gs-item>
+                    <gs-item name="id"></gs-item>
+                </gs-store>
+                <gs-context slot="extra" target="tbody tr">
+                    <gs-item name="Details" action="details"></gs-item>
+                    <gs-item name="Toggle state" action="toggle"></gs-item>
+                    <gs-item></gs-item>
+                    <gs-item name="Remove" action="remove"></gs-item>
+                </gs-context>
+                <gs-pager slot="extra" previous="&laquo;" next="&raquo;" firstlast="false" pages="0"></gs-pager>
+            </gs-table>
+
+            <gs-admin-dialog id="modal-main" visible="false" css-body="p-0" css-header="p-3 " content="//forms/key-api.html" title="API Key">
+                <!--
+                    <h4 slot="title">API Key</h4>
+                    <gs-template slot="body" href="//forms/key-api.html"></gs-template>
+                -->
+            </gs-admin-dialog>
+
+        </div>
+
+    </div>
+</div>

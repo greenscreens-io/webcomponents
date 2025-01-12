@@ -1,0 +1,19 @@
+<gs-form-group css="m-1" name="defaultUUID" label="Default UUID"  
+    autocomplete="off" maxlength="64" pattern="[0-9a-zA-Z_]+"
+    description="Default UUID name on login screen.">
+</gs-form-group>
+
+<gs-form-group css="m-1" name="defaultHost" label="Default Host" 
+    autocomplete="off" maxlength="64" pattern="[0-9a-zA-Z_]+"
+    description="Default host name on login screen.">
+</gs-form-group>
+
+<gs-form-group css="m-1" name="enlist" label="Enlist configs" required
+    description="Show selection list for UUID/HOST on main login page.">
+    <template>
+        <select class="form-select" id="enlist" name="enlist" required>
+            <option value="false">Disabled</option>
+            <option value="true">Enabled</option>
+      </select>         
+    </template>
+</gs-form-group>
