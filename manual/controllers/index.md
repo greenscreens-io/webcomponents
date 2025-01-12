@@ -9,10 +9,11 @@ Function as hostConnected, hostDiconnected, hostUpdate are called from component
 2. [AttributeController](./AttributeController.md)
 3. [ContentController](./ContentController.md)
 4. [DataController](./DataController.md)
-5. [OrientationController](./OrientationController.md)
-6. [SlotController](./SlotController.md)
-7. [TemplateController](./TemplateController.md)
-8. [ThemeController](./ThemeController.md)
+5. [GroupController](./GroupController.md)
+6. [OrientationController](./OrientationController.md)
+7. [SlotController](./SlotController.md)
+8. [TemplateController](./TemplateController.md)
+9. [ThemeController](./ThemeController.md)
     
 <br>
 
