@@ -17,6 +17,7 @@ export class GSListElement extends GSGroupElement {
     super();
     this.circular = false;
     this.multiple = false;
+    this.selectable = false;
   }
 
   initData() {
@@ -45,11 +46,11 @@ export class GSListElement extends GSGroupElement {
   }
 
   renderItems() {
+    const me = this;
     return this.data.map(o => {
       return html`<gs-list-item generated
         .active="${o.active === true}"
         .autofocus="${o.autofocus === true}"
-        .selectable="${o.selectable === true}"
         .disabled="${ifDefined(o.disabled === true)}" 
         icon="${ifDefined(o.icon)}" 
         href="${ifDefined(o.href)}" 

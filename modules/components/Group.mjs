@@ -44,8 +44,12 @@ export class GSGroupElement extends GSElement {
   }
 
   onBusEvent(e) {
-    if (e.detail.owner != this) {
-      this.reset();
+    let owner, item;  
+    ({owner, item} = e.detail);
+    if (owner != this) {
+      if (!item?.disabled || owner?.selectable) {
+        this.reset();
+      }
     }
   }
 

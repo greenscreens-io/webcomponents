@@ -1,5 +1,5 @@
 <div class="d-flex  align-items-center">
-        <gs-link id="explorer" icon="folder-symlink" size="3" tooltip="Open resource explorer" text="secondary" data-gs-action="explorer" data-gs-src="/admin/explorer/"></gs-link>
+        <gs-button id="explorer" css="shadow-none fs-3" icon="folder-symlink" tooltip="Open resource explorer" text="secondary" data-gs-action="explorer" data-gs-src="/admin/explorer/"></gs-button>
         <gs-dropdown simple auto dark group="header" icon="download fs-3" id="menu1" css="px-1" tooltip="Downloads">
             <!--   
                 <gs-item name="Download SAVF" action="download-savf"></gs-item>
@@ -7,8 +7,9 @@
             <gs-item name="Download Configuration" data-gs-action="download-config"></gs-item>
             <gs-item name="Download Logs" data-gs-action="download-logs"></gs-item>
         </gs-dropdown>
-        <gs-link id="restart" icon="arrow-repeat" size="3" tooltip="Restart server" text="secondary" data-gs-inject="gs-admin-dialog-restart" data-gs-target="#dialogs"></gs-link>
-        <gs-link id="migrate" icon="database" size="3" tooltip="Migrate Storage from previous version" text="secondary" data-gs-inject="gs-admin-dialog-migrate" data-gs-target="#dialogs"></gs-link>
+
+        <gs-button id="restart" css="shadow-none fs-3" icon="arrow-repeat" tooltip="Restart server" text="secondary" data-gs-inject="gs-admin-dialog-restart" data-gs-target="#dialogs"></gs-button>
+        <gs-button id="migrate" css="shadow-none fs-3" icon="database" tooltip="Migrate Storage from previous version" text="secondary" data-gs-inject="gs-admin-dialog-migrate" data-gs-target="#dialogs"></gs-button>
         <gs-dropdown simple auto dark group="header" icon="postcard fs-3" id="menu2" css="px-1" tooltip="Digital Certificate Tools">
             <gs-item name="Regenerate Terminal Keys" data-gs-action="cert-gen-term"></gs-item>
             <gs-item></gs-item>
@@ -38,5 +39,5 @@
             <gs-item name="Network" data-gs-inject="gs-admin-dialog-network" data-gs-target="#dialogs"></gs-item>
             <gs-item name="System" data-gs-inject="gs-admin-dialog-system" data-gs-target="#dialogs"></gs-item>
         </gs-dropdown>
-        <gs-link id="logout" icon="box-arrow-right fs-3" size="5" tooltip="Logout from Web Admin Console" text="secondary" data-gs-action="logout"></gs-link>
+        <gs-button id="logout" css="shadow-none fs-3" icon="box-arrow-right fs-3" tooltip="Logout from Web Admin Console" text="secondary" data-gs-action="logout"></gs-button>
 </div>

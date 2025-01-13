@@ -66,7 +66,7 @@ export class ElementNavigationController {
   previous() {
     const me = this;
     let el = me.#focused?.previousElementSibling;
-    while (el && el.disabled) el = el.previousElementSibling;
+    while (el?.disabled) el = el.previousElementSibling;
     if (me.circular && !el) el = me.lastElementChild;
     el?.focus();
   }
@@ -74,7 +74,7 @@ export class ElementNavigationController {
   next() {
     const me = this;
     let el = me.#focused?.nextElementSibling;
-    while (el && el.disabled) el = el.nextElementSibling;
+    while (el?.disabled) el = el.nextElementSibling;
     if (me.circular && !el) el = me.firstElementChild;
     el?.focus();
   }

@@ -6,6 +6,7 @@ import { classMap, ifDefined, html, createRef, ref } from '../lib.mjs';
 import { GSDOM } from '../base/GSDOM.mjs';
 import { GSElement } from '../GSElement.mjs';
 import { GSAttributeHandler } from '../base/GSAttributeHandler.mjs';
+import { GSUtil } from '../base/GSUtil.mjs';
 
 export class GSListItemElement extends GSElement {
 
@@ -18,7 +19,6 @@ export class GSListItemElement extends GSElement {
     autofocus: { type: Boolean, reflect: true },
     disabled: { type: Boolean, reflect: true },
     active: { type: Boolean, reflect: true },
-    selectable: { type: Boolean, reflect: true },
     generated: { state: true, type: Boolean }
   }
 
@@ -61,9 +61,13 @@ export class GSListItemElement extends GSElement {
       'list-group-item-action': true,
       [`fs-${me.size}`]: me.size > 0,
       [me.#itemCSS] : true,
-      'active': me.active
+      'active': me.active && me.isSelectable()
     }
     return me.mapCSS(me.#itemStatusCSS, css);
+  }
+
+  isSelectable() {
+    return !GSUtil.asBool(this.disabled) || GSUtil.asBool(this.owner.selectable);
   }
 
   #renderIcon() {
@@ -103,6 +107,7 @@ export class GSListItemElement extends GSElement {
     return this.href && this.target ? this.href : '#';
   }
 
+  // TODO Can I use this.parentComponent ? 
   get owner() {
     return (this.hasAttribute('generated') ? GSDOM.component(this) : this.parentElement);
   }
@@ -120,7 +125,7 @@ export class GSListItemElement extends GSElement {
   }
 
   get #itemStatusCSS() {
-    return this.active ? this.#activeCSS : this.#inactiveCSS;
+    return this.active && this.isSelectable() ? this.#activeCSS : this.#inactiveCSS;
   }
 
   static {

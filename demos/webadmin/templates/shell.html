@@ -1,7 +1,7 @@
 <gs-layout type="horizontal" css="">
 
     <!-- header - topbar -->
-    <gs-item type="vertical" v-pos="center" h-pos="end" min="60"
+    <gs-item v-pos="center" h-pos="end" min="60"
             css="border-bottom shadow-sm text-bg-light logo">
             <template>
                 <gs-admin-shell-header></gs-admin-shell-header>
@@ -9,7 +9,7 @@
     </gs-item>
 
     <!-- center content location -->
-    <gs-item css="p-3" id="content" v-pos="top" h-pos="center">
+    <gs-item id="content" v-pos="top" h-pos="center" css="p-3">
         <template>
             <gs-admin-view-configuration></gs-admin-view-configuration>
         </template>

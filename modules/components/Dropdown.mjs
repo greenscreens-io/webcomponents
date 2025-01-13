@@ -64,7 +64,7 @@ export class GSDropdownElement extends GSMenuElement {
             size="${ifDefined(me.size)}"
             title="${ifDefined(me.title)}"
             tooltip="${ifDefined(me.tooltip)}"
-            @notify="${me.open}">
+            @notify="${me.toggle}">
             </gs-link>`;
     }
 
