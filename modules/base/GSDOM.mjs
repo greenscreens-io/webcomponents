@@ -921,7 +921,7 @@ export class GSDOM {
 		GSDOM.queryAll(own, qry)
 			.filter(el => all ? true : !el.disabled)
 			.forEach(el => {
-				el.setAttribute('disabled', true);
+				el.setAttribute('disabled', '');
 				if (group) el.dataset[group] = true;
 			});
 	}

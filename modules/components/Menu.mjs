@@ -70,7 +70,9 @@ export class GSMenuElement extends GSElement {
 
     updated() {
         this.#updatePosition();
-        if (this.opened) this.#controller.notify();
+        if (this.opened) {
+            this.#controller.notify();
+        }
     }
 
     renderUI() {

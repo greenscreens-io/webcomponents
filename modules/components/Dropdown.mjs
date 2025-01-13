@@ -26,7 +26,8 @@ export class GSDropdownElement extends GSMenuElement {
         size: {},
         title: {},
         tooltip: {},
-        group: {}
+        group: {},
+        simple: {type:Boolean}
     }
 
     constructor() {
@@ -48,7 +49,7 @@ export class GSDropdownElement extends GSMenuElement {
             ...super.renderClass(),
             'btn': true,
             [`btn-${me.color}`] : me.color ? true : false,
-            'dropdown-toggle': true,
+            'dropdown-toggle': !me.simple,
             'shadow-none' : true,
         }
         return css;

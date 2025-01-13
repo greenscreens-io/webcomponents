@@ -19,7 +19,12 @@
     <meta name="description" content="Green Screens Web Admin console.">
     
     <script>
-        globalThis.GS_TEMPLATE_URL = '/bootstrap-lit/demos/webadmin/templates/';
+        self.GS_TEMPLATE_URL = '/bootstrap-lit/demos/webadmin/templates/';
+        self.GS_NO_CACHE = true;
+        self.DEMO = {success: true, code:'0', data:[], msg:''};
+        self.GSC = {
+            company : 'Green Screens Ltd.'
+        };
     </script>
  
     <!-- Optimized CSS loading -->

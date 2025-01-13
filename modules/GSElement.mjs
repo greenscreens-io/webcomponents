@@ -24,6 +24,7 @@ import { GSDOM } from './base/GSDOM.mjs';
 import { GSData } from './base/GSData.mjs';
 import { GSUtil } from './base/GSUtil.mjs';
 import { SlotController } from './controllers/SlotController.mjs';
+import { GSAttributeHandler } from './base/GSAttributeHandler.mjs';
 
 /**
  * Main WebComponent used by all other GS-* components
@@ -405,7 +406,8 @@ export class GSElement extends LitElement {
    * Check if component is bindable to process data-gs-atributes
    */
   get isBindable() {
-    return this.dataset.gsTarget;
+    //return this.dataset.gsTarget;
+    return GSAttributeHandler.isBindable(this);
   }
 
   /**

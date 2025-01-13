@@ -337,6 +337,19 @@ export class GSAttributeHandler {
             .forEach(o => to.setAttribute(o.attribute, from.getAttribute(o.attribute)));
     }
 
+    /**
+     * Check if component is bindable to events
+     * @param {HTMLElement} el 
+     * @returns 
+     */
+    static isBindable(el) {
+        const def = GSAttributeHandler.DEFINITION;
+        return Object.values(def)
+            .filter(o => el.hasAttribute(o.attribute))
+            .length > 0;
+
+    }
+
     static {
         const def = GSAttributeHandler.DEFINITION;
         Object.values(def).forEach(o => Object.freeze(o));

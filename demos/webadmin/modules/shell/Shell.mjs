@@ -1,6 +1,7 @@
 /*
  * Copyright (C) 2015, 2025 Green Screens Ltd.
  */
+import { GSEvents } from '../../../../modules/base/GSEvents.mjs';
 import { GSElement } from '../../../../modules/GSElement.mjs';
 
 /*
@@ -16,6 +17,51 @@ class Shell extends GSElement {
 
     firstUpdated() {
         super.firstUpdated();
+        GSEvents.monitorAction(this);
+    }
+
+    async onLogout(e) {
+        debugger;
+    }
+
+    onExplorer(e) {
+        debugger;
+    }
+
+    onDownloadConfig(e) {
+        debugger;
+    }
+
+    onDownloadLogs(e) {
+        debugger;
+    }
+
+    onCertGenTerm() {
+        debugger;
+    }
+
+    onCertGenTsp() {
+        debugger;
+    }
+    
+    onCertGenSvr() {
+        debugger;
+    }
+
+    onCertReq() {
+        debugger;
+    }
+    
+    onCertExport() {
+        debugger;
+    }
+
+    onCertClientVerify() {
+        debugger;
+    }    
+
+    onCertServerRefresh() {
+        debugger;
     }
 
     static {

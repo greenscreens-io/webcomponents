@@ -2,7 +2,6 @@
  * Copyright (C) 2015, 2024 Green Screens Ltd.
  */
 
-import { GSDOM } from "../base/GSDOM.mjs";
 import { GSLog } from "../base/GSLog.mjs";
 import { GSUtil } from "../base/GSUtil.mjs";
 import { GSReadWriteRegistry } from "../data/ReadWriteRegistry.mjs";

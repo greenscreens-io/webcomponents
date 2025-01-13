@@ -6,7 +6,7 @@
  * Used to generate short temporary browser unique hash to improve Quark RPC API security.
  * NOTE: Not used to track user/browser
  */
-export default class GSFinigerprint {
+export class GSFinigerprint {
 
     // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/acosh#Polyfill
     static #acoshPf(x) {

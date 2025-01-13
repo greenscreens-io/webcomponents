@@ -39,7 +39,7 @@ dialog::backdrop {
 }
 
 .logo {
-    background-image: url(/webcomponents/assets/img/logo.png);
+    background-image: url(/bootstrap-lit/assets/img/logo.png);
     background-repeat: no-repeat;
     background-size: 12rem;
     background-position: 50% 50%;

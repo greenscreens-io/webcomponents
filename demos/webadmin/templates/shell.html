@@ -1,19 +1,11 @@
 <gs-layout type="horizontal" css="">
 
     <!-- header - topbar -->
-    <gs-item type="vertical" v-pos="center" h-pos="center" min="62" 
-            css="border-bottom shadow-sm text-bg-light">
-            <gs-item></gs-item>
-            <gs-item h-pos="center">
-                <template>
-                    <img src="/bootstrap-lit/assets/img/logo.png" height="32">
-                </template>
-            </gs-item>
-            <gs-item h-pos="end">
-                <template>
-                    <gs-admin-shell-header></gs-admin-shell-header>
-                </template>
-            </gs-item>
+    <gs-item type="vertical" v-pos="center" h-pos="end" min="60"
+            css="border-bottom shadow-sm text-bg-light logo">
+            <template>
+                <gs-admin-shell-header></gs-admin-shell-header>
+            </template>
     </gs-item>
 
     <!-- center content location -->

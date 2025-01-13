@@ -16,7 +16,7 @@ import { GSFunction } from '../../../../modules/base/GSFunction.mjs';
  * Helper class with shared utility functions
  * @class
  */
-export default class Utils {
+export class Utils {
 
     static setUI(value) {
         const el = document.createElement(value);
