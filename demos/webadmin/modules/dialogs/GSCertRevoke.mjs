@@ -37,10 +37,7 @@ export default class GSCertRevoke extends GSAsbtractDialog {
 	    if (o.msg) Utils.notify.secondary('Client certificate revoking', o.msg, true, 4, 0.2);
 	    me.enable();
 	    me.visible = false;
-	    /*
-		super.onData();
         return o.success;
-        */
     }
 
 }
