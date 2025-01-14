@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015, 2024 Green Screens Ltd.
+ * Copyright (C) 2015, 2025 Green Screens Ltd.
  */
 
 export const ColorTypes = ['', 'primary', 'secondary', 'dark', 'light', 'info', 'warning', 'danger', 'alert', 'link', 'success'];
