@@ -47,7 +47,11 @@ export class TemplateController {
   }
 
   hostUpdated() {
-    if (this.#injected) this.#host.templateInjected?.();
+    const me = this;
+    if (me.#injected) {
+      me.#injected = false;
+      me.#host.templateInjected?.();
+    }
   }
 
   #request() {

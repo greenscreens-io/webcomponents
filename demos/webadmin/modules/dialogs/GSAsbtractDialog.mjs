@@ -62,11 +62,27 @@ export class GSAsbtractDialog extends GSDialogElement {
         return true;
     }
 
+    async templateInjected() {
+        const form = this.form;
+        if (form) form.data = await this.loadDefaults();
+    }    
+
+    async loadDefaults() {
+        return null;
+    }
+
     /**
      * Wait dialog
      */
     get waiter() {
         return Utils.waiter;
+    }
+
+    /**
+     * Get dialog form
+     */
+    get form() {
+        return this.query('gs-form', true);
     }
 
     /**

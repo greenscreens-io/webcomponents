@@ -84,7 +84,9 @@ export class GSInputElement extends ReactiveInput {
 
   firstUpdated(changed) {
     super.firstUpdated(changed);
-    if (this.autofocus) this.focus();
+    if (this.autofocus) this.focus();    
+    const data = this.form?.data;
+    if (data) GSDOM.fromObject2Element(this, data);
   }
 
   /**
@@ -244,6 +246,10 @@ export class GSInputElement extends ReactiveInput {
   */
   removeEvent(el, name = '', fn) {
     return GSEvents.remove(this, el, name, fn);
+  }
+
+  get form() {
+    return this.closest('gs-form');
   }
 
   get owner() {

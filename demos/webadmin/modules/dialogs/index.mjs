@@ -1,3 +1,16 @@
 import './GSAsbtractDialog.mjs';
 import './GSAbout.mjs';
 import './GSRestart.mjs';
+import './GSMigrate.mjs';
+import './GSCertClient.mjs';
+import './GSCertRevoke.mjs';
+import './GSCertImportStore.mjs';
+import './GSCertOpt.mjs';
+import './GSLoginAdmin.mjs';
+import './GSLoginDefaults.mjs';
+import './GSSystem.mjs';
+import './GSKerberos.mjs';
+import './GSNetwork.mjs';
+import './GSOtpOptions.mjs';
+import './GSRegisterOTP.mjs';
+import './GSRegisterBiometrics.mjs';

@@ -1,4 +1,4 @@
-<form slot="body" is="gs-ext-form"  class="flex-fill" novalidate="">
+<gs-form slot="body" css="flex-fill">
 
     <gs-form-group css="m-1" name="license" label="License key" required
         pattern="^(okey|lkey|ckey){1}(://){1}[\S]+$"
@@ -21,4 +21,4 @@
     <gs-form-group css="m-1" name="usglimit" label="Limit" required type="number" min="0" max="999999"
         description="Workstation limit for partition. Set 0 for license default.">
     </gs-form-group>
-</form>
+</gs-form>

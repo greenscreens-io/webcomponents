@@ -48,7 +48,7 @@ class Shell extends GSElement {
         debugger;
     }
 
-    onCertReq() {
+    onCertGenReq() {
         debugger;
     }
     

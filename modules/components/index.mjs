@@ -47,6 +47,7 @@ export * from "./Template.mjs";
 
 export * from "./ext/index.mjs";
 export * from "./breadcrumb/index.mjs";
+export * from "./filebox/index.mjs";
 export * from "./intl/index.mjs";
 export * from "./steps/index.mjs";
 export * from "./toast/index.mjs";

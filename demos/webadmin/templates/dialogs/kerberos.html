@@ -1,4 +1,4 @@
-<form slot="body" is="gs-ext-form"  class="flex-fill" novalidate="">
+<gs-form slot="body" css="flex-fill">
 	    
 	<gs-form-group css="m-1" name="sso" label="Status" autocomplete="off"
 	    description="Enable Single Sign On. IBM system must be configured to use Kerberos for signon.">
@@ -24,8 +24,8 @@
 	<gs-form-group css="m-1" name="btnKDC" label="" icon="false" placement="start"
 	    description="Resync data from KDC">
 	    <template>
-	        <gs-button action="reload" id="btnKDC" css="btn btn-sm btn-secondary d-inline" title="Reload"></gs-button>
+	        <gs-button data-gs-action="reload-kerberos" id="btnKDC" css="btn btn-sm btn-secondary d-inline" title="Reload"></gs-button>
 	    </template>
 	</gs-form-group>
 
-</form>
+</gs-form>

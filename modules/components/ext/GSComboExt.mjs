@@ -42,6 +42,8 @@ export class GSComboExt extends HTMLSelectElement {
 
     connectedCallback() {
         GSID.setIf(this);
+        const data = this.form?.data;
+        if (data) GSDOM.fromObject2Element(this, data);
     }
 
     validate() {
@@ -51,9 +53,22 @@ export class GSComboExt extends HTMLSelectElement {
         return isValid;
     }
 
+    get form() {
+        return this.closest('gs-form');
+    }
+
     get owner() {
         const own = GSDOM.root(this);
         return GSDOM.unwrap(own);
+    }
+
+    /**
+     * Find closest top element by CSS selector
+     * @param {String} query 
+     * @returns {HTMLElement}
+     */
+    closest(query = '') {
+        return GSDOM.closest(this, query);
     }
 
     async load(url = '') {
