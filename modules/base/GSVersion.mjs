@@ -18,6 +18,6 @@ export class GSVersion {
     }
 
     get build() {
-        return 20251227;
+        return 2025;1227;
     }
 }

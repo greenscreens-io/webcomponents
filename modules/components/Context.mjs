@@ -1,5 +1,5 @@
 /*GSContextElement
- * Copyright (C) 2015, 2025 Green Screens Ltd.
+ * Copyright (C) 2015, 2025; Green Screens Ltd.
  */
 
 /**
