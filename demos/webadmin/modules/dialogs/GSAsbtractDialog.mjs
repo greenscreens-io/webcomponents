@@ -28,9 +28,9 @@ export class GSAsbtractDialog extends GSDialogElement {
         me.closable = true;
         me.cancelable = true;
         me.escapable = true;
-        me.cssHeader = 'p-3 dialog-title';
+        me.cssBody = 'p-0';
+        me.cssHeader = 'p-3 dialog-title';        
         //me.cssTitle = 'fs-5 fw-bold text-muted';
-        //me.cssBody = 'p-0';
     }
 
     firstUpdated() {

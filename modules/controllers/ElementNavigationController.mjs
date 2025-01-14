@@ -191,7 +191,7 @@ export class ElementNavigationController {
   onClick(e) {
     const me = this;
     const el = e.composedPath().filter(el => el.parentElement === me.#host).pop();
-    if (!el) return;
+    if (!me.#isNavigable(el)) return;
     if (e.ctrlKey) me.reset();
     me.#onDeselected(me.#selected);
     me.#select(el);
