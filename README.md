@@ -12,5 +12,5 @@ Project web page at [webcomponents.greenscreens.ltd](https://webcomponents.green
 
 To compile, use "rollup -c" 
  
-&copy; Green Screens Ltd. 2016 - 2024
+&copy; Green Screens Ltd. 2016 - 2025
  
