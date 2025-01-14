@@ -25,4 +25,4 @@ GSCopyright WebComponent is a simple helper class to render company copyright in
 
 <br>
 
-&copy; Green Screens Ltd. 2016 - 2024
+&copy; Green Screens Ltd. 2016 - 2025

@@ -50,4 +50,4 @@ GSElement extended from Lit Element is base WebComponent used by all other Green
 
 <br>
 
-&copy; Green Screens Ltd. 2016 - 2024
+&copy; Green Screens Ltd. 2016 - 2025

@@ -4,5 +4,5 @@ GSCacheStyles Class is internal caching for loaded CSS styles which are shared a
 
 <br>
 
-&copy; Green Screens Ltd. 2016 - 2024
+&copy; Green Screens Ltd. 2016 - 2025
 

@@ -34,4 +34,4 @@ For more details, check [Button Group Demo](../../demos/button.html)
 
 <br>
 
-&copy; Green Screens Ltd. 2016 - 2024
+&copy; Green Screens Ltd. 2016 - 2025

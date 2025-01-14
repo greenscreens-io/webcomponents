@@ -16,4 +16,4 @@ Purpose of this component is to support mobile app UI behaviour based on screen 
 
 <br>
 
-&copy; Green Screens Ltd. 2016 - 2024
+&copy; Green Screens Ltd. 2016 - 2025

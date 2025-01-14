@@ -4,4 +4,4 @@ GSFunction Class is a generic set of static functions used for handlig, calling 
 
 <br>
 
-&copy; Green Screens Ltd. 2016 - 2024
+&copy; Green Screens Ltd. 2016 - 2025

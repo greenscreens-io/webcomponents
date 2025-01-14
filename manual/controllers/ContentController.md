@@ -10,4 +10,4 @@ Cleanup is automatic, but in order to keep the HTML, set flag "keep" to ignore t
 
 <br>
 
-&copy; Green Screens Ltd. 2016 - 2024
+&copy; Green Screens Ltd. 2016 - 2025

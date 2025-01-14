@@ -12,4 +12,4 @@ Input field names "type" is linked to a **<datalist>** named **types**. When **<
 ```
 <br>
 
-&copy; Green Screens Ltd. 2016 - 2024
+&copy; Green Screens Ltd. 2016 - 2025

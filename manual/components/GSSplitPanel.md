@@ -50,4 +50,4 @@ For more details, check [splitpanel.html](../../demos/splitpanel.html)
 
 <br>
 
-&copy; Green Screens Ltd. 2016 - 2024
+&copy; Green Screens Ltd. 2016 - 2025

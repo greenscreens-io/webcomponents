@@ -4,4 +4,4 @@ GSLoader Class is a generic set of static functions used for loading resources s
 
 <br>
 
-&copy; Green Screens Ltd. 2016 - 2024
+&copy; Green Screens Ltd. 2016 - 2025

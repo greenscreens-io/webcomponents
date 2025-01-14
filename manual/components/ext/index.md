@@ -21,4 +21,4 @@ For more details, check controllers.
     5. [PasswordController](./controllers/PasswordController.md)
 <br>
 
-&copy; Green Screens Ltd. 2016 - 2024
+&copy; Green Screens Ltd. 2016 - 2025

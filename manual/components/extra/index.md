@@ -11,4 +11,4 @@ Extra library is a set of classes that wraps around external libraries into WebC
 
 <br>
 
-&copy; Green Screens Ltd. 2016 - 2024
+&copy; Green Screens Ltd. 2016 - 2025

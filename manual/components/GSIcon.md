@@ -23,4 +23,4 @@ GSIcon WebComponent is a wrapper around standard HTMLForm element with addtional
  
 <br>
 
-&copy; Green Screens Ltd. 2016 - 2024
+&copy; Green Screens Ltd. 2016 - 2025

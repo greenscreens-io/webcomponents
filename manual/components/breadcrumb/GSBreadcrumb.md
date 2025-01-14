@@ -34,4 +34,4 @@ For more details, check [Breadcrumb Demo](../../demos/breadcrumb.html)
 
 <br>
 
-&copy; Green Screens Ltd. 2016 - 2024
+&copy; Green Screens Ltd. 2016 - 2025

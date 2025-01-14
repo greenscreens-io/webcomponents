@@ -7,4 +7,4 @@ If we decide to extend this logging mechanism with other functionalities, such a
 
 <br>
 
-&copy; Green Screens Ltd. 2016 - 2024
+&copy; Green Screens Ltd. 2016 - 2025

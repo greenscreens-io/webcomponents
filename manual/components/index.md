@@ -72,4 +72,4 @@ Components library contains all WebComponents UI elements based on Bootstrap 5.2
     4. [GSMonaco](./extra/GSMonaco.md)
 <br>
 
-&copy; Green Screens Ltd. 2016 - 2024
+&copy; Green Screens Ltd. 2016 - 2025

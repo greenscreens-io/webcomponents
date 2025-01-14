@@ -65,4 +65,4 @@ For more details, check [Layouts Demo](../../demos/layouts/)
 
 <br>
 
-&copy; Green Screens Ltd. 2016 - 2024
+&copy; Green Screens Ltd. 2016 - 2025

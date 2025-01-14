@@ -6,4 +6,4 @@ Please refer to the demo in [Inputmask Demo](../../../../demos/inputmask.html)
 
 <br>
 
-&copy; Green Screens Ltd. 2016 - 2024
+&copy; Green Screens Ltd. 2016 - 2025

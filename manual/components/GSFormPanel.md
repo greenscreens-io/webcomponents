@@ -23,4 +23,4 @@ For detail example, check [formpanel.html](../../demos/formpanel.html)
  
 <br>
 
-&copy; Green Screens Ltd. 2016 - 2024
+&copy; Green Screens Ltd. 2016 - 2025

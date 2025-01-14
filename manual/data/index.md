@@ -10,4 +10,4 @@ Data library is set of remote data readers and wirters with tupport for Gren Scr
 4. [GSTreeReader](./GSTreeReader.md)
 <br>
 
-&copy; Green Screens Ltd. 2016 - 2024
+&copy; Green Screens Ltd. 2016 - 2025

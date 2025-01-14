@@ -53,4 +53,4 @@ For more details, check [alert.html](../../demos/alert.html)
 
 <br>
 
-&copy; Green Screens Ltd. 2016 - 2024
+&copy; Green Screens Ltd. 2016 - 2025

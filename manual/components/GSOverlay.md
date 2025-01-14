@@ -28,4 +28,4 @@ For detail example, check [overlay.html](../../demos/overlay.html)
  
 <br>
 
-&copy; Green Screens Ltd. 2016 - 2024
+&copy; Green Screens Ltd. 2016 - 2025

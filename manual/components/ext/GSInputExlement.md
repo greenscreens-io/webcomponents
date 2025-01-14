@@ -26,4 +26,4 @@ For more examples, please refer to [Input field demos](../../../../demos/inputma
  ```
 <br>
 
-&copy; Green Screens Ltd. 2016 - 2024
+&copy; Green Screens Ltd. 2016 - 2025

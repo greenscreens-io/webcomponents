@@ -5,4 +5,4 @@ Featres are actvated if autoselect and autocopy attributes are enabled.
 
 <br>
 
-&copy; Green Screens Ltd. 2016 - 2024
+&copy; Green Screens Ltd. 2016 - 2025

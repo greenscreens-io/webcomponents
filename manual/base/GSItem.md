@@ -4,4 +4,4 @@ GSItem WebComopnent is a generic configuration element used by various GS UI Web
 
 <br>
 
-&copy; Green Screens Ltd. 2016 - 2024
+&copy; Green Screens Ltd. 2016 - 2025

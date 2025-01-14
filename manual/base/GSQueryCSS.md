@@ -4,4 +4,4 @@ GSQueryCSS Class is a Proxy class to handle chained css. Used internally, see [G
  
 <br>
 
-&copy; Green Screens Ltd. 2016 - 2024
+&copy; Green Screens Ltd. 2016 - 2025

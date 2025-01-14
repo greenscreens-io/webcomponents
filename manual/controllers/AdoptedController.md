@@ -8,4 +8,4 @@ Controller listens for "gs-adopted" event triggered by [GSAdoptedEngine](../base
 
 <br>
 
-&copy; Green Screens Ltd. 2016 - 2024
+&copy; Green Screens Ltd. 2016 - 2025

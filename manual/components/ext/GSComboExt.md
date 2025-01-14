@@ -11,4 +11,4 @@ GSComboExt WebComponent is an extension of a standard HTMLSelectElement that add
 
 <br>
 
-&copy; Green Screens Ltd. 2016 - 2024
+&copy; Green Screens Ltd. 2016 - 2025
