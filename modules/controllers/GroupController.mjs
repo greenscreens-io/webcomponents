@@ -42,7 +42,7 @@ export class GroupController {
 
   notify(data) {
     const me = this;
-    me.#busEvent.emit(me.#host.group, {owner: me.#host, item:data}); 	
+    me.#busEvent?.emit(me.#host.group, {owner: me.#host, item:data}); 	
   }
 
 }  

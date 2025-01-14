@@ -4,7 +4,6 @@
 
 import { html, ifDefined } from '../lib.mjs';
 import { GSGroupElement } from './Group.mjs';
-import { GSNavItemElement } from './NavItem.mjs';
 import { PlacementTypes, nav, placement } from '../properties/index.mjs';
 
 export class GSNavElement extends GSGroupElement {
@@ -23,9 +22,11 @@ export class GSNavElement extends GSGroupElement {
     this.placement = 'start';
   }
 
+  /*
   initData() {
     return this.settings(GSNavItemElement);
   }
+  */
 
   shouldUpdate(changed) {
     return this.data.length > 0 || this.query('gs-nav-item');

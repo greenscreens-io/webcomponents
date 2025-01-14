@@ -6,7 +6,6 @@ import { GSID } from '../../base/GSID.mjs';
 import { html, ifDefined } from '../../lib.mjs';
 import { PlacementTypes } from '../../properties/placement.mjs';
 import { GSNavElement } from '../Nav.mjs';
-import { GSTabItemElement } from './Tab.mjs';
 
 /**
  * Panel with tabs component (gs-tab-group), generate childrens gs-tab and gs-tab-panel 
@@ -25,9 +24,11 @@ export class GSTabGroupElement extends GSNavElement {
     me.queryAll('gs-tab').forEach(el => me.#findPanel(el));
   }
 
+  /*
   initData() {
     return this.settings(GSTabItemElement);
   }
+  */
 
   firstUpdated(changed) {
     super.firstUpdated(changed);
