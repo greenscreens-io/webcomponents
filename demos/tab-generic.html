@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Bootstrap-Lit</title>
+    <meta charset="utf-8">
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0">
+
+    <meta name="subject" content="Green Scereens Ltd.">
+    <meta name="author" content="www.greenscreens.ltd">
+    <meta name="keywords" content="JavaScript,WebComponents">
+    <meta name="robots" content="index, follow">
+    <meta name="revisit-after" content="3 month">
+    <meta name="description" content="WebComponents UI library based on Bootstrap.">
+
+    <script>
+        globalThis.GS_TEMPLATE_URL = '/bootstrap-lit/demos/templates/';
+    </script>
+
+    <!-- Optimized CSS loading -->
+    <link rel="preload" href="/bootstrap-lit/assets/css/bootstrap.css" as="style" data-adoptable="true">
+    <link rel="preload" href="/bootstrap-lit/assets/themes/default.css" as="style" data-adoptable="true">
+    <link rel="preload" href="/bootstrap-lit/assets/icons/bootstrap-icons.css" as="style" data-adoptable="true">
+
+    <script type="module" src="/bootstrap-lit/modules/base/GSAdoptedEngine.mjs"></script>
+    <script type="module" src="/bootstrap-lit/modules/base/GSTheme.mjs"></script>
+    <script type="module" src="/bootstrap-lit/modules/components/Template.mjs"></script>
+    <script type="module" src="/bootstrap-lit/modules/components/Link.mjs"></script>
+    <script type="module" src="/bootstrap-lit/modules/components/Button.mjs"></script>
+    <script type="module" src="/bootstrap-lit/modules/components/Icon.mjs"></script>
+    <script type="module" src="/bootstrap-lit/modules/components/tab/Tab.mjs"></script>
+    <script type="module" src="/bootstrap-lit/modules/components/tab/TabPanel.mjs"></script>
+    <script type="module" src="/bootstrap-lit/modules/components/tab/TabGroup.mjs"></script>
+    
+    <script type="module" src="/bootstrap-lit/modules/components/ext/index.mjs"></script>
+    <script type="module" src="/bootstrap-lit/modules/components/Form.mjs"></script>
+    <script type="module" src="/bootstrap-lit/modules/components/FormGroup.mjs"></script>
+    <script type="module" src="/bootstrap-lit/modules/components/FormPanel.mjs"></script>
+
+    <script>
+        self.GS_TEMPLATE_URL = '/bootstrap-lit/demos/webadmin/templates/';
+        self.GS_NO_CACHE = false;
+    </script>
+</head>
+<body>
+
+    <gs-tab-group type="tabs" css-panel="p-2" css-tab="fw-bold">
+        <gs-item name="tab1" template="//dialogs/certificate/root.html" title="Root CA" active autofocus></gs-item>
+        <gs-item name="tab2" template="//dialogs/certificate/server.html" title="Intermediate CA"></gs-item>
+        <gs-item name="tab3" template="//dialogs/certificate/timestamp.html" title="Server Certificate"></gs-item>
+    </gs-tab-group>
+
+</body>
+</html>
