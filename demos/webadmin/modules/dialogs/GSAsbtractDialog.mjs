@@ -39,6 +39,7 @@ export class GSAsbtractDialog extends GSDialogElement {
         me.on('data', me.#onFormData.bind(me));
         me.on('error', me.#onFormError.bind(me));
         me.on('notify', me.#onNotify.bind(me));
+        GSEvents.monitorAction(this);
     }
 
     /**

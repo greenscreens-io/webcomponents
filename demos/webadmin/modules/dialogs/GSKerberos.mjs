@@ -2,6 +2,7 @@
 * Copyright (C) 2015, 2025 Green Screens Ltd.
 */
 
+import { Utils } from '../utils/Utils.mjs';
 import { GSAsbtractDialog } from './GSAsbtractDialog.mjs';
 
 /**
@@ -33,6 +34,11 @@ export class GSKerberos extends GSAsbtractDialog {
     
     async onReloadKerberos() {
         const o = DEMO ? DEMO : await io.greenscreens.Kerberos.reload();
+        if (o.success) {
+            Utils.notify.secondary('', 'Kerberos reloaded', true);
+        } else {
+            Utils.notify.danger('Error', o.msg, true);
+        }
         return o.success;
     }
 }

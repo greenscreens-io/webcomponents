@@ -28,12 +28,16 @@ export class GSToastElement extends GSElement {
 
     shouldUpdate(changedProperties) {
         const me = this;
-        const visibilityChange = changedProperties.has('opened');
+        const visibilityChange = me.#isVisibilityChanged(changedProperties);
         if (me.delay > 0 && me.opened && visibilityChange) {
             me.#pending = true;
             me.#pendingUpdate();
         }
         return me.#validParent && (!me.#pending);
+    }
+
+    #isVisibilityChanged(changedProperties) {
+        return changedProperties.has('opened');
     }
 
     async #pendingUpdate() {
@@ -45,12 +49,13 @@ export class GSToastElement extends GSElement {
 
     async updated(changedProperties) {
         const me = this;
-        if (me.timeout > 0) {
+        const visibilityChange = me.#isVisibilityChanged(changedProperties);
+        if (me.timeout > 0 && me.opened) {
             await GSUtil.timeout(me.timeout * 1000);
             me.opened = false;
-            await GSUtil.timeout(GSDOM.SPEED);
+        } else if (visibilityChange && !me.opened) { 
             me.remove();
-        }
+        };
     }
 
     renderUI() {
@@ -110,7 +115,9 @@ export class GSToastElement extends GSElement {
     }
 
     get #validParent() {
-        return this.parentElement instanceof GSNotificationElement;
+        const isToast = GSDOM.hasClass(this.parentElement, 'toast-container');
+        const isNotify = this.parentElement instanceof GSNotificationElement;
+        return isToast || isNotify;
     }
 
     static {

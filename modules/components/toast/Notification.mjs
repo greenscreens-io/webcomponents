@@ -1,6 +1,8 @@
 
 import { classMap, html, ifDefined } from '../../lib.mjs';
+import { GSAttr } from '../../base/GSAttr.mjs';
 import { GSElement } from '../../GSElement.mjs';
+import { GSDOM } from '../../base/GSDOM.mjs';
 
 export class GSNotificationElement extends GSElement {
 
@@ -28,6 +30,7 @@ export class GSNotificationElement extends GSElement {
     constructor() {
         super();
         this.css = 'p-3';
+        this.position = GSNotificationElement.DEFAULT;
     }
 
     renderUI() {

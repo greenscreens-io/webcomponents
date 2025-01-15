@@ -490,16 +490,16 @@ export class GSEvents {
 	}
 
 	/**
-	 * Monitor GSElement 'action' events and trigger class functions if avaialble.
+	 * Monitor GSElement 'action' events and trigger class functions if available.
 	 * @param {HTMLElement} owner 
 	 * @param {String} type 
 	 */
 	static monitorAction(owner, type) {
-		owner.on('action', async (e) => {
+		owner.on('action', (e) => {
 			const me = owner;
 			const data = e.detail;
 			const action = GSUtil.isString(data) ? data : data.action || data.data?.action;
-			await GSEvents.onAction(me, action, type, e);
+			GSEvents.onAction(me, action, type, e);
 		});
 	}
 
