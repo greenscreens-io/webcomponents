@@ -17,6 +17,11 @@ export class GSItem extends HTMLElement {
 
 	static #tags = ['GS-ITEM', 'TEMPLATE']
 
+	static properties = {
+		active: { type: Boolean },
+		disabled: { type: Boolean }
+	}
+
 	constructor() {
 		super();
 		GSItem.validate(this);
@@ -48,6 +53,13 @@ export class GSItem extends HTMLElement {
 		return GSAttr.get(this, 'name', '');
 	}
 
+	/**
+	 * Get parent GS-* component
+	 */
+	get parentComponent() {
+		return GSDOM.parentAll(this).filter(x => x instanceof GSElement).next()?.value;
+	}
+		
 	asJSON(recursive = true) {
 		return GSDOM.toJson(this, recursive);
 	}

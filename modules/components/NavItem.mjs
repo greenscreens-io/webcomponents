@@ -5,7 +5,6 @@
 import { classMap, ifDefined, html, createRef, ref } from '../lib.mjs';
 import { NavTypes, PlacementTypes } from '../properties/index.mjs';
 import { GSElement } from '../GSElement.mjs';
-import { GSDOM } from '../base/GSDOM.mjs';
 
 export class GSNavItemElement extends GSElement {
 
@@ -16,8 +15,7 @@ export class GSNavItemElement extends GSElement {
     icon: {},
     disabled: { type: Boolean },
     autofocus: { type: Boolean },
-    active: { type: Boolean, reflect: true },
-    generated: { state: true, type : Boolean }
+    active: { type: Boolean, reflect: true }
   }
 
   #refEl = createRef();
@@ -27,7 +25,7 @@ export class GSNavItemElement extends GSElement {
   }
 
   shouldUpdate(changedProperties) {
-    return this.owner?.tagName === 'GS-NAV';
+    return this.parentComponent?.tagName === 'GS-NAV';
   }
 
   firstUpdated(changed) {
@@ -61,15 +59,11 @@ export class GSNavItemElement extends GSElement {
   }
 
   get vertical() {
-    return this.parentElement.vertical || false;
+    return this.parentComponent.vertical || false;
   }
 
   get placement() {
-    return this.parentElement.placement;
-  }
-
-  get owner() {
-    return (this.hasAttribute('generated') ? GSDOM.component(this) : this.parentElement);
+    return this.parentComponent.placement;
   }
 
   get url() {
@@ -107,19 +101,19 @@ export class GSNavItemElement extends GSElement {
   }
 
   get #itemsCSS() {
-    return this.owner.dataset?.cssItem || '';
+    return this.parentComponent.dataset?.cssItem || '';
   }
 
   get #buttonCSS() {
-    return this.owner.dataset?.cssButton || '';
+    return this.parentComponent.dataset?.cssButton || '';
   }
 
   get #activeCSS() {
-    return this.owner.dataset?.cssActive || '';
+    return this.parentComponent.dataset?.cssActive || '';
   }
 
   get #navType() {
-    return NavTypes.indexOf(this.owner.type);
+    return NavTypes.indexOf(this.parentComponent.type);
   }
 
   // fiix for shadowed DOM, parent class="nav nav-pills.." 

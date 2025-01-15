@@ -2,6 +2,8 @@
  * Copyright (C) 2015, 2025; Green Screens Ltd.
  */
 
+import { GSElement } from "../GSElement.mjs";
+
 /**
  * Controller for child element navigation / selection / focusing
  */
@@ -17,11 +19,6 @@ export class ElementNavigationController {
     const me = this;
     me.#host = host;
     host.addController(me);
-  }
-
-  hostConnected() {
-    const me = this;
-    me.init();
   }
 
   hostDisconnected() {
@@ -47,11 +44,17 @@ export class ElementNavigationController {
     return this.multiple ? [...this.#multiselect.values()] : this.#selected;
   }
 
+  /**
+   * Called on first update from host component
+   */
   init() {
     const me = this;
-    me.#selected = me.#host.data?.filter(o => o.active).pop();
+    me.#selected = me.#host.active;
   }
 
+  /**
+   * Called on first update from host component
+   */  
   attach(el) {
     const me = this;
     if (me.#attached) return;
@@ -190,7 +193,9 @@ export class ElementNavigationController {
 
   onClick(e) {
     const me = this;
-    const el = e.composedPath().filter(el => el.parentElement === me.#host).pop();
+    const el = e.composedPath()
+    .filter(el => el instanceof GSElement)
+    .filter(el => el.parentComponent === me.#host).pop();
     if (!me.#isNavigable(el)) return;
     if (e.ctrlKey) me.reset();
     me.#onDeselected(me.#selected);

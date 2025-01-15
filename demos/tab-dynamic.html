@@ -58,7 +58,7 @@
 
     <gs-tab-group type="pills" css="border p-1 m-4 shadow-sm text-nowrap bg-light" css-panel="p-4 text-bg-light"
         css-tab="bg-dark p-2" border="" shadow="">
-        <gs-tab name="tab1" slot="tabs" autofocus="" title="Link 1"></gs-tab>
+        <gs-tab name="tab1" slot="tabs" title="Link 1" active></gs-tab>
         <gs-tab name="tab2" slot="tabs" title="Link 2"></gs-tab>
         <gs-tab name="tab3" slot="tabs" title="Link 3"></gs-tab>
         <gs-tab name="tab4" slot="tabs" title="Link 4"></gs-tab>
@@ -75,7 +75,7 @@
 
     <gs-tab-group data-css-active="fw-bold rounded-top text-light"
         css="border m-4 shadow-sm text-nowrap text-bg-light" css-tab="text-bg-dark p-2" css-panel="p-1" type="">
-        <gs-tab name="tab1" slot="tabs" autofocus="" title="Link 1"></gs-tab>
+        <gs-tab name="tab1" slot="tabs" title="Link 1" active></gs-tab>
         <gs-tab name="tab2" slot="tabs" title="Link 2"></gs-tab>
         <gs-tab name="tab3" slot="tabs" title="Link 3"></gs-tab>
         <gs-tab name="tab4" slot="tabs" title="Link 4"></gs-tab>
@@ -89,11 +89,11 @@
     </gs-tab-group>
 
     <gs-tab-group css="m-4 p-0 bg-light bordered shadow-sm" type="tabs" css-panel="p-2">
-        <gs-item title="Home" active template="//tab/content.html"  css-nav="" css-panel=""></gs-item>
+        <gs-item title="Home"  template="//tab/content.html"  active></gs-item>
         <gs-item title="Test1" template="//tab/content2.html" icon="alarm ms-1"></gs-item>
         <gs-item title="Test2" template="#test"></gs-item>
-        <gs-item title="Blog" template="#test2"  css-nav="" css-panel="border rounded p-1 text-bg-dark"></gs-item>
-        <gs-item title="Contact" template="#test3" css-nav="" css-panel=""></gs-item>
+        <gs-item title="Blog"  template="#test2" css-panel="border rounded p-1 text-bg-dark"></gs-item>
+        <gs-item title="Contact" template="#test3"></gs-item>
     </gs-tab-group>
         
 </body>

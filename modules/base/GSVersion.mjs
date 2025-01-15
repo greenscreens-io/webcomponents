@@ -13,11 +13,11 @@
  */
 export class GSVersion {
 
-    get version() {
+    static get version() {
         return '2.0.0';
     }
 
-    get build() {
+    static get build() {
         return 2025;1227;
     }
 }

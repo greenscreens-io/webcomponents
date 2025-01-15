@@ -22,12 +22,6 @@ export class GSNavElement extends GSGroupElement {
     this.placement = 'start';
   }
 
-  /*
-  initData() {
-    return this.settings(GSNavItemElement);
-  }
-  */
-
   shouldUpdate(changed) {
     return this.data.length > 0 || this.query('gs-nav-item');
   }
@@ -65,16 +59,16 @@ export class GSNavElement extends GSGroupElement {
     });
   }
 
-  isNavigable(el) {
-    return el?.tagName === 'GS-NAV-ITEM';
-  }
-
   /**
    * Callback when child element focused
    * @param {*} el 
    */
   onFocused(el) {
     // el?.click();
+  }
+
+  get childTagName() {
+    return 'GS-NAV-ITEM';
   }
 
   static {

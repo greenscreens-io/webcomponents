@@ -43,21 +43,7 @@ export class GSGroupElement extends GSElement {
     me.#controller = new ElementNavigationController(me);
     me.#controllerGroup = new GroupController(me);
   }
-
-  onBusEvent(e) {
-    let owner, item;  
-    ({owner, item} = e.detail);
-    if (owner != this) {
-      if (!item?.disabled || owner?.selectable) {
-        this.reset();
-      }
-    }
-  }
-
-  onSelected(el) {
-    this.#controllerGroup.notify(el);
-  }
-
+  
   firstUpdated(changed) {
     const me = this;
     me.#controller.init();
@@ -115,11 +101,25 @@ export class GSGroupElement extends GSElement {
    * @returns 
    */
   isNavigable(el) {
-    return true;
+    return el?.tagName === this.childTagName;
   }
 
   onDataRead(data) {
     this.data = data;
+  }
+
+  onBusEvent(e) {
+    let owner, item;  
+    ({owner, item} = e.detail);
+    if (owner != this) {
+      if (!item?.disabled || owner?.selectable) {
+        this.reset();
+      }
+    }
+  }
+  
+  onSelected(el) {
+    this.#controllerGroup.notify(el);
   }
 
   get focused() {
@@ -128,6 +128,22 @@ export class GSGroupElement extends GSElement {
 
   get selected() {
     return this.#controller.selected;
+  }
+
+  get childTagName() {
+    return '';
+  }
+    
+  get items() {
+    return this.queryAll(this.childTagName);
+  }
+
+  get generated() {
+    return this.queryAll(`${this.childTagName}[generated]`);
+  }
+
+  get active() {
+    return this.query(`${this.childTagName}[active]`);
   }
 
   settings(el) {

@@ -4,7 +4,6 @@
 
 import { html, ifDefined } from '../lib.mjs';
 import { GSGroupElement } from './Group.mjs';
-import { GSListItemElement } from './ListItem.mjs';
 
 export class GSListElement extends GSGroupElement {
 
@@ -20,13 +19,16 @@ export class GSListElement extends GSGroupElement {
     this.selectable = false;
   }
 
-  initData() {
-    return this.settings(GSListItemElement);
+  shouldUpdate(changed) {
+    return this.data.length > 0 || this.items.length > 0;
   }
 
-  shouldUpdate(changed) {
-    return this.data.length > 0 || this.query('gs-list-item');
-  }
+  firstUpdated(changed) {
+    super.firstUpdated(changed);
+    const me = this;
+    const el = me.active;
+
+ }
 
   renderClass() {
     const css = {
@@ -37,7 +39,8 @@ export class GSListElement extends GSGroupElement {
   }
 
   renderWrappedUI() {
-    return html`<slot>${this.renderItems()}</slot>`;
+    const me = this;
+    return me.data.length === 0 ? html`<slot></slot>` : html`<slot name="body">${me.renderItems()}</slot>`;
   }
 
   reset() {
@@ -45,12 +48,11 @@ export class GSListElement extends GSGroupElement {
     this.notify();
   }
 
-  renderItems() {
-    const me = this;
+  renderItems() {    
     return this.data.map(o => {
       return html`<gs-list-item generated
-        .active="${o.active === true}"
-        .autofocus="${o.autofocus === true}"
+        .active="${ifDefined(o.active === true)}"
+        .autofocus="${ifDefined(o.autofocus === true)}"
         .disabled="${ifDefined(o.disabled === true)}" 
         icon="${ifDefined(o.icon)}" 
         href="${ifDefined(o.href)}" 
@@ -60,11 +62,11 @@ export class GSListElement extends GSGroupElement {
   }
 
   isNavigable(el) {
-    return el?.tagName === 'GS-LIST-ITEM';
+    return super.isNavigable(el) && this.selectable;
   }
 
-  get items() {
-    return this.queryAll('gs-list-item');
+  get childTagName() {
+    return 'GS-LIST-ITEM';
   }
 
   static {

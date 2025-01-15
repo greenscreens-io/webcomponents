@@ -48,12 +48,21 @@
   <!-- non selectable -->
   <div class="m-4 p-1 bg-light text-bg-light bordered shadow-sm">
     <gs-list>
-      <gs-list-item title="Home" action="home"></gs-list-item>
+      <gs-list-item title="Home" action="home" active autofocus></gs-list-item>
       <gs-list-item title="Test1" action="test1" template="//tpl.html"></gs-list-item>
       <gs-list-item title="Test2" action="test2" template="#tpl1"></gs-list-item>
     </gs-list>
   </div>
   
+    <!-- from gs-item  -->
+    <div class="m-4 p-1 bg-light text-bg-light bordered shadow-sm">
+      <gs-list selectable>
+        <gs-item title="Item 1" action="home" active autofocus></gs-item>
+        <gs-item title="Item 2" action="test1" template="//tpl.html"></gs-item>
+        <gs-item title="Item 3" action="test2" template="#tpl1"></gs-item>
+      </gs-list>
+    </div>
+
   <!-- selectable -->
   <div class="m-4 p-1 bg-light text-bg-light bordered shadow-sm">
     <gs-list selectable data-css-item="">

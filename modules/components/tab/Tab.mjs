@@ -21,11 +21,11 @@ export class GSTabItemElement extends GSNavItemElement {
 
   get #updateCSS() {
     const me = this;
-    return me.shouldUpdate() ? GSUtil.normalize(me.parentElement?.tabCSS) : '';
+    return me.shouldUpdate() ? GSUtil.normalize(me.parentComponent?.tabCSS) : '';
   }
 
   shouldUpdate(changed) {
-    return this.owner?.tagName === 'GS-TAB-GROUP';
+    return this.parentComponent?.tagName === 'GS-TAB-GROUP';
   }
 
   static {

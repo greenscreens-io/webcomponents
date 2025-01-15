@@ -23,7 +23,7 @@ export class GSTabPanelElement extends GSElement {
   }
 
   shouldUpdate(changedProperties) {
-    return this.owner?.tagName === 'GS-TAB-GROUP';
+    return this.parentComponent?.tagName === 'GS-TAB-GROUP';
   }
 
   renderUI() {

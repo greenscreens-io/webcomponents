@@ -3,9 +3,7 @@
  */
 
 import { classMap, ifDefined, html, createRef, ref } from '../lib.mjs';
-import { GSDOM } from '../base/GSDOM.mjs';
 import { GSElement } from '../GSElement.mjs';
-import { GSAttributeHandler } from '../base/GSAttributeHandler.mjs';
 import { GSUtil } from '../base/GSUtil.mjs';
 
 export class GSListItemElement extends GSElement {
@@ -18,8 +16,7 @@ export class GSListItemElement extends GSElement {
     size: { type: Number },
     autofocus: { type: Boolean, reflect: true },
     disabled: { type: Boolean, reflect: true },
-    active: { type: Boolean, reflect: true },
-    generated: { state: true, type: Boolean }
+    active: { type: Boolean, reflect: true }
   }
 
   #initial;
@@ -33,12 +30,15 @@ export class GSListItemElement extends GSElement {
   connectedCallback() {
     super.connectedCallback();
     this.#initial = this.active;
-    // allow single setting at the gs-list to applay to the child
-    GSAttributeHandler.clone(this.owner, this, false);
   }
 
   shouldUpdate(changedProperties) {
-    return this.owner?.tagName === 'GS-LIST';
+    return this.parentComponent?.tagName === 'GS-LIST';
+  }
+
+  firstUpdated(changed) {
+        // allow single setting at the gs-list to applay to the child
+        // GSAttributeHandler.clone(this.parentComponent, this, false);
   }
 
   renderUI() {
@@ -67,7 +67,7 @@ export class GSListItemElement extends GSElement {
   }
 
   isSelectable() {
-    return !GSUtil.asBool(this.disabled) || GSUtil.asBool(this.owner.selectable);
+    return !GSUtil.asBool(this.disabled) || GSUtil.asBool(this.parentComponent.selectable);
   }
 
   #renderIcon() {
@@ -107,21 +107,16 @@ export class GSListItemElement extends GSElement {
     return this.href && this.target ? this.href : '#';
   }
 
-  // TODO Can I use this.parentComponent ? 
-  get owner() {
-    return (this.hasAttribute('generated') ? GSDOM.component(this) : this.parentElement);
-  }
-  
   get #activeCSS() {
-    return this.owner.dataset?.cssActive || '';
+    return this.parentComponent.dataset?.cssActive || '';
   }
 
   get #inactiveCSS() {
-    return this.owner.dataset?.cssInactive || '';
+    return this.parentComponent.dataset?.cssInactive || '';
   }
 
   get #itemCSS() {
-    return this.owner.dataset?.cssItem || '';
+    return this.parentComponent.dataset?.cssItem || '';
   }
 
   get #itemStatusCSS() {

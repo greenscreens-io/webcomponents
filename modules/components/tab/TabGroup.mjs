@@ -19,26 +19,18 @@ export class GSTabGroupElement extends GSNavElement {
 
   constructor() {
     super();
-    const me = this;
-    // link tabs and panels
-    me.queryAll('gs-tab').forEach(el => me.#findPanel(el));
   }
-
-  /*
-  initData() {
-    return this.settings(GSTabItemElement);
-  }
-  */
-
+   
   firstUpdated(changed) {
     super.firstUpdated(changed);
     const me = this;
-    const tabEl = me.query('gs-tab[active],gs-tab[autofocus],gs-tab');
-    me.onSelected(tabEl);
+    // link tabs and panels
+    me.items.forEach(el => me.#findPanel(el));
+    me.onSelected(me.active);
   }
 
   shouldUpdate(changed) {
-    return this.data.length > 0 || this.query('gs-tab');
+    return this.data.length > 0 || this.items.length > 0;
   }
 
   renderClass() {
@@ -55,7 +47,7 @@ export class GSTabGroupElement extends GSNavElement {
     const reverse = PlacementTypes.isAfter(me.placement);
     const list = [super.renderWrappedUI('tabs'),
     html`<div class="tab-content flex-fill ${me.panelCSS}"  dir="${ifDefined(me.direction)}">
-        <slot name="panels"></slot>
+        <slot name="panels">${me.renderPanels()}</slot>
       </div>
       <slot class="d-none"></slot>`];
     return reverse ? list.reverse() : list;
@@ -72,12 +64,13 @@ export class GSTabGroupElement extends GSNavElement {
    * @returns 
    */
   renderItems() {
-    return this.data.map(o => {
+    const me = this;
+    return me.data.map(o => {
       if (!o.name) o.name = GSID.id;
       return html`<gs-tab generated
-        .active="${o.active}"
-        .autofocus="${o.autofocus || o.active}"
-        .disabled="${ifDefined(o.disabled)}" 
+        .active="${ifDefined(o.active === true)}"
+        .autofocus="${ifDefined(o.autofocus === true)}"
+        .disabled="${ifDefined(o.disabled === true)}" 
         icon="${ifDefined(o.icon)}"    
         title="${ifDefined(o.title)}"
         name="${o.name}"></gs-tab>`;
@@ -91,17 +84,11 @@ export class GSTabGroupElement extends GSNavElement {
   renderPanels() {
     return this.data.map(o => {
       if (!o.name) o.name = GSID.id;
-      return html`<gs-tab-panel name="${o.name}" 
+      return html`<gs-tab-panel generated
+        name="${o.name}" 
+        .active="${ifDefined(o.active)}"
         template="${ifDefined(o.template)}"></gs-tab-panel>`;
     });
-  }
-
-  /**
-   * Filter navigable element
-   * @param {HTMLElement} el 
-   */
-  isNavigable(el) {
-    return el?.tagName === 'GS-TAB';
   }
 
   /**
@@ -123,6 +110,10 @@ export class GSTabGroupElement extends GSNavElement {
     if (panel) panel.active = false;
   }
 
+  get childTagName() {
+    return 'GS-TAB';
+  }
+
   /**
    * Selected Tab node name is used to find the panel.
    * If panel found, auto-link it with node element
@@ -132,7 +123,7 @@ export class GSTabGroupElement extends GSNavElement {
     if (!el) return null;
     const me = this;
     const key = Symbol.for('gs-element');
-    const generated = false; // me.data?.length > 0;
+    const generated = me.data?.length > 0;
     let panel = el[key] || me.query(`gs-tab-panel[name="${el.name}"]`, generated);
     if (!el[key]) el[key] = panel;
     return panel;
