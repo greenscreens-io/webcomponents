@@ -9,6 +9,7 @@ import { GSUtil } from "./GSUtil.mjs";
 import { GSEvents } from "./GSEvents.mjs";
 import { GSFunction } from "./GSFunction.mjs";
 import { GSTemplateCache } from "./GSTemplateCache.mjs";
+import { GSElement } from "../GSElement.mjs";
 
 /**
  * A module GSAttributeHandler GSAttr class
@@ -82,11 +83,21 @@ export class GSAttributeHandler {
         me.#proxy = GSAttributeHandler.proxify(me.#host);
     }
 
+    /**
+     * Main function to process element data-gs-* attributes
+     * @param {Event} e 
+     */
     handle(e) {
         const me = this;
         me.targets.forEach(el => me.#handleTarget(me.#host, el, e));
     }
 
+    /**
+     * Process each individual data-gs-* attribute
+     * @param {GSElement} host 
+     * @param {String|HTMLElement} target 
+     * @param {Event} evt 
+     */
     #handleTarget(host, target, evt) {
         const me = this;
         me.#handleBinding(target, evt);
@@ -102,6 +113,12 @@ export class GSAttributeHandler {
         me.#handleTemplate(host, target);
     }
 
+    /**
+     * Bind provided value to the form or form element
+     * @param {HTMLFormElement|HTMLInputElement} target 
+     * @param {Event} evt 
+     * @returns 
+     */
     #handleBinding(target, evt) {
         const source = evt.target.field || evt.target.form || evt.target;
         const isForm = source instanceof HTMLFormElement;
@@ -114,10 +131,19 @@ export class GSAttributeHandler {
         }
     }
 
+    /**
+     * Trigger 'action' event on target to execute specific function
+     * @param {GSElement} target 
+     */
     #handleAction(target) {
         if (this.action) GSEvents.send(target, 'action', this.action, true, true);
     }
 
+    /**
+     * Set target attribute value
+     * @param {HTMLElement} target 
+     * @returns 
+     */
     #handleAttribute(target) {
         const me = this;
         if (me.isAttributeJSON) {
@@ -128,6 +154,11 @@ export class GSAttributeHandler {
         attrs.forEach(v => me.#toggleAttribute(target, v[0], me.value || v[1]));
     }
 
+    /**
+     * Set value to target propery
+     * @param {GSElement} target 
+     * @returns 
+     */
     #handleProperty(target) {
         const me = this;
         if (me.isPropertyJSON) {
@@ -161,6 +192,10 @@ export class GSAttributeHandler {
         }
     }
 
+    /**
+     * Toggle target css class
+     * @param {HTMLElement} target 
+     */
     async #handleToggle(target) {
         const me = this;
         const tout = me.timeout * 1000;
@@ -177,11 +212,24 @@ export class GSAttributeHandler {
         }
     }
 
+    /**
+     * Calls a function on a target
+     * @param {GSElement} host 
+     * @param {HTMLElement} target 
+     * @param {Event} evt 
+     */
     #handleCall(host, target, evt) {
         const val = GSUtil.isJsonString(host.value) ? GSUtil.toJson(host.value) : host.value;
         this.calls.forEach(v => GSFunction.callFunction(target[v], target, true, val || evt));
     }
 
+    /**
+     * Calls a function on a target
+     * @param {*} host 
+     * @param {*} target 
+     * @param {*} evt 
+     * @returns 
+     */
     #handleExec(host, target, evt) {
         if (!this.exec) return;
         try {
@@ -191,10 +239,20 @@ export class GSAttributeHandler {
         }
     }
 
+    /**
+     * Send an event to a target
+     * @param {HTMLElement} target 
+     * @param {Event} evt 
+     */
     #handleTrigger(target, evt) {
         this.triggers.forEach(v => GSEvents.send(target, v, evt));
     }
 
+    /**
+     * Inject HTML to target
+     * @param {GSElement} host 
+     * @param {HTMLElement} target 
+     */
     #handleInject(host, target) {
         if (this.inject) {
             const src = this.#toHTML(this.inject);
@@ -203,24 +261,50 @@ export class GSAttributeHandler {
         }
     }
 
+    /**
+     * Swap inner HTML on a target
+     * @param {HTMLElement} target 
+     */
     #handleSwap(target) {
         if (this.swap) target.innerHTML =  this.#toHTML(this.swap);
     }
 
+    /**
+     * Convert value as URL to a tempalte or as a component name to inject
+     * @param {String} value 
+     * @returns {String}
+     */
     #toHTML(value = '') {
         return value.indexOf('/') < 0 ? `<${value}></${value}>` : `<gs-template flat src="${value}"></gs-template>`;
     }
 
+    /**
+     * Load HTML template and apply to a target
+     * @param {GSElement} host 
+     * @param {HTMLElement} target 
+     */
     async #handleTemplate(host, target) {
         const tpl = await GSTemplateCache.loadTemplate(true, this.template, this.template);
         this.#applyTemplate(host, target, tpl);
     }
 
+    /**
+     * Apply htmltemplate to a target
+     * @param {GSElement} host 
+     * @param {HTMLElement} target 
+     * @param {HTMLTemplateElement} template 
+     */    
     #applyTemplate(host, target, template) {
         const content = GSTemplateCache.clone(template);
         this.#applyContent(host, target, content);
     }
 
+    /**
+     * Apply htmltemplate to a target
+     * @param {GSElement} host 
+     * @param {HTMLElement} target 
+     * @param {HTMLTemplateElement} template 
+     */    
     #applyContent(host, target, content) {
         if (host.anchor) {
             GSDOM.insertAdjacent(target, content, host.anchor);
@@ -295,18 +379,35 @@ export class GSAttributeHandler {
         return val.split(/[,;]/g).map(v => v.split('=')).filter(v => GSUtil.isStringNonEmpty(v));
     }
 
+    /**
+     * Is property value JSON
+     */
     get isPropertyJSON() {
         return GSUtil.isJson(this.property);
     }
 
+    /**
+     * Is element attribute value JSON
+     */
     get isAttributeJSON() {
         return GSUtil.isJson(this.attribute);
     }
 
+    /**
+     * Wrap any element into data-gs-* handler
+     * @param {HTMLElement} el 
+     * @returns {Proxy}
+     */
     static proxify(el) {
         return GSAttr.proxify(el, GSAttributeHandler.DEFINITION);
     }
 
+    /**
+     * Process data-gs-* attributtes on a element
+     * @param {HTMLElement} el 
+     * @param {Event} e 
+     * @returns 
+     */
     static process(el, e) {
         if (!el?.hasAttribute('gs-target')) return;
         let me = el[GSAttributeHandler.#link];
@@ -317,6 +418,11 @@ export class GSAttributeHandler {
         me.handle(e);
     }
 
+    /**
+     * Create a new attribute handler instance
+     * @param {HTMLElement} el 
+     * @returns 
+     */
     static create(el) {
         const me = new GSAttributeHandler(el);
         me.attach();

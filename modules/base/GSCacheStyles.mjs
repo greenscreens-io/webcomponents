@@ -15,7 +15,7 @@ import { gsstyles } from "./style.mjs";
 
 /**
  * Cache for dynaamically loaded styles.
- * Used to sharestyles among GS-* WebComponents
+ * Used to share styles among GS-* WebComponents
  * @class
  */
 export class GSCacheStyles {
