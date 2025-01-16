@@ -118,7 +118,7 @@ export class GSAsbtractDialog extends GSDialogElement {
         let sts = false;
         try {
             me.disabled = true;
-            sts = await me.onData(e.detail.data);
+            sts = await me.onData(e.detail);
         } catch (e) {
             Utils.handleError(e);
         } finally {

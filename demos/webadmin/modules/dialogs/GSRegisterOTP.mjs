@@ -55,10 +55,6 @@ export class GSRegisterOtp extends GSAsbtractDialog {
         return DEMO ? Utils.inform(false, 'Not available in DEMO!') : true;
     }
 
-    async onData() {
-        return true;
-    }
-
     #update(o) {
         const me = this;
         const url = me.getUrl(o.url);
