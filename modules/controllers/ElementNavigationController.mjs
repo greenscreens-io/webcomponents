@@ -11,9 +11,7 @@ export class ElementNavigationController {
 
   #host;
   #attached;
-  #selected;
   #focused;
-  #multiselect = new Set();
 
   constructor(host) {
     const me = this;
@@ -41,15 +39,14 @@ export class ElementNavigationController {
   }
 
   get selected() {
-    return this.multiple ? [...this.#multiselect.values()] : this.#selected;
+    return this.#host.active;
   }
 
   /**
    * Called on first update from host component
    */
   init() {
-    const me = this;
-    me.#selected = me.#host.active;
+
   }
 
   /**
@@ -87,18 +84,17 @@ export class ElementNavigationController {
    */
   reset() {
     const me = this;
+    const active = me.selected;
     if (me.multiple) {
-      me.#multiselect.forEach(el => {
+      active.forEach(el => {
         el.active = false;
         el.blur();
       });
-    } else if (me.#selected) {
-      me.#selected.active = false;
-      me.#selected.blur();
+    } else if (active) {
+      active.active = false;
+      active.blur();
     }
-    me.#multiselect.clear();
     me.#focused = undefined;
-    me.#selected = undefined;
     me.#host?.emit('group-reset', undefined, true);
   }
 
@@ -153,10 +149,8 @@ export class ElementNavigationController {
     const me = this;
     if (!me.#isNavigable(el)) return;
     if (el.active) {
-      me.#multiselect.add(el);
       me.#onSelected(el);
     } else {
-      me.#multiselect.delete(el);
       me.#onDeselected(el);
     }
   }
@@ -165,20 +159,18 @@ export class ElementNavigationController {
     const me = this;
     if (!me.#isNavigable(el)) return;
 
-    if (me.#selected && !me.multiple) {
-      me.#selected.active = false;
-      me.#toggle(me.#selected);
+    const active = me.selected;
+    if (active && !me.multiple) {
+      active.active = false;
+      me.#toggle(active);
     }
 
-    me.#selected = el;
-    if (el) {
-      if (me.multiple) {
-        el.active = !el.active;
-      } else {
-        el.active = true;
-      }
-      me.#toggle(el);
+    if (me.multiple) {
+      el.active = !el.active;
+    } else {
+      el.active = true;
     }
+    me.#toggle(el);
   }
 
   onFocusOut(e) {
@@ -198,7 +190,7 @@ export class ElementNavigationController {
     .filter(el => el.parentComponent === me.#host).pop();
     if (!me.#isNavigable(el)) return;
     if (e.ctrlKey) me.reset();
-    me.#onDeselected(me.#selected);
+    me.#onDeselected(me.selected);
     me.#select(el);
   }
 

@@ -135,15 +135,19 @@ export class GSGroupElement extends GSElement {
   }
     
   get items() {
-    return this.queryAll(this.childTagName);
+    const me = this;
+    return me.queryAll(me.childTagName, me.data.length > 0);
   }
 
   get generated() {
-    return this.queryAll(`${this.childTagName}[generated]`);
+    const me = this;
+    return this.queryAll(`${me.childTagName}[generated]`, me.data.length > 0);
   }
 
   get active() {
-    return this.query(`${this.childTagName}[active]`);
+    const me = this;
+    if (me.multiple) return me.queryAll(`${me.childTagName}[active]`, me.data.length > 0);
+    return me.query(`${me.childTagName}[active]`, me.data.length > 0);
   }
 
   settings(el) {

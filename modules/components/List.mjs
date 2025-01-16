@@ -8,8 +8,7 @@ import { GSGroupElement } from './Group.mjs';
 export class GSListElement extends GSGroupElement {
 
   static properties = {
-    selectable: { reflect: true, type: Boolean },
-    data: { type: Array },
+    selectable: { reflect: true, type: Boolean }
   }
 
   constructor() {
@@ -22,13 +21,6 @@ export class GSListElement extends GSGroupElement {
   shouldUpdate(changed) {
     return this.data.length > 0 || this.items.length > 0;
   }
-
-  firstUpdated(changed) {
-    super.firstUpdated(changed);
-    const me = this;
-    const el = me.active;
-
- }
 
   renderClass() {
     const css = {
