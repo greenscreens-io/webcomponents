@@ -9,7 +9,6 @@ import { GSUtil } from "./GSUtil.mjs";
 import { GSEvents } from "./GSEvents.mjs";
 import { GSFunction } from "./GSFunction.mjs";
 import { GSTemplateCache } from "./GSTemplateCache.mjs";
-import { GSElement } from "../GSElement.mjs";
 
 /**
  * A module GSAttributeHandler GSAttr class
@@ -300,7 +299,7 @@ export class GSAttributeHandler {
     }
 
     /**
-     * Apply htmltemplate to a target
+     * Apply html template to a target
      * @param {GSElement} host 
      * @param {HTMLElement} target 
      * @param {HTMLTemplateElement} content 
