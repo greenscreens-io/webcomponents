@@ -9,10 +9,11 @@
 
 import { GSElement } from '../GSElement.mjs';
 import { GSAttr } from '../base/GSAttr.mjs';
+import { GSDOM } from '../base/GSDOM.mjs';
 import { GSItem } from '../base/GSItem.mjs';
 import { ElementNavigationController } from '../controllers/ElementNavigationController.mjs';
 import { GroupController } from '../controllers/GroupController.mjs';
-import { classMap, createRef, html, ifDefined, ref } from '../lib.mjs';
+import { classMap, createRef, html, render, ifDefined, ref } from '../lib.mjs';
 
 /**
  * Renderer for grouped elements such as Buttons, Navs, Tabs and lists.
@@ -43,13 +44,33 @@ export class GSGroupElement extends GSElement {
     me.#controller = new ElementNavigationController(me);
     me.#controllerGroup = new GroupController(me);
   }
+
+  #prerender() {
+    const me = this;
+    me.queryAll('[generated]').forEach(el => el.remove());
+    if (me.data.length > 0) {
+      const items = me.renderItems();
+      const tpl = document.createElement('template');
+      render(items, tpl);
+      Array.of(...tpl.children).forEach(el => GSDOM.appendChild(me, el));
+    }
+  }
   
   firstUpdated(changed) {
     const me = this;
     me.#controller.init();
     me.#controller.attach(me.#elRef.value);
     super.firstUpdated(changed);
+    //me.#prerender();
   }  
+
+  willUpdate(changed) {
+    const me = this;
+    if (changed.has('data')) {      
+      me.#prerender();
+    }
+    super.willUpdate(changed);
+  }
 
   renderUI() {
     const me = this;
@@ -64,7 +85,7 @@ export class GSGroupElement extends GSElement {
     const me = this;
     return html`<div 
       class="${classMap(me.renderWrappedClass())}">
-      <slot name="${ifDefined(name)}">${me.renderItems()}</slot>
+      <slot name="${ifDefined(name)}"></slot>
       </div>`;
   }
 
@@ -136,18 +157,18 @@ export class GSGroupElement extends GSElement {
     
   get items() {
     const me = this;
-    return me.queryAll(me.childTagName, me.data.length > 0);
+    return me.queryAll(me.childTagName);
   }
 
   get generated() {
     const me = this;
-    return this.queryAll(`${me.childTagName}[generated]`, me.data.length > 0);
+    return this.queryAll(`${me.childTagName}[generated]`);
   }
 
   get active() {
     const me = this;
-    if (me.multiple) return me.queryAll(`${me.childTagName}[active]`, me.data.length > 0);
-    return me.query(`${me.childTagName}[active]`, me.data.length > 0);
+    if (me.multiple) return me.queryAll(`${me.childTagName}[active]`);
+    return me.query(`${me.childTagName}[active]`);
   }
 
   settings(el) {

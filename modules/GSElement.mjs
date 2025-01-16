@@ -553,9 +553,7 @@ export class GSElement extends LitElement {
    * @returns {Object}
    */
   static allProperties(obj) {
-    const list = [...GSDOM.inheritance(obj)].map(o => o.properties).filter(o => o);
-    list.push(obj.constructor?.properties || obj.properties);
-    return GSData.mergeObjects(list);
+    return GSDOM.allProperties(obj);
   }
 
   /**

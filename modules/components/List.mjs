@@ -31,8 +31,7 @@ export class GSListElement extends GSGroupElement {
   }
 
   renderWrappedUI() {
-    const me = this;
-    return me.data.length === 0 ? html`<slot></slot>` : html`<slot name="body">${me.renderItems()}</slot>`;
+    return html`<slot></slot>`;
   }
 
   reset() {

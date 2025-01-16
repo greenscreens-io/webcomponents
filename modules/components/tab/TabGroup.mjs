@@ -33,6 +33,14 @@ export class GSTabGroupElement extends GSNavElement {
     return this.data.length > 0 || this.items.length > 0;
   }
 
+  willUpdate(changed) {
+    const me = this;
+    if (changed.has('data')) {      
+      me.items.forEach(el => me.#findPanel(el));
+    }
+    super.willUpdate(changed);
+  }
+
   renderClass() {
     const me = this;
     const css = {
@@ -47,7 +55,7 @@ export class GSTabGroupElement extends GSNavElement {
     const reverse = PlacementTypes.isAfter(me.placement);
     const list = [super.renderWrappedUI('tabs'),
     html`<div class="tab-content flex-fill ${me.panelCSS}"  dir="${ifDefined(me.direction)}">
-        <slot name="panels">${me.renderPanels()}</slot>
+        <slot name="panels"></slot>
       </div>
       <slot class="d-none"></slot>`];
     return reverse ? list.reverse() : list;
@@ -65,27 +73,33 @@ export class GSTabGroupElement extends GSNavElement {
    */
   renderItems() {
     const me = this;
-    return me.data.map(o => {
+    const tabs =  me.#renderTabs();
+    const panels = me.#renderPanels();
+    return tabs.concat(...panels);
+  }
+
+  #renderTabs() {    
+    return this.data.map(o => {
       if (!o.name) o.name = GSID.id;
-      return html`<gs-tab generated
+      return html`<gs-tab generated slot="tabs"
         .active="${ifDefined(o.active === true)}"
         .autofocus="${ifDefined(o.autofocus === true)}"
         .disabled="${ifDefined(o.disabled === true)}" 
         icon="${ifDefined(o.icon)}"    
         title="${ifDefined(o.title)}"
         name="${o.name}"></gs-tab>`;
-    });
+    });    
   }
 
   /**
    * Render items based on data property (might be from gs-item)
    * @returns 
    */
-  renderPanels() {
+  #renderPanels() {
     return this.data.map(o => {
       if (!o.name) o.name = GSID.id;
-      return html`<gs-tab-panel generated
-        name="${o.name}" 
+      return html`<gs-tab-panel generated  
+        slot="panels" name="${o.name}" 
         .active="${ifDefined(o.active)}"
         template="${ifDefined(o.template)}"></gs-tab-panel>`;
     });

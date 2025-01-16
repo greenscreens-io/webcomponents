@@ -7,6 +7,7 @@
  * @module base/GSDOM
  */
 
+import { GSAttr } from "./GSAttr.mjs";
 import { GSCSSMap } from "./GSCSSMap.mjs";
 import { GSData } from "./GSData.mjs";
 import { GSLog } from "./GSLog.mjs";
@@ -796,7 +797,21 @@ export class GSDOM {
 		if (!plain) obj['#tagName'] = own.tagName.toLowerCase();
 		obj['$text'] = own.innerText;
 
-		Array.from(own.attributes).forEach(v => obj[v.name] = v.value);
+		const props = GSDOM.allProperties(own);
+		Array.from(own.attributes).forEach(v => {
+			const type = props[v.name]?.type;
+			switch(type) {
+				case Boolean :
+					obj[v.name] = own.hasAttribute(v.name);
+					break;
+				case Number :
+					obj[v.name] = GSAttr.getAsNum(own, v.name);
+					break;
+				default:					
+					obj[v.name] = v.value;
+					break;
+			}
+		});
 
 		if (recursive) {
 			const children = Array.from(own.children).map(el => GSDOM.toJson(el, recursive, plain));
@@ -1024,6 +1039,17 @@ export class GSDOM {
 			sts = false;
 		}
 		return sts;
+	}
+
+	/**
+	 * Extract and merge all static properties definition from WebComponent instance
+	 * @param {GSElement} obj 
+	 * @returns {Object}
+	 */
+	static allProperties(obj) {
+		const list = [...GSDOM.inheritance(obj)].map(o => o.properties).filter(o => o);
+		list.push(obj.constructor?.properties || obj.properties);
+		return GSData.mergeObjects(list);
 	}
 
 	static {

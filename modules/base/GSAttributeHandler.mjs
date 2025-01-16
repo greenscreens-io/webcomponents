@@ -303,7 +303,7 @@ export class GSAttributeHandler {
      * Apply htmltemplate to a target
      * @param {GSElement} host 
      * @param {HTMLElement} target 
-     * @param {HTMLTemplateElement} template 
+     * @param {HTMLTemplateElement} content 
      */    
     #applyContent(host, target, content) {
         if (host.anchor) {
