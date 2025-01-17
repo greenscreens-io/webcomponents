@@ -7,15 +7,15 @@ import { GSReadWrite } from "./ReadWrite.mjs";
 import { GSReadWriteRegistry } from "./ReadWriteRegistry.mjs";
 
 /**
- * A module loading GSReadWrite class
- * @module base/GSEvent
+ * A module loading GSCachedReadWrite class
+ * @module base/GSCachedReadWrite
  */
 
 /**
  * ReadWrite with cached memory data. 
  * @Class
  */
-export class GSCachedReader extends GSReadWrite {
+export class GSCachedReadWrite extends GSReadWrite {
 
     #data = [];
 
@@ -77,6 +77,10 @@ export class GSCachedReader extends GSReadWrite {
         return data;
     }
 
+    async onWrite(owner, data) {
+        return this.append(data);
+    }
+
     disable() {
         this.#data = [];
         super.disable();
@@ -99,11 +103,11 @@ export class GSCachedReader extends GSReadWrite {
      * @returns {GSReadWrite} Data handler instance
      */
     static register(name) {
-        return new GSCachedReader(name, true);
+        return new GSCachedReadWrite(name, true);
     }
 
     static {
-        GSReadWriteRegistry.addHandler('cached', GSCachedReader);
+        GSReadWriteRegistry.addHandler('cached', GSCachedReadWrite);
     }
 
 }

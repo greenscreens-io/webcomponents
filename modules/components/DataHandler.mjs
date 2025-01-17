@@ -9,7 +9,6 @@ import { GSItem } from '../base/GSItem.mjs';
 import { GSElement } from '../GSElement.mjs';
 import { numGT0 } from '../properties/verificator.mjs';
 import { GSReadWriteRegistry } from '../data/ReadWriteRegistry.mjs';
-import { GSAttr } from '../base/GSAttr.mjs';
 import { GSData } from '../base/GSData.mjs';
 
 /**
@@ -44,12 +43,12 @@ export class GSDataHandler extends GSElement {
     #config = null;
     #handler = null;
     #lifoReadRef = null;
+    #lifoWriteRef = null;
 
     constructor() {
         super();
         const me = this;
-        if (!me.id) throw new Error('Element ID is required attribute!');
-        GSItem.validate(me, me.tagName);
+        me.storage = me.storage || me.id;
         me.autorefresh = 0;
         me.autoload = false;
         me.flat = true;
@@ -57,33 +56,42 @@ export class GSDataHandler extends GSElement {
         me.sort = [];
         me.limit = 0;
         me.skip = 0;
+        me.src = '';
         me.type = 'remote';
         me.mode = 'query';
         me.reader = 'GET';
         me.writer = 'POST';
-        me.storage = me.id;
+        if (!me.isGenerated && !me.id) throw new Error('Element ID is required attribute!');
+        GSItem.validate(me, me.tagName);
     }
-
+    
     connectedCallback() {
         super.connectedCallback();
         const me = this;
-        me.#initLIFO();
-        me.#config = GSItem.proxify(me, GSData.PROPERTIES);
-        me.#handler = GSReadWriteRegistry.newHandler(me.type, me.id, false);
-        if (me.#config?.length > 0) me.#handler?.addProcessor(me);
-        me.#handler?.enable();
+        me.storage = me.storage || me.id;
+        const itemHolder = me.isGenerated && me.childElementCount === 0 ? me.parentComponent : me;
+        me.#config = GSItem.proxify(itemHolder, GSData.PROPERTIES);
+        me.#initLIFO(true);
+        me.#initLIFO(false);
     }
-
+    
     disconnectedCallback() {
         super.disconnectedCallback();
-        this.#handler?.disable();
-        this.#handler?.removeProcessor(this);
-        this.#lifoReadRef = null;
-        clearTimeout(this.#iid);
+        const me = this;
+        me.#handler?.disable();
+        me.#handler?.removeProcessor(me);
+        me.#lifoReadRef = null;
+        me.#lifoWriteRef = null;
+        clearTimeout(me.#iid);
     }
-
+    
     firstUpdated() {
-        this.dataController?.read();
+        const me = this;
+        me.#handler = GSReadWriteRegistry.newHandler(me.type, me.storage, false);
+        if (me.#config?.length > 0) me.#handler?.addProcessor(me);
+        me.#updateHandler();
+        me.#handler?.enable();
+        me.dataController?.read();
     }
 
     willUpdate(changed) {
@@ -171,10 +179,8 @@ export class GSDataHandler extends GSElement {
         return this.#lifoReadRef();
     }
 
-    write(data) {
-        const me = this;
-        me.#verifyHandler();
-        me.#handler?.write(me, data);
+    write(data, append = false) {
+        return this.#lifoWriteRef(data, append);
     }
 
     load() {
@@ -232,21 +238,33 @@ export class GSDataHandler extends GSElement {
         throw new Error('Data handler not initialized!');
     }
 
-    #initLIFO() {
+    #initLIFO(read = true) {
         const me = this;
-        me.#lifoReadRef = GSFunction.callOnceLifo(me.#lifoReadRefCallback, me);
+        if (read) {
+            me.#lifoReadRef = GSFunction.callOnceLifo(me.#lifoReadRefCallback, me);
+        } else {
+            me.#lifoWriteRef = GSFunction.callOnceLifo(me.#lifoWriteRefCallback, me);
+        }
     }
 
     #lifoReadRefCallback() {
         const me = this;
-        me.#initLIFO();
-        return me.#lifoRead();
+        me.#initLIFO(true);
+        return me.#lifoCall(true);
     }
 
-    #lifoRead() {
+    #lifoWriteRefCallback(data, append) {
         const me = this;
-        me.#verifyHandler();
-        return me.#handler?.read(me);
+        me.#initLIFO(false);
+        return me.#lifoCall(false, data, append);
+    }
+    
+    #lifoCall(read = true, data, append) {
+        const me = this;
+        me.#verifyHandler();        
+        if (read) return me.#handler?.read(me);        
+        if (!append) me.#handler.clear();
+        return me.#handler?.write(me, data);
     }
 
     #formated(val) {

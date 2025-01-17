@@ -9,11 +9,19 @@ import { GSData } from '../base/GSData.mjs';
 import { GSItem } from '../base/GSItem.mjs';
 import { GSDOM } from '../base/GSDOM.mjs';
 import { GSUtil } from '../base/GSUtil.mjs';
-import { GSDate } from '../base/GSDate.mjs';
+import { GSID } from '../base/GSID.mjs';
+
+// TODO 
+// move "selections" to data handler
+// handle "data" changed state to preent rendering, update storage 
 
 /**
- * A simple HTML Table rederer for read-only tabular data representation
- * For complex interactive dat use gs-table
+ * A HTML Table rederer for tabular data representation.
+ * Either use "storage" property to point to data handler
+ * or use simpler form by using "data" property.
+ * 
+ * NOTE: Simpler form currently does not suport data filter.
+ * Simpler form is only for read-ony static data representation.
  */
 export class GSTableElement extends GSElement {
 
@@ -61,11 +69,13 @@ export class GSTableElement extends GSElement {
     multiselect: { type: Boolean },
     protected: { type: Boolean },
     selectable: { type: Boolean },
+    toggle: { type: Boolean },
     sortable: { type: Boolean },
   }
 
   #config = [];
   #sortOrder = [];
+  #auto = false;
 
   constructor() {
     super();
@@ -94,6 +104,9 @@ export class GSTableElement extends GSElement {
     const me = this;
     me.#config = GSItem.proxify(me, GSTableElement.CELLS);
     if (me.columns.length === 0) me.columns = me.#config.map(v => v.name);
+    if (!me.storage) {      
+      me.storage = me.#auto = GSID.next('table-');
+    } 
     super.connectedCallback();
   }
 
@@ -156,13 +169,18 @@ export class GSTableElement extends GSElement {
             ${me.columns.map((entry, index) => me.#renderColumn(entry, index))}
           </tr>
         </thead>
-        <tbody @click=${me.#onSelect} class="${me.divider ? 'table-group-divider' : ''}" role="button">
+        <tbody @click=${me.#onSelect} @contextmenu=${me.#onSelect} class="${me.divider ? 'table-group-divider' : ''}" role="button">
           ${me.data.map((entry, index) => me.#renderRecord(entry, index))}
           ${me.#renderEmpty()}
         </tbody>
       </table>
-      <slot name="extra"></slot>
+      <slot name="extra">${me.#renderHandler()}</slot>
     `;
+  }
+
+  #renderHandler() {
+    const me = this;
+    return me.#auto ? html`<gs-data-handler type="cached" mode="" id=${me.#auto} generated></gs-data-handler>` : '';
   }
 
   onDataRead(data) {
@@ -256,9 +274,10 @@ export class GSTableElement extends GSElement {
     const me = this;
     if (!Array.isArray(entry)) entry = me.columns.map(v => entry[v]);
     entry = entry.map((val, i) => me.#config[i] ? GSData.format(me.#config[i], val) : val);
-    const color = me.colorSelect && me.selections.includes(index) ? `table-${me.colorSelect}` : '';
+    const selected = me.selections.includes(index);
+    const color = me.colorSelect && selected ? `table-${me.colorSelect}` : '';
     return html`
-        <tr .index=${index} class="${color}" tabindex="0">
+        <tr .index=${index} class="${color}" tabindex="0" ?selected=${selected}>
           ${entry.map((cell, i) => html`<td class="text-${me.#config[i]?.align}"><span>${cell}</span></td>`)}
         </tr>
       `;
@@ -282,7 +301,12 @@ export class GSTableElement extends GSElement {
         return { name: el.name, value: val, locale : cfg?.locale }
       })
       .filter(el => el?.value);
-    me.dataController.filter(filter);
+      if (me.storage) {
+        me.dataController.filter(filter);
+      } else {
+        // TODO keep full data, use sorted
+        // GSData.filter(me.data, filter);
+      }
   }  
 
   #onSort(e) {
@@ -311,10 +335,11 @@ export class GSTableElement extends GSElement {
     const sort = me.#prepareSorter(me.sort, me.#sortOrder);
 
     if (me.storage) {
-      return me.dataController.sort(sort);
+      me.dataController.sort(sort);
+    } else {
+      me.data = GSData.sortData(me.data, sort);
     }
 
-    me.data = GSData.sortData(me.data, sort);
     me.emit('sort');
   }
 
@@ -343,6 +368,8 @@ export class GSTableElement extends GSElement {
     if (!me.selectable) return;
     const tr = e.target.tagName === 'TR' ? e.target : e.target.closest('tr');
     if (!tr) return;
+    // if context menu is attached and right click made
+    if (e.button === 2 && !me.query('gs-context')) return;
     const isSelected = me.selections.includes(tr.index);
     if (me.multiselect) {
       if (isSelected) {
@@ -351,8 +378,10 @@ export class GSTableElement extends GSElement {
         me.selections.push(tr.index);
         me.requestUpdate();
       }
-    } else {
+    } else if (me.toggle) {
       me.selections = isSelected ? [] : [tr.index];
+    } else {
+      me.selections = [tr.index];
     }
     me.emit('select');
   }

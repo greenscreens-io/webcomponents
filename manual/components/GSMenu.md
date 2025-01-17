@@ -12,6 +12,7 @@ GSMenu WebComponent renders Bootstrap menu.
 | auto               | If set, menu to close automatically on mouse out             |
 | opened             | If set, will render menu as opened                           |
 | dark               | If set, menu dark theme will be used                         |
+| offset             | Set negative offset in pixels to move menu under the cursor  |
 | reverse            | Used to position submenu opennig icon                        |
 
 <br>

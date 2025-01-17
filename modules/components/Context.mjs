@@ -12,7 +12,7 @@ import { GSEvents } from '../base/GSEvents.mjs';
 import { GSMenuElement } from './Menu.mjs';
 
 /**
- * Renderer for panel layout 
+ * Renderer for context menu
  * @class
  * @extends {GSMenuElement}
  */
@@ -52,7 +52,7 @@ export class GSContextElement extends GSMenuElement {
     #match(e) {
         const me = this;
         return e.composedPath().filter(el => el.matches)
-            .filter(el => el.matches(me.target || me.filter));
+            .filter(el => el.matches(me.filter ? me.filter : me.target));
     }
 
     #onPopup(e) {

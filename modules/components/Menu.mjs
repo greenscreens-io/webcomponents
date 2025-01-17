@@ -16,6 +16,7 @@ import { GSEvents } from '../base/GSEvents.mjs';
 import { GSDOM } from '../base/GSDOM.mjs';
 import { dataset } from '../directives/dataset.mjs';
 import { GroupController } from '../controllers/GroupController.mjs';
+import { GSUtil } from '../base/GSUtil.mjs';
 
 /**
  * Renderer for panel layout 
@@ -30,6 +31,7 @@ export class GSMenuElement extends GSElement {
         opened: { type: Boolean, reflect: true },
         dark: { type: Boolean },
         reverse: { type: Boolean },
+        offset: { type: Number },
         data: { type: Array },
     }
 
@@ -50,6 +52,7 @@ export class GSMenuElement extends GSElement {
     constructor() {
         super();
         const me = this;
+        me.offset = 0;
         me.dynamicStyle(me.#styleID);
         me.data = me.#proxify(me);
         me.#controller = new GroupController(this);
@@ -127,6 +130,9 @@ export class GSMenuElement extends GSElement {
     popup(x = 0, y = 0, caller) {
 
         const me = this;
+        // offset to render under the mouse,
+        // important for GSGrid for better UI experience
+        const offset = GSUtil.asNum(me.offset, 0);
         let target = caller;
 
         if (GSEvents.isMouseOrPointerEvent(x)) {
@@ -140,7 +146,7 @@ export class GSMenuElement extends GSElement {
             y = y - (offset?.top || 0);
         }
 
-        const cfg = { clientX: x, clientY: y, target: target };
+        const cfg = { clientX: x - offset, clientY: y - offset, target: target };
 
         requestAnimationFrame(() => {
             const style = {

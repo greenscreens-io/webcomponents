@@ -4,7 +4,7 @@
 
 export * from "./AbstractReadWrite.mjs";
 export * from "./ReadWrite.mjs";
-export * from "./CachedReader.mjs";
+export * from "./CachedReadWrite.mjs";
 export * from "./TreeNode.mjs";
 export * from "./TreeReader.mjs";
 export * from "./ReadWriteRegistry.mjs";

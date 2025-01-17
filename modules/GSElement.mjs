@@ -501,6 +501,13 @@ export class GSElement extends LitElement {
   }
 
   /**
+   * Internal attribute set if component is genrated by other components
+   */
+  get isGenerated() {
+    return this.hasAttribute('generated');
+  }
+
+  /**
    * Get parent GS-* component
    */
   get parentComponent() {
