@@ -31,6 +31,7 @@
     <script type="module" src="/bootstrap-lit/modules/components/Template.mjs"></script>
     <script type="module" src="/bootstrap-lit/modules/components/Table.mjs"></script>
     <script type="module" src="/bootstrap-lit/modules/components/Icon.mjs"></script>
+    <script type="module" src="/bootstrap-lit/modules/components/Tooltip.mjs"></script>
     
     <script type="module" src="/bootstrap-lit/modules/components/Center.mjs"></script>
     <script type="module" src="/bootstrap-lit/modules/components/FormGroup.mjs"></script>
@@ -43,6 +44,8 @@
     <script type="module" src="/bootstrap-lit/modules/components/Pager.mjs"></script>
     <script type="module" src="/bootstrap-lit/modules/components/DataHandler.mjs"></script>
     <script type="module" src="/bootstrap-lit/modules/components/ext/index.mjs"></script>
+
+    <script type="module" src="/bootstrap-lit/demos/grid/record.mjs"></script>
 
 </head>
 <body>
@@ -88,11 +91,7 @@
             <gs-item name="Start date" title="Date" type="text" align="center" locale="hr-HR" width="180" filter-type="text" filter></gs-item>
 
             <gs-context slot="extra" target="tbody" filter="[selected]" offset="4">
-                <gs-item name="Edit" data-gs-action="edit"></gs-item>
-                <gs-item name="Delete" data-gs-action="remove"></gs-item>
-                <gs-item></gs-item>
-                <gs-item name="Help"></gs-item>
-                <gs-item name="About" data-gs-toggle="dialog" data-gs-target="#dlgAbout"></gs-item>
+                <gs-item name="Edit" data-gs-swap="gs-record-edit" data-gs-target="#dialogs"></gs-item>
             </gs-context>
         
         </gs-table>
@@ -100,5 +99,6 @@
         <gs-pagination storage="employees" pages="5" css="justify-content-center" first last previous next></gs-pagination>
     </div>
 
+    <div id="dialogs"></div>
 </body>
 </html>
