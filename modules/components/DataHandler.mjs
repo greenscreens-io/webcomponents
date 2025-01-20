@@ -134,6 +134,10 @@ export class GSDataHandler extends GSElement {
         return this.#handler?.isOffline;
     }
 
+    get isCached() {
+        return this.#handler?.type == 'cached';
+    }
+
     set search(val) {
         if (this.#handler) this.#handler.search = val;
     }
@@ -189,6 +193,37 @@ export class GSDataHandler extends GSElement {
 
     save(data) {
         return this.write(data);
+    }
+
+    /**
+     * Return list of all selected record id's
+     */
+    get selected() {
+        return this.#handler?.selected;
+    }
+
+    /**
+     * Store selected record ID
+     * @param {*} val 
+     * @returns 
+     */
+    addSelected(val) {
+        return this.#handler?.addSelected(val);
+    }
+
+    /**
+     * Remove selected record ID
+     * @param {*} val 
+     */
+    removeSelected(val) {
+        return this.#handler?.removeSelected(val);
+    }
+
+    /**
+     * Remove all selections
+     */
+    clearSelected(data) {
+        return this.#handler?.clearSelected();
     }
 
     /**

@@ -5,6 +5,7 @@
 import { GSID } from "../base/GSID.mjs";
 import { GSEvent } from "../base/GSEvent.mjs";
 import { GSReadWriteRegistry } from "./ReadWriteRegistry.mjs";
+import { GSUtil } from "../base/GSUtil.mjs";
 
 /**
  * A module loading GSAbstractReadWrite class
@@ -12,10 +13,12 @@ import { GSReadWriteRegistry } from "./ReadWriteRegistry.mjs";
  */
 
 /**
- * Generic Class for data read/write for various components such as grid/form/dynaimc menu etc.
+ * Generic Class for data read/write for various components such as grid/form/dynamic menu etc.
  * @Class
  */
 export class GSAbstractReadWrite extends GSEvent {
+
+    static #SELECT = Symbol('select');
 
     #id = null;
     #processors = null;
@@ -135,6 +138,68 @@ export class GSAbstractReadWrite extends GSEvent {
      */
     async onRead(owner) {
         throw new Error('Extend base GSAbstractReadWrite to implement read operation');
+    }
+
+    /**
+     * Store selected record ID
+     * @param {*} val 
+     * @returns 
+     */
+    addSelected(val) {
+        if (!val) return false;
+        GSUtil.asArray(val).forEach(o => o[GSAbstractReadWrite.#SELECT] = true);
+        const me = this;
+        me.emit('selection-add', val);
+        me.emit('select');
+        return val;
+    }
+
+    /**
+     * Remove selected record ID
+     * @param {*} val 
+     */
+    removeSelected(val) {
+        if (!val) return false;
+        delete val[GSAbstractReadWrite.#SELECT];
+        const me = this;
+        me.emit('selection-remove', val);
+        me.emit('select');
+        return val;
+    }
+
+    /**
+     * Remove all selections
+     */
+    clearSelected(data) {
+        const me = this;
+        GSUtil.asArray(data).forEach(o => me.removeSelected(o));
+        me.emit('selection-clear');
+        me.emit('select');
+    }
+
+    /**
+     * Return list of all selected record id's
+     */
+    getSelected(data = []) {
+        const me = this;        
+        return GSUtil.asArray(data).filter(o => me.isSelected(o));
+    }
+
+    /**
+     * Check if record id is in list of selected records
+     * @param {*} val 
+     * @returns 
+     */
+    isSelected(val) {
+        return val ? val[GSAbstractReadWrite.#SELECT] === true : false;
+    }
+
+    /**
+     * Get list of selected records.
+     * Override in inherited class
+     */
+    get selected() {
+        return [];
     }
 
     /**

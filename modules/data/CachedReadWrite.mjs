@@ -17,6 +17,8 @@ import { GSReadWriteRegistry } from "./ReadWriteRegistry.mjs";
  */
 export class GSCachedReadWrite extends GSReadWrite {
 
+    static #TYPE = 'cached';
+
     #data = [];
 
     #reformat(data = []) {
@@ -42,6 +44,7 @@ export class GSCachedReadWrite extends GSReadWrite {
     }
 
     clear() {
+        this.clearSelected(this.#data);
         this.#data = [];
     }
 
@@ -55,6 +58,7 @@ export class GSCachedReadWrite extends GSReadWrite {
 
     remove(data) {
         const me = this;
+        me.removeSelected(data);
         me.#data = me.#data.filter(o => o =! data);
         return me.#data;
     }
@@ -78,7 +82,7 @@ export class GSCachedReadWrite extends GSReadWrite {
     }
 
     async onWrite(owner, data) {
-        return this.append(data);
+        return this.append(data);        
     }
 
     disable() {
@@ -98,6 +102,21 @@ export class GSCachedReadWrite extends GSReadWrite {
     }
 
     /**
+     * Return list of all selected record id's
+     */
+    get selected() {
+        const me = this;
+        return super.getSelected(me.#data);
+    }
+
+    /**
+     * Handler type
+     */
+    get type() {
+        return GSCachedReadWrite.#TYPE;
+    }
+
+    /**
      * Register generic handler under unique name.
      * @param {string} name Unique handler name
      * @returns {GSReadWrite} Data handler instance
@@ -107,7 +126,7 @@ export class GSCachedReadWrite extends GSReadWrite {
     }
 
     static {
-        GSReadWriteRegistry.addHandler('cached', GSCachedReadWrite);
+        GSReadWriteRegistry.addHandler(GSCachedReadWrite.#TYPE, GSCachedReadWrite);
     }
 
 }

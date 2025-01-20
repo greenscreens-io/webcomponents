@@ -9,14 +9,9 @@ import { GSData } from '../base/GSData.mjs';
 import { GSItem } from '../base/GSItem.mjs';
 import { GSDOM } from '../base/GSDOM.mjs';
 import { GSUtil } from '../base/GSUtil.mjs';
-import { GSID } from '../base/GSID.mjs';
-
-// TODO 
-// move "selections" to data handler
-// handle "data" changed state to preent rendering, update storage 
 
 /**
- * A HTML Table rederer for tabular data representation.
+ * A HTML Table renderer for tabular data representation.
  * Either use "storage" property to point to data handler
  * or use simpler form by using "data" property.
  * 
@@ -60,7 +55,6 @@ export class GSTableElement extends GSElement {
 
     sort: { type: Array, state: true },
     columns: { type: Array, state: true },
-    selections: { type: Array, state: true },
     key: { type: Number, state: true },
 
     data: { type: Array },
@@ -75,27 +69,25 @@ export class GSTableElement extends GSElement {
 
   #config = [];
   #sortOrder = [];
-  #auto = false;
+  // #auto = false;
 
   constructor() {
     super();
     this.headColor = 'secondary';
     this.colorSelect = 'info';
-    this.columns = [];
-    this.selections = [];
+    this.columns = [];    
     this.data = [];
     this.sort = [];
     this.key = 0;
   }
 
   get selected() {
-    const me = this;
-    return me.data.filter((v, i) => me.selections.includes(i));
+    return this.dataController.selected;
   }
 
   set search(val) {
     const me = this;
-    if (me.storage) {
+    if (me.storage && me.dataController) {
       return me.dataController.search = val;
     }
   }
@@ -104,16 +96,18 @@ export class GSTableElement extends GSElement {
     const me = this;
     me.#config = GSItem.proxify(me, GSTableElement.CELLS);
     if (me.columns.length === 0) me.columns = me.#config.map(v => v.name);
+    /*
     if (!me.storage) {      
       me.storage = me.#auto = GSID.next('table-');
-    } 
+    }
+    */
     super.connectedCallback();
   }
 
   disconnectedCallback() {
     super.disconnectedCallback();
+    this.dataController.clearSelected(this.data);
     this.data = [];
-    this.selections = [];
   }
 
   renderClass() {
@@ -144,8 +138,8 @@ export class GSTableElement extends GSElement {
       me.columns = me.data[0];
       me.data = me.data.slice(1);
     }
-    if (changed.has('multiselect') && !me.multiselect) me.selections = [];
-    if (changed.has('selectable') && !me.selectable) me.selections = [];
+    if (changed.has('multiselect') && !me.multiselect) me.dataController.clearSelected();
+    if (changed.has('selectable') && !me.selectable) me.dataController.clearSelected();
     if (changed.has('sortable') || changed.has('multisort')) {
       me.sort = Array(me.columns.length).fill(0);
       me.#sortOrder = [];
@@ -179,14 +173,17 @@ export class GSTableElement extends GSElement {
   }
 
   #renderHandler() {
+    /*
     const me = this;
     return me.#auto ? html`<gs-data-handler type="cached" mode="" id=${me.#auto} generated></gs-data-handler>` : '';
+    */
+   return '';
   }
 
   onDataRead(data) {
     const me = this;
     me.data = data;
-    me.selections = [];
+    me.dataController.clearSelected();
 
     // update filtering
     if (data.length > 0 && me.#hasFilters) {
@@ -196,6 +193,9 @@ export class GSTableElement extends GSElement {
     }
   }
 
+  /**
+   * Clear table filters
+   */
   clear() {
     this.#input.forEach(el => el.value = '');
     this.dataController?.filter([]);
@@ -272,49 +272,62 @@ export class GSTableElement extends GSElement {
 
   #renderRecord(entry, index) {
     const me = this;
-    if (!Array.isArray(entry)) entry = me.columns.map(v => entry[v]);
-    entry = entry.map((val, i) => me.#config[i] ? GSData.format(me.#config[i], val) : val);
-    const selected = me.selections.includes(index);
+    const selected = me.dataController.isSelected(entry);
     const color = me.colorSelect && selected ? `table-${me.colorSelect}` : '';
+    const cells = me.#remapRecord(entry);
     return html`
         <tr .index=${index} class="${color}" tabindex="0" ?selected=${selected}>
-          ${entry.map((cell, i) => html`<td class="text-${me.#config[i]?.align}"><span>${cell}</span></td>`)}
+          ${cells.map((cell, i) => html`<td class="text-${me.#config[i]?.align}"><span>${cell}</span></td>`)}
         </tr>
       `;
   }
 
+  #remapRecord(record) {
+    const me = this;
+    if (!Array.isArray(record)) record = me.columns.map(v => record[v]);
+    return record.map((val, i) => me.#config[i] ? GSData.format(me.#config[i], val) : val);
+  }
+
   #renderEmpty() {
     const me = this;
-    if (me.data.length > 0 ) return '';
-    return html`<tr data-ignore="true"><td colspan="${me.columns.length}" class="text-center fw-bold text-muted">${me.translate('No Data')}</td></tr>`;
+    return me.data.length > 0 ?  '' :
+    html`<tr data-ignore="true"><td colspan="${me.columns.length}" class="text-center fw-bold text-muted">${me.translate('No Data')}</td></tr>`;
+  }
 
+  #elementTofilter(el) {
+    if (!el.value) return undefined;
+    const isDate = el.type === 'date';
+    const val = isDate ? el.valueAsDate : el.value;
+    const cfg = me.#config[el.index];
+    return { name: el.name, value: val, locale : cfg?.locale };
   }
 
   #onFilter(e) {
+    
     const me = this;
+    
     const filter = me.#input
-      .map(el => {
-        if (!el.value) return undefined;
-        const isDate = el.type === 'date';
-        const val = isDate ? el.valueAsDate : el.value;
-        const cfg = me.#config[el.index];
-        return { name: el.name, value: val, locale : cfg?.locale }
-      })
+      .map(el => me.#elementTofilter(el))
       .filter(el => el?.value);
-      if (me.storage) {
-        me.dataController.filter(filter);
-      } else {
-        // TODO keep full data, use sorted
-        // GSData.filter(me.data, filter);
-      }
+
+    if (me.storage) {
+      me.dataController.filter(filter);
+    } else {
+      // TODO keep full data, use sorted
+      // GSData.filter(me.data, filter);
+    }
   }  
 
   #onSort(e) {
+    
     const me = this;
+    
     if (!me.sortable) return;
+    
     const icon = e.target.tagName === 'GS-ICON' ? e.target : e.target.closest('gs-icon');
     const column = e.target.closest('th');
     if (!icon || !column) return;
+
     const idx = column.index !== undefined ? column.index : GSDOM.getElementIndex(column);
     const current = me.sort[idx];
     const sortType = current === 1 ? -1 : current + 1;
@@ -335,7 +348,7 @@ export class GSTableElement extends GSElement {
     const sort = me.#prepareSorter(me.sort, me.#sortOrder);
 
     if (me.storage) {
-      me.dataController.sort(sort);
+      me.dataController?.sort(sort);
     } else {
       me.data = GSData.sortData(me.data, sort);
     }
@@ -344,6 +357,7 @@ export class GSTableElement extends GSElement {
   }
 
   #prepareSorter(sort, sortOrder) {
+    
     const me = this;
 
     if (sort.filter(v => v).length === 0) {
@@ -364,24 +378,34 @@ export class GSTableElement extends GSElement {
   }
 
   #onSelect(e) {
+    
     const me = this;
+    
     if (!me.selectable) return;
+    
     const tr = e.target.tagName === 'TR' ? e.target : e.target.closest('tr');
     if (!tr) return;
+    
     // if context menu is attached and right click made
     if (e.button === 2 && !me.query('gs-context')) return;
-    const isSelected = me.selections.includes(tr.index);
+    
+    const record = me.data[tr.index];
+    const isSelected = me.dataController.isSelected(record);
     if (me.multiselect) {
       if (isSelected) {
-        me.selections = me.selections.filter(v => v != tr.index);
+        me.dataController.removeSelected(record);
       } else {
-        me.selections.push(tr.index);
-        me.requestUpdate();
+        me.dataController.addSelected(record);
       }
     } else if (me.toggle) {
-      me.selections = isSelected ? [] : [tr.index];
+      if (isSelected) {
+        me.dataController.clearSelected(me.data);
+      } else {
+        me.dataController.addSelected(record);
+      }
     } else {
-      me.selections = [tr.index];
+      me.dataController.clearSelected(me.data);
+      me.dataController.addSelected(record);
     }
     me.emit('select');
   }

@@ -16,6 +16,7 @@ export class DataController {
   #readCallback;
   #writeCallback;
   #errorCallback;
+  #selectCallback;
 
   constructor(host) {
     const me = this;
@@ -23,6 +24,7 @@ export class DataController {
     me.#readCallback = me.#onRead.bind(me);
     me.#writeCallback = me.#onWrite.bind(me);
     me.#errorCallback = me.#onError.bind(me);
+    me.#selectCallback = me.#onSelect.bind(me);
     me.#host.addController(me);
   }
 
@@ -72,14 +74,6 @@ export class DataController {
     this.store.search = val;
   }
 
-  get store() {
-    return GSReadWriteRegistry.find(this.storeID);
-  }
-
-  get storeID() {
-    return this.#host?.storage;
-  }
-
   firstPage() {
     this.page = 1;
   }
@@ -94,6 +88,34 @@ export class DataController {
 
   prevPage() {
     this.page = this.page - 1;
+  }
+
+  get selected() {
+    return this.store.selected;
+  }
+
+  isSelected(val) {
+    return this.store.isSelected(val);
+  }
+
+  addSelected(val) {
+    return this.store.addSelected(val);
+  }
+  
+  removeSelected(val) {
+    return this.store.removeSelected(val);
+  }
+
+  clearSelected(data) {
+    return this.store.clearSelected(data);
+  }
+
+  get store() {
+    return GSReadWriteRegistry.find(this.storeID);
+  }
+
+  get storeID() {
+    return this.#host?.storage;
   }
 
   get page() {
@@ -116,6 +138,7 @@ export class DataController {
     storage?.on('read', me.#readCallback);
     storage?.on('write', me.#writeCallback);
     storage?.on('error', me.#errorCallback);
+    storage?.on('select', me.#selectCallback);
     if (read) storage.read(me.#host);
   }
 
@@ -125,6 +148,11 @@ export class DataController {
     storage?.off('read', me.#readCallback);
     storage?.off('write', me.#writeCallback);
     storage?.off('error', me.#errorCallback);
+    storage?.off('select', me.#selectCallback);
+  }
+
+  #onSelect(e) {
+    this.#host.requestUpdate();
   }
 
   #onRead(e) {

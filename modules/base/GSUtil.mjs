@@ -51,6 +51,10 @@ export class GSUtil {
 
 	static extractNumber = (val = '') => val.match(/[\d,\.]*\d/)?.[0];
 
+	static asArray(val) {
+		return Array.isArray(val) ? val : [val];
+	}
+
 	static asNum(val, dft = 0, locale) {
 		locale = locale || GSUtil.locale;
 		if (GSUtil.isString(val)) {

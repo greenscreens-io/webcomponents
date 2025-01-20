@@ -22,6 +22,8 @@ import { GSReadWriteRegistry } from "./ReadWriteRegistry.mjs";
  */
 export class GSReadWrite extends GSAbstractReadWrite {
 
+    static #TYPE = "remote";
+
     static #MODES = ['', 'rest', 'query', 'quark'];
     static #METHOD = ['GET', 'PUT', 'POST', 'DELETE'];
 
@@ -45,6 +47,13 @@ export class GSReadWrite extends GSAbstractReadWrite {
      */
     constructor(name, enabled) {
         super(name, enabled);
+    }
+
+    /**
+     * Handler type
+     */
+    get type() {
+        return GSReadWrite.#TYPE;
     }
 
     /**
@@ -327,7 +336,7 @@ export class GSReadWrite extends GSAbstractReadWrite {
     }
 
     static {
-        GSReadWriteRegistry.addHandler('remote', GSReadWrite);
+        GSReadWriteRegistry.addHandler(GSReadWrite.#TYPE, GSReadWrite);
     }
 
 }
