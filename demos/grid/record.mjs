@@ -1,7 +1,5 @@
 
-import { GSData } from '../../modules/base/GSData.mjs';
 import { GSEvents } from '../../modules/base/GSEvents.mjs';
-import { GSUtil } from '../../modules/base/GSUtil.mjs';
 import { GSDialogElement } from "../../modules/components/Dialog.mjs";
 import { GSReadWriteRegistry } from "../../modules/data/ReadWriteRegistry.mjs";
 
@@ -11,6 +9,10 @@ export class RecordDialog extends GSDialogElement {
         this.define('gs-record-edit');
     }
 
+    // here we store selected record, 
+    // upon change, we use Object.asign to 
+    // apply teh data from the form and call table update
+    // to reflect changes inside the table
     #data;
 
     connectedCallback() {
@@ -41,11 +43,10 @@ export class RecordDialog extends GSDialogElement {
         return this.onLoad();
     }
 
-    // TODO save form data on OK click
+    // save form data on OK click
+    // and update table to reflect chenges in UI
     async onData(data) {
-        //this.#data = GSData.mergeObjects([this.#data, data]);
         Object.assign(this.#data, data);
-        alert(JSON.stringify(this.#data));
         this.table?.requestUpdate();
         return true;
     }
@@ -59,7 +60,7 @@ export class RecordDialog extends GSDialogElement {
         const storage = GSReadWriteRegistry.find('employees');
         const form = this.form;
         if (form && storage) {            
-            form.data = this.#data = storage?.selected.pop();
+            form.data = this.#data = storage.selected.pop();
         }
     }    
 
