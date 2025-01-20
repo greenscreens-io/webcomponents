@@ -101,12 +101,15 @@ export class GSCachedReadWrite extends GSReadWrite {
         */
     }
 
+    clearSelected() {
+        return super.clearSelected(this.#data);
+    }
+
     /**
      * Return list of all selected record id's
      */
     get selected() {
-        const me = this;
-        return super.getSelected(me.#data);
+        return super.getSelected(this.#data);
     }
 
     /**

@@ -9,6 +9,7 @@ import { GSData } from '../base/GSData.mjs';
 import { GSItem } from '../base/GSItem.mjs';
 import { GSDOM } from '../base/GSDOM.mjs';
 import { GSUtil } from '../base/GSUtil.mjs';
+import { GSID } from '../base/GSID.mjs';
 
 /**
  * A HTML Table renderer for tabular data representation.
@@ -69,7 +70,7 @@ export class GSTableElement extends GSElement {
 
   #config = [];
   #sortOrder = [];
-  // #auto = false;
+  #auto = false;
 
   constructor() {
     super();
@@ -96,11 +97,9 @@ export class GSTableElement extends GSElement {
     const me = this;
     me.#config = GSItem.proxify(me, GSTableElement.CELLS);
     if (me.columns.length === 0) me.columns = me.#config.map(v => v.name);
-    /*
     if (!me.storage) {      
       me.storage = me.#auto = GSID.next('table-');
     }
-    */
     super.connectedCallback();
   }
 
@@ -173,17 +172,14 @@ export class GSTableElement extends GSElement {
   }
 
   #renderHandler() {
-    /*
     const me = this;
     return me.#auto ? html`<gs-data-handler type="cached" mode="" id=${me.#auto} generated></gs-data-handler>` : '';
-    */
-   return '';
   }
 
   onDataRead(data) {
     const me = this;
     me.data = data;
-    me.dataController.clearSelected();
+    //me.dataController.clearSelected();
 
     // update filtering
     if (data.length > 0 && me.#hasFilters) {
@@ -298,7 +294,7 @@ export class GSTableElement extends GSElement {
     if (!el.value) return undefined;
     const isDate = el.type === 'date';
     const val = isDate ? el.valueAsDate : el.value;
-    const cfg = me.#config[el.index];
+    const cfg = this.#config[el.index];
     return { name: el.name, value: val, locale : cfg?.locale };
   }
 

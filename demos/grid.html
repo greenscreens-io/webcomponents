@@ -68,6 +68,7 @@
                 <gs-form-group cell-label="col-auto" cell-field="col-auto" css-field="form-control-sm rounded-0" name="search" label="Search" data-gs-target="gs-data-handler#employees"></gs-form-group>
             </div>
         </div>
+        
         <!-- Defined items will be converted into desired type if possible -->
         <gs-data-handler id="employees" type="cached" limit="10" src="/bootstrap-lit/demos/helpers/data/data2.json">
             <gs-item name="Age" type="number"></gs-item>
@@ -80,6 +81,7 @@
         <gs-table id="grid" storage="employees" color="light" css-filter="rounded-0" select-color="primary"
             selectable hover bordered shadow divider sortable multisort>
             <gs-item name="Office" filter></gs-item>
+            <gs-item name="Name" filter></gs-item>
             <gs-item name="Position" filter></gs-item>
             <gs-item name="Age" type="number" align="center" width="100" filter></gs-item>
             <gs-item name="Salary" type="currency" align="end" currency="USD" locale="hr-HR" width="200" filter></gs-item>
