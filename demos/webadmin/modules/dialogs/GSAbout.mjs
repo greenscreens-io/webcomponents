@@ -18,7 +18,8 @@ export class GSAbout extends GSDialogElement {
         this.define('gs-admin-dialog-about');
     }
 
-    firstUpdated() {
+    connectedCallback() {
+        super.connectedCallback();
         const me = this;
         me.buttonAlign = 'center';
         me.cancelable = false;
@@ -28,6 +29,10 @@ export class GSAbout extends GSDialogElement {
         me.rounded = true;
         me.opened = true;
         me.cssHeader = 'bg-white';
+    }
+
+    firstUpdated() {
+        const me = this;
         me.on('notify', me.#onNotify.bind(me));
         super.firstUpdated();
     }

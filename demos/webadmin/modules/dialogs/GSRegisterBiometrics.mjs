@@ -16,9 +16,11 @@ export class GSRegisterBiometrics extends GSAsbtractDialog {
         this.define('gs-admin-dialog-bioreg');
     }
 
-    constructor() {
-        super();
+    connectedCallback() {
+        super.connectedCallback();
         const me = this;
+        me.opened = true;
+        me.dismissable = true;
         me.title = "SerRegister Biometric";
         me.template = "//dialogs/register-bio.html";
     }

@@ -15,9 +15,11 @@ export class GSNetwork extends GSAsbtractDialog {
         this.define('gs-admin-dialog-network');
     }
 
-    constructor() {
-        super();
+    connectedCallback() {
+        super.connectedCallback();
         const me = this;
+        me.opened = true;
+        me.dismissable = true;
         me.title = "Netowrk Options";
         me.template = "//dialogs/network.html";
     }

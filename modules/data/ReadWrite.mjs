@@ -34,6 +34,8 @@ export class GSReadWrite extends GSAbstractReadWrite {
     #action = '';
     #mode = '';
 
+    #key = null;
+
     #skip = 0;
     #limit = 0;
 
@@ -138,6 +140,21 @@ export class GSReadWrite extends GSAbstractReadWrite {
         val = GSUtil.toJson(val);
         const me = this;
         me.#headers = { ...val };
+    }
+
+    /**
+     * Record key field
+     */
+    get key() {
+        return this.#key;
+    }
+
+    /**
+     * Record key field
+     * @var {String} 
+     */
+    set key(val) {
+        this.#key = val;
     }
 
     /**

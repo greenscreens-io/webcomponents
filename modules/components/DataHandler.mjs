@@ -106,6 +106,7 @@ export class GSDataHandler extends GSElement {
         if (!me.#handler) return;
 
         me.#handler.src = me.src;
+        me.#handler.key = me.key;
         me.#handler.mode = me.mode;
         me.#handler.action = me.action;
         me.#handler.reader = me.reader;
@@ -140,6 +141,10 @@ export class GSDataHandler extends GSElement {
 
     set search(val) {
         if (this.#handler) this.#handler.search = val;
+    }
+
+    get key() {
+        return this.#config.filter(o => o.key).map(o => o.name).pop() || null;
     }
 
     /**

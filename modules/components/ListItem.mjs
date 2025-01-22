@@ -37,7 +37,7 @@ export class GSListItemElement extends GSElement {
   }
 
   firstUpdated(changed) {
-        // allow single setting at the gs-list to applay to the child
+        // allow single setting at the gs-list to apply to the child
         // GSAttributeHandler.clone(this.parentComponent, this, false);
   }
 

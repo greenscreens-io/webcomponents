@@ -17,9 +17,11 @@ export class GSRegisterOtp extends GSAsbtractDialog {
         this.define('gs-admin-dialog-otpreg');
     }
 
-    constructor() {
-        super();
+    connectedCallback() {
+        super.connectedCallback();
         const me = this;
+        me.opened = true;
+        me.dismissable = true;
         me.title = "Register OTP";
         me.template = "//dialogs/register-otp.html";
     }

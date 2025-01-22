@@ -19,12 +19,17 @@ export class GSAsbtractDialog extends GSDialogElement {
         this.define('gs-admin-dialog');
     }
 
+    static properties = {
+        dismissable: { reflect: true, type: Boolean },
+    }
+
     #data = null;
 
     connectedCallback() {
         super.connectedCallback();
         const me = this;
-        me.opened = true;
+        me.dismissable = false;
+        me.opened = false;
         me.closable = true;
         me.cancelable = true;
         me.escapable = true;
@@ -100,7 +105,8 @@ export class GSAsbtractDialog extends GSDialogElement {
 
     // auto remove on close
     #onNotify(e) {
-        if (!this.opened) this.remove();
+        const me = this;
+        if (!me.opened && me.dismissable && e.detail === 'closing') me.remove();
     }
 
     #onFormError(e) {

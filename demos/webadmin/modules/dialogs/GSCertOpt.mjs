@@ -15,9 +15,11 @@ export class GSCertOpt extends GSAsbtractDialog {
         this.define('gs-admin-dialog-certopt');
     }
 
-    constructor() {
-        super();
+    connectedCallback() {
+        super.connectedCallback();
         const me = this;
+        me.opened = true;
+        me.dismissable = true;
         me.title = "Certificate Options";
         me.template = "//dialogs/certificates-options.html";
     }

@@ -9,6 +9,8 @@
 
 import { GSUtil } from "./GSUtil.mjs";
 import { GSDate } from "./GSDate.mjs";
+import { GSDOM } from "./GSDOM.mjs";
+import { GSAttr } from "./GSAttr.mjs";
 
 /**
  * A set of static functions used for loading resources
@@ -16,7 +18,7 @@ import { GSDate } from "./GSDate.mjs";
  */
 export class GSData {
 
-    static PROPERTIES = { name: {}, type: {}, format: {}, currency: {}, locale: {}, extract: {} };
+    static PROPERTIES = { name: {}, type: {}, format: {}, currency: {}, locale: {}, extract: {}, key: { type: Boolean } };
 
     /**
      * Removes duplicates from list
@@ -81,6 +83,12 @@ export class GSData {
         const locale = cfg.locale || GSUtil.locale;
         const rule = GSUtil.toRegex(cfg.extract, 'g');
         val = rule ? val.match(rule)[0] : val;
+
+        // intercept overrides; used b GS-TABLE cell Ui remapping
+        if (cfg.childElementCount > 0) {
+            const el = GSDOM.query(cfg, `gs-item[value="${val}"]`);
+            return GSAttr.get(el, "map", val);
+        }
 
         switch (type) {
             case 'timestamp':
@@ -147,8 +155,8 @@ export class GSData {
      * @returns {Array}
      */
     static filterData(data = [], filter = [], fields, limit = 0) {
-        data = Array.isArray(data) ? data : [];
-        filter = Array.isArray(filter) ? filter : [];
+        data = Array.isArray(data) ? data : [data];
+        filter = Array.isArray(filter) ? filter : [filter];
         if (filter.length === 0) return data;
         return [...GSData.filter(data, filter, fields, limit)];
     }
@@ -161,8 +169,8 @@ export class GSData {
      * @returns {Array}
      */
     static filterRecord(rec, filter, fields) {
-        const isSimple = typeof filter === 'string';
-        return isSimple ? GSData.filterSimple(rec, filter, fields) : GSData.filterComplex(rec, filter);
+        const isSimple = GSUtil.isPrimitive(filter);
+        return isSimple ? GSData.filterSimple(rec, filter, fields) : GSData.filterComplex(rec, filter, fields);
     }
 
     /**
@@ -194,18 +202,26 @@ export class GSData {
      *           - name is string if rec is JSON object
      * @returns {Boolean} Flag indicating if record is matched to a given filter critheria
      */
-    static filterComplex(rec, filter) {
+    static filterComplex(rec, filter, fields) {
 
+        let primitive = false;
         let found = true;
         let value = null;
 
         for (let flt of filter) {
-            value = rec[flt.name];
-            if (flt.name) {
-                found = found && GSData.filterValue(value, flt)
+
+            primitive = GSUtil.isPrimitive(flt);
+            if (primitive) {
+                found = found && GSData.filterSimple(rec, flt, fields);
             } else {
-                found = found && GSData.filterSimple(rec, flt.value);
+                value = rec[flt.name];
+                if (flt.name) {
+                    found = found && GSData.filterValue(value, flt)
+                } else {
+                    found = found && GSData.filterSimple(rec, flt.value, fields);
+                }
             }
+
             if (!found) break;
         }
 
@@ -213,12 +229,13 @@ export class GSData {
     }
 
     static filterValue(value, filter) {
-        if (value instanceof Date) {
+        const toCheck = GSUtil.isPrimitive(filter) ? filter : filter.value;
+        if (GSUtil.isDate(value)) {
             return GSData.matchDate(value, filter);
-        } else if (value instanceof Date) {
-            return GSData.matchNumber(value, GSUtil.asNum(filter.value), filter.op);
+        } else if (GSUtil.isNumber(value)) {
+            return GSData.matchNumber(value, GSUtil.asNum(toCheck, null), filter.op);
         } else {
-            return ('' + value).toLocaleLowerCase().includes(('' + filter.value).toLocaleLowerCase());
+            return (GSUtil.normalize(value)).toLocaleLowerCase().includes(GSUtil.normalize(toCheck).toLocaleLowerCase());
         }
     }
 

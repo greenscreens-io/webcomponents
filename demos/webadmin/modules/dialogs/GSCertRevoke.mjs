@@ -15,9 +15,11 @@ export class GSCertRevoke extends GSAsbtractDialog {
         this.define('gs-admin-dialog-certrevoke');
     }
 
-    constructor() {
-        super();
+    connectedCallback() {
+        super.connectedCallback();
         const me = this;
+        me.opened = true;
+        me.dismissable = true;
         me.title = "Revoke Client Certificate";
         me.template = "//dialogs/certificates-revoke.html";
     }

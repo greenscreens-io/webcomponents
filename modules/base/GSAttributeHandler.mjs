@@ -101,14 +101,14 @@ export class GSAttributeHandler {
         const me = this;
         me.#handleBinding(target, evt);
         me.#handleAction(target);
+        me.#handleSwap(target);
+        me.#handleInject(host, target);
         me.#handleAttribute(target);
         me.#handleProperty(target);
         me.#handleToggle(target);
         me.#handleTrigger(target, evt);
         me.#handleCall(host, target, evt);
         me.#handleExec(host, target, evt);
-        me.#handleSwap(target);
-        me.#handleInject(host, target);
         me.#handleTemplate(host, target);
     }
 
@@ -145,6 +145,10 @@ export class GSAttributeHandler {
      */
     #handleAttribute(target) {
         const me = this;
+
+        if (me.inject) target = GSDOM.query(target, me.inject);
+        if (me.swap) target = GSDOM.query(target, me.swap);
+
         if (me.isAttributeJSON) {
             const obj = GSUtil.toJson(me.attribute);
             return GSAttr.jsonToAttr(target, obj);
@@ -160,6 +164,8 @@ export class GSAttributeHandler {
      */
     #handleProperty(target) {
         const me = this;
+        if (me.inject) target = GSDOM.query(target, me.inject);
+        if (me.swap) target = GSDOM.query(target, me.swap);
         if (me.isPropertyJSON) {
             const obj = GSUtil.toJson(me.property);
             return Object.assign(target, obj);
@@ -169,6 +175,7 @@ export class GSAttributeHandler {
     }
 
     #toggleAttribute(target, name, value) {
+
         if (GSUtil.isBool(target[name])) {
             return GSAttr.toggle(target, name, !target[name]);
         } else if (GSUtil.isNumber(target[name])) {
@@ -338,7 +345,8 @@ export class GSAttributeHandler {
             case 'self':
                 return [me.#host];
             case 'owner':
-                return [GSDOM.root(me.#host)];
+                //return [GSDOM.root(me.#host)];
+                return [me.#host.parentComponent];
             case 'parent':
                 return [me.#host.parentElement];
         }

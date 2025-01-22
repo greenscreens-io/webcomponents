@@ -94,9 +94,17 @@ export class GSDialogElement extends GSElement {
 
   updated(changed) {
     super.updated(changed);
+    if (changed.has('opened')) {
+      this.#onOpenChanged();
+    }
+  }
+
+  #onOpenChanged() {
     const me = this;
+    let state = null;
     if (me.opened) {
       GSDialogElement.#STACK.push(me);
+      state = 'opening';
       if (me.standard) {
         me.#dialog?.open();
       } else {
@@ -104,10 +112,11 @@ export class GSDialogElement extends GSElement {
       }
       me.#focusable()?.focus();
     } else {
+      state = 'closing';
       GSDialogElement.#STACK.pop();
       me.#dialog?.close();
     }
-    me.notify();
+    me.notify(true, false, state);
   }
 
   #renderConfirm() {
@@ -201,7 +210,7 @@ export class GSDialogElement extends GSElement {
   info(title = '', message = '', closable = false, cancelable = false) {
     const me = this;
     me.title = title;
-    me.body = message;
+    me.message = message;
     me.closable = closable;
     me.cancelable = cancelable;
     me.escapable = cancelable;

@@ -15,9 +15,11 @@ export class GSKerberos extends GSAsbtractDialog {
         this.define('gs-admin-dialog-kerberos');
     }
 
-    constructor() {
-        super();
+    connectedCallback() {
+        super.connectedCallback();
         const me = this;
+        me.opened = true;
+        me.dismissable = true;
         me.title = "SSO Options";
         me.template = "//dialogs/kerberos.html";
     }

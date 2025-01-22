@@ -47,6 +47,8 @@ export class GSUtil {
 
 	static isInstance = (el) => el instanceof el.constructor;
 
+	static isPrimitive = (o) => !Array.isArray(o) && (this.isBool(o) || this.isDate(o) || this.isNumber(o) || this.isString(o));
+
 	static range = (val = 0, min = 10, max = 100) => (Math.max(Math.min(max, val), min));
 
 	static extractNumber = (val = '') => val.match(/[\d,\.]*\d/)?.[0];

@@ -14,9 +14,11 @@ export class GSOtpOptions extends GSAsbtractDialog {
         this.define('gs-admin-dialog-otpopt');
     }
 
-    constructor() {
-        super();
+    connectedCallback() {
+        super.connectedCallback();
         const me = this;
+        me.opened = true;
+        me.dismissable = true;
         me.title = "OTP Options";
         me.template = "//dialogs/otp-options.html";
     }

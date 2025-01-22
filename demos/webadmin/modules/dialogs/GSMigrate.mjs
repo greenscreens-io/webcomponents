@@ -15,9 +15,11 @@ export class GSMigrate extends GSAsbtractDialog {
         this.define('gs-admin-dialog-migrate');
     }
 
-    constructor() {
-        super();
+    connectedCallback() {
+        super.connectedCallback();
         const me = this;
+        me.opened = true;
+        me.dismissable = true;
         me.title = "Migrate Storage";
         me.template = "//dialogs/migrate.html";
     }

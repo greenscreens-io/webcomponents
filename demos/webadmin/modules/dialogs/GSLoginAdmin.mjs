@@ -14,9 +14,11 @@ export class GSLoginAdmin extends GSAsbtractDialog {
         this.define('gs-admin-dialog-loginadm');
     }
 
-    constructor() {
-        super();
+    connectedCallback() {
+        super.connectedCallback();
         const me = this;
+        me.opened = true;
+        me.dismissable = true;
         me.title = "Admin Login";
         me.template = "//dialogs/login-admin.html";
     }

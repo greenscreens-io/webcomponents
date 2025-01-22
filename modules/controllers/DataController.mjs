@@ -91,23 +91,23 @@ export class DataController {
   }
 
   get selected() {
-    return this.store.selected;
+    return this.store?.selected;
   }
 
   isSelected(val) {
-    return this.store.isSelected(val);
+    return this.store?.isSelected(val);
   }
 
   addSelected(val) {
-    return this.store.addSelected(val);
+    return this.store?.addSelected(val);
   }
   
   removeSelected(val) {
-    return this.store.removeSelected(val);
+    return this.store?.removeSelected(val);
   }
 
   clearSelected(data) {
-    return this.store.clearSelected(data);
+    return this.store?.clearSelected(data);
   }
 
   get store() {

@@ -14,9 +14,11 @@ export class GSLoginDefaults extends GSAsbtractDialog {
         this.define('gs-admin-dialog-logindefs');
     }
 
-    constructor() {
-        super();
+    connectedCallback() {
+        super.connectedCallback();
         const me = this;
+        me.opened = true;
+        me.dismissable = true;
         me.title = "Login Defaults";
         me.template = "//dialogs/login-defaults.html";
     }

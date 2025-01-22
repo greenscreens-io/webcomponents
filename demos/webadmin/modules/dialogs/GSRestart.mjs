@@ -14,9 +14,11 @@ export class GSRestart extends GSAsbtractDialog {
         this.define('gs-admin-dialog-restart');
     }
 
-    constructor() {
-        super();
+    connectedCallback() {
+        super.connectedCallback();
         const me = this;
+        me.opened = true;
+        me.dismissable = true;
         me.title = "Server restart";
         me.template = "//dialogs/server-restart.html";
     }

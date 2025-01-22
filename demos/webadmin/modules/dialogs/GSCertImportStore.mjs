@@ -16,9 +16,11 @@ export class GSCertImportStore extends GSAsbtractDialog {
         this.define('gs-admin-dialog-certstoreimport');
     }
 
-    constructor() {
-        super();
+    connectedCallback() {
+        super.connectedCallback();
         const me = this;
+        me.opened = true;
+        me.dismissable = true;
         me.title = "Import PFX/PEM Certificate Store";
         me.template = "//dialogs/certificates-import-store.html";
     }

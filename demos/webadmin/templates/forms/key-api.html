@@ -1,7 +1,7 @@
 <gs-form slot="body" css="flex-fill">
     <input id="id" name="id" type="hidden">
-    <gs-tab flat="true" css-nav="nav-tabs fw-bold" css-pane="d-flex justify-content-center border-t flex-fill p-2">
-        <gs-item title="General" template="//forms/apikey/general.html" css-pane="flex-fill" active="true"></gs-item>
-        <gs-item title="Advanced" template="//forms/apikey/advanced.html" css-pane="flex-fill" ></gs-item>  
-    </gs-tab>
+    <gs-tab-group css-nav="nav-tabs fw-bold" css-panel="d-flex justify-content-center border-t flex-fill p-2">
+        <gs-item title="General" template="//forms/apikey/general.html" active></gs-item>
+        <gs-item title="Advanced" template="//forms/apikey/advanced.html"></gs-item>  
+    </gs-tab-group>
 </gs-form>

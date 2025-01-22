@@ -9,6 +9,7 @@
 
 import { GSElement } from '../GSElement.mjs';
 import { GSAttr } from '../base/GSAttr.mjs';
+import { GSAttributeHandler } from '../base/GSAttributeHandler.mjs';
 import { GSDOM } from '../base/GSDOM.mjs';
 import { GSItem } from '../base/GSItem.mjs';
 import { ElementNavigationController } from '../controllers/ElementNavigationController.mjs';
@@ -44,6 +45,16 @@ export class GSGroupElement extends GSElement {
     me.#controller = new ElementNavigationController(me);
     me.#controllerGroup = new GroupController(me);
   }
+
+  connectedCallback() {
+    super.connectedCallback();
+    const me = this;
+    // allow single setting at the container component to apply to the child
+    Array.from(me.children).forEach(it => {
+      GSAttributeHandler.clone(me, it, false);
+    });
+  }  
+
 
   #prerender() {
     const me = this;

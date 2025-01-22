@@ -1,6 +1,7 @@
 :root {
     --bs-body-bg: #f7f7f7;
     --bs-body-bg-rgb: 247, 247, 247;
+    --gs-secondary-rgb: 244, 248, 251;
 }
 
 dialog {
@@ -62,5 +63,9 @@ dialog::backdrop {
 }
 
 .list-group {
-    --bs-list-group-color: #9db0c3;
+    --bs-list-group-color: #697e93;
+}
+
+.table-secondary {
+    --bs-table-bg: #f4f8fb;
 }
