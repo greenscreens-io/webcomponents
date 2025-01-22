@@ -1,13 +1,9 @@
 <gs-form slot="body" css="flex-fill">
     
-    <gs-form-group css="m-1" name="type" label="Restart type" 
+    <gs-form-group css="m-1" name="type" label="Restart type" selectable required
 		description="If 'restart' selected, manual server start might be required.">
-    	<template>
-			<select class="form-select" id="type" name="type" required>
-                <option value="false">Reload</option>
-            	<option value="true">Restart</option>
-            </select>
-        </template>
+        <gs-item value="false" name="Reload" selected></gs-item>
+        <gs-item value="true" name="Restart"></gs-item>        
     </gs-form-group>
     
 </gs-form>

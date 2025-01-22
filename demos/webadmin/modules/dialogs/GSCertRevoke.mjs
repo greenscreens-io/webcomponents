@@ -15,8 +15,8 @@ export class GSCertRevoke extends GSAsbtractDialog {
         this.define('gs-admin-dialog-certrevoke');
     }
 
-    connectedCallback() {
-        super.connectedCallback();
+    constructor() {
+        super();
         const me = this;
         me.opened = true;
         me.dismissable = true;

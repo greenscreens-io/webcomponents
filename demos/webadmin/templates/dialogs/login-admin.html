@@ -10,15 +10,11 @@
         description="Repeat password to confirm valid entry">
     </gs-form-group> 
     
-    <gs-form-group css="m-1" name="adminAccess" label="Admin Access" required
+    <gs-form-group css="m-1" name="adminAccess" label="Admin Access" required selectable
         description="Enable access to this admin console from local network or all networks (from Internet).">
-        <template>
-            <select class="form-select" id="adminAccess" name="adminAccess" required>
-                <option value="0" selected>All networks</option>
-                <option value="1">Local network only</option>
-                <option value="2">Local computer only</option>
-            </select>
-        </template>
+        <gs-item value="0" name="All networks" selected></gs-item>
+        <gs-item value="1" name="Local network only"></gs-item>
+        <gs-item value="2" name="Local computer only"></gs-item>
     </gs-form-group> 
     
 </gs-form>

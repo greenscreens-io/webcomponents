@@ -1,27 +1,19 @@
-<gs-form-group css="m-1" name="keySize" label="Key Size"
+<gs-form-group css="m-1" name="keySize" label="Key Size" selectable
     description="Select Key size. (ECDSA requires Java 11+)">
-    <template>
-        <select class="form-select" id="keySize" name="keySize">
-            <option value="0">RSA-1024</option>
-            <option value="1">RSA-2048</option>
-            <option value="2">RSA-4096</option>
-            <option value="3">ECDSA-160</option>
-            <option value="4">ECDSA-224</option>
-            <option value="5">ECDSA-256</option>
-            <option value="6">ECDSA-384</option>
-            <option value="7">ECDSA-512</option>
-        </select>
-    </template>
+    <gs-item value="0" name="RSA-1024"></gs-item>
+    <gs-item value="1" name="RSA-2048" selected></gs-item>
+    <gs-item value="2" name="RSA-4096"></gs-item>
+    <gs-item value="3" name="ECDSA-160"></gs-item>
+    <gs-item value="4" name="ECDSA-224"></gs-item>
+    <gs-item value="5" name="ECDSA-256"></gs-item>
+    <gs-item value="6" name="ECDSA-384"></gs-item>
+    <gs-item value="7" name="ECDSA-512"></gs-item>
 </gs-form-group>
 
-<gs-form-group css="m-1" name="tlsType" label="Key Type"
+<gs-form-group css="m-1" name="tlsType" label="Key Type" selectable
     description="Select TLS encryption mode.">
-    <template>
-        <select class="form-select" id="tlsType" name="tlsType">
-            <option value="TLSv1.3">TLSv1.3</option>
-            <option value="TLSv1.2">TLSv1.2</option>
-        </select>
-    </template>
+    <gs-item value="TLSv1.3" name="TLSv1.3"></gs-item>
+    <gs-item value="TLSv1.2" name="TLSv1.2" selected></gs-item>
 </gs-form-group>
 
 <hr>
@@ -33,44 +25,28 @@
 	</template>
 </gs-form-group>
 
-<gs-form-group css="m-1" name="urlCA" label="Authority CA"
+<gs-form-group css="m-1" name="urlCA" label="Authority CA" selectable
     description="Add CA download URL to certificate.">
-    <template>
-        <select class="form-select" id="urlCA" name="urlCA">
-            <option value="true">Enabled</option>
-            <option value="false">Disabled</option>
-        </select>
-    </template>
+    <gs-item value="true" name="Enabled"></gs-item>
+    <gs-item value="false" name="Disabled" selected></gs-item>
 </gs-form-group>
 
-<gs-form-group css="m-1" name="urlOCSP" label="Authority OCSP"
+<gs-form-group css="m-1" name="urlOCSP" label="Authority OCSP" selectable
     description="Add OCSP certificate verification URL.">
-    <template>
-        <select class="form-select" id="urlOCSP" name="urlOCSP">
-            <option value="true">Enabled</option>
-            <option value="false">Disabled</option>
-        </select>
-    </template>
+    <gs-item value="true" name="Enabled"></gs-item>
+    <gs-item value="false" name="Disabled" selected></gs-item>
 </gs-form-group>
 
-<gs-form-group css="m-1" name="urlCRL" label="CRL"
+<gs-form-group css="m-1" name="urlCRL" label="CRL" selectable
     description="Add CRL certificate verification URL.">
-    <template>
-        <select class="form-select" id="urlCRL" name="urlCRL">
-            <option value="true">Enabled</option>
-            <option value="false">Disabled</option>
-        </select>
-    </template>
+    <gs-item value="true" name="Enabled"></gs-item>
+    <gs-item value="false" name="Disabled" selected></gs-item>
 </gs-form-group>
 
 <!-- BY spec, it shoud be merged
-<gs-form-group css="m-1" name="crlMerged" label="CRL Merged"
+<gs-form-group css="m-1" name="crlMerged" label="CRL Merged" selectable
     description="Distribution point generation model.">
-    <template>
-        <select class="form-select" id="crlMerged" name="crlMerged">
-            <option value="true">Enabled</option>
-            <option value="false">Disabled</option>
-        </select>
-    </template>
+    <gs-item value="true" name="Enabled"></gs-item>
+    <gs-item value="false" name="Disabled"></gs-item>
 </gs-form-group>
 -->

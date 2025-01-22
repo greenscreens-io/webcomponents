@@ -14,8 +14,8 @@ export class GSSystem extends GSAsbtractDialog {
         this.define('gs-admin-dialog-system');
     }
 
-    connectedCallback() {
-        super.connectedCallback();
+    constructor() {
+        super();
         const me = this;
         me.opened = true;
         me.dismissable = true;

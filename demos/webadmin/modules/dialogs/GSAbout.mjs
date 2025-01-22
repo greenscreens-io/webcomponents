@@ -18,8 +18,8 @@ export class GSAbout extends GSDialogElement {
         this.define('gs-admin-dialog-about');
     }
 
-    connectedCallback() {
-        super.connectedCallback();
+    constructor() {
+        super();
         const me = this;
         me.buttonAlign = 'center';
         me.cancelable = false;

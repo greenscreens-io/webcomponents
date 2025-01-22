@@ -1,11 +1,7 @@
-<gs-form-group css="m-1" name="sso" label="SSO Status" autocomplete="off"
+<gs-form-group css="m-1" name="sso" label="SSO Status" autocomplete="off" selectable
     description="Enable Single Sign On. IBM system must be configured to use Kerberos for signon.">
-    <template>
-        <select class="form-select" id="sso" name="sso" required="" selected="false">
-            <option value="false">Disabled</option>
-            <option value="true">Enabled</option>
-      </select>        
-    </template>
+    <gs-item value="false" name="Disabled" selected></gs-item>
+    <gs-item value="true" name="Enabled"></gs-item>
 </gs-form-group>
 
 <gs-form-group css="m-1" name="ssoKDC" label="KDC" 

@@ -20,14 +20,15 @@ Except all standard ```<input>``` [tag attributes](https://developer.mozilla.org
 | autocopy           | Copy all text on click into a field                      |
 | autoselect         | Select all text on click into a field                    |
 | default            | Default value                                            |
+| description        | Tooltip content - describe field purpose                 |
 | icon               | Tooltip icon                                             |
 | mask               | When masked input required (refer to GSInputExt)         |
 | label              | Input field visible label                                |
 | layout             | Orientation type (vertical, horizontal, floating)        |
+| placement          | Tooltip placement (deafult right)                        |
 | reveal             | Allow password reveal on shortcut                        |
 | reverse            | Only for "range type" to display max value first         |
-| placement          | Tooltip placement (deafult right)                        |
-| description        | Tooltip content - describe field purpose                 |
+| selectable         | Render select instead of input                           |
 
 **NOTE**: All HTML input element attributes are allowed.
 

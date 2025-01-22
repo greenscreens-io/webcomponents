@@ -16,8 +16,8 @@ export class GSCertImportStore extends GSAsbtractDialog {
         this.define('gs-admin-dialog-certstoreimport');
     }
 
-    connectedCallback() {
-        super.connectedCallback();
+    constructor() {
+        super();
         const me = this;
         me.opened = true;
         me.dismissable = true;

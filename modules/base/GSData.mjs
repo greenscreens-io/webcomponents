@@ -9,7 +9,6 @@
 
 import { GSUtil } from "./GSUtil.mjs";
 import { GSDate } from "./GSDate.mjs";
-import { GSDOM } from "./GSDOM.mjs";
 import { GSAttr } from "./GSAttr.mjs";
 
 /**
@@ -86,7 +85,7 @@ export class GSData {
 
         // intercept overrides; used b GS-TABLE cell Ui remapping
         if (cfg.childElementCount > 0) {
-            const el = GSDOM.query(cfg, `gs-item[value="${val}"]`);
+            const el = cfg.querySelector(`gs-item[value="${val}"]`);
             return GSAttr.get(el, "map", val);
         }
 

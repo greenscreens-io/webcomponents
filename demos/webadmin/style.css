@@ -22,6 +22,11 @@ dialog::backdrop {
     --bs-offcanvas-bg: #f4f8fb !important
 }
 
+.list-group {
+    --bs-list-group-bg: var( --bs-offcanvas-bg);
+    --bs-list-group-action-hover-bg: var(--bs-gray-200);
+}
+
 .nav-link:hover,
 .nav-link:focus {
     background-color: rgb(67 89 113 / 13%) !important;

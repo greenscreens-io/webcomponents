@@ -1,18 +1,14 @@
 <gs-form slot="body" css="flex-fill">
 
-    <gs-form-group css="m-1" name="type" label="Storage" 
+    <gs-form-group css="m-1" name="type" label="Storage" required selectable
 		description="Storage type. AUTO will import ROOT, INTERMEDIATE, SERVER or TRUST. JRE will import trusted signers for IBM i SSL access.">
-    	<template>
-			<select class="form-select" id="type" name="type" required>
-                <option value="0">Automatic</option>
-            	<option value="1">Root</option>
-            	<option value="2">Intermediate</option>
-            	<option value="3">Server</option>
-                <option value="6">Timestamp</option>
-            	<option value="4">Trust</option>
-            	<option value="7">JRE</option>
-            </select>
-        </template>
+        <gs-item value="0" name="Automatic"></gs-item>
+        <gs-item value="1" name="Root"></gs-item>
+        <gs-item value="2" name="Intermediate"></gs-item>
+        <gs-item value="3" name="Server"></gs-item>
+        <gs-item value="6" name="Timestamp"></gs-item>
+        <gs-item value="4" name="Trust"></gs-item>
+        <gs-item value="7" name="JRE"></gs-item>
     </gs-form-group>
             
     <gs-form-group css="m-1" name="password" label="Password" type="password" autocomplete="off" reveal 

@@ -2,7 +2,7 @@
  * Copyright (C) 2015, 2025; Green Screens Ltd.
  */
 
-import { classMap, createRef, ref, html, ifDefined } from '../lib.mjs';
+import { classMap, createRef, ref, html, unsafeHTML, ifDefined } from '../lib.mjs';
 import { inputType, numGT0, numGE0 } from '../properties/index.mjs';
 import { GSElement } from '../GSElement.mjs';
 import { GSItem } from '../base/GSItem.mjs';
@@ -17,6 +17,12 @@ export class GSFormGroupElement extends GSElement {
   static CSS_LABEL = 'user-select-none fw-small fw-light text-secondary';
   static CSS_ICON = 'text-primary me-2 fs-5';
   static ICON = 'info-circle-fill';
+
+  static #SELECTOPT = {
+    name : {},
+    value : {},
+    selected : {type: Boolean}
+  }
 
   static properties = {
     icon: {},
@@ -43,6 +49,7 @@ export class GSFormGroupElement extends GSElement {
     maxLength: { type: Number, reflect: true, hasChanged: numGT0 },
 
     reverse: { type: Boolean },
+    selectable: { type: Boolean },
 
     autoid: { type: Boolean },
     autocopy: { type: Boolean, reflect: true },
@@ -70,6 +77,7 @@ export class GSFormGroupElement extends GSElement {
   #inputRef = createRef();
   #ouptutRef = createRef();
   #patterns = [];
+  #options = [];
 
   constructor() {
     super();
@@ -81,16 +89,19 @@ export class GSFormGroupElement extends GSElement {
     this.icon = GSFormGroupElement.ICON;
     this.cssLabel = GSFormGroupElement.CSS_LABEL;
     this.cellLabel = GSFormGroupElement.CSS_LABEL_CELL;
-
   }
   
   connectedCallback() {
     const me = this;
     const form = GSDOM.closest(me, 'gs-form');
     me.layout = GSAttr.get(form, 'layout', me.layout);
-    me.#patterns = GSItem.collect(me)
-    .filter(el => el.dataset.pattern)
-    .map(el => new RegExp(el.dataset.pattern));
+    if (me.selectable) {
+      me.#options = GSItem.proxify(me, GSFormGroupElement.#SELECTOPT);
+    } else {
+      me.#patterns = GSItem.collect(me)
+      .filter(el => el.dataset.pattern)
+      .map(el => new RegExp(el.dataset.pattern));
+    }      
     super.connectedCallback();
   }
 
@@ -122,6 +133,15 @@ export class GSFormGroupElement extends GSElement {
     }
   }
 
+  templateInjected() {
+    super.templateInjected();
+    const me = this;
+    const el = GSDOM.formElements(me, true).pop();
+    me.attachEvent(el, 'blur', me.#onBlur.bind(me));
+    me.attachEvent(el, 'input', me.#onRange.bind(me));
+    me.attachEvent(el, 'change', me.#onChange.bind(me));
+  }
+
   #renderFloating() {
     const me = this;
     return html`
@@ -132,7 +152,8 @@ export class GSFormGroupElement extends GSElement {
           ${me.#renderLabel()}
        </div>
        ${me.#renderInfo()}
-    </div>`;
+    </div>
+    <slot></slot>`;
   }
 
   #renderVertical() {
@@ -148,7 +169,7 @@ export class GSFormGroupElement extends GSElement {
        </div>
        ${me.#renderInfo()}   
     </div>      
-    `;
+    <slot></slot>`;
   }
 
   #renderHorizontal() {
@@ -160,7 +181,8 @@ export class GSFormGroupElement extends GSElement {
        ${me.#renderField()}
        ${me.#renderInfo()}
        <slot name="footer"></slot>
-    </div>`;
+    </div>
+    <slot></slot>`;
   }
 
   #renderLabel() {
@@ -225,6 +247,8 @@ export class GSFormGroupElement extends GSElement {
         .map((o, i) => me.#fieldSet(me.name + i, o.v, me.#inputHTML(o.id, me.name, o.v), wrap));
     }
 
+    if (me.selectable) return me.#selectHTML(idattr, me.name, me.value);
+
     return me.#inputHTML(idattr, me.name, me.value);
   }
 
@@ -236,14 +260,57 @@ export class GSFormGroupElement extends GSElement {
       html`<span class="me-3">${fld}<label for="${id}" class="ms-1">${me.translate(val)}</label></span>`;
   }
 
-  #inputHTML(id, name, value) {
+  #initStyle() {
     const me = this;
-    const type = me.isSwitch ? 'checkbox' : me.type;
-
     const style = {
       transform: me.reverse && me.isRange ? 'rotateY(180deg)' : ''
     }
-    me.dynamicStyle(me.#styleID, style);
+    me.dynamicStyle(me.#styleID, style);    
+  }
+
+  #renderOptions() {
+    const me = this;
+    return me.#options.map( el => html`<option value="${el.value}" ?selected=${el.selected}>${el.name || el.value}</option>`);
+  }
+
+  #selectHTML(id, name, value) {
+    const me = this;
+    me.#initStyle();
+
+    return html`<select ${ref(me.#inputRef)}
+            id=${ifDefined(id)} 
+            @blur="${me.#onBlur.bind(me)}"
+            @input="${me.#onRange.bind(me)}"
+            @change="${me.#onChange.bind(me)}"
+        
+            name="${name}"             
+            class="${me.#cssField} ${me.cssField} ${me.#styleID}" 
+
+            ?autofocus="${me.autofocus}"
+            ?autocopy="${me.autocopy}"
+            ?autoselect="${me.autoselect}"
+            ?readonly="${me.readonly}"
+            ?required="${me.required}"
+            ?disabled="${me.disabled}">
+            ${me.#renderOptions()}
+            </select>`;
+  }
+
+  get #listHTML() {
+    const me = this;
+    let list = '';
+    if (me.list) {
+      const root = me.parentComponent || me.parentElement;
+      const el = GSDOM.query(root, `datalist[id="${me.list}"]`, true);
+      if (el) list = html`${unsafeHTML(el.outerHTML)}`;
+    }
+    return list;
+  }
+
+  #inputHTML(id, name, value) {
+    const me = this;
+    const type = me.isSwitch ? 'checkbox' : me.type;
+    me.#initStyle();
 
     return html`<input is="gs-ext-input" 
             ${ref(me.#inputRef)}
@@ -284,11 +351,12 @@ export class GSFormGroupElement extends GSElement {
             ?required="${me.required}"
             ?disabled="${me.disabled}"
             ?reveal="${me.reveal}"
-            >`;
+            >${me.#listHTML}`;
   }
 
   get #cssField() {
     const me = this;
+    if (me.selectable) return 'form-select ms-0';
     if (me.isCheckable) return 'form-check-input ms-0';
     if (me.isRange) return 'form-range';
     return 'form-control';
@@ -359,7 +427,7 @@ export class GSFormGroupElement extends GSElement {
     let list = Array.from(me.children).filter(el => el.slot && !slots.includes(el.slot));
     if (list.length > 0) throw new Error(`Custom element injection must contain slot="header|body|footer" attribute! Element: ${me.tagName}, ID: ${me.id}`);
     list = Array.from(me.children).filter(el => !el.slot);
-    const tagList = ['TEMPLATE', 'GS-ITEM'];
+    const tagList = ['TEMPLATE', 'GS-ITEM', 'DATALIST'];
     const allowed = GSDOM.isAllowed(list, tagList);
     if (!allowed) throw new Error(GSDOM.toValidationError(me, tagList));
   }

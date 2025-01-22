@@ -4,6 +4,7 @@
 
 import { GSUtil } from "../base/GSUtil.mjs";
 import { GSTemplateCache } from "../base/GSTemplateCache.mjs";
+import { GSDOM } from "../base/GSDOM.mjs";
 
 /**
  * Handle element template and signal rerender when ready
@@ -14,22 +15,23 @@ export class TemplateController {
   #host;
   #template;
   #lastRef;
-  #injected;
 
   static #scheduled = false;
   static #tasks = new Set();
+  static #cache = new Map();
 
   constructor(host) {
-    this.#host = host;
+    const me = this;
+    me.#host = host;
     host.addController(this);
   }
 
+  // inherited
   hostConnected() {
-    const me = this;
-    me.#injected = false;
-    me.#request();    
+
   }
 
+  // inherited
   hostDisconnected() {
     const me = this;
     me.#host.removeController(me);
@@ -38,40 +40,46 @@ export class TemplateController {
     me.#template = null;
   }
 
+  // inherited
   hostUpdate() {
-    this.#request();
-  }
-
-  requestUpdate() {
-    this.#host.requestUpdate();
-  }
-
-  hostUpdated() {
     const me = this;
-    if (me.#injected) {
-      me.#injected = false;
-      me.#host.templateInjected?.();
-    }
-  }
-
-  #request() {
-    const me = this;
+    if (me.#template) return;
     const ref = me.templateRef;
     if (me.#lastRef !== ref) {
+      me.#template = TemplateController.#cache.get(ref);      
       me.#lastRef = ref;
-      if (ref) TemplateController.#schedule(this);
+      if (ref && !me.#template) TemplateController.#schedule(this);
     }
+  }
+
+  // inherited
+  hostUpdated() {
+    const me = this;
+    if (me.#template) {
+      this.#host.removeController(this);
+      me.#host.templateInjected?.();
+    } 
+
   }
 
   async #load() {
     const me = this;
     const ref = me.templateRef;
     if (!ref) return;
+    let template = null;
     const isTplEl = ref instanceof HTMLTemplateElement;
-    const template = isTplEl ? ref : await GSTemplateCache.loadTemplate(true, ref, ref);
+    const cacheable = GSUtil.isString(ref);
+    if (cacheable) {
+      template = TemplateController.#cache.get(ref);
+    }
+    if (!template) {
+      template = isTplEl ? ref : await GSTemplateCache.loadTemplate(true, ref, ref);
+      if (cacheable) {
+        TemplateController.#cache.set(ref, template);
+      }       
+    }
     if (template) {
       me.#template = template;
-      me.#injected = true;
       me.#host.requestUpdate();
     }
   }
@@ -85,14 +93,10 @@ export class TemplateController {
   }
 
   get templateRef() {
-    const host = this.#host;
-    if (!host) return;
-    if(this.isTemplateElement) return host.src;
-    return host.template || host.query('template', false);
+    return GSDOM.templateRef(this.#host);
   }
 
   static async #process(tasks) {
-    await GSUtil.timeout(100);
     const list = Array.from(tasks);
     for (let item of list) {
       await item.#load();

@@ -14,8 +14,8 @@ export class GSLoginDefaults extends GSAsbtractDialog {
         this.define('gs-admin-dialog-logindefs');
     }
 
-    connectedCallback() {
-        super.connectedCallback();
+    constructor() {
+        super();
         const me = this;
         me.opened = true;
         me.dismissable = true;

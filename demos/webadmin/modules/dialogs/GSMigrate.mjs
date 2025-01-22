@@ -15,8 +15,8 @@ export class GSMigrate extends GSAsbtractDialog {
         this.define('gs-admin-dialog-migrate');
     }
 
-    connectedCallback() {
-        super.connectedCallback();
+    constructor() {
+        super();
         const me = this;
         me.opened = true;
         me.dismissable = true;

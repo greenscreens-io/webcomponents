@@ -144,10 +144,11 @@ export class GSDOM {
 	/**
 	 * Return all form elements for a given root element
 	 * @param {HTMLElement} el 
+	 * @param {Boolean} shadow 
 	 * @returns 
 	 */
-	static formElements(el) {
-		return GSDOM.queryAll(el, GSDOM.#FORMEL.map(v => v.toLowerCase()));
+	static formElements(el, shadow = false) {
+		return GSDOM.queryAll(el, GSDOM.#FORMEL.map(v => v.toLowerCase()), shadow);
 	}
 
 	/**
@@ -1052,6 +1053,17 @@ export class GSDOM {
 		return GSData.mergeObjects(list);
 	}
 
+	/**
+	 * Return element template ref
+	 * @param {GSElement} host 
+	 * @returns 
+	 */
+	static templateRef(host) {
+		if (!host) return;
+		if(host.tagName === 'GS-TEMPLATE') return host.src;
+		return host.template || host.query?.('template', false);
+	  }
+	
 	static {
 		Object.seal(GSDOM);
 		globalThis.GSDOM = GSDOM;

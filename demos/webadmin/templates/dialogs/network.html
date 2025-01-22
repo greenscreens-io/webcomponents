@@ -19,14 +19,10 @@
         description="Enter IP address on which server will listen for connections.">
     </gs-form-group> 
 
-    <gs-form-group css="m-1" name="restart" label="Restart Server" autocomplete="off" required
+    <gs-form-group css="m-1" name="restart" label="Restart Server" autocomplete="off" required selectable
         description="Restart server immediately. If restart selected, session will logout. Active web terminal sessions will be terminated.">
-        <template>
-            <select class="form-select" id="restart" name="restart" required>
-                <option selected value="0">No</option>
-                <option value="1">Yes</option>
-            </select>
-        </template>
+        <gs-item value="0" name="No" selected></gs-item>
+        <gs-item value="1" name="Yes"></gs-item>
     </gs-form-group> 
     
 </gs-form>

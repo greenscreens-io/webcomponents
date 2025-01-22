@@ -15,8 +15,8 @@ export class GSCertClient extends GSAsbtractDialog {
         this.define('gs-admin-dialog-certclient');
     }
 
-    connectedCallback() {
-        super.connectedCallback();
+    constructor() {
+        super();
         const me = this;
         me.opened = true;
         me.dismissable = true;

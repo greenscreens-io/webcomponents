@@ -23,14 +23,10 @@ type="number" min="1" autocomplete="off" value="1"
 description="When certificate will expire.">
 </gs-form-group> 
 
-<gs-form-group css="m-1" name="expirationType" label="Expiration Type" required
+<gs-form-group css="m-1" name="expirationType" label="Expiration Type" required selectable
 description="Expiration value type.">
-<template>
-    <select class="form-select" id="expirationType" name="expirationType" selected="3" value="3" required>
-        <option value="0">Hours</option>
-        <option value="1">Days</option>
-        <option value="2">Months</option>
-        <option value="3" selected>Years</option>
-      </select> 
-</template>
+  <gs-item value="0" name="Hours"></gs-item>
+  <gs-item value="1" name="Days"></gs-item>
+  <gs-item value="2" name="Months"></gs-item>
+  <gs-item value="3" name="Years" selected></gs-item>
 </gs-form-group> 

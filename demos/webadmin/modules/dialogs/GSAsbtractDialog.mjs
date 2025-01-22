@@ -25,8 +25,8 @@ export class GSAsbtractDialog extends GSDialogElement {
 
     #data = null;
 
-    connectedCallback() {
-        super.connectedCallback();
+    constructor() {
+        super();
         const me = this;
         me.dismissable = false;
         me.opened = false;
@@ -107,6 +107,7 @@ export class GSAsbtractDialog extends GSDialogElement {
     #onNotify(e) {
         const me = this;
         if (!me.opened && me.dismissable && e.detail === 'closing') me.remove();
+        if (me.opened) me.afterOpen();
     }
 
     #onFormError(e) {

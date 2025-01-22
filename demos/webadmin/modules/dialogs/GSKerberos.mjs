@@ -15,8 +15,8 @@ export class GSKerberos extends GSAsbtractDialog {
         this.define('gs-admin-dialog-kerberos');
     }
 
-    connectedCallback() {
-        super.connectedCallback();
+    constructor() {
+        super();
         const me = this;
         me.opened = true;
         me.dismissable = true;

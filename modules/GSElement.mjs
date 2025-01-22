@@ -75,7 +75,7 @@ export class GSElement extends LitElement {
     me.#content = new ContentController(me);
     me.#localization = new LocalizationController(me);
     me.#orientation = new OrientationController(me);
-    me.#template = new TemplateController(me);
+    //me.#template = new TemplateController(me);
     me.#themes = new ThemeController(me);
     me.#slotController = new SlotController(me);
   }
@@ -86,7 +86,10 @@ export class GSElement extends LitElement {
 
   connectedCallback() {
     super.connectedCallback();
-    if (this.isBindable) this.binded();
+    const me = this;
+    const tpl = GSDOM.templateRef(me);
+    if (tpl) me.#template = new TemplateController(me);    
+    if (me.isBindable) me.binded();
   }
 
   disconnectedCallback() {
@@ -428,7 +431,7 @@ export class GSElement extends LitElement {
    * Reference to cached template if set
    */
   get templateRef() {
-    return this.#template.template;
+    return this.#template?.template;
   }
 
   /**

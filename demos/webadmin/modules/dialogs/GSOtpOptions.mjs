@@ -14,8 +14,8 @@ export class GSOtpOptions extends GSAsbtractDialog {
         this.define('gs-admin-dialog-otpopt');
     }
 
-    connectedCallback() {
-        super.connectedCallback();
+    constructor() {
+        super();
         const me = this;
         me.opened = true;
         me.dismissable = true;

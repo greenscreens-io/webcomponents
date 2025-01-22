@@ -15,8 +15,8 @@ export class RecordDialog extends GSDialogElement {
     // to reflect changes inside the table
     #data;
 
-    connectedCallback() {
-        super.connectedCallback();
+    constructor() {
+        super();
         const me = this;
         me.opened = true;
         me.closable = true;
