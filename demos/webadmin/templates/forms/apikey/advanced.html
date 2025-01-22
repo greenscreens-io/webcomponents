@@ -12,22 +12,14 @@
     description="Service names (web modules). If not set, all services allowed.">
 </gs-form-group>
 
-<gs-form-group css="m-1" name="allowOveride" label="Allow Overide" 
+<gs-form-group selectable required css="m-1" name="allowOveride" label="Allow Overide" 
     description="Allow requester to override credentials.">
-    <template>
-        <select class="form-select" id="allowOveride" name="allowOveride" required>
-            <option value="true">Enabled</option>
-            <option value="false">Disabled</option>
-        </select>
-    </template>
+    <gs-item value="true" name="Enabled"></gs-item>
+    <gs-item value="false" name="Disabled" selected></gs-item>
 </gs-form-group>
 
-<gs-form-group css="m-1" name="serviceUser" label="Use service User" 
+<gs-form-group selectable required css="m-1" name="serviceUser" label="Use service User" 
     description="Use main host configured service user.">
-    <template>
-        <select class="form-select" id="serviceUser" name="serviceUser" required>
-            <option value="true">Enabled</option>
-            <option value="false">Disabled</option>
-        </select>
-    </template>
+    <gs-item value="true" name="Enabled"></gs-item>
+    <gs-item value="false" name="Disabled" disabled></gs-item>
 </gs-form-group>

@@ -2,7 +2,6 @@
 * Copyright (C) 2015, 2025 Green Screens Ltd.
 */
 
-import { GSAttr } from '../../../../modules/base/GSAttr.mjs';
 import { GSAsbtractDialog } from '../dialogs/GSAsbtractDialog.mjs';
 
 /**
@@ -22,10 +21,6 @@ export default class GSPrinterSetup extends GSAsbtractDialog {
         me.title = "Printer Setup";
     }
 
-    get hpt() {
-        return this.query('select[name="hostTransform"]');
-    }
-
     templateInjected() {
         super.templateInjected();
         const me = this;
@@ -34,10 +29,8 @@ export default class GSPrinterSetup extends GSAsbtractDialog {
 
     open(data) {
         const me = this;
-        data = Object.assign({}, data);
-        data.host = data.name;
-        delete data.drawer1;
-        delete data.drawer2;
+        //data = Object.assign({}, data);
+        data = {uuid : data.uuid, host:data.name};
         me.form.reset();
         me.#update(true);
         super.open(data);
@@ -62,12 +55,13 @@ export default class GSPrinterSetup extends GSAsbtractDialog {
     }
 
     #onHPT(e) {
-        this.#update(e.target.value !== '1');
+        if (e.target.name === "hostTransform") {
+            this.#update(e.target.value !== '1');
+        }
     }
 
     #update(sts) {
-        const qry = '[data-group="true"] input, [data-group="true"] select';
-        this.queryAll(qry).forEach(el => GSAttr.toggle(el, 'disabled', sts));
+        this.form.queryAll("[data-group='true']").forEach(el => el.disabled = sts);
     }
 
 }

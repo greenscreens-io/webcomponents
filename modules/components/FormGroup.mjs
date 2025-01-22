@@ -34,12 +34,12 @@ export class GSFormGroupElement extends GSElement {
     placeholder: {},
     pattern: {},
     mask: {},
-
+    
     name: {},
     type: { ...inputType },
     list: {},
     accept: {},
-
+    
     lang: {},
     default: { reflect: true },
     step: { type: Number, reflect: true, hasChanged: numGT0 },
@@ -109,6 +109,9 @@ export class GSFormGroupElement extends GSElement {
     super.firstUpdated();
     const me = this;
     me.value = me.default;
+    if (!me.selectable) {
+      me.field.defaultValue =  GSUtil.normalize(me.default);
+    }
   }
 
   updated() {

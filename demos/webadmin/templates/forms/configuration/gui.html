@@ -1,33 +1,21 @@
-<gs-form-group css="m-1" name="modernization" label="Modernization"
+<gs-form-group selectable css="m-1" name="modernization" label="Modernization"
     description="Enable automatic screen conversion to GUI interface. NOTE: Requires definition and screen templates.">
-    <template>
-        <select class="form-select" id="modernization" name="modernization" required>
-            <option selected value="false">NO</option>
-            <option value="true">YES</option>
-        </select>        
-    </template>
+    <gs-item value="true" name="Yes" ></gs-item>
+    <gs-item value="false" name="No" selected></gs-item>    
 </gs-form-group>
 
-<gs-form-group css="m-1" name="editing" label="Editing"
+<gs-form-group selectable css="m-1" name="editing" label="Editing"
     description="Enable template editing.">
-    <template>
-        <select class="form-select" id="editing" name="editing">
-            <option selected value="false">NO</option>
-            <option value="true">YES</option>
-        </select>
-    </template>
+    <gs-item value="true" name="Yes" ></gs-item>
+    <gs-item value="false" name="No" selected></gs-item>    
 </gs-form-group>
 
-<gs-form-group css="m-1" name="cacheTimeout" label="Cache Timeout"
+<gs-form-group selectable css="m-1" name="cacheTimeout" label="Cache Timeout"
     description="Cache value type.">
-    <template>
-        <select class="form-select" id="cacheTimeout" name="cacheTimeout" selected="0">
-            <option value="0">HOURS</option>
-            <option value="1">DAYS</option>
-            <option value="2">WEEKS</option>
-            <option value="3">MONTHS</option>
-        </select>
-    </template>
+    <gs-item value="0" name="HOURS" selected></gs-item>
+    <gs-item value="1" name="DAYS"></gs-item>    
+    <gs-item value="1" name="WEEKS"></gs-item>    
+    <gs-item value="1" name="MONTHS"></gs-item>    
 </gs-form-group>
 
 <gs-form-group css="m-1" name="cacheValue" label="Cache Value"

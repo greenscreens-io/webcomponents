@@ -18,12 +18,9 @@
 		<gs-item data-type="2" data-pattern="^((?:(?:[0-9]{1,2})|(?:1[0-9]{2,2})|(?:2[0-4][0-9])|(?:25[0-5])|\*)(?:-(?:(?:[0-9]{1,2})|(?:1[0-9]{2,2})|(?:2[0-4][0-9])|(?:25[0-5])|\*))?\.){3}(?:(?:[0-9]{1,2})|(?:1[0-9]{2,2})|(?:2[0-4][0-9])|(?:25[0-5])|\*)(?:-(?:(?:[0-9]{1,2})|(?:1[0-9]{2,2})|(?:2[0-4][0-9])|(?:25[0-5])|\*))?$"></gs-item>    
 </gs-form-group>
 
-<gs-form-group css="m-1" name="active" label="Status" 
+<gs-form-group selectable required 
+    css="m-1" name="active" label="Status" 
     description="Enable or disable this key.">
-    <template>
-        <select class="form-select" id="active" name="active" required>
-            <option value="true">Enabled</option>
-            <option value="false">Disabled</option>
-        </select>
-    </template>
+    <gs-item value="true" name="Enabled" selected></gs-item>
+    <gs-item value="false" name="Disabled"></gs-item>
 </gs-form-group>

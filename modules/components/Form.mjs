@@ -50,7 +50,8 @@ export class GSFormElement extends GSElement {
       }
     }
     if (changed.has('data')) {
-      me.asJSON = me.data;
+      //me.asJSON = me.data;
+      me.asJSON = Object.assign(me.asJSON, me.data);
     }
   }
 
