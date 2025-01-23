@@ -229,7 +229,7 @@ export class GSDialogElement extends GSElement {
   reset(data, index = 0) {
     index = GSUtil.asNum(index, 0);
     const me = this;
-    me.forms?.forEach?.(f => { f.reset(); f.values = data; });
+    me.forms?.forEach?.(f => { f.reset(); f.data = data; });
     const tab = me.tab;
     if (tab && index > -1) tab.index = index;
   }

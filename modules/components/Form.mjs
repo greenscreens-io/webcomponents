@@ -7,6 +7,7 @@ import { GSElement } from '../GSElement.mjs';
 import { GSDOM } from '../base/GSDOM.mjs';
 import { GSLog } from '../base/GSLog.mjs';
 import { GSEvents } from '../base/GSEvents.mjs';
+import { GSUtil } from '../base/GSUtil.mjs';
 
 export class GSFormElement extends GSElement {
 
@@ -50,13 +51,46 @@ export class GSFormElement extends GSElement {
       }
     }
     if (changed.has('data')) {
-      //me.asJSON = me.data;
-      me.asJSON = Object.assign(me.asJSON, me.data);
+      if (GSUtil.isNull(me.data)) {
+        me.reset();
+      } else {
+        me.asJSON = Object.assign(me.asJSON, me.data);
+      }
     }
   }
 
-  get form() {
-    return this.#formRef.value;
+  async reset(e) {
+    const me = this;
+    const internal = e?.target === me.form;
+
+    if (internal) {
+      // not required, form will reset on it's own
+      //me.elements.forEach(el => el.value = el.defaultValue);
+      await me.dataController?.read(me.asJSON);
+    } else {
+      me.data = {};
+      me.form.reset();
+    }
+  }
+
+  async submit(e) {
+    GSEvents.prevent(e);
+    const me = this;
+    if (!me.validate()) return;
+    const json = me.asJSON;
+    await me.dataController?.write(json);
+    const data = { type: 'submit', data: json, source: e, owner : me};
+    return me.emit('form', data, true, true, true);
+  }
+
+  validate() {
+    const me = this;
+    let isValid = me.checkValidity() && me.isValid;
+    if (!isValid) me.reportValidity();
+    const data = { type: 'valid', data: isValid, owner : me};
+    isValid = me.onValidate(isValid);
+    if (isValid) me.emit('form', data, true, true);
+    return isValid;
   }
 
   get isValid() {
@@ -64,6 +98,10 @@ export class GSFormElement extends GSElement {
       .filter(el => GSDOM.isVisible(el))
       .map(el => el.checkValidity())
       .filter(v => v === false).length === 0;
+  }
+
+  get form() {
+    return this.#formRef.value;
   }
 
   /**
@@ -111,29 +149,6 @@ export class GSFormElement extends GSElement {
     return this.form.reportValidity();
   }
 
-  async reset(e) {
-    const me = this;
-    const internal = e?.target === me.form;
-
-    if (internal) {
-      me.elements.forEach(el => el.value = el.defaultValue);
-      await me.dataController?.read(me.asJSON);
-    } else {
-      me.data = {};
-      me.form.reset();
-    }
-  }
-
-  async submit(e) {
-    GSEvents.prevent(e);
-    const me = this;
-    if (!me.validate()) return;
-    const json = me.asJSON;
-    await me.dataController?.write(json);
-    const data = { type: 'submit', data: json, source: e, owner : me};
-    return me.emit('form', data, true, true, true);
-  }
-
   onDataRead(data) {
     this.data = data;
   }
@@ -153,16 +168,6 @@ export class GSFormElement extends GSElement {
   onValidate(sts) {
 
     return sts;
-  }
-
-  validate() {
-    const me = this;
-    let isValid = me.checkValidity() && me.isValid;
-    if (!isValid) me.reportValidity();
-    const data = { type: 'valid', data: isValid, owner : me};
-    isValid = me.onValidate(isValid);
-    if (isValid) me.emit('form', data, true, true);
-    return isValid;
   }
 
   #onChange(e) {

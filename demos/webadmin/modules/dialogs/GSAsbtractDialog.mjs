@@ -53,11 +53,18 @@ export class GSAsbtractDialog extends GSDialogElement {
      */
 	open(data) {
 		this.#data = data;
-		super.open(data);
+		super.open();
 	}
 
+    /**
+     * Update dialog forms 
+     */
     afterOpen() {
-        this.#update(this.#data);
+        const me = this;
+        if (GSUtil.isJson(me.#data)) {
+            me.reset(me.#data);
+            me.emit('change');
+        }
     }
 
     /**
@@ -89,18 +96,6 @@ export class GSAsbtractDialog extends GSDialogElement {
      */
     get form() {
         return this.query('gs-form', true);
-    }
-
-    /**
-     * Update dialog forms 
-     */
-    #update(data) {
-        if (GSUtil.isJson(data)) {
-            const me = this;
-            me.reset();
-            me.forms.forEach(f => f.data = data);
-            me.emit('change');
-        }
     }
 
     // auto remove on close

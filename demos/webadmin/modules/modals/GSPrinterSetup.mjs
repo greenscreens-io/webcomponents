@@ -31,8 +31,8 @@ export default class GSPrinterSetup extends GSAsbtractDialog {
         const me = this;
         //data = Object.assign({}, data);
         data = {uuid : data.uuid, host:data.name};
-        me.form.reset();
-        me.#update(true);
+        // me.form.reset();
+        // me.#update(true);
         super.open(data);
     }
 
