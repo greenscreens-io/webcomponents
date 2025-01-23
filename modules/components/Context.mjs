@@ -26,8 +26,15 @@ export class GSContextElement extends GSMenuElement {
     }
 
     constructor() {
-        super();        
-        this.auto = true;
+        super();
+        const me = this;        
+        me.auto = true;
+        if (me.#isInTable) {
+            me.slot = "extra";
+            me.target = "tbody";
+            me.filter = "[selected]";
+            me.offset ="4";
+        }
     }
 
     connectedCallback() {
@@ -63,6 +70,10 @@ export class GSContextElement extends GSMenuElement {
         GSEvents.prevent(e);
         me.popup(e);
         return true;
+    }
+
+    get #isInTable() {
+        return this.parentComponent?.tagName === 'GS-TABLE';
     }
 
     /**

@@ -31,11 +31,15 @@ export class GSPagerElement extends GSElement {
 
   constructor() {
     super();
-    this.pages = 5;
-    this.labelFirst = '&laquo;';
-    this.labelLast = '&raquo;';
-    this.labelNext = '&rsaquo;';
-    this.labelPrevious = '&lsaquo;';
+    const me = this;
+    me.pages = 5;
+    me.labelFirst = '&laquo;';
+    me.labelLast = '&raquo;';
+    me.labelNext = '&rsaquo;';
+    me.labelPrevious = '&lsaquo;';
+    if (me.#isInTable) {
+      me.slot = "extra";
+    }
   }
 
   renderUI() {
@@ -161,6 +165,10 @@ export class GSPagerElement extends GSElement {
     return el.tagName === name.toUpperCase() ? el : undefined;
   }
 
+  get #isInTable() {
+    return this.parentComponent?.tagName === 'GS-TABLE';
+  }
+  
   static {
     this.define('gs-pagination');
   }

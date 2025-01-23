@@ -16,7 +16,7 @@
 
     <div class="row border shadow-sm rounded ms-4 pb-4 bg-light ">
 
-        <div class="col-12 border-bottom d-flex justify-content-end p-1 align-items-center">
+        <div class="col-12 d-flex justify-content-end p-1 ">
             <gs-button data-gs-action="create" tooltip="Add new configuration" 
             color="light" text="dark" -hover-css="gs-pulse" click-css="gs-shake" css="shadow-none border-0"
             icon="file-earmark fs-4 fw-bold"></gs-button>
@@ -54,7 +54,8 @@
                    <gs-item value="true" map="Active"></gs-item>
                    <gs-item value="false" map="Inactive"></gs-item>
                </gs-item>
-                <gs-context slot="extra" target="tbody" filter="[selected]" offset="4">
+               
+               <gs-context>
                     <gs-item name="Details" data-gs-action="details"></gs-item>
                     <gs-item></gs-item>
                     <gs-item name="Remove" data-gs-action="remove"></gs-item>

@@ -8,33 +8,42 @@
     
     <div class="row border shadow-sm rounded ms-4 pb-4 bg-light">
 
-        <div class="col-12 border-bottom">
-            <gs-template href="//shell/toolbar2.html" id="toolbar"></gs-template>
+        <div class="col-12 d-flex justify-content-end p-1 ">
+            <gs-button data-gs-action="export" tooltip="Export table data" 
+            color="light" text="dark" -hover-css="gs-pulse" click-css="gs-shake" css="shadow-none border-0"
+            icon="download fs-4 fw-bold"></gs-button>
+
+            <gs-button data-gs-action="refresh" tooltip="Refresh data" 
+            color="light" text="dark" -hover-css="gs-pulse" click-css="gs-shake" css="shadow-none border-0"
+            icon="arrow-repeat fs-4 fw-bold"></gs-button>
         </div>
 
         <div class="col-12 mt-2 p-0">
 
-            <gs-table id="table-main" index=false class="flex-fill"
-                css="table table-light table-hover user-select-none m-0" css-select="table-active table-primary"
-                css-header="user-select-none" css-columns="table-secondary">
-                <gs-header>
-                    <gs-column title="Module" name="module"></gs-column>
-                    <gs-column title="Property" name="property"></gs-column>
-                    <gs-column title="Value" name="value"></gs-column>
-                    <gs-column title="Description" name="desc"></gs-column>
-                </gs-header>
-                <gs-store src="data/services.json" id="sessions" limit=15>
-                    <gs-item name="module"></gs-item>
-                    <gs-item name="desc"></gs-item>
-                    <gs-item name="type"></gs-item>
-                    <gs-item name="property"></gs-item>
-                    <gs-item name="value"></gs-item>
-                </gs-store>
-                <gs-context slot="extra" target="tbody tr">
-                    <gs-item name="Edit" action="details"></gs-item>
+            <gs-data-handler src="data/services.json" id="services" type="cached" limit=15>
+                <gs-item name="module"></gs-item>
+                <gs-item name="desc"></gs-item>
+                <gs-item name="type"></gs-item>
+                <gs-item name="property"></gs-item>
+                <gs-item name="value"></gs-item>
+            </gs-data-handler>
+
+            <gs-table id="table-main" storage="services" 
+                selectable hover bordered shadow -divider sortable multisort
+                class="flex-fill" css-filter="rounded-0" css-header="border"
+                color="light" select-color="primary" head-color="secondary">  
+
+                <gs-item title="Module" name="module" filter></gs-item>
+                <gs-item title="Property" name="property" filter></gs-item>
+                <gs-item title="Value" name="value"></gs-item>
+                <gs-item title="Description" name="desc"></gs-item>
+
+                <gs-context>
+                    <gs-item name="Edit" data-gs-action="details"></gs-item>
                 </gs-context>
-                <gs-pager slot="extra" previous="&laquo;" next="&raquo;" firstlast="false" pages="0"></gs-pager>
             </gs-table>
+
+            <gs-pagination storage="services" pages="5" css="justify-content-center p-1 m-1" first last previous next></gs-pagination>
 
             <gs-admin-dialog-service id="modal-main"></gs-admin-dialog-service>
 

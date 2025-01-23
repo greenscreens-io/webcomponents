@@ -116,7 +116,7 @@
                         <gs-item value="true" map="ENABLED"></gs-item>
                         <gs-item value="false" map="DISABLED"></gs-item>                       
                     </gs-item>                    
-                <gs-context slot="extra" target="tbody" filter="[selected]" offset="4">
+                <gs-context>
                     <gs-item name="Details" data-gs-action="details"></gs-item>
                     <gs-item></gs-item>
                     <gs-item name="Clone" data-gs-action="clone"></gs-item>
@@ -130,7 +130,7 @@
                 </gs-context>
             </gs-table>
             
-            <gs-pagination slot="extra" storage="sessions" pages="5" css="justify-content-center p-1 m-1" first last previous next></gs-pagination>
+            <gs-pagination storage="sessions" pages="5" css="justify-content-center p-1 m-1" first last previous next></gs-pagination>
 
             <gs-admin-dialog id="modal-main" size="large" css-body="p-0" css-header="p-3 " 
                     title="IBM i Configuration" template="//forms/configuration.html">

@@ -61,6 +61,9 @@ export class GSDataHandler extends GSElement {
         me.mode = 'query';
         me.reader = 'GET';
         me.writer = 'POST';
+        if (me.#isInTable) {
+            me.slot = "extra";
+          }
         if (!me.isGenerated && !me.id) throw new Error('Element ID is required attribute!');
         GSItem.validate(me, me.tagName);
     }
@@ -309,6 +312,10 @@ export class GSDataHandler extends GSElement {
 
     #formated(val) {
         return GSUtil.isJsonString(val) ? JSON.parse(val) : val;
+    }
+
+    get #isInTable() {
+        return this.parentComponent?.tagName === 'GS-TABLE';
     }
 
     static {

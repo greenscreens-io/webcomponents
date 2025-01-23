@@ -8,61 +8,61 @@
 
     <div class="row border shadow-sm rounded ms-4 pb-4 bg-light ">
 
-        <div class="col-12 border-bottom d-flex justify-content-end p-1">
-            <gs-button action="refresh" select="false" comment="Refresh data" css="text-bg-light"
-                icon="bi bi-arrow-repeat fs-4 fw-bold"></gs-button>
+        <div class="col-12 d-flex justify-content-end p-1 ">
+            <gs-button data-gs-action="refresh" tooltip="Refresh data" 
+            color="light" text="dark" -hover-css="gs-pulse" click-css="gs-shake" css="shadow-none border-0"
+            icon="arrow-repeat fs-4 fw-bold"></gs-button>
         </div>
         
         <div class="col-12 p-0">
 
-            <gs-table id="table-main" index=false class="flex-fill"
-                css="table table-light table-hover user-select-none m-0" css-select="table-active table-primary"
-                css-header="user-select-none" css-columns="table-secondary">
-                <gs-header>
-                    <gs-column title="UUID" name="uuid" filter="true"></gs-column>
-                    <gs-column title="Host" name="host" filter="true"></gs-column>
-                    <gs-column title="User" name="user" filter="true"></gs-column>
-                    <gs-column title="User Name" name="userName"></gs-column>
-                    <gs-column title="Created" name="created" type="timestamp" format="HH:mm:ss DD.MM.YYYY"></gs-column>
-                    <gs-column title="Invalid Logins" name="attempts"></gs-column>
-                    <gs-column title="Status" name="locked">
-                        <gs-item map="true">
-                            <gs-item value="true" map="Locked"></gs-item>
-                            <gs-item value="false" map="Unlocked"></gs-item>
-                        </gs-item>                          
-                    </gs-column>
-                    <gs-column title="Activity" name="active">
-                        <gs-item map="true">
-                            <gs-item value="true" map="Enabled"></gs-item>
-                            <gs-item value="false" map="Disabled"></gs-item>
-                        </gs-item>                        
-                    </gs-column>
-                </gs-header>
-                <gs-store src="data/keys-otp.json" id="sessions" limit=15>
-                    <gs-item name="id"></gs-item>
-                    <gs-item name="uuid"></gs-item>
-                    <gs-item name="host"></gs-item>
-                    <gs-item name="user"></gs-item>
-                    <gs-item name="key"></gs-item>
-                    <gs-item name="attempts"></gs-item>
-                    <gs-item name="verificationCode"></gs-item>
-                    <gs-item name="scratchCodes"></gs-item>
-                    <gs-item name="active"></gs-item>
-                    <gs-item name="locked"></gs-item>
-                    <gs-item name="url"></gs-item>
-                    <gs-item name="created"></gs-item>
-                    <gs-item name="userName"></gs-item>
-                </gs-store>
-                <gs-context slot="extra" target="tbody tr">
-                    <gs-item name="Details" action="details"></gs-item>
-                    <gs-item name="Toggle state" action="toggle"></gs-item>
-                    <gs-item></gs-item>
-                    <gs-item name="Remove" action="remove"></gs-item>
-                </gs-context>
-                <gs-pager slot="extra" previous="&laquo;" next="&raquo;" firstlast="false" pages="0"></gs-pager>
-            </gs-table>
+            <gs-data-handler src="data/keys-otp.json" id="keyotp" type="cached" limit=15>
+                <gs-item name="id"></gs-item>
+                <gs-item name="uuid"></gs-item>
+                <gs-item name="host"></gs-item>
+                <gs-item name="user"></gs-item>
+                <gs-item name="key"></gs-item>
+                <gs-item name="attempts"></gs-item>
+                <gs-item name="verificationCode"></gs-item>
+                <gs-item name="scratchCodes"></gs-item>
+                <gs-item name="active"></gs-item>
+                <gs-item name="locked"></gs-item>
+                <gs-item name="url"></gs-item>
+                <gs-item name="created"></gs-item>
+                <gs-item name="userName"></gs-item>
+            </gs-data-handler>
+            
+            <gs-table id="table-main" storage="keyotp" 
+                selectable hover bordered shadow -divider sortable multisort
+                class="flex-fill" css-filter="rounded-0" css-header="border"
+                color="light" select-color="primary" head-color="secondary">  
 
-            <gs-admin-dialog id="modal-main" visible="false" css-body="p-0" css-header="p-3 " 
+                <gs-item title="UUID" name="uuid" filter></gs-item>
+                <gs-item title="Host" name="host" filter></gs-item>
+                <gs-item title="User" name="user" filter></gs-item>
+                <gs-item title="User Name" name="userName"></gs-item>
+                <gs-item title="Created" name="created" type="timestamp" format="HH:mm:ss DD.MM.YYYY"></gs-item>
+                <gs-item title="Invalid Logins" name="attempts"></gs-item>
+                <gs-item title="Status" name="locked" filter fixed>
+                    <gs-item value="true" map="Locked"></gs-item>
+                    <gs-item value="false" map="Unlocked"></gs-item>
+                </gs-item>
+                <gs-item title="Activity" name="active" filter fixed>
+                    <gs-item value="true" map="Enabled"></gs-item>
+                    <gs-item value="false" map="Disabled"></gs-item>
+                </gs-item>
+
+                <gs-context>
+                    <gs-item name="Details" data-gs-action="details"></gs-item>
+                    <gs-item name="Toggle state" data-gs-action="toggle"></gs-item>
+                    <gs-item></gs-item>
+                    <gs-item name="Remove" data-gs-action="remove"></gs-item>
+                </gs-context>
+            </gs-table>
+            
+            <gs-pagination storage="keyotp" pages="5" css="justify-content-center p-1 m-1" first last previous next></gs-pagination>
+
+            <gs-admin-dialog id="modal-main" css-body="p-0" css-header="p-3 " 
                 title="OTP Key" template="//forms/key-otp.html">
             </gs-admin-dialog>
 
