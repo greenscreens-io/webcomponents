@@ -11,8 +11,7 @@ import { BaseViewUI } from '../BaseViewUI.mjs';
 export default class GSConfiguration extends BaseViewUI {
 
     static {
-        customElements.define('gs-admin-view-configuration', GSConfiguration);
-        Object.seal(GSConfiguration);
+        this.define('gs-admin-view-configuration');
     }
 
     constructor() {
@@ -27,8 +26,7 @@ export default class GSConfiguration extends BaseViewUI {
 
         // If license installer not available; remove activator
         if (!me.#hasInstaller) {
-            const ctx = me.query('gs-context');
-            ctx?.query('[data-action="activate"]', true)?.remove();
+            me.menu?.query('[data-action="activate"]', true)?.remove();
         }
     }
 
@@ -50,6 +48,10 @@ export default class GSConfiguration extends BaseViewUI {
 
     get validate() {
         return this.query('#modal-validate', true);
+    }
+
+    get menu() {
+        return this.query('gs-context');
     }
 
     async onLoad(e) {

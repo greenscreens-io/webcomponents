@@ -20,6 +20,7 @@ export class GSCertOpt extends GSAsbtractDialog {
         const me = this;
         me.opened = true;
         me.dismissable = true;
+        me.size = "large";
         me.title = "Certificate Options";
         me.template = "//dialogs/certificates-options.html";
     }

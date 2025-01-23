@@ -12,7 +12,7 @@ import { notEmpty, numGE0 } from '../properties/index.mjs';
 
 export class GSCalendarElement extends GSElement {
 
-  static style = css`.year::-webkit-outer-spin-button,.year::-webkit-inner-spin-button {-webkit-appearance: none;margin: 0;} .year {-moz-appearance: textfield;} .day:focus{font-weight: bold;}`
+  static styles = css`.year::-webkit-outer-spin-button,.year::-webkit-inner-spin-button {-webkit-appearance: none;margin: 0;} .year {-moz-appearance: textfield;} .day:focus{font-weight: bold;}`
 
   static properties = {
     date: {},

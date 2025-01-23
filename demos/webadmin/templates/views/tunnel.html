@@ -9,79 +9,75 @@
     <div class="row border shadow-sm rounded ms-4 pb-4 bg-light">
 
         <div class="col-12 border-bottom d-flex justify-content-end p-1">
-            <gs-button action="create" select="false" comment="Add new configuration" css="text-bg-light"
-                icon="bi bi-file-earmark fs-4 fw-bold"></gs-button>                 
-            <gs-button action="refresh" select="false" comment="Refresh data" css="text-bg-light"
-                icon="bi bi-arrow-repeat fs-4 fw-bold"></gs-button>
+            <gs-button data-gs-action="create" tooltip="Add new configuration" 
+            color="light" text="dark" -hover-css="gs-pulse" click-css="gs-shake" css="shadow-none border-0"
+            icon="file-earmark fs-4 fw-bold"></gs-button>
+
+            <gs-button data-gs-action="refresh" tooltip="Refresh data" 
+            color="light" text="dark" -hover-css="gs-pulse" click-css="gs-shake" css="shadow-none border-0"
+            icon="arrow-repeat fs-4 fw-bold"></gs-button>
         </div>
 
         <div class="col-12 mt-2 p-0">
 
-            <gs-table id="table-main" index=false class="flex-fill"
-                css="table table-light table-hover user-select-none m-0" css-select="table-active table-primary"
-                css-header="user-select-none" css-columns="table-secondary">
-                <gs-header>
-                    <gs-column title="Name" name="name"></gs-column>
-                    <gs-column title="Remote IP" name="ip"></gs-column>
-                    <gs-column title="Remote Port" name="port"></gs-column>
-                    <gs-column title="Local Port" name="localPort"></gs-column>
-                    <gs-column title="Protocol" name="unix">
-                        <gs-item map="true">
-                            <gs-item value="true" map="AF_UNIX"></gs-item>
-                            <gs-item value="false" map="AF_TCP"></gs-item>
-                        </gs-item>                         
-                    </gs-column>
-                    <gs-column title="Type" name="type">
-                        <gs-item map="true">
-                            <gs-item value="0" map="SOCK5"></gs-item>
-                            <gs-item value="1" map="VPN"></gs-item>
-                            <gs-item value="2" map="SSH"></gs-item>
-                        </gs-item>                        
-                    </gs-column>
-                    <gs-column title="Rule" name="enabled">
-                        <gs-item map="true" filter="true">
-                            <gs-item value="true" map="Enabled"></gs-item>
-                            <gs-item value="false" map="Disabled"></gs-item>                         
-                        </gs-item>
-                    </gs-column>
-                    <gs-column title="Status" name="active">
-                        <gs-item map="true" filter="true">
-                            <gs-item value="true" map="Active"></gs-item>
-                            <gs-item value="false" map="Inactive"></gs-item>                         
-                        </gs-item>                        
-                    </gs-column>
-                    <gs-column title="Connections" name="connections"></gs-column>
+            <gs-data-handler src="data/proxy.json" id="tunnel" type="cached" limit=15>
+                <gs-item name="id" key></gs-item>
+                <gs-item name="name"></gs-item>
+                <gs-item name="localPort"></gs-item>
+                <gs-item name="unix"></gs-item>
+                <gs-item name="enabled"></gs-item>
+                <gs-item name="active"></gs-item>
+                <gs-item name="type"></gs-item>
+                <gs-item name="connections" type="number"></gs-item>
+                <gs-item name="timestamp"></gs-item>
+                <gs-item name="port"></gs-item>
+                <gs-item name="ip"></gs-item>
+            </gs-data-handler>
 
-                </gs-header>
-                <gs-store src="data/proxy.json" id="sessions" limit=15>
-                    <gs-item name="name"></gs-item>
-                    <gs-item name="localPort"></gs-item>
-                    <gs-item name="unix"></gs-item>
-                    <gs-item name="enabled"></gs-item>
-                    <gs-item name="active"></gs-item>
-                    <gs-item name="type"></gs-item>
-                    <gs-item name="connections" type="number"></gs-item>
-                    <gs-item name="timestamp"></gs-item>
-                    <gs-item name="port"></gs-item>
-                    <gs-item name="id"></gs-item>
-                    <gs-item name="ip"></gs-item>
-                </gs-store>
-                <gs-context slot="extra" target="tbody tr">
-                    <gs-item name="Details" action="details"></gs-item>
+            <gs-table id="table-main" storage="tunnel" 
+                selectable hover bordered shadow -divider sortable multisort
+                class="flex-fill" css-filter="rounded-0" css-header="border"
+                color="light" select-color="primary" head-color="secondary">                 
+                <gs-item title="Name" name="name"></gs-item>
+                <gs-item title="Remote IP" name="ip"></gs-item>
+                <gs-item title="Remote Port" name="port"></gs-item>
+                <gs-item title="Local Port" name="localPort"></gs-item>
+                <gs-item title="Protocol" name="unix">
+                    <gs-item value="true" map="AF_UNIX"></gs-item>
+                    <gs-item value="false" map="AF_TCP"></gs-item>
+                </gs-item>
+                <gs-item title="Type" name="type">
+                    <gs-item value="0" map="SOCK5"></gs-item>
+                    <gs-item value="1" map="VPN"></gs-item>
+                    <gs-item value="2" map="SSH"></gs-item>
+                </gs-item>
+                <gs-item title="Rule" name="enabled">
+                    <gs-item value="true" map="Enabled"></gs-item>
+                    <gs-item value="false" map="Disabled"></gs-item>                         
+                </gs-item>
+                <gs-item title="Status" name="active">
+                    <gs-item value="true" map="Active"></gs-item>
+                    <gs-item value="false" map="Inactive"></gs-item>                         
+                </gs-item>
+                <gs-item title="Connections" name="connections"></gs-item>
+
+                <gs-context slot="extra" target="tbody" filter="[selected]" offset="4">
+                    <gs-item name="Details" data-gs-action="details"></gs-item>
                     <gs-item></gs-item>
-                    <gs-item name="Clone" action="clone"></gs-item>
-                    <gs-item name="Remove" action="remove"></gs-item>
+                    <gs-item name="Clone" data-gs-action="clone"></gs-item>
+                    <gs-item name="Remove" data-gs-action="remove"></gs-item>
                     <gs-item></gs-item>
-                    <gs-item name="Start" action="start"></gs-item>
-                    <gs-item name="Stop" action="stop"></gs-item>
-                    <gs-item name="Restart" action="rstart"></gs-item>
+                    <gs-item name="Start" data-gs-action="start"></gs-item>
+                    <gs-item name="Stop" data-gs-action="stop"></gs-item>
+                    <gs-item name="Restart" data-gs-action="rstart"></gs-item>
                     <gs-item></gs-item>
-                    <gs-item name="Download" action="download"></gs-item>
+                    <gs-item name="Download" data-gs-action="download"></gs-item>
                 </gs-context>
-                <gs-pager slot="extra" previous="&laquo;" next="&raquo;" firstlast="false" pages="0"></gs-pager>
             </gs-table>
+            
+            <gs-pagination slot="extra" storage="tunnel" pages="5" css="justify-content-center p-1 m-1" first last previous next></gs-pagination>
 
-            <gs-admin-dialog id="modal-main" visible="false" css-modal="modal-lg" css-body="p-0" css-header="p-3 "
+            <gs-admin-dialog id="modal-main" css-modal="modal-lg" css-body="p-0" css-header="p-3 "
                 title="Network tunnel" template="//forms/tunnel.html">
             </gs-admin-dialog>
 

@@ -8,6 +8,7 @@ import { GSEvents } from '../base/GSEvents.mjs';
 import { GSDOM } from '../base/GSDOM.mjs';
 import { GSUtil } from '../base/GSUtil.mjs';
 import { GSID } from '../base/GSID.mjs';
+import { size, SizeTypes } from '../properties/size.mjs';
 
 export class GSDialogElement extends GSElement {
 
@@ -20,7 +21,7 @@ export class GSDialogElement extends GSElement {
 
   static #STACK = [];
 
-  static styles = css`dialog{outline:none;}dialog::backdrop{backdrop-filter: blur(4px);}`;
+  static styles = css`dialog{--bs-modal-width: 500px;width:var(--bs-modal-width);outline:none;}dialog::backdrop{backdrop-filter: blur(4px);}`;
 
   static properties = {
 
@@ -31,6 +32,7 @@ export class GSDialogElement extends GSElement {
     escapable: { reflect: true, type: Boolean },
     disabled: { reflect: true, type: Boolean },
 
+    size : size,
 
     title: { reflect: true },
     message: { reflect: true },
@@ -157,7 +159,9 @@ export class GSDialogElement extends GSElement {
 
   renderUI() {
     const me = this;
-    const styles = { 'min-width': me.minWidth > 0 ? `${me.minWidth}px` : undefined };
+    const styles = { 
+      'min-width': me.minWidth > 0 ? `${me.minWidth}px` : undefined 
+    };
     me.dynamicStyle(me.#styleID, styles);
     return html`
         <dialog tabindex="-1" ${ref(me.#dialogRef)} 
@@ -189,12 +193,14 @@ export class GSDialogElement extends GSElement {
 
   renderClass() {
     const me = this;
+    const size = SizeTypes[me.size];
     const css = {
       ...super.renderClass(),
       'dialog': true,
       'p-0': true,
       'border-0': true,
-      [me.#styleID]: true
+      [me.#styleID]: true,
+      [`modal-${size}`]: size ? true : false
     }
     return css;
   }

@@ -217,7 +217,8 @@ export class GSTemplateCache {
 		let template = false;
 
 		if (tpl.indexOf('#') == 0) {
-			return document.getElementById(tpl.slice(1));
+			// return document.getElementById(tpl.slice(1));
+			return GSDOM.query(`template[id="${tpl.slice(1)}"]`, true);
 		}
 
 		if (!template) {

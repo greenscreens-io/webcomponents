@@ -32,6 +32,7 @@ export class GSTableElement extends GSElement {
     css: {},
     title: {},
     filter: { type: Boolean },
+    fixed: { type: Boolean },
     filterType: { attribute: 'filter-type' },
     cssFilter: { attribute: 'css-filter' },
     cssHeader: { attribute: 'css-header' },
@@ -202,7 +203,7 @@ export class GSTableElement extends GSElement {
   }
 
   get #input() {
-    return this.queryAll('th > input', true);
+    return this.queryAll('th > input, th > select', true);
   }
 
   get #hasFilters() {
@@ -229,18 +230,44 @@ export class GSTableElement extends GSElement {
     const cfg = me.#config[index];
     if (!cfg?.filter) return html`<th></th>`;
     let mask = '';
+    const hasSub = cfg.childElementCount > 0;
     const isDate = cfg.columnType === 'date';
     if (isDate) mask = cfg.format || GSUtil.getDateFormat(cfg.locale || GSUtil.locale);
     const css = `${GSUtil.normalize(me.cssFilter)} ${GSUtil.normalize(cell.cssFilter)}`; 
 
+    if (hasSub && cfg.fixed) {
+      return html`<th .index=${index} @change="${me.#onFilter}">
+          <select is="gs-ext-select" .index=${index}
+              class="form-select ${css}" 
+              name="${cell}"> 
+              ${me.#renderOption(cfg)}
+              </select>
+          </th>`;
+    }
+
+    let listid = '';
+    let list = '';
+    if (hasSub) {
+      listid = `${me.id}-list-${index}`;
+      list = html`<datalist id="${listid}">${me.#renderOption(cfg)}</datalist>`;
+    } 
+
     return html`<th .index=${index} @change="${me.#onFilter}">
+        ${list}
         <input is="gs-ext-input" .index=${index}
             class="form-control ${css}" 
             mask="${ifDefined(mask)}"
+            list="${ifDefined(listid)}"
             name="${cell}" 
             type="${cfg.filterType || cfg.columnType}"
             data-slots="${ifDefined(isDate ? 'DMY' : undefined)}">
         </th>`;
+  }
+
+  #renderOption(cfg) {
+    if (cfg.childElementCount == 0) return '';
+    const sub = GSItem.proxify(cfg);
+    return sub.map(el => html`<option value="${el.value}">${cfg.fixed ? el.map : ''}</option>`);
   }
 
   #renderColumn(cell, index) {

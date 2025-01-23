@@ -19,6 +19,7 @@ export class GSSystem extends GSAsbtractDialog {
         const me = this;
         me.opened = true;
         me.dismissable = true;
+        me.size = "large";
         me.title = "System options";
         me.template = "//dialogs/system.html";
     }

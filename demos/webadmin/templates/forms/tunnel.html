@@ -1,34 +1,22 @@
 <gs-form slot="body" css="flex-fill">
     
-    <gs-form-group css="m-1" name="enabled" label="Status" required     
+    <gs-form-group css="m-1" name="enabled" label="Status" selectable required    
         description="Enable or disable network tunnel.">
-        <template>
-            <select class="form-select" id="enabled" name="enabled" required>
-                <option value="true">Enabled</option>
-                <option value="false">Disabled</option>
-            </select>            
-        </template>
+        <gs-item selected value="true" name="Enabled"></gs-item>
+        <gs-item value="false" name="Disabled"></gs-item>
     </gs-form-group>
 
-    <gs-form-group css="m-1" name="type" label="Type" required     
+    <gs-form-group css="m-1" name="type" label="Type" selectable required     
         description="Select network tunnel type.">
-        <template>
-            <select class="form-select" id="type" name="type" required>
-                <option value="0">SOCK5</option>
-                <option selected value="2">SSH</option>
-                <option value="1">VPN</option>
-            </select>            
-        </template>
+        <gs-item value="0" name="SOCK5"></gs-item>
+        <gs-item selected value="2" name="SSH"></gs-item>
+        <gs-item value="1" name="VPN"></gs-item>
     </gs-form-group>
     
-    <gs-form-group css="m-1" name="unix" label="Protocol" required     
+    <gs-form-group css="m-1" name="unix" label="Protocol" selectable required     
         description="Select network connection type.">
-        <template>
-            <select class="form-select" id="unix" name="unix" required>
-                <option selected value="false">AF_TCP</option>
-                <option value="true">AF_UNIX</option>
-            </select>            
-        </template>
+        <gs-item selected value="false" name="AF_TCP"></gs-item>
+        <gs-item value="true" name="AF_UNIX"></gs-item>
     </gs-form-group>  
     
     <gs-form-group css="m-1" name="name" label="Name" required 

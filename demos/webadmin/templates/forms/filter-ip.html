@@ -2,38 +2,29 @@
     
     <input id="id" name="id" type="hidden">
 
-    <gs-form-group css="m-1" name="active" label="Active"
+    <gs-form-group  selectable required
+        css="m-1" name="active" label="Active"
         description="Enable or disable this rule.">
-        <template>
-            <select class="form-select" id="active" name="active" required>
-                <option value="true">Enabled</option>
-                <option value="false">Disabled</option>
-            </select>            
-        </template>
+        <gs-item value="true" name="Enabled"></gs-item>
+        <gs-item value="false" name="Disabled"></gs-item>
     </gs-form-group>
 
-    <gs-form-group css="m-1" name="rule" label="Rule"
+    <gs-form-group  selectable required
+        css="m-1" name="rule" label="Rule"
         description="Allow or deny network access based on matched criteria.">
-        <template>
-            <select class="form-select" id="rule" name="rule" required>
-                <option value="0">Allow</option>
-                <option value="1">Deny</option>
-            </select>            
-        </template>
+        <gs-item value="0" name="Allow"></gs-item>
+        <gs-item value="1" name="Deny"></gs-item>
     </gs-form-group>
 
-    <gs-form-group css="m-1" name="type" label="Type"
+    <gs-form-group  selectable required
+        css="m-1" name="type" label="Type"
         description="Select filter type.
         IP: Single IP address to match.
         MASK: CIDR format of IP range.
         EXPR: Expression for more complex ranges such as * or 10.*.*.10-30 or 192.168.1.* etc.">
-        <template>
-            <select class="form-select" id="type" name="type">
-                <option selected value="0">IP</option>
-                <option value="1">Mask</option>
-                <option value="2">Expression</option>
-            </select>            
-        </template>
+        <gs-item selected value="0">IP"></gs-item>
+        <gs-item value="1" name="Mask"></gs-item>
+        <gs-item value="2" name="Expression"></gs-item>
     </gs-form-group>
 
     <gs-form-group css="m-1" name="value" label="Value"
