@@ -28,7 +28,7 @@ export class ContentController {
 
   hostUpdated() {
     const me = this;
-    if (!me.#isSelf()) me.#refs.add(me.#target);
+    if (!me.#isSelf() && me.#target) me.#refs.add(me.#target);
   }
 
   get contentRef() {

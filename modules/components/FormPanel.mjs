@@ -50,7 +50,7 @@ export class GSFormPanelElement extends GSElement {
       <slot>
         ${repeat(me.data, (r) => html`<gs-form-group .data=${r} locale="${ifDefined(me.locale)}" ></gs-form-group>`)}
       </slot>
-    </form>`;
+    </gs-form>`;
   }
 
   get form() {

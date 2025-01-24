@@ -3,7 +3,7 @@
  */
 
 import { classMap, createRef, ref, html, unsafeHTML, ifDefined } from '../lib.mjs';
-import { inputType, numGT0, numGE0 } from '../properties/index.mjs';
+import { inputType, InputTypes, numGT0, numGE0 } from '../properties/index.mjs';
 import { GSElement } from '../GSElement.mjs';
 import { GSItem } from '../base/GSItem.mjs';
 import { GSUtil } from '../base/GSUtil.mjs';
@@ -66,6 +66,8 @@ export class GSFormGroupElement extends GSElement {
     readonly: { type: Boolean, reflect: true },
     required: { type: Boolean, reflect: true },
 
+    invalidMessage: {reflect: true},
+
     cellField: { attribute: 'cell-field' },
     cellLabel: { attribute: 'cell-label' },
     cssLabel: { attribute: 'css-label' },
@@ -86,6 +88,7 @@ export class GSFormGroupElement extends GSElement {
     this.type = 'text';
     this.placement = 'top';
     this.layout = 'horizontal';
+    this.invalidMessage = 'Invalid input',
     this.icon = GSFormGroupElement.ICON;
     this.cssLabel = GSFormGroupElement.CSS_LABEL;
     this.cellLabel = GSFormGroupElement.CSS_LABEL_CELL;
@@ -109,8 +112,8 @@ export class GSFormGroupElement extends GSElement {
     super.firstUpdated();
     const me = this;
     me.value = me.default;
-    if (!me.selectable) {
-      me.field.defaultValue =  GSUtil.normalize(me.default);
+    if (!me.selectable && me.field) {
+      me.field.defaultValue = GSUtil.normalize(me.default);
     }
   }
 
@@ -273,7 +276,7 @@ export class GSFormGroupElement extends GSElement {
 
   #renderOptions() {
     const me = this;
-    return me.#options.map( el => html`<option value="${el.value}" ?selected=${el.selected}>${el.name || el.value}</option>`);
+    return me.#options.map( el => html`<option value="${el.value}" ?selected=${el.selected}>${el.name || el.innerText || el.value }</option>`);
   }
 
   #selectHTML(id, name, value) {
@@ -403,7 +406,7 @@ export class GSFormGroupElement extends GSElement {
   }
 
   #onChange(e) {
-    this.emit('change', e, true);
+    this.emit('change', e, true, true);
   }
 
   async #onBlur(e) {
@@ -413,15 +416,9 @@ export class GSFormGroupElement extends GSElement {
 
     if (el.value.length === 0 || me.#patterns.length === 0) return;
 
-    const isValid = me.checkValidity();
-    if (!isValid) {
-      me.reportValidity();
-      el.focus();
-      await GSUtil.timeout(2000);
-      el.setCustomValidity('');
-    }
+    await me.validate(true, 2000);
 
-    me.emit('change', e);
+    me.#onChange(e);
   }
 
   #validateAllowed() {
@@ -435,10 +432,20 @@ export class GSFormGroupElement extends GSElement {
     if (!allowed) throw new Error(GSDOM.toValidationError(me, tagList));
   }
 
-  validate() {
-    const me = this;
+  async validate(focus = false, timeout = 0) {
+    const me = this;    
+    const el = me.field;
     const isValid = me.checkValidity();
-    if (!isValid) me.reportValidity();
+
+    if (!isValid) {
+      if (focus) el.focus();
+      me.reportValidity();
+      if (timeout) {
+        await GSUtil.timeout(timeout);
+        el.setCustomValidity('');
+      }
+    }
+
     return isValid;
   }
 
@@ -446,22 +453,36 @@ export class GSFormGroupElement extends GSElement {
 
     const me = this;
     const el = me.field;
+    let isValid = true;
 
-    let isValid = el?.checkValidity();
-    for (const r of me.#patterns) {
-      isValid = r.test(el?.value);
-      if (!isValid) break;
+    if (!el) return true;
+
+    const def = InputTypes.filter(o => o.type === el.type).pop();
+    if (!def || def.ignore) return true;
+    
+    if (def.native) {
+      isValid = el.checkValidity();          
+    } else {
+      const val = GSUtil.normalize(me.field.value);
+
+      if (me.required && val.length === 0) {
+        isValid = true;
+      } else {
+        for (const r of me.#patterns) {
+          isValid = r.test(el?.value);
+          if (isValid) break;
+        }
+      }
     }
+
+    const msg = isValid ? '' : me.invalidMessage;
+    el?.setCustomValidity(msg);
 
     return isValid;
   }
 
   reportValidity() {
-    const me = this;
-    const el = me.field;
-    const msg = me.#patterns.length > 0 ? 'Invalid input' : '';
-    el?.setCustomValidity(msg);
-    return el?.reportValidity();
+    return this.field?.reportValidity();
   }
 
   get value() {

@@ -83,21 +83,8 @@ export class GSFormElement extends GSElement {
     return me.emit('form', data, true, true, true);
   }
 
-  validate() {
-    const me = this;
-    let isValid = me.checkValidity() && me.isValid;
-    if (!isValid) me.reportValidity();
-    const data = { type: 'valid', data: isValid, owner : me};
-    isValid = me.onValidate(isValid);
-    if (isValid) me.emit('form', data, true, true);
-    return isValid;
-  }
-
-  get isValid() {
-    return this.elements
-      .filter(el => GSDOM.isVisible(el))
-      .map(el => el.checkValidity())
-      .filter(v => v === false).length === 0;
+  #childrens(shadow = false) {
+    return this.queryAll('input,select,output,textarea,gs-form-group', shadow);
   }
 
   get form() {
@@ -108,7 +95,7 @@ export class GSFormElement extends GSElement {
   * Overide native to pickup all form elements, including ones in shadow dom
   */
   get elements() {
-    return this.queryAll('input,select,output,textarea', true);
+    return this.#childrens(true);
   }
 
   get fields() {
@@ -129,24 +116,41 @@ export class GSFormElement extends GSElement {
     return me.validate();
   }
 
+  get isValid() {
+    return this.#childrens(false)
+      .filter(el => GSDOM.isVisible(el))
+      .map(el => el.checkValidity())
+      .filter(v => v === false).length === 0;
+  }
+
+  checkValidity() {
+    return this.isValid && this.form.checkValidity();
+  }
+
+  reportValidity() {
+    this.#childrens(false)
+      .filter(el => GSDOM.isVisible(el))
+      .filter(el => !el.checkValidity())
+      .forEach(el => el.reportValidity() );
+    return this.form.reportValidity();
+  }
+
+  validate() {
+    const me = this;
+    let isValid = me.checkValidity();
+    if (!isValid) me.reportValidity();
+    const data = { type: 'valid', data: isValid, owner : me};
+    isValid = me.onValidate(isValid);
+    if (isValid) me.emit('form', data, true, true);
+    return isValid;
+  }
+
   disable() {
     GSDOM.disableInput(this, 'gs-form-group, input, textarea, select, .btn', false, 'gsForm');
   }
 
   enable() {
     GSDOM.enableInput(this, 'gs-form-group, input, textarea, select, .btn', false, 'gsForm');
-  }
-
-  checkValidity() {
-    return this.form.checkValidity();
-  }
-
-  reportValidity() {
-    this.elements
-      .filter(el => GSDOM.isVisible(el))
-      .filter(el => !el.checkValidity())
-      .forEach(el => el.reportValidity() );
-    return this.form.reportValidity();
   }
 
   onDataRead(data) {
@@ -172,8 +176,34 @@ export class GSFormElement extends GSElement {
 
   #onChange(e) {
     const me = this;
-    if (me.isBindable) me.handle(e);
+    let field = e.target;
+    if (e.composed) {
+      field = e.composedPath()
+        .filter(el => el.matches?.('input,select,textarea,gs-form-group'))
+        .pop();
+    }
+    me.#doFilter(field);
+    me.handle(e);
     if (me.validate()) me.onFieldChange(e.detail);
+  }
+
+  /**
+   * Filter field disabled status
+   * @param {HTMLInputElement} field 
+   */
+  #doFilter(field) {
+    if(!field) return;
+    const me = this;
+    const fldName = me.dataset.gsfDisable;
+    const fldVal = me.dataset.gsfValue;
+    const matched = fldName && field.name === fldName;
+    const flag = matched && field.value === fldVal;
+    if (matched) {
+      me.elements
+        .filter(el => el.name != fldName)
+        .forEach(el => el.disabled = flag);
+    } 
+
   }
 
   static {

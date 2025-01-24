@@ -16,6 +16,11 @@
 
         <div class="col-12 p-0">
 
+            <gs-data-handler src="data/fido.json" id="fido" type="cached">
+                <gs-item name="value"></gs-item>
+                <gs-item name="map"></gs-item>
+            </gs-data-handler>
+
             <gs-data-handler src="data/keys-bio.json" id="keysbio" type="cached" limit=15>
                 <gs-item name="uuid"></gs-item>
                 <gs-item name="host"></gs-item>
@@ -32,32 +37,13 @@
                 class="flex-fill" css-filter="rounded-0" css-header="border"
                 color="light" select-color="primary" head-color="secondary">  
 
+                <gs-item title="UUID" name="uuid" filter hidden></gs-item>
+                <gs-item title="Host" name="host" filter hidden></gs-item>
+                <gs-item title="User" name="user" filter hidden></gs-item>
+                <gs-item title="Origin" name="origin" filter hidden></gs-item>
+
                 <gs-item title="AAGUID" name="aaguid" colspan="2"></gs-item>
-                <gs-item title="Description" name="desc" colspan="4" ref="aaguid" src="data/fido.json" filter fixed>
-                    <gs-item value="android" map="Android Application"> </gs-item>
-                    <gs-item value="b93fd961-f2e6-462f-b122-82002247de78" map="Android Authenticator with SafetyNet Attestation"> </gs-item>
-
-                    <gs-item value="6028b017-b1d4-4c02-b4b3-afcdafc96bb2" map="Windows Hello software authenticator"></gs-item>
-                    <gs-item value="6e96969e-a5cf-4aad-9b56-305fe6c82795" map="Windows Hello VBS software authenticator"></gs-item>                            
-                    <gs-item value="08987058-cadc-4b81-b6e1-30de50dcbe96" map="Windows Hello hardware authenticator"></gs-item>
-                    <gs-item value="9ddd1817-af5a-4672-a2b9-3e3dd95000a9" map="Windows Hello VBS hardware authenticator"></gs-item>
-                    
-                    <gs-item value="149a2021-8ef6-4133-96b8-81f8d5b7f1f5" map="Security Key by Yubico with NFC"></gs-item>
-                    <gs-item value="2fc0579f-8113-47ea-b116-bb5a8db9202a" map="YubiKey 5 Series with NFC"></gs-item>
-                    <gs-item value="6d44ba9b-f6ec-2e49-b930-0c8fe920cb73" map="Security Key by Yubico with NFC"></gs-item>
-                    <gs-item value="73bb0cd4-e502-49b8-9c6f-b59445bf720b" map="YubiKey 5 FIPS Series"></gs-item>
-                    <gs-item value="85203421-48f9-4355-9bc8-8a53846e5083" map="YubiKey 5Ci FIPS"></gs-item>
-
-                    <gs-item value="b92c3f9a-c014-4056-887f-140a2501163b" map="Security Key by Yubico"></gs-item>
-                    <gs-item value="c1f9a0bc-1dd2-404a-b27f-8e29047a43fd" map="YubiKey 5 FIPS Series with NFC"></gs-item>
-                    <gs-item value="c5ef55ff-ad9a-4b9f-b580-adebafe026d0" map="YubiKey 5Ci"></gs-item>
-                    <gs-item value="cb69481e-8ff7-4039-93ec-0a2729a154a8" map="YubiKey 5 Series"></gs-item>
-                    
-                    <gs-item value="d8522d9f-575b-4866-88a9-ba99fa02f35b" map="YubiKey Bio Series"> </gs-item>
-                    <gs-item value="ee882879-721c-4913-9775-3dfcce97072a" map="YubiKey 5 Series"></gs-item>
-                    <gs-item value="f8a011f3-8c0a-4d15-8006-17111f9edc7d" map="Security Key by Yubico"></gs-item>
-                    <gs-item value="fa2b99dc-9e39-4257-8f92-4a30d23c4118" map="YubiKey 5 Series with NFC"></gs-item>
-                </gs-item>
+                <gs-item title="Description" name="desc" colspan="4" ref="aaguid" storage="fido"></gs-item>
                 <gs-item title="Created" name="created" type="timestamp" format="HH:mm:ss DD.MM.YYYY"></gs-item>
 
                 <gs-context>

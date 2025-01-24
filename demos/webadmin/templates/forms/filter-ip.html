@@ -1,5 +1,4 @@
-<gs-form slot="body" css="flex-fill">
-    
+<gs-form slot="body" css="flex-fill"  data-gsf-disable="active" data-gsf-value="false">
     <input id="id" name="id" type="hidden">
 
     <gs-form-group  selectable required
@@ -22,7 +21,7 @@
         IP: Single IP address to match.
         MASK: CIDR format of IP range.
         EXPR: Expression for more complex ranges such as * or 10.*.*.10-30 or 192.168.1.* etc.">
-        <gs-item selected value="0">IP"></gs-item>
+        <gs-item selected value="0" name="IP"></gs-item>
         <gs-item value="1" name="Mask"></gs-item>
         <gs-item value="2" name="Expression"></gs-item>
     </gs-form-group>

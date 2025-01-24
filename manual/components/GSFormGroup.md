@@ -29,6 +29,7 @@ Except all standard ```<input>``` [tag attributes](https://developer.mozilla.org
 | reveal             | Allow password reveal on shortcut                        |
 | reverse            | Only for "range type" to display max value first         |
 | selectable         | Render select instead of input                           |
+| invalid-message    | Field validity message if input is invalid               |
 
 **NOTE**: All HTML input element attributes are allowed.
 

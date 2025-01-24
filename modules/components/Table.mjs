@@ -31,7 +31,11 @@ export class GSTableElement extends GSElement {
     width: {},
     css: {},
     title: {},
+    colspan: {},
+    storage: {},
+    ref: {}, // if set; use storage or gs-items to map ref value to virtual field
     filter: { type: Boolean },
+    hidden: { type: Boolean },
     fixed: { type: Boolean },
     filterType: { attribute: 'filter-type' },
     cssFilter: { attribute: 'css-filter' },
@@ -229,6 +233,7 @@ export class GSTableElement extends GSElement {
     const me = this;
     const cfg = me.#config[index];
     if (!cfg?.filter) return html`<th></th>`;
+
     let mask = '';
     const hasSub = cfg.childElementCount > 0;
     const isDate = cfg.columnType === 'date';
@@ -259,6 +264,7 @@ export class GSTableElement extends GSElement {
             mask="${ifDefined(mask)}"
             list="${ifDefined(listid)}"
             name="${cell}" 
+            placeholder="${ifDefined(cfg.title)}" 
             type="${cfg.filterType || cfg.columnType}"
             data-slots="${ifDefined(isDate ? 'DMY' : undefined)}">
         </th>`;
@@ -273,9 +279,12 @@ export class GSTableElement extends GSElement {
   #renderColumn(cell, index) {
     const me = this;
     const cfg = me.#config[index];
+    if (cfg?.hidden) return '';
     const css = `${GSUtil.normalize(me.cssHeader)} ${GSUtil.normalize(cell.cssHeader)}`; 
     return html`
-      <th .index=${index} class="${css}" width="${ifDefined(me.#config[index]?.width)}">
+      <th .index=${index} class="${css}" 
+        colspan="${ifDefined(cfg.colspan)}"
+        width="${ifDefined(cfg?.width)}">
         <div class="d-flex justify-content-between"> 
           <span>${cfg?.title || cell}</span>
           ${me.#renderIcon(index)}
@@ -300,9 +309,15 @@ export class GSTableElement extends GSElement {
     const cells = me.#remapRecord(entry);
     return html`
         <tr .index=${index} class="${color}" tabindex="0" ?selected=${selected}>
-          ${cells.map((cell, i) => html`<td class="text-${me.#config[i]?.align}"><span>${cell}</span></td>`)}
+          ${cells.map((cell, i) => me.#renderCell(cell, i))}
         </tr>
       `;
+  }
+
+  #renderCell(cell, index) {
+    const cfg = this.#config[index];
+    if (cfg?.hidden) return '';
+    return html`<td class="text-${cfg?.align}" colspan="${ifDefined(cfg.colspan)}" ><span>${cell}</span></td>`;
   }
 
   #remapRecord(record) {

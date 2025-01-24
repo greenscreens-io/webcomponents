@@ -329,6 +329,7 @@ export class GSUtil {
 	 * @returns {Promise<void>}
 	 */
 	static async timeout(time = 0, signal) {
+		if (time <= 0) return;
 		signal = GSUtil.isNumber(signal) ? AbortSignal.timeout(signal) : signal;
 		return new Promise((resolve, reject) => {
 			const iid = setTimeout(resolve.bind(null, true), time);
