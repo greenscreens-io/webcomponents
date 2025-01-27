@@ -16,11 +16,6 @@
 
         <div class="col-12 p-0">
 
-            <gs-data-handler src="data/fido.json" id="fido" type="cached">
-                <gs-item name="value"></gs-item>
-                <gs-item name="map"></gs-item>
-            </gs-data-handler>
-
             <gs-data-handler src="data/keys-bio.json" id="keysbio" type="cached" limit=15>
                 <gs-item name="uuid"></gs-item>
                 <gs-item name="host"></gs-item>
@@ -43,7 +38,7 @@
                 <gs-item title="Origin" name="origin" filter hidden></gs-item>
 
                 <gs-item title="AAGUID" name="aaguid" colspan="2"></gs-item>
-                <gs-item title="Description" name="desc" colspan="4" ref="aaguid" storage="fido"></gs-item>
+                <gs-item title="Description" name="desc" colspan="4" ref="aaguid" src="data/fido.json"></gs-item>
                 <gs-item title="Created" name="created" type="timestamp" format="HH:mm:ss DD.MM.YYYY"></gs-item>
 
                 <gs-context>

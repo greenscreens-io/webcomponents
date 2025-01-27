@@ -8,6 +8,7 @@ import { GSDOM } from '../base/GSDOM.mjs';
 import { GSLog } from '../base/GSLog.mjs';
 import { GSEvents } from '../base/GSEvents.mjs';
 import { GSUtil } from '../base/GSUtil.mjs';
+import { GSAttr } from '../base/GSAttr.mjs';
 
 export class GSFormElement extends GSElement {
 
@@ -38,9 +39,10 @@ export class GSFormElement extends GSElement {
 
   firstUpdated(changed) {
     super.firstUpdated(changed);
-    this.dataController?.read();
+    const me = this;
+    me.dataController?.read();
   }
-
+  
   updated(changed) {
     const me = this;
     if (changed.has('disabled')) {
@@ -58,6 +60,11 @@ export class GSFormElement extends GSElement {
       }
     }
   }
+
+  templateInjected() {
+    const me = this;
+    me.#doFilter(me.#filterField);
+	}  
 
   async reset(e) {
     const me = this;
@@ -87,6 +94,11 @@ export class GSFormElement extends GSElement {
     return this.queryAll('input,select,output,textarea,gs-form-group', shadow);
   }
 
+  get #filterField() {
+    const me = this;
+    return me.elements.filter(el => el.name === me.dataset.gsfDisable).pop();
+  }
+
   get form() {
     return this.#formRef.value;
   }
@@ -113,6 +125,7 @@ export class GSFormElement extends GSElement {
   set asJSON(data) {
     const me = this;
     GSDOM.fromObject(me, data);
+    //me.#doFilter(me.#filterField);
     return me.validate();
   }
 
@@ -192,18 +205,36 @@ export class GSFormElement extends GSElement {
    * @param {HTMLInputElement} field 
    */
   #doFilter(field) {
+    
     if(!field) return;
+    
     const me = this;
+
+    const value = me.#fieldValue(field);
     const fldName = me.dataset.gsfDisable;
     const fldVal = me.dataset.gsfValue;
     const matched = fldName && field.name === fldName;
-    const flag = matched && field.value === fldVal;
+    const flag = matched && value === fldVal;
     if (matched) {
       me.elements
         .filter(el => el.name != fldName)
         .forEach(el => el.disabled = flag);
     } 
 
+  }
+
+  /**
+   * Initialy, feild might not be set just yet (if it is selectable),
+   * so we need to take valeu fro mgs-item definition
+   * @param {*} field 
+   * @returns 
+   */
+  #fieldValue(field) {
+    let value = field.value;
+    if (field.selectable && GSUtil.isNull(value)) {
+      value = GSAttr.get(this.query('gs-item[selected]'), 'value');
+    }
+    return value;
   }
 
   static {
