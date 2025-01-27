@@ -2,6 +2,7 @@
 * Copyright (C) 2015, 2025 Green Screens Ltd.
 */
 
+import { html } from '../../../../modules/lib.mjs';
 import { GSLoader } from '../../../../modules/base/GSLoader.mjs';
 import { GSAsbtractDialog } from '../dialogs/GSAsbtractDialog.mjs';
 
@@ -26,11 +27,14 @@ export class GSWorkstation extends GSAsbtractDialog {
     constructor() {
         super();        
         this.cssBody = 'NA';
+        this.cancelable = false;
+        this.title = 'Workstation details';
         this.#definition();
     }
 
     async #definition() {
         this.#def = await GSLoader.loadSafe('data/wks.json','GET', null,true);
+        this.requestUpdate();
     }
 
     open(data) {
@@ -39,6 +43,10 @@ export class GSWorkstation extends GSAsbtractDialog {
         super.open();
     }
     
+    renderTemplate() {
+        return this.#render(this.data);
+    }
+
     #render(data) {
         const me = this;
         return html`
@@ -57,7 +65,7 @@ export class GSWorkstation extends GSAsbtractDialog {
     
     #rows(data = []) {
         const me = this;
-        return me.#def.order.filter(v => data[v]).map(v => me.#row(data, v));
+        return me.#def?.order.filter(v => data[v]).map(v => me.#row(data, v));
     }
 
     #row(data, key) {
