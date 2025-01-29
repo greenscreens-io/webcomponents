@@ -757,15 +757,7 @@ export class GSDOM {
 			.filter(el => el.name)
 			.filter(el => el.dataset.ignore !== 'true')
 			.filter(el => invalid ? true : el.checkValidity())
-			.forEach(el => {
-				if (el.type !== 'radio') {
-					//params[el.name] = GSDOM.toValue(el);
-					GSData.writeToOject(params, el.name, GSDOM.toValue(el, defaults));
-				} else if (el.checked) {
-					//params[el.name] = GSDOM.toValue(el);
-					GSData.writeToOject(params, el.name, GSDOM.toValue(el, defaults));
-				}
-			});
+			.forEach(el => GSDOM.fromElement2Object(el, params, defaults) );
 		return params;
 	}
 
@@ -798,6 +790,22 @@ export class GSDOM {
 		if (el.type !== 'radio') {
 			GSDOM.fromValue(el, val, defaults);
 		} else if (el.value === val) el.checked = true;
+	}
+
+	/**
+	 * Convert HTMLElement (input) value to JSON Object  
+	 * @param {HTMLElement} owner Element value source
+	 * @param {Object} obj Object to populate 
+	 * @param {Boolean} defaults Set default value for form reset
+	 */
+	static fromElement2Object(el, obj, defaults = false) {
+		if (el.type !== 'radio') {
+			//params[el.name] = GSDOM.toValue(el);
+			GSData.writeToOject(obj, el.name, GSDOM.toValue(el, defaults));
+		} else if (el.checked) {
+			//params[el.name] = GSDOM.toValue(el);
+			GSData.writeToOject(obj, el.name, GSDOM.toValue(el, defaults));
+		}
 	}
 
 	/**

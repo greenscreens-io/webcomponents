@@ -9,16 +9,19 @@ import { AdoptedController } from '../../controllers/AdoptedController.mjs';
 import { AttributeController } from '../../controllers/AttributeController.mjs';
 import { CopySelectController } from './controllers/CopySelectController.mjs';
 import { MaskController } from './controllers/MaskController.mjs';
+import { MultipatternController } from './controllers/MultipatternController.mjs';
 import { PasswordController } from './controllers/PasswordController.mjs';
 import { NumberController } from './controllers/NumberController.mjs';
 import { TextController } from './controllers/TextController.mjs';
 import { ListController } from './controllers/ListController.mjs';
 
 import { ReactiveInput } from './ReactiveInput.mjs';
+import { GSUtil } from '../../base/GSUtil.mjs';
+import { GSBeep } from '../../base/GSBeep.mjs';
 
 /**
  * Extended HTMLInputElement with controllers support
- * adding various feature such as masked input support 
+ * adding various features such as masked input support 
  */
 export class GSInputElement extends ReactiveInput {
 
@@ -27,7 +30,12 @@ export class GSInputElement extends ReactiveInput {
     autofocus: { type: Boolean },
     autoselect: { type: Boolean },
     reveal: { type: Boolean },
-    mask: { reflect: true }
+    mask: { reflect: true },
+    multipattern: { type : Object},
+
+    block: { type: Boolean },
+    beep: { type: Boolean },
+    timeout: { type: Number }
   }
 
   #adopted;
@@ -35,24 +43,47 @@ export class GSInputElement extends ReactiveInput {
 
   #copyselect;
   #maskController;
+  #multiPatternController;
   #passwordController;
   #numberController;
   #textController;
   #listController;
 
+  #processing;
+
   constructor() {
     super();
+    this.#processing = false;
+    this.block = false;
+    this.beep = false;
+    this.timeout = 0;
     this.#copyselect = new CopySelectController(this);
   }
 
   connectedCallback() {
     super.connectedCallback();
     if (this.isBindable) this.binded();
+    this.on('invalid', this.#onInvalid);
   }
 
   disconnectedCallback() {
     GSEvents.deattachListeners(this);
     super.disconnectedCallback();
+  }
+
+  async #onInvalid(e) {    
+    
+    const me = this;   
+    if (me.#processing) return;
+
+    me.#processing = false;
+    if (me.block) me.focus();
+    if (me.beep) await GSBeep.beep(100, 1200, 150, 'triangle');
+    if (me.timeout) {
+      await GSUtil.timeout(me.timeout);
+      me.setCustomValidity(' ');
+    }
+    me.#processing = false;
   }
 
   willUpdate(changed) {
@@ -63,6 +94,12 @@ export class GSInputElement extends ReactiveInput {
       this.placeholder = this.mask;
       this.#maskController ??= new MaskController(this);
       this.#maskController.initRules();
+    }
+
+    if (changed.has('multipattern') && this.multipattern) {
+      if (['text', 'password'].includes(this.type)) {
+        this.#multiPatternController ??= new MultipatternController(this);
+      }
     }
 
     if (this.list) {
@@ -248,6 +285,15 @@ export class GSInputElement extends ReactiveInput {
     return GSEvents.remove(this, el, name, fn);
   }
 
+  checkValidity() {
+    const me = this;
+    const isValid = super.checkValidity();
+    const results = [];
+    if (me.#multiPatternController) results.push(me.#multiPatternController.checkValidity(isValid));
+    if (me.#maskController) results.push(me.#maskController.checkValidity(isValid));
+    return results.length > 0 ? results.filter(v => v).length === results.length : isValid;
+  }
+
   get form() {
     return this.closest('gs-form');
   }
@@ -255,6 +301,13 @@ export class GSInputElement extends ReactiveInput {
   get owner() {
     const own = GSDOM.root(this);
     return GSDOM.unwrap(own);
+  }
+
+  /**
+   * Get parent GS-* component
+   */
+  get parentComponent() {
+    return GSDOM.parentAll(this).filter(x => x instanceof GSElement).next()?.value;
   }
 
   get raw() {
@@ -266,7 +319,7 @@ export class GSInputElement extends ReactiveInput {
   }
 
   set value(val) {
-    super.value = val;
+    super.value = this.mask === val ? '' : val;
   }
 
   /**

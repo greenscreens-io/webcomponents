@@ -12,7 +12,7 @@ export const InputTypes = [
    { type: 'url',  native: true},
    { type: 'file', native: true}, 
    { type: 'text'},
-   { type: 'passsword'}
+   { type: 'password'}
 ];
 
 export const inputType = {

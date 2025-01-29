@@ -1,6 +1,6 @@
-# Maskontroller Class
+# MaskController Class
 
-Maskontroller adds masked input suppot to the HTMLInputElement of a type="text".
+MaskController adds masked input support to the HTMLInputElement of a type="text".
 
 Please refer to the demo in [Inputmask Demo](../../../../demos/inputmask.html)
 

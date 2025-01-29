@@ -3,6 +3,10 @@
 */
 export * from './verificator.mjs';
 
+export * from './autocapitalize.mjs';
+export * from './autocomplete.mjs';
+export * from './autocorrect.mjs';
+
 export * from './buttonType.mjs';
 export * from './color.mjs';
 export * from './environment.mjs';

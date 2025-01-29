@@ -48,11 +48,11 @@
     </div>
 
     <div class="container justify-content-center w-50 bordered p-4 shadow-sm bg-light">
-        <gs-form storage="mystore" data-gsf-disable="active" data-gsf-value="false">
+        <gs-form storage="mystore" name="myform" data-gsf-disable="active" data-gsf-value="false">
             <gs-form-group css="mt-2" name="date" mask="DD-MM-YYYY" label="Date" description="Masked date input"></gs-form-group>
             <gs-form-group css="mt-2" name="hexa" mask="XXXXXXXXXXXXXXXX" label="Hexadecimal input with" description="Masked hexadecimal input"></gs-form-group>
 
-            <gs-form-group css="mt-2" name="client.ip" label="IP Address" description="IP Address, CIDR or wildcard">
+            <gs-form-group css="mt-2" name="client.ip" label="IP Address" description="IP Address, CIDR or wildcard" required>
                 <gs-item data-pattern="^(?:(?:25[0-5]|(?:2[0-4]|1\d|[1-9]|)\d)\.?\b){4}(?:/[1-9]{1,2})?$"></gs-item>
                 <gs-item data-pattern="^(?:(?:25[0-5]|(?:2[0-4]|1\d|[1-9]|)\d|\*)\.){3}(?:(?:25[0-5]|(?:2[0-4]|1\d|[1-9]|)\d|\*))$"></gs-item>
                 <gs-item data-pattern="^(?:(?:(?:25[0-5]|(?:2[0-4]|1\d|[1-9]|)\d)(?:\-(?:25[0-5]|(?:2[0-4]|1\d|[1-9]|)\d))?)\.?){3}(?:(?:25[0-5]|(?:2[0-4]|1\d|[1-9]|)\d)(?:-(?:25[0-5]|(?:2[0-4]|1\d|[1-9]|)\d))?)$"></gs-item>
@@ -67,6 +67,9 @@
 
             <gs-form-group css="mt-2" name="field5" label="Password (ALT+CTRL+SHIFT)" type="password" reveal required></gs-form-group>
 
+            <gs-form-group css="m-1" name="description" label="Description" autocomplete="off" rows="5">
+            </gs-form-group>
+                        
             <gs-form-group selectable
                 css="mt-2" name="active" label="Status" description="test">
                 <gs-item value="true">Enabled</gs-item>

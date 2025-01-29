@@ -7,6 +7,7 @@ export * from "./style.mjs";
 export * from "./GSAbortController.mjs";
 export * from "./GSAdoptedEngine.mjs";
 export * from "./GSAttr.mjs";
+export * from "./GSBeep.mjs";
 export * from "./GSDynamicStyle.mjs";
 export * from "./GSCacheStyles.mjs";
 export * from "./GSCSSMap.mjs";

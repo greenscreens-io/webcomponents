@@ -16,6 +16,18 @@ export class GSFormElement extends GSElement {
     storage: {},
     disabled: { type: Boolean },
     data: { type: Object },
+
+    name: { reflect : true},
+    rel: { reflect : true},
+    acceptCharset : {reflect : true, attribute: 'accept-charset'},
+    autocapitalize: { reflect : true},
+    autocomplete: { reflect : true},
+
+    action: { reflect : true},
+    enctype: { reflect : true},
+    method: { reflect : true},
+    novalidate: { reflect : true, type: Boolean},
+    target: { reflect : true},
   }
 
   #formRef = createRef();
@@ -23,16 +35,29 @@ export class GSFormElement extends GSElement {
   constructor() {
     super();
     this.data = {};
+    this.disabled = false;
+    this.method = "dialog";
   }
 
   renderUI() {
     const me = this;
     return html`<form ${ref(me.#formRef)}
+      name="${ifDefined(me.name)}"
       dir="${ifDefined(me.direction)}"
       @change="${me.#onChange}"
       @submit="${me.submit}"
       @reset="${me.reset}"
-      method="dialog">
+      method="${me.method}"
+      
+      rel="${ifDefined(me.rel)}"
+      acceptCharset="${ifDefined(me.acceptCharset)}"
+      autocapitalize="${ifDefined(me.autocapitalize)}"
+      autocomplete="${ifDefined(me.autocomplete)}"
+      action="${ifDefined(me.action)}"
+      enctype="${ifDefined(me.enctype)}"
+      target="${ifDefined(me.target)}"
+
+      ?novalidate="${me.novalidate}">
       <slot></slot>
     </form>`;
   }
@@ -83,6 +108,7 @@ export class GSFormElement extends GSElement {
   async submit(e) {
     GSEvents.prevent(e);
     const me = this;
+    if (me.disabled) return;
     if (!me.validate()) return;
     const json = me.asJSON;
     await me.dataController?.write(json);
@@ -91,7 +117,7 @@ export class GSFormElement extends GSElement {
   }
 
   #childrens(shadow = false) {
-    return this.queryAll('input,select,output,textarea,gs-form-group', shadow);
+    return this.queryAll('input,select,output,textarea', shadow);
   }
 
   get #filterField() {
@@ -119,14 +145,17 @@ export class GSFormElement extends GSElement {
   }
 
   get asJSON() {
-    return GSDOM.toObject(this);
+    const data = {};
+    this.elements.forEach(field => GSDOM.fromElement2Object(field, data));    
+    return data;
   }
 
   set asJSON(data) {
     const me = this;
-    GSDOM.fromObject(me, data);
+    //me.form.reset(); do not use, create a circular calls
+    me.elements.forEach(field => GSDOM.fromObject2Element(field, data));    
     //me.#doFilter(me.#filterField);
-    return me.validate();
+    me.validate();
   }
 
   get isValid() {
@@ -154,7 +183,8 @@ export class GSFormElement extends GSElement {
     if (!isValid) me.reportValidity();
     const data = { type: 'valid', data: isValid, owner : me};
     isValid = me.onValidate(isValid);
-    if (isValid) me.emit('form', data, true, true);
+    data.isValid = isValid;
+    me.emit('form', data, true, true);
     return isValid;
   }
 
@@ -224,13 +254,13 @@ export class GSFormElement extends GSElement {
   }
 
   /**
-   * Initialy, feild might not be set just yet (if it is selectable),
+   * Initialy, field might not be set just yet (if it is selectable),
    * so we need to take valeu fro mgs-item definition
    * @param {*} field 
    * @returns 
    */
   #fieldValue(field) {
-    let value = field.value;
+    let value = field.tagName === 'GS-FORM-GROUP' ? field.field?.value : field.value;
     if (field.selectable && GSUtil.isNull(value)) {
       value = GSAttr.get(this.query('gs-item[selected]'), 'value');
     }

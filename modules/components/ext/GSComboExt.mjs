@@ -46,6 +46,11 @@ export class GSComboExt extends HTMLSelectElement {
         if (data) GSDOM.fromObject2Element(this, data);
     }
 
+    disconnectedCallback() {
+        GSEvents.deattachListeners(this);
+        super.disconnectedCallback();
+    }
+        
     validate() {
         const me = this;
         const isValid = me.checkValidity();
@@ -60,6 +65,13 @@ export class GSComboExt extends HTMLSelectElement {
     get owner() {
         const own = GSDOM.root(this);
         return GSDOM.unwrap(own);
+    }
+
+    /**
+     * Get parent GS-* component
+     */
+    get parentComponent() {
+        return GSDOM.parentAll(this).filter(x => x instanceof GSElement).next()?.value;
     }
 
     /**
@@ -111,6 +123,120 @@ export class GSComboExt extends HTMLSelectElement {
         seg.push('</option>')
 
         return seg.join(' ');
+    }
+
+
+    /**
+     * Generic component signal
+     * @param {Boolean} bubbles  Does buuble to upper nodes
+     * @param {Boolean} composed Does traverse from shadow DOM 
+     */
+    notify(bubbles = true, composed = false, data) {
+        this.emit('notify', data, bubbles, composed, true);
+    }
+
+    /**
+     * Send event
+     * @param {String} name 
+     * @param {Object} obj 
+     * @param {Boolean} bubbles 
+     * @param {Boolean} composed 
+     * @param {Boolean} cancelable 
+     */
+    emit(name, obj = '', bubbles = false, composed = false, cancelable = false) {
+        return GSEvents.send(this, name, obj, bubbles, composed, cancelable);
+    }
+
+    /**
+     * Wait for event to happen
+     * @async
+     * @param {String} name 
+     * @returns {Promise}
+     */
+    waitEvent(name = '', timeout = 0) {
+        return GSEvents.wait(this, name, timeout);
+    }
+
+    /**
+     * Listen once for triggered event
+     * @param {String} name  A name of the event
+     * @param {Function} func A callback function on event trigger
+     * @returns {Boolean}
+     */
+    once(name, func) {
+        return this.listen(name, func, true);
+    }
+
+    /**
+     * Alternative function for event listen
+     * @param {String} name  A name of the event
+     * @param {Function} func A callback function on event trigger
+     * @returns {Boolean}
+     */
+    on(name, func, once = false) {
+        return this.listen(name, func, once);
+    }
+
+    /**
+     * Alternative function for event unlisten
+     * @param {String} name  A name of the event
+     * @param {Function} func A callback function on event trigger
+     * @returns {Boolean}
+     */
+    off(name, func) {
+        return this.unlisten(name, func);
+    }
+
+    /**
+     * Prevent event firing up the DOM tree
+     * @param {Event} e 
+     */
+    prevent(e) {
+        GSEvents.prevent(e);
+    }
+
+    /**
+     * Attach event to this element
+     * @param {String} name  A name of the event
+     * @param {Function} func A callback function on event trigger
+     * @returns {Boolean}
+     */
+    listen(name, func, once = false) {
+        return this.attachEvent(this, name, func, once);
+    }
+
+    /**
+     * Remove event from this element
+     * @param {String} name  A name of the event
+     * @param {Function} func A callback function on event trigger
+     * @returns {Boolean}
+     */
+    unlisten(name, func) {
+        return this.removeEvent(this, name, func);
+    }
+
+    /**
+    * Generic event listener appender
+    * 
+    * @param {HTMLElement} el Element on which to monitor for named events
+    * @param {String} name Event name to watch for
+    * @param {Function} fn Event trigger callback
+    * @param {Boolean} once Listen only once
+    * @returns {Boolean} State if attachment was successful
+    */
+    attachEvent(el, name = '', fn, once = false) {
+        return GSEvents.attach(this, el, name, fn, once);
+    }
+
+    /**
+    * Generic event listener remove
+    * @param {HTMLElement} el Element on which to monitor for named events
+    * @param {String} name Event name to watch for
+    * @param {Function} fn Event trigger callback
+    * @returns {Boolean} State if attachment was successful	
+    */
+    removeEvent(el, name = '', fn) {
+        return GSEvents.remove(this, el, name, fn);
     }
 
 }

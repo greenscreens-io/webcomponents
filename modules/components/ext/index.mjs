@@ -7,3 +7,4 @@ export * from "./ReactiveInput.mjs";
 export * from "./GSComboExt.mjs";
 export * from "./GSDataListExt.mjs";
 export * from "./GSInputElement.mjs";
+export * from "./GSTextArea.mjs";

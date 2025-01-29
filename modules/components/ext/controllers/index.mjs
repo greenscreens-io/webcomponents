@@ -4,6 +4,7 @@
 
 export * from "./CopySelectController.mjs";
 export * from "./MaskController.mjs";
+export * from "./MultipatternController.mjs";
 export * from "./NumberController.mjs";
 export * from "./PasswordController.mjs";
 export * from "./TextController.mjs";

@@ -3,7 +3,7 @@
  */
 
 /**
- * Handle for input tpye password tosupport keyboard shortcut for password reveal.
+ * Handle for input tpye password to support keyboard shortcut for password reveal.
  */
 export class PasswordController {
 

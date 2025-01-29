@@ -7,52 +7,95 @@
  * @module components/ext/GSDataListExt
  */
 
-
 import { GSID } from "../../base/GSID.mjs";
 import { GSDOM } from "../../base/GSDOM.mjs";
-import { GSUtil } from "../../base/GSUtil.mjs";
 import { GSLoader } from "../../base/GSLoader.mjs";
+import { GSEvent } from "../../base/GSEvent.mjs";
 import { GSEvents } from "../../base/GSEvents.mjs";
+import { GSAttr } from "../../base/GSAttr.mjs";
 
 /**
- * Add JSON loader to datalist element
- * 
- * <datalist is="gs-ext-datalist" data="data.json">
+ * Add JSON loader to select element
+ * <textarea is="gs-ext-text"></textarea>
  * 
  * [{text:'', value:'' selected:true}]
  * 
  * @class
- * @extends {HTMLDataListElement}
+ * @extends {HTMLTextAreaElement}
  */
-export class GSDataListExt extends HTMLDataListElement {
+export class GSTextArea extends HTMLTextAreaElement {
 
     static {
-        customElements.define('gs-ext-datalist', GSDataListExt, { extends: 'datalist' });
-        Object.seal(GSDataListExt);
+        customElements.define('gs-ext-text', GSTextArea, { extends: 'textarea' });
+        Object.seal(GSTextArea);
     }
+
+    #processing;
 
     constructor() {
         super();
     }
 
-    static get observedAttributes() {
-        return ['data'];
-    }
-
     attributeChangedCallback(name, oldValue, newValue) {
-        //GSLog.error(null, e);`name:${name}, oldValue:${oldValue}, newValue:${newValue}`);
-        if (name === 'data') this.load(newValue);
+
     }
 
     connectedCallback() {
         GSID.setIf(this);
+        GSEvent
+        this.on('invalid', this.#onInvalid);
+        const data = this.form?.data;
+        if (data) GSDOM.fromObject2Element(this, data);
     }
 
     disconnectedCallback() {
         GSEvents.deattachListeners(this);
         super.disconnectedCallback();
     }
-        
+
+    async #onInvalid(e) {
+
+        const me = this;
+        if (me.#processing) return;
+
+        me.#processing = false;
+        if (me.block) me.focus();
+        if (me.beep) await GSBeep.beep(100, 1200, 150, 'triangle');
+        if (me.timeout) {
+            await GSUtil.timeout(me.timeout);
+            me.setCustomValidity(' ');
+        }
+        me.#processing = false;
+    }
+
+    get block() {
+        return GSAttr.getAsBool(this, 'block', false);
+    } 
+    
+    get beep() {
+        return GSAttr.getAsBool(this, 'beep', false);
+    } 
+
+    get timeout() {
+        return GSAttr.getAsNum(this, 'timeout', 0);
+    }
+
+    set block(val = false) {
+        GSAttr.setAsBool(this, 'block', val);
+    } 
+    
+    set beep(val = false) {
+        GSAttr.setAsBool(this, 'beep', val);
+    } 
+
+    set timeout(val = 0) {
+        return GSAttr.setAsNum(this, 'timeout', val);
+    }
+
+    get form() {
+        return this.closest('gs-form');
+    }
+
     get owner() {
         const own = GSDOM.root(this);
         return GSDOM.unwrap(own);
@@ -65,50 +108,19 @@ export class GSDataListExt extends HTMLDataListElement {
         return GSDOM.parentAll(this).filter(x => x instanceof GSElement).next()?.value;
     }
 
+    /**
+     * Find closest top element by CSS selector
+     * @param {String} query 
+     * @returns {HTMLElement}
+     */
+    closest(query = '') {
+        return GSDOM.closest(this, query);
+    }
 
     async load(url = '') {
         if (!url) return;
-        const data = await GSLoader.loadSafe(url, 'GET', null, true);
-        this.apply(data);
+        this.value = await GSLoader.loadSafe(url, 'GET', null, true);
     }
-
-    apply(data) {
-
-        if (!Array.isArray(data)) return false;
-
-        const me = this;
-
-        queueMicrotask(() => {
-
-            const list = [];
-            data.forEach(o => {
-                list.push(me.#objToHTML(o));
-            });
-
-            GSDOM.setHTML(me, list.join('\n'));
-        });
-        return true;
-    }
-
-    #objToHTML(o) {
-        const seg = ['<option'];
-
-        if (GSUtil.isString(o)) o = { value: o };
-
-        Object.entries(o).forEach(it => {
-            const key = it[0];
-            const val = it[1];
-            if ('text' === key) return;
-            if ('selected' === key) return seg.push(key);
-            seg.push(`${key}="${val}"`);
-        });
-
-        seg.push(o.text);
-        seg.push('>')
-
-        return seg.join(' ');
-    }
-
 
     /**
      * Generic component signal

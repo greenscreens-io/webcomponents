@@ -3,7 +3,7 @@
  */
 
 import { classMap, createRef, ref, html, unsafeHTML, ifDefined } from '../lib.mjs';
-import { inputType, InputTypes, numGT0, numGE0 } from '../properties/index.mjs';
+import { inputType, numGT0, numGE0, autocapitalize, autocorrect, autocomplete } from '../properties/index.mjs';
 import { GSElement } from '../GSElement.mjs';
 import { GSItem } from '../base/GSItem.mjs';
 import { GSUtil } from '../base/GSUtil.mjs';
@@ -29,19 +29,27 @@ export class GSFormGroupElement extends GSElement {
     layout: {},
     placement: {},
 
-    description: {},
     label: {},
-    placeholder: {},
+    description: {},
+    placeholder: {reflect: true},
+
     pattern: {},
     mask: {},
     
-    name: {},
+    form: {},
+    wrap: {},
+    spellcheck: {},
+
     type: { ...inputType },
+    name: {},
     list: {},
-    accept: {},
-    
-    lang: {},
-    default: { reflect: true },
+    accept: {},   
+    value: {},
+
+    lang: {reflect: true},
+    title: {reflect: true},
+    rows: { type: Number, reflect: true, hasChanged: numGT0 },
+    cols: { type: Number, reflect: true, hasChanged: numGT0 },
     step: { type: Number, reflect: true, hasChanged: numGT0 },
     min: { type: Number, reflect: true, hasChanged: numGE0 },
     max: { type: Number, reflect: true, hasChanged: numGT0 },
@@ -55,8 +63,10 @@ export class GSFormGroupElement extends GSElement {
     autocopy: { type: Boolean, reflect: true },
     autoselect: { type: Boolean, reflect: true },
 
-    autocapitalize: { type: Boolean, reflect: true },
-    autocomplete: { type: Boolean, reflect: true },
+    autocapitalize: { ...autocapitalize, reflect: true },
+    autocorrect: { ...autocorrect, reflect: true },
+    autocomplete: { reflect: true },
+
     autofocus: { type: Boolean, reflect: true },
     autoselect: { type: Boolean, reflect: true },
     disabled: { type: Boolean, reflect: true },
@@ -85,6 +95,8 @@ export class GSFormGroupElement extends GSElement {
     super();
     this.#validateAllowed();
     this.dynamicStyle(this.#styleID);
+    this.rows = 0;
+    this.cols = 0;
     this.type = 'text';
     this.placement = 'top';
     this.layout = 'horizontal';
@@ -98,6 +110,9 @@ export class GSFormGroupElement extends GSElement {
     const me = this;
     const form = GSDOM.closest(me, 'gs-form');
     me.layout = GSAttr.get(form, 'layout', me.layout);
+
+    if (!me.form && form) me.form = form.name;
+
     if (me.selectable) {
       me.#options = GSItem.proxify(me, GSFormGroupElement.#SELECTOPT);
     } else {
@@ -108,26 +123,9 @@ export class GSFormGroupElement extends GSElement {
     super.connectedCallback();
   }
 
-  firstUpdated() {
-    super.firstUpdated();
-    const me = this;
-    me.value = me.default;
-    if (!me.selectable && me.field) {
-      me.field.defaultValue = GSUtil.normalize(me.default);
-    }
-  }
-
-  updated() {
+  updated(changed) {
     const me = this;
     me.#onRange();
-    if (me.templateRef && !me.field) {
-      const field = GSDOM.formElements(me.renderRoot).pop();
-      me.#inputRef.value = field;
-      if (field) {
-        field.name = this.name;
-        me.attachEvent(field, 'change', me.#onChange.bind(me));
-      }
-    }
   }
 
   renderUI() {
@@ -139,14 +137,6 @@ export class GSFormGroupElement extends GSElement {
     }
   }
 
-  templateInjected() {
-    super.templateInjected();
-    const me = this;
-    const el = GSDOM.formElements(me, true).pop();
-    me.attachEvent(el, 'blur', me.#onBlur.bind(me));
-    me.attachEvent(el, 'input', me.#onRange.bind(me));
-    me.attachEvent(el, 'change', me.#onChange.bind(me));
-  }
 
   #renderFloating() {
     const me = this;
@@ -241,9 +231,6 @@ export class GSFormGroupElement extends GSElement {
 
     const me = this;
 
-    const tpl = me.query('template') || me.template;
-    if (tpl) return me.renderTemplate();
-
     const idattr = me.autoid ? me.name : undefined;
     const val = me.isFieldset ? me.value.split(',') : me.value;
 
@@ -254,6 +241,8 @@ export class GSFormGroupElement extends GSElement {
     }
 
     if (me.selectable) return me.#selectHTML(idattr, me.name, me.value);
+
+    if (me.#isTextArea) return me.#textArea(idattr, me.name, me.value);
 
     return me.#inputHTML(idattr, me.name, me.value);
   }
@@ -285,11 +274,10 @@ export class GSFormGroupElement extends GSElement {
 
     return html`<select ${ref(me.#inputRef)}
             id=${ifDefined(id)} 
-            @blur="${me.#onBlur.bind(me)}"
-            @input="${me.#onRange.bind(me)}"
             @change="${me.#onChange.bind(me)}"
         
             name="${name}"             
+            form="${ifDefined(me.form)}"
             class="${me.#cssField} ${me.cssField} ${me.#styleID}" 
 
             ?autofocus="${me.autofocus}"
@@ -300,6 +288,11 @@ export class GSFormGroupElement extends GSElement {
             ?disabled="${me.disabled}">
             ${me.#renderOptions()}
             </select>`;
+  }
+
+  get #isTextArea() {
+    const me = this;
+    return (me.rows > 0 || me.cols > 0) && me.type === 'text';
   }
 
   get #listHTML() {
@@ -313,27 +306,79 @@ export class GSFormGroupElement extends GSElement {
     return list;
   }
 
+  #textArea(id, name, value) {
+    const me = this;
+    me.#initStyle();
+    const placeholder = me.placeholder ? me.translate(me.placeholder) : null;
+    const title = me.title ? me.translate(me.title) : null;
+
+    return html`<textarea 
+            ${ref(me.#inputRef)}
+            id=${ifDefined(id)}     
+            lang="${ifDefined(me.lang)}"
+            minlength="${ifDefined(me.minLength)}"
+            maxlength="${ifDefined(me.maxLength)}"
+            cols="${me.cols}"
+            rows="${me.rows}"
+
+            ?block="${true}"
+            ?beep="${true}"
+            timeout="${2000}"
+
+            spellcheck="${ifDefined(me.spellcheck)}" 
+            wrap="${ifDefined(me.wrap)}" 
+            form="${ifDefined(me.form)}" 
+            name="${name}" 
+            value="${ifDefined(value)}"
+            placeholder="${ifDefined(placeholder)}"
+            title="${ifDefined(title)}"
+    
+            class="${me.#cssField} ${me.cssField} ${me.#styleID}" 
+
+            autocomplete="${ifDefined(me.autocomplete)}"
+            autocorrect="${ifDefined(me.autocorrect)}"
+            autocapitalize="${ifDefined(me.autocapitalize)}"
+
+            ?autofocus="${me.autofocus}"            
+            ?readonly="${me.readonly}"
+            ?required="${me.required}"
+            ?disabled="${me.disabled}"      
+      ></textarea>`;
+  }
+
   #inputHTML(id, name, value) {
     const me = this;
     const type = me.isSwitch ? 'checkbox' : me.type;
+    let title = me.isRange ? me.value : me.title;
+    title = title ? me.translate(me.title) : title;
+
+    const placeholder = me.placeholder ? me.translate(me.placeholder) : null;
+    const description = me.description ? me.translate(me.description) : null;
+    
     me.#initStyle();
 
     return html`<input is="gs-ext-input" 
             ${ref(me.#inputRef)}
             id=${ifDefined(id)} 
-            @blur="${me.#onBlur.bind(me)}"
             @input="${me.#onRange.bind(me)}"
             @change="${me.#onChange.bind(me)}"
         
             name="${name}" 
             type="${type}" 
+            form="${ifDefined(me.form)}"
             value="${ifDefined(value)}"
-    
+            title="${ifDefined(title)}"
+
+            ?block="${true}"
+            ?beep="${true}"
+            timeout="${2000}"
+
             class="${me.#cssField} ${me.cssField} ${me.#styleID}" 
 
-            placeholder="${ifDefined(me.translate(me.placeholder))}"
-            description="${ifDefined(me.translate(me.description))}"
+            placeholder="${ifDefined(placeholder)}"
+            description="${ifDefined(description)}"
 
+            .multipattern="${ifDefined(me.#patterns)}"
             mask="${ifDefined(me.mask)}"
             pattern="${ifDefined(me.pattern)}"
             list="${ifDefined(me.list)}"
@@ -346,11 +391,14 @@ export class GSFormGroupElement extends GSElement {
 
             minlength="${ifDefined(me.minLength)}"
             maxlength="${ifDefined(me.maxLength)}"
-            
+
+            autocomplete="${ifDefined(me.autocomplete)}"
+            autocorrect="${ifDefined(me.autocorrect)}"
+            autocapitalize="${ifDefined(me.autocapitalize)}"
+
             ?autofocus="${me.autofocus}"
             ?autocopy="${me.autocopy}"
             ?autoselect="${me.autoselect}"
-            ?autocomplete="${me.autocomplete}"
             ?multiple="${me.multiple}"
             ?checked="${me.checked}"
             ?readonly="${me.readonly}"
@@ -395,30 +443,14 @@ export class GSFormGroupElement extends GSElement {
     return GSUtil.isStringNonEmpty(this.icon);
   }
 
-  #onRange(e) {
-    const me = this;
-    if (me.isRange) {
-      const el = me.#ouptutRef.value;
-      if (el) el.innerHTML = me.value || '';
-      me.field.title = me.value;
-    }
-    me.emit('input', e);
+  #onRange(e) { 
+    this.emit('input', e);
   }
 
   #onChange(e) {
-    this.emit('change', e, true, true);
-  }
-
-  async #onBlur(e) {
-
     const me = this;
-    const el = me.field;
-
-    if (el.value.length === 0 || me.#patterns.length === 0) return;
-
-    await me.validate(true, 2000);
-
-    me.#onChange(e);
+    if (me.isRange) me.value = e.target?.value;
+    me.emit('change', e, true, true);
   }
 
   #validateAllowed() {
@@ -427,72 +459,9 @@ export class GSFormGroupElement extends GSElement {
     let list = Array.from(me.children).filter(el => el.slot && !slots.includes(el.slot));
     if (list.length > 0) throw new Error(`Custom element injection must contain slot="header|body|footer" attribute! Element: ${me.tagName}, ID: ${me.id}`);
     list = Array.from(me.children).filter(el => !el.slot);
-    const tagList = ['TEMPLATE', 'GS-ITEM', 'DATALIST'];
+    const tagList = ['GS-ITEM', 'DATALIST'];
     const allowed = GSDOM.isAllowed(list, tagList);
     if (!allowed) throw new Error(GSDOM.toValidationError(me, tagList));
-  }
-
-  async validate(focus = false, timeout = 0) {
-    const me = this;    
-    const el = me.field;
-    const isValid = me.checkValidity();
-
-    if (!isValid) {
-      if (focus) el.focus();
-      me.reportValidity();
-      if (timeout) {
-        await GSUtil.timeout(timeout);
-        el.setCustomValidity('');
-      }
-    }
-
-    return isValid;
-  }
-
-  checkValidity() {
-
-    const me = this;
-    const el = me.field;
-    let isValid = true;
-
-    if (!el) return true;
-
-    const def = InputTypes.filter(o => o.type === el.type).pop();
-    if (!def || def.ignore) return true;
-    
-    if (def.native) {
-      isValid = el.checkValidity();          
-    } else {
-      const val = GSUtil.normalize(me.field.value);
-
-      if (me.required && val.length === 0) {
-        isValid = true;
-      } else {
-        for (const r of me.#patterns) {
-          isValid = r.test(el?.value);
-          if (isValid) break;
-        }
-      }
-    }
-
-    const msg = isValid ? '' : me.invalidMessage;
-    el?.setCustomValidity(msg);
-
-    return isValid;
-  }
-
-  reportValidity() {
-    return this.field?.reportValidity();
-  }
-
-  get value() {
-    return this.field?.value;
-  }
-
-  set value(val) {
-    GSDOM.fromObject2Element(this.field, { [this.name]: val });
-    this.validate();
-    this.#onRange();
   }
 
   get isFloating() {
@@ -518,7 +487,7 @@ export class GSFormGroupElement extends GSElement {
   }
 
   get isChecked() {
-    return this.field.checked;
+    return this.field?.checked;
   }
 
   get isCheck() {

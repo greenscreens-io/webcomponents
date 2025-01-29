@@ -450,6 +450,7 @@ export class GSData {
      * @returns {*}
      */
 	static readFromObject(obj, name) {
+        if (obj?.hasOwnProperty(name)) return GSData.readFromProperty(obj, name);
 		return name ? name.split('.').reduce((a, v) => GSData.readFromProperty(a, v), obj) : undefined;
 	}
 	

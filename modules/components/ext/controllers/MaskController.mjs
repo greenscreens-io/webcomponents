@@ -35,7 +35,7 @@ export class MaskController {
   #keyDownCallback;
   #inputCallback;
   #focusCallback;
-  #blurCallback;
+  #changeCallback;
 
   constructor(host) {
     const me = this;
@@ -43,7 +43,7 @@ export class MaskController {
     me.#keyDownCallback = me.#onKeyDown.bind(me);
     me.#inputCallback = me.#format.bind(me);
     me.#focusCallback = me.#onFocus.bind(me);
-    me.#blurCallback = me.#onBlur.bind(me);
+    me.#changeCallback = me.#onChange.bind(me);
     host.addController(me);
   }
 
@@ -53,7 +53,7 @@ export class MaskController {
     me.#host.on('keydown', me.#keyDownCallback);
     me.#host.on('input', me.#inputCallback);
     me.#host.on('focus', me.#focusCallback);
-    me.#host.on('blur', me.#blurCallback);
+    me.#host.on('change', me.#changeCallback);
   }
 
   hostDisconnected() {
@@ -62,32 +62,33 @@ export class MaskController {
     me.#host.off('keydown', me.#keyDownCallback);
     me.#host.off('input', me.#inputCallback);
     me.#host.off('focus', me.#focusCallback);
-    me.#host.off('blur', me.#blurCallback);
+    me.#host.off('change', me.#changeCallback);
   }
 
   initRules() {
     const me = this;
     if (!me.pattern) return;
-    me.#slots = me.#builSlots();
+    me.#slots = me.#buildSlots();
     me.#prev = (j => Array.from(me.pattern, (c, i) => me.#slots.has(c) ? j = i + 1 : j))(0);
     me.#first = [...me.pattern].findIndex(c => me.#slots.has(c));
-    me.#accept = me.#builAccept();
+    me.#accept = me.#buildAccept();
     me.#toPattern();    
   }
   
   validate() {
     const me = this;
     me.setCustomValidity('');
-    me.#pattern.lastIndex = 0;
-    const isMatch = me.required ? me.#pattern.test(me.raw) : true;
-    const isValid = isMatch && me.checkValidity();
-    if (!isMatch) me.setCustomValidity('Data did not match pattern!');
+
+    const isValid = me.#host.checkValidity();
+    const isMatch = isValid && me.isMatch;
+
+    if (!isMatch) me.setCustomValidity('Data did not match mask!');
     if (!isValid) me.reportValidity();
     return isValid;
   }
 
-  checkValidity() {
-    return this.#host.checkValidity();
+  checkValidity(isValid) {    
+    return isValid && this.isMatch;  
   }
 
   setCustomValidity(val) {
@@ -143,26 +144,39 @@ export class MaskController {
     return this.#host.autoselect;
   }
 
+  get isMatch() {
+    const me = this;
+    
+    let isMatch = true;
+    if (me.#pattern) {
+      me.#pattern.lastIndex = 0;
+      isMatch = me.#pattern.test(me.raw);
+    }
+   
+    return isMatch;
+  }
+
   #onKeyDown(e) {
     this.#back = e.key === "Backspace";
   }
 
   #onFocus(e) {
     const me = this;
-    me.#format(e);
+    me.#format();
     if (me.autoselect) me.select();
   }
 
-  #onBlur(e) {
-    // me.value === me.pattern && (me.value = "");
-    this.validate();
+  #onChange(e) {
+    const me = this;
+    me.#format();
+    me.validate();
   }
 
   /**
    * If data-slots not defined, try to detect automatically
    * @returns 
    */
-  #builSlots() {
+  #buildSlots() {
     const me = this;
     let slots = me.dataset.slots;
     if (!slots) {
@@ -178,7 +192,7 @@ export class MaskController {
    * If data-accept not defined, try to detect automatically
    * @returns 
    */
-  #builAccept() {
+  #buildAccept() {
     const me = this;
     let accept = me.dataset.accept;
     if (!accept) {
@@ -206,10 +220,11 @@ export class MaskController {
     });
   }
 
-  #format(e) {
+  #format() {
     const me = this;
     const [i, j] = me.#range();
-    me.value = me.#clean(me.#host.raw).join``;
+    const val = me.#clean(me.#host.raw);
+    me.value = val.join``;
     me.setSelectionRange(i, j);
     me.#back = false;
   }
@@ -218,7 +233,7 @@ export class MaskController {
   #clean(input) {
     const me = this;
     input = input.match(me.#accept) || [];
-    return Array.from(me.pattern, c => input[0] === c || me.#slots.has(c) ? input.shift() || c : c);
+    return Array.from(me.pattern, (c, i) => input[i] === c || me.#slots.has(c) ? input.shift() || c : c);
   }
 
   #toPattern() {
@@ -235,7 +250,7 @@ export class MaskController {
 
     let cnt = 0;
     chars.forEach((v, i) => {
-      const m = maskType[v.toLowerCase()];
+      const m = me.#slots.has(v) ? maskType[v.toLowerCase()] : null;
       if (!m) {
         if (cnt > 0) masks.push(`{${++cnt}}`);
         cnt = 0;

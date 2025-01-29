@@ -52,7 +52,7 @@ export class GSAsbtractDialog extends GSDialogElement {
      * @param {*} data 
      */
 	open(data) {
-		this.#data = data;
+		//this.#data = data;
 		super.open();
 	}
 
