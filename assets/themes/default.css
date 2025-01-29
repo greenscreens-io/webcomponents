@@ -525,7 +525,8 @@ input:required:invalid:not(:focus) {
     animation: 1s linear 0s infinite normal none running blinker-warn;
 }
 
-input:invalid:not(:placeholder-shown):not(:focus) {
+input:invalid:not(:placeholder-shown):not(:focus),
+textarea:invalid:not(:placeholder-shown):not(:focus) {
     color: var(--bs-danger);
     animation: blinker-danger 1s linear infinite
 }
