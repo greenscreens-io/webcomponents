@@ -2,6 +2,9 @@
  * Copyright (C) 2015, 2025; Green Screens Ltd.
  */
 
+import { GSUtil } from "../../../base/GSUtil.mjs";
+
+
 /**
  * Handle field mask 
  */
@@ -40,6 +43,7 @@ export class MaskController {
   constructor(host) {
     const me = this;
     me.#host = host;
+    me.initRules();
     me.#keyDownCallback = me.#onKeyDown.bind(me);
     me.#inputCallback = me.#format.bind(me);
     me.#focusCallback = me.#onFocus.bind(me);
@@ -72,39 +76,37 @@ export class MaskController {
     me.#prev = (j => Array.from(me.pattern, (c, i) => me.#slots.has(c) ? j = i + 1 : j))(0);
     me.#first = [...me.pattern].findIndex(c => me.#slots.has(c));
     me.#accept = me.#buildAccept();
-    me.#toPattern();    
-  }
-  
-  validate() {
-    const me = this;
-    me.setCustomValidity('');
-
-    const isValid = me.#host.checkValidity();
-    const isMatch = isValid && me.isMatch;
-
-    if (!isMatch) me.setCustomValidity('Data did not match mask!');
-    if (!isValid) me.reportValidity();
-    return isValid;
+    me.#toPattern();
   }
 
-  checkValidity(isValid) {    
-    return isValid && this.isMatch;  
+  checkValidity() {  
+    const me = this;  
+    let isMatch = true;
+    if (me.isValid) {
+      isMatch = me.isEmpty || me.isMatch;
+      if (!isMatch) me.setCustomValidity('Mask not matched!');
+    }
+    return me.isValid && isMatch;
   }
 
   setCustomValidity(val) {
     return this.#host.setCustomValidity(val);
   }
-
-  reportValidity() {
-    return this.#host.reportValidity();
-  }
-
+    
   setSelectionRange(i, j) {
     this.#host.setSelectionRange(i, j);
   }
-  
+
   select() {
     this.#host.select();
+  }
+
+  get isEmpty() {
+    return GSUtil.isStringEmpty(this.raw);
+  }
+
+  get isValid() {
+    return this.#host.validity.valid;
   }
 
   get value() {
@@ -146,13 +148,13 @@ export class MaskController {
 
   get isMatch() {
     const me = this;
-    
+
     let isMatch = true;
     if (me.#pattern) {
       me.#pattern.lastIndex = 0;
       isMatch = me.#pattern.test(me.raw);
     }
-   
+
     return isMatch;
   }
 
@@ -169,7 +171,6 @@ export class MaskController {
   #onChange(e) {
     const me = this;
     me.#format();
-    me.validate();
   }
 
   /**
@@ -198,14 +199,14 @@ export class MaskController {
     if (!accept) {
       const maskType = MaskController.#maskType;
       accept = [...new Set(me.pattern)]
-      .map(v => maskType[v.toLowerCase()])
-      .filter(v => v);
+        .map(v => maskType[v.toLowerCase()])
+        .filter(v => v);
       if (accept.length > 0) {
         const tmp = {};
         accept.forEach(v => tmp[v.src] = v);
         accept = Object.values(tmp);
         return accept.length === 1 ? accept.pop() : accept;
-      } 
+      }
 
     }
     return new RegExp(accept || "\\d", "g");

@@ -18,6 +18,7 @@ export class ValidityController {
   #blurCallback;
   #changeCallback;
   #focusCallback;
+  #inputCallback;
 
   #processing;
 
@@ -29,6 +30,7 @@ export class ValidityController {
     me.#blurCallback = me.#onBlur.bind(me);
     me.#changeCallback = me.#onChange.bind(me);
     me.#focusCallback = me.#onFocus.bind(me);
+    me.#inputCallback = me.#onInput.bind(me);
     host.addController?.(me);
   }
 
@@ -38,6 +40,7 @@ export class ValidityController {
     me.#host.on?.('blur', me.#blurCallback);
     me.#host.on?.('focus', me.#focusCallback);
     me.#host.on?.('change', me.#changeCallback);
+    me.#host.on('input', me.#inputCallback);
   }
 
   hostDisconnected() {
@@ -47,6 +50,27 @@ export class ValidityController {
     me.#host.off?.('blur', me.#blurCallback);
     me.#host.off?.('focus', me.#focusCallback);
     me.#host.off?.('change', me.#changeCallback);
+    me.#host.off('input', me.#inputCallback);
+  }
+
+  reset() {
+    this.setCustomValidity('');
+    this.#togglUI(this.isValid);
+  }
+
+  async report() {    
+    const me = this;
+    if (me.#processing) return;
+    me.#processing = true;
+    me.reportValidity();
+    if (me.isVisible) {
+      if (me.block) me.focus();
+      if (me.beep) await me.#beep();
+    }
+    await GSUtil.timeout(me.timeout);
+    me.setCustomValidity(me.isValid ? '' : ' ');
+    me.#togglUI(me.isValid);
+    me.#processing = false;    
   }
 
   setCustomValidity(val) {
@@ -65,8 +89,8 @@ export class ValidityController {
     return this.#host.focus();
   }
 
-  get validity() {
-    return this.#host.validity;
+  get isValid() {
+    return this.#host.validity.valid;
   }
 
   get value() {
@@ -85,41 +109,40 @@ export class ValidityController {
     return this.#host.timeout;
   }
 
-  async #onInvalid(e) {
-    const me = this;
-    if (me.#processing) return;
+  get isVisible() {
+    return GSDOM.isVisible(this.#host);
+  }
 
-    me.#processing = true;
-    if (me.block) me.focus();
-    if (me.beep) await me.#beep();
-    if (me.timeout) {
-      await GSUtil.timeout(me.timeout);
-      me.setCustomValidity(me.validity.valid ? '' : ' ');
-    }
-    me.#processing = false;
+  #onInput(e) {
+    this.#processing = false;
+  }
+
+  #onFocus(e) {
+    this.#togglUI(this.isValid);
+  }
+
+  #onInvalid(e) {
+    this.report();
   }
 
   #onChange(e) {
     const me = this;
-    me.setCustomValidity('');
-    const isValid = me.checkValidity();
-    if (!isValid) me.reportValidity();
-    return isValid;
-  }
-
-  #onFocus(e) {
-    GSDOM.toggleClass(this.#host, 'is-invalid', !this.validity.valid);
+    if(me.checkValidity()) {
+      me.reset();
+    }
   }
 
   #onBlur(e) {
     const me = this;
-    me.#onFocus(e);
-    const isValid = me.validity.valid;
-
-    if (!isValid) {
-      if (me.block) me.focus();
-      if (me.beep) me.#beep();
+    if (me.isValid) {
+      me.reset();
+    } else {
+      me.checkValidity();
     }
+  }
+
+  #togglUI(isValid) {
+    GSDOM.toggleClass(this.#host, 'is-invalid', !isValid);
   }
 
   #beep() {

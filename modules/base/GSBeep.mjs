@@ -29,6 +29,7 @@ export class GSBeep {
     static beep(duration = 200, frequency = 440, volume = 1, type = 'sine') {
         return new Promise((resolve, reject) => {
             try{
+                if (!GSBeep.isAvailable) return resolve();
                 const context = new GSBeep.audioCtx();
                 const oscillatorNode = context.createOscillator();
                 const gainNode = context.createGain();
@@ -56,4 +57,8 @@ export class GSBeep {
         });
     }
 
+    static get isAvailable() {
+        const {isActive, hasBeenActive } =  navigator.userActivation;
+        return isActive || hasBeenActive;
+    }
 }

@@ -16,8 +16,6 @@ import { TextController } from './controllers/TextController.mjs';
 import { ListController } from './controllers/ListController.mjs';
 
 import { ReactiveInput } from './ReactiveInput.mjs';
-import { GSUtil } from '../../base/GSUtil.mjs';
-import { GSBeep } from '../../base/GSBeep.mjs';
 import { ValidityController } from './controllers/ValidityController.mjs';
 
 /**
@@ -73,41 +71,45 @@ export class GSInputElement extends ReactiveInput {
   willUpdate(changed) {
 
     super.willUpdate(changed);
+    const me = this;
 
-    if (changed.has('mask') && this.mask && this.type === 'text') {
-      this.placeholder = this.mask;
-      this.#maskController ??= new MaskController(this);
-      this.#maskController.initRules();
+    if (changed.has('mask') && me.mask && me.type === 'text') {
+      me.placeholder = me.mask;
+      me.#maskController ??= new MaskController(me);
     }
 
-    if (changed.has('multipattern') && this.multipattern) {
-      if (['text', 'password'].includes(this.type)) {
-        this.#multiPatternController ??= new MultipatternController(this);
+    if (changed.has('multipattern')) {
+      const isMulti = Array.isArray(me.multipattern) && me.multipattern.length > 0;
+      const isType = ['text', 'password'].includes(me.type);
+      if (isMulti && isType) {
+        me.#multiPatternController ??= new MultipatternController(me);
       }
     }
 
-    if (this.list) {
-      this.#listController ??= new ListController(this);
+    if (me.list) {
+      me.#listController ??= new ListController(me);
     }
 
-    switch (this.type) {
+    switch (me.type) {
       case 'text':
-        this.#textController ??= new TextController(this);
+        me.#textController ??= new TextController(me);
         break;
       case 'password':
-        this.#passwordController ??= new PasswordController(this);
+        me.#passwordController ??= new PasswordController(me);
         break;
       case 'number':
-        this.#numberController ??= new NumberController(this);
+        me.#numberController ??= new NumberController(me);
         break;
     }
   }
 
   firstUpdated(changed) {
     super.firstUpdated(changed);
-    if (this.autofocus) this.focus();    
-    const data = this.form?.data;
-    if (data) GSDOM.fromObject2Element(this, data);
+    const me = this;
+    if (me.autofocus) me.focus();    
+    const data = me.formComponent?.data;
+    if (data) GSDOM.fromObject2Element(me, data);
+    me.checkValidity();
   }
 
   /**
@@ -271,14 +273,20 @@ export class GSInputElement extends ReactiveInput {
 
   checkValidity() {
     const me = this;
-    const isValid = super.checkValidity();
-    const results = [];
-    if (me.#multiPatternController) results.push(me.#multiPatternController.checkValidity(isValid));
-    if (me.#maskController) results.push(me.#maskController.checkValidity(isValid));
-    return results.length > 0 ? results.filter(v => v).length === results.length : isValid;
+    me.#validityController.reset();
+    super.checkValidity();
+    me.#multiPatternController?.checkValidity();
+    me.#maskController?.checkValidity();
+    super.checkValidity();
+    return me.validity.valid;
   }
 
-  get form() {
+  reportValidity() {
+    super.reportValidity();
+    this.#validityController.report();
+  }
+
+  get formComponent() {
     return this.closest('gs-form');
   }
 

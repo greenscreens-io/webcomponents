@@ -83,6 +83,9 @@ export class GSFormGroupElement extends GSElement {
     cssLabel: { attribute: 'css-label' },
     cssField: { attribute: 'css-field' },
 
+    block: { type: Boolean },
+    beep: { type: Boolean },
+    timeout: { type: Number }
   }
 
   #styleID = GSID.id;
@@ -275,6 +278,7 @@ export class GSFormGroupElement extends GSElement {
     return html`<select ${ref(me.#inputRef)}
             id=${ifDefined(id)} 
             @change="${me.#onChange.bind(me)}"
+            @blur="${me.#onBlur.bind(me)}"
         
             name="${name}"             
             form="${ifDefined(me.form)}"
@@ -306,6 +310,18 @@ export class GSFormGroupElement extends GSElement {
     return list;
   }
 
+  get #isBlock() {
+    return this.block || this.parentComponent?.block || false;
+  }
+
+  get #isBeep() {
+    return this.beep || this.parentComponent?.beep || false;
+  }
+  
+  #timeout() {
+    return this.timeout || this.parentComponent?.timeout || 0;
+  }
+
   #textArea(id, name, value) {
     const me = this;
     me.#initStyle();
@@ -314,16 +330,20 @@ export class GSFormGroupElement extends GSElement {
 
     return html`<textarea  is="gs-ext-text" 
             ${ref(me.#inputRef)}
-            id=${ifDefined(id)}     
+            id=${ifDefined(id)}
+            @input="${me.#onRange.bind(me)}"
+            @change="${me.#onChange.bind(me)}"
+            @blur="${me.#onBlur.bind(me)}"
+            @invalid="${me.#onInvalid.bind(me)}"
             lang="${ifDefined(me.lang)}"
             minlength="${ifDefined(me.minLength)}"
             maxlength="${ifDefined(me.maxLength)}"
             cols="${me.cols}"
             rows="${me.rows}"
 
-            ?block="${true}"
-            ?beep="${true}"
-            timeout="${2000}"
+            ?block="${me.#isBlock}"
+            ?beep="${me.#isBeep}"
+            timeout="${me.#timeout()}"
 
             spellcheck="${ifDefined(me.spellcheck)}" 
             wrap="${ifDefined(me.wrap)}" 
@@ -362,6 +382,8 @@ export class GSFormGroupElement extends GSElement {
             id=${ifDefined(id)} 
             @input="${me.#onRange.bind(me)}"
             @change="${me.#onChange.bind(me)}"
+            @blur="${me.#onBlur.bind(me)}"
+            @invalid="${me.#onInvalid.bind(me)}"
         
             name="${name}" 
             type="${type}" 
@@ -369,9 +391,9 @@ export class GSFormGroupElement extends GSElement {
             value="${ifDefined(value)}"
             title="${ifDefined(title)}"
 
-            ?block="${true}"
-            ?beep="${true}"
-            timeout="${2000}"
+            ?block="${me.#isBlock}"
+            ?beep="${me.#isBeep}"
+            timeout="${me.#timeout()}"
 
             class="${me.#cssField} ${me.cssField} ${me.#styleID}" 
 
@@ -447,10 +469,18 @@ export class GSFormGroupElement extends GSElement {
     this.emit('input', e);
   }
 
+  #onBlur(e) {
+    this.emit('blur', e, true, true);
+  }
+
   #onChange(e) {
     const me = this;
     if (me.isRange) me.value = e.target?.value;
     me.emit('change', e, true, true);
+  }
+
+  #onInvalid(e) {
+    this.emit('invalid', e, true, true);
   }
 
   #validateAllowed() {

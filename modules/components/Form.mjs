@@ -28,6 +28,10 @@ export class GSFormElement extends GSElement {
     method: { reflect : true},
     novalidate: { reflect : true, type: Boolean},
     target: { reflect : true},
+
+    block: { type: Boolean },
+    beep: { type: Boolean },
+    timeout: { type: Number }
   }
 
   #formRef = createRef();
@@ -45,6 +49,8 @@ export class GSFormElement extends GSElement {
       name="${ifDefined(me.name)}"
       dir="${ifDefined(me.direction)}"
       @change="${me.#onChange}"
+      @blur="${me.#onBlur}"
+      @invalid="${me.#onInvalid}"
       @submit="${me.submit}"
       @reset="${me.reset}"
       method="${me.method}"
@@ -96,8 +102,6 @@ export class GSFormElement extends GSElement {
     const internal = e?.target === me.form;
 
     if (internal) {
-      // not required, form will reset on it's own
-      //me.elements.forEach(el => el.value = el.defaultValue);
       await me.dataController?.read(me.asJSON);
     } else {
       me.data = {};
@@ -116,19 +120,22 @@ export class GSFormElement extends GSElement {
     return me.emit('form', data, true, true, true);
   }
 
-  #childrens(shadow = false) {
-    return this.queryAll('input,select,output,textarea', shadow);
+  #button(type) {
+    return this.query(`button[type="${type}"]`, true);
   }
 
-  get #filterField() {
-    const me = this;
-    return me.elements.filter(el => el.name === me.dataset.gsfDisable).pop();
+  get submitButton() {
+    return this.#button('submit');
   }
-
+  
+  get resetButton() {
+    return this.#button('reset');
+  }
+  
   get form() {
     return this.#formRef.value;
   }
-
+  
   /**
   * Overide native to pickup all form elements, including ones in shadow dom
   */
@@ -159,20 +166,22 @@ export class GSFormElement extends GSElement {
   }
 
   get isValid() {
-    return this.#childrens(false)
-      .filter(el => GSDOM.isVisible(el))
-      .map(el => el.checkValidity())
-      .filter(v => v === false).length === 0;
+    return this.elements
+      .filter(el => !el.disabled)
+      .filter(el => !el.validity.valid).length === 0;
   }
 
   checkValidity() {
-    return this.isValid && this.form.checkValidity();
+    return this.form.checkValidity() && 
+    this.elements
+      .filter(el => !el.disabled)
+      .filter(el => !el.checkValidity()).length === 0;;
   }
 
   reportValidity() {
-    this.#childrens(false)
-      .filter(el => GSDOM.isVisible(el))
-      .filter(el => !el.checkValidity())
+    this.elements
+      .filter(el => !el.disabled)
+      .filter(el => !el.validity?.valid)
       .forEach(el => el.reportValidity() );
     return this.form.reportValidity();
   }
@@ -181,10 +190,9 @@ export class GSFormElement extends GSElement {
     const me = this;
     let isValid = me.checkValidity();
     if (!isValid) me.reportValidity();
-    const data = { type: 'valid', data: isValid, owner : me};
     isValid = me.onValidate(isValid);
-    data.isValid = isValid;
-    me.emit('form', data, true, true);
+    me.#toggle(isValid);
+    me.#notify(isValid);
     return isValid;
   }
 
@@ -208,7 +216,19 @@ export class GSFormElement extends GSElement {
     GSLog.error(this, e);
   }
 
+  /**
+   * Called only if field is valid and changed
+   * @param {HTMLInputElement|HTMLSelectElement|HTMLTextAreaElement} el 
+   */
   onFieldChange(el) {
+
+  }
+
+  /**
+   * Called only if field is invalid
+   * @param {HTMLInputElement|HTMLSelectElement|HTMLTextAreaElement} el 
+   */
+  onFieldInvalid(el) {
 
   }
 
@@ -217,17 +237,61 @@ export class GSFormElement extends GSElement {
     return sts;
   }
 
+  #onInvalid(e) {
+    const me = this;
+    me.prevent(e);
+    const field = me.#findField(e);
+    if(field) me.onFieldInvalid(field);
+    me.#toggle(false);
+    me.#notify(false);
+  }
+
+  #onBlur(e) {
+    const me = this;
+    me.prevent(e);
+    me.#toggle(me.isValid);
+    me.#notify(me);
+  }
+
   #onChange(e) {
+    const me = this;
+    me.prevent(e);
+    const field = me.#findField(e);
+    if (field) {
+      me.#doFilter(field);
+      me.handle(e);
+      if (field.validity.valid) me.onFieldChange(field);
+    }
+    me.#toggle(me.isValid);
+  }
+
+  #notify(isValid = false) {
+    const me = this;
+    const data = { type: 'valid', data: isValid, owner : this};
+    this.emit('form', data, true, true);    
+  }
+
+  #toggle(isValid = false) {
+    const me = this;
+    const btn = me.submitButton;
+    if (btn) btn.disabled = !isValid;
+  }  
+
+  #findField(e) {
+    if (!(e instanceof Event)) return;
     const me = this;
     let field = e.target;
     if (e.composed) {
       field = e.composedPath()
-        .filter(el => el.matches?.('input,select,textarea,gs-form-group'))
+        .filter(el => me.#isField(el))
         .pop();
     }
-    me.#doFilter(field);
-    me.handle(e);
-    if (me.validate()) me.onFieldChange(e.detail);
+    if(!me.#isField(field)) field = me.#findField(e.detail);
+    return me.#isField(field) ? field : null;
+  }
+
+  #isField(el) {
+    return el?.matches?.('input,select,textarea');
   }
 
   /**
@@ -265,6 +329,15 @@ export class GSFormElement extends GSElement {
       value = GSAttr.get(this.query('gs-item[selected]'), 'value');
     }
     return value;
+  }
+
+  #childrens(shadow = false) {
+    return this.queryAll('input,select,output,textarea', shadow);
+  }
+
+  get #filterField() {
+    const me = this;
+    return me.elements.filter(el => el.name === me.dataset.gsfDisable).pop();
   }
 
   static {

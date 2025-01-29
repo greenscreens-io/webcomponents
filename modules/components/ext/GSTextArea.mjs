@@ -78,6 +78,17 @@ export class GSTextArea extends HTMLTextAreaElement {
         this.#controllers?.delete(controller);
     }
 
+    checkValidity() {
+        const me = this;
+        me.#validityController.reset();
+        return super.checkValidity();
+    }
+
+    reportValidity() {
+        super.reportValidity();
+        this.#validityController.report();
+    }
+
     get block() {
         return this.hasAttribute('block');
     }
@@ -94,7 +105,7 @@ export class GSTextArea extends HTMLTextAreaElement {
         GSAttr.toggle(this, 'block', val);
     }
 
-    set beep(val = false) {        
+    set beep(val = false) {
         GSAttr.toggle(this, 'beep', val);
     }
 

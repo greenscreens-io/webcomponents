@@ -9,48 +9,36 @@ export class MultipatternController {
 
   #host;
 
-  #changeCallback;
-
   constructor(host) {
     const me = this;
     me.#host = host;
-    me.#changeCallback = me.#onChange.bind(me);
     host.addController(me);
   }
 
   hostConnected() {
-    const me = this;
-    me.#host.on('change', me.#changeCallback);
   }
 
   hostDisconnected() {
     const me = this;
     me.#host.removeController(me);
-    me.#host.off('change', me.#changeCallback);
   }
   
-  validate() {
-    const me = this;
-    me.setCustomValidity('');
-
-    const isValid = me.#host.checkValidity();
-    const isMatch = isValid && me.isMatch;
-
-    if (!isMatch) me.setCustomValidity('Data did not match pattern!');
-    if (!isValid) me.reportValidity();
-    return isValid;
-  }
-
-  checkValidity(isValid) {    
-    return isValid && this.isMatch;  
+  checkValidity() {    
+    const me = this;  
+    let isMatch = true;
+    if (me.isValid) {
+      isMatch = me.isEmpty || me.isMatch;
+      if (!isMatch) me.setCustomValidity('Pattern not matched!');
+    }
+    return me.isValid && isMatch;
   }
 
   setCustomValidity(val) {
     return this.#host.setCustomValidity(val);
   }
 
-  reportValidity() {
-    return this.#host.reportValidity();
+  get isValid() {
+    return this.#host.validity.valid;
   }
 
   get value() {
@@ -89,11 +77,6 @@ export class MultipatternController {
     }
    
     return isMatch;
-  }
-
-  #onChange(e) {
-    const me = this;
-    me.validate();
   }
 
 }  
