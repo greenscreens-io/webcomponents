@@ -76,7 +76,7 @@ export class GSInputElement extends ReactiveInput {
     const me = this;   
     if (me.#processing) return;
 
-    me.#processing = false;
+    me.#processing = true;
     if (me.block) me.focus();
     if (me.beep) await GSBeep.beep(100, 1200, 150, 'triangle');
     if (me.timeout) {

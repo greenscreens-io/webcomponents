@@ -13,6 +13,7 @@ import { GSLoader } from "../../base/GSLoader.mjs";
 import { GSEvent } from "../../base/GSEvent.mjs";
 import { GSEvents } from "../../base/GSEvents.mjs";
 import { GSAttr } from "../../base/GSAttr.mjs";
+import { GSBeep } from "../../base/GSBeep.mjs";
 
 /**
  * Add JSON loader to select element
@@ -44,6 +45,7 @@ export class GSTextArea extends HTMLTextAreaElement {
         GSID.setIf(this);
         GSEvent
         this.on('invalid', this.#onInvalid);
+        this.on('change', this.#onChange);
         const data = this.form?.data;
         if (data) GSDOM.fromObject2Element(this, data);
     }
@@ -53,12 +55,20 @@ export class GSTextArea extends HTMLTextAreaElement {
         super.disconnectedCallback();
     }
 
+    #onChange() {
+        const me = this;
+        me.setCustomValidity('');
+        const isValid = me.checkValidity();
+        if (!isValid) me.reportValidity();
+        return isValid;
+    }
+
     async #onInvalid(e) {
 
         const me = this;
         if (me.#processing) return;
 
-        me.#processing = false;
+        me.#processing = true;
         if (me.block) me.focus();
         if (me.beep) await GSBeep.beep(100, 1200, 150, 'triangle');
         if (me.timeout) {
@@ -69,24 +79,24 @@ export class GSTextArea extends HTMLTextAreaElement {
     }
 
     get block() {
-        return GSAttr.getAsBool(this, 'block', false);
-    } 
-    
+        return this.hasAttribute('block');
+    }
+
     get beep() {
-        return GSAttr.getAsBool(this, 'beep', false);
-    } 
+        return this.hasAttribute('beep');
+    }
 
     get timeout() {
         return GSAttr.getAsNum(this, 'timeout', 0);
     }
 
     set block(val = false) {
-        GSAttr.setAsBool(this, 'block', val);
-    } 
-    
-    set beep(val = false) {
-        GSAttr.setAsBool(this, 'beep', val);
-    } 
+        GSAttr.toggle(this, 'block', val);
+    }
+
+    set beep(val = false) {        
+        GSAttr.toggle(this, 'beep', val);
+    }
 
     set timeout(val = 0) {
         return GSAttr.setAsNum(this, 'timeout', val);

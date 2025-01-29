@@ -312,7 +312,7 @@ export class GSFormGroupElement extends GSElement {
     const placeholder = me.placeholder ? me.translate(me.placeholder) : null;
     const title = me.title ? me.translate(me.title) : null;
 
-    return html`<textarea 
+    return html`<textarea  is="gs-ext-text" 
             ${ref(me.#inputRef)}
             id=${ifDefined(id)}     
             lang="${ifDefined(me.lang)}"
