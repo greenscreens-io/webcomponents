@@ -179,8 +179,14 @@ export class ElementNavigationController {
   }
 
   onFocusIn(e) {
+    if (!e.target.isNav) return;
     const me = this;
-    me.#focus(e.target)
+    if(e.relatedTarget?.isNav) {
+      me.#focus(e.target)
+    } else {
+      me.selected?.focus();
+    }
+
   }
 
   onClick(e) {
@@ -196,6 +202,7 @@ export class ElementNavigationController {
 
   onKeyDown(e) {
     const me = this;
+    if (!e.target.isNav) return;
     switch (e.code) {
       case 'ArrowUp':
       case 'ArrowLeft':
@@ -211,6 +218,7 @@ export class ElementNavigationController {
 
   onKeyUp(e) {
     const me = this;
+    if (!e.target.isNav) return;
     switch (e.code) {
       case 'Space':
       case 'Enter':
