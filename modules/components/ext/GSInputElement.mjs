@@ -18,6 +18,7 @@ import { ListController } from './controllers/ListController.mjs';
 import { ReactiveInput } from './ReactiveInput.mjs';
 import { GSUtil } from '../../base/GSUtil.mjs';
 import { GSBeep } from '../../base/GSBeep.mjs';
+import { ValidityController } from './controllers/ValidityController.mjs';
 
 /**
  * Extended HTMLInputElement with controllers support
@@ -48,42 +49,25 @@ export class GSInputElement extends ReactiveInput {
   #numberController;
   #textController;
   #listController;
-
-  #processing;
+  #validityController;
 
   constructor() {
     super();
-    this.#processing = false;
     this.block = false;
     this.beep = false;
     this.timeout = 0;
     this.#copyselect = new CopySelectController(this);
+    this.#validityController = new ValidityController(this);
   }
 
   connectedCallback() {
     super.connectedCallback();
     if (this.isBindable) this.binded();
-    this.on('invalid', this.#onInvalid);
   }
 
   disconnectedCallback() {
     GSEvents.deattachListeners(this);
     super.disconnectedCallback();
-  }
-
-  async #onInvalid(e) {    
-    
-    const me = this;   
-    if (me.#processing) return;
-
-    me.#processing = true;
-    if (me.block) me.focus();
-    if (me.beep) await GSBeep.beep(100, 1200, 150, 'triangle');
-    if (me.timeout) {
-      await GSUtil.timeout(me.timeout);
-      me.setCustomValidity(' ');
-    }
-    me.#processing = false;
   }
 
   willUpdate(changed) {

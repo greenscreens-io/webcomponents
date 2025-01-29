@@ -14,6 +14,8 @@ import { GSEvent } from "../../base/GSEvent.mjs";
 import { GSEvents } from "../../base/GSEvents.mjs";
 import { GSAttr } from "../../base/GSAttr.mjs";
 import { GSBeep } from "../../base/GSBeep.mjs";
+import { CopySelectController } from "./controllers/CopySelectController.mjs";
+import { ValidityController } from "./controllers/ValidityController.mjs";
 
 /**
  * Add JSON loader to select element
@@ -31,10 +33,16 @@ export class GSTextArea extends HTMLTextAreaElement {
         Object.seal(GSTextArea);
     }
 
-    #processing;
+    #isConnected = false;
+    #controllers = undefined;
+
+    #copyselect;
+    #validityController;
 
     constructor() {
         super();
+        this.#copyselect = new CopySelectController(this);
+        this.#validityController = new ValidityController(this);
     }
 
     attributeChangedCallback(name, oldValue, newValue) {
@@ -42,40 +50,33 @@ export class GSTextArea extends HTMLTextAreaElement {
     }
 
     connectedCallback() {
-        GSID.setIf(this);
-        GSEvent
-        this.on('invalid', this.#onInvalid);
-        this.on('change', this.#onChange);
-        const data = this.form?.data;
-        if (data) GSDOM.fromObject2Element(this, data);
+        const me = this;
+        GSID.setIf(me);
+        const data = me.form?.data;
+        if (data) GSDOM.fromObject2Element(me, data);
+        me.#controllers?.forEach((c) => c.hostConnected?.());
+        me.#isConnected = true;
     }
 
     disconnectedCallback() {
-        GSEvents.deattachListeners(this);
+        const me = this;
+        me.#isConnected = false;
+        me.#controllers?.forEach((c) => c.hostDisconnected?.());
+        GSEvents.deattachListeners(me);
         super.disconnectedCallback();
     }
 
-    #onChange() {
+    addController(controller) {
+        // if (!(controller instanceof ReactiveController)) throw new Error('Argument not instance of ReactiveController');
         const me = this;
-        me.setCustomValidity('');
-        const isValid = me.checkValidity();
-        if (!isValid) me.reportValidity();
-        return isValid;
+        (me.#controllers ??= new Set()).add(controller);
+        if (me.#isConnected) {
+            controller.hostConnected?.();
+        }
     }
 
-    async #onInvalid(e) {
-
-        const me = this;
-        if (me.#processing) return;
-
-        me.#processing = true;
-        if (me.block) me.focus();
-        if (me.beep) await GSBeep.beep(100, 1200, 150, 'triangle');
-        if (me.timeout) {
-            await GSUtil.timeout(me.timeout);
-            me.setCustomValidity(' ');
-        }
-        me.#processing = false;
+    removeController(controller) {
+        this.#controllers?.delete(controller);
     }
 
     get block() {

@@ -56,6 +56,8 @@ export class ReactiveInput extends HTMLInputElement {
     #hasUpdated = false;
     #isUpdatePending = false;
 
+    #isConnected = false;
+
     /**
      * Returns a list of attributes corresponding to the registered properties.
     */
@@ -152,9 +154,11 @@ export class ReactiveInput extends HTMLInputElement {
         const me = this;
         me.enableUpdating(true);
         me.#controllers?.forEach((c) => c.hostConnected?.());
+        me.#isConnected = true;
     }
 
     disconnectedCallback() {
+        this.#isConnected = false;
         this.#controllers?.forEach((c) => c.hostDisconnected?.());
     }
 
@@ -178,7 +182,7 @@ export class ReactiveInput extends HTMLInputElement {
         // if (!(controller instanceof ReactiveController)) throw new Error('Argument not instance of ReactiveController');
         const me = this;
         (me.#controllers ??= new Set()).add(controller);
-        if (me.isConnected) {
+        if (me.#isConnected) {
             controller.hostConnected?.();
         }
     }

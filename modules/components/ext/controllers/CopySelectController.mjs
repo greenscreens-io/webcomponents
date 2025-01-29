@@ -19,20 +19,20 @@ export class CopySelectController {
     me.#host = host;
     me.#clickCallback = me.#onClick.bind(me);
     me.#copyCallback = me.#onCopy.bind(me);
-    host.addController(me);
+    host.addController?.(me);
   }
 
   hostConnected() {
     const me = this;
-    me.#host.on('click', me.#clickCallback);
-    me.#host.on('copy', me.#copyCallback);
+    me.#host.on?.('click', me.#clickCallback);
+    me.#host.on?.('copy', me.#copyCallback);
   }
 
   hostDisconnected() {
     const me = this;
-    me.#host.removeController(me);
-    me.#host.off('click', me.#clickCallback);
-    me.#host.off('copy', me.#copyCallback);
+    me.#host.removeController?.(me);
+    me.#host.off?.('click', me.#clickCallback);
+    me.#host.off?.('copy', me.#copyCallback);
   }
 
   #onCopy() {
