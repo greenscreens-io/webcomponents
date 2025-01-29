@@ -50,7 +50,6 @@ export class GSDataListExt extends HTMLDataListElement {
 
     disconnectedCallback() {
         GSEvents.deattachListeners(this);
-        super.disconnectedCallback();
     }
         
     get owner() {

@@ -10,6 +10,7 @@
 import { GSID } from "../../base/GSID.mjs";
 import { GSDOM } from "../../base/GSDOM.mjs";
 import { GSLoader } from "../../base/GSLoader.mjs";
+import { GSEvents } from "../../base/GSEvents.mjs";
 
 /**
  * Add JSON loader to select element
@@ -48,7 +49,6 @@ export class GSComboExt extends HTMLSelectElement {
 
     disconnectedCallback() {
         GSEvents.deattachListeners(this);
-        super.disconnectedCallback();
     }
         
     validate() {

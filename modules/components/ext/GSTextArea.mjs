@@ -63,7 +63,6 @@ export class GSTextArea extends HTMLTextAreaElement {
         me.#isConnected = false;
         me.#controllers?.forEach((c) => c.hostDisconnected?.());
         GSEvents.deattachListeners(me);
-        super.disconnectedCallback();
     }
 
     addController(controller) {

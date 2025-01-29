@@ -2,7 +2,6 @@
  * Copyright (C) 2015, 2025; Green Screens Ltd.
  */
 
-import { GSAttr } from "../../../base/GSAttr.mjs";
 import { GSBeep } from "../../../base/GSBeep.mjs";
 import { GSDOM } from "../../../base/GSDOM.mjs";
 import { GSUtil } from "../../../base/GSUtil.mjs";
