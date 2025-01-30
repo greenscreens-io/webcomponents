@@ -192,9 +192,17 @@ export class GSDOM {
 	}
 
 	/**
+	 * Check if given element is of type HTMLSelectElement
+	 * @returns {Boolean}
+	 */
+	static isSelect(el) {
+		return el instanceof HTMLSelectElement;
+	}
+
+	/**
 	 * Check if given element is of type HTMLSlotElement
 	 * @returns {Boolean}
-	 */	
+	 */
 	static isSlotElement(el) {
 		return el instanceof HTMLSlotElement;
 	}
@@ -679,11 +687,11 @@ export class GSDOM {
 		switch (el.type) {
 			case 'datetime-local':
 			case 'number':
-					val = el.value ? el.valueAsNumber : el.value;
-					break;
+				val = el.value ? el.valueAsNumber : el.value;
+				break;
 			case 'select-multiple':
-					val = Array.from(el.selectedOptions).map(o => o.value);
-					break;
+				val = Array.from(el.selectedOptions).map(o => o.value);
+				break;
 			case 'checkbox':
 				if (el.hasAttribute('value') && el.value) {
 					val = el.checked ? el.value : null;
@@ -693,13 +701,13 @@ export class GSDOM {
 				break;
 			default:
 				val = el.value;
-			}
-
-			if(GSUtil.isNull(val) && defaults) {
-				val = el.defaultValue;
-			}
-			return val;
 		}
+
+		if (GSUtil.isNull(val) && defaults) {
+			val = el.defaultValue;
+		}
+		return val;
+	}
 
 	/**
 	 * Get value from form element
@@ -757,7 +765,7 @@ export class GSDOM {
 			.filter(el => el.name)
 			.filter(el => el.dataset.ignore !== 'true')
 			.filter(el => invalid ? true : el.checkValidity())
-			.forEach(el => GSDOM.fromElement2Object(el, params, defaults) );
+			.forEach(el => GSDOM.fromElement2Object(el, params, defaults));
 		return params;
 	}
 
@@ -826,14 +834,14 @@ export class GSDOM {
 		const props = GSDOM.allProperties(own);
 		Array.from(own.attributes).forEach(v => {
 			const type = props[v.name]?.type;
-			switch(type) {
-				case Boolean :
+			switch (type) {
+				case Boolean:
 					obj[v.name] = own.hasAttribute(v.name);
 					break;
-				case Number :
+				case Number:
 					obj[v.name] = GSAttr.getAsNum(own, v.name);
 					break;
-				default:					
+				default:
 					obj[v.name] = v.value;
 					break;
 			}
@@ -1086,10 +1094,42 @@ export class GSDOM {
 	 */
 	static templateRef(host) {
 		if (!host) return;
-		if(host.tagName === 'GS-TEMPLATE') return host.src;
+		if (host.tagName === 'GS-TEMPLATE') return host.src;
 		return host.template || host.query?.('template', false);
-	  }
+	}
+
+	/**
+	 * Reset form element
+	 * @param {*} element 
+	 * @returns 
+	 */
+	static reset(element) {
+		if(GSDOM.isFormElement(element)) {
+			if (!GSDOM.resetSelect(element)) {
+				element.dataset.typed = false;
+				element.value = element.defaultValue;
+				GSDOM.#dispatch(element);
+				return true;	
+			}
+		} 		
+	}
+
+	/**
+	 * Reset select element to default value
+	 * @param {HTMLSelectElement} element 
+	 */
+	static resetSelect(element) {
+		if (GSDOM.isSelect(element)) {
+			Array.from(element.options).forEach(el => el.selected = el.hasAttribute('selected'));
+			GSDOM.#dispatch(element);
+			return true;
+		}
+	}
 	
+	static #dispatch(element) {
+		element.dispatchEvent(new Event('change', { bubbles: true, composed: true }));
+	}
+
 	static {
 		Object.seal(GSDOM);
 		globalThis.GSDOM = GSDOM;

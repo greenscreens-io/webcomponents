@@ -61,8 +61,8 @@ export class GSAsbtractDialog extends GSDialogElement {
      */
     afterOpen() {
         const me = this;
+        me.reset(me.#data);
         if (GSUtil.isJson(me.#data)) {
-            me.reset(me.#data);
             me.emit('change');
         }
     }

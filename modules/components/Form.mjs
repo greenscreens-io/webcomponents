@@ -35,6 +35,7 @@ export class GSFormElement extends GSElement {
   }
 
   #formRef = createRef();
+  #lastState = undefined;
 
   constructor() {
     super();
@@ -46,6 +47,7 @@ export class GSFormElement extends GSElement {
   renderUI() {
     const me = this;
     return html`<form ${ref(me.#formRef)}
+      id="${ifDefined(me.name)}"
       name="${ifDefined(me.name)}"
       dir="${ifDefined(me.direction)}"
       @change="${me.#onChange}"
@@ -95,6 +97,7 @@ export class GSFormElement extends GSElement {
   templateInjected() {
     const me = this;
     me.#doFilter(me.#filterField);
+    me.invalid[0]?.focus();
 	}  
 
   async reset(e) {
@@ -102,6 +105,7 @@ export class GSFormElement extends GSElement {
     const internal = e?.target === me.form;
 
     if (internal) {
+      me.elements.forEach(el => GSDOM.reset(el));
       await me.dataController?.read(me.asJSON);
     } else {
       me.data = {};
@@ -151,6 +155,10 @@ export class GSFormElement extends GSElement {
     return this.elements;
   }
 
+  get invalid() {
+    return this.inputs.filter(el => !el.validity.valid);
+  }
+
   get asJSON() {
     const data = {};
     this.elements.forEach(field => GSDOM.fromElement2Object(field, data));    
@@ -161,7 +169,7 @@ export class GSFormElement extends GSElement {
     const me = this;
     //me.form.reset(); do not use, create a circular calls
     me.elements.forEach(field => GSDOM.fromObject2Element(field, data));    
-    //me.#doFilter(me.#filterField);
+    me.#doFilter(me.#filterField);
     me.validate();
   }
 
@@ -193,6 +201,7 @@ export class GSFormElement extends GSElement {
     isValid = me.onValidate(isValid);
     me.#toggle(isValid);
     me.#notify(isValid);
+    me.invalid[0]?.focus();
     return isValid;
   }
 
@@ -267,8 +276,10 @@ export class GSFormElement extends GSElement {
 
   #notify(isValid = false) {
     const me = this;
-    const data = { type: 'valid', data: isValid, owner : this};
-    this.emit('form', data, true, true);    
+    if (me.#lastState === isValid) return;
+    me.#lastState = isValid;
+    const data = { type: 'valid', data: isValid, owner : me};
+    me.emit('form', data, true, true);    
   }
 
   #toggle(isValid = false) {

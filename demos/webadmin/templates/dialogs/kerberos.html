@@ -1,4 +1,4 @@
-<gs-form slot="body" css="flex-fill" data-gsf-disable="sso" data-gsf-value="false">
+<gs-form beep block slot="body" css="flex-fill" data-gsf-disable="sso" data-gsf-value="false">
 	    
 	<gs-form-group css="m-1" name="sso" label="Status" autocomplete="off" selectable required
 	    description="Enable Single Sign On. IBM system must be configured to use Kerberos for signon.">
@@ -12,7 +12,7 @@
 	    description="Kerberos V5 service. If empty, auto discovery is used. DNS SRV must be properly set. Useful if multiple KDC services used.">
 	</gs-form-group>
 	
-	<gs-form-group css="m-1" name="ssoSPN" label="SPN" autocomplete="off" list="spn"
+	<gs-form-group css="m-1" name="ssoSPN" label="SPN" autocomplete="off" list="spn" required
 	    description="SPN name for this service.">
 		<datalist slot="footer" id="spn" is="gs-ext-datalist"></datalist>
 	</gs-form-group>

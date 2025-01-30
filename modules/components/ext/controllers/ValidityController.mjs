@@ -20,7 +20,7 @@ export class ValidityController {
   #focusCallback;
   #inputCallback;
 
-  #processing;
+  #processing;  
 
   constructor(host) {
     const me = this;
@@ -65,12 +65,12 @@ export class ValidityController {
     me.reportValidity();
     if (me.isVisible) {
       if (me.block) me.focus();
-      if (me.beep) await me.#beep();
+      if (me.beep && me.isTyped) await me.#beep();
     }
     await GSUtil.timeout(me.timeout);
     me.setCustomValidity(me.isValid ? '' : ' ');
     me.#togglUI(me.isValid);
-    me.#processing = false;    
+    me.#processing = false;
   }
 
   setCustomValidity(val) {
@@ -87,6 +87,10 @@ export class ValidityController {
 
   focus() {
     return this.#host.focus();
+  }
+  
+  get isTyped() {
+    return GSUtil.asBool(this.#host.dataset.typed);
   }
 
   get isValid() {
@@ -114,6 +118,7 @@ export class ValidityController {
   }
 
   #onInput(e) {
+    this.#host.dataset.typed = true;
     this.#processing = false;
   }
 

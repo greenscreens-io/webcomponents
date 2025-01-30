@@ -42,9 +42,11 @@ export class GSComboExt extends HTMLSelectElement {
     }
 
     connectedCallback() {
-        GSID.setIf(this);
-        const data = this.form?.data;
-        if (data) GSDOM.fromObject2Element(this, data);
+        const me = this;
+        GSID.setIf(me);
+        const data = me.form?.data;
+        if (data) GSDOM.fromObject2Element(me, data);
+        me.on('reset', me.#onReset);
     }
 
     disconnectedCallback() {
@@ -72,6 +74,10 @@ export class GSComboExt extends HTMLSelectElement {
      */
     get parentComponent() {
         return GSDOM.parentAll(this).filter(x => x instanceof GSElement).next()?.value;
+    }
+
+    reset() {
+        GSDOM.resetSelect(this);
     }
 
     /**
@@ -239,5 +245,8 @@ export class GSComboExt extends HTMLSelectElement {
         return GSEvents.remove(this, el, name, fn);
     }
 
+    #onReset(e) {
+        this.reset();
+    }
 }
 

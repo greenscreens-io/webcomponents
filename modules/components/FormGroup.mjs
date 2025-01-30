@@ -111,7 +111,7 @@ export class GSFormGroupElement extends GSElement {
   
   connectedCallback() {
     const me = this;
-    const form = GSDOM.closest(me, 'gs-form');
+    const form = me.formComponent;
     me.layout = GSAttr.get(form, 'layout', me.layout);
 
     if (!me.form && form) me.form = form.name;
@@ -311,15 +311,15 @@ export class GSFormGroupElement extends GSElement {
   }
 
   get #isBlock() {
-    return this.block || this.parentComponent?.block || false;
+    return this.block || this.formComponent?.block || false;
   }
 
   get #isBeep() {
-    return this.beep || this.parentComponent?.beep || false;
+    return this.beep || this.formComponent?.beep || false;
   }
   
   #timeout() {
-    return this.timeout || this.parentComponent?.timeout || 0;
+    return this.timeout || this.formComponent?.timeout || 0;
   }
 
   #textArea(id, name, value) {
@@ -562,6 +562,10 @@ export class GSFormGroupElement extends GSElement {
 
   get field() {
     return this.#inputRef.value;
+  }
+
+  get formComponent() {
+    return GSDOM.closest(this, 'gs-form');
   }
 
   static {
