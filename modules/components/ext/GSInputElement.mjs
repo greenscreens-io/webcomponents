@@ -64,7 +64,7 @@ export class GSInputElement extends ReactiveInput {
   }
 
   disconnectedCallback() {
-    GSEvents.deattachListeners(this);
+    GSEvents.detachListeners(this);
     super.disconnectedCallback();
   }
 
@@ -284,6 +284,10 @@ export class GSInputElement extends ReactiveInput {
   reportValidity() {
     super.reportValidity();
     this.#validityController.report();
+  }
+
+  reset() {
+    GSDOM.reset(this);
   }
 
   get formComponent() {

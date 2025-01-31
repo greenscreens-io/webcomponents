@@ -76,6 +76,13 @@ export class GSTreeReader extends GSReadWrite {
     }
 
     /**
+     * Reset the tree data
+     */
+    resetData() {
+        this.#data = TreeNode.root;
+    }
+
+    /**
      * Register generic handler under unique name.
      * @param {string} name Unique handler name
      * @returns {GSTreeReader} Data handler instance

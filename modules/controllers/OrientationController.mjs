@@ -24,7 +24,7 @@ export class OrientationController {
     
     hostDisconnected() {
       const me = this;
-      OrientationController.#hosts.delete(me.#host);
+      OrientationController.#hosts.delete(me);
       me.#host.removeController(me);      
       me.#host = null;
     }
@@ -40,4 +40,4 @@ export class OrientationController {
     static {
       screen.orientation.addEventListener('change', OrientationController.#onOrientation);
     }
-}  
+}

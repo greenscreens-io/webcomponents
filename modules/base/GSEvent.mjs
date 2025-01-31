@@ -41,12 +41,7 @@ export class GSEvent extends EventTarget {
      */
     on(type = '', listener, timeout = 0, abortable = false) {
         if (!type) return reject('Event undefined!');
-        let controller = null;
-        if (abortable instanceof AbortController) {
-            controller = abortable;
-        } else {
-            controller = abortable ? new GSAbortController(timeout) : null;
-        }
+        const controller = abortable instanceof AbortController ? abortable : (abortable ? new GSAbortController(timeout) : null);
         const signal = controller || timeout == 0 ? controller?.signal : AbortSignal.timeout(timeout);
         this.addEventListener(type, listener, { signal: signal });
         return controller || signal;
@@ -70,11 +65,7 @@ export class GSEvent extends EventTarget {
         wrap.type = type;
         wrap.listener = listener;
         wrap.timeout = timeout;
-        if (abortable instanceof AbortController) {
-            wrap.controller = abortable;
-        } else {
-            wrap.controller = abortable ? new GSAbortController(timeout) : null;
-        }
+        wrap.controller = abortable instanceof AbortController ? abortable : (abortable ? new GSAbortController(timeout) : null);
         wrap.signal = wrap.controller || timeout == 0 ? wrap.controller?.signal : AbortSignal.timeout(timeout);
         me.addEventListener(type, wrap, { once: true, signal: wrap.signal });
         return wrap.controller || wrap.signal;
@@ -150,8 +141,10 @@ export class GSEvent extends EventTarget {
     removeEventListener(type, listener) {
         const me = this;
         const list = me.#list(type, listener);
-        list.forEach(o => super.removeEventListener(o.type, o.listener))
-        list.forEach(o => me.#listeners.delete(o));
+        list.forEach(o => {
+            super.removeEventListener(o.type, o.listener);
+            me.#listeners.delete(o);
+        });
     }
 
     static {

@@ -212,4 +212,11 @@ export class GSAbstractReadWrite extends GSEvent {
         throw new Error('Extend base GSAbstractReadWrite to implement write operation');
     }
 
+    /**
+     * Reset the abstract read/write handler
+     */
+    reset() {
+        this.#processors = null;
+    }
+
 }

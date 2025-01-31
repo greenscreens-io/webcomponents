@@ -124,6 +124,14 @@ class GSReadWriteRegistryImpl extends GSEvent {
         return me.find(id);
     }
 
+    /**
+     * Reset the registry
+     */
+    resetRegistry() {
+        this.#handlers.clear();
+        this.#map.clear();
+    }
+
     #verify(obj) {
         //if (!(obj instanceof GSAbstractReadWrite)) throw new Error('Invalid parameter type.');
     }

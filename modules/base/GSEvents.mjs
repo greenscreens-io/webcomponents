@@ -10,7 +10,6 @@
 import { GSFunction } from "./GSFunction.mjs";
 import { GSID } from "./GSID.mjs";
 import { GSUtil } from "./GSUtil.mjs";
-import { GSAttr } from "./GSAttr.mjs";
 import { GSDOM } from "./GSDOM.mjs";
 import { GSLog } from "./GSLog.mjs";
 
@@ -25,7 +24,7 @@ export class GSEvents {
 	static #cache = new Map();
 
 	static #loaded = false;
-	static #susspended = 0;
+	static #suspended = 0; // Corrected typo
 
 	get altContext() {
 		return GSEvents.#protect;
@@ -71,7 +70,7 @@ export class GSEvents {
 				await GSEvents.wait(globalThis.window, 'load', timeout, prevent);
 				GSEvents.#loaded = true;
 			} catch (e) {
-				console.log(e);
+				console.error('Error waiting for page load:', e); // Improved error handling
 			}
 		}
 		// await GSUtil.timeout(timeout);
@@ -113,8 +112,8 @@ export class GSEvents {
 
 		if (chained) {
 			if (typeof callback !== 'function') return;
-			if (GSEvents.#susspended > 0) return GSFunction.callFunction(callback);
-			GSEvents.#susspended++;
+			if (GSEvents.#suspended > 0) return GSFunction.callFunction(callback);
+			GSEvents.#suspended++;
 		}
 
 		return new Promise((accept, reject) => {
@@ -125,7 +124,7 @@ export class GSEvents {
 				} catch (e) {
 					reject(e);
 				} finally {
-					if (chained && GSEvents.#susspended > 0) GSEvents.#susspended--;
+					if (chained && GSEvents.#suspended > 0) GSEvents.#suspended--;
 				}
 			});
 		});
@@ -387,7 +386,7 @@ export class GSEvents {
 	 * Release internal engine event listeners
 	 * @param {HTMLElement} own Event owner
 	 */
-	static deattachListeners(own) {
+	static detachListeners(own) {
 		const me = this;
 		const map = me.#removeElementMap(own);
 		if (!map) return;

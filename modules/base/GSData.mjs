@@ -17,7 +17,7 @@ import { GSAttr } from "./GSAttr.mjs";
  */
 export class GSData {
 
-    static PROPERTIES = { name: {}, type: {}, format: {}, currency: {}, locale: {}, extract: {}, key: { type: Boolean } };
+    static PROPERTIES = { name: {}, type: {}, format: {}, currency: {}, language: {}, extract: {}, key: { type: Boolean } };
 
     /**
      * Removes duplicates from list
@@ -72,14 +72,14 @@ export class GSData {
 
     /**
      * Convert data to format by given definition.
-     * @param {object} cfg {name:'field_name' , type:'date', format:'d/m/y', currency:'eur', locale:'hr', extract:'REGEX'}
+     * @param {object} cfg {name:'field_name' , type:'date', format:'d/m/y', currency:'eur', language:'hr', extract:'REGEX'}
      * @param {*} val 
      * @returns 
      */
     static format(cfg, val) {
 
         const type = GSData.#toType(cfg, val);
-        const locale = cfg.locale || GSUtil.locale;
+        const language = cfg.language || GSUtil.language;
         const rule = GSUtil.toRegex(cfg.extract, 'g');
         val = rule ? val.match(rule)[0] : val;
 
@@ -96,23 +96,23 @@ export class GSData {
             case 'date':
                 if (val instanceof Date) return val;
                 const fmt = GSUtil.asBool(cfg.format) ? undefined : cfg.format;
-                if (GSUtil.isString(val)) return GSDate.parse(val, fmt, locale);
-                return val && val != 0 ? new GSDate(val).format(fmt, locale) : val;
+                if (GSUtil.isString(val)) return GSDate.parse(val, fmt, language);
+                return val && val != 0 ? new GSDate(val).format(fmt, language) : val;
             case 'string':
             case 'text':
                 if (val instanceof Date) {
-                    const fmt = cfg.format || GSUtil.getDateFormat(locale);
-                    return new GSDate(val).format(fmt, locale);
+                    const fmt = cfg.format || GSUtil.getDateFormat(language);
+                    return new GSDate(val).format(fmt, language);
                 };
                 break;
             case 'boolean':
                 return GSUtil.asBool(val, false);
             case 'number':
-                return GSUtil.asNum(val, val, locale);
+                return GSUtil.asNum(val, val, language);
             case 'currency':
                 if (GSUtil.isString(val)) val = GSUtil.asNum(val);
                 const opt = { style: 'currency', currency: cfg.currency };
-                return new Intl.NumberFormat(locale, opt).format(val);
+                return new Intl.NumberFormat(language, opt).format(val);
         }
 
         return val;
@@ -238,11 +238,11 @@ export class GSData {
         }
     }
 
-    static matchDate(val, filter, locale) {
+    static matchDate(val, filter, language) {
 
         if (typeof filter === 'string') {
             const value = '' + filter;
-            const local = val.toLocaleDateString(locale);
+            const local = val.toLocaleDateString(language);
             const iso = val.toISOString();
             return local.includes(value) || iso.includes(value);
         }
@@ -258,7 +258,7 @@ export class GSData {
                 return GSData.matchNumber(val.getTime(), filter.value.getTime(), filter.op);
         }
 
-        return GSData.matchDate(val, '' + filter.value, filter.locale);
+        return GSData.matchDate(val, '' + filter.value, filter.language);
     }
 
     /**
@@ -463,6 +463,15 @@ export class GSData {
 	static objectPathExist(obj, name) {
         return GSData.readFromObject(obj, name) !== undefined;
 	}
+
+    /**
+     * Create a deep clone of an object
+     * @param {Object} obj 
+     * @returns {Object}
+     */
+    static deepClone(obj) {
+        return JSON.parse(JSON.stringify(obj));
+    }
 
     static {
         Object.seal(GSData);

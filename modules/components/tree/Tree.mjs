@@ -215,7 +215,6 @@ export class GSTreeElement extends GSElement {
   }
 
   #onClick(e) {
-
     const isIcon = e.target.closest('gs-icon')?.dataset.type === 'state';
     const el = e.target.closest('gs-tree-item');
     if (!el.node) return;
@@ -223,7 +222,7 @@ export class GSTreeElement extends GSElement {
     const me = this;
 
     if (me.multiselect) {
-      if (isIcon) el.select(!el.selected);
+      if (isIcon) el.toggleSelection();
     } else {
       el.select(true);
     }

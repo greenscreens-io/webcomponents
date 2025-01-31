@@ -67,8 +67,8 @@ export class GSAttr {
 	 */
 	static get(el, name = '', val = '') {
 		if (!GSAttr.isHTMLElement(el)) return val;
-		if (!GSUtil.isInstance(el)) return undefined;
-		const v = el.getAttribute(name) || val;
+		if (!GSUtil.isInstance(el)) return val;
+		const v = el.getAttribute(name) ?? val;
 		return GSUtil.normalize(v);
 	}
 
@@ -235,7 +235,7 @@ export class GSAttr {
 				const multi = tmp[prop]?.multi === true;
 				
 				prop = tmp[prop]?.attribute || prop;
-				let val = target.hasAttribute(prop) ? GSAttr.get(target, prop) : target[prop];
+				const val = target.hasAttribute(prop) ? GSAttr.get(target, prop) : target[prop];
 
 				if (GSFunction.isFunction(val)) return val.bind(target);
 				

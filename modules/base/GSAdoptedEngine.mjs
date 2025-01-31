@@ -140,9 +140,9 @@ export class GSAdoptedEngine {
   
   /**
    * Filter style and link(css) elements which will be shared
-   * with all web componentes. Filter only those marked with data-adoptable
+   * with all web components. Filter only those marked with data-adoptable
    * @param {HTMLElement} el 
-   * @returns {Boolean} Return true if monotired element is selected for further processing
+   * @returns {Boolean} Return true if monitored element is selected for further processing
    */
   static #onMonitorFilter(el) {
     return (Boolean(el.dataset?.adoptable))
@@ -182,7 +182,7 @@ export class GSAdoptedEngine {
   }
 
   /**
-   * Observe DOM tree from mutations
+   * Observe DOM tree for mutations
    * @param {HTMLElement} owner Root element to watch DOM tree from 
    */
   static observe(owner) {
@@ -195,4 +195,4 @@ export class GSAdoptedEngine {
     this.#init();
   }
 
-}  
+}

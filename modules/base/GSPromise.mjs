@@ -85,9 +85,9 @@ export class GSPromise {
     }
 
 	/**
-	 * Execute array of promisses sequentially
-	 * @param {Arrayy<Promise>} ps 
-	 * @returns 
+	 * Execute array of promises sequentially
+	 * @param {Array<Promise>} ps 
+	 * @returns {Promise}
 	 */
 	static sequential(ps) {
 		if (!Array.isArray(ps)) ps = [];

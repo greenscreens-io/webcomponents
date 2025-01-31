@@ -121,10 +121,14 @@ export class GSChartElement extends GSElement {
 
     async #render() {
         const me = this;
-        const options = await GSLoader.loadSafe(me.config, 'GET', null, true, {});
-        const data = await GSLoader.loadSafe(me.url, 'GET', null, true, []);
-        me.data = data;
-        me.options = options;
+        try {
+            const options = await GSLoader.loadSafe(me.config, 'GET', null, true, {});
+            const data = await GSLoader.loadSafe(me.url, 'GET', null, true, []);
+            me.data = data;
+            me.options = options;
+        } catch (error) {
+            GSLog.error(null, error);
+        }
     }
 
     #renderData(data, options) {
@@ -137,8 +141,12 @@ export class GSChartElement extends GSElement {
 
         if (me.#chart) return me.updateChart(opt);
 
-        const ctx = me.canvas.getContext('2d');
-        me.#chart = new GSChartElement.#Chart(ctx, opt);
+        const ctx = me.canvas?.getContext('2d');
+        if (ctx) {
+            me.#chart = new GSChartElement.#Chart(ctx, opt);
+        } else {
+            GSLog.error(null, 'Failed to get canvas context');
+        }
     }
 
     async #waitInit() {

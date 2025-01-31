@@ -34,7 +34,7 @@ export class GSFormPanelElement extends GSElement {
     return html`<gs-form ${ref(me.#formRef)}
       ?disabled=${me.disabled} 
       storage="${ifDefined(me.formStorage)}" 
-      .locale="${me.locale}"
+      .language="${me.language}"
       .rtl="${me.rtl}"
       .css="${me.css}"
       .theme="${me.theme}"
@@ -48,7 +48,7 @@ export class GSFormPanelElement extends GSElement {
       .orientation="${me.orientation}"
       .protocol="${me.protocol}">
       <slot>
-        ${repeat(me.data, (r) => html`<gs-form-group .data=${r} locale="${ifDefined(me.locale)}" ></gs-form-group>`)}
+        ${repeat(me.data, (r) => html`<gs-form-group .data=${r} language="${ifDefined(me.language)}" ></gs-form-group>`)}
       </slot>
     </gs-form>`;
   }

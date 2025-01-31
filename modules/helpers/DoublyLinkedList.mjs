@@ -31,7 +31,7 @@ list.size;                      // 0
 */
 
 /**
- * Node data holder
+ *  Linear data structure following doubly linked list order of operations.
  */
 export class Node {
 
@@ -103,12 +103,11 @@ export class DoublyLinkedList {
      * @returns 
      */
     insertAt(index, value, safe) {
-
         if (!this.#validate(index, safe)) return false;
 
         const previousNode = this.#nodes[index - 1] || null;
         const nextNode = this.#nodes[index] || null;
-        const node = create(value, nextNode, previousNode);
+        const node = this.create(value, nextNode, previousNode);
 
         if (previousNode) previousNode.next = node;
         if (nextNode) nextNode.previous = node;

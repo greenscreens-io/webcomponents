@@ -15,7 +15,8 @@ export class GSNavItemElement extends GSElement {
     icon: {},
     disabled: { type: Boolean },
     autofocus: { type: Boolean },
-    active: { type: Boolean, reflect: true }
+    active: { type: Boolean, reflect: true },
+    tooltip: {} // Add tooltip property
   }
 
   #refEl = createRef();
@@ -94,7 +95,8 @@ export class GSNavItemElement extends GSElement {
      ${ref(me.#refEl)}
      class="nav-link ${classMap(obj)}"
      href="${ifDefined(me.url)}" 
-     target="${ifDefined(me.target)}">
+     target="${ifDefined(me.target)}"
+     title="${ifDefined(me.tooltip)}"> 
         ${me.#first} 
         ${me.#second}
       </a>`;

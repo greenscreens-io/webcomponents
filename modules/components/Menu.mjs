@@ -197,7 +197,7 @@ export class GSMenuElement extends GSElement {
                 .data=${el.items} 
                 ?dark=${me.dark} 
                 ?reverse="${me.reverse}" 
-                locale="${ifDefined(me.locale)}" 
+                language="${ifDefined(me.language)}" 
                 data-submenu="true">
             </gs-menu>
         </li>`;
@@ -213,7 +213,7 @@ export class GSMenuElement extends GSElement {
                     ${dataset(el, false)}
                     url="${el.url}"
                     title="${el.name}" 
-                    locale="${ifDefined(this.locale)}" 
+                    language="${ifDefined(this.language)}" 
                     icon="${ifDefined(el.icon)}" 
                     text="${ifDefined(el.color)}"
                     data-gs-target="${ifDefined(el.target || 'self')}"

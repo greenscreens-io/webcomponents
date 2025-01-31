@@ -202,7 +202,7 @@ export class GSFormGroupElement extends GSElement {
   #renderTooltip() {
     const me = this;
     const tgt = me.#isIcon ? '@parent' : `[name='${me.name}']`;
-    return me.description ? html`<gs-tooltip local locale="${ifDefined(me.locale)}" placement="${me.placement}" title="${me.description}" target=${ifDefined(tgt)}></gs-tooltip>` : '';
+    return me.description ? html`<gs-tooltip local language="${ifDefined(me.language)}" placement="${me.placement}" title="${me.description}" target=${ifDefined(tgt)}></gs-tooltip>` : '';
   }
 
   #renderInfo() {

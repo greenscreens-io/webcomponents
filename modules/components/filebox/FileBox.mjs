@@ -35,6 +35,7 @@ export class GSFileBoxElement extends GSElement {
         title: {},
         accept: {},
         filter: {},
+        maxFileSize: { reflect: true, attribute: 'max-file-size', type: Number }, // New property
     }
 
     #listEl = createRef();
@@ -49,6 +50,7 @@ export class GSFileBoxElement extends GSElement {
         this.title = GSFileBoxElement.TITLE;
         this.filter = '^image\/(gif|png|jpeg)$'
         this.directory = false;
+        this.maxFileSize = 0; // Default to 0, meaning no limit
     }
 
     renderUI() {
@@ -166,10 +168,15 @@ export class GSFileBoxElement extends GSElement {
             ? await GSAttachment.traverse(transferred, me.directory)
             : GSAttachment.from(transferred);
 
-        const accepted = me.emit('accept', { attachments }, true, false, true);
-        if (accepted && attachments.length) {
-            me.#accept(attachments);
-            me.emit('accepted', { attachments }, true);
+        // Filter out files that exceed the maxFileSize
+        const validAttachments = me.maxFileSize > 0 
+            ? attachments.filter(a => a.file.size <= me.maxFileSize)
+            : attachments;
+
+        const accepted = me.emit('accept', { attachments: validAttachments }, true, false, true);
+        if (accepted && validAttachments.length) {
+            me.#accept(validAttachments);
+            me.emit('accepted', { attachments: validAttachments }, true);
         }
     }
 

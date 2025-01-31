@@ -19,11 +19,11 @@ export class GSDate extends Date {
     static DEFAULT_FORMAT = 'YYYY-MM-DDTHH:mm:ssZ';
     static REGEX_FORMAT = /\[([^\]]+)]|Y{1,4}|M{1,4}|D{1,2}|d{1,4}|H{1,2}|h{1,2}|a|A|m{1,2}|s{1,2}|Z{1,2}|SSS/g
 
-    #locale = navigator.locale;
+    #language = navigator.language;
 
-    format(val = GSDate.DEFAULT_FORMAT, locale) {
+    format(val = GSDate.DEFAULT_FORMAT, language) {
         const me = this;
-        me.locale = locale;
+        me.language = language;
         const obj = me.asJSON();
         return val.replace(GSDate.REGEX_FORMAT, (match, val) => val || obj[match]);
     }
@@ -52,12 +52,12 @@ export class GSDate extends Date {
         return days;
     }
 
-    get locale() {
-        return this.#locale;
+    get language() {
+        return this.#language;
     }
 
-    set locale(val) {
-        this.#locale = val || navigator.language;
+    set language(val) {
+        this.#language = val || navigator.language;
     }
 
     get year() {
@@ -270,9 +270,9 @@ export class GSDate extends Date {
         }
     }
 
-    static monthList(short = false, locale = navigator.locale, capitalize = true) {
+    static monthList(short = false, language = navigator.language, capitalize = true) {
         const tmp = new GSDate();
-        tmp.locale = locale;
+        tmp.language = language;
         tmp.setMonth(0);
         const days = [];
         let val = null;
@@ -286,9 +286,9 @@ export class GSDate extends Date {
         return days;
     }
 
-    static dayList(short = false, locale = navigator.locale, capitalize = true) {
+    static dayList(short = false, language = navigator.language, capitalize = true) {
         const tmp = new GSDate();
-        tmp.locale = locale;
+        tmp.language = language;
         const mondayFirst = tmp.#isMondayFirst();
         const offset = mondayFirst ? 1 : 0;
         tmp.setDate(tmp.getDate() - tmp.getDay() + offset);
@@ -306,7 +306,7 @@ export class GSDate extends Date {
 
     #isMondayFirst() {
         // TODO Firefox does not support it
-        return new Intl.Locale(this.#locale)?.weekInfo?.firstDay === 1;
+        return new Intl.Locale(this.#language)?.weekInfo?.firstDay === 1;
     }
 
     #capitalize(val = '') {
@@ -314,7 +314,7 @@ export class GSDate extends Date {
     }
 
     #toLocale(opt) {
-        return this.toLocaleString(this.#locale, opt);
+        return this.toLocaleString(this.#language, opt);
     }
 
     #formatHour(size) {
@@ -341,8 +341,8 @@ export class GSDate extends Date {
         return `${seg1}${seg2}:${seg3}`;
     }
 
-    static parse(value, format, locale) {
-        format = format || GSUtil.getDateFormat(locale);
+    static parse(value, format, language) {
+        format = format || GSUtil.getDateFormat(language);
         const regex = GSDate.#getFormattedDateRegex(format);
         return GSDate.#parseFormattedDate(value, regex);
     }
@@ -373,6 +373,15 @@ export class GSDate extends Date {
         if (d !== date.getDate()) return null;
 
         return isNaN(date.valueOf()) ? null : date;
+    }
+
+    /**
+     * Check if a year is a leap year
+     * @param {number} year 
+     * @returns {Boolean}
+     */
+    static isLeapYear(year) {
+        return (year % 4 === 0 && year % 100 !== 0) || (year % 400 === 0);
     }
 
     static {

@@ -237,7 +237,7 @@ export class GSTableElement extends GSElement {
     let mask = '';
     const hasSub = cfg.childElementCount > 0;
     const isDate = cfg.columnType === 'date';
-    if (isDate) mask = cfg.format || GSUtil.getDateFormat(cfg.locale || GSUtil.locale);
+    if (isDate) mask = cfg.format || GSUtil.getDateFormat(cfg.language || GSUtil.language);
     const css = `${GSUtil.normalize(me.cssFilter)} ${GSUtil.normalize(cell.cssFilter)}`; 
 
     if (hasSub && cfg.fixed) {
@@ -337,7 +337,7 @@ export class GSTableElement extends GSElement {
     const isDate = el.type === 'date';
     const val = isDate ? el.valueAsDate : el.value;
     const cfg = this.#config[el.index];
-    return { name: el.name, value: val, locale : cfg?.locale };
+    return { name: el.name, value: val, language : cfg?.language };
   }
 
   #onFilter(e) {

@@ -327,8 +327,8 @@ export class GSAttributeHandler {
         }
     }
 
-    deattach(name = 'click') {
-        //GSEvents.deattachListeners(this.#host);
+    detach(name = 'click') {
+        //GSEvents.detachListeners(this.#host);
         const me = this;
         GSEvents.off(me.#host, null, name, me.#callback);
         me.#active = false;

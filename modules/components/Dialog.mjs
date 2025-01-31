@@ -127,7 +127,7 @@ export class GSDialogElement extends GSElement {
     return html`<gs-button  ${ref(me.#btnConfirmRef)} 
       @click="${me.#onConfirm.bind(me)}" 
       icon="${ifDefined(me.iconConfirm)}"
-      locale="${ifDefined(me.locale)}"
+      language="${ifDefined(me.language)}"
       .disabled="${me.disabled}"  
       css="${ifDefined(me.cssConfirm)}" 
       color="${ifDefined(me.colorConfirm)}" 
@@ -141,7 +141,7 @@ export class GSDialogElement extends GSElement {
     return html`<gs-button ${ref(me.#btnCancelRef)}
       @click="${me.#onCancel.bind(me)}" 
       icon="${ifDefined(me.iconCancel)}"
-      locale="${ifDefined(me.locale)}"
+      language="${ifDefined(me.language)}"
       css="${ifDefined(me.cssCancel)}" 
       color="${ifDefined(me.colorCancel)}" 
       title="${me.cancelText}">

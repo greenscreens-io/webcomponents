@@ -41,8 +41,8 @@ export class GSCalendarElement extends GSElement {
     super();
     const me = this;
     me.#date = new GSDate();
-    me.#date.locale = GSUtil.locale;
-    me.locale = GSUtil.locale;
+    me.#date.language = GSUtil.language;
+    me.language = GSUtil.language;
     me.day = me.#date.day;
     me.month = me.#date.month;
     me.year = me.#date.year;
@@ -115,7 +115,7 @@ export class GSCalendarElement extends GSElement {
 
   formatted(date) {
     const me = this;
-    return (date || me.#date).format(me.format, me.locale);
+    return (date || me.#date).format(me.format, me.language);
   }
 
   updated() {
@@ -130,9 +130,9 @@ export class GSCalendarElement extends GSElement {
     me.#date.year = me.year;
     me.#date.month = me.month;
     me.#date.day = me.day;
-    me.#date.locale = me.locale;
+    me.#date.language = me.language;
 
-    const week = GSDate.dayList(true, me.locale).map(v => html`<div class="col">${v}</div>`);
+    const week = GSDate.dayList(true, me.language).map(v => html`<div class="col">${v}</div>`);
     const months = me.#monthsHTML();
     const year = me.#yearHTML();
 
@@ -178,7 +178,7 @@ export class GSCalendarElement extends GSElement {
     me.day = me.#date.day;
     me.month = me.#date.month;
     me.year = me.#date.year;
-    me.locale = me.#date.locale;
+    me.language = me.#date.language;
   }
 
   #isToday(v, date) {
@@ -189,8 +189,8 @@ export class GSCalendarElement extends GSElement {
   #daysHTML() {
     const me = this;
     const today = new GSDate();
-    today.locale = me.locale;
-    const list = me.#date.build(me.locale);
+    today.language = me.language;
+    const list = me.#date.build(me.language);
     const result = list
       .map(v => {
         const c1 = me.#isToday(v, today) ? me.cssToday : '';
@@ -212,9 +212,9 @@ export class GSCalendarElement extends GSElement {
   #monthsHTML() {
     const me = this;
     const current = me.#date.MMMM;
-    const months = GSDate.monthList(false, me.locale);
+    const months = GSDate.monthList(false, me.language);
     const list = months.map((v, i) => html`<option value="${i}" selected=${ifDefined(current == v ? true : undefined)}>${v}</option>`);
-    //const list = GSDate.monthList(false, me.locale).map((v, i) => html`<option value="${i}" ${current == v ? 'selected' : ''}>${v}</option>`);
+    //const list = GSDate.monthList(false, me.language).map((v, i) => html`<option value="${i}" ${current == v ? 'selected' : ''}>${v}</option>`);
     return html`<select @change="${me.#onMonth}" name="month" class="month ${me.cssMonth}" value="${months.indexOf(current)}">${list}</select>`;
   }
 

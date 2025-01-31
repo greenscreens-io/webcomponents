@@ -76,7 +76,7 @@
         <gs-data-handler id="employees" type="cached" limit="10" src="/bootstrap-lit/demos/helpers/data/data2.json">
             <gs-item name="Age" type="number"></gs-item>
             <!-- Convert curency into number; table UI column definition defines the output format -->
-            <gs-item name="Salary" type="number" locale="en-US"></gs-item>
+            <gs-item name="Salary" type="number" language="en-US"></gs-item>
             <gs-item name="Start date" type="date" format="yyyy/mm/dd"></gs-item>
         </gs-data-handler>
 
@@ -87,8 +87,8 @@
             <gs-item name="Name" filter></gs-item>
             <gs-item name="Position" filter></gs-item>
             <gs-item name="Age" type="number" align="center" width="100" filter></gs-item>
-            <gs-item name="Salary" type="currency" align="end" currency="USD" locale="hr-HR" width="200" filter></gs-item>
-            <gs-item name="Start date" title="Date" type="text" align="center" locale="hr-HR" width="180" filter-type="text" filter></gs-item>
+            <gs-item name="Salary" type="currency" align="end" currency="USD" language="hr-HR" width="200" filter></gs-item>
+            <gs-item name="Start date" title="Date" type="text" align="center" language="hr-HR" width="180" filter-type="text" filter></gs-item>
 
             <gs-context slot="extra" target="tbody" filter="[selected]" offset="4">
                 <gs-item name="Edit" data-gs-swap="gs-record-edit" data-gs-target="#dialogs"></gs-item>

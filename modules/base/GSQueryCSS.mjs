@@ -5,6 +5,7 @@
 import { GSDOM } from "./GSDOM.mjs";
 import { GSFunction } from "./GSFunction.mjs";
 import { GSUtil } from "./GSUtil.mjs";
+import { GSCSSMap } from "./GSCSSMap.mjs";
 
 /**
  * Proxy class to handle chained css.

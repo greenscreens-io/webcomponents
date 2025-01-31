@@ -14,7 +14,7 @@ const definition = {
     'toggle': 'gsToggle',
     'trigger': 'gsTrigger',
     'value': 'gsValue'
-}
+};
 
 const template = {
     'gsAction': undefined,
@@ -30,7 +30,7 @@ const template = {
     'gsToggle': undefined,
     'gsTrigger': undefined,
     'gsValue': undefined
-}
+};
 
 class DatasetDirective extends Directive {
 

@@ -26,7 +26,7 @@ export class AttributeController extends GSAttributeHandler {
   hostDisconnected() {
     const me = this;
     me.host.removeController(me);
-    me.deattach(me.#eventName);
+    me.detach(me.#eventName);
   }
 
   onNotify(evt) {

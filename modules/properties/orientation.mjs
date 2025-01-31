@@ -11,12 +11,12 @@ export class OrientationTypes {
     }
 
     static isVertical(val) {
-        const idx = OrientationTypes.values.indexOf(val)
+        const idx = OrientationTypes.values.indexOf(val);
         return idx === 2 || idx === 3;
     }
 
     static isHorizontal(val) {
-        const idx = OrientationTypes.values.indexOf(val)
+        const idx = OrientationTypes.values.indexOf(val);
         return idx === 1 || idx === 4;
     }
 

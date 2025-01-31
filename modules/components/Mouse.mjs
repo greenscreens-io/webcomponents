@@ -9,7 +9,7 @@ import { GSElement } from '../GSElement.mjs';
  * For debugging purposes for floating element such as popup, popover, menus... 
  * https://developer.mozilla.org/en-US/docs/Web/CSS/CSSOM_view/Coordinate_systems
  */
-export class GSMouselement extends GSElement {
+export class GSMouseElement extends GSElement {
 
   static properties = {
     pageX: { type: Number },

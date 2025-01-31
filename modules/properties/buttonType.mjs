@@ -10,7 +10,7 @@ export class ButtonTypes {
         return ButtonTypes.values.includes(val);
     }
 
-    static isReest(val) {
+    static isReset(val) {
         return ButtonTypes.values.indexOf(val) === 1;
     }
 

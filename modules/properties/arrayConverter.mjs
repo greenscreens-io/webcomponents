@@ -5,4 +5,4 @@ export const stringArrayConverter = {
     toAttribute: (value, type) => {
         return (value || []).join(',');
     }
-  }
+};

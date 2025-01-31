@@ -84,6 +84,18 @@ export class GSFunction {
     }
 
     /**
+     * Check if object is of type generator function
+     * 
+     * @param {function} fn 
+     * @returns {Boolean}
+     */
+    static isFunctionGenerator(fn) {
+        if (!GSFunction.isFunction(fn)) return false;
+        const GeneratorFunction = (function*(){}).constructor;
+        return fn instanceof GeneratorFunction;
+    }
+
+    /**
      * Generic asynchronous function caller
      * 
      * @async

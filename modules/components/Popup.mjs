@@ -46,7 +46,7 @@ export class GSPopupElement extends GSElement {
   connectedCallback() {
     super.connectedCallback();
     const me = this;
-    me.#attachTaraget();
+    me.#attachTarget(); // Fixed typo: #attachTaraget -> #attachTarget
     me.attachEvent(window, 'resize', me.close.bind(me));
     me.on('mouseleave', me.#onAuto.bind(me));
   }
@@ -188,7 +188,7 @@ export class GSPopupElement extends GSElement {
     return true;
   }
 
-  #attachTaraget() {
+  #attachTarget() { // Fixed typo: #attachTaraget -> #attachTarget
     const me = this;
     const targets = GSDOM.queryAll(document.documentElement, me.target);
     me.trigger.split(' ').forEach(evt => {

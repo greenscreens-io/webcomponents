@@ -5,7 +5,7 @@
 import { html } from '../lib.mjs';
 
 /**
- * Generic object property descritptor getter
+ * Generic object property descriptor getter
  * @param {Object} instance 
  * @returns {PropertyDescriptor}
  */
@@ -36,7 +36,7 @@ function listGetters(instance) {
 }
 
 /**
- * List of all getteble properties from an object
+ * List of all gettable properties from an object
  * @param {Object} instance 
  * @returns {Array}
  */

@@ -202,7 +202,7 @@ export class Tree {
         if (inclusive && !reverse && node.level > -1) yield o;
         if (flat) {
             let item = node.previousSibling;
-            item = item?.isFolder ? item.lastChild : item
+            item = item?.isFolder ? item.lastChild : item;
             if (item) yield* this.up(item, values, true, reverse, flat);
         }        
         if (node.parent) {
@@ -401,7 +401,7 @@ export class Tree {
                 key: this.key,
                 value: this.value,
                 items: this.#children.map(o => o.toJSON())
-            }
+            };
     }
 
     /**

@@ -44,13 +44,13 @@ export class GSDateFormat extends GSElement {
 
     static properties = {
         value: {},
-        locale: {},
         format: {},
+        language: {},
     }
 
     constructor() {
         super();
-        this.locale = navigator.locale;
+        this.language = navigator.language;
         this.value = new Date();
     }
 
@@ -62,14 +62,14 @@ export class GSDateFormat extends GSElement {
         const me = this;
         const val = me.date;
         if (me.format) return val.format(me.format);
-        return new Intl.DateTimeFormat(me.locale, me.dataset).format(val);
+        return new Intl.DateTimeFormat(me.language, me.dataset).format(val);
     }
 
     get date() {
         const me = this;
         const o = Date.parse(me.value || new Date());
         const date = new GSDate(o);
-        date.locale = me.locale;
+        date.language = me.language;
         return date;
     }
 

@@ -10,7 +10,7 @@ import { GSPopper } from '../base/GSPopper.mjs';
 import { GSEvents } from '../base/GSEvents.mjs';
 import { GSDOM } from '../base/GSDOM.mjs';
 
-export class GSPopoverlement extends GSElement {
+export class GSPopoverElement extends GSElement { // Fixed typo: GSPopoverlement -> GSPopoverElement
 
   static properties = {
     placement: { ...placement },

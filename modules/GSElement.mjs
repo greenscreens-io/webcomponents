@@ -48,7 +48,7 @@ export class GSElement extends LitElement {
 
     os: {},
     browser: {},
-    locale: { reflect: true, hasChanged: notEmpty },
+    language: { reflect: true, hasChanged: notEmpty },
     environment: environment,
     orientation: orientation,
     protocol: protocol,
@@ -70,7 +70,7 @@ export class GSElement extends LitElement {
     super();
     const me = this;
     me.css = '';
-    me.locale = "";
+    me.language = "";
     me.#adopted = new AdoptedController(me);
     me.#content = new ContentController(me);
     me.#localization = new LocalizationController(me);
@@ -93,7 +93,7 @@ export class GSElement extends LitElement {
   }
 
   disconnectedCallback() {
-    GSEvents.deattachListeners(this);
+    GSEvents.detachListeners(this);
     super.disconnectedCallback();
   }
 
@@ -129,11 +129,8 @@ export class GSElement extends LitElement {
     const me = this;
     if (changed.has('storage')) {
       if (me.storage) {
-        if (!me.#dataController) {
-          me.#dataController = new DataController(me);
-        } else {
-          me.#dataController.relink();
-        }
+        me.#dataController ??= new DataController(me);
+        me.#dataController.relink?.();
       } else {
         me.#dataController?.hostDisconnected();
         me.#dataController = undefined;
@@ -397,7 +394,7 @@ export class GSElement extends LitElement {
   }
 
   translate(value) {
-    return GSLocalization.translate(this.locale, value);
+    return GSLocalization.translate(this.language, value);
   }
 
   get direction() {
@@ -466,7 +463,7 @@ export class GSElement extends LitElement {
    * @returns {Boolean} 
    */
   get isValidEnvironment() {
-    return GSEnvironment.isValidEnvironment(this.environment);
+    return GSEnvironment.isValidEnvironment(this.environment ?? '');
   }
 
   /**
@@ -475,7 +472,7 @@ export class GSElement extends LitElement {
    * @returns {Boolean} 
    */
   get isValidOS() {
-    return GSEnvironment.isDevice(this.os);
+    return GSEnvironment.isDevice(this.os ?? '');
   }
 
   /**
@@ -484,7 +481,7 @@ export class GSElement extends LitElement {
    * @returns {Boolean} 
    */
   get isValidOrientation() {
-    return GSEnvironment.isValidOrientation(this.orientation);
+    return GSEnvironment.isValidOrientation(this.orientation ?? '');
   }
 
   /**
@@ -492,7 +489,7 @@ export class GSElement extends LitElement {
    * @returns {Boolean} 
    */
   get isValidBrowser() {
-    return GSEnvironment.isValidBrowser(this.browser);
+    return GSEnvironment.isValidBrowser(this.browser ?? '');
   }
 
   /**
@@ -500,7 +497,7 @@ export class GSElement extends LitElement {
    * @returns {Boolean} 
    */
   get isValidProtocol() {
-    return GSEnvironment.isValidProtocol(this.protocol);
+    return GSEnvironment.isValidProtocol(this.protocol ?? '');
   }
 
   /**

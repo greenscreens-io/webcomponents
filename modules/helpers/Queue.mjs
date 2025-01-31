@@ -3,7 +3,7 @@
  */
 
 /**
- *  Linear data structure follownig first in, first out (FIFO) order of operations.
+ *  Linear data structure following first in, first out (FIFO) order of operations.
  */
 export class Queue extends Array {
     

@@ -40,7 +40,7 @@ export class GSTemplateCache {
 	}
 
 	/**
-	 * Get template from cache by it's name.
+	 * Get template from cache by its name.
 	 * @param {*} name Name of a template
 	 * @returns {HTMLTemplateElement}
 	 */
@@ -49,8 +49,8 @@ export class GSTemplateCache {
 	}
 
 	/**
-	 * Helper function to retrieve alreaady existing template by name,
-	 *  or inject a new one if does not exists already and return template instance.
+	 * Helper function to retrieve already existing template by name,
+	 * or inject a new one if it does not exist already and return template instance.
 	 * @param {String} name 
 	 * @param {String} template 
 	 * @returns {HTMLTemplateElement}
@@ -139,7 +139,7 @@ export class GSTemplateCache {
 	 * 
 	 * @param {Boolean} cached Set to true to auto cache if template does not exist
 	 * @param {String} name Template name
-	 * @param {String} template Template source
+	 * @param {String} tpl Template source
 	 * @returns {HTMLTemplateElement} Template instance
 	 */
 	static loadHTMLTemplate(cached = false, name = '', tpl) {

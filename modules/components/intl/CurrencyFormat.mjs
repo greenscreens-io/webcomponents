@@ -22,8 +22,8 @@ export class GSCurrencyFormat extends GSElement {
 
     static properties = {
         value: {},
-        locale: {},
         currency: {},
+        language: {},
     }
 
     renderUI() {
@@ -37,7 +37,7 @@ export class GSCurrencyFormat extends GSElement {
 
     get format() {
         const me = this;
-        return new Intl.NumberFormat(me.locale, me.#options).format(me.value);
+        return new Intl.NumberFormat(me.language, me.#options).format(me.value);
     }
 
     static {

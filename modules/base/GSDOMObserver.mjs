@@ -27,7 +27,7 @@ export class GSDOMObserver extends MutationObserver {
      * Observe element for insertion / deletion
      * @param {HTMLElement} el A HTMLElement instance to observe for child changes
      * @param {Object} opt A JSON configuration object
-     * @returns {Boolean} A satus of successfull observer registration
+     * @returns {Boolean} A status of successful observer registration
      */
     observe(el, opt) {
         const cfg = opt || { childList: true, subtree: true };
@@ -48,7 +48,7 @@ export class GSDOMObserver extends MutationObserver {
 
     /**
      * Get add or remove filter
-     * @param {Boolean} forRemove If "true", return injection filter functions, elseremoval functions
+     * @param {Boolean} forRemove If "true", return injection filter functions, else removal functions
      * @returns {Map<Function, Function>} Returns map of filter functions
      */
     static #getFilter(forRemove = false) {

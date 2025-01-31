@@ -43,10 +43,10 @@ export class GSOverlayElement extends GSElement {
         const me = this;
         if (!me.opened) return '';
         const path = me.#path;
-        return path ? html`<svg xmlns="http://www.w3.org/2000/svg" xmlspce="preserve"
+        return path ? html`<svg xmlns="http://www.w3.org/2000/svg" xmlns:space="preserve"
             xmlnsXlink="http://www.w3.org/1999/xlink"
             version="1.1" preserveAspectRatio="xMinYMin slice"
-            viewvbox="0 0 ${window.innerWidth} ${window.innerHeight}"
+            viewBox="0 0 ${window.innerWidth} ${window.innerHeight}"
             class="gs-overlay gs-overlay-animated ${me.#styleID}"
             @click="${me.reset.bind(me)}">
             ${path}

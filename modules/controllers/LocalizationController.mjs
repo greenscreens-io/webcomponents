@@ -12,12 +12,12 @@ import { GSEvents } from '../base/GSEvents.mjs';
 export class LocalizationController {
 
   #host;
-  #locale;
+  #language;
 
   constructor(host) {
     const me = this;
     me.#host = host;
-    me.#locale = host.locale;
+    me.#language = host.language;
     host.addController(me);
   }
 
@@ -33,14 +33,14 @@ export class LocalizationController {
 
   hostUpdate() {
     const me = this;
-    if (me.#locale !== me.#host?.locale) {
-      me.#locale === me.#host?.locale;
-      me.updateLanguage(me.#locale);
+    if (me.#language !== me.#host?.language) {
+      me.#language === me.#host?.language;
+      me.updateLanguage(me.#language);
     }
   }
 
   updateLanguageExt(langauge) {
-    if (!this.#locale) this.updateLanguage(langauge);
+    if (!this.#language) this.updateLanguage(langauge);
   }
 
   updateLanguage(lang) {

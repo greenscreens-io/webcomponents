@@ -11,7 +11,7 @@ import { GSFunction } from "./GSFunction.mjs";
  */
 
 /**
- * Wrapper around computesdStyledMap to support Firefox and WebKit Mode
+ * Wrapper around computedStyleMap to support Firefox and WebKit Mode
  * @class
  */
 export class GSCSSMap {
@@ -53,7 +53,7 @@ export class GSCSSMap {
     }
 
     /**
-     * Support for Firefox/Gecko to get element computedStyledMap
+     * Support for Firefox/Gecko to get element computedStyleMap
      * @param {HTMLElement} el 
      * @returns {CSSStyleDeclaration}
      */
@@ -64,7 +64,7 @@ export class GSCSSMap {
     }
 
     /**
-     * Support for Firefox/Gecko to get element computedStyledMap item
+     * Support for Firefox/Gecko to get element computedStyleMap item
      * @param {HTMLElement} el 
      * @returns {}
      */
@@ -73,7 +73,7 @@ export class GSCSSMap {
     }
 
     /**
-     * Support for Firefox/Gecko to get element computedStyledMap
+     * Support for Firefox/Gecko to get element computedStyleMap
      * @param {HTMLElement} element 
      * @returns {GSCSSMap}
      */

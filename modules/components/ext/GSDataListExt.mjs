@@ -13,6 +13,7 @@ import { GSDOM } from "../../base/GSDOM.mjs";
 import { GSUtil } from "../../base/GSUtil.mjs";
 import { GSLoader } from "../../base/GSLoader.mjs";
 import { GSEvents } from "../../base/GSEvents.mjs";
+import { GSLog } from "../../base/GSLog.mjs";
 
 /**
  * Add JSON loader to datalist element
@@ -49,7 +50,7 @@ export class GSDataListExt extends HTMLDataListElement {
     }
 
     disconnectedCallback() {
-        GSEvents.deattachListeners(this);
+        GSEvents.detachListeners(this);
     }
         
     get owner() {
@@ -67,8 +68,13 @@ export class GSDataListExt extends HTMLDataListElement {
 
     async load(url = '') {
         if (!url) return;
-        const data = await GSLoader.loadSafe(url, 'GET', null, true);
-        this.apply(data);
+        try {
+            const data = await GSLoader.loadSafe(url, 'GET', null, true);
+            this.apply(data);
+        } catch (error) {
+            console.error('Failed to load data:', error);
+            GSLog.error(this, error);
+        }
     }
 
     apply(data) {

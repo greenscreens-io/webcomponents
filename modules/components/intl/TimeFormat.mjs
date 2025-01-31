@@ -20,7 +20,7 @@ export class GSTimeFormat extends GSElement {
 
     static properties = {
         interval: {reflect:true, type:Number},
-        locale: {reflect:true},
+        language: {reflect:true},
     }
 
     #id = 0;
@@ -28,7 +28,7 @@ export class GSTimeFormat extends GSElement {
     constructor() {
         super();
         this.interval = 1;
-        this.locale = GSUtil.locale;
+        this.language = GSUtil.language;
     }
 
     connectedCallback() {
@@ -43,7 +43,7 @@ export class GSTimeFormat extends GSElement {
 
     renderUI() {
         const date = new Date();
-        return date.toLocaleTimeString(this.locale);
+        return date.toLocaleTimeString(this.language);
     }    
 
     start() {

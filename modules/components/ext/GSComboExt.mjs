@@ -50,7 +50,7 @@ export class GSComboExt extends HTMLSelectElement {
     }
 
     disconnectedCallback() {
-        GSEvents.deattachListeners(this);
+        GSEvents.detachListeners(this);
     }
         
     validate() {

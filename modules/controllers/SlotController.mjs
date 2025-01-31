@@ -27,9 +27,11 @@ export class SlotController {
     }
 
     #onSlotChanged(e) {
-      e.target.assignedElements().forEach(el => {
-        el.onSlotInjected?.(e.target);
-      });
+      if (typeof e.target.assignedElements === 'function') {
+        e.target.assignedElements().forEach(el => {
+          el.onSlotInjected?.(e.target);
+        });
+      }
     }
 
-}  
+}

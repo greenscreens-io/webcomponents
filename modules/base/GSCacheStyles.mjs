@@ -14,7 +14,7 @@ import { GSLog } from "./GSLog.mjs";
 import { gsstyles } from "./style.mjs";
 
 /**
- * Cache for dynaamically loaded styles.
+ * Cache for dynamically loaded styles.
  * Used to share styles among GS-* WebComponents
  * @class
  */

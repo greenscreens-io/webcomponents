@@ -120,6 +120,14 @@ export class GSCachedReadWrite extends GSReadWrite {
     }
 
     /**
+     * Reset the cached read/write handler
+     */
+    reset() {
+        this.clear();
+        super.reset();
+    }
+
+    /**
      * Register generic handler under unique name.
      * @param {string} name Unique handler name
      * @returns {GSReadWrite} Data handler instance

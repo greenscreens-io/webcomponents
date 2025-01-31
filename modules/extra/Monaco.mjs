@@ -124,11 +124,15 @@ export class GSMonacoElement extends GSElement {
      */
     async #onURL(url) {
         const me = this;
-        const data = url ? await GSLoader.load(url) : null;
-        if (!data) return me.code = `Code URL ${url} unreachable!`;
-        me.code = '';
-        me.#onLanguage(me.language);
-        me.code = data;
+        try {
+            const data = url ? await GSLoader.load(url) : null;
+            if (!data) throw new Error(`Code URL ${url} unreachable!`);
+            me.code = '';
+            me.#onLanguage(me.language);
+            me.code = data;
+        } catch (error) {
+            me.code = error.message;
+        }
     }
 
     #onMonacoReady() {
@@ -161,12 +165,15 @@ export class GSMonacoElement extends GSElement {
 
     #onResize(e) {
         const me = this;
-        me.#editor?.layout({ width: 0, height: 0 });
+        if (!me.#editor) return;
+        me.#editor.layout({ width: 0, height: 0 });
 
         requestAnimationFrame(() => {
-            const rect = me.owner.getBoundingClientRect();
-            me.#editor?.layout({ width: rect.width, height: rect.height });
-        })
+            const rect = me.owner?.getBoundingClientRect();
+            if (rect) {
+                me.#editor.layout({ width: rect.width, height: rect.height });
+            }
+        });
     }
 
     get #container() {

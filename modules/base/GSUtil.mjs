@@ -57,10 +57,10 @@ export class GSUtil {
 		return Array.isArray(val) ? val : [val];
 	}
 
-	static asNum(val, dft = 0, locale) {
-		locale = locale || GSUtil.locale;
+	static asNum(val, dft = 0, language) {
+		language = language || GSUtil.language;
 		if (GSUtil.isString(val)) {
-			const sep = GSUtil.numberSeparator(locale);
+			const sep = GSUtil.numberSeparator(language);
 			val = GSUtil.extractNumber(val)?.replaceAll(sep, '') || val;
 		}
 		return GSUtil.isNumber(val) ? parseFloat(val) : dft;
@@ -85,10 +85,10 @@ export class GSUtil {
 	static generateUUID = (pattern = "xxxx-xxxx-xxxx-xxxx-xxxx", charset = "abcdef0123456789") => pattern.replace(/[x]/g, () => charset[Math.floor(Math.random() * charset.length)]);
 
 	/**
-	 * Get browser default locale
+	 * Get browser default language
 	 * @returns {String}
 	 */
-	static get locale() {
+	static get language() {
 		return navigator.language ? navigator.language : navigator.languages[0];
 	}
 
@@ -104,30 +104,30 @@ export class GSUtil {
 	}
 
 	/**
-	 * Find number separator for given locale
-	 * @param {string} locale 
+	 * Find number separator for given language
+	 * @param {string} language 
 	 * @returns 
 	 */
-	static decimalSeparator(locale) {
-		return Intl.NumberFormat(locale).format(1.1)[1];
+	static decimalSeparator(language) {
+		return Intl.NumberFormat(language).format(1.1)[1];
 	}
 
 	/**
-	 * Find decimal separator for given locale
-	 * @param {string} locale 
+	 * Find decimal separator for given language
+	 * @param {string} language 
 	 * @returns 
 	 */
-	static numberSeparator(locale) {
-		return Intl.NumberFormat(locale).format(1000)[1];
+	static numberSeparator(language) {
+		return Intl.NumberFormat(language).format(1000)[1];
 	}
 
 	/**
-	 * Try to find data format based on locale
-	 * @param {string} locale 
+	 * Try to find data format based on language
+	 * @param {string} language 
 	 * @returns 
 	 */
-	static getDateFormat(locale = undefined) {
-		const formatted = new Intl.DateTimeFormat(locale).format(new Date(2000, 0, 2));
+	static getDateFormat(language = undefined) {
+		const formatted = new Intl.DateTimeFormat(language).format(new Date(2000, 0, 2));
 		return formatted
 			.replace('2000', 'YYYY')
 			.replace('01', 'MM')
@@ -315,9 +315,9 @@ export class GSUtil {
 		const lmatch = GSUtil.isStringNonEmpty(left);
 		const rmatch = GSUtil.isStringNonEmpty(right);
 		if (lmatch && rmatch) {
-			return left.trim().toLowerCase() == right.trim().toLowerCase();
+			return left.trim().toLowerCase() === right.trim().toLowerCase();
 		}
-		return lmatch === rmatch;
+		return lmatch === rmatch;		
 	}
 
 	/**

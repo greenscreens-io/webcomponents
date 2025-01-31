@@ -3,7 +3,7 @@
  */
 
 /**
- *  Linear data structure follownig  last in, first out (LIFO) order of operations.
+ *  Linear data structure following last in, first out (LIFO) order of operations.
  */
 export class Stack extends Array {
     

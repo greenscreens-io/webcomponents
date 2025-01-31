@@ -9,7 +9,7 @@ GSDateFormat WebComponent is a plain WebComponent to render date with languagae 
 
 | Name               | Description                                              |
 |--------------------|----------------------------------------------------------|
-| locale             | Internationl language code format (en-EN)                | 
+| language           | Internationl language code format (en-EN)                | 
 | value              | Value to format, if not set, current date used           |
 | format             | Simple format, if not used, wil ltry 
 | data-*             | Optional data from Intl.DateTimeFormat class             |
@@ -52,9 +52,9 @@ List of **data-*** attribute values-
 For more details, check [date.html](../../demos/intl/date.html)
 
 ```html
-<gs-date-format locale="hr-HR" format="HH:mm:ss DD.MM.YYYY"></gs-date-format>
+<gs-date-format language="hr-HR" format="HH:mm:ss DD.MM.YYYY"></gs-date-format>
 
-<gs-date-format locale="hr-HR" data-dateStyle="full"></gs-date-format>
+<gs-date-format language="hr-HR" data-dateStyle="full"></gs-date-format>
 ```
 <br>
 

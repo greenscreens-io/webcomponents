@@ -115,7 +115,7 @@ export class GSNotificationElement extends GSElement {
 
     #showWeb(title, message, css, closable, timeout, delay) {
         const me = this;
-        const tpl = `<gs-toast css="${css}"  opened ${closable ? 'closable' : ''} timeout="${timeout}"  delay="${delay}" message="${message}" title="${title}" locale="${me.locale}" ></gs-toast>`;
+        const tpl = `<gs-toast css="${css}"  opened ${closable ? 'closable' : ''} timeout="${timeout}"  delay="${delay}" message="${message}" title="${title}" language="${me.language}" ></gs-toast>`;
         const el = GSDOM.parse(tpl, true);
         requestAnimationFrame(async () => {
             await me.#delay(delay);

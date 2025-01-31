@@ -88,6 +88,13 @@ export class GSTreeItemElement extends GSElement {
     this.#status(false);
   }
 
+  /**
+   * Toggle selection state
+   */
+  toggleSelection() {
+    this.select(!this.selected);
+  }
+
   focus(val = true) {
     if (val) super.focus();
     this.focused = val == true;

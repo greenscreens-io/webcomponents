@@ -62,7 +62,7 @@ export class GSTextArea extends HTMLTextAreaElement {
         const me = this;
         me.#isConnected = false;
         me.#controllers?.forEach((c) => c.hostDisconnected?.());
-        GSEvents.deattachListeners(me);
+        GSEvents.detachListeners(me);
     }
 
     addController(controller) {
@@ -89,6 +89,10 @@ export class GSTextArea extends HTMLTextAreaElement {
         this.#validityController.report();
     }
 
+    reset() {
+        GSDOM.reset(this);
+    }
+    
     get block() {
         return this.hasAttribute('block');
     }

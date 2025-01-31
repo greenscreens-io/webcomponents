@@ -319,6 +319,19 @@ export class TreeNode extends Tree {
         return obj;
     }
 
+    /**
+     * Reset the tree node
+     */
+    reset() {
+        this.#multi = false;
+        this.#opened = false;
+        this.#focused = false;
+        this.#selected = false;
+        this.#focusedNode = undefined;
+        this.#selectedNode = undefined;
+        this.#controllers = undefined;
+    }
+
     static get root() {
         return new TreeNode(null, null, null, -1);
     }

@@ -92,10 +92,14 @@ export class GSHighlightElement extends GSElement {
      */
     async #onURL() {
         const me = this;
-        const data = await GSLoader.load(me.url);
-        if (!data) return GSDOM.setHTML(me.#code, `Code URL ${me.url} unreachable!`);
-        me.#data = data;
-        me.#onHighlight(data);
+        try {
+            const data = await GSLoader.load(me.url);
+            if (!data) throw new Error(`Code URL ${me.url} unreachable!`);
+            me.#data = data;
+            me.#onHighlight(data);
+        } catch (error) {
+            GSDOM.setHTML(me.#code, error.message);
+        }
     }
 
     get #code() {
@@ -113,12 +117,16 @@ export class GSHighlightElement extends GSElement {
     #onHighlight(data = '', append = false) {
         const me = this;
         if (!data) return GSDOM.setHTML(me.#code, 'No data!');
-        const response = me.#worker;
-        const blob = new Blob([response], { type: 'application/javascript' });
-        const blobURL = URL.createObjectURL(blob);
-        const worker = new Worker(blobURL);
-        worker.onmessage = me.#onMessage.bind(me);
-        worker.postMessage({ data: data, url: blobURL, append: append });
+        try {
+            const response = me.#worker;
+            const blob = new Blob([response], { type: 'application/javascript' });
+            const blobURL = URL.createObjectURL(blob);
+            const worker = new Worker(blobURL);
+            worker.onmessage = me.#onMessage.bind(me);
+            worker.postMessage({ data: data, url: blobURL, append: append });
+        } catch (error) {
+            GSDOM.setHTML(me.#code, error.message);
+        }
     }
 
     get #worker() {

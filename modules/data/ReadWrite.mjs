@@ -344,6 +344,23 @@ export class GSReadWrite extends GSAbstractReadWrite {
     }
 
     /**
+     * Reset the read/write handler
+     */
+    reset() {
+        this.#src = '';
+        this.#headers = {};
+        this.#reader = 'GET';
+        this.#writer = 'POST';
+        this.#action = '';
+        this.#mode = '';
+        this.#key = null;
+        this.#skip = 0;
+        this.#limit = 0;
+        this.#sort = [];
+        this.#filter = [];
+    }
+
+    /**
      * Register generic handler under unique name.
      * @param {string} name Unique handler name
      * @returns {GSReadWrite} Data handler instance
