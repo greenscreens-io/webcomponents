@@ -66,9 +66,9 @@ export class GSFormGroupElement extends GSElement {
     autocapitalize: { ...autocapitalize, reflect: true },
     autocorrect: { ...autocorrect, reflect: true },
     autocomplete: { reflect: true },
-
     autofocus: { type: Boolean, reflect: true },
     autoselect: { type: Boolean, reflect: true },
+
     disabled: { type: Boolean, reflect: true },
     checked: { type: Boolean, reflect: true },
     multiple: { type: Boolean, reflect: true },
@@ -76,7 +76,7 @@ export class GSFormGroupElement extends GSElement {
     readonly: { type: Boolean, reflect: true },
     required: { type: Boolean, reflect: true },
 
-    invalidMessage: {reflect: true},
+    invalidMessage: {reflect: true, attribute: 'invalid-message' },
 
     cellField: { attribute: 'cell-field' },
     cellLabel: { attribute: 'cell-label' },

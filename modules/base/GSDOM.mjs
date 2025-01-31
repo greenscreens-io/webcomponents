@@ -1133,6 +1133,12 @@ export class GSDOM {
 	static {
 		Object.seal(GSDOM);
 		globalThis.GSDOM = GSDOM;
+		globalThis.dispatchEvent?.(new CustomEvent('gs-base-ready', {
+			detail: {
+			message: 'GS Base is ready',
+			time: new Date(),
+			}
+		}));		
 	}
 }
 
