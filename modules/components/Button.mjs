@@ -99,7 +99,7 @@ export class GSButtonElement extends GSElement {
   }
 
   get isReset() {
-    return ButtonTypes.isReest(this.type);
+    return ButtonTypes.isReset(this.type);
   }
 
   get isSubmit() {

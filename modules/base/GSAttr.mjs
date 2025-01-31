@@ -235,7 +235,7 @@ export class GSAttr {
 				const multi = tmp[prop]?.multi === true;
 				
 				prop = tmp[prop]?.attribute || prop;
-				const val = target.hasAttribute(prop) ? GSAttr.get(target, prop) : target[prop];
+				let val = target.hasAttribute(prop) ? GSAttr.get(target, prop) : target[prop];
 
 				if (GSFunction.isFunction(val)) return val.bind(target);
 				
