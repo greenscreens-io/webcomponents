@@ -18,6 +18,7 @@ export class GSCalendarElement extends GSElement {
     date: {},
     target: {},
     format: { hasChanged: notEmpty },
+    range: { type: Number },
     year: { type: Number },
     month: { type: Number, hasChanged: numGE0 },
     day: { type: Number, hasChanged: numGE0 },
@@ -46,6 +47,7 @@ export class GSCalendarElement extends GSElement {
     me.day = me.#date.day;
     me.month = me.#date.month;
     me.year = me.#date.year;
+    me.range = 5;
     me.minYear = 1900;
     me.maxYear = 2100;
     me.arrowPrev = '&#10094;';
@@ -220,7 +222,22 @@ export class GSCalendarElement extends GSElement {
 
   #yearHTML() {
     const me = this;
-    return html`<input @change="${me.#onYear}" name="year" class="year ${me.cssYear}" value="${me.#date.getFullYear()}" type="number" min="${me.minYear}" max="${me.maxYear}">`;
+    let minYear = me.minYear;
+    let maxYear = me.maxYear;
+    if (me.range > 0) {
+      const options = [];
+      const year = (new GSDate()).year;
+      minYear = year - me.range;
+      maxYear = year + me.range;
+
+      let min = minYear;
+      while (min <= maxYear) {
+        options.push(html`<option value="${min}" selected=${ifDefined(min == year ? true : undefined)}>${min}</option>`);
+        min++;
+      }
+      return html`<select @change="${me.#onYear}" name="year" class="year ${me.cssYear}" data-gs-min="${minYear}" data-gs-max="${maxYear}">${options}</select>`;
+    }
+    return html`<input @change="${me.#onYear}" name="year" class="year ${me.cssYear}" value="${me.#date.getFullYear()}" type="number" min="${minYear}" max="${maxYear}">`;
   }
 
   #onDay(e) {
@@ -234,11 +251,14 @@ export class GSCalendarElement extends GSElement {
   }
 
   #onYear(e) {
-    this.year = e.target.value;
+    const yearEl = e?.target;
+    if (yearEl?.validity.valid) {
+      this.year = yearEl.value;
+    }
   }
 
   #onKey(e) {
-    console.log(e);
+    // console.log(e);
   }
 
   static {
