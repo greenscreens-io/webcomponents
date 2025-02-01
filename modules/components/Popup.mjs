@@ -65,6 +65,14 @@ export class GSPopupElement extends GSElement {
     me.#reposition();
     if (me.autofocus) me.focus();
     me.notify();
+    me.#postPopup();
+  }
+
+  willUpdate(changedProperties) {
+    if (changedProperties.has('opened')) {
+      this.#postPopup();
+    }
+    return super.willUpdate(changedProperties); 
   }
 
   renderUI() {
@@ -186,6 +194,12 @@ export class GSPopupElement extends GSElement {
 
     me.popup(x, y);
     return true;
+  }
+
+  #postPopup() {
+    const me = this;
+    const rule = me.dynamicStyle(me.#styleID);
+    Object.assign(rule.style, {display: me.opened ? '' : 'none'}); 
   }
 
   #attachTarget() { // Fixed typo: #attachTaraget -> #attachTarget

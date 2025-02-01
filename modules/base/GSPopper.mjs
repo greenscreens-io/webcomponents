@@ -138,6 +138,7 @@ export class GSPopper {
 		}
 
 		const style = GSDynamicStyle.dynamicStyle(source);
+		if (!style) return;
 
 		const css = {
 			position: 'fixed',
@@ -192,7 +193,8 @@ export class GSPopper {
 
 		const style = GSDynamicStyle.dynamicStyle(source);
 		const astyle = GSDynamicStyle.dynamicStyle(arrow);
-
+		if (!style) return;
+		
 		const css = {
 			inset: GSPopper.#inset(pos),
 			position: 'absolute',

@@ -44,7 +44,7 @@
   <gs-template src="//header.html"></gs-template>
 
   <!-- auto-generated gs-popover based on data-bs-toggle="popover" and title attribute -->
-  <div class="row m-4 p-1 bg-light bordered shadow-sm">
+  <div class="row m-4 p-1 bg-light border shadow-sm">
     <div class="col-auto">
       <gs-button title="Calendar toggle" color="secondary" data-gs-call="open" data-gs-target="#mypopup"></gs-button>
     </div>
@@ -60,15 +60,15 @@
 
 
   <!-- attach to ref targeted element -->
-  <gs-center css="m-4 p-1 bg-light bordered shadow-sm w-30" _style="min-width:355px;">
-    <gs-calendar id="mycalendar" target="#mydate"></gs-calendar>
+  <gs-center bordered margin="4" padding="1"  css="bg-light shadow-sm w-30" _style="min-width:355px;">
+    <gs-calendar id="mycalendar" target="#mydate" bordered></gs-calendar>
   </gs-center>
 
   <!-- 
     target and placement tells popup component where to show up (below input field) 
     if target not set, it will take calling element as target
   -->
-  <gs-popup css="text-bg-light bordered p-1 m-2" w-max="360" target="#mydate2" placement="bottom" id="mypopup">
+  <gs-popup bordered margin="1" css="text-bg-light" w-max="360" target="#mydate2" placement="bottom" id="mypopup">
     <gs-calendar id="calendar" target="#mydate2" format="MM/DD/YYYY"></gs-calendar>
   </gs-popup>
 
