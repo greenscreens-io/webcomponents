@@ -8,7 +8,7 @@ import { GSEvents } from "../../../base/GSEvents.mjs";
 
 /**
  * Handle data filtering for list atribute, and linked fields.
- * Changes in one field list, update avaialble selections in another field selections.
+ * Changes in one field list, update available selections in another field selections.
  */
 export class ListController {
 

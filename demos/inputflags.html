@@ -28,7 +28,10 @@
     <script type="module" src="/bootstrap-lit/modules/base/GSAdoptedEngine.mjs"></script>
     <script type="module" src="/bootstrap-lit/modules/base/GSTheme.mjs"></script>
     <script type="module" src="/bootstrap-lit/modules/components/Template.mjs"></script>
+    <script type="module" src="/bootstrap-lit/modules/components/Form.mjs"></script>
     <script type="module" src="/bootstrap-lit/modules/components/ext/GSInputElement.mjs"></script>
+    <script type="module" src="/bootstrap-lit/modules/components/ext/GSDataListExt.mjs"></script>
+    <script type="module" src="/bootstrap-lit/modules/components/ext/GSComboExt.mjs"></script>
 
 </head>
 <body>
@@ -50,22 +53,20 @@
                 </div>
                 <div class="col-md-6 col-sm-6 col-xs-11">
                     <input is="gs-ext-input" required autofocus type="text" id="group" list="groups" name="group" placeholder="Barcode Group" class="form-control" >
-                    <datalist id="groups">
-                        <option data-group="1" data-code="1" value="One Dimensional">
+                    <datalist id="groups" is="gs-ext-datalist">
+                        <option data-group="1" data-code="1" value="One Dimensional" selected>
                         <option data-group="2" data-code="2" value="Two Dimensional">
                     </datalist>
                 </div>
             </div>
-        </div>
 
-        <div class="m-4 p-1 bg-light bordered shadow-sm">
             <div class="row form-group m-1">
                 <div class="col-md-4 col-sm-4 col-xs-12 text-md-end ">
                     <label class="control-label">Seelct SUB-GROUP</label>
                 </div>
                 <div class="col-md-6 col-sm-6 col-xs-11">
                     <input is="gs-ext-input" required type="text" id="type" list="types" name="type" data-filter="group" placeholder="Barcode Type" class="form-control">
-                    <datalist id="types">
+                    <datalist id="types" is="gs-ext-datalist">
 							<option value="Codabar" data-group="1" data-code="CODABAR" data-flag="1">
 							<option value="Code 11" data-group="1" data-code="CODE_11" data-flag="1">
 							<option value="Code 2 of 5 - Standard" data-group="1" data-code="CODE25_MATRIX" data-flag="1">
@@ -81,9 +82,7 @@
                     </datalist>
                 </div>
             </div>
-        </div>
 
-        <div class="m-4 p-1 bg-light bordered shadow-sm">
             <div class="row form-group m-1">
                 <div class="col-md-4 col-sm-4 col-xs-12 text-md-end ">
                     <label class="control-label">Data input FLAG 1</label>
@@ -92,9 +91,7 @@
                     <input class="form-control font-monospace" data-flag="1">
                 </div>
             </div>
-        </div>
-        
-        <div class="m-4 p-1 bg-light bordered shadow-sm">
+
             <div class="row form-group m-1">
                 <div class="col-md-4 col-sm-4 col-xs-12 text-md-end ">
                     <label class="control-label">Data input FLAG 2</label>
@@ -103,9 +100,7 @@
                     <input class="form-control font-monospace" data-flag="2">
                 </div>
             </div>
-        </div>        
 
-        <div class="m-4 p-1 bg-light bordered shadow-sm" data-code="CODABAR,CODE_11,CODE25_MATRIX,CODE39,CODE_128">
             <div class="row form-group m-1">
                 <div class="col-md-4 col-sm-4 col-xs-12 text-md-end ">
                     <label class="control-label">Data input GROUP 1 (CODE)</label>
@@ -114,9 +109,7 @@
                     <input class="form-control font-monospace">
                 </div>
             </div>
-        </div>
 
-        <div class="m-4 p-1 bg-light bordered shadow-sm" data-code="EAN,UPC_A">
             <div class="row form-group m-1">
                 <div class="col-md-4 col-sm-4 col-xs-12 text-md-end ">
                     <label class="control-label">Data input GROUP 1 (EAN/UPC)</label>
@@ -125,9 +118,7 @@
                     <input class="form-control font-monospace">
                 </div>
             </div>
-        </div>        
 
-        <div class="m-4 p-1 bg-light bordered shadow-sm" data-code="DATAMATRIX,MAXICODE,QR,QR_MICRO">
             <div class="row form-group m-1">
                 <div class="col-md-4 col-sm-4 col-xs-12 text-md-end ">
                     <label class="control-label">Data input GROUP 2</label>
@@ -141,5 +132,4 @@
     </form>
 
 </body>
-
 </html>
