@@ -271,6 +271,7 @@ export default class GSDate extends Date {
     static monthList(short = false, locale = navigator.locale, capitalize = true) {
         const tmp = new GSDate();
         tmp.locale = locale;
+        tmp.setDate(1);
         tmp.setMonth(0);
         const days = [];
         let val = null;
