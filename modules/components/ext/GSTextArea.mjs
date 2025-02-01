@@ -10,10 +10,8 @@
 import { GSID } from "../../base/GSID.mjs";
 import { GSDOM } from "../../base/GSDOM.mjs";
 import { GSLoader } from "../../base/GSLoader.mjs";
-import { GSEvent } from "../../base/GSEvent.mjs";
 import { GSEvents } from "../../base/GSEvents.mjs";
 import { GSAttr } from "../../base/GSAttr.mjs";
-import { GSBeep } from "../../base/GSBeep.mjs";
 import { CopySelectController } from "./controllers/CopySelectController.mjs";
 import { ValidityController } from "./controllers/ValidityController.mjs";
 
@@ -46,7 +44,7 @@ export class GSTextArea extends HTMLTextAreaElement {
     }
 
     attributeChangedCallback(name, oldValue, newValue) {
-
+        this.#controllers?.forEach((c) => c.hostUpdated?.());
     }
 
     connectedCallback() {
@@ -66,7 +64,6 @@ export class GSTextArea extends HTMLTextAreaElement {
     }
 
     addController(controller) {
-        // if (!(controller instanceof ReactiveController)) throw new Error('Argument not instance of ReactiveController');
         const me = this;
         (me.#controllers ??= new Set()).add(controller);
         if (me.#isConnected) {

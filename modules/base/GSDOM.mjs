@@ -491,7 +491,7 @@ export class GSDOM {
 	 * Query DOM Tree up to find closest element across Shadow DOM
 	 * @param {HTMLElement} el Root node to start from
 	 * @param {String} qry CSS query
-	 * @param {Number} level How many levels to wal, 0 = all
+	 * @param {Number} level How many levels to walk, 0 = all
 	 * @returns {HTMLElement} 
 	 */
 	static closest(el, qry, levels = 0) {

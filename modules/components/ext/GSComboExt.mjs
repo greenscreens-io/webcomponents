@@ -11,6 +11,7 @@ import { GSID } from "../../base/GSID.mjs";
 import { GSDOM } from "../../base/GSDOM.mjs";
 import { GSLoader } from "../../base/GSLoader.mjs";
 import { GSEvents } from "../../base/GSEvents.mjs";
+import { ComboController } from "./controllers/ComboController.mjs";
 
 /**
  * Add JSON loader to select element
@@ -28,8 +29,13 @@ export class GSComboExt extends HTMLSelectElement {
         Object.seal(GSComboExt);
     }
 
+    #isConnected = false;
+    #controllers = undefined;
+    #comboController = undefined;
+
     constructor() {
         super();
+        this.#comboController ??= new ComboController(this);
     }
 
     static get observedAttributes() {
@@ -39,6 +45,7 @@ export class GSComboExt extends HTMLSelectElement {
     attributeChangedCallback(name, oldValue, newValue) {
         //GSLog.error(null, `name:${name}, oldValue:${oldValue}, newValue:${newValue}`);
         if (name === 'data') this.load(newValue);
+        this.#controllers?.forEach((c) => c.hostUpdated?.());
     }
 
     connectedCallback() {
@@ -46,13 +53,30 @@ export class GSComboExt extends HTMLSelectElement {
         GSID.setIf(me);
         const data = me.form?.data;
         if (data) GSDOM.fromObject2Element(me, data);
+        me.#controllers?.forEach((c) => c.hostConnected?.());
+        me.#isConnected = true;
         me.on('reset', me.#onReset);
     }
 
     disconnectedCallback() {
-        GSEvents.detachListeners(this);
+        const me = this;
+        me.#isConnected = false;
+        me.#controllers?.forEach((c) => c.hostDisconnected?.());
+        GSEvents.detachListeners(me);
     }
         
+    addController(controller) {
+        const me = this;
+        (me.#controllers ??= new Set()).add(controller);
+        if (me.#isConnected) {
+            controller.hostConnected?.();
+        }
+    }
+
+    removeController(controller) {
+        this.#controllers?.delete(controller);
+    }
+
     validate() {
         const me = this;
         const isValid = me.checkValidity();
