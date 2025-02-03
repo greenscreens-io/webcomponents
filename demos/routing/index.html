@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Bootstrap-Lit</title>
+    <meta charset="utf-8">
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0">
+
+    <meta name="subject" content="Green Scereens Ltd.">
+    <meta name="author" content="www.greenscreens.ltd">
+    <meta name="keywords" content="JavaScript,WebComponents">
+    <meta name="robots" content="index, follow">
+    <meta name="revisit-after" content="3 month">
+    <meta name="description" content="WebComponents UI library based on Bootstrap.">
+
+    <script>
+        globalThis.GS_TEMPLATE_URL = '/bootstrap-lit/demos/templates/';
+        globalThis.GS_ROUTER_URL =  '/bootstrap-lit/demos/routing/router.json';;
+    </script>
+
+    <!-- Optimized CSS loading -->
+    <link rel="preload" href="/bootstrap-lit/assets/css/bootstrap.css" as="style"  data-adoptable="true" data-id="1">
+    <link rel="preload" href="/bootstrap-lit/assets/themes/default.css" as="style" data-adoptable="true" data-id="2">
+    <link rel="preload" href="/bootstrap-lit/assets/icons/bootstrap-icons.css" as="style" data-adoptable="true" data-id="4">
+
+    <script type="module" src="/bootstrap-lit/modules/base/index.mjs"></script>
+    <script type="module" src="/bootstrap-lit/modules/components/index.mjs"></script>
+    
+</head>
+
+<body>
+
+    <gs-template src="//header.html"></gs-template>
+
+    <div class="border p-3 m-4 shadow-sm text-nowrap text-bg-light">
+        <a href="#reset">Reset content</a>
+        <a class="ms-1" href="#version1">Example 1 (swap)</a>
+        <a class="ms-1" href="#version2">Example 2 (swap)</a>
+        <a class="ms-1" href="#version3">Example 3 (inject)</a>
+        <a class="ms-1" href="#version4">Example 4 (inject)</a>                
+  </div>    
+
+    <div id="content" class="container justify-content-center w-50 bordered">
+
+    </div>
+
+</body>
+</html>

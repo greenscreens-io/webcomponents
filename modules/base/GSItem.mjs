@@ -20,6 +20,7 @@ export class GSItem extends HTMLElement {
 	static properties = {
 		active: { type: Boolean },
 		disabled: { type: Boolean },
+		selected: { type: Boolean },
 		autofocus: { type: Boolean },
 	}
 

@@ -820,18 +820,21 @@ export class GSDOM {
 	 * Convert HTMLElement into a JSON object
 	 * @param {HTMLElement|Array} own 
 	 * @param {Boolean} recursive 
-	 * @param {Boolean} plain  
+	 * @param {Boolean} plain  If false, will include #tagName
+	 * @param {Object} definitions Json data type definitions	
 	 * @returns {Object}
 	 */
-	static toJson(own, recursive = true, plain = false) {
-		if (Array.isArray(own)) return own.map(o => GSDOM.toJson(o, recursive));
+	static toJson(own, recursive = true, plain = false, definitions) {
+		if (Array.isArray(own)) return own.map(o => GSDOM.toJson(o, recursive,plain,definitions));
 		const obj = {};
 		if (!GSDOM.isHTMLElement(own)) return obj;
 
 		if (!plain) obj['#tagName'] = own.tagName.toLowerCase();
 		obj['$text'] = own.innerText;
 
-		const props = GSDOM.allProperties(own);
+		//obj.dataset = Object.assign({}, own.dataset);
+
+		const props = definitions || GSDOM.allProperties(own);
 		Array.from(own.attributes).forEach(v => {
 			const type = props[v.name]?.type;
 			switch (type) {
@@ -848,7 +851,7 @@ export class GSDOM {
 		});
 
 		if (recursive) {
-			const children = Array.from(own.children).map(el => GSDOM.toJson(el, recursive, plain));
+			const children = Array.from(own.children).map(el => GSDOM.toJson(el, recursive, plain, definitions));
 			if (children.length > 0) obj.items = children;
 		}
 
@@ -883,8 +886,15 @@ export class GSDOM {
 		const name = obj['#tagName'] || tag;
 		const el = document.createElement(name);
 
-		Object.keys(obj).filter(v => v != 'items' && v[0] != '#')
+		Object.keys(obj)
+			.filter(v => v != 'items')
+			.filter(v => v[0] != '#')
+			.filter(v => v[0] != '$')
 			.forEach(v => el.setAttribute(v, obj[v]));
+
+		if (obj["#def"]) {
+			el[Symbol.for("#def")] = obj["#def"];
+		}
 
 		if (Array.isArray(obj.items)) {
 			obj.items.forEach(o => {
@@ -911,7 +921,10 @@ export class GSDOM {
 		const src = [];
 		src.push(`<${name} `);
 
-		Object.keys(obj).filter(v => v != 'items' && v[0] != '#')
+		Object.keys(obj)
+			.filter(v => v != 'items')
+			.filter(v => v[0] != '#')
+			.filter(v => v[0] != '$')
 			.forEach(v => src.push(` ${v}="${obj[v]}" `));
 
 		src.push(`>`);

@@ -28,9 +28,10 @@ Base library is core of all GS WebComponents UI elements. Contains a set of non 
 22. [GSPromise](./GSPromise.md)
 23. [GSQuery](./GSQuery.md)
 24. [GSQueryCSS](./GSQueryCSS.md)
-25. [GSTemplateCache](./GSTemplateCache.md)
-26. [GSTheme](./GSTheme.md)
-27. [GSTheme](./GSUtil.md)
+25. [GSRouter](./GSRouter.md)
+26. [GSTemplateCache](./GSTemplateCache.md)
+27. [GSTheme](./GSTheme.md)
+28. [GSUtil](./GSUtil.md)
 
 <br>
 

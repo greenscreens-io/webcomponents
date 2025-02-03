@@ -5,6 +5,8 @@
 import { GSFunction } from "./GSFunction.mjs";
 import { GSUtil } from "./GSUtil.mjs";
 
+const isProxy = Symbol("isProxy")
+
 /**
  * A module loading GSAttr class
  * @module base/GSAttr
@@ -160,7 +162,11 @@ export class GSAttr {
 	 */
 	static jsonToAttr(obj, el) {
 		if (!GSAttr.isHTMLElement(el)) return;
-		Object.entries(obj || {}).map(kv => GSAttr.set(el, kv[0], kv[1]));
+		Object.entries(obj || {})
+		.filter(kv => kv != 'items')
+		.filter(kv => kv[0][0] != '#')
+		.filter(kv => kv[0][0] != '$')
+		.map(kv => GSAttr.set(el, kv[0], kv[1]));
 	}
 
 	/**
@@ -198,6 +204,7 @@ export class GSAttr {
 				
 				if (prop === 'self') return;
 				if (prop === 'dataset') return target.dataset = value;
+				if (typeof prop === 'symbol') return target[prop] = value;
 
 				const type = opt[prop]?.type;
 				prop = opt[prop]?.attribute || prop;
@@ -225,6 +232,7 @@ export class GSAttr {
 				if (prop === 'self') return target;
 				if (prop === 'dataset') return target.dataset;
 				if (typeof prop === 'symbol') return target[prop];
+				if (prop === 'isProxy') return isProxy;
 				if (prop === recursive) return Array.from(target.children).map(el => GSAttr.proxify(el, opt, recursive)); 
 				
 				const tmp = opt; // Object.hasOwn(opt, prop) ? opt : target;

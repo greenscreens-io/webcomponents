@@ -160,8 +160,10 @@ export class GSLoader {
      * 
      * @async
      * @param {String} val Full or partial url path
-     * @param {String} method HTTP methog get|put|post
+     * @param {String} method HTTP method get|put|post
+     * @param {Object} headers HTTP request headers in JSON key/value pairs
      * @param {Boolean} asjson Parse returned data as JSON
+     * @param {} body Data to send in a request 
      * @returns {Promise<object|string>}
      */
     static async load(val = '', method = 'GET', headers, asjson = false, body) {
@@ -173,6 +175,7 @@ export class GSLoader {
         const url = GSLoader.normalizeURL(val, true);
         const opt = { method: method, headers: headers };
         if (method === 'POST' || method === 'PUT' && body) {
+            // TODO - detect if binary
             opt.body = JSON.stringify(body);
         }
         const res = await fetch(url, opt);
