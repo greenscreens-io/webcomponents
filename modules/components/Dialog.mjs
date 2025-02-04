@@ -115,6 +115,7 @@ export class GSDialogElement extends GSElement {
       me.#focusable()?.focus();
     } else {
       state = 'closing';
+      if (me.isHashed) location.hash = '';
       GSDialogElement.#STACK.pop();
       me.#dialog?.close();
     }
@@ -250,6 +251,14 @@ export class GSDialogElement extends GSElement {
 
   toggle() {
     this.opened = !this.opened;
+  }
+
+  /**
+   * Retrun true if dialog is opened by hashbang.
+   * Used to clear the hashbang on close
+   */
+  get isHashed() {
+    return GSUtil.asBool(this.dataset.gsHashed);
   }
 
   get form() {

@@ -2,6 +2,7 @@
  * Copyright (C) 2015, 2025; Green Screens Ltd.
  */
 
+export * from "./Router.mjs";
 export * from "./Accordion.mjs";
 export * from "./AccordionItem.mjs";
 export * from "./Alert.mjs";

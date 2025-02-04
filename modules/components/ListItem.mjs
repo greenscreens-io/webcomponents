@@ -9,7 +9,7 @@ import { GSUtil } from '../base/GSUtil.mjs';
 export class GSListItemElement extends GSElement {
 
   static properties = {
-    href: {},
+    url: {},
     target: {},
     title: {},
     icon: {},
@@ -44,7 +44,7 @@ export class GSListItemElement extends GSElement {
   renderUI() {
     const me = this;
     return html`<a  tabindex="0" ${ref(me.#refEl)}
-       href="${ifDefined(me.url)}" 
+       href="${ifDefined(me.href)}" 
        target="${ifDefined(me.target)}" 
        class="${classMap(me.renderClass())}">
         ${me.#renderFirst()} 
@@ -103,8 +103,8 @@ export class GSListItemElement extends GSElement {
     requestAnimationFrame(() => this.#refEl.value?.focus());
   }
 
-  get url() {
-    return this.href && this.target ? this.href : '#';
+  get href() {
+    return this.url ? this.url : '#';
   }
 
   get #activeCSS() {

@@ -1,0 +1,51 @@
+{
+    "#def" : {
+        "opened": true
+    },
+    "#defaults" : {
+        "data-gs-target": "#dialogs"
+    },
+    
+    "restart": {
+        "data-gs-swap": "gs-admin-dialog-restart"
+    },
+    "migrate": {
+        "data-gs-swap": "gs-admin-dialog-migrate"
+    },
+    "cert-client": {
+        "data-gs-swap": "gs-admin-dialog-certclient"
+    },
+    "cert-revoke": {
+        "data-gs-swap": "gs-admin-dialog-certrevoke"
+    },
+    "cert-import": {
+        "data-gs-swap": "gs-admin-dialog-certstoreimport"
+    },
+    "cert-options": {
+        "data-gs-swap": "gs-admin-dialog-certopt"
+    },
+    "login-admin": {
+        "data-gs-swap": "gs-admin-dialog-loginadm"
+    },
+    "login-defaults": {
+        "data-gs-swap": "gs-admin-dialog-logindefs"
+    },
+    "register-biometric": {
+        "data-gs-swap": "gs-admin-dialog-bioreg"
+    },
+    "register-otp": {
+        "data-gs-swap": "gs-admin-dialog-otpreg"
+    },
+    "otp-options": {
+        "data-gs-swap": "gs-admin-dialog-otpopt"
+    },
+    "kerberos": {
+        "data-gs-swap": "gs-admin-dialog-kerberos"
+    },
+    "network": {
+        "data-gs-swap": "gs-admin-dialog-network"
+    },
+    "system": {
+        "data-gs-swap": "gs-admin-dialog-system"
+    }        
+}

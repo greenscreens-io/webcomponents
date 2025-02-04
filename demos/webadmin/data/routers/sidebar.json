@@ -1,0 +1,70 @@
+{
+    "configurations": {
+        "data-gs-swap": "gs-admin-view-configuration",
+        "data-gs-target": "#content"
+    }, 
+    "tunnel": {
+        "data-gs-swap": "gs-admin-view-tunnel",
+        "data-gs-target": "#content"
+    }, 
+    "customization": {
+        "data-gs-swap": "gs-admin-view-customization",
+        "data-gs-target": "#content"
+    },
+    "filter-fido": {
+        "data-gs-swap": "gs-admin-view-filter-fido",
+        "data-gs-target": "#content"
+    },
+    "filter-ip": {
+        "data-gs-swap": "gs-admin-view-filter-ip",
+        "data-gs-target": "#content"
+    },
+    "filter-mobile": {
+        "data-gs-swap": "gs-admin-view-filter-mobile",
+        "data-gs-target": "#content"
+    },
+    "key-api": {
+        "data-gs-swap": "gs-admin-view-apikeys",
+        "data-gs-target": "#content"
+    },
+    "key-otp": {
+        "data-gs-swap": "gs-admin-view-otp",
+        "data-gs-target": "#content"
+    },
+    "key-bio": {
+        "data-gs-swap": "gs-admin-view-biometrics",
+        "data-gs-target": "#content"
+    },    
+    "printing": {
+        "data-gs-swap": "gs-admin-view-printing",
+        "data-gs-target": "#content"
+    },
+    "scheduler": {
+        "data-gs-swap": "gs-admin-view-scheduler",
+        "data-gs-target": "#content"
+    },
+    "users": {
+        "data-gs-swap": "gs-admin-view-users",
+        "data-gs-target": "#content"
+    },
+    "services": {
+        "data-gs-swap": "gs-admin-view-services",
+        "data-gs-target": "#content"
+    },
+    "workstations": {
+        "data-gs-swap": "gs-admin-view-workstations",
+        "data-gs-target": "#content"
+    },
+    "webmodules": {
+        "data-gs-swap": "gs-admin-view-webmodules",
+        "data-gs-target": "#content"
+    },
+    "about": {
+        "data-gs-swap": "gs-admin-dialog-about",
+        "data-gs-target": "#dialogs",
+        "#def" : {
+            "visible" : true
+            
+        }
+    }
+}

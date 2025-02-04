@@ -20,15 +20,21 @@ import { GSVersion } from "./GSVersion.mjs";
 export class GSLoader {
 
     static TEMPLATE_URL = globalThis.GS_TEMPLATE_URL || location.origin;
+    static ROUTER_URL = globalThis.GS_ROUTER_URL || location.origin;
+
     static NO_CACHE = false;
     static UNIQUE = GSVersion.build;
 
     static {
+        const rootURL = GSLoader.#defaultURL;
         if (!globalThis.GS_TEMPLATE_URL) {
-            const url = location.href.split('?').pop();
-            let seg = url.split('/');
-            GSLoader.TEMPLATE_URL = url.endsWith('/') ? url : seg.slice(0, -1).join('/');
-            globalThis.GS_TEMPLATE_URL = GSLoader.TEMPLATE_URL;
+            GSLoader.TEMPLATE_URL = rootURL;
+            globalThis.GS_TEMPLATE_URL = rootURL;
+        }
+
+        if (!globalThis.GS_ROUTER_URL) {
+            GSLoader.ROUTER_URL = rootURL;
+            globalThis.GS_ROUTER_URL = rootURL;
         }
 
         //const hasKey = Object.hasOwn(self, 'GS_NO_CACHE');
@@ -40,6 +46,13 @@ export class GSLoader {
         GSLoader.NO_CACHE = localStorage ? localStorage.getItem('GS_NO_CACHE') == 'true' : false;
 
     }
+
+    static get #defaultURL() {
+        const url = location.href.split('?').pop();
+        const seg = url.split('/');
+        return url.endsWith('/') ? url : seg.slice(0, -1).join('/');
+    }
+
     /**
      * Convert partial URL to a real URL
      * @param {String} url 
@@ -84,6 +97,56 @@ export class GSLoader {
      */
     static parentPath(url = '', level = 1) {
         return (url || '').split('/').slice(0, -1 * level).join('/') + '/';
+    }
+
+    /**
+     * Used to load router definition from virtual path
+     * 
+     * @async
+     * @param {String} def
+     * @return {Promise<string>}
+     */
+    static async getRouter(def = '') {
+
+        if (!def) return def;
+
+        const isRef = def.startsWith('#');
+        if (isRef) {
+            const el = GSDOM.query(document.documentElement, def);
+            return el ? GSUtil.toJson(el.innerHTML) : {};
+        }
+
+        const isHTML = GSUtil.isHTML(def);
+        if (isHTML) return def;
+
+        def = GSLoader.#getRouterURL(def);
+        return GSLoader.loadSafe(def, 'GET', null, true);
+    }
+
+    /**
+     * Decode template URL into a real URL
+     * @param {String} url 
+     * @return {String}
+     */
+    static #getRouterURL(url = '') {
+        url = url.startsWith('//') ? GSLoader.#routerURL + '/' + url : url;
+        return GSLoader.normalizeURL(url);
+    }
+
+    /**
+     * Retrieve default template url
+     * @return {String}
+     */
+    static get #routerURL() {
+        return GSLoader.normalizeURL(GSLoader.#routerPath, true);
+    }
+
+    /**
+     * Retrieve defult template path
+     * @return {String}
+     */
+    static get #routerPath() {
+        return GSLoader.ROUTER_URL ? GSLoader.ROUTER_URL.replace('//', '/') : '';
     }
 
     /**

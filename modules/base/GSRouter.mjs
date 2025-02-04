@@ -7,65 +7,71 @@
  * @module base/GSRouter
  */
 
-import { GSAttributeHandler } from "./GSAttributeHandler.mjs";
+import { GSLog } from "./GSLog.mjs";
+import { GSUtil } from "./GSUtil.mjs";
 import { GSData } from "./GSData.mjs";
 import { GSDOM } from "./GSDOM.mjs";
 import { GSEvents } from "./GSEvents.mjs";
 import { GSLoader } from "./GSLoader.mjs";
-import { GSLog } from "./GSLog.mjs";
-import { GSUtil } from "./GSUtil.mjs";
+import { GSAttributeHandler } from "./GSAttributeHandler.mjs";
 
 /**
  * Class for handling hash based routing.
  * Class uses GSAttributeHandler and optional JSON definition to handle routing.
  * 
  * Use globalThis.GS_ROUTER_URL before loading this module to define JSON definition file location
- * Use globalThis.GS_ROUTER_ENABLED to enable or disable routing on load
  * @Class
  */
 export class GSRouter {
 
-    // use GS_ROUTER_URL to define JSON definition file location
-    static DEFINITION_URL = globalThis.GS_ROUTER_URL || '';
-    static #definition = {};
+    #logging = true;
+    #enabled = false;
+    #hashCallback = null;
+    #definition = {};
+
+    constructor() {
+        this.#hashCallback = this.#onHashChange.bind(this);
+    }
 
     /**
      * Loda JSON definition for routing from JSON document.
      * @param {string} url 
      * @returns 
      */
-    static async loadDefinition(url) {
-        return GSLoader.load(url, 'GET', null, true);
+    async loadDefinition(url) {
+        return GSLoader.getRouter(url);
     }
 
     /**
      * Initialize routing from provided URL
-     * @param {*} url 
+     * @param {string} url 
+     * @param {number} wait in ms
      */
-    static async initialize(url) {
-        url = url || GSRouter.DEFINITION_URL;
+    async initialize(url, wait = 2000) {
+        const me = this;
         if (GSUtil.isStringNonEmpty(url)) {
-            GSRouter.#definition = await GSRouter.loadDefinition(url);
+            me.#definition = await me.loadDefinition(url);
         }
-        if (globalThis.GS_ROUTER_ENABLED) {
-            GSRouter.enable();
-        }
-        await GSEvents.waitPageLoad(null, null, null, globalThis.GS_ROUTER_WAIT);
-        GSRouter.#onHashChange();        
+        await GSEvents.waitPageLoad(null, null, null, wait);
+        me.enable();
+        me.#onHashChange();        
     }
 
     /**
      * Enable routing
      */
-    static enable() {
-        GSEvents.on(globalThis, null, 'hashchange', GSRouter.#onHashChange);
+    enable() {
+        if (this.#enabled) return;
+        GSEvents.on(globalThis, null, 'hashchange', this.#hashCallback);
+        this.#enabled = true;
     }
 
     /**
      * Disable routing
      */
-    static disable() {
-        GSEvents.off(globalThis, null, 'hashchange', GSRouter.#onHashChange);
+    disable() {
+        GSEvents.off(globalThis, null, 'hashchange', this.#hashCallback);
+        this.#enabled = false;
     }
 
     /**
@@ -73,47 +79,60 @@ export class GSRouter {
      * @param {string} route Abstract url for a route
      * @param {Object} options 
      */
-    static register(route, options) {
-        GSRouter.#definition[route] = options;
+    register(route, options) {
+        this.#definition[route] = options;
     }
 
     /**
      * Unregister a single route
      * @param {string} route 
      */
-    static unregister(route) {
-        delete GSRouter.#definition[route];
+    unregister(route) {
+        delete this.#definition[route];
     }
 
     /**
      * Get URL hashbang without hash
      */
-    static get hash() {
+    get hash() {
         return location.hash.slice(1);
     }
 
     /**
      * Return routing definition object
      */
-    static get definition() {
-        return GSData.deepClone(GSRouter.#definition);
+    get definition() {
+        return GSData.deepClone(this.#definition);
     }
 
-    static #onHashChange() {
-        const def = GSRouter.#definition[GSRouter.hash];
-        if (def) {
-            const el = GSDOM.fromJson(def);
+    get log() {
+        return this.#logging;
+    }
+
+    set log(val) {
+        this.#logging = GSUtil.asBool(val);
+    }
+
+    #onHashChange() {
+        const me = this;
+        const def = me.#definition["#def"] || {};
+        const defaults = me.#definition["#defaults"] || {};
+        const route = me.#definition[me.hash];
+        if (route) {
+            const el = GSDOM.fromJson(Object.assign({}, route, def, defaults));
+            el.dataset.gsHashed = true;
             const px = GSAttributeHandler.proxify(el);
             GSAttributeHandler.process(px);
-        } else {
-            GSLog.warn(null, `No routing definition found for: ${GSRouter.hash}`);
+        } else if (me.#logging) {
+            GSLog.warn(null, `No routing definition found for: ${me.hash}`);
         }
     }
 
     static {
-        globalThis.GS_ROUTER_ENABLED = true;
-        globalThis.GS_ROUTER_WAIT = 2000;
-        GSRouter.initialize();        
+        const wait = globalThis.GS_ROUTER_WAIT || 2000;
+        if (globalThis.GS_DEFINITION_URL) {
+            new GSRouter().initialize(globalThis.GS_DEFINITION_URL, wait);
+        }
     }
 
 }

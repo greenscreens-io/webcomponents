@@ -23,7 +23,8 @@ export class GSButtonElement extends GSElement {
     icon: {},
     title: {},
     tooltip: {},
-    text: {}
+    text: {},
+    url: {},
   };
 
   #refEl = createRef();
@@ -85,9 +86,20 @@ export class GSButtonElement extends GSElement {
     const me = this;
     if(me.toggling) me.toggle();
     me.iconEl?.animate();
+    me.#onHref(e)
     if (me.isReset) return me.form?.reset();
     if (me.isSubmit) return me.form?.submit();
     me.notify();
+  }
+
+  #onHref(e) {
+    const me = this;
+    if (!me.url) return;
+    if (me.url.startsWith('#')) {
+      location.hash = me.url;
+    } else {
+      location.href = me.url;
+    }
   }
 
   #onMouseOver() {

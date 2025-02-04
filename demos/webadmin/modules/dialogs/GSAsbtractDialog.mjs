@@ -67,6 +67,14 @@ export class GSAsbtractDialog extends GSDialogElement {
         }
     }
 
+    afterClose() {
+
+    }
+
+    get isHashed() {
+        return GSUtil.asBool(this.dataset.gsHashed);
+    }
+
     /**
      * Used by inherited dialogs to process confirmed dialog form
      * @param {*} data 
@@ -102,7 +110,11 @@ export class GSAsbtractDialog extends GSDialogElement {
     #onNotify(e) {
         const me = this;
         if (!me.opened && me.dismissable && e.detail === 'closing') me.remove();
-        if (me.opened) me.afterOpen();
+        if (me.opened) {
+            me.afterOpen();
+        } else {
+            me.afterClose();
+        }
     }
 
     #onFormError(e) {

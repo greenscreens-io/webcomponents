@@ -56,6 +56,8 @@ export class GSAbout extends GSDialogElement {
     }
 
     #onNotify(e) {
-        if (!this.opened) this.remove();
+        if (!this.opened) {
+            this.remove();
+        }
     }
 }

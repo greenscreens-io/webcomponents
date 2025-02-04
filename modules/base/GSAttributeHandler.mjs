@@ -64,6 +64,8 @@ export class GSAttributeHandler {
         trigger: { attribute: 'data-gs-trigger' },
         value: { attribute: 'data-gs-value' },
 
+        hashed: { attribute: 'data-gs-hashed', type: Boolean },
+
         calls: { attribute: 'data-gs-call', multi: true },
         toggles: { attribute: 'data-gs-toggle', multi: true },
         timeout: { attribute: 'data-gs-timeout', type: Number },
@@ -275,6 +277,7 @@ export class GSAttributeHandler {
                 target.innerHTML = '';
             }
 
+            content.dataset.gsHashed = me.hashed;
             me.#applyContent(host, target, content);
         }
     }
@@ -395,6 +398,7 @@ export class GSAttributeHandler {
     get timeout() { return this.#proxy.timeout; }
     get template() { return this.#proxy.template; }
     get value() { return this.#proxy.value; }
+    get hashed() { return this.#proxy.hashed; }
 
     get calls() { return this.#proxy.calls; }
     get toggles() { return this.#proxy.toggles; }
