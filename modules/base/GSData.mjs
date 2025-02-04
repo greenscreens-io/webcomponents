@@ -92,6 +92,8 @@ export class GSData {
         switch (type) {
             case 'timestamp':
                 if (val instanceof Date) return val;
+                if (GSUtil.isNumber(val)) return new GSDate(val).format(cfg.format, language);
+                if (cfg.format) return GSDate.parse(val, cfg.format, language);
                 return Date.parse(val);
             case 'date':
                 if (val instanceof Date) return val;

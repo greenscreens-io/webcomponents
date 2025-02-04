@@ -48,8 +48,8 @@ export class BaseViewUI extends GSElement {
 	/**
 	 * Table data filter
 	 */
-	get filter() {
-		const flt = this.store?.filter || [];
+	get filterSimple() {
+		const flt = this.filter || [];
 		const obj = {};
 		flt.forEach(o => obj[o.name] = o.value);
 		return obj;
@@ -74,11 +74,11 @@ export class BaseViewUI extends GSElement {
 	}
 
 	get filter() {
-		return this.table?.filters;
+		return this.store?.filter;
 	}
 
 	get sort() {
-		return this.table?.sorters;
+		return this.store?.sort;
 	}
 
 	get form() {

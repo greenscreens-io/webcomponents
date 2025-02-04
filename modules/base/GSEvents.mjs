@@ -582,6 +582,7 @@ export class GSEvents {
 		//GSEvents.resizeMonitor();
 		Object.freeze(GSEvents);
 		globalThis.GSEvents = GSEvents;
+		GSEvents.waitPageLoad();
 	}
 }
 

@@ -88,7 +88,7 @@ export class GSTableElement extends GSElement {
   }
 
   get selected() {
-    return this.dataController.selected;
+    return this.dataController?.selected;
   }
 
   set search(val) {
@@ -110,7 +110,7 @@ export class GSTableElement extends GSElement {
 
   disconnectedCallback() {
     super.disconnectedCallback();
-    this.dataController.clearSelected(this.data);
+    this.dataController?.clearSelected(this.data);
     this.data = [];
   }
 
@@ -142,8 +142,8 @@ export class GSTableElement extends GSElement {
       me.columns = me.data[0];
       me.data = me.data.slice(1);
     }
-    if (changed.has('multiselect') && !me.multiselect) me.dataController.clearSelected();
-    if (changed.has('selectable') && !me.selectable) me.dataController.clearSelected();
+    if (changed.has('multiselect') && !me.multiselect) me.dataController?.clearSelected();
+    if (changed.has('selectable') && !me.selectable) me.dataController?.clearSelected();
     if (changed.has('sortable') || changed.has('multisort')) {
       me.sort = Array(me.columns.length).fill(0);
       me.#sortOrder = [];
@@ -184,7 +184,7 @@ export class GSTableElement extends GSElement {
   onDataRead(data) {
     const me = this;
     me.data = data;
-    //me.dataController.clearSelected();
+    //me.dataController?.clearSelected();
 
     // update filtering
     if (data.length > 0 && me.#hasFilters) {
@@ -304,7 +304,7 @@ export class GSTableElement extends GSElement {
 
   #renderRecord(entry, index) {
     const me = this;
-    const selected = me.dataController.isSelected(entry);
+    const selected = me.dataController?.isSelected(entry);
     const color = me.colorSelect && selected ? `table-${me.colorSelect}` : '';
     const cells = me.#remapRecord(entry);
     return html`
@@ -349,7 +349,7 @@ export class GSTableElement extends GSElement {
       .filter(el => el?.value);
 
     if (me.storage) {
-      me.dataController.filter(filter);
+      me.dataController?.filter(filter);
     } else {
       // TODO keep full data, use sorted
       // GSData.filter(me.data, filter);
@@ -427,23 +427,26 @@ export class GSTableElement extends GSElement {
     // if context menu is attached and right click made
     if (e.button === 2 && !me.query('gs-context')) return;
     
+    const controller = me.dataController;
+    if (!controller) return;
+
     const record = me.data[tr.index];
-    const isSelected = me.dataController.isSelected(record);
+    const isSelected = controller.isSelected(record);
     if (me.multiselect) {
       if (isSelected) {
-        me.dataController.removeSelected(record);
+        controller.removeSelected(record);
       } else {
-        me.dataController.addSelected(record);
+        controller.addSelected(record);
       }
     } else if (me.toggle) {
       if (isSelected) {
-        me.dataController.clearSelected(me.data);
+        controller.clearSelected(me.data);
       } else {
-        me.dataController.addSelected(record);
+        controller.addSelected(record);
       }
     } else {
-      me.dataController.clearSelected(me.data);
-      me.dataController.addSelected(record);
+      controller.clearSelected(me.data);
+      controller.addSelected(record);
     }
     me.emit('select');
   }
