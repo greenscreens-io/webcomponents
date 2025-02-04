@@ -11,14 +11,15 @@ export class GSRouterElement extends GSElement {
 
   static properties = {
     url: {},
-    disabled: {type:Boolean},
-    logging: {type:Boolean}
+    disabled: { type: Boolean },
+    logging: { type: Boolean }
   };
 
   constructor() {
     super();
     this.logging = false;
     this.#router = new GSRouter();
+    this.#router.log = false;
   }
 
   renderUI() {
@@ -26,7 +27,7 @@ export class GSRouterElement extends GSElement {
   }
 
   updated(changed) {
-    this.#router.logging = this.logging;
+    this.#router.log = this.logging;
     if (changed.has('url')) {
       this.#router.initialize(this.url);
     }

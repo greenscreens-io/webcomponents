@@ -173,7 +173,11 @@ export class GSEvents {
 		const signal = GSEvents.#toSignal(timeout);
 		if (signal && signal.internal) {
 			return new Promise((resolve, reject) => {
-				GSEvents.listen(own, qry, event, callback || resolve, { once: true, signal: signal });
+				GSEvents.listen(own, qry, event, evt => {
+					signal.removeEventListener('abort', reject);
+					callback?.(evt);
+					resolve(evt);
+				}, { once: true, signal: signal });
 				signal.addEventListener('abort', reject);
 			});
 		}

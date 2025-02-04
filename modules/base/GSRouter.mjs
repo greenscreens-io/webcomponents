@@ -47,12 +47,14 @@ export class GSRouter {
      * @param {string} url 
      * @param {number} wait in ms
      */
-    async initialize(url, wait = 2000) {
+    async initialize(url, wait = 0) {
         const me = this;
         if (GSUtil.isStringNonEmpty(url)) {
             me.#definition = await me.loadDefinition(url);
         }
-        await GSEvents.waitPageLoad(null, null, null, wait);
+        if (wait > 0) {
+            await GSEvents.waitPageLoad(null, null, null, wait);
+        }
         me.enable();
         me.#onHashChange();        
     }
@@ -129,9 +131,8 @@ export class GSRouter {
     }
 
     static {
-        const wait = globalThis.GS_ROUTER_WAIT || 2000;
         if (globalThis.GS_DEFINITION_URL) {
-            new GSRouter().initialize(globalThis.GS_DEFINITION_URL, wait);
+            new GSRouter().initialize(globalThis.GS_DEFINITION_URL, globalThis.GS_ROUTER_WAIT);
         }
     }
 
