@@ -64,7 +64,7 @@ export class GSEvents {
 	 * @param {function} callback 
 	 * @param {Promise<number>} timeout 
 	 */
-	static async waitPageLoad(target, name = 'loaded', callback, timeout = 100, prevent = true) {
+	static async waitPageLoad(target, name = 'loaded', callback, timeout = 0, prevent = true) {
 		if (!GSEvents.#loaded) {
 			try {
 				await GSEvents.wait(globalThis.window, 'load', timeout, prevent);
@@ -73,9 +73,10 @@ export class GSEvents {
 				console.error('Error waiting for page load:', e); // Improved error handling
 			}
 		}
-		// await GSUtil.timeout(timeout);
-		await GSFunction.callFunction(callback);
-		GSEvents.sendSuspended(target, name);
+		if (GSEvents.#loaded) {
+			await GSFunction.callFunction(callback);
+			GSEvents.sendSuspended(target, name);
+		}
 	}
 
 	/**

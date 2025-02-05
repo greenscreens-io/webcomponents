@@ -140,7 +140,8 @@ export class GSLinklement extends GSElement {
         tooltip="${ifDefined(opt.tooltip)}"
         href="${ifDefined(opt.url)}">        
         ${before || ''}
-        <slot>${opt.title}</slot> 
+        ${ifDefined(opt.title)}
+        <slot></slot> 
         ${after || ''}
     </a>`;
   }

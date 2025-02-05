@@ -12,7 +12,7 @@ import { GSFormGroupElement } from './FormGroup.mjs';
 // TODO: Make generic JSON to template generator, 
 // then create string template and apply it to the lit html function.
 // Use all properties exstractor from super components and use type definition for bool proeprties.
-// Use xtype to define component type and use it to create component instance.
+// Use xtype(#tagName) to define component type and use it to create component instance.
 
 /**
  * Component is responsible for auto-building gs-form and gs-form-group elements

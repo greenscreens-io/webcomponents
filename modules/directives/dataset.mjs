@@ -13,7 +13,11 @@ const definition = {
     'template': 'gsTemplate',
     'toggle': 'gsToggle',
     'trigger': 'gsTrigger',
-    'value': 'gsValue'
+    'value': 'gsValue',
+    'calls':'gsCall',
+    'toggles':'gsToggle',
+    'timeout':'gsTimeout',
+    'triggers':'gsTrigger'
 };
 
 const template = {
@@ -29,7 +33,11 @@ const template = {
     'gsTemplate': undefined,
     'gsToggle': undefined,
     'gsTrigger': undefined,
-    'gsValue': undefined
+    'gsValue': undefined,
+    'gsCall': undefined,
+    'gsToggle': undefined,
+    'gsTimeout': undefined,
+    'gsTrigger': undefined
 };
 
 class DatasetDirective extends Directive {
@@ -42,7 +50,6 @@ class DatasetDirective extends Directive {
     update(part, [obj, flat = true]) {
 
         if (!obj) return nothing;
-
         const dataset = part.element.dataset;
         const srcset = obj.dataset || obj;
         const isDataset = srcset instanceof DOMStringMap;
@@ -61,7 +68,9 @@ class DatasetDirective extends Directive {
         const list = Object.entries(obj).filter(v => Object.hasOwn(definition, v[0]));
         if (list.length > 0) {
             list.forEach(kv => opt[definition[kv[0]]] = kv[1]);
-            Object.assign(dataset, opt);
+            Object.keys(opt)
+            .filter(k => opt[k] !== undefined)
+            .forEach(k => dataset[k] = opt[k]);
         }
     }
 }

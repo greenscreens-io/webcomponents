@@ -215,7 +215,8 @@ export class GSTreeElement extends GSElement {
   }
 
   #onClick(e) {
-    const isIcon = e.target.closest('gs-icon')?.dataset.type === 'state';
+    const icon = e.target.tagName === 'GS-ICON' ? e.target : e.target.closest('gs-icon');
+    const isIcon = icon?.dataset.type === 'state';
     const el = e.target.closest('gs-tree-item');
     if (!el.node) return;
 
@@ -265,6 +266,10 @@ export class GSTreeElement extends GSElement {
           me.next();
         }
         break;
+      case 'Enter':
+          if (el.isFolder) {
+            el.toggle();
+          }        
     }
   }
 

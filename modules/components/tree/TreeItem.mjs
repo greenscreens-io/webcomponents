@@ -105,7 +105,20 @@ export class GSTreeItemElement extends GSElement {
   }
 
   handle(e) {
-    GSAttributeHandler.process(this.querySelector('a'), e);
+    GSAttributeHandler.process(this.#link, e);
+    /*
+    const me = this;
+    const isIcon = e.target.tagName === 'GS-ICON';
+    if (me.multiselect && isIcon) {
+      me.toggleSelection();
+    } else {
+      GSAttributeHandler.process(me.#link, e);
+    }
+    */
+  }
+
+  get #link() {
+    return this.query('a');
   }
 
   get isLeaf() {

@@ -27,7 +27,6 @@ export class Tree {
 
     /**
      * Return tree list from root to this node.
-     * TODO: Refactor when iterator "map" become available
      */
     get subtree() {
         return Array.from(this.up(undefined, false, true, true));

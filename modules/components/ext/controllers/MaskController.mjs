@@ -230,7 +230,6 @@ export class MaskController {
     me.#back = false;
   }
 
-  //  TODO support multi #accecpt
   #clean(input) {
     const me = this;
     input = input.match(me.#accept) || [];

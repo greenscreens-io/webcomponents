@@ -176,7 +176,6 @@ export class TreeNode extends Tree {
 
     /**
      * List all selected nodes.
-     * TODO; refactor when Iterator.filter become available 
      * @returns 
      */
     selectedNodes() {
@@ -185,11 +184,7 @@ export class TreeNode extends Tree {
             const node = root.selectedNode()
             return node?.selected ? [node] : [];
         }
-        const result = [];
-        for (let node of root.walk()) {
-            if (node.selected) result.push(node);
-        }
-        return result;
+        return Array.from(root.walk().filter(o => o.selected));
     }
 
     /**
