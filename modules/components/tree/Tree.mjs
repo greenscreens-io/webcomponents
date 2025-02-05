@@ -177,7 +177,7 @@ export class GSTreeElement extends GSElement {
   }
 
   get selected() {
-    return this.#host(this.node.selectedNode());
+    return this.#host(this.node.selectedNodes());
   }
 
   get focused() {
@@ -211,6 +211,9 @@ export class GSTreeElement extends GSElement {
   }
 
   #host(node) {
+    if (Array.isArray(node)) {
+      return node.map(n =>n[Symbol.for('gs-element')]).filter( n=> n);
+    }
     return node?.[Symbol.for('gs-element')];
   }
 
