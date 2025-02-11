@@ -54,6 +54,7 @@ export class GSData {
      * TODo improve https://www.geeksforgeeks.org/how-to-convert-array-of-objects-into-unique-array-of-objects-in-javascript/
      * @param {Array} first 
      * @param {Array} second 
+     * @param {Boolean} advanced Used when data is Object instead of string
      * @returns {Array}
      */
     static mergeArrays(first = [], second = [], advanced = false) {
