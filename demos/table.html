@@ -114,6 +114,11 @@
         const table = document.querySelector('gs-table');
         table.columns = columns;
         table.data = data;
+        /*
+        const storage = await table.dataController.storage();
+        storage.append(data);
+        table.dataController.read();
+        */
     </script>    
 
 </body>

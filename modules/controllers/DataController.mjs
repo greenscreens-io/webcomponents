@@ -152,7 +152,7 @@ export class DataController {
   }
 
   #onSelect(e) {
-    this.#host.requestUpdate();
+    this.#host.requestUpdate?.();
   }
 
   #onRead(e) {

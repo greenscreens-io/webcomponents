@@ -38,10 +38,19 @@ GSTable WebComponent is a HTML Table renderer.
 
 <br>
 
+## Column Attributes
+---
+
+| Name               | Description                                              |
+|--------------------|----------------------------------------------------------|
+| filter             | If set, generate column filter input in the header       | 
+| fixed              | If set, generate combo else data list (filter only)      | 
+| list               | If set, dynamically populate filter options from storage |
+
 ## Example
 ---
 
-For more details, check [Table Demo](../../demos/table.html)
+For more details, check [Table Demo](../../demos/table.html) or  [Grid Demo](../../demos/grid/index.html)
 
 ```html
 <gs-table id="handler" color="light" divider storage="mydata"></gs-table>

@@ -55,16 +55,14 @@
     <div class="m-4 p-3 bordered shadow-sm text-bg-light">
         <div class="row my-2">
             <div class="col-auto">
-                <gs-form-group cell-label="col-auto" cell-field="col-auto" name="limit" label="Limit" data-gs-target="gs-data-handler#employees" data-gs-call="read">
-                    <template>
-                        <select class="form-select form-select-sm rounded-0" name="limit" >
-                            <option value="5">5</option>
-                            <option value="10" selected>10</option>
-                            <option value="15">15</option>
-                            <option value="25">25</option>
-                            <option value="50">50</option>
-                        </select>
-                    </template>            
+                <gs-form-group selectable
+                    cell-label="col-auto" cell-field="col-auto" name="limit" label="Limit" 
+                    data-gs-target="gs-data-handler#employees" data-gs-call="read">
+                    <gs-item value="5" name="5"></gs-item>
+                    <gs-item value="10" name="10" selected></gs-item>
+                    <gs-item value="15" name="15"></gs-item>
+                    <gs-item value="25" name="25"></gs-item>
+                    <gs-item value="50" name="50"></gs-item>
                 </gs-form-group>
             </div>
             <div class="col d-flex justify-content-end">
@@ -83,8 +81,8 @@
         <!-- Defiend items will render data as defiend type -->
         <gs-table id="grid" storage="employees" color="light" css-filter="rounded-0" select-color="primary"
             selectable hover bordered shadow divider sortable multisort>
-            <gs-item name="Office" filter></gs-item>
-            <gs-item name="Name" filter></gs-item>
+            <gs-item name="Office" filter fixed list ></gs-item>
+            <gs-item name="Name" filter list></gs-item>
             <gs-item name="Position" filter></gs-item>
             <gs-item name="Age" type="number" align="center" width="100" filter></gs-item>
             <gs-item name="Salary" type="currency" align="end" currency="USD" language="hr-HR" width="200" filter></gs-item>

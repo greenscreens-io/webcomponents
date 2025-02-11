@@ -9,7 +9,6 @@ import { GSData } from '../base/GSData.mjs';
 import { GSItem } from '../base/GSItem.mjs';
 import { GSDOM } from '../base/GSDOM.mjs';
 import { GSUtil } from '../base/GSUtil.mjs';
-import { GSID } from '../base/GSID.mjs';
 
 /**
  * A HTML Table renderer for tabular data representation.
@@ -34,6 +33,7 @@ export class GSTableElement extends GSElement {
     colspan: {},
     storage: {},
     ref: {}, // if set; use storage or gs-items to map ref value to virtual field
+    list : { type: Boolean }, // if set, use storage record column as a filter
     filter: { type: Boolean },
     hidden: { type: Boolean },
     fixed: { type: Boolean },
@@ -102,9 +102,12 @@ export class GSTableElement extends GSElement {
     const me = this;
     me.#config = GSItem.proxify(me, GSTableElement.CELLS);
     if (me.columns.length === 0) me.columns = me.#config.map(v => v.name);
+    /* TODO - auto storage prevents using plain table with 
+       columns, data properties programmatically
     if (!me.storage) {      
       me.storage = me.#auto = GSID.next('table-');
     }
+    */
     super.connectedCallback();
   }
 
@@ -234,40 +237,45 @@ export class GSTableElement extends GSElement {
     const cfg = me.#config[index];
     if (!cfg?.filter) return html`<th></th>`;
 
-    let mask = '';
+    let mask = undefined;
     const hasSub = cfg.childElementCount > 0;
     const isDate = cfg.columnType === 'date';
     if (isDate) mask = cfg.format || GSUtil.getDateFormat(cfg.language || GSUtil.language);
     const css = `${GSUtil.normalize(me.cssFilter)} ${GSUtil.normalize(cell.cssFilter)}`; 
 
-    if (hasSub && cfg.fixed) {
+    if ((hasSub || cfg.list) && cfg.fixed) {
       return html`<th .index=${index} @change="${me.#onFilter}">
           <select is="gs-ext-select" .index=${index}
               class="form-select ${css}" 
-              name="${cell}"> 
+              name="${cell}"
+              storage="${ifDefined(cfg.list ? me.storage : null)}"
+              key="${ifDefined(cfg.list ? cfg.name : null)}"> 
               ${me.#renderOption(cfg)}
               </select>
           </th>`;
     }
 
     let listid = '';
-    let list = '';
-    if (hasSub) {
+    let list = undefined;
+    if (hasSub || cfg.list) {
       listid = `${me.id}-list-${index}`;
-      list = html`<datalist id="${listid}">${me.#renderOption(cfg)}</datalist>`;
+      list = html`<datalist id="${listid}" is="gs-ext-datalist"
+              storage="${ifDefined(cfg.list ? me.storage : null)}"
+              key="${ifDefined(cfg.list ? cfg.name : null)}"> 
+              ${me.#renderOption(cfg)}</datalist>`;
     } 
 
     return html`<th .index=${index} @change="${me.#onFilter}">
-        ${list}
-        <input is="gs-ext-input" .index=${index}
-            class="form-control ${css}" 
-            mask="${ifDefined(mask)}"
-            list="${ifDefined(listid)}"
-            name="${cell}" 
-            placeholder="${ifDefined(cfg.title)}" 
-            type="${cfg.filterType || cfg.columnType}"
-            data-slots="${ifDefined(isDate ? 'DMY' : undefined)}">
-        </th>`;
+    <input is="gs-ext-input" .index=${index}
+      class="form-control ${css}" 
+      mask="${ifDefined(mask)}"
+      list="${ifDefined(listid)}"
+      name="${cell}" 
+      placeholder="${ifDefined(cfg.title)}" 
+      type="${cfg.filterType || cfg.columnType}"
+      data-slots="${ifDefined(isDate ? 'DMY' : undefined)}"/>
+    ${list}
+    </th>`;
   }
 
   #renderOption(cfg) {
@@ -283,7 +291,7 @@ export class GSTableElement extends GSElement {
     const css = `${GSUtil.normalize(me.cssHeader)} ${GSUtil.normalize(cell.cssHeader)}`; 
     return html`
       <th .index=${index} class="${css}" 
-        colspan="${ifDefined(cfg.colspan)}"
+        colspan="${ifDefined(cfg?.colspan)}"
         width="${ifDefined(cfg?.width)}">
         <div class="d-flex justify-content-between"> 
           <span>${cfg?.title || cell}</span>
@@ -317,7 +325,7 @@ export class GSTableElement extends GSElement {
   #renderCell(cell, index) {
     const cfg = this.#config[index];
     if (cfg?.hidden) return '';
-    return html`<td class="text-${cfg?.align}" colspan="${ifDefined(cfg.colspan)}" ><span>${cell}</span></td>`;
+    return html`<td class="text-${cfg?.align}" colspan="${ifDefined(cfg?.colspan)}" ><span>${cell}</span></td>`;
   }
 
   #remapRecord(record) {

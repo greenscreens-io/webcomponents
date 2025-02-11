@@ -12,6 +12,9 @@ import { GSDOM } from "../../base/GSDOM.mjs";
 import { GSLoader } from "../../base/GSLoader.mjs";
 import { GSEvents } from "../../base/GSEvents.mjs";
 import { ComboController } from "./controllers/ComboController.mjs";
+import { DataController } from "../../controllers/DataController.mjs";
+import { GSAttr } from "../../base/GSAttr.mjs";
+import { GSData } from "../../base/GSData.mjs";
 
 /**
  * Add JSON loader to select element
@@ -29,9 +32,11 @@ export class GSComboExt extends HTMLSelectElement {
         Object.seal(GSComboExt);
     }
 
+    #data = [];
     #isConnected = false;
     #controllers = undefined;
     #comboController = undefined;
+    #dataController = undefined;
 
     constructor() {
         super();
@@ -53,6 +58,7 @@ export class GSComboExt extends HTMLSelectElement {
         GSID.setIf(me);
         const data = me.form?.data;
         if (data) GSDOM.fromObject2Element(me, data);
+        if (me.storage) me.#dataController ??= new DataController(me);
         me.#controllers?.forEach((c) => c.hostConnected?.());
         me.#isConnected = true;
         me.on('reset', me.#onReset);
@@ -272,5 +278,30 @@ export class GSComboExt extends HTMLSelectElement {
     #onReset(e) {
         this.reset();
     }
+
+    /**
+     * For DataController read callback
+     * 
+     * @param {Array} data 
+     */
+    onDataRead(data = []) {
+        const me = this;
+        const key = me.key;
+        const tmp = GSData.uniqe(data.map(o => o[key]))
+            .map(v => {return {text:v, value:v}});
+        me.#data = GSData.mergeArrays(tmp, me.#data);
+        me.apply(me.#data);
+    }
+
+    get storage() {
+        return GSAttr.get(this, 'storage');
+    }
+
+    /**
+     * Storage records key to use to generate unique list
+     */
+    get key() {
+        return GSAttr.get(this, 'key');
+    }    
 }
 

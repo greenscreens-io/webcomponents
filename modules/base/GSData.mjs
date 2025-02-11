@@ -51,12 +51,14 @@ export class GSData {
 
     /**
      * Simple array merge, without duplicates. Used by observableAttributes
+     * TODo improve https://www.geeksforgeeks.org/how-to-convert-array-of-objects-into-unique-array-of-objects-in-javascript/
      * @param {Array} first 
      * @param {Array} second 
      * @returns {Array}
      */
     static mergeArrays(first = [], second = []) {
-        return [...first, ...second].filter((value, index, arr) => arr.indexOf(value) === index);
+        return [...new Set([...first, ...second].map(JSON.stringify))].map(JSON.parse);
+        //return [...first, ...second].filter((value, index, arr) => arr.indexOf(value) === index);
     }
 
     /**

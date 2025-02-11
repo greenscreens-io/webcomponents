@@ -14,6 +14,9 @@ import { GSUtil } from "../../base/GSUtil.mjs";
 import { GSLoader } from "../../base/GSLoader.mjs";
 import { GSEvents } from "../../base/GSEvents.mjs";
 import { GSLog } from "../../base/GSLog.mjs";
+import { GSAttr } from "../../base/GSAttr.mjs";
+import { DataController } from "../../controllers/DataController.mjs";
+import { GSData } from "../../base/GSData.mjs";
 
 /**
  * Add JSON loader to datalist element
@@ -32,6 +35,11 @@ export class GSDataListExt extends HTMLDataListElement {
         Object.seal(GSDataListExt);
     }
 
+    #data = [];
+    #isConnected = false;
+    #controllers = undefined;
+    #dataController = undefined;
+
     constructor() {
         super();
     }
@@ -43,15 +51,35 @@ export class GSDataListExt extends HTMLDataListElement {
     attributeChangedCallback(name, oldValue, newValue) {
         //GSLog.error(null, e);`name:${name}, oldValue:${oldValue}, newValue:${newValue}`);
         if (name === 'data') this.load(newValue);
+        this.#controllers?.forEach((c) => c.hostUpdated?.());
     }
 
     connectedCallback() {
-        GSID.setIf(this);
+        const me = this;
+        GSID.setIf(me);
+        if (me.storage) me.#dataController ??= new DataController(me);
+        me.#controllers?.forEach((c) => c.hostConnected?.());
+        me.#isConnected = true;
     }
 
     disconnectedCallback() {
-        GSEvents.detachListeners(this);
+        const me = this;
+        me.#isConnected = false;
+        me.#controllers?.forEach((c) => c.hostDisconnected?.());        
+        GSEvents.detachListeners(me);
     }
+   
+    addController(controller) {
+        const me = this;
+        (me.#controllers ??= new Set()).add(controller);
+        if (me.#isConnected) {
+            controller.hostConnected?.();
+        }
+    }
+
+    removeController(controller) {
+        this.#controllers?.delete(controller);
+    }    
         
     get owner() {
         const own = GSDOM.root(this);
@@ -108,8 +136,13 @@ export class GSDataListExt extends HTMLDataListElement {
             seg.push(`${key}="${val}"`);
         });
 
-        seg.push(o.text);
-        seg.push('>')
+        if (o.text) {
+            seg.push('>')
+            seg.push(o.text);
+            seg.push('</option>')
+        } else {
+            seg.push('>')
+        }
 
         return seg.join(' ');
     }
@@ -228,5 +261,29 @@ export class GSDataListExt extends HTMLDataListElement {
         return GSEvents.remove(this, el, name, fn);
     }
 
+    /**
+     * For DataController read callback
+     * 
+     * @param {Array} data 
+     */
+    onDataRead(data = []) {
+        const me = this;
+        const key = me.key;
+        const tmp = GSData.uniqe(data.map(o => o[key]))
+            .map(v => {return {value:v}});
+        me.#data = GSData.mergeArrays(tmp, me.#data);
+        me.apply(me.#data);
+    }   
+
+    get storage() {
+        return GSAttr.get(this, 'storage');
+    }
+
+    /**
+     * Storage records key to use to generate unique list
+     */
+    get key() {
+        return GSAttr.get(this, 'key');
+    }    
 }
 
