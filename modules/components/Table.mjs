@@ -40,12 +40,14 @@ export class GSTableElement extends GSElement {
     filterType: { attribute: 'filter-type' },
     cssFilter: { attribute: 'css-filter' },
     cssHeader: { attribute: 'css-header' },
+    color: { ...color},
     ...GSData.PROPERTIES
   }
 
   static properties = {
     storage: {},
     color: { ...color },
+    colorFilter: { ...color, attribute: 'filter-color' },
     colorHead: { ...color, attribute: 'head-color' },
     colorSelect: { ...color, attribute: 'select-color' },
     colorSort: { ...color, attribute: 'sort-color' },
@@ -242,11 +244,13 @@ export class GSTableElement extends GSElement {
     const isDate = cfg.columnType === 'date';
     if (isDate) mask = cfg.format || GSUtil.getDateFormat(cfg.language || GSUtil.language);
     const css = `${GSUtil.normalize(me.cssFilter)} ${GSUtil.normalize(cell.cssFilter)}`; 
+    const color = `text-bg-${GSUtil.normalize(cell.color || me.colorFilter)}`; 
+    
 
     if ((hasSub || cfg.list) && cfg.fixed) {
       return html`<th .index=${index} @change="${me.#onFilter}">
           <select is="gs-ext-select" .index=${index}
-              class="form-select ${css}" 
+              class="form-select ${css} ${color}" 
               name="${cell}"
               storage="${ifDefined(cfg.list ? me.storage : null)}"
               key="${ifDefined(cfg.list ? cfg.name : null)}"> 
@@ -267,7 +271,7 @@ export class GSTableElement extends GSElement {
 
     return html`<th .index=${index} @change="${me.#onFilter}">
     <input is="gs-ext-input" .index=${index}
-      class="form-control ${css}" 
+      class="form-control ${css} ${color}" 
       mask="${ifDefined(mask)}"
       list="${ifDefined(listid)}"
       name="${cell}" 

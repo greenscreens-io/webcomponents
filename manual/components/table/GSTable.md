@@ -22,6 +22,7 @@ When using different components layout / design, element such as ```<gs-pager>``
 | cssHeader          | Table header CSS                                         | 
 | cssRow             | Comon CSS for every row                                  | 
 | cssCell            | Common CSS for every cell                                | 
+| colorFilter        | Color fo a filter cell                                   | 
 
 <br>
 

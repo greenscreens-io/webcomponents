@@ -175,7 +175,7 @@ export default class GSTagElement extends GSElement {
             badge: true,
             tag: true,
             [`fs-${me.size}`]: me.size > 0,
-            [`bg-${me.color}`]: me.color ? true : false
+            [`text-bg-${me.color}`]: me.color ? true : false
         }
         return me.mapCSS(me.cssTag, opt);
     }
@@ -185,7 +185,7 @@ export default class GSTagElement extends GSElement {
         const opt = {
             'btn-close': true,
             'ms-1': true,
-            [`bg-${me.closeColor}`]: me.closeColor ? true : false
+            [`text-bg-${me.closeColor}`]: me.closeColor ? true : false
         }
         return me.mapCSS(me.cssClose, opt);
     }
