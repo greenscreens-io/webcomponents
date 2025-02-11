@@ -8,7 +8,16 @@ Input field names "type" is linked to a **<datalist>** named **types**. When **<
  
 ```html
 <input type="text" list="types" name="type" class="form-control">
-<datalist id="types" is="gs-ext-datalist" data="datalist.json"></datalist>11
+<datalist id="types" is="gs-ext-datalist" data="datalist.json"></datalist>
+```
+<br>
+
+Use storage to generate an unique list of selectable values from provided record field. 
+The property "key" is used to select record field name or column number if data is a simple array.
+
+```html
+<input type="text" list="types" name="type" class="form-control">
+<datalist id="types" is="gs-ext-datalist" key="name" storage="data"></datalist>
 ```
 <br>
 
