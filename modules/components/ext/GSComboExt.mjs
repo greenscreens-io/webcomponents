@@ -287,9 +287,8 @@ export class GSComboExt extends HTMLSelectElement {
     onDataRead(data = []) {
         const me = this;
         const key = me.key;
-        const tmp = GSData.uniqe(data.map(o => o[key]))
-            .map(v => {return {text:v, value:v}});
-        me.#data = GSData.mergeArrays(tmp, me.#data);
+        me.#data = GSData.mergeArrays(data.map(o => o[key]), me.#data.map(o => o.value))
+               .map(v => {return {text:v, value:v}});;    
         me.apply(me.#data);
     }
 
@@ -301,7 +300,7 @@ export class GSComboExt extends HTMLSelectElement {
      * Storage records key to use to generate unique list
      */
     get key() {
-        return GSAttr.get(this, 'key');
+        return GSAttr.get(this, 'key', 0);
     }    
 }
 

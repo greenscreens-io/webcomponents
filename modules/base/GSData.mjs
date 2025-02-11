@@ -56,9 +56,11 @@ export class GSData {
      * @param {Array} second 
      * @returns {Array}
      */
-    static mergeArrays(first = [], second = []) {
-        return [...new Set([...first, ...second].map(JSON.stringify))].map(JSON.parse);
-        //return [...first, ...second].filter((value, index, arr) => arr.indexOf(value) === index);
+    static mergeArrays(first = [], second = [], advanced = false) {
+        if (advanced) {
+            return [...new Set([...first, ...second].map(JSON.stringify))].map(JSON.parse);
+        }
+        return [...first, ...second].filter((value, index, arr) => arr.indexOf(value) === index);
     }
 
     /**

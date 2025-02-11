@@ -269,9 +269,8 @@ export class GSDataListExt extends HTMLDataListElement {
     onDataRead(data = []) {
         const me = this;
         const key = me.key;
-        const tmp = GSData.uniqe(data.map(o => o[key]))
-            .map(v => {return {value:v}});
-        me.#data = GSData.mergeArrays(tmp, me.#data);
+        me.#data = GSData.mergeArrays(data.map(o => o[key]), me.#data.map(o => o.value))
+               .map(v => {return {value:v}});        
         me.apply(me.#data);
     }   
 
@@ -283,7 +282,7 @@ export class GSDataListExt extends HTMLDataListElement {
      * Storage records key to use to generate unique list
      */
     get key() {
-        return GSAttr.get(this, 'key');
+        return GSAttr.get(this, 'key', 0);
     }    
 }
 
