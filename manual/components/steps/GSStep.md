@@ -12,8 +12,8 @@ GSStep WebComponent represent UI for a single step.
 | title              | Step title                                                       |
 | icon               | Step icon                                                        |
 | color              | Step Bootstrap color                                             |
-| iconCss            | Custom CSS for icon                                              |
-| titleCSS           | Custom CSS for title                                             |
+| icon-css           | Custom CSS for icon                                              |
+| title-cSS          | Custom CSS for title                                             |
  
 <br>
 

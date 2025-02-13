@@ -9,11 +9,9 @@ GSCompare WebComponent is image comparator alllowing to show ovelaping "before" 
  
 | Name               | Description                                              |
 |--------------------|----------------------------------------------------------|
+| background         | Bootstrap color for background                           |
 | before             | First image                                              |
 | after              | Second image                                             |
-| background         | Bootstrap color for background                           |
-| border             | Render border around                                     |
-| shadow             | Render shadow around the frame                           |
 | width              | Image width in pixels                                    |
 | height             | Image height in pixels                                   |
 

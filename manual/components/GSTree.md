@@ -32,7 +32,7 @@ These attributes are shared between GSTreeElement and GSTreeItemElement.
 | data               | JSON Array of tree nodes                                 | 
 | node               | TreeNode isntacne of tree nodes                          | 
 | storage            | GSDataHandler store ID                                   | 
-| border             | Rener border for each Tree Item                          | 
+| border             | Render border for each Tree Item                          | 
 | leaf               | Prevent selecting "folder" nodes                         | 
 | multiselect        | Allow selecting multipel nodes                           | 
 

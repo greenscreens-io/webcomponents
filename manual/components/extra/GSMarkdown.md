@@ -16,7 +16,7 @@ If scripts are distributed localy, use **self.GS_URL_MARKDOWN** global variable 
 | css                | CSS classes to apply to internal element            |
 | url                | URL address from which to load source data          |
 | history            | Number of navigation levels rememberd               |
-| maxHeight          | Maximum height allowed                              |
+| max-height         | Maximum height allowed                              |
 
 
 <br>

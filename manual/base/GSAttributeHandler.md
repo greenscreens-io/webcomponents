@@ -18,8 +18,8 @@
 | data-gs-property        | Togle element property (k=v;k1=v1 or JSON format)                   |
 | data-gs-swap            | Swap HTML content; used for WebComponent replacement                |
 | data-gs-target          | CSS query for a target or targets                                   |
-| data-gs-timeout         | A timeout between class toggle                                      |
 | data-gs-template        | Template to load and inject template                                |
+| data-gs-timeout         | A timeout between class toggle                                      |
 | data-gs-toggle          | Toggle CSS classes on a given target                                |
 | data-gs-trigger         | Triggers an event on a given target                                 | 
 | data-gs-value           | Value to pass to a data-gs-call or data-gs-trigger,  or use as URL  |

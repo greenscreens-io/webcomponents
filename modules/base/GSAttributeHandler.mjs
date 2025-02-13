@@ -20,9 +20,9 @@ import { GSTemplateCache } from "./GSTemplateCache.mjs";
  * Used for meta linking between UI elements
  * 
  * Attributes handled:
- * - data-gs-attribute - toggle element attribute (receive k=v;k1=v1 or JSON format)
  * - data-gs-action - trigger action event
  * - data-gs-anchor - where to anchor injected html (self, beforebegin, afterbegin, etc.)
+ * - data-gs-attribute - toggle element attribute (receive k=v;k1=v1 or JSON format)
  * - data-gs-call - calls a function on a given target (multiple functions supported)
  * - data-gs-exec - execute a function (alternative to the call)
  * - data-gs-inject - inject HTML content; used for WebComponent append

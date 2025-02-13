@@ -21,7 +21,7 @@ export class GSContextElement extends GSMenuElement {
     static properties = {
         target: {},
         filter: {},
-        altContext: { type: Boolean },
+        altContext: { type: Boolean, attribute: 'altcontext' },
         disabled: { type: Boolean },
     }
 

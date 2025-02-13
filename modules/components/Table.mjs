@@ -64,8 +64,8 @@ export class GSTableElement extends GSElement {
     sort: { type: Array, state: true },
     columns: { type: Array, state: true },
     key: { type: Number, state: true },
-
     data: { type: Array },
+    
     datacolumn: { type: Boolean },
     multisort: { type: Boolean },
     multiselect: { type: Boolean },

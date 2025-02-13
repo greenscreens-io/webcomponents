@@ -15,7 +15,7 @@ Menu items can be loaded from an external **template** or can be added as compon
 |--------------------|-------------------------------------------------------------------|
 | filter             | CSS selector for clicked element to accept                        |
 | target             | CSS selector for element context used for                         |
-| altContext         | Is set, allow opening native context menu when shift key pressed  |
+| altcontext         | Is set, allow opening native context menu when shift key pressed  |
 | disabled           | If set, disable context menu click activation                     |
 
  

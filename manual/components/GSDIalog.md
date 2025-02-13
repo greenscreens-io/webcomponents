@@ -19,8 +19,8 @@ This is browser native version t oBootstrap Modal. If ```<dialog>``` si not supp
 | shadow             | Render dialog shadow                                         |
 | title              | Modal title message                                          |
 | message            | Modal message                                                |
-| cancelText         | Cancel button text                                           |
-| confirmText        | Confirm button text                                          |
+| text-cancel        | Cancel button text                                           |
+| text-confirm       | Confirm button text                                          |
 | button-align       | Align modal buttons (start, end, center)                     |
 | color-cancel       | Bootstrap color for cacnel button                            |
 | color-confirm      | Bootstrap color for confirm button                           |

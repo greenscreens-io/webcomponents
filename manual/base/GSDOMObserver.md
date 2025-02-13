@@ -11,7 +11,7 @@ It is required as Bootstrap JavaScript code is not supported across multiple Sha
  
 Example below shows how to select **DIV** injected elements. Handler callback function will be called for every **DIV** element injected into a page.
 
-```
+```JavaScript
 const filter = (el) => { return el.tagName ==='DIV'; };
 const handler = (el) => { console.log(el); }
 

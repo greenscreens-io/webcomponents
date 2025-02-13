@@ -36,8 +36,8 @@ export class GSDialogElement extends GSElement {
 
     title: { reflect: true },
     message: { reflect: true },
-    cancelText: { reflect: true, },
-    confirmText: { reflect: true, },
+    cancelText: { reflect: true, attribute:'text-cancel' },
+    confirmText: { reflect: true, attribute:'text-confirm'},
 
     minWidth: { reflect: true, type: Number, attribute: 'min-width' },
     buttonAlign: { reflect: true, attribute: 'button-align' },

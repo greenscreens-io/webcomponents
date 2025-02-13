@@ -9,10 +9,7 @@ GSMovable WebComponent is a mouse movement wrapper allowing wrapped component to
  
 | Name               | Description                                                  |
 |--------------------|--------------------------------------------------------------|
-| color              | Standard Bootstrap color names (primary, secondaray ...)      |
-| border             | If set, render border around panel.                           |
-| shadow             | If set, render shadow around panel.                           | 
-
+| color              | Standard Bootstrap color names (primary, secondaray ...)     |
  
 <br>
  

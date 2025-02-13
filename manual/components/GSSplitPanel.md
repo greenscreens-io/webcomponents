@@ -13,8 +13,6 @@ Component contains two side-by-side panels with resizer.
 | resize             | Element selection for resizing (start,end,top,bottom)         |
 | color              | Standard Bootstrap color names (primary, secondaray ...)      |
 | horizontal         | If set, horizontal splitting is used.                         | 
-| border             | If set, render border around panel.                           |
-| shadow             | If set, render shadow around panel.                           | 
 | fixed              | If set, splitter is not available.                            | 
 | width              | Component optional height in pixels.                          | 
 | height             | Component optional width in pixels.                           | 

@@ -19,19 +19,20 @@ GSCard WebComponent is a wrapper around Bootstrap cart layout.
 | css-footer         | CSS classes for card footer                              |
 | css-body           | CSS classes for card body                                |
 | css-image          | CSS classes for image                                    |
+| css-text           | CSS classes for inner text                               |
+
+| image-style        | JSON format for img css style                            |
+
+| footer             | Card footer text                                         |
+| header             | Card header text                                         |
+| subtitle           | String for card subtitle                                 |
+| title              | String for card title                                    |
+| text               | Card content text                                        |
 
 | align              | Content align (start/end/center)                         |
-| placement          | Image placement (start/end/top/bottom)                   |
-| overlay            | Flag to use Iiamge as an overlay (footr/header not used) |
-| border             | Helper to render card border                             |
-| shadow             | Helper to render card shadow                             |
 | image              | Image URL                                                |
-| imageStyle         | JSON format for img css style                            |
-| title              | String for card title                                    |
-| subtitle           | String for card subtitle                                 |
-| text               | Card content text                                        |
-| header             | Card header text                                         |
-| footer             | Card footer text                                         |
+| overlay            | Flag to use Iiamge as an overlay (footr/header not used) |
+| placement          | Image placement (start/end/top/bottom)                   |
 
 <br>
  

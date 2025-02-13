@@ -14,15 +14,40 @@ When using different components layout / design, element such as ```<gs-pager>``
 
 | Name               | Description                                              |
 |--------------------|----------------------------------------------------------|
-| autofit            | Default true, will reduce rows to fit to a page (bool)   |
+| borderless         | Boolean, if set, hide table border                       |
+| color              | Bootstrap color for record data                          |
+| color-sort         | Bootstrap color for sort icons                           |
+| css-filter         | CSS for filter fields                                    |
+| css-header         | CSS for table header                                     |
+| divider            | Boolean, if set, show row divider                        |
+| filter-color       | Bootstrap color for filter fields                        |
+| grid               | Boolean, if set, show table grids around cells           |
+| head-color         | Bootstrap color for table header                         |
+| hover              | Boolean, if set, highlight hovered row                   |
+| select-color       | Bootstrap color for selected row                         |
+| small              | Boolean, if set, render table with reduced spacing       |
+| storage            | GSDatahandler element name                               |
+| striped            | Boolean, if set, show stripped rows                      |
+| striped-column     | Boolean -if set, enable stripperd colum UI               |
+| datacolumn         | If set, first data record is a column data  (bool)       |
+| multisort          | Is multi column sorting available (bool)                 |
 | multiselect        | Is multi row select is enabled (bool)                    |
-| select             | If row select is enabled. (bool)                         |
-| css                | Geenral table CSS                                        | 
-| cssSelect          | CSS for selected row                                     | 
-| cssHeader          | Table header CSS                                         | 
-| cssRow             | Comon CSS for every row                                  | 
-| cssCell            | Common CSS for every cell                                | 
-| colorFilter        | Color fo a filter cell                                   | 
+| protected          | Disable data selection with mouse (bool)                 |
+| selectable         | If set, row can be selected (bool)                       |
+| sortable           | Enable column sorting (bool)                             |
+| toggle             | Enable selection toggle (bool)                           |
+
+<br>
+
+## Properties
+---
+
+| Name               | Description                                              |
+|--------------------|----------------------------------------------------------|
+| columns            | List of column object definitions                        |
+| data               | List of data record objects                              |
+| sort               | List of sort object definitions                          |
+| key                |                                                          |
 
 <br>
 
