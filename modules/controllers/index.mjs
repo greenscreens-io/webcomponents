@@ -9,6 +9,7 @@ export * from "./DataController.mjs";
 export * from "./ElementMoveController.mjs";
 export * from "./ElementNavigationController.mjs";
 export * from "./GroupController.mjs";
+export * from "./LocalizationController.mjs";
 export * from "./OrientationController.mjs";
 export * from "./ThemeController.mjs";
 export * from "./TemplateController.mjs";
