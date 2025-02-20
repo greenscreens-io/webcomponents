@@ -1,5 +1,5 @@
-import { GSLoader } from "/webcomponents/modules/base/GSLoader.mjs";
-import { GSAbstractReadWrite } from "/webcomponents/modules/data/AbstractReadWrite.mjs";
+
+import { GSLoader, GSAbstractReadWrite } from "/webcomponents/release/esm/io.greenscreens.components.all.min.js";
 
 class MyStore extends GSAbstractReadWrite {
 
