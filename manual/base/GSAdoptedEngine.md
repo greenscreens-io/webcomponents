@@ -25,13 +25,13 @@ This is primarily developed to support shared global CSS styles (for Bootstrap) 
 
 ```HTML
     <!-- Simple CSS sharing across WebComponent shadow DOM -->
-    <link rel="stylesheet" href="/bootstrap-lit/assets/css/io.greenscreens.bootstrap.css" data-adoptable="true">
+    <link rel="stylesheet" href="/webcomponents/assets/css/io.greenscreens.bootstrap.css" data-adoptable="true">
 
     <!-- Non blocking style preloading -->
-    <link rel="preload" href="/bootstrap-lit/assets/css/io.greenscreens.bootstrap.css" as="style" data-adoptable="true">
+    <link rel="preload" href="/webcomponents/assets/css/io.greenscreens.bootstrap.css" as="style" data-adoptable="true">
 
     <!-- disable CSS -->
-    <link rel="preload" href="/bootstrap-lit/assets/css/io.greenscreens.bootstrap.css" as="style" data-adoptable="true" disabled>
+    <link rel="preload" href="/webcomponents/assets/css/io.greenscreens.bootstrap.css" as="style" data-adoptable="true" disabled>
 
     <!-- style element examples -->
     <style data-adoptable="true"></style>
