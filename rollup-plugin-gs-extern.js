@@ -1,9 +1,9 @@
 /*
- * Copyright (C) 2015, 2024 Green Screens Ltd.
+ * Copyright (C) 2015, 2025 Green Screens Ltd.
  */
 
 /**
- * Rollup plugin to prevent inclusion of external libraryies into final build.
+ * Rollup plugin to prevent inclusion of external libraries into final build.
  */
 export function gsExtern () {
 
