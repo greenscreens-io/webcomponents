@@ -1,23 +1,19 @@
 /*
-* Copyright (C) 2015, 2023 Green Screens Ltd.
+* Copyright (C) 2015, 2024 Green Screens Ltd.
 */
 
 /**
  * A module loading IPPView class
  * @module ipp/IPPView
  */
-import Utils from './Utils.mjs';
-import BaseView from './BaseView.mjs';
+import { Utils } from './Utils.mjs';
+import { BaseView } from './BaseView.mjs';
 
-export default class IPPView extends BaseView {
+export class IPPView extends BaseView {
 
-    static {
-        customElements.define('gs-ipp-view', IPPView);
-        Object.seal(IPPView);
-    }
-
-    async getTemplate() {
-        return super.getTemplate('//ipp-view.html');
+    constructor() {
+        super();
+        this.template = '//ipp-view.html';
     }
 
     get #attributes() {
@@ -32,17 +28,21 @@ export default class IPPView extends BaseView {
         return this.query('#printerURI')?.value || '';
     }
 
-    async register() {
-        this.refresh();
+    async onRegister() {
+        this.onRefresh();
     }
 
-    async refresh() {
+    async onRefresh() {
         const me = this;
         const data = await Utils.load('./data/printer-attributes.json');
         me.#attributes.load(data);
 
         const jobs = await Utils.load('./data/jobs.json');
         me.#jobs.load(jobs);
+    }
+
+    static {
+        BaseView.define('gs-ipp-view', IPPView);
     }
 
 }

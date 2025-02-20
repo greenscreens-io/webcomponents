@@ -1,22 +1,19 @@
-<form slot="body" is="gs-ext-form" id="form-main" class="flex-fill" novalidate="">
+<gs-form beep block slot="body" css="flex-fill" data-gsf-disable="active" data-gsf-value="false">
 
-    <gs-form-group css="m-1" name="active" label="Status" required 
+    <gs-form-group selectable required 
+        css="m-1" name="active" label="Status"
         description="Enable or disable this printer.">
-        <template>
-            <select class="form-select" id="active" name="active" required>
-                <option selected value="true">Enabled</option>
-                <option value="false">Disabled</option>
-            </select>            
-        </template>
+        <gs-item value="true" name="Enabled" selected></gs-item>
+        <gs-item value="false" name="Disabled"></gs-item>        
     </gs-form-group>
     
     <gs-form-group css="m-1" name="uuid" label="UUID" required 
-        maxlength="64" pattern="[a-zA-Z0-9-_]+" 
+        maxlength="64" pattern="[a-zA-Z0-9-_]+" css-field="text-uppercase"
         description="Configuration group. Used on login form along with virtual host name.">
     </gs-form-group>
 
     <gs-form-group css="m-1" name="host" label="Host" required 
-        maxlength="64" pattern="[a-zA-Z0-9-_]+" 
+        maxlength="64" pattern="[a-zA-Z0-9-_]+" css-field="text-uppercase"
         description="Virtual server name used on login screen. It is an alias for server IP address.">
     </gs-form-group>
     
@@ -40,27 +37,24 @@
         description="Spool user name.">
     </gs-form-group>
 
-    <gs-form-group css="m-1" name="driver" label="Driver" 
+    <gs-form-group selectable required
+        css="m-1" name="driver" label="Driver" 
         description="Spool driver.">
-        <template>
-            <select class="form-select" id="driver" name="driver">
-                <option selected value="0">PDF</option>
-                <option value="1">HTML</option>
-                <option value="2">TEXT</option>
-                <option value="3">JSON</option>
-                <option value="4">RAW</option>
+        <gs-item value="0" name="PDF" selected></gs-item>
+        <gs-item value="1" name="HTML"></gs-item>
+        <gs-item value="2" name="TEXT"></gs-item>
+        <gs-item value="3" name="JSON"></gs-item>
+        <gs-item value="4" name="RAW"></gs-item>
 
-                <option value="6">JSX</option>
-                <option value="7">HPT</option>
-                <option value="8">ZPL</option>
-                <option value="9">POS</option>
-                <option value="11">SVG</option>
-            </select>
-        </template>
+        <gs-item value="6" name="JSX"></optiogs-item>
+        <gs-item value="7" name="HPT"></gs-item>
+        <gs-item value="8" name="ZPL"></gs-item>
+        <gs-item value="9" name="POS"></gs-item>
+        <gs-item value="11" name="SVG"></gs-item>
     </gs-form-group>    
     
     <gs-form-group css="m-1" name="printerName" label="Printer" 
         description="Local printer name.">
     </gs-form-group>
 
-</form>
+</gs-form>

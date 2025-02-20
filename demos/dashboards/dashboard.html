@@ -2,14 +2,12 @@
 <html lang="en">
 
 <head>
-    <title>Dashboard test</title>
+    <title>Bootstrap-Lit</title>
     <meta charset="utf-8">
 
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
-    <meta name="viewport"
-        content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0">
 
     <meta name="subject" content="Green Scereens Ltd.">
     <meta name="author" content="www.greenscreens.ltd">
@@ -18,51 +16,46 @@
     <meta name="revisit-after" content="3 month">
     <meta name="description" content="WebComponents UI library based on Bootstrap.">
 
-    <script type="text/javascript">
-        self.GS_TEMPLATE_URL = '/demos/layout/templates';
+    <script>
+        globalThis.GS_TEMPLATE_URL = '/webcomponents/demos/templates/';
     </script>
 
-    <script type="module" src="/webcomponents/release/esm/io.greenscreens.components.all.esm.min.js"></script>
+    <!-- Optimized CSS loading -->
+    <link rel="preload" href="/webcomponents/assets/css/bootstrap.css" as="style"  data-adoptable="true" data-id="1">
+    <link rel="preload" href="/webcomponents/assets/themes/default.css" as="style" data-adoptable="true" data-id="2">
+    <link rel="preload" href="/webcomponents/assets/icons/bootstrap-icons.css" as="style" data-adoptable="true" data-id="4">
+    <script type="module" src="/webcomponents/release/esm/lit-all.min.js"></script>
+    <script type="module" src="/webcomponents/release/esm/io.greenscreens.components.all.min.js"></script>
 
-    <gs-css url="/webcomponents/assets/css/io.greenscreens.bootstrap.min.css"></gs-css>
-    <gs-css url="/webcomponents/assets/icons/bootstrap-icons.css" notheme="true"></gs-css>
 </head>
+<body class="overflow-hidden">
 
-<body>
+    <gs-layout type="horizontal">
 
-    <gs-layout type="vertical" css="">
-
-        <gs-item v-pos="center" h-pos="center" min="5" css="p-3 border-bottm shadow-sm text-bg-light">
-            <template>
-                <div class=" ">
+        <gs-item  v-pos="center" h-pos="center" min="5" css="p-3 border-bottom shadow-sm text-bg-light">
+            <template id="tplhead">
+                <div>
                     <img src="/webcomponents/assets/img/logo.png" height="32">
                 </div>
             </template>
         </gs-item>
 
-        <gs-item>
-            <template>
-                <gs-layout type="horizontal">
-                    <gs-item css="p-3 border-end shadow-sm text-bg-dark" min="260" max="260">
-                        <template>
-                            left-sidebar
-                        </template>
-                    </gs-item>
-                    <gs-item css="p-3" id="content" v-pos="top" h-pos="center">
-                        <template>
-                            centerd data
-                        </template>
-                    </gs-item>
-                </gs-layout>
-            </template>
+        <gs-item type="vertical">
+            <gs-item  css="p-3 border-end shadow-sm text-bg-dark" min="260" max="260">
+                <template id="tplsbr">
+                    left-sidebar
+                </template>
+            </gs-item>
+            <gs-item  css="p-3" id="content" v-pos="top" h-pos="center">
+                <template  id="tplcd">
+                    centerd data
+                </template>
+            </gs-item>
         </gs-item>
 
     </gs-layout>
 
-
-    <div class="fixed-bottom d-flex justify-content-center align-items-center mt-1 p-2 text-muted">
-        <small>© Green Scereens Ltd. 2015. - 2022.</small>
-    </div>
+    <gs-copyright year="2015" company="Green Screens Ltd."></gs-copyright>
 
 </body>
 

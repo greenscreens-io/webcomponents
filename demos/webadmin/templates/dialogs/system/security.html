@@ -10,32 +10,26 @@
     NOTE: This feature protects web terminal access when user and password are used for bypass sign-on.">
 </gs-form-group>
 
-<gs-form-group css="m-1" name="cookieProtection" label="Cookie Protection" required
+<gs-form-group css="m-1" name="cookieProtection" label="Cookie Protection" required selectable
     description="When enabled, session cookie not available from JavaScript. NOTE: Server restart required!">
-    <template>
-        <select class="form-select" id="cookieProtection" name="cookieProtection" required="" >
-            <option value="false">Disabled</option>
-            <option value="true">Enabled</option>
-      </select>        
-    </template>
+    <gs-item value="false" name="Disabled" selected></gs-item>
+    <gs-item value="true" name="Enabled"></gs-item>
 </gs-form-group>
 
-<gs-form-group css="m-1" name="forcedSSL" label="Cookie Forced SSL" 
+<gs-form-group css="m-1" name="forcedSSL" label="Force SSL" selectable
     description="When enabled, session cookie will be available only if SSL is used. NOTE: Server restart required!">
-    <template>
-        <select class="form-select" id="forcedSSL" name="forcedSSL" required="" >
-            <option value="false">Disabled</option>
-            <option value="true">Enabled</option>
-      </select>        
-    </template>
+    <gs-item value="false" name="Disabled"></gs-item>
+    <gs-item value="true" name="Enabled"></gs-item>
 </gs-form-group>
 
-<gs-form-group css="m-1" name="autoDiscovery" label="Discovery Service" 
+<gs-form-group css="m-1" name="allowEmbed" label="Allow Embed" selectable
+    description="When enabled, allow terminal to be embedded within other web context (iframe). NOTE: SSL forced required!">
+    <gs-item value="false" name="Disabled" selected></gs-item>
+    <gs-item value="true" name="Enabled"></gs-item>
+</gs-form-group>
+
+<gs-form-group css="m-1" name="autoDiscovery" label="Discovery Service" selectable
     description="Used by mobile app to auto-detect server in local network. <br> Should be disabled in cloud environment.">
-    <template>
-        <select class="form-select" id="autoDiscovery" name="autoDiscovery" required="" >
-            <option value="false">Disabled</option>
-            <option value="true">Enabled</option>
-      </select>        
-    </template>
+    <gs-item value="false" name="Disabled" selected></gs-item>
+    <gs-item value="true" name="Enabled"></gs-item>
 </gs-form-group>

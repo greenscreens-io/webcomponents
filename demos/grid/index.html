@@ -1,0 +1,85 @@
+
+<!DOCTYPE html>
+<html lang="hr">
+
+<head>
+    <title>Bootstrap-Lit</title>
+    <meta charset="utf-8">
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0">
+
+    <meta name="subject" content="Green Scereens Ltd.">
+    <meta name="author" content="www.greenscreens.ltd">
+    <meta name="keywords" content="JavaScript,WebComponents">
+    <meta name="robots" content="index, follow">
+    <meta name="revisit-after" content="3 month">
+    <meta name="description" content="WebComponents UI library based on Bootstrap.">
+
+    <script>
+        globalThis.GS_TEMPLATE_URL='/webcomponents/demos/templates/';
+    </script>
+
+    <!-- Optimized CSS loading -->
+    <link rel="preload" href="/webcomponents/assets/css/bootstrap.css" as="style"  data-adoptable="true">
+    <link rel="preload" href="/webcomponents/assets/themes/default.css" as="style" data-adoptable="true">
+    <link rel="preload" href="/webcomponents/assets/icons/bootstrap-icons.css" as="style" data-adoptable="true">
+
+    <script type="module" src="/webcomponents/release/esm/lit-all.min.js"></script>
+    <script type="module" src="/webcomponents/release/esm/io.greenscreens.components.all.min.js"></script>
+
+
+</head>
+<body>
+
+    <gs-template src="//header.html"></gs-template>
+
+    <div class="m-4 p-3 bordered shadow-sm text-bg-light">
+        <div class="row my-2">
+            <div class="col-auto">
+                <gs-form-group selectable
+                    cell-label="col-auto" cell-field="col-auto" name="limit" label="Limit" 
+                    data-gs-target="gs-data-handler#employees" data-gs-call="read">
+                    <gs-item value="5" name="5"></gs-item>
+                    <gs-item value="10" name="10" selected></gs-item>
+                    <gs-item value="15" name="15"></gs-item>
+                    <gs-item value="25" name="25"></gs-item>
+                    <gs-item value="50" name="50"></gs-item>
+                </gs-form-group>
+            </div>
+            <div class="col d-flex justify-content-end">
+                <gs-form-group cell-label="col-auto" cell-field="col-auto" css-field="form-control-sm rounded-0" name="search" label="Search" data-gs-target="gs-data-handler#employees"></gs-form-group>
+            </div>
+        </div>
+        
+        <!-- Defined items will be converted into desired type if possible -->
+        <gs-data-handler id="employees" type="cached" limit="10" src="/webcomponents/demos/helpers/data/data2.json">
+            <gs-item name="Age" type="number"></gs-item>
+            <!-- Convert curency into number; table UI column definition defines the output format -->
+            <gs-item name="Salary" type="number" language="en-US"></gs-item>
+            <gs-item name="Start date" type="date" format="yyyy/mm/dd"></gs-item>
+        </gs-data-handler>
+
+        <!-- Defiend items will render data as defiend type -->
+        <gs-table id="grid" storage="employees" color="light" css-filter="rounded-0" filter-color="light" select-color="primary"
+            selectable hover bordered shadow divider sortable multisort>
+            <gs-item name="Office" filter fixed list ></gs-item>
+            <gs-item name="Name" filter list></gs-item>
+            <gs-item name="Position" filter></gs-item>
+            <gs-item name="Age" type="number" align="center" width="100" filter></gs-item>
+            <gs-item name="Salary" type="currency" align="end" currency="USD" language="hr-HR" width="200" filter></gs-item>
+            <gs-item name="Start date" title="Date" type="text" align="center" language="hr-HR" width="180" filter-type="text" filter></gs-item>
+
+            <gs-context slot="extra" target="tbody" filter="[selected]" offset="4">
+                <gs-item name="Edit" data-gs-swap="gs-record-edit" data-gs-target="#dialogs"></gs-item>
+            </gs-context>
+        
+        </gs-table>
+
+        <gs-pagination storage="employees" pages="5" css="justify-content-center" first last previous next></gs-pagination>
+    </div>
+
+    <div id="dialogs"></div>
+</body>
+</html>

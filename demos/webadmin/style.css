@@ -1,6 +1,7 @@
 :root {
     --bs-body-bg: #f7f7f7;
     --bs-body-bg-rgb: 247, 247, 247;
+    --gs-secondary-rgb: 244, 248, 251;
 }
 
 dialog {
@@ -9,15 +10,7 @@ dialog {
 
 dialog::backdrop {
     backdrop-filter: blur(4px);
-    /*
-    background: repeating-linear-gradient(
-      45deg,
-      rgba(0, 0, 0, 0.2),
-      rgba(0, 0, 0, 0.2) 1px,
-      rgba(0, 0, 0, 0.3) 1px,
-      rgba(0, 0, 0, 0.3) 20px
-    );
-    */
+    transform: translate3d(0px, 0px, 0px);
 }
 
 .offcanvas,
@@ -29,44 +22,26 @@ dialog::backdrop {
     --bs-offcanvas-bg: #f4f8fb !important
 }
 
+.list-group {
+    --bs-list-group-bg: var( --bs-offcanvas-bg);
+    --bs-list-group-action-hover-bg: var(--bs-gray-200);
+}
+
 .nav-link:hover,
 .nav-link:focus {
     background-color: rgb(67 89 113 / 13%) !important;
-}
-
-.sorting {
-    cursor: pointer;
-    position: relative;
-}
-
-.sorting:before {
-    right: 1em;
-    content: "↑";
-    opacity: 0.3;
-    position: absolute;
-}
-
-.sorting:after {
-    right: .5em;
-    content: "↓";
-    opacity: 0.3;
-    position: absolute;
-}
-
-.sorting_desc:after {
-    opacity: 1;
-}
-
-.sorting_asc:before {
-    opacity: 1;
 }
 
 .zindex-10k {
     z-index: 10000;
 }
 
-.dialog-title {
-    background-color: ghostwhite;
+.card {
+    --bs-card-header-bg: ghostwhite;
+}
+
+.card-header {
+    background-color: var(--bs-card-header-bg);
 }
 
 .logo {
@@ -85,4 +60,17 @@ dialog::backdrop {
     --bs-btn-active-border-color: #ff6500;
     --bs-btn-disabled-bg: #d37639;
     --bs-btn-disabled-border-color: #d37639;
+}
+
+.form-control:focus,
+.form-select:focus {
+    background-color: aliceblue;
+}
+
+.list-group {
+    --bs-list-group-color: #697e93;
+}
+
+.table-secondary {
+    --bs-table-bg: #f4f8fb;
 }

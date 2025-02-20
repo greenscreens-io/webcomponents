@@ -1,18 +1,20 @@
 <gs-form-group css="m-1" name="confid" label="Config code" css-field="text-uppercase"
-    maxlength="64" pattern="[a-zA-Z0-9-_]+" 
+    maxlength="64" pattern="[a-zA-Z0-9-_]+" required 
     description="Configuration ID to group set of configurations for user.">
 </gs-form-group>
 
 <gs-form-group css="m-1" name="uuid" label="UUID" css-field="text-uppercase"
-    maxlength="64" pattern="[a-zA-Z0-9-_]+" 
+    maxlength="64" pattern="[a-zA-Z0-9-_]+" required
     description="UUID virtual host group.">
 </gs-form-group>
 
 <gs-form-group css="m-1" name="host" label="Host" css-field="text-uppercase"
+    required
     description="Virtual host name.">
 </gs-form-group>
 
 <gs-form-group css="m-1" name="user" label="User" css-field="text-uppercase"
     maxlength="10" pattern="[a-zA-Z10-9]{0,10}" placeholder="Enter workstation name"
+    required
     description="User Name to access to the remote host.">
 </gs-form-group>

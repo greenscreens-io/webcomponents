@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Green Screens Terminal</title>
+    <meta charset="utf-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="viewport"
+        content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+
+    <meta name="subject" content="Green Scereens Ltd.">
+    <meta name="author" content="www.greenscreens.ltd">
+    <meta name="keywords" content="JavaScript,WebComponents">
+    <meta name="robots" content="index, follow">
+    <meta name="revisit-after" content="3 month">
+    <meta name="description" content="WebComponents UI library based on Bootstrap.">
+
+    <script type="text/javascript">
+        self.GS_TEMPLATE_URL = './templates';
+        self.GS_NO_CACHE = true;
+    </script>
+    <script type="module" src="/webcomponents/modules/index.mjs"></script>
+    <script type="module" src="/webcomponents/modules/components/index.mjs"></script>
+    <script type="module" src="./scripts/index.mjs"></script>
+
+    <gs-css url="/webcomponents/assets/css/io.greenscreens.bootstrap.min.css"></gs-css>
+    <gs-css url="/webcomponents/assets/icons/bootstrap-icons.css" notheme="true"></gs-css>
+    <gs-css url="./style.css" notheme="true"></gs-css>
+
+</head>
+
+<body class="overflow-hidden">
+
+    <!-- Header info -->
+    <gs-template href="//shell/header.html" class="_fixed-top zindex-10k"></gs-template>
+
+    <gs-layout type="horizontal">
+
+        <!-- SIDEBAR - template contains clicable action with injection targets -->
+        <gs-item css="border-end" css-template="flex-fill p-3" min="260" max="260" 
+            template="//shell/sidebar.html"></gs-item>
+
+        <gs-item css="" css-template="flex-fill p-3">
+            <template>
+                <gs-layout type="vertical" css="overflow-auto">
+
+                    <!-- CONTENT - target where to inject templates -->
+                    <gs-item css="p-4" name="content" v-pos="top" h-pos="center">
+                        <template>
+                            <!-- default page the same as sidebar selected item -->
+                            <gs-ext-settings></gs-ext-settings>
+                        </template>
+                    </gs-item>
+
+                </gs-layout>
+            </template>
+        </gs-item>
+
+    </gs-layout>
+
+    <!-- APP FOOTER WITH Copyright notice -->
+    <div id="footer" class="fixed-bottom text-end">
+        <a href="https://www.greenscreens.ltd" target="_blank" class="text-muted">
+            &copy; Green Screens Ltd. 2015. - <gs-year-format></gs-year-format>.</a>
+    </div>
+
+    <!-- Application toast notification -->
+    <gs-notification id="notification"></gs-notification>
+
+</body>
+</html>

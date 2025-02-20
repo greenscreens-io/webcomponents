@@ -1,0 +1,117 @@
+<div class="row form-group m-1">
+	<div class="col-md-4 col-sm-4 col-xs-12 text-md-end ">
+		<label class="control-label " for="printer">Printer name</label>
+	</div>
+
+	<div class="col-md-6 col-sm-6 col-xs-11">
+		<input class="form-control  upper"  id="printer" name="printer" type="text" maxlength="10" pattern="[a-zA-Z10-9]{0,10}">
+	</div>
+	<div class="col-auto ">
+		<gs-tooltip placement="right" title="Printer output queue name"></gs-tooltip>
+		<i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
+	</div>
+</div>
+
+<div class="row form-group m-1">
+
+	<div class="col-md-4 col-sm-4 col-xs-12 text-md-end ">
+		<label class="control-label " for="driver">Printer Driver</label>
+	</div>
+
+	<div class="col-md-6 col-sm-6 col-xs-11">
+		<select class="form-control "  id="driver" name="driver">
+			<option value="0" selected>PDF (default)</option>
+			<option value="1">HTML</option>
+			<option value="2">TEXT</option>
+			<option value="3">JSON</option>
+			<option value="4">RAW</option>
+
+			<option value="6">JSX</option>
+			<option value="11">SVG</option>
+		</select>
+	</div>
+
+	<div class="col-auto ">
+		<gs-tooltip placement="right" title="Driver used to convert spool file into output format"></gs-tooltip>
+		<i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
+	</div>
+
+</div>
+
+<div class="row form-group m-1">
+
+	<div class="col-md-4 col-sm-4 col-xs-12 text-md-end ">
+		<label class="control-label " for="dbcs">Printer encoding</label>
+	</div>
+
+	<div class="col-md-6 col-sm-6 col-xs-11">
+		<select class="form-control "  id="dbcs" name="dbcs">
+			<option value="0" selected>SCS (default)</option>
+			<option value="1">DBCS</option>
+		</select>
+	</div>
+
+	<div class="col-auto ">
+		<gs-tooltip placement="right" title="Spool printing type - SCS (default) or DBCS"></gs-tooltip>
+		<i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
+	</div>
+
+</div>
+
+<div class="row form-group m-1">
+
+	<div class="col-md-4 col-sm-4 col-xs-12 text-md-end ">
+		<label class="control-label " for="drawer1">Drawer 1</label>
+	</div>
+
+	<div class="col-md-6 col-sm-6 col-xs-11">
+		<select class="form-control "  id="drawer1" name="drawer1">
+			<option value="-1" selected>Drawer 1 (Default)</option>
+			<option value="1">LETTER</option>
+			<option value="2">LEGAL</option>
+			<option value="3">EXECUTIVE</option>
+			<option value="4">A4</option>
+			<option value="5">A5</option>
+			<option value="6">B5</option>
+			<option value="9">LEDGER</option>
+			<option value="10">A3</option>
+			<option value="11">B4</option>
+			<option value="12">NONE</option>
+		</select>
+	</div>
+
+	<div class="col-auto ">
+		<gs-tooltip placement="right" title="Printer drawer 1 page size."></gs-tooltip>
+		<i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
+	</div>
+
+</div>
+
+<div class="row form-group m-1">
+
+	<div class="col-md-4 col-sm-4 col-xs-12 text-md-end ">
+		<label class="control-label " for="drawer2">Drawer 2</label>
+	</div>
+
+	<div class="col-md-6 col-sm-6 col-xs-11">
+		<select class="form-control "  id="drawer2" name="drawer2">
+			<option value="-1" selected>Drawer 2 (Default)</option>
+			<option value="1">LETTER</option>
+			<option value="2">LEGAL</option>
+			<option value="3">EXECUTIVE</option>
+			<option value="4">A4</option>
+			<option value="5">A5</option>
+			<option value="6">B5</option>
+			<option value="9">LEDGER</option>
+			<option value="10">A3</option>
+			<option value="11">B4</option>
+			<option value="12">NONE</option>
+		</select>
+	</div>
+
+	<div class="col-auto ">
+		<gs-tooltip placement="right" title="Printer drawer 2 page size."></gs-tooltip>
+		<i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
+	</div>
+
+</div>

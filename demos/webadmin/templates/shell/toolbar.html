@@ -1,10 +1,12 @@
-<div class="d-flex justify-content-between align-items-center">
+<div class="d-flex justify-content-between align-items-center p-1">
 
-    <gs-search class="w-50" name="search"></gs-search>
+    <gs-search class="w-50" name="search" css-icon="bg-light" css-input="border-start-0"></gs-search>
     <div>
-        <gs-button id="create" action="create" select="false" comment="Add new definition" css="text-bg-light"
-            icon="bi bi-file-earmark fs-4 fw-bold"></gs-button>
-        <gs-button id="refresh" action="refresh" select="false" comment="Refresh data" css="text-bg-light"
-            icon="bi bi-arrow-repeat fs-4 fw-bold"></gs-button>
+        <gs-button id="create" data-gs-action="create" tooltip="Add new definition" 
+            color="light" text="dark" -hover-css="gs-pulse" click-css="gs-shake" css="shadow-none border-0"
+            icon="file-earmark fs-4 fw-bold"></gs-button>
+        <gs-button id="refresh" data-gs-action="refresh" tooltip="Refresh data" 
+            color="light" text="dark" -hover-css="gs-pulse" click-css="gs-shake" css="shadow-none border-0"
+            icon="arrow-repeat fs-4 fw-bold"></gs-button>
     </div>
 </div>

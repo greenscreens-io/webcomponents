@@ -1,0 +1,31 @@
+{
+    "block":true,
+    "beep":true,
+    "timeout": 2000,
+    "items": [
+      {
+        "type": "text",
+        "name": "name",
+        "label": "Name",
+        "required": true
+      },
+      {
+        "type": "text",
+        "name": "email",
+        "label": "Email",
+        "required": true
+      },
+      {
+        "type": "text",
+        "name": "phone",
+        "label": "Phone",
+        "required": true
+      },
+      {
+        "type": "text",
+        "name": "message",
+        "label": "Message",
+        "required": true
+      }
+    ]
+  }

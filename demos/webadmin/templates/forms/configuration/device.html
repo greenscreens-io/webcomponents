@@ -3,83 +3,59 @@
     description="Prefix to add to Display Name value on login screen. For example, WEB + given to detect users connecting with web terminal at the AS/400 side.">
 </gs-form-group>
 
-<gs-form-group css="m-1" name="autoconf" label="Display auto configure"
+<gs-form-group selectable css="m-1" name="autoconf" label="Display auto configure"
     description="Auto configure display name to avoid duplicate names. 
     NOTE 1: For this option to work, QAUTOCFG must be on or workstation devices must exist on remote system.        
     NOTE 2: User can override this through browser extension tool.">
-    <template>
-        <select class="form-select" id="autoconf" name="autoconf">
-            <option selected="" value="">None</option>
-            <option value="0">This workstation</option>
-            <option value="1">Other workstations</option>
-            <option value="2">All workstations</option>	
-        </select>        
-    </template>
+    <gs-item value="" name="None" selected></gs-item>
+    <gs-item value="0" name="This Workstation"></gs-item>
+    <gs-item value="1" name="Other Workstation"></gs-item>
+    <gs-item value="2" name="All Workstation"></gs-item>
 </gs-form-group>
 
-<gs-form-group css="m-1" name="blockPrinter" label="Virtual Printer"
+<gs-form-group selectable required css="m-1" name="blockPrinter" label="Virtual Printer"
     description="Disable or enable users to start virtual printer.">
-    <template>
-        <select class="form-select" id="blockPrinter" name="blockPrinter" required>
-            <option value="false">Enabled</option>
-            <option value="true">Disabled</option>
-        </select>        
-    </template>    
+    <gs-item value="false" name="Disabled" selected></gs-item>
+    <gs-item value="true" name="Enabled"></gs-item>  
 </gs-form-group>
 
-<gs-form-group css="m-1" name="createPrinter" label="Auto create printer"
+<gs-form-group selectable required css="m-1" name="createPrinter" label="Auto create printer"
     description="Automatic printer device and writer creation on request. Service user must have *IOSYSCFG authority.">
-    <template>
-        <select class="form-select" id="createPrinter" name="createPrinter" required>
-            <option value="true">Enabled</option>
-            <option value="false">Disabled</option>
-        </select>        
-    </template>    
+    <gs-item value="false" name="Disabled" selected></gs-item>
+    <gs-item value="true" name="Enabled"></gs-item>
 </gs-form-group>
 
-<gs-form-group css="m-1" name="verifyPrinter" label="Verify Printer"
+<gs-form-group required selectable css="m-1" name="verifyPrinter" label="Verify Printer"
     description="">
-    <template>
-        <select class="form-select" id="verifyPrinter" name="verifyPrinter" required>
-            <option value="true">Enabled</option>
-            <option value="false">Disabled</option>
-        </select>        
-    </template>    
+    <gs-item value="false" name="Disabled" selected></gs-item>
+    <gs-item value="true" name="Enabled"></gs-item>
 </gs-form-group>
 
 
-<gs-form-group css="m-1" name="drawer1" label="Drawer 1"
+<gs-form-group selectable required css="m-1" name="drawer1" label="Drawer 1"
     description="Default paper size for printer sessions for drawer 1. When user select DEFAULT, this option will be used.">
-    <template>
-        <select class="form-select" id="drawer1" name="drawer1" required>
-            <option value="1">LETTER</option>
-            <option value="2">LEGAL</option>
-            <option value="3">EXECUTIVE</option>
-            <option value="4">A4</option>
-            <option value="5">A5</option>
-            <option value="6">B5</option>
-            <option value="9" selected>LEDGER</option>
-            <option value="10">A3</option>
-            <option value="11">B4</option>
-            <option value="12">NONE</option>
-        </select>        
-    </template>    
+    <gs-item value="1" name="LETTER"></gs-item>
+    <gs-item value="2" name="LEGAL"></gs-item>
+    <gs-item value="3" name="EXECUTIVE"></gs-item>
+    <gs-item value="4" name="A4"></gs-item>
+    <gs-item value="5" name="A5"></gs-item>
+    <gs-item value="6" name="B5"></gs-item>
+    <gs-item value="9" name="LEDGER" selected></gs-item>
+    <gs-item value="10" name="A3"></gs-item>
+    <gs-item value="11" name="B4"></gs-item>
+    <gs-item value="12" name="NONE"></gs-item>
 </gs-form-group>
 
-<gs-form-group css="m-1" name="drawer2" label="Drawer 2"
+<gs-form-group selectable required css="m-1" name="drawer2" label="Drawer 2"
     description="Default paper size for printer sessions for drawer 2. When user select DEFAULT, this option will be used.">
-    <template>
-        <select class="form-select" id="drawer2" name="drawer2" required>
-            <option value="1">LETTER</option>
-            <option value="2">LEGAL</option>
-            <option value="3">EXECUTIVE</option>
-            <option value="4">A4</option>
-            <option value="5">A5</option>
-            <option value="6">B5</option>
-            <option value="9" selected>LEDGER</option>
-            <option value="10">A3</option>
-            <option value="11">B4</option>
-            <option value="12">NONE</option>
-        </select>
-    </template>
+    <gs-item value="1" name="LETTER"></gs-item>
+    <gs-item value="2" name="LEGAL"></gs-item>
+    <gs-item value="3" name="EXECUTIVE"></gs-item>
+    <gs-item value="4" name="A4"></gs-item>
+    <gs-item value="5" name="A5"></gs-item>
+    <gs-item value="6" name="B5"></gs-item>
+    <gs-item value="9" name="LEDGER" selected></gs-item>
+    <gs-item value="10" name="A3"></gs-item>
+    <gs-item value="11" name="B4"></gs-item>
+    <gs-item value="12" name="NONE"></gs-item>
 </gs-form-group>

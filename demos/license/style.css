@@ -1,0 +1,25 @@
+.offcanvas,
+.offcanvas-xxl,
+.offcanvas-xl,
+.offcanvas-lg,
+.offcanvas-md,
+.offcanvas-sm {
+    --bs-offcanvas-bg: #f4f8fb !important
+}
+
+.btn-primary {
+    --bs-btn-color: #fff;
+    --bs-btn-bg: rgb(255 127 36);
+    --bs-btn-border-color: rgb(238 186 90);
+    --bs-btn-hover-color: #fff;
+    --bs-btn-hover-bg: rgb(197 102 65);
+    --bs-btn-hover-border-color: rgb(214 150 81);
+    --bs-btn-focus-shadow-rgb: 49, 132, 253;
+    --bs-btn-active-color: #fff;
+    --bs-btn-active-bg: rgb(202 146 77);
+    --bs-btn-active-border-color: rgb(202 136 77);
+    --bs-btn-active-shadow: rgb(238 146 90 / 40%) 0px 0.125rem 0.25rem 0px;
+    --bs-btn-disabled-color: #fff;
+    --bs-btn-disabled-bg: #fdb30d;
+    --bs-btn-disabled-border-color: #fdb30d;
+}  

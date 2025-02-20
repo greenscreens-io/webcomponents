@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015, 2022 Green Screens Ltd.
+ * Copyright (C) 2015, 2024 Green Screens Ltd.
  */
 
 /**
@@ -7,7 +7,8 @@
  * @module GSSearch
  */
 
-import {GSEvent, GSAttr, GSElement, GSEnvironment} from "/webcomponents/release/esm/io.greenscreens.components.all.esm.min.js";
+import { html } from "/webcomponents/release/esm/lit-all.min.js";
+import { GSEnvironment, GSEvents, GSElement} from "/webcomponents/release/esm/io.greenscreens.components.all.min.js";
 
 /**
  * Search input box WebComponent which emits searh event to upper tree.
@@ -17,89 +18,59 @@ import {GSEvent, GSAttr, GSElement, GSEnvironment} from "/webcomponents/release/
  */
 class GSSearch extends GSElement {
 
-    static {
-        customElements.define('gs-search', GSSearch);
-        Object.seal(GSSearch);
+    static properties = {
+        css: {},
+        name: {},
+        placeholder: {},
+        iconCSS: { attribute: 'css-icon' },
+        inputCSS: { attribute: 'css-input' },
+    };
+
+    constructor() {
+        super();
+        this.name = 'search';
+        this.placeholder = 'search';
+        this.inputCSS = 'border-start-0';
+        this.iconCSS = 'bg-white bi bi-search';
     }
 
-    async getTemplate() {
+    renderUI() {
         const me = this;
-        return `
+        return html`
         <div class="input-group ${me.css}">
             <i class="input-group-text ${me.iconCSS}"></i>
-            <input type="search"  incremental="true" class="form-control ${me.inputCSS}" placeholder="${me.placeholder}" name="${me.name}">
+            <input type="search" incremental="true"
+                 class="form-control ${me.inputCSS}" 
+                 placeholder="${me.placeholder}" 
+                 name="${me.name}">
         </div>        
-        `
+        `;
     }
 
-    onReady() {
+    firstUpdated() {
+        super.firstUpdated();
         const me = this;
         if (GSEnvironment.isWebkit) {
             me.attachEvent(me.#searchEl, 'search', me.#onSearch.bind(me));
         } else {
             me.attachEvent(me.#searchEl, 'keydown', me.#onSearch.bind(me));
         }
-        super.onReady();
     }
 
     #onSearch(e) {
         if (!GSEnvironment.isWebkit && e.which != 13) return;
         const me = this;
-        GSEvent.prevent(e);
+        GSEvents.prevent(e);
         const opt = { type: 'search', action: 'search', value: me.#searchEl.value };
-        GSEvent.send(me, 'action', opt, true, true, true);
+        GSEvents.send(me, 'action', opt, true, true, true);
     }
 
     get #searchEl() {
-        return this.query('input');
+        return this.query('input', true);
     }
 
-    get css() {
-        return GSAttr.get(this, 'css', '');
-    }
-
-    set css(val = '') {
-        return GSAttr.set(this, 'css', val);
-    }
-
-    get iconCSS() {
-        return GSAttr.get(this, 'css-icon', 'bg-white bi bi-search');
-    }
-
-    set iconCSS(val = '') {
-        return GSAttr.set(this, 'css-icon', val);
-    }
-
-    get inputCSS() {
-        return GSAttr.get(this, 'css-input', 'border-start-0');
-    }
-
-    set inputCSS(val = '') {
-        return GSAttr.set(this, 'css-input', val);
-    }
-
-     /**
-     * Input box info mesasge
-     * @returns {string}
-     */
-    get placeholder() {
-        return GSAttr.get(this, 'placeholder', 'search');
-    }
-
-    set placeholder(val = '') {
-        return GSAttr.set(this, 'placeholder', val);
-    }
-
-    /**
-     * Input box name
-     * @returns {string}
-     */
-    get name() {
-        return GSAttr.get(this, 'name', 'search');
-    }
-
-    set name(val = '') {
-        return GSAttr.set(this, 'name', val);
+    static {
+        GSElement.define('gs-search', GSSearch);
     }
 
 }

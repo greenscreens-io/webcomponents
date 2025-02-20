@@ -47,14 +47,15 @@
         "roles": "",
         "timestamp": 1638447021984,
         "proxyName": "",
-        "sso": true
+        "sso": true,
+        "active": true
     },
     {
         "id": "1638446962418",
         "uuid": "DEMO",
         "name": "IBM1",
-        "ipAddress": "127.0.0.1",
-        "port": 23,
+        "ipAddress": "127.0.0.2",
+        "port": 24,
         "autoconf": "",
         "user": "QSECOFR",
         "password": "QSECOFR",
@@ -97,14 +98,15 @@
         "roles": "",
         "timestamp": 1638729209202,
         "proxyName": "",
-        "sso": false
+        "sso": false,
+        "active": true
     },
     {
         "id": "1638446962428",
         "uuid": "DEMO",
         "name": "IBM2",
-        "ipAddress": "127.0.0.1",
-        "port": 23,
+        "ipAddress": "127.0.0.3",
+        "port": 25,
         "autoconf": "",
         "user": "QSECOFR",
         "password": "QSECOFR",
@@ -147,14 +149,15 @@
         "roles": "",
         "timestamp": 1638729224269,
         "proxyName": "",
-        "sso": false
+        "sso": false,
+        "active": true
     },
     {
         "id": "1638737447695",
         "uuid": "DEMO",
         "name": "IBM3",
-        "ipAddress": "127.0.0.1",
-        "port": 23,
+        "ipAddress": "127.0.0.4",
+        "port": 26,
         "autoconf": "",
         "user": "QSECOFR",
         "password": "QSECOFR",
@@ -197,6 +200,7 @@
         "roles": "",
         "timestamp": 1638737468594,
         "proxyName": "",
-        "sso": false
+        "sso": false,
+        "active": false
     }
 ]

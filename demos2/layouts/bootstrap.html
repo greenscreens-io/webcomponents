@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Layouts test</title>
+    <meta charset="utf-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="viewport"
+        content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+
+    <meta name="subject" content="Green Scereens Ltd.">
+    <meta name="author" content="www.greenscreens.ltd">
+    <meta name="keywords" content="JavaScript,WebComponents">
+    <meta name="robots" content="index, follow">
+    <meta name="revisit-after" content="3 month">
+    <meta name="description" content="WebComponents UI library based on Bootstrap.">
+
+    <script type="module" src="/webcomponents/release/esm/io.greenscreens.components.all.esm.min.js"></script>
+
+    <gs-css url="/webcomponents/assets/css/io.greenscreens.bootstrap.min.css"></gs-css>
+</head>
+
+<body>
+    <div class="d-flex flex-column vh-100">
+        <div class="text-bg-light">header</div>
+        <gs-splitter split="horizontal" id="shdr"></gs-splitter>
+        <div class="flex-grow-1 d-flex">
+            <div class="text-bg-secondary" style="max-width: 280px;min-width: 60px;">sidebar</div>
+            <gs-splitter split="vertical" id="ssb"></gs-splitter>
+            <div class="text-bg-primary flex-grow-1 d-flex justify-content-center align-items-start">main</div>
+            <gs-splitter split="vertical" resize="end" id="smain"></gs-splitter>
+            <div class="text-bg-secondary" style="max-width: 280px;min-width: 60px;">sidebar</div>
+        </div>
+        <gs-splitter split="horizontal" resize="end" id="sftr"></gs-splitter>
+        <div class="text-bg-dark">footer</div>
+    </div>
+
+</body>
+
+</html>

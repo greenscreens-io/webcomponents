@@ -1,25 +1,19 @@
-<form slot="body" is="gs-ext-form" id="form-main" class="flex-fill" novalidate="">
+<gs-form beep block slot="body" css="flex-fill" data-gsf-disable="active" data-gsf-value="false">
     
-    <input class="d-none" id="id"  name="id" type="text" readonly>
+    <input id="id" name="id" type="hidden">
 
-    <gs-form-group css="m-1" name="active" label="Status"
+    <gs-form-group  selectable required
+        css="m-1" name="active" label="Status"
         description="Enable or disable this rule.">
-        <template>
-            <select class="form-select" id="active" name="active" required>
-                <option value="true">Enabled</option>
-                <option value="false">Disabled</option>
-            </select>            
-        </template>
+        <gs-item value="true" name="Enabled"></gs-item>
+        <gs-item value="false" name="Disabled"></gs-item>
     </gs-form-group>
 
-    <gs-form-group css="m-1" name="rule" label="Rule"
+    <gs-form-group  selectable required
+        css="m-1" name="rule" label="Rule"
         description="Allow or deny access based on matched criteria.">
-        <template>
-            <select class="form-select" id="rule" name="rule" required>
-                <option value="0">Allow</option>
-                <option value="1">Deny</option>
-            </select>            
-        </template>
+        <gs-item value="0" name="Allow"></gs-item>
+        <gs-item value="1" name="Deny"></gs-item>
     </gs-form-group>
 
     <gs-form-group css="m-1" name="aaguid" label="AAGUID" required 
@@ -33,4 +27,4 @@
         description="Device description, usually token type and version.">
     </gs-form-group>
     
-</form>
+</gs-form>

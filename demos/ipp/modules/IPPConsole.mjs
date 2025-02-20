@@ -1,5 +1,5 @@
 /*
-* Copyright (C) 2015, 2023 Green Screens Ltd.
+* Copyright (C) 2015, 2024 Green Screens Ltd.
 */
 
 /**
@@ -7,21 +7,21 @@
  * 
  * @module ipp/IPPConsole
  */
-import { GSElement } from '/webcomponents/release/esm/io.greenscreens.components.all.esm.min.js';
+import { GSElement } from "/webcomponents/release/esm/io.greenscreens.components.all.min.js";
 
 /**
  * IPPJobs UI lists printer jobs and allows job manupulation actions
  */
-export default class IPPConsole extends GSElement {
+export class IPPConsole extends GSElement {
 
-    static {
-        customElements.define('gs-ipp-console', IPPConsole);
-        Object.seal(IPPConsole);
+    constructor() {
+        super();
+        this.template = '//ipp-console.html';
     }
-
-    async getTemplate() {
-        return super.getTemplate('//ipp-console.html');
-    }
+    
+    renderUI() {
+        return this.renderTemplate();
+    }    
 
     log(data = '') {
         this.#console.content = JSON.stringify(data, '', 4);
@@ -30,4 +30,9 @@ export default class IPPConsole extends GSElement {
     get #console() {
         return this.query('gs-highlight');
     }
+
+    static {
+        GSElement.define('gs-ipp-console', IPPConsole);
+    }
+
 }

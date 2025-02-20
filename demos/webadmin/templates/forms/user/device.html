@@ -1,12 +1,9 @@
-<gs-form-group css="m-1" name="devtype" label="Device type"
+<gs-form-group selectable required
+    css="m-1" name="devtype" label="Device type"
     description="Type of device configuration.">
-    <template>
-        <select class="form-select" id="devtype" name="devtype" required>
-            <option selected value="0">0 - Both</option>
-            <option value="1">1 - Display</option>
-            <option value="2">2 - Printer</option>
-        </select>
-    </template>
+    <gs-item value="0" name="0 - Both" selected></gs-item>     
+    <gs-item value="1" name="1 - Display"></gs-item>
+    <gs-item value="2" name="2 - Printer"></gs-item> 
 </gs-form-group>
 
 <gs-form-group css="m-1" name="display" label="Display name"
@@ -23,65 +20,54 @@
     description="Local printer name.">
 </gs-form-group>
 
-<gs-form-group css="m-1" name="driver" label="Driver"
+<gs-form-group  selectable required
+    css="m-1" name="driver" label="Driver"
     description="Printer driver (optional).">
-    <template>
-        <select class="form-select" id="driver" name="driver" required>
-            <option selected value="0">0 - PDF</option>
-            <option value="1">1 - HTML</option>
-            <option value="2">2 - TEXT</option>
-            <option value="3">3 - JSON</option>
-            <option value="4">4 - RAW</option>
-            <option value="5">5 - ETL</option>
-            <option value="6">6 - JSX</option>
-            <option value="9">99 - EXT</option>
-        </select>        
-    </template>
+    <gs-item value="0" name="0 - PDF" selected></gs-item>
+    <gs-item value="1" name="1 - HTML"></gs-item>
+    <gs-item value="2" name="2 - TEXT"></gs-item>
+    <gs-item value="3" name="3 - JSON"></gs-item>
+    <gs-item value="4" name="4 - RAW"></gs-item>
+    <gs-item value="5" name="5 - ETL"></gs-item>
+    <gs-item value="6" name="6 - JSX"></optiogs-item>
+    <gs-item value="9" name="99 - EXT"></gs-item>
 </gs-form-group>
 
-<gs-form-group css="m-1" name="drawer1" label="Drawer 1"
-    description="Default paper size for printer sessions for drawer 1. When user select DEFAULT, this option will be used.">    <template>
-        <select class="form-select" id="drawer1" name="drawer1" required>
-            <option value="-1" selected>Drawer 1 (Default)</option>
-            <option value="1">LETTER</option>
-            <option value="2">LEGAL</option>
-            <option value="3">EXECUTIVE</option>
-            <option value="4">A4</option>
-            <option value="5">A5</option>
-            <option value="6">B5</option>
-            <option value="9">LEDGER</option>
-            <option value="10">A3</option>
-            <option value="11">B4</option>
-            <option value="12">NONE</option>
-        </select>        
-    </template>
+<gs-form-group  selectable required
+    css="m-1" name="drawer1" label="Drawer 1"
+    description="Default paper size for printer sessions for drawer 1. When user select DEFAULT, this option will be used.">  
+    <gs-item value="-1" name="Drawer 1 (Default)" selected></gs-item>
+    <gs-item value="1" name="*LETTER"></gs-item>
+    <gs-item value="2" name="*LEGAL"></gs-item>
+    <gs-item value="3" name="*EXECUTIVE"></gs-item>
+    <gs-item value="4" name="*A4"></gs-item>
+    <gs-item value="5" name="*A5"></gs-item>
+    <gs-item value="6" name="*B5"></optiogs-item>
+    <gs-item value="9" name="*LEDGER"></gs-item>
+    <gs-item value="10" name="*A3"></gs-item>
+    <gs-item value="11" name="*B4"></gs-item>
+    <gs-item value="12" name="*NONE"></gs-item>
 </gs-form-group>
 
-<gs-form-group css="m-1" name="drawer2" label="Drawer 2"
+<gs-form-group  selectable required
+    css="m-1" name="drawer2" label="Drawer 2"
     description="Default paper size for printer sessions for drawer 2. When user select DEFAULT, this option will be used.">
-    <template>
-        <select class="form-select" id="drawer2" name="drawer2" required>
-            <option value="-1" selected>Drawer 2 (Default)</option>
-            <option value="1">LETTER</option>
-            <option value="2">LEGAL</option>
-            <option value="3">EXECUTIVE</option>
-            <option value="4">A4</option>
-            <option value="5">A5</option>
-            <option value="6">B5</option>
-            <option value="9">LEDGER</option>
-            <option value="10">A3</option>
-            <option value="11">B4</option>
-            <option value="12">NONE</option>
-        </select>        
-    </template>
+    <gs-item value="-1" name="Drawer 2 (Default)" selected></gs-item>
+    <gs-item value="1" name="*LETTER"></gs-item>
+    <gs-item value="2" name="*LEGAL"></gs-item>
+    <gs-item value="3" name="*EXECUTIVE"></gs-item>
+    <gs-item value="4" name="*A4"></gs-item>
+    <gs-item value="5" name="*A5"></gs-item>
+    <gs-item value="6" name="*B5"></optiogs-item>
+    <gs-item value="9" name="*LEDGER"></gs-item>
+    <gs-item value="10" name="*A3"></gs-item>
+    <gs-item value="11" name="*B4"></gs-item>
+    <gs-item value="12" name="*NONE"></gs-item>
 </gs-form-group>
 
-<gs-form-group css="m-1" name="enhanced" label="Enhanced"
+<gs-form-group  selectable required
+    css="m-1" name="enhanced" label="Enhanced"
     description="Enable only if PDF driver has script processing. Might decrease processing performance if enabled.">
-    <template>
-        <select class="form-select" id="enhanced" name="enhanced" required>
-            <option value="0">FALSE</option>
-            <option selected value="1">TRUE</option>
-        </select>        
-    </template>
+    <gs-item selected value="1" name="Enabled"></gs-item>
+    <gs-item value="0" name="Disabled"></gs-item>    
 </gs-form-group>

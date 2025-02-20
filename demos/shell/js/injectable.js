@@ -1,4 +1,9 @@
-import { GSDOM, GSLog, GSLoader, GSElement } from "/webcomponents/release/esm/io.greenscreens.components.all.esm.min.js";
+/*
+ * Copyright (C) 2015, 2024 Green Screens Ltd.
+ */
+
+import { GSLog, GSLoader, GSDOM, GSElement } from "/webcomponents/release/esm/io.greenscreens.components.all.min.js";
+
 
 class GSInjectable extends GSElement {
 
@@ -18,10 +23,6 @@ class GSInjectable extends GSElement {
 		return "text/plain";
 	}
 
-	async getTemplate() {
-		return '';
-	}
-
 	async inject() {
 		const me = this;
 		const data = await GSLoader.loadSafe(me.template);
@@ -29,7 +30,8 @@ class GSInjectable extends GSElement {
 		GSDOM.addSibling(this, el);
 	}
 
-	async onReady() {
+	async firstUpdated() {
+		super.firstUpdated();
 		try {
 			const me = this;
 			await me.inject();
@@ -41,8 +43,7 @@ class GSInjectable extends GSElement {
 	}
 
 	static {
-		customElements.define('gs-inject', GSInjectable);
-		Object.seal(GSInjectable);
+		GSElement.define('gs-inject', GSInjectable);
 	}
 
 }

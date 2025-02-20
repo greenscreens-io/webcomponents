@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015, 2022 Green Screens Ltd.
+ * Copyright (C) 2015, 2024 Green Screens Ltd.
  */
 
 /**
@@ -7,7 +7,7 @@
  * @module SessionsUI
  */
 
-import BaseUI from "./BaseUI.mjs"
+import { BaseUI } from "./BaseUI.mjs"
 
 /**
  * SessionsUI handles session template elements
@@ -15,18 +15,10 @@ import BaseUI from "./BaseUI.mjs"
  * @extends {BaseUI}
  */
 class SessionsUI extends BaseUI {
-
-    static {
-        customElements.define('gs-ext-sessions', SessionsUI);
-        Object.seal(SessionsUI);
-    }
-
-    async getTemplate(val = '') {
-        return super.getTemplate('//views/sessions.html');
-    }
-
+    
     constructor() {
         super();
+        this.template = '//views/sessions.html';
         if (self.GS_DEV_MODE) self._SessionsUI = this;
     }
 
@@ -67,5 +59,9 @@ class SessionsUI extends BaseUI {
     async onRemove(data) {
         return true;
     }
+
+    static {
+        BaseUI.define('gs-ext-sessions', SessionsUI);
+    }    
 }
 

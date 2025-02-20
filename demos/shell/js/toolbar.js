@@ -1,30 +1,38 @@
-import {GSEvent, GSAttr, GSElement} from "/webcomponents/release/esm/io.greenscreens.components.all.esm.min.js";
+/*
+ * Copyright (C) 2015, 2024 Green Screens Ltd.
+ */
+
+import { GSElement } from "/webcomponents/release/esm/io.greenscreens.components.all.min.js";
 
 class GSToolbar extends GSElement {
 
-	get template() {
-		return GSAttr.get(this, 'template', '//toolbar.html');
-	}
+	constructor() {
+		super();
+		this.template = '//toolbar.html';
+	}	
 
 	get topEl() {
-		return this.query('div');
+		return this.query('div', true);
 	}
 
-	onReady() {
+    renderUI() {
+        return this.renderTemplate();
+    }
+	
+	templateInjected() {
 		const me = this;
 		const el = me.topEl;
-		me.attachEvent(el, 'click', me.onSelect);
+		me.attachEvent(el, 'click', me.onSelect.bind(me));
 	}
 
 	onSelect(e) {
 		const el = e.target.closest('a[data-view]');
 		if (!el) return;
-		GSEvent.send(this, 'gs-evt-view', el.getAttribute('data-view'));
+		this.emit('gs-evt-view', el.dataset.view);
 	}
 
 	static {
-		customElements.define('gs-toolbar', GSToolbar);
-		Object.seal(GSToolbar);
+		GSElement.define('gs-toolbar', GSToolbar);
 	}
 }
 

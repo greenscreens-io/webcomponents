@@ -1,0 +1,33 @@
+{
+    "type": "scatter",
+    "data": {
+        "datasets": [
+            {
+                "label": "Dataset 1",
+                "_data_": [],
+                "borderColor": "rgb(255, 99, 132)",
+                "backgroundColor": "rgba(255, 99, 132, 0.5)"
+            },
+            {
+                "label": "Dataset 2",
+                "_data_": [],
+                "borderColor": "rgb(255, 159, 64)",
+                "backgroundColor": "rgba(255, 159, 64, 0.5)"
+            }
+        ],
+        "labels": []
+    },
+    "options": {
+        "responsive": true,
+        "maintainAspectRatio": true,
+        "scales": {
+            "x": {
+                "display": true
+            },
+            "y": {
+                "beginAtZero": true,
+                "display": true
+            }
+        }
+    }
+}

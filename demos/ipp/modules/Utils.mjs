@@ -1,8 +1,9 @@
 /*
- * Copyright (C) 2015, 2022 Green Screens Ltd.
+ * Copyright (C) 2015, 2024 Green Screens Ltd.
  */
 
-import { GSComponents } from '/webcomponents/release/esm/io.greenscreens.components.all.esm.min.js';
+import { GSDOM } from "/webcomponents/release/esm/io.greenscreens.components.all.min.js";
+
 
 /**
  * A module loading Utils class
@@ -13,10 +14,10 @@ import { GSComponents } from '/webcomponents/release/esm/io.greenscreens.compone
  * Helper class with shared utility functions
  * @class
  */
-export default class Utils {
+export class Utils {
 
     static get notify() {
-        return GSComponents.get('notification');
+        return GSDOM.query('gs-notification');
     }
 
     /**
@@ -27,9 +28,8 @@ export default class Utils {
      * @returns {boolean}
      */
     static inform(success = false, msg) {
-        if (!Utils.notify) return;
-        if (success) return Utils.notify.info('Info', msg);
-        Utils.notify.danger('Error', msg);
+        if (success) return Utils.notify?.info('Info', msg);
+        Utils.notify?.danger('Error', msg);
         return success;
     }
 

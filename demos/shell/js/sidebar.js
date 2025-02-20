@@ -1,41 +1,47 @@
-import {GSEvent, GSAttr, GSElement} from "/webcomponents/release/esm/io.greenscreens.components.all.esm.min.js";
+/*
+ * Copyright (C) 2015, 2024 Green Screens Ltd.
+ */
+
+import { GSElement } from "/webcomponents/release/esm/io.greenscreens.components.all.min.js";
 
 class GSSidebar extends GSElement {
 
-	get template() {
-		return GSAttr.get(this, 'template', '//sidebar_narrow.html');
+	static properties = {
+		auto: { type: Boolean },
+		minWidth: { type: Number, attribute: 'min-width' },
+		maxWidth: { type: Number, attribute: 'max-width' },
+	};
+
+	constructor() {
+		super();
+		this.minWidth = 64;
+		this.maxWidth = 280;
+		this.template = '//sidebar_narrow.html';
 	}
 
-	get minWidth() {
-		return GSAttr.get(this, 'minWidth', '64');
-	}
+	renderUI() {
+        return this.renderTemplate();
+    }
 
-	get maxWidth() {
-		return GSAttr.get(this, 'maxWidth', '280');
-	}
+	templateInjected() {
 
-	get auto() {
-		return GSAttr.getAsBool(this, 'auto', 'true');
-	}
-
-	onReady() {
 		const me = this;
 		const el = me.topEl;
+
+		if (!el) return;
+
 		el.style.width = me.maxWidth;
-
 		me.attachEvent(el, 'click', me.onSelect.bind(me));
-
 		if (!me.auto) return;
 		me.attachEvent(el, 'mouseover', me.onFocus.bind(me));
 		me.attachEvent(el, 'mouseout', me.onUnfocus.bind(me));
-
 		el.style.width = me.minWidth;
 	}
 
 	onSelect(e) {
 		const el = e.target.closest('a[data-view]');
 		if (!el) return;
-		GSEvent.send(this, 'gs-evt-view', el.getAttribute('data-view'));
+		this.emit('gs-evt-view', el.dataset.view);
 		this.onUnfocus(e);
 	}
 
@@ -52,12 +58,11 @@ class GSSidebar extends GSElement {
 	}
 
 	get topEl() {
-		return this.query('div');
+		return this.query('div', true);
 	}
 
 	static {
-		customElements.define('gs-sidebar', GSSidebar);
-		Object.seal(GSSidebar);
+		GSElement.define('gs-sidebar', GSSidebar);
 	}
 }
 

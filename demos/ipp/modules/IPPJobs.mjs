@@ -1,5 +1,5 @@
 /*
-* Copyright (C) 2015, 2023 Green Screens Ltd.
+* Copyright (C) 2015, 2024 Green Screens Ltd.
 */
 
 /**
@@ -7,22 +7,18 @@
  * 
  * @module ipp/IPPJobs
  */
-import Utils from './Utils.mjs';
-import BaseView from './BaseView.mjs';
+import { Utils } from './Utils.mjs';
+import { BaseView } from './BaseView.mjs';
 
 /**
  * IPPJobs UI lists printer jobs and allows job manupulation actions
  */
-export default class IPPJobs extends BaseView {
+export class IPPJobs extends BaseView {
 
-    static {
-        customElements.define('gs-ipp-jobs', IPPJobs);
-        Object.seal(IPPJobs);
-    }
-
-    async getTemplate() {
-        return super.getTemplate('//ipp-jobs.html');
-    }
+    constructor() {
+        super();
+        this.template = '//ipp-jobs.html';
+    }  
 
     load(data) {
         if (!data) return;
@@ -58,25 +54,30 @@ export default class IPPJobs extends BaseView {
         return this.#attrTable.store;
     }
 
-    cancelJob(e) {
+    onCancelJob(e) {
 
     }
     
-    printUri(e) {
+    onPrintUri(e) {
 
     }
 
-    purgeJobs(e) {
+    onPurgeJobs(e) {
         this.#jobsStore.clear();
     }
 
-    async details(e) {
+    async onDetails(e) {
         const jobs = await Utils.load('./data/job-attributes.json');
         this.load(jobs);
     }
 
-    async refresh(e) {
+    async onRefresh(e) {
         const jobs = await Utils.load('./data/jobs.json');
         this.load(jobs);
     }
+
+    static {
+        BaseView.define('gs-ipp-jobs', IPPJobs);
+    }
+
 }

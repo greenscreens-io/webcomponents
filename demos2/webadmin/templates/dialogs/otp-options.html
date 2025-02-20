@@ -1,0 +1,16 @@
+<form slot="body" is="gs-ext-form" id="form-main" class="flex-fill" novalidate="">
+
+    <gs-form-group css="m-1" name="otpIssuer" label="Issuer" autocomplete="off" required
+        description="Company name.">
+    </gs-form-group>  
+
+    <gs-form-group css="m-1" name="otpDomain" label="Domain" autocomplete="off" required
+        description="Domain name.">
+    </gs-form-group> 
+    
+    <gs-form-group css="m-1" name="otpLimit" label="Login Attempts" required
+        type="number" value="0"
+        description="Invalid login attempts before disabling token.">
+    </gs-form-group> 
+      
+</form>

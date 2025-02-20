@@ -1,24 +1,20 @@
-<form slot="body" is="gs-ext-form" id="form-main" class="flex-fill" novalidate="">
+<gs-form beep block slot="body" css="flex-fill">
 
     <gs-form-group css="m-1" name="password" label="Admin Password" required
-        autocomplete="off" type="password" maxlength="64"
+        autocomplete="off" type="password" maxlength="64" reveal
         description="Password to access this web admin console. Leave empty to keep current password.">
     </gs-form-group> 
 
-    <gs-form-group css="m-1" name="password2" label="Repeat Password" required
+    <gs-form-group css="m-1" name="password2" label="Repeat Password" required reveal
         autocomplete="off" type="password" maxlength="64"
         description="Repeat password to confirm valid entry">
     </gs-form-group> 
     
-    <gs-form-group css="m-1" name="adminAccess" label="Admin Access" required
+    <gs-form-group css="m-1" name="adminAccess" label="Admin Access" required selectable
         description="Enable access to this admin console from local network or all networks (from Internet).">
-        <template>
-            <select class="form-select" id="adminAccess" name="adminAccess" required>
-                <option value="0" selected>All networks</option>
-                <option value="1">Local network only</option>
-                <option value="2">Local computer only</option>
-            </select>
-        </template>
+        <gs-item value="0" name="All networks" selected></gs-item>
+        <gs-item value="1" name="Local network only"></gs-item>
+        <gs-item value="2" name="Local computer only"></gs-item>
     </gs-form-group> 
     
-</form>
+</gs-form>

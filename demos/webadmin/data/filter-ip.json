@@ -25,5 +25,14 @@
         "subval": null,
         "active": true,
         "timestamp": 1636188618574
-    }
+    },
+    {
+        "id": 1636188466755,
+        "rule": 0,
+        "type": 2,
+        "value": "1.1.0.0-1.1.0.128",
+        "subval": null,
+        "active": false,
+        "timestamp": 1636144518574
+    }    
 ]

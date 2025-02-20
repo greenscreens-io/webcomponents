@@ -1,15 +1,14 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-    <title>Layouts test</title>
+    <title>Bootstrap-Lit</title>
     <meta charset="utf-8">
 
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
-    <meta name="viewport"
-        content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0">
 
     <meta name="subject" content="Green Scereens Ltd.">
     <meta name="author" content="www.greenscreens.ltd">
@@ -18,26 +17,35 @@
     <meta name="revisit-after" content="3 month">
     <meta name="description" content="WebComponents UI library based on Bootstrap.">
 
-    <script type="text/javascript">
-        self.GS_TEMPLATE_URL = './templates';
+    <script>
+        globalThis.GS_TEMPLATE_URL='/webcomponents/demos/templates/';
     </script>
-    <script type="module" src="/webcomponents/release/esm/io.greenscreens.components.all.esm.min.js"></script>
-    <gs-css url="/webcomponents/assets/css/io.greenscreens.bootstrap.min.css"></gs-css>
 
-    <template id="sidebar">sidebar</template>
+    <!-- Optimized CSS loading -->
+    <link rel="preload" href="/webcomponents/assets/css/bootstrap.css" as="style"  data-adoptable="true" data-id="1">
+    <link rel="preload" href="/webcomponents/assets/themes/default.css" as="style" data-adoptable="true" data-id="2">
+    <link rel="preload" href="/webcomponents/assets/icons/bootstrap-icons.css" as="style" data-adoptable="true" data-id="4">
 
+    <script type="module" src="/webcomponents/release/esm/lit-all.min.js"></script>
+    <script type="module" src="/webcomponents/release/esm/io.greenscreens.components.all.min.js"></script>
+
+    
+    <template id="center">template centered data</template>
 </head>
-
-<body>
-
-    <!-- left-sidebar main right-sidebar -->
+<body class="vh-100">
+    
+    <!-- header main footer -->
     <gs-layout type="horizontal">
-        <gs-item css="text-bg-secondary" id="left-sidebar" resizable="true" min="60" max="280" template="#sidebar">
+        <gs-item css="text-bg-light" resizable name="header">
+            <template>
+                header
+            </template>
         </gs-item>
-        <gs-item css="text-bg-primary" id="content" v-pos="top" h-pos="center">
-            <template>content</template>
-        </gs-item>
-        <gs-item css="text-bg-secondary" id="right-sidebar" resizable="true" min="60" max="280" template="#sidebar">
+        <gs-item css="text-bg-primary" id="main" template="#center"></gs-item>
+        <gs-item css="text-bg-dark" resizable name="footer" template="#tplfooter">
+            <template id="tplfooter">
+                footer
+            </template>
         </gs-item>
     </gs-layout>
 

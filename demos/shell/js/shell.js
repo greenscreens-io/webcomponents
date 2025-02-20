@@ -1,28 +1,37 @@
-import { GSAttr, GSElement} from "/webcomponents/release/esm/io.greenscreens.components.all.esm.min.js";
+/*
+ * Copyright (C) 2015, 2024 Green Screens Ltd.
+ */
+
+import { GSElement } from "/webcomponents/release/esm/io.greenscreens.components.all.min.js";
 
 class GSShell extends GSElement {
 
-	get template() {
-		return GSAttr.get(this, 'template', '//shell.html');
+	constructor() {
+		super();
+		this.template = '//shell.html';
 	}
 
 	get sidebar() {
-		return this.query('gs-sidebar');
+		return this.query('gs-sidebar', true);
 	}
 
 	get toolbar() {
-		return this.query('gs-toolbar');
+		return this.query('gs-toolbar', true);
 	}
 
 	get content() {
-		return this.query('slot[name="content"]');
+		return this.query('slot[name="content"]', true);
 	}
 
 	get dialog() {
-		return this.query('gs-dialog');
+		return this.query('gs-dialog', true);
 	}
 
-	onReady() {
+    renderUI() {
+        return this.renderTemplate();
+    }
+
+	templateInjected() {
 		const me = this;
 		me.attachEvent(me.sidebar, 'gs-evt-view', me.onView.bind(me));
 		me.attachEvent(me.toolbar, 'gs-evt-view', me.onView.bind(me));
@@ -34,8 +43,7 @@ class GSShell extends GSElement {
 	}
 
 	static {
-		customElements.define('gs-shell', GSShell);
-		Object.seal(GSShell);
+		GSElement.define('gs-shell', GSShell);
 	}
 }
 

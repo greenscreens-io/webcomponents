@@ -1,4 +1,7 @@
-import {GSDOM} from "/webcomponents/release/esm/io.greenscreens.components.all.esm.min.js";
+/*
+ * Copyright (C) 2015, 2024 Green Screens Ltd.
+ */
+import { GSDOM } from "/webcomponents/release/esm/io.greenscreens.components.all.min.js";
 
 class GSColorCombo extends HTMLSelectElement {
 
@@ -6,17 +9,11 @@ class GSColorCombo extends HTMLSelectElement {
 
     #listener;
 
-    static {
-        customElements.define('gs-ext-color', GSColorCombo, {extends : 'select'})
-        Object.seal(GSColorCombo);
-        GSColorCombo.#load();
-    }
-
     static async #load() {
         try {
             const res = await fetch('/webcomponents/demos/extension/data/themes.json');
             if (res.ok) GSColorCombo.#THEMES = await res.json();
-        } catch(e) {
+        } catch (e) {
             console.log(e);
         }
     }
@@ -42,11 +39,17 @@ class GSColorCombo extends HTMLSelectElement {
 
     get #options() {
         return Object.entries(GSColorCombo.#THEMES)
-                .map(kv => `<option value="${kv[0]}">${kv[1]["#name"]}</option>`).join('');
+            .map(kv => `<option value="${kv[0]}">${kv[1]["#name"]}</option>`).join('');
     }
 
     get #form() {
-        return this.closest('form');
+        return this.closest('form,gs-form');
+    }
+
+    static {
+        customElements.define('gs-ext-color', GSColorCombo, { extends: 'select' })
+        Object.seal(GSColorCombo);
+        GSColorCombo.#load();
     }
 
 }

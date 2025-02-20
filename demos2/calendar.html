@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Calendar Test</title>
+  <meta charset="utf-8">
+
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="viewport"
+    content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+
+  <meta name="subject" content="Green Scereens Ltd.">
+  <meta name="author" content="www.greenscreens.ltd">
+  <meta name="keywords" content="JavaScript,WebComponents">
+  <meta name="robots" content="index, follow">
+  <meta name="revisit-after" content="3 month">
+  <meta name="description" content="WebComponents UI library based on Bootstrap.">
+
+  <script type="module" src="/webcomponents/release/esm/io.greenscreens.components.all.esm.min.js"></script>
+
+  <gs-css url="/webcomponents/assets/css/io.greenscreens.bootstrap.min.css"></gs-css>
+  <gs-css url="/webcomponents/assets/icons/bootstrap-icons.css" notheme="true"></gs-css>
+
+</head>
+
+<body class="vh-100 overflow-hidden">
+
+  <gs-template href="/webcomponents/demos/header.tpl" ></gs-template>
+
+  <!-- auto-generated gs-popover based on data-bs-toggle="popover" and title attribute -->
+  <div class="row m-4 p-1 bg-light border shadow-sm">
+    <div class="col-auto">
+      <button type="button" class="btn btn-secondary" data-bs-toggle="popup" data-bs-target="#mypopup">
+        Calendar toggle
+      </button>
+    </div>
+    <div class="col-auto">
+      <!-- modern browser does not need calendar ui if type is set to "date" -->
+      <input class="form-control" name="mydate" id="mydate" type="date" title="Browser native date selector">
+    </div>
+    <div class="col-auto">
+      <!-- here is a fallback how to use it if browser does not have calendar selection -->
+      <input class="form-control" name="mydate2" id="mydate2" type="text" pattern="\d{1,2}/\d{1,2}/\d{4}"
+        data-bs-toggle="popup" data-bs-target="#mypopup" title="Custom UI date selector">
+    </div>
+  </div>
+
+
+  <!-- attach to ref targeted element -->
+  <gs-center css="m-4 p-1 bg-light border shadow-sm" style="min-width:355px;">
+    <gs-calendar id="mycalendar" target="#mydate"></gs-calendar>
+  </gs-center>
+
+  <!-- 
+    target and placement tells popup component where to show up (below input field) 
+    if target not set, it will take calling element as target
+  -->
+  <gs-popup css="text-bg-light border p-1 m-2" w-max="360" target_="#mydate2" placement="bottom" id="mypopup">
+    <gs-calendar id="calendar" target="#mydate2" format="mm/dd/yyyy" locale="en"></gs-calendar>
+  </gs-popup>
+
+  <script>
+    self.GS_FORMAT_DATE = (date, format, locale) => {
+      return `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
+    }
+  </script>
+
+  <script defer="true" type="module">
+    await GSComponents.waitFor('gs-calendar');
+    GSComponents.get('mycalendar').listen('date', (e) => console.log(e.detail));
+    GSComponents.get('calendar').listen('date', (e) => GSComponents.get('mypopup').close());
+  </script>
+
+</body>
+
+</html>

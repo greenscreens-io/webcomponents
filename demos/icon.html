@@ -1,0 +1,55 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Bootstrap-Lit</title>
+    <meta charset="utf-8">
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0">
+
+    <meta name="subject" content="Green Scereens Ltd.">
+    <meta name="author" content="www.greenscreens.ltd">
+    <meta name="keywords" content="JavaScript,WebComponents">
+    <meta name="robots" content="index, follow">
+    <meta name="revisit-after" content="3 month">
+    <meta name="description" content="WebComponents UI library based on Bootstrap.">
+
+    <script>
+        globalThis.GS_TEMPLATE_URL='/webcomponents/demos/templates/';
+    </script>
+
+    <!-- Optimized CSS loading -->
+    <link rel="preload" href="/webcomponents/assets/css/bootstrap.css" as="style"  data-adoptable="true">
+    <link rel="preload" href="/webcomponents/assets/themes/default.css" as="style" data-adoptable="true">
+    <link rel="preload" href="/webcomponents/assets/icons/bootstrap-icons.css" as="style" data-adoptable="true">
+    <link rel="preload" href="/webcomponents/assets/css/animate.css" as="style"  data-adoptable="true">
+
+    <script type="module" src="/webcomponents/release/esm/lit-all.min.js"></script>
+    <script type="module" src="/webcomponents/release/esm/io.greenscreens.components.all.min.js"></script>
+
+</head>
+
+<body>
+
+    <gs-template src="//header.html"></gs-template>
+
+    <div class="border p-3 m-4 shadow-sm text-nowrap text-bg-light">
+        <gs-icon name="bicycle" size="3" color="primary"></gs-icon>  
+        <gs-icon name="bug" size="3" color="secondary"></gs-icon>  
+        <gs-icon name="terminal" size="3" color="info"></gs-icon>  
+    </div>  
+
+    <div class="border p-3 m-4 shadow-sm text-nowrap text-bg-light">
+        <span class="m-2" title="VIBRATE">
+            <gs-icon name="alarm" size="3" hover-css="gs-vibrate" click-css="gs-shake2" ></gs-icon>        
+        </span>
+        <span class="m-2" title="PULSATE">
+            <gs-icon name="alarm" size="3" hover-css="gs-pulsate" click-css="gs-shake" data-delay="1"></gs-icon>        
+        </span>          
+    </div>
+</body>
+
+</html>

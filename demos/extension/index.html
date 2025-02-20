@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <title>Green Screens Terminal</title>
+    <title>Green Screens Extension</title>
     <meta charset="utf-8">
 
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -22,50 +22,37 @@
         self.GS_TEMPLATE_URL = './templates';
         self.GS_NO_CACHE = true;
     </script>
-    <script type="module" src="/webcomponents/modules/index.mjs"></script>
-    <script type="module" src="/webcomponents/modules/components/index.mjs"></script>
+    <script type="module" src="/webcomponents/release/esm/lit-all.min.js"></script>
+    <script type="module" src="/webcomponents/release/esm/io.greenscreens.components.all.min.js"></script>
+
     <script type="module" src="./scripts/index.mjs"></script>
 
-    <gs-css url="/webcomponents/assets/css/io.greenscreens.bootstrap.min.css"></gs-css>
-    <gs-css url="/webcomponents/assets/icons/bootstrap-icons.css" notheme="true"></gs-css>
-    <gs-css url="./style.css" notheme="true"></gs-css>
+    <link rel="preload" href="/webcomponents/assets/css/bootstrap.css" as="style"  data-adoptable="true">
+    <link rel="preload" href="/webcomponents/assets/themes/default.css" as="style" data-adoptable="true">
+    <link rel="preload" href="/webcomponents/assets/icons/bootstrap-icons.css" as="style" data-adoptable="true">
+    <link rel="preload" href="./style.css" as="style" data-adoptable="true">
 
 </head>
 
 <body class="overflow-hidden">
 
     <!-- Header info -->
-    <gs-template href="//shell/header.html" class="_fixed-top zindex-10k"></gs-template>
+    <gs-template src="//shell/header.html" class="_fixed-top zindex-10k"></gs-template>
+    
+    <gs-actions></gs-actions>
 
-    <gs-layout type="horizontal">
-
-        <!-- SIDEBAR - template contains clicable action with injection targets -->
-        <gs-item css="border-end" css-template="flex-fill p-3" min="260" max="260" 
-            template="//shell/sidebar.html"></gs-item>
-
-        <gs-item css="" css-template="flex-fill p-3">
+    <gs-layout type="vertical">
+        <gs-item css="flex-fill pt-3 border-end" id="left-sidebar" min="260" max="260" size="260" template="//shell/sidebar.html"></gs-item>
+        <gs-item css="flex-fill p-3 overflow-auto" id="content" v-pos="top" h-pos="center">
             <template>
-                <gs-layout type="vertical" css="overflow-auto">
-
-                    <!-- CONTENT - target where to inject templates -->
-                    <gs-item css="p-4" name="content" v-pos="top" h-pos="center">
-                        <template>
-                            <!-- default page the same as sidebar selected item -->
-                            <gs-ext-settings></gs-ext-settings>
-                        </template>
-                    </gs-item>
-
-                </gs-layout>
+                <!-- default page the same as sidebar selected item -->
+                <gs-ext-settings></gs-ext-settings>                
             </template>
         </gs-item>
-
     </gs-layout>
-
+    
     <!-- APP FOOTER WITH Copyright notice -->
-    <div id="footer" class="fixed-bottom text-end">
-        <a href="https://www.greenscreens.ltd" target="_blank" class="text-muted">
-            &copy; Green Screens Ltd. 2015. - <gs-year-format></gs-year-format>.</a>
-    </div>
+    <gs-copyright year="2015" company="Green Screens Ltd."></gs-copyright>
 
     <!-- Application toast notification -->
     <gs-notification id="notification"></gs-notification>

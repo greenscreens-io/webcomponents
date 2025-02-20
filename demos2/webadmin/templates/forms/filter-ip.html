@@ -1,0 +1,45 @@
+<form slot="body" is="gs-ext-form" id="form-main" class="flex-fill" novalidate="">
+    
+    <input class="d-none" id="id"  name="id" type="text" readonly>
+
+    <gs-form-group css="m-1" name="active" label="Active"
+        description="Enable or disable this rule.">
+        <template>
+            <select class="form-select" id="active" name="active" required>
+                <option value="true">Enabled</option>
+                <option value="false">Disabled</option>
+            </select>            
+        </template>
+    </gs-form-group>
+
+    <gs-form-group css="m-1" name="rule" label="Rule"
+        description="Allow or deny network access based on matched criteria.">
+        <template>
+            <select class="form-select" id="rule" name="rule" required>
+                <option value="0">Allow</option>
+                <option value="1">Deny</option>
+            </select>            
+        </template>
+    </gs-form-group>
+
+    <gs-form-group css="m-1" name="type" label="Type"
+        description="Select filter type.
+        IP: Single IP address to match.
+        MASK: CIDR format of IP range.
+        EXPR: Expression for more complex ranges such as * or 10.*.*.10-30 or 192.168.1.* etc.">
+        <template>
+            <select class="form-select" id="type" name="type">
+                <option selected value="0">IP</option>
+                <option value="1">Mask</option>
+                <option value="2">Expression</option>
+            </select>            
+        </template>
+    </gs-form-group>
+
+    <gs-form-group css="m-1" name="value" label="Value"
+        _pattern="^((25[0-5]|(2[0-4]|1\d|[1-9]|)\d)\.?\b){4}$"
+        autocomplete="off" required
+        description="Rule value to match IP address.">
+    </gs-form-group>
+
+</form>

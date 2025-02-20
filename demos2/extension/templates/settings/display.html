@@ -1,0 +1,74 @@
+<div class="mt-4">
+	<h4>Display Settings</h4>
+	<div class="list-group text-bg-light shadow-sm">
+
+		<div class="list-group-item" ignore>
+			<div class="d-flex w-100 justify-content-between">
+				<label class="form-control-label fw-bold" for="enter_mode">Enter Key</label>
+				<div class="fs-4">
+					<select class="form-control" id="enter_mode" name="enter_mode" selected="false">
+						<option value="1">&lt;Field Exit&gt; = Enter, &lt;Enter&gt; = Right CTRL</option>
+						<option value="2">&lt;Field Exit> = Right CTRL, &lt;Enter> = Enter</option>
+					</select>
+				</div>
+			</div>
+			<p class="mb-1 text-muted">Select Enter key mode to behave as "FieldExit" or as "Enter".</p>
+		</div>
+
+		<div class="list-group-item" ignore>
+			<div class="d-flex w-100 justify-content-between">
+				<label class="form-check-label fw-bold" for="sound">Sound Notification</label>
+				<div class="form-check form-switch fs-4">
+					<input class="form-check-input" type="checkbox" role="switch" id="sound" name="sound" checked>
+				</div>
+			</div>
+			<p class="mb-1 text-muted">Enable or disable "beep" signal on keyboard entry error.</p>
+		</div>
+
+		<div class="list-group-item" ignore>
+			<div class="d-flex w-100 justify-content-between">
+				<label class="form-check-label fw-bold" for="legacy">Legacy Mode</label>
+				<div class="form-check form-switch fs-4">
+					<input class="form-check-input" type="checkbox" role="switch" id="legacy" name="legacy">
+				</div>
+			</div>
+			<p class="mb-1 text-muted">Enable terminal rendering in 4:3 ratio instead of "fit to window".</p>
+		</div>
+
+		<div class="list-group-item" ignore>
+			<div class="d-flex w-100 justify-content-between">
+				<label class="form-control-label fw-bold" for="crosshair">Crosshair</label>
+				<div class="fs-4">
+					<select class="form-control " id="crosshair" name="crosshair">
+						<option value="">Disabled</option>
+						<option value="*">Vertical and Horizontal</option>
+						<option value="h">Horizontal</option>
+						<option value="v">Vertical</option>
+					</select>
+				</div>
+			</div>
+			<p class="mb-1 text-muted">Select crosshair style on terminal.</p>
+		</div>
+
+		<div class="list-group-item" ignore>
+			<div class="d-flex w-100 justify-content-between">
+				<label class="form-check-label fw-bold" for="protect">Close Control</label>
+				<div class="form-check form-switch fs-4">
+					<input class="form-check-input" type="checkbox" role="switch" id="protect" name="protect">
+				</div>
+			</div>
+			<p class="mb-1 text-muted">Prevent from accidental closing terminal tab.</p>
+		</div>
+
+		<div class="list-group-item" ignore>
+			<div class="d-flex w-100 justify-content-between">
+				<label class="form-check-label fw-bold" for="tabmode">Window Mode</label>
+				<div class="form-check form-switch fs-4">
+					<input class="form-check-input" type="checkbox" role="switch" id="tabmode" name="tabmode">
+				</div>
+			</div>
+			<p class="mb-1 text-muted">If enabled, terminal will open in a separate window.</p>
+		</div>
+
+	</div>
+</div>

@@ -1,0 +1,62 @@
+<div class="container-fluid">
+    <div class="row border shadow-sm ms-4 ps-4 py-4 bg-light border shadow-sm ">
+
+        <div class="row">
+            <div class="col">
+                <h4 class="text-muted">Terminal Sessions</h4>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+
+
+                <gs-template href="//shell/toolbar.html" id="toolbar"></gs-template>
+
+                <gs-table id="table-main" index=false class="flex-fill"
+                    css="table table-light table-hover user-select-none m-0 border" 
+                    css-select="table-active table-primary"
+                    css-header="user-select-none table-secondary">
+                    <gs-header>
+                        <gs-column title="Name" name="name"></gs-column>
+                        <gs-column title="UUID" name="uuid"></gs-column>
+                        <gs-column title="Host" name="host"></gs-column>
+                        <gs-column title="Display Name" name="display"></gs-column>
+                        <gs-column title="Printer Name" name="printer"></gs-column>
+                        <gs-column title="User" name="user"></gs-column>
+                        <gs-column title="Code Page" name="codepage"></gs-column>
+                        <gs-column title="Session ID" name="sessionID"></gs-column>
+                        <gs-column title="Theme" name="theme"></gs-column>
+                    </gs-header>
+                    <gs-store src="data/sessions.json" id="sessions" limit=10>
+                        <gs-item name="name"></gs-item>
+                        <gs-item name="uuid"></gs-item>
+                        <gs-item name="host"></gs-item>
+                        <gs-item name="display"></gs-item>
+                        <gs-item name="printer"></gs-item>
+                        <gs-item name="user"></gs-item>
+                        <gs-item name="codepage"></gs-item>
+                        <gs-item name="sessionID"></gs-item>
+                        <gs-item name="theme"></gs-item>
+                    </gs-store>
+                    <gs-context slot="extra" target="tbody tr">
+                        <gs-item name="Details" action="details"></gs-item>
+                        <gs-item name="Clone" action="clone"></gs-item>
+                        <gs-item name="Start" action="start"></gs-item>
+                        <gs-item></gs-item>
+                        <gs-item name="Remove" action="remove"></gs-item>
+                    </gs-context>
+                    <gs-pager slot="extra" previous="&laquo;" next="&raquo;" firstlast="false"></gs-pager>
+                </gs-table>
+    
+                <gs-modal id="modal-main" visible="false" css-body="p-0">
+                    <h4 slot="title">Terminal Session</h4>
+                    <gs-template slot="body" href="//forms/session.html"></gs-template>
+                </gs-modal>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+

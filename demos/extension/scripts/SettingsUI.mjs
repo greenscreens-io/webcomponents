@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015, 2022 Green Screens Ltd.
+ * Copyright (C) 2015, 2024 Green Screens Ltd.
  */
 
 /**
@@ -7,7 +7,7 @@
  * @module SettingsUI
  */
 
-import {GSElement} from "/webcomponents/release/esm/io.greenscreens.components.all.esm.min.js";
+import { GSDOM, GSElement } from "/webcomponents/release/esm/io.greenscreens.components.all.min.js";
 
 /**
  * SettingsUI handles session template elements
@@ -16,37 +16,42 @@ import {GSElement} from "/webcomponents/release/esm/io.greenscreens.components.a
  */
 class SettingsUI extends GSElement {
 
-    static {
-        customElements.define('gs-ext-settings', SettingsUI);
-        Object.seal(SettingsUI);
-    }
-
-    async getTemplate(val = '') {
-        return super.getTemplate('//views/settings.html');
-    }
-
     constructor() {
         super();
         this.className = 'w-100';
+        this.template = '//views/settings.html';
         if (self.GS_DEV_MODE) self._SettingsUI = this;
     }
 
-    onReady() {
-        const me = this;
-        me.attachEvent(me, 'form', me.#onForm.bind(me));
-        super.onReady();
+    renderUI() {
+        return this.renderTemplate();
     }
 
+	templateInjected() {
+		const me = this;
+        me.attachEvent(me, 'form', me.#onForm.bind(me));
+	}
+
     async #onForm(e) {
-        const data = e.detail.data;
-        if (e.detail.valid) {
-            return GSComponents.get('notification').danger('', 'Not all required fields valid!');
+        const form = e.detail.owner;
+        const data = form.asJSON;
+        
+        if (!data) {
+            return this.notify?.danger('', 'Not all required fields valid!');
         }
 
         // TODO save data        
-        console.log(data);
+        console.log(form.asJSON);
         
-        GSComponents.get('notification').warn('', 'Record updated!');
+        this.notify?.warn('', 'Record updated!');
+    }
+
+    get notify() {
+        return GSDOM.query('#notification');
+    }
+
+    static {
+        GSElement.define('gs-ext-settings', SettingsUI);
     }
 
 }

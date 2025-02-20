@@ -13,14 +13,8 @@
     description="Printer or Display virtual controller. For pre 6.1 releases default is QVIRCD0001 or any QVIRCDxxxx and for newer releases it is QPACTL01 or any QPACTLxx.">
 </gs-form-group>
 
-<gs-form-group css="m-1" name="transfer" label="File transfers"
-    description="Select which transfer types are allowed. Only download, or only upload or both can be enabled. Default is NONE.">
-    <template>
-        <select class="form-select" id="transfer" name="transfer" required>
-            <option value="0">None</option>
-            <option value="1">Both</option>
-            <option value="2">Download</option>
-            <option value="3">Upload</option>
-        </select>
-    </template>
+<gs-form-group seletable required css="m-1" name="active" label="Status"
+    description="Enable or disable this configuration for use. Default is ENABLED">
+    <gs-item value="true" name="Enabled" selected></gs-item>
+    <gs-item value="false" name="Disabled"></gs-item>
 </gs-form-group>

@@ -1,10 +1,11 @@
 <div class="container-fluid ms-4">
-    <div class="row border shadow-sm ms-4 ps-4 py-4 bg-light border shadow-sm  mb-4">
+
+    <div class="row -border shadow-sm rounded-3 ms-4 ps-4 py-4 bg-light mb-4">
         <div class="col">
             <h4 class="text-muted user-select-none">Mobile Filter Records</h4>
         </div>
         <div class="col-2">
-            <select auto="false" name="filter" title="Filter status" class="form-select">
+            <select name="filter" title="Filter status" class="form-select">
                 <option value="0" selected>Disabled</option>
                 <option value="1">Enabled</option>
                 <option value="2">Learning</option>
@@ -13,60 +14,59 @@
         </div>        
     </div>
 
-    <div class="row border shadow-sm ms-4 pb-4 bg-light border shadow-sm ">
+    <div class="row border shadow-sm rounded ms-4 pb-4 bg-light ">
 
-        <div class="col-12 border-bottom d-flex justify-content-end align-items-center">
+        <div class="col-12 d-flex justify-content-end p-1 ">
+            <gs-button data-gs-action="create" tooltip="Add new configuration" 
+            color="light" text="dark" -hover-css="gs-pulse" click-css="gs-shake" css="shadow-none border-0"
+            icon="file-earmark fs-4 fw-bold"></gs-button>
 
-            <gs-button action="create" select="false" comment="Add new configuration" css="text-bg-light"
-                icon="bi bi-file-earmark fs-4 fw-bold"></gs-button>                
-            <gs-button action="refresh" select="false" comment="Refresh data" css="text-bg-light"
-                icon="bi bi-arrow-repeat fs-4 fw-bold"></gs-button>
+            <gs-button data-gs-action="refresh" tooltip="Refresh data" 
+            color="light" text="dark" -hover-css="gs-pulse" click-css="gs-shake" css="shadow-none border-0"
+            icon="arrow-repeat fs-4 fw-bold"></gs-button>
         </div>
 
         <div class="col-12 p-0">
 
-            <gs-table id="table-main" index=false class="flex-fill"
-                css="table table-light table-hover user-select-none m-0" css-select="table-active table-primary"
-                css-header="user-select-none" css-columns="table-secondary">
-                <gs-header>
-                     <gs-column title="Rule" name="rule" filter="true" list="fixed">
-                        <gs-item map="true" filter="true">
-                            <gs-item value="0" map="Allow"></gs-item>
-                            <gs-item value="1" map="Deny"></gs-item>   
-                        </gs-item>
-                    </gs-column>
-                    <gs-column title="Mobile" name="mobile" filter="true"></gs-column>
-                    <gs-column title="Device ID" name="deviceID" filter="true"></gs-column>
-                    <gs-column title="Owner" name="user" filter="true"></gs-column>
-                    <gs-column title="Status" name="active" filter="true" list="fixed">
-                        <gs-item map="true" filter="true">
-                            <gs-item value="true" map="Active"></gs-item>
-                            <gs-item value="false" map="Inactive"></gs-item>
-                        </gs-item>
-                    </gs-column>
-                </gs-header>
-                <gs-store src="data/filter-mobile.json" id="sessions" limit=15>
-                    <gs-item name="id"></gs-item>
-                    <gs-item name="rule"></gs-item>
-                    <gs-item name="deviceID"></gs-item>
-                    <gs-item name="mobile"></gs-item>
-                    <gs-item name="fullname"></gs-item>
-                    <gs-item name="user"></gs-item>
-                    <gs-item name="active"></gs-item>
-                    <gs-item name="timestamp"></gs-item>
-                </gs-store>
-                <gs-context slot="extra" target="tbody tr">
-                    <gs-item name="Details" action="details"></gs-item>
-                    <gs-item></gs-item>
-                    <gs-item name="Remove" action="remove"></gs-item>
-                </gs-context>
-                <gs-pager slot="extra" previous="&laquo;" next="&raquo;" firstlast="false" pages="0"></gs-pager>
-            </gs-table>
+            <gs-data-handler src="data/filter-mobile.json" id="filtermobile" type="cached" limit=15>
+                <gs-item name="id"></gs-item>
+                <gs-item name="rule"></gs-item>
+                <gs-item name="deviceID"></gs-item>
+                <gs-item name="mobile"></gs-item>
+                <gs-item name="fullname"></gs-item>
+                <gs-item name="user"></gs-item>
+                <gs-item name="active"></gs-item>
+                <gs-item name="timestamp"></gs-item>
+            </gs-data-handler>
 
-            <gs-dialog id="modal-main" visible="false" size="large" css-body="p-0" css-header="p-3 dialog-title" >
-                <h4 slot="title">Mobile Filter</h4>
-                <gs-template slot="body" href="//forms/filter-mobile.html"></gs-template>
-            </gs-dialog>
+            <gs-table id="table-main" storage="filtermobile" 
+                selectable hover bordered shadow -divider sortable multisort
+                class="flex-fill" css-filter="rounded-0" css-header="border"
+                color="light" select-color="primary" head-color="secondary">  
+                <gs-item title="Rule" name="rule" filter fixed>
+                    <gs-item value="0" map="Allow"></gs-item>
+                    <gs-item value="1" map="Deny"></gs-item>   
+               </gs-item>
+               <gs-item title="Mobile" name="mobile" filter></gs-item>
+               <gs-item title="Device ID" name="deviceID" filter></gs-item>
+               <gs-item title="Owner" name="user" filter></gs-item>
+               <gs-item title="Status" name="active" filter fixed>
+                   <gs-item value="true" map="Active"></gs-item>
+                   <gs-item value="false" map="Inactive"></gs-item>
+               </gs-item>
+               
+               <gs-context>
+                    <gs-item name="Details" data-gs-action="details"></gs-item>
+                    <gs-item></gs-item>
+                    <gs-item name="Remove" data-gs-action="remove"></gs-item>
+                </gs-context>
+            </gs-table>
+            
+            <gs-pagination slot="extra" storage="filtermobile" pages="5" css="justify-content-center p-1 m-1" first last previous next></gs-pagination>
+
+            <gs-admin-dialog id="modal-main" css-modal="modal-lg" css-body="p-0" css-header="p-3"
+                title="Mobile Filter" template="//forms/filter-mobile.html">
+            </gs-admin-dialog>
 
         </div>
 

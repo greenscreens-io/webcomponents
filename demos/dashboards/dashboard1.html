@@ -17,74 +17,89 @@
     <meta name="robots" content="index, follow">
     <meta name="revisit-after" content="3 month">
     <meta name="description" content="WebComponents UI library based on Bootstrap.">
-
-    <script type="text/javascript">
-        self.GS_TEMPLATE_URL = './templates';
+    
+    <script>
+        globalThis.GS_TEMPLATE_URL = '/webcomponents/demos/templates/';
     </script>
-    <script type="module" src="/webcomponents/modules/index.mjs"></script>
 
-    <script type="module" src="/webcomponents/release/esm/io.greenscreens.components.all.esm.min.js"></script>
-
-    <gs-css url="/webcomponents/assets/css/io.greenscreens.bootstrap.min.css"></gs-css>
-    <gs-css url="/webcomponents/assets/icons/bootstrap-icons.css" notheme="true"></gs-css>
-
-    <style is="gs-ext-style">
-    .offcanvas, .offcanvas-xxl, .offcanvas-xl, .offcanvas-lg, .offcanvas-md, .offcanvas-sm {
-        --bs-offcanvas-bg: #f4f8fb !important
-    }
+    <style data-adoptable="true" data-id="3">
+        .offcanvas,
+        .offcanvas-xxl,
+        .offcanvas-xl,
+        .offcanvas-lg,
+        .offcanvas-md,
+        .offcanvas-sm {
+            --bs-offcanvas-bg: #f4f8fb !important
+        }
     </style>
+
+    <!-- Optimized CSS loading -->
+    <link rel="preload" href="/webcomponents/assets/css/bootstrap.css" as="style"  data-adoptable="true" data-id="1">
+    <link rel="preload" href="/webcomponents/assets/themes/default.css" as="style" data-adoptable="true" data-id="2">
+    <link rel="preload" href="/webcomponents/assets/icons/bootstrap-icons.css" as="style" data-adoptable="true" data-id="4">
+
+    <script type="module" src="/webcomponents/release/esm/lit-all.min.js"></script>
+    <script type="module" src="/webcomponents/release/esm/io.greenscreens.components.all.min.js"></script>
+
+
+    <template id="tplmenu">
+        <gs-dropdown icon="list" size="3" text="secondary">
+            <gs-item header="Menu group"></gs-item>
+            <gs-item name="Open" action="open"></gs-item>
+            <gs-item></gs-item>
+            <gs-item name="Submenu 1">
+                <gs-item name="Submenu 1" action="sub_1_1"></gs-item>
+                <gs-item name="Submenu 2" action="sub_1_2"></gs-item>
+            </gs-item>
+            <gs-item name="Submenu 2">
+                <gs-item name="Submenu 2.1" action="sub_2_1"></gs-item>
+                <gs-item name="Submenu 2.2" action="sub_2_2"></gs-item>
+                <gs-item name="Submenu 2.3">
+                    <gs-item name="Submenu 2.3.1" action="sub_2_3_1"></gs-item>
+                    <gs-item name="Submenu 2.3.2" action="sub_2_3_2"></gs-item>
+                </gs-item>
+            </gs-item>
+        </gs-dropdown>
+    </template>
 
 </head>
 
-<body>
+<body class="overflow-hidden">
 
-    <gs-layout type="vertical" css="">
+    <gs-layout type="horizontal" css="">
 
-        <gs-item v-pos="center" h-pos="between" min="5" css="p-1 border-bottom shadow-sm text-bg-light">
+        <gs-item type="vertical" v-pos="center" h-pos="center" min="62" css="p-1 border-bottom shadow-sm text-bg-light">
+            <gs-item min="1"></gs-item>
+            <gs-item h-pos="center">
+                <template>
+                    <img src="/webcomponents/assets/img/logo.png" height="32">
+                </template>
+            </gs-item>
+            <gs-item min="1" template="#tplmenu"></gs-item>
+        </gs-item>
+
+        <gs-item css="p-3" id="content" v-pos="top" h-pos="center">
             <template>
-                <div></div>
-                <div><img src="/webcomponents/assets/img/logo.png" height="32"></div>
-                <div class="">
-                    <a type="button" class="btn dropdown-toggle" data-bs-toggle="dropdown" data-bs-target="">
-                        <i class="bi-list fs-3"></i>
-                    </a>
-                    <gs-dropdown dark="false">
-                        <gs-item header="Menu group"></gs-item>
-                        <gs-item name="Open" action="open"></gs-item>
-                        <gs-item></gs-item>
-                        <gs-item name="Submenu 1">
-                            <gs-item name="Submenu 1" action="sub_1_1"></gs-item>
-                            <gs-item name="Submenu 2" action="sub_1_2"></gs-item>
-                        </gs-item>
-                        <gs-item name="Submenu 2">
-                            <gs-item name="Submenu 2.1" action="sub_2_1"></gs-item>
-                            <gs-item name="Submenu 2.2" action="sub_2_2"></gs-item>
-                            <gs-item name="Submenu 2.3">
-                                <gs-item name="Submenu 2.3.1" action="sub_2_3_1"></gs-item>
-                                <gs-item name="Submenu 2.3.2" action="sub_2_3_2"></gs-item>
-                            </gs-item>
-                        </gs-item>
-                    </gs-dropdown>
-                </div>
+                centered data
             </template>
         </gs-item>
 
-        <gs-item css="p-3" id="content" v-pos="top" h-pos="center">centerd data</gs-item>
-        
     </gs-layout>
 
     <div id="dialogs">
         <!-- dialog placeholder -->
     </div>
 
-    <gs-offcanvas css="border-end shadow-sm" css-head="p-0 border-bottom" css-body="overflow-hidden" expanded="true" closable="false" autoclose="true" min="65" max="260">
+    <gs-drawer css="border-end shadow-sm" css-head="p-0 border-bottom" css-body="overflow-hidden" expanded autoclose
+        min="65" max="260">
 
         <div slot="header" class="flex-fill">
-            <a href="https://webcomponents.greenscreens.ltd" target="_blank" class="m-3 d-flex justify-content-start align-items-center fs-5">
+            <a href="https://webcomponents.greenscreens.ltd" target="_blank"
+                class="m-3 d-flex justify-content-start align-items-center fs-5">
                 <span><img src="/webcomponents/assets/img/icon.png" height="26"></span>
                 <span class="d-flex ms-4 overflow-hidden text-nowrap"><b>Admin Panel</b></span>
             </a>
-        </div>        
+        </div>
 
         <gs-list slot="body" css="" selectable="false">
             <gs-item css="border-0 p-1">
@@ -105,11 +120,9 @@
             </gs-item>
         </gs-list>
 
-    </gs-offcanvas>
+    </gs-drawer>
 
-    <div class="fixed-bottom d-flex justify-content-center align-items-center mt-1 p-2 text-muted">
-        <small>© Green Scereens Ltd. 2015. - <gs-year-format></gs-year-format>.</small>
-    </div>
+    <gs-copyright year="2015" company="Green Screens Ltd."></gs-copyright>
 
 </body>
 

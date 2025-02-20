@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Bootstrap-Lit</title>
+  <meta charset="utf-8">
+
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0">
+
+  <meta name="subject" content="Green Scereens Ltd.">
+  <meta name="author" content="www.greenscreens.ltd">
+  <meta name="keywords" content="JavaScript,WebComponents">
+  <meta name="robots" content="index, follow">
+  <meta name="revisit-after" content="3 month">
+  <meta name="description" content="WebComponents UI library based on Bootstrap.">
+
+  <script>
+    globalThis.GS_TEMPLATE_URL = '/webcomponents/demos/templates/';
+  </script>
+
+  <!-- Optimized CSS loading -->
+  <link rel="preload" href="/webcomponents/assets/css/bootstrap.css" as="style" data-adoptable="true" data-id="1">
+  <link rel="preload" href="/webcomponents/assets/themes/default.css" as="style" data-adoptable="true" data-id="2">
+  <link rel="preload" href="/webcomponents/assets/icons/bootstrap-icons.css" as="style" data-adoptable="true"
+    data-id="4">
+
+    <script type="module" src="/webcomponents/release/esm/lit-all.min.js"></script>
+    <script type="module" src="/webcomponents/release/esm/io.greenscreens.components.all.min.js"></script>
+
+</head>
+
+<body>
+  <gs-template src="//header.html"></gs-template>
+
+  <!-- also, use gs-image with filter options -->
+  <gs-center css="m-4 p-4 bg-light bordered shadow-sm">
+    <gs-compare css="border bg-secondary" _width="800" _height="550">
+      <gs-image slot="before" grayscale="0.7" src="https://images.unsplash.com/photo-1682687220208-22d7a2543e88?q=80&w=800&h=550&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"></gs-image>
+      <gs-image slot="after"src="https://images.unsplash.com/photo-1484318571209-661cf29a69c3?q=80&w=800&h=550&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"></gs-image>
+    </gs-compare>
+  </gs-center>
+
+  <!-- also, use standard image -->
+  <!--
+      <gs-compare css="border bg-secondary" width="800" height="550">
+        <img src="https://images.unsplash.com/photo-1682687220208-22d7a2543e88?q=80&w=800&h=550&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" slot="before"></img>
+        <img src="https://images.unsplash.com/photo-1484318571209-661cf29a69c3?q=80&w=800&h=550&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" slot="after"></img>
+      </gs-compare>
+     -->
+
+  <!-- Alternatively, use this format
+      <gs-compare 
+        before="https://images.unsplash.com/photo-1682687220208-22d7a2543e88?q=80&w=800&h=550&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+        after="https://images.unsplash.com/photo-1484318571209-661cf29a69c3?q=80&w=800&h=550&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+        css="border bg-secondary" width="800" height="550">
+      </gs-compare>
+ -->
+</body>
+
+</html>

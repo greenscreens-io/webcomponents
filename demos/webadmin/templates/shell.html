@@ -1,22 +1,22 @@
-<gs-layout type="vertical" css="">
+<gs-layout type="horizontal" css="">
 
     <!-- header - topbar -->
-    <gs-item v-pos="center" h-pos="end" min="5" css="p-1 border-bottom shadow-sm text-bg-light logo"
-        css-template="flex-fill">
-        <template>
-            <gs-admin-shell-header></gs-admin-shell-header>
-        </template>
+    <gs-item v-pos="center" h-pos="end" min="60"
+            css="border-bottom shadow-sm text-bg-light logo">
+            <template>
+                <gs-admin-shell-header></gs-admin-shell-header>
+            </template>
     </gs-item>
 
     <!-- center content location -->
-    <gs-item v-pos="top" h-pos="center" css="p-3">
+    <gs-item id="content" v-pos="top" h-pos="center" css="p-3">
         <template>
-            <div id="content" class="d-flex flex-fill">
-                <gs-admin-view-configuration></gs-admin-view-configuration>
-            </div>
+            <gs-admin-view-configuration></gs-admin-view-configuration>
         </template>
     </gs-item>
+
 </gs-layout>
+
 
 <div id="dialogs">
     <!-- dialog placeholder -->
@@ -28,8 +28,8 @@
 <!-- Application toast notification -->
 <gs-notification id="notification"></gs-notification>
 
-<gs-dialog id="modal-waiter" visible="false" closable="false" cancelable="false">
-    <h4 slot="body" class="text-center">Please wait...</h4>
+<gs-dialog id="modal-waiter" visible="false" closable="false" cancelable="false" css-header="d-none" css-footer="d-none" css-body="p-4">
+    <h4 slot="body" class="text-center mt-2">Please wait...</h4>
 </gs-dialog>
 
 <!-- fixed footer -->

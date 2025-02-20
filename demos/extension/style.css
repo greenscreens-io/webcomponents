@@ -12,8 +12,8 @@
     --bs-offcanvas-bg: #f4f8fb !important
 }
 
-.nav-link:hover,
-.nav-link:focus {
+/* .nav-link:focus */
+.nav-link:hover {
     background-color: rgb(67 89 113 / 13%) !important;
 }
 

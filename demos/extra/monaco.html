@@ -1,15 +1,14 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-    <title>Monaco editor Test</title>
+    <title>Bootstrap-Lit</title>
     <meta charset="utf-8">
 
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
-    <meta name="viewport"
-        content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0">
 
     <meta name="subject" content="Green Scereens Ltd.">
     <meta name="author" content="www.greenscreens.ltd">
@@ -19,22 +18,25 @@
     <meta name="description" content="WebComponents UI library based on Bootstrap.">
 
     <script>
-        self.GS_URL_CHART = false;
-		self.GS_URL_HLJS = false;
+        globalThis.GS_TEMPLATE_URL='/webcomponents/demos/templates/';
     </script>
-        
-    <script type="module" src="/webcomponents/release/esm/io.greenscreens.components.all.esm.min.js"></script>
 
-    <gs-css url="/webcomponents/assets/css/io.greenscreens.bootstrap.min.css"></gs-css>
-    <gs-css url="/webcomponents/assets/icons/bootstrap-icons.css" notheme="true"></gs-css>
+    <!-- Optimized CSS loading -->
+    <link rel="preload" href="/webcomponents/assets/css/bootstrap.css" as="style"  data-adoptable="true" data-id="1">
+    <link rel="preload" href="/webcomponents/assets/themes/default.css" as="style" data-adoptable="true" data-id="2">
+    <link rel="preload" href="/webcomponents/assets/icons/bootstrap-icons.css" as="style" data-adoptable="true" data-id="4">
+
+    <script type="module" src="/webcomponents/release/esm/lit-all.min.js"></script>
+    <script type="module" src="/webcomponents/release/esm/io.greenscreens.components.all.min.js"></script>
+
 
 </head>
-
 <body>
-    <gs-template href="../header.tpl"></gs-template>
+
+    <gs-template src="//header.html"></gs-template>
 
     <!-- toolbar -->
-    <div class="m-4 p-1 bg-light border shadow-sm row form-row">
+    <div class="m-4 p-1 bg-light bordered shadow-sm row form-row">
         <div class="m-4 w-25 col">
             <select class="form-select mt-2" id="selectTheme">
                 <option value="" selected>Select theme...</option>
@@ -55,13 +57,13 @@
             <datalist id="sources">
                 <option value="monaco.html">
                 <option value="../../assets/css/style.css">
-                <option value="../../assets/css/theme.css">
+                <option value="../../assets/themes/default.css">
             </datalist>            
         </div>                        
     </div>
     
     <!-- container for code editor -->
-    <div class="d-flex m-4 bg-dark border shadow-sm" id="wrapper" style="height:500px">
+    <div class="d-flex m-4 bg-dark bordered shadow-sm" id="wrapper" style="height:500px">
         <gs-monaco url="monaco.html" language="" class="flex-fill d-flex" css="flex-fill"></gs-monaco>
     </div>
 
@@ -81,7 +83,6 @@
         document.querySelector('#source').addEventListener('keypress', (e) => {
             if (e.which !== 13) return;
             const el = GSDOM.query(document.body, 'gs-monaco');
-            el.code = '';
             el.url = e.target.value;
         });
         

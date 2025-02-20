@@ -1,0 +1,45 @@
+{
+    "version1": {
+        "data-gs-swap": "gs-copyright",
+        "data-gs-target": "#content",
+        "#def": {
+            "company": "Green Screens Ltd.",
+            "url": "https://webcomponents.greenscreens.ltd",
+            "year": 2015
+        }        
+    },
+    "version2": {
+        "data-gs-swap": true,
+        "data-gs-target": "#content",
+        "#def": {
+            "#tagName": "gs-copyright",
+            "company": "My company Ltd.",
+            "url": "https://webcomponents.greenscreens.ltd",
+            "year": 2022
+        }
+    },
+    "version3": {
+        "data-gs-inject": "gs-copyright",
+        "data-gs-target": "#content",
+        "#def": {
+            "company": "One2One Ltd.",
+            "url": "https://webcomponents.greenscreens.ltd",
+            "year": 2018
+        }        
+    },
+    "version4": {
+        "data-gs-inject": true,
+        "data-gs-target": "#content",
+        "#def": {
+            "#tagName": "gs-copyright",
+            "company": "Tech Advisory Ltd.",
+            "url": "https://webcomponents.greenscreens.ltd",
+            "year": 2020
+        }
+    },
+    "reset": {
+        "data-gs-swap": "span",
+        "data-gs-target": "#content"
+    }    
+
+}

@@ -1,166 +1,152 @@
 <div class="container-fluid ms-4">
 
-    <div class="row border shadow-sm ms-4 ps-4 py-4 bg-light border shadow-sm mb-4">
+    <div class="row -border shadow-sm rounded-3 ms-4 ps-3 py-3 bg-light mb-4">
         <div class="col">
-            <h4 class="text-muted user-select-none">IBM i Server Configurations</h4>
+            <h5 class="text-muted user-select-none">IBM i Server Configurations</h5>
         </div>
     </div>
 
-    <div class="row border shadow-sm ms-4 pb-4 bg-light border shadow-sm ">
+    <div class="row border shadow-sm rounded ms-4 pb-4 bg-light">
         
         <div class="col-12 border-bottom">
-            <gs-template href="//shell/toolbar.html" id="toolbar"></gs-template>
+            <gs-template src="//shell/toolbar.html" id="toolbar"></gs-template>
         </div>
 
         <div class="col-12 mt-2 p-0">
 
-            <gs-table id="table-main" index=false class="flex-fill"
-                css="table table-light table-hover user-select-none m-0" css-select="table-active table-primary"
-                css-header="user-select-none" css-columns="table-secondary">
-                <gs-header>
-                    <gs-column title="UUID" name="uuid"></gs-column>
-                    <gs-column title="Host" name="name"></gs-column>
-                    <gs-column title="Tunnel" name="proxyName"></gs-column>
-                    <gs-column title="IP Address" name="ipAddress"></gs-column>
-                    <gs-column title="Port" name="port"></gs-column>
-                    <gs-column title="SSL" name="ssl">
-                        <gs-item map="true">
-                            <gs-item value="NONE" map="N/A"></gs-item>
-                            <gs-item value="SSL" map="SSL"></gs-item>
-                            <gs-item value="SSLv2" map="SSL v2"></gs-item>
-                            <gs-item value="SSLv3" map="SSL v3"></gs-item>
-                            <gs-item value="TLSv1" map="TLS v1"></gs-item>
-                            <gs-item value="TLSv1.1" map="TLS v1.1"></gs-item>
-                            <gs-item value="TLSv1.2" map="TLS v1.2"></gs-item>
-                            <gs-item value="TLSv1.3" map="TLS v1.3"></gs-item>
-                        </gs-item>
-                    </gs-column>
-                    <gs-column title="QPWDLVL" name="qpwdlvl">
-                        <gs-item map="true">
-                            <gs-item value="-1" map="N/A"></gs-item>
-                            <gs-item value="0" map="Level 0"></gs-item>
-                            <gs-item value="1" map="Level 1"></gs-item>
-                            <gs-item value="2" map="Level 2"></gs-item>
-                            <gs-item value="3" map="Level 3"></gs-item>
-                            <gs-item value="4" map="Level 4"></gs-item>
-                        </gs-item>
-                    </gs-column>
-                    <gs-column title="Code Page" name="codePage"></gs-column>
+            <gs-data-handler id="sessions" type="cached" limit="15" src="data/configurations.json">
+                <gs-item name="id" key></gs-item>
+                <gs-item name="uuid"></gs-item>
+                <gs-item name="name"></gs-item>
+                <gs-item name="ipAddress"></gs-item>
+                <gs-item name="port"></gs-item>
+                <gs-item name="autoconf"></gs-item>
+                <gs-item name="user"></gs-item>
+                <gs-item name="password"></gs-item>
+                <gs-item name="qpwdlvl"></gs-item>
+                <gs-item name="codePage"></gs-item>
+                <gs-item name="ssl"></gs-item>
+                <gs-item name="license"></gs-item>
+                <gs-item name="lparUsers"></gs-item>
+                <gs-item name="expdate"></gs-item>
+                <gs-item name="usglimit"></gs-item>
+                <gs-item name="debug"></gs-item>
+                <gs-item name="logging"></gs-item>
+                <gs-item name="controller"></gs-item>
+                <gs-item name="displayPrefix"></gs-item>
+                <gs-item name="transfer"></gs-item>
+                <gs-item name="modernization"></gs-item>
+                <gs-item name="editing"></gs-item>
+                <gs-item name="bypass"></gs-item>
+                <gs-item name="ssoTarget"></gs-item>
+                <gs-item name="fingerprintFilter"></gs-item>
+                <gs-item name="mobileAccess"></gs-item>
+                <gs-item name="sql"></gs-item>
+                <gs-item name="localOnly"></gs-item>
+                <gs-item name="blockPrinter"></gs-item>
+                <gs-item name="createPrinter"></gs-item>
+                <gs-item name="verifyPrinter"></gs-item>
+                <gs-item name="drawer1"></gs-item>
+                <gs-item name="drawer2"></gs-item>
+                <gs-item name="sharing"></gs-item>
+                <gs-item name="sslUserVerification"></gs-item>
+                <gs-item name="sslVerification"></gs-item>
+                <gs-item name="sslAlternate"></gs-item>
+                <gs-item name="verification"></gs-item>
+                <gs-item name="feature"></gs-item>
+                <gs-item name="expiration"></gs-item>
+                <gs-item name="cacheTimeout"></gs-item>
+                <gs-item name="cacheValue"></gs-item>
+                <gs-item name="partID"></gs-item>
+                <gs-item name="systemID"></gs-item>
+                <gs-item name="roles"></gs-item>
+                <gs-item name="timestamp"></gs-item>
+                <gs-item name="proxyName"></gs-item>
+                <gs-item name="sso"></gs-item>
+                <gs-item name="active"></gs-item>
+            </gs-data-handler>
+
+            <gs-table id="table-main" storage="sessions" 
+                selectable hover bordered shadow -divider sortable multisort
+                class="flex-fill" css-filter="rounded-0" css-header="border"
+                color="light" select-color="primary" head-color="secondary"> 
+                    <gs-item title="UUID" name="uuid"></gs-item>
+                    <gs-item title="Host" name="name"></gs-item>
+                    <gs-item title="Tunnel" name="proxyName"></gs-item>
+                    <gs-item title="IP Address" name="ipAddress"></gs-item>
+                    <gs-item title="Port" name="port" align="center"></gs-item>
+                    <gs-item title="SSL" name="ssl">
+                        <gs-item value="NONE" map="N/A"></gs-item>
+                        <gs-item value="SSL" map="SSL"></gs-item>
+                        <gs-item value="SSLv2" map="SSL v2"></gs-item>
+                        <gs-item value="SSLv3" map="SSL v3"></gs-item>
+                        <gs-item value="TLSv1" map="TLS v1"></gs-item>
+                        <gs-item value="TLSv1.1" map="TLS v1.1"></gs-item>
+                        <gs-item value="TLSv1.2" map="TLS v1.2"></gs-item>
+                        <gs-item value="TLSv1.3" map="TLS v1.3"></gs-item>
+                    </gs-item>
+                    <gs-item title="QPWDLVL" name="qpwdlvl" align="center">
+                        <gs-item value="-1" map="N/A"></gs-item>
+                        <gs-item value="0" map="Level 0"></gs-item>
+                        <gs-item value="1" map="Level 1"></gs-item>
+                        <gs-item value="2" map="Level 2"></gs-item>
+                        <gs-item value="3" map="Level 3"></gs-item>
+                        <gs-item value="4" map="Level 4"></gs-item>
+                    </gs-item>
+                    <gs-item title="Code Page" name="codePage" align="center"></gs-item>
                     <!-- ENABLE when available
-                        <gs-column title="Modernization" name="modernization">
+                        <gs-item title="Modernization" name="modernization">
+                                <gs-item value="true" map="YES"></gs-item>
+                                <gs-item value="false" map="NO"></gs-item>
+                        </gs-item>
                     -->
-                        <gs-item map="true">
-                            <gs-item value="true" map="YES"></gs-item>
-                            <gs-item value="false" map="NO"></gs-item>
-                        </gs-item>
-                    </gs-column>
-                    <gs-column title="Editing" name="editing">
-                        <gs-item map="true">
-                            <gs-item value="true" map="YES"></gs-item>
-                            <gs-item value="false" map="NO"></gs-item>                       
-                        </gs-item>
-                    </gs-column>
-                    <gs-column title="Printer" name="blockPrinter">
-                        <gs-item map="true">
-                            <gs-item value="true" map="YES"></gs-item>
-                            <gs-item value="false" map="NO"></gs-item>                       
-                        </gs-item>
-                    </gs-column>
-                    <gs-column title="Mobile" name="mobileAccess">
-                        <gs-item map="true">
-                            <gs-item value="true" map="YES"></gs-item>
-                            <gs-item value="false" map="NO"></gs-item>
-                        </gs-item>
-                    </gs-column>
-                    <gs-column title="SSO" name="sso">
-                        <gs-item map="true">
-                            <gs-item value="true" map="YES"></gs-item>
-                            <gs-item value="false" map="NO"></gs-item>
-                        </gs-item>
-                    </gs-column>
-                </gs-header>
-                <gs-store src="data/configurations.json" id="sessions" limit=15>
-                    <gs-item name="id"></gs-item>
-                    <gs-item name="uuid"></gs-item>
-                    <gs-item name="name"></gs-item>
-                    <gs-item name="ipAddress"></gs-item>
-                    <gs-item name="port"></gs-item>
-                    <gs-item name="autoconf"></gs-item>
-                    <gs-item name="user"></gs-item>
-                    <gs-item name="password"></gs-item>
-                    <gs-item name="qpwdlvl"></gs-item>
-                    <gs-item name="codePage"></gs-item>
-                    <gs-item name="ssl"></gs-item>
-                    <gs-item name="license"></gs-item>
-                    <gs-item name="lparUsers"></gs-item>
-                    <gs-item name="expdate"></gs-item>
-                    <gs-item name="usglimit"></gs-item>
-                    <gs-item name="debug"></gs-item>
-                    <gs-item name="logging"></gs-item>
-                    <gs-item name="controller"></gs-item>
-                    <gs-item name="displayPrefix"></gs-item>
-                    <gs-item name="transfer"></gs-item>
-                    <gs-item name="modernization"></gs-item>
-                    <gs-item name="editing"></gs-item>
-                    <gs-item name="bypass"></gs-item>
-                    <gs-item name="ssoTarget"></gs-item>
-                    <gs-item name="fingerprintFilter"></gs-item>
-                    <gs-item name="mobileAccess"></gs-item>
-                    <gs-item name="sql"></gs-item>
-                    <gs-item name="localOnly"></gs-item>
-                    <gs-item name="blockPrinter"></gs-item>
-                    <gs-item name="createPrinter"></gs-item>
-                    <gs-item name="verifyPrinter"></gs-item>
-                    <gs-item name="drawer1"></gs-item>
-                    <gs-item name="drawer2"></gs-item>
-                    <gs-item name="sharing"></gs-item>
-                    <gs-item name="sslUserVerification"></gs-item>
-                    <gs-item name="sslVerification"></gs-item>
-                    <gs-item name="sslAlternate"></gs-item>
-                    <gs-item name="verification"></gs-item>
-                    <gs-item name="feature"></gs-item>
-                    <gs-item name="expiration"></gs-item>
-                    <gs-item name="cacheTimeout"></gs-item>
-                    <gs-item name="cacheValue"></gs-item>
-                    <gs-item name="partID"></gs-item>
-                    <gs-item name="systemID"></gs-item>
-                    <gs-item name="roles"></gs-item>
-                    <gs-item name="timestamp"></gs-item>
-                    <gs-item name="proxyName"></gs-item>
-                    <gs-item name="sso"></gs-item>
-                </gs-store>
-                <gs-context slot="extra" target="tbody tr">
-                    <gs-item name="Details" action="details"></gs-item>
+                    <gs-item title="Printer" name="blockPrinter">
+                        <gs-item value="true" map="YES"></gs-item>
+                        <gs-item value="false" map="NO"></gs-item>                       
+                    </gs-item>
+                    <gs-item title="Mobile" name="mobileAccess">
+                        <gs-item value="true" map="YES"></gs-item>
+                        <gs-item value="false" map="NO"></gs-item>
+                    </gs-item>
+                    <gs-item title="SSO" name="sso">
+                        <gs-item value="true" map="YES"></gs-item>
+                        <gs-item value="false" map="NO"></gs-item>
+                    </gs-item>
+                    <gs-item title="Status" name="active">
+                        <gs-item value="true" map="ENABLED"></gs-item>
+                        <gs-item value="false" map="DISABLED"></gs-item>                       
+                    </gs-item>                    
+                <gs-context>
+                    <gs-item name="Details" data-gs-action="details"></gs-item>
                     <gs-item></gs-item>
-                    <gs-item name="Clone" action="clone"></gs-item>
-                    <gs-item name="Remove" action="remove"></gs-item>
+                    <gs-item name="Clone" data-gs-action="clone"></gs-item>
+                    <gs-item name="Remove" data-gs-action="remove"></gs-item>
                     <gs-item></gs-item>
-                    <gs-item name="Activate" action="activate"></gs-item>
-                    <gs-item name="Install" action="install"></gs-item>
-                    <gs-item name="License" action="license"></gs-item>
+                    <gs-item name="Activate" data-gs-action="activate"></gs-item>
                     <gs-item></gs-item>
-                    <gs-item name="Reset Printer" action="resetPrinter"></gs-item>
-                    <gs-item name="Setup Printer" action="setupPrinter"></gs-item>
-                    <gs-item name="Validate Server" action="validateServer"></gs-item>                    
+                    <gs-item name="Reset Printer" data-gs-action="reset-printer"></gs-item>
+                    <gs-item name="Setup Printer" data-gs-action="setup-printer"></gs-item>
+                    <gs-item name="Validate Server" data-gs-action="validate-server"></gs-item>                    
                 </gs-context>
-                <gs-pager slot="extra" previous="&laquo;" next="&raquo;" firstlast="false" pages="0"></gs-pager>
             </gs-table>
+            
+            <gs-pagination storage="sessions" pages="5" css="justify-content-center p-1 m-1" first last previous next></gs-pagination>
 
-            <gs-dialog id="modal-main" visible="false" css-modal="modal-lg" css-body="p-0" css-header="p-3 dialog-title" >
-                <h4 slot="title">IBM i Configuration</h4>
-                <gs-template slot="body" href="//forms/configuration.html"></gs-template>
-            </gs-dialog>
+            <gs-admin-dialog id="modal-main" size="large" css-body="p-0" css-header="p-3 " 
+                    title="IBM i Configuration" template="//forms/configuration.html">
+            </gs-admin-dialog>
 
-            <gs-dialog id="modal-validate" visible="false" button-align="center" closable="true" cancelable="false" css-modal="modal-lg" css-body="text-start p-2 m-1 border" css-header="p-3 dialog-title" >
+            <gs-dialog id="modal-validate" button-align="center" closable
+            	css-modal="modal-lg" css-body="text-start p-2 m-1 border" css-header="p-3 " >
                 <h4 slot="title">Validation</h4>
             </gs-dialog>
             
-            <gs-admin-dialog-printer-setup auto="false" id="modal-setup"></gs-admin-dialog-printer-setup>
-            <gs-admin-dialog-printer-reset auto="false" id="modal-reset"></gs-admin-dialog-printer-reset>
-            
-            <gs-admin-dialog-activate auto="false" id="modal-activate"></gs-admin-dialog-activate>
-            <gs-admin-dialog-install auto="false" id="modal-install"></gs-admin-dialog-install>
-            <gs-admin-dialog-license auto="false" id="modal-license"></gs-admin-dialog-license>
+            <gs-admin-dialog-printer-setup id="modal-setup"></gs-admin-dialog-printer-setup>
+            <gs-admin-dialog-printer-reset id="modal-reset"></gs-admin-dialog-printer-reset>
+
+            <gs-admin-dialog-activate id="modal-activate"></gs-admin-dialog-activate>
+            <gs-admin-dialog-install id="modal-install"></gs-admin-dialog-install>
+            <gs-admin-dialog-license id="modal-license"></gs-admin-dialog-license>
 
         </div>
 

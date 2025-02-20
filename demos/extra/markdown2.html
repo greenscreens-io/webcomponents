@@ -1,0 +1,66 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Bootstrap-Lit</title>
+    <meta charset="utf-8">
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0">
+
+    <meta name="subject" content="Green Scereens Ltd.">
+    <meta name="author" content="www.greenscreens.ltd">
+    <meta name="keywords" content="JavaScript,WebComponents">
+    <meta name="robots" content="index, follow">
+    <meta name="revisit-after" content="3 month">
+    <meta name="description" content="WebComponents UI library based on Bootstrap.">
+
+    <style data-id="3" data-adoptable="true">
+        :root {
+            --bs-link-color: rgb(52 149 255 / 70%);
+        }
+    </style>
+
+    <script>
+        globalThis.GS_TEMPLATE_URL='/webcomponents/demos/templates/';
+        self.GS_URL_CHART = '/bootstrap-lit';
+    </script>
+
+    <!-- Optimized CSS loading -->
+    <link rel="preload" href="/webcomponents/assets/css/bootstrap.css" as="style"  data-adoptable="true" data-id="1">
+    <link rel="preload" href="/webcomponents/assets/themes/default.css" as="style" data-adoptable="true" data-id="2">
+    <link rel="preload" href="/webcomponents/assets/icons/bootstrap-icons.css" as="style" data-adoptable="true" data-id="4">
+
+    <script type="module" src="/webcomponents/release/esm/lit-all.min.js"></script>
+    <script type="module" src="/webcomponents/release/esm/io.greenscreens.components.all.min.js"></script>
+
+</head>    
+<body>
+
+    <div class="m-4 p-1 bg-light bordered shadow-sm">
+        <button id="btnback" class="btn btn-primary" onclick="GSDOM.query('#md2').back()">Back</button>
+    </div>
+
+    <!-- container for markdown -->
+    <div class="row m-4">
+        <div class="col-auto m-1 p-1">
+            <gs-markdown id="md1" css="p-1" url="/webcomponents/manual/index.md"></gs-markdown>
+        </div>
+        <div class="col m-1 p-1 border-start">
+            <gs-markdown id="md2" css="p-1" max="800" url="/webcomponents/manual/quickintro.md"></gs-markdown>
+        </div>
+    </div>
+
+    <script type="module">
+        document.getElementById('md1').addEventListener('data', e => {
+            GSDOM.queryAll(e.target, 'h1,h2').forEach(el => el.remove());
+            e.target.addEventListener('link', e => {
+                GSEvents.prevent(e);
+                GSDOM.query('#md2').url = e.detail;
+            });
+        });
+    </script>
+</body>
+</html>

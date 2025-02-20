@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015, 2022 Green Screens Ltd.
+ * Copyright (C) 2015, 2024 Green Screens Ltd.
  */
 
 /**
@@ -7,44 +7,65 @@
  * @module BaseUI
  */
 
-import {GSFunction, GSDOM, GSElement} from "/webcomponents/release/esm/io.greenscreens.components.all.esm.min.js";
+import { GSFunction, GSDOM, GSElement } from "/webcomponents/release/esm/io.greenscreens.components.all.min.js";
 
 /**
  * BaseUI handles basic screen (used by other UI elements)
  * @class
  * @extends {GSElement}
  */
-export default class BaseUI extends GSElement {
+export class BaseUI extends GSElement {
+
+    #listener = null;
+    #data = null;
 
     constructor() {
         super();
         this.className = 'd-flex flex-fill';
     }
 
-    onReady() {
+    connectedCallback() {
         const me = this;
-        me.attachEvent(me, 'action', me.#onAction.bind(me));
-        super.onReady();
+        me.#listener = me.#onRuntimeMessage.bind(me);
+        chrome?.runtime?.onMessage?.addListener(me.#listener);
+        super.connectedCallback();
     }
 
-    get #store() {
-        return this.#table.store;
+    disconnectedCallback() {
+        const me = this;
+        chrome?.runtime?.onMessage?.removeListener(me.#listener);
+        me.#listener = null;
+        super.disconnectedCallback();
+    }
+
+    renderUI() {
+        return this.renderTemplate();
+    }
+
+    firstUpdated() {
+        super.firstUpdated();
+        const me = this;
+        me.attachEvent(me, 'action', me.#onAction.bind(me));
+    }
+
+    get store() {
+        return this.#table.dataController.store;
     }
 
     get #table() {
-        return this.query('#table-main');
+        return this.query('#table-main', true);
     }
 
     get #modal() {
-        return this.query('#modal-main');
-    }
-
-    get #form() {
-        return GSDOM.query(document.body, '#form-main');
+        return this.query('#modal-main', true);
     }
 
     get #notify() {
-        return GSComponents.get('notification');
+        return GSDOM.query('#notification');
+    }
+
+    get #selected() {
+        return this.#table.selected[0];
     }
 
     /**
@@ -55,10 +76,27 @@ export default class BaseUI extends GSElement {
      * @param {Event} e 
      */
     #onAction(e) {
-        const action = e.detail.action;
+        const action = e.detail.action || e.detail;
         if (GSFunction.isFunction(this[action])) this[action](e);
     }
 
+    #onRuntimeMessage(req) {
+        const me = this;
+        if (req.key === 'conf' && req.cmd === 'refresh' && req.data) {
+            me.#data = req.data;
+            me.onData(req.data);
+            me.#notify.secondary('', 'Data refreshed!');
+        }
+    }
+
+    get service() {
+        return this.#data.settings?.service;
+    }
+
+    get data() {
+        return this.#data;
+    }
+    
     /**
      * Table record action - clone record
      * @param {Event} e 
@@ -67,7 +105,7 @@ export default class BaseUI extends GSElement {
     async clone(e) {
 
         const me = this;
-        const data = e.detail.data.pop();
+        const data = me.#selected;
         if (!data) return;
 
         const rec = Object.assign({}, data);
@@ -79,7 +117,8 @@ export default class BaseUI extends GSElement {
             if (!sts) throw new Error('Record not cloned!');
 
             // update locally to refresh ui
-            me.#store.setData(rec, true);
+            me.store.append?.(rec);
+            me.store.read();
             me.#notify.secondary('', 'Record cloned!');
 
         } catch (e) {
@@ -97,7 +136,7 @@ export default class BaseUI extends GSElement {
     async remove(e) {
 
         const me = this;
-        const data = e.detail.data.pop();
+        const data = me.#selected;
         if (!data) return;
 
         try {
@@ -106,8 +145,8 @@ export default class BaseUI extends GSElement {
             if (!sts) throw new Error('Record not removed!');
 
             // update locally to refresh ui
-            const subset = me.#store.data.filter(o => o.name !== data.name);
-            me.#store.setData(subset);
+            me.store.remove?.(data);
+            me.store.read();
             me.#notify.danger('', 'Record removed!');
 
         } catch (e) {
@@ -118,6 +157,17 @@ export default class BaseUI extends GSElement {
     }
 
     /**
+     * Generic function to be overriden by inherited class
+     * Used to handle record received from backend.
+     * @param {Object} data 
+     * @returns {boolean}
+     * @throws {Error}
+     */
+    onData(data) {
+        return true;
+    }    
+
+    /**
      * Table record action - edit data
      * @param {Event} e 
      * @returns {Promise}
@@ -125,22 +175,31 @@ export default class BaseUI extends GSElement {
     async details(e) {
 
         const me = this;
-        const data = e.detail.data.pop();
+        const data = me.#selected;
         if (!data) return;
 
-        me.#form.reset();
-        GSDOM.fromObject(me.#form, data);
-        me.#modal.open();
-        const result = await me.#modal.waitEvent('data');
+        const modal = me.#modal;
+        const tab = modal.query('gs-tab', true);
+        if (tab) tab.index = 0;
+
+        const frm = modal.query('gs-form', true);
+        if(frm)  {
+            frm.data = {};
+            frm.data = data;
+        }
+
+        modal.open();
+        const result = await modal.waitEvent('data');
 
         try {
 
-            const sts = await me.onUpdate(result.data);
+            const sts = await me.onUpdate(result.detail);
             if (!sts) throw new Error('Record not updated!');
 
+            modal.reset();
             // update locally to refresh ui
-            Object.assign(data, result.data);
-            me.#store.reload();
+            Object.assign(data, result.detail);
+            me.store.read();
             me.#notify.warn('', 'Record updated!');
 
         } catch (e) {
@@ -159,18 +218,24 @@ export default class BaseUI extends GSElement {
 
         const me = this;
 
-        me.#form.reset();
-        me.#modal.open();
-        const result = await me.#modal.waitEvent('data');
+        const modal = me.#modal;
+        const tab = modal.query('GS-TAB', true);
+        if (tab) tab.index = 0;
+
+        const frm = modal.query('gs-form', true);
+        if(frm) frm.reset();
+
+        modal.open();
+        const result = await modal.waitEvent('data');
 
         try {
 
-            const sts = await me.onCreate(result.data);
+            const sts = await me.onCreate(result.detail.data);
             if (!sts) throw new Error('Record not created!');
-
+            modal.reset();
             // update locally to refresh ui
-            me.#store.data.push(result.data);
-            me.#store.reload();
+            me.store.data.push(result.detail.data);
+            me.store.read();
             me.#notify.primary('', 'Record created!');
 
         } catch (e) {
@@ -187,8 +252,10 @@ export default class BaseUI extends GSElement {
     refresh(e) {
         // get data from extension and populate table;
         const me = this;
-        me.#store.clear();
-        me.#store.reload();
+        const store = me.store;
+        store.clear?.();
+        store.read();
+        Messenger.load();
     }
 
     /**
@@ -196,7 +263,9 @@ export default class BaseUI extends GSElement {
      * @param {Event} val 
      */
     search(e) {
-        this.#store.filter = e.detail.value;
+        const store = this.store;
+        store.filter = e.detail.value;
+        store.read();
     }
 
     /**
@@ -216,7 +285,7 @@ export default class BaseUI extends GSElement {
      * @param {Object} data 
      * @returns {boolean}
      * @throws {Error}
-     */    
+     */
     async onUpdate(data) {
         return true;
     }
@@ -227,7 +296,7 @@ export default class BaseUI extends GSElement {
      * @param {Object} data 
      * @returns {boolean}
      * @throws {Error}
-     */    
+     */
     async onRemove(data) {
         return true;
     }

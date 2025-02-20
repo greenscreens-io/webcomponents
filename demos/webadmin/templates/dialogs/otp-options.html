@@ -1,6 +1,6 @@
-<form slot="body" is="gs-ext-form" id="form-main" class="flex-fill" novalidate="">
+<gs-form beep block slot="body" css="flex-fill">
 
-    <gs-form-group css="m-1" name="otpIssuer" label="Issuer" autocomplete="off" required
+    <gs-form-group css="m-1" name="otpIssuer" label="Issuer" autocomplete="off" required autofocus
         description="Company name.">
     </gs-form-group>  
 
@@ -13,4 +13,4 @@
         description="Invalid login attempts before disabling token.">
     </gs-form-group> 
       
-</form>
+</gs-form>

@@ -1,5 +1,5 @@
 /*
-* Copyright (C) 2015, 2023 Green Screens Ltd.
+* Copyright (C) 2015, 2024 Green Screens Ltd.
 */
 
 /**
@@ -7,27 +7,22 @@
  * 
  * @module ipp/IPPPrinterAttributes
  */
-import { GSElement } from '/webcomponents/release/esm/io.greenscreens.components.all.esm.min.js';
 
+import { GSElement } from "/webcomponents/release/esm/io.greenscreens.components.all.min.js";
 /**
  * IPPPrinterAttributes UI lists printer attributes
  */
-export default class IPPAttributes extends GSElement {
+export class IPPAttributes extends GSElement {
 
-    static {
-        customElements.define('gs-ipp-attributes', IPPAttributes);
-        Object.seal(IPPAttributes);
+    constructor() {
+        super();
+        this.template = '//ipp-printer-attributes.html';
     }
 
-    async getTemplate() {
-        return super.getTemplate('//ipp-printer-attributes.html');
+    renderUI() {
+        return this.renderTemplate();
     }
-
-    onReady() {
-        super.onReady();
-        const me = this;
-    }
-
+    
     load(data) {
         if (!data) return;
         data = data['printer-attributes'] ||data;
@@ -42,4 +37,9 @@ export default class IPPAttributes extends GSElement {
     get #store() {
         return this.#table.store;
     }
+
+    static {
+        GSElement.define('gs-ipp-attributes', IPPAttributes);
+    }
+
 }

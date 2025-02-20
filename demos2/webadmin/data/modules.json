@@ -1,0 +1,134 @@
+[
+    {
+        "name": "logins.war",
+        "active": true,
+        "timestamp" : 1663425669638,
+        "hash" : "18F22846854E69936D672EA6AAE0E5714A61A364"
+    },
+    {
+        "name": "assets.war",
+        "active": true,
+        "timestamp" : 1663425669638,
+        "hash" : "18F22846854E69936D672EA6AAE0E5714A61A364"        
+    },
+    {
+        "name": "modernization.war",
+        "active": true,
+        "timestamp" : 1663425669638,
+        "hash" : "18F22846854E69936D672EA6AAE0E5714A61A364"        
+    },
+    {
+        "name": "ROOT.war",
+        "active": true,
+        "timestamp" : 1663425669638,
+        "hash" : "18F22846854E69936D672EA6AAE0E5714A61A364"
+    },
+    {
+        "name": "doc.war",
+        "active": true,
+        "timestamp" : 1663425669638,
+        "hash" : "18F22846854E69936D672EA6AAE0E5714A61A364"
+    },
+    {
+        "name": "samples.war",
+        "active": true,
+        "timestamp" : 1663425669638,
+        "hash" : "18F22846854E69936D672EA6AAE0E5714A61A364"
+    },
+    {
+        "name": "i18n.war",
+        "active": true,
+        "timestamp" : 1663425669638,
+        "hash" : "18F22846854E69936D672EA6AAE0E5714A61A364"
+    },
+    {
+        "name": "service.update.war",
+        "active": true,
+        "timestamp" : 1663425669638,
+        "hash" : "18F22846854E69936D672EA6AAE0E5714A61A364"
+    },
+    {
+        "name": "templates.war",
+        "active": true,
+        "timestamp" : 1663425669638,
+        "hash" : "18F22846854E69936D672EA6AAE0E5714A61A364"
+    },
+    {
+        "name": "service.writer.war",
+        "active": true,
+        "timestamp" : 1663425669638,
+        "hash" : "18F22846854E69936D672EA6AAE0E5714A61A364"
+    },
+    {
+        "name": "office.war",
+        "active": true,
+        "timestamp" : 1663425669638,
+        "hash" : "18F22846854E69936D672EA6AAE0E5714A61A364"
+    },
+    {
+        "name": "otp.war",
+        "active": true,
+        "timestamp" : 1663425669638,
+        "hash" : "18F22846854E69936D672EA6AAE0E5714A61A364"
+    },
+    {
+        "name": "webauth.war",
+        "active": true,
+        "timestamp" : 1663425669638,
+        "hash" : "18F22846854E69936D672EA6AAE0E5714A61A364"
+    },
+    {
+        "name": "login.war",
+        "active": true,
+        "timestamp" : 1663425669638,
+        "hash" : "18F22846854E69936D672EA6AAE0E5714A61A364"
+    },
+    {
+        "name": "wtma.war",
+        "active": true,
+        "timestamp" : 1663425669638,
+        "hash" : "18F22846854E69936D672EA6AAE0E5714A61A364"
+    },
+    {
+        "name": "lite.war",
+        "active": true,
+        "timestamp" : 1663425669638,
+        "hash" : "18F22846854E69936D672EA6AAE0E5714A61A364"
+    },
+    {
+        "name": "service.printing.war",
+        "active": true,
+        "timestamp" : 1663425669638,
+        "hash" : "18F22846854E69936D672EA6AAE0E5714A61A364"
+    },
+    {
+        "name": "wl.war",
+        "active": true,
+        "timestamp" : 1663425669638,
+        "hash" : "18F22846854E69936D672EA6AAE0E5714A61A364"
+    },
+    {
+        "name": "barcode.war",
+        "active": true,
+        "timestamp" : 1663425669638,
+        "hash" : "18F22846854E69936D672EA6AAE0E5714A61A364"
+    },
+    {
+        "name": "terminal.war",
+        "active": true,
+        "timestamp" : 1663425669638,
+        "hash" : "18F22846854E69936D672EA6AAE0E5714A61A364"
+    },
+    {
+        "name": "resources.war",
+        "active": true,
+        "timestamp" : 1663425669638,
+        "hash" : "18F22846854E69936D672EA6AAE0E5714A61A364"
+    },
+    {
+        "name": "service.spooler.war",
+        "active": true,
+        "timestamp" : 1663425669638,
+        "hash" : "18F22846854E69936D672EA6AAE0E5714A61A364"
+    }
+]

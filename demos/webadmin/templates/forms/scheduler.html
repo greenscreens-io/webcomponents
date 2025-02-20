@@ -1,50 +1,41 @@
-<form slot="body" is="gs-ext-form" id="form-main" class="flex-fill" novalidate="">
+<gs-form beep block slot="body" css="flex-fill" data-gsf-disable="status" data-gsf-value="false">
 
-    <input type="text" class="form-control d-none" id="id" name="id" readonly>
+    <input id="id" name="id" type="hidden">
 
-    <gs-form-group css="m-1" name="status" label="Status" required     
+    <gs-form-group selectable required     
+        css="m-1" name="status" label="Status" 
         description="Enable or disable this task.">
-        <template>
-            <select class="form-select" id="status" name="status" required>
-                <option selected value="true">Enabled</option>
-                <option value="false">Disabled</option>
-            </select>            
-        </template>
+        <gs-item value="true" name="Enabled" selected></gs-item>
+        <gs-item value="false" name="Disabled"></gs-item>        
     </gs-form-group>
 
-    <gs-form-group css="m-1" name="type" label="Type" required     
+    <gs-form-group  selectable required
+        css="m-1" name="type" label="Type" required     
         description="Task type.">
-        <template>
-            <select class="form-select" id="type" name="type">
-                <option value="1">Service Event</option>
-                <option value="2">Web Access On</option>
-                <option value="3">Web Access Off</option>
-                <option value="4">Server Restart</option>
-                <option value="6">Central Management</option>
-            </select>            
-        </template>
+        <gs-item value="1" name="Service Event"></gs-item>
+        <gs-item value="2" name="Web Access On"></gs-item>
+        <gs-item value="3" name="Web Access Off"></gs-item>
+        <gs-item value="4" name="Server Restart"></gs-item>
+        <gs-item value="6" name="Central Management"></gs-item>
     </gs-form-group>
 
     <gs-form-group css="m-1" name="name" label="Name" required     
         description="Task name">
     </gs-form-group>   
 
-    <gs-form-group css="m-1" name="day" label="Day" required     
+    <gs-form-group selectable required
+        css="m-1" name="day" label="Day"     
         description="Trigger day.">
-        <template>
-            <select class="form-select" id="day" name="day" required>
-                <option value="0">Every</option>
-                <option value="1">Monday</option>
-                <option value="2">Tuesday</option>
-                <option value="3">Wednesday</option>
-                <option value="4">Thursday</option>
-                <option value="5">Friday</option>
-                <option value="6">Saturday</option>
-                <option value="7">Sunday</option>
-                <option value="8">Work days</option>
-                <option value="9">Weekends</option>
-            </select>            
-        </template>
+        <gs-item value="0" name="Every"></gs-item>
+        <gs-item value="1" name="Monday"></gs-item>
+        <gs-item value="2" name="Tuesday"></gs-item>
+        <gs-item value="3" name="Wednesday"></gs-item>
+        <gs-item value="4" name="Thursday"></gs-item>
+        <gs-item value="5" name="Friday"></gs-item>
+        <gs-item value="6" name="Saturday"></gs-item>
+        <gs-item value="7" name="Sunday"></gs-item>
+        <gs-item value="8" name="Work days"></gs-item>
+        <gs-item value="9" name="Weekends"></gs-item>
     </gs-form-group>    
 
     <gs-form-group css="m-1" name="time" label="Time" type="time" required     
@@ -55,4 +46,4 @@
         description="Extra data to send to service.">
     </gs-form-group>    
 
-</form>
+</gs-form>

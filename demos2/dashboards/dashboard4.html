@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Dashboard test</title>
+    <meta charset="utf-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="viewport"
+        content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+
+    <meta name="subject" content="Green Scereens Ltd.">
+    <meta name="author" content="www.greenscreens.ltd">
+    <meta name="keywords" content="JavaScript,WebComponents">
+    <meta name="robots" content="index, follow">
+    <meta name="revisit-after" content="3 month">
+    <meta name="description" content="WebComponents UI library based on Bootstrap.">
+
+    <script type="text/javascript">
+        self.GS_TEMPLATE_URL = './templates';
+    </script>
+
+    <script type="module" src="/webcomponents/release/esm/io.greenscreens.components.all.esm.min.js"></script>
+
+    <gs-css url="/webcomponents/assets/css/io.greenscreens.bootstrap.min.css"></gs-css>
+    <gs-css url="/webcomponents/assets/icons/bootstrap-icons.css" notheme="true"></gs-css>
+</head>
+
+<body>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-auto bg-light sticky-top border-end shadow-sm">
+                <div class="d-flex flex-sm-column flex-row flex-nowrap bg-light align-items-center sticky-top">
+                    <a href="/" class="d-block p-2 link-dark text-decoration-none"  data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Icon-only">
+                        <i class="bi-bootstrap fs-1"></i>
+                    </a>
+                    <ul class="nav nav-pills nav-flush flex-sm-column flex-row flex-nowrap mb-auto mx-auto text-center justify-content-between w-100 px-0 align-items-center">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link py-2 px-2" data-bs-toggle="tooltip" data-bs-placement="right" title="Home"
+                                data-bs-target="#content" data-inject="gs-ext-home">
+                                <i class="bi-house fs-3"></i>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="nav-link py-2 px-2" data-bs-toggle="tooltip" data-bs-placement="right" title="Dashboard" 
+                                data-bs-target="#content" data-inject="gs-ext-dashboard">
+                                <i class="bi-speedometer2 fs-3"></i>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="nav-link py-2 px-2" data-bs-toggle="tooltip" data-bs-placement="right" title="Orders"
+                                data-bs-target="#content" data-inject="gs-ext-orders">
+                                <i class="bi-table fs-3"></i>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="nav-link py-2 px-2"  data-bs-toggle="tooltip" data-bs-placement="right" title="Products"
+                                data-bs-target="#content" data-inject="gs-ext-products">
+                                <i class="bi-heart fs-3"></i>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="nav-link py-2 px-2" data-bs-toggle="tooltip" data-bs-placement="right" title="Customers"
+                                data-bs-target="#content" data-inject="gs-ext-customers">
+                                <i class="bi-people fs-3"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-sm p-3 min-vh-100">
+                <!-- content -->
+                <h2>Bootstrap 5 icon sidebar menu!</h2>
+                <hr>
+                <h3>More content...</h3>
+                <p>Use with combination of GS Elements to add some interactivity.</p>
+                <p>GSTooltip added for sidebar through GSDataAttr observer.</p>
+                <p>Content injection added for sidebar actions through GSDataAttr observer.</p>
+                <p>Injected is a custom WebComponent bsaed oNGSElement, responsible for loading template and rendering UI.</p>
+
+                <!-- injection point ; check sidebar data-bs-inject attributes -->
+                <div id="content"></div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

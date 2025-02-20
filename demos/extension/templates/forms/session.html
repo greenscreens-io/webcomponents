@@ -1,7 +1,11 @@
-<form is="gs-ext-form" id="form-main" class="flex-fill" novalidate="">
-    <gs-tab flat="true" css-nav="nav-tabs fw-bold" css-pane="d-flex justify-content-center border-t flex-fill p-2">
-        <gs-item title="General" template="//session/general.html" css-pane="flex-fill" active="true"></gs-item>
-        <gs-item title="Display" template="//session/display.html" css-pane="flex-fill" ></gs-item>
-        <gs-item title="Printer" template="//session/printer.html" css-pane="flex-fill" ></gs-item>
-    </gs-tab>
-</form>
+<gs-form id="form-main" class="flex-fill" novalidate="">
+    <gs-tab-group type="tabs" css-nav="fw-bold" css-pane="d-flex justify-content-center flex-fill p-2" data-css-active="text-bg-secondary">
+        <gs-tab name="tab1" slot="tabs" title="General" active autofocus></gs-tab>
+        <gs-tab name="tab2" slot="tabs" title="Display"></gs-tab>
+        <gs-tab name="tab3" slot="tabs" title="Printer"></gs-tab>
+
+        <gs-tab-panel slot="panels" name="tab1" template="//session/general.html" css-pane="flex-fill"></gs-tab-panel>
+        <gs-tab-panel slot="panels" name="tab2" template="//session/display.html" css-pane="flex-fill" ></gs-tab-panel>
+        <gs-tab-panel slot="panels" name="tab3" template="//session/printer.html" css-pane="flex-fill" ></gs-tab-panel>
+    </gs-tab-group>
+</gs-form>

@@ -2,14 +2,12 @@
 <html lang="en">
 
 <head>
-    <title>Inputmask Test</title>
+    <title>Bootstrap-Lit</title>
     <meta charset="utf-8">
 
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
-    <meta name="viewport"
-        content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0">
 
     <meta name="subject" content="Green Scereens Ltd.">
     <meta name="author" content="www.greenscreens.ltd">
@@ -18,48 +16,53 @@
     <meta name="revisit-after" content="3 month">
     <meta name="description" content="WebComponents UI library based on Bootstrap.">
 
-    <script type="module" src="/webcomponents/release/esm/io.greenscreens.components.all.esm.min.js"></script>
+    <script>
+        globalThis.GS_TEMPLATE_URL='/webcomponents/demos/templates/';
+    </script>
 
-    <gs-css url="/webcomponents/assets/css/io.greenscreens.bootstrap.min.css"></gs-css>
-    <gs-css url="/webcomponents/assets/icons/bootstrap-icons.css" notheme="true"></gs-css>
+    <!-- Optimized CSS loading -->
+    <link rel="preload" href="/webcomponents/assets/css/bootstrap.css" as="style"  data-adoptable="true" data-id="1">
+    <link rel="preload" href="/webcomponents/assets/themes/default.css" as="style" data-adoptable="true" data-id="2">
+    <link rel="preload" href="/webcomponents/assets/icons/bootstrap-icons.css" as="style" data-adoptable="true" data-id="4">
+
+    <script type="module" src="/webcomponents/release/esm/lit-all.min.js"></script>
+    <script type="module" src="/webcomponents/release/esm/io.greenscreens.components.all.min.js"></script>
 
 </head>
-
 <body>
 
-    <gs-template href="/webcomponents/demos/header.tpl"></gs-template>
+    <gs-template src="//header.html"></gs-template>
 
-    <div class="m-4 p-1 bg-light border shadow-sm row">
+    <div class="m-4 p-1 bg-light bordered shadow-sm row">
         <div class="col-auto">
             Conditional toggle based on input selection; sublist is also filtered
         </div>
     </div>
 
+    <div class="container">
     <form>
 
-        <div class="m-4 p-1 bg-light border shadow-sm">
+        <div class="m-4 p-1 bg-light bordered shadow-sm">
             <div class="row form-group m-1">
                 <div class="col-md-4 col-sm-4 col-xs-12 text-md-end ">
                     <label class="control-label">Select GROUP</label>
                 </div>
                 <div class="col-md-6 col-sm-6 col-xs-11">
                     <input is="gs-ext-input" required autofocus type="text" id="group" list="groups" name="group" placeholder="Barcode Group" class="form-control" >
-                    <datalist id="groups">
-                        <option data-group="1" data-code="1" value="One Dimensional">
+                    <datalist id="groups" is="gs-ext-datalist">
+                        <option data-group="1" data-code="1" value="One Dimensional" selected>
                         <option data-group="2" data-code="2" value="Two Dimensional">
                     </datalist>
                 </div>
             </div>
-        </div>
 
-        <div class="m-4 p-1 bg-light border shadow-sm">
             <div class="row form-group m-1">
                 <div class="col-md-4 col-sm-4 col-xs-12 text-md-end ">
                     <label class="control-label">Seelct SUB-GROUP</label>
                 </div>
                 <div class="col-md-6 col-sm-6 col-xs-11">
                     <input is="gs-ext-input" required type="text" id="type" list="types" name="type" data-filter="group" placeholder="Barcode Type" class="form-control">
-                    <datalist id="types">
+                    <datalist id="types" is="gs-ext-datalist">
 							<option value="Codabar" data-group="1" data-code="CODABAR" data-flag="1">
 							<option value="Code 11" data-group="1" data-code="CODE_11" data-flag="1">
 							<option value="Code 2 of 5 - Standard" data-group="1" data-code="CODE25_MATRIX" data-flag="1">
@@ -75,9 +78,7 @@
                     </datalist>
                 </div>
             </div>
-        </div>
 
-        <div class="m-4 p-1 bg-light border shadow-sm">
             <div class="row form-group m-1">
                 <div class="col-md-4 col-sm-4 col-xs-12 text-md-end ">
                     <label class="control-label">Data input FLAG 1</label>
@@ -86,9 +87,7 @@
                     <input class="form-control font-monospace" data-flag="1">
                 </div>
             </div>
-        </div>
-        
-        <div class="m-4 p-1 bg-light border shadow-sm">
+
             <div class="row form-group m-1">
                 <div class="col-md-4 col-sm-4 col-xs-12 text-md-end ">
                     <label class="control-label">Data input FLAG 2</label>
@@ -97,9 +96,7 @@
                     <input class="form-control font-monospace" data-flag="2">
                 </div>
             </div>
-        </div>        
 
-        <div class="m-4 p-1 bg-light border shadow-sm" data-code="CODABAR,CODE_11,CODE25_MATRIX,CODE39,CODE_128">
             <div class="row form-group m-1">
                 <div class="col-md-4 col-sm-4 col-xs-12 text-md-end ">
                     <label class="control-label">Data input GROUP 1 (CODE)</label>
@@ -108,9 +105,7 @@
                     <input class="form-control font-monospace">
                 </div>
             </div>
-        </div>
 
-        <div class="m-4 p-1 bg-light border shadow-sm" data-code="EAN,UPC_A">
             <div class="row form-group m-1">
                 <div class="col-md-4 col-sm-4 col-xs-12 text-md-end ">
                     <label class="control-label">Data input GROUP 1 (EAN/UPC)</label>
@@ -119,9 +114,7 @@
                     <input class="form-control font-monospace">
                 </div>
             </div>
-        </div>        
 
-        <div class="m-4 p-1 bg-light border shadow-sm" data-code="DATAMATRIX,MAXICODE,QR,QR_MICRO">
             <div class="row form-group m-1">
                 <div class="col-md-4 col-sm-4 col-xs-12 text-md-end ">
                     <label class="control-label">Data input GROUP 2</label>
@@ -134,6 +127,102 @@
         
     </form>
 
-</body>
+</div>
 
+    <div class="m-4 p-1 bg-light bordered shadow-sm row">
+        <div class="col-auto">
+            Conditional toggle based on input selection; sublist is also filtered
+        </div>
+    </div>
+
+    <div class="container">
+        
+    <gs-form>
+
+        <div class="m-4 p-1 bg-light bordered shadow-sm">
+            <div class="row form-group m-1">
+                <div class="col-md-4 col-sm-4 col-xs-12 text-md-end ">
+                    <label class="control-label">Select GROUP</label>
+                </div>
+                <div class="col-md-6 col-sm-6 col-xs-11">
+                    <select is="gs-ext-select" required autofocus type="text" id="group" name="group" placeholder="Barcode Group" class="form-control" >
+                        <option data-group="1" data-code="1" value="One Dimensional" selected>One Dimensional</option>
+                        <option data-group="2" data-code="2" value="Two Dimensional">Two Dimensional</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="row form-group m-1">
+                <div class="col-md-4 col-sm-4 col-xs-12 text-md-end ">
+                    <label class="control-label">Select SUB-GROUP</label>
+                </div>
+                <div class="col-md-6 col-sm-6 col-xs-11">
+                    <select is="gs-ext-select"  id="type" name="type" data-filter="group" placeholder="Barcode Type" class="form-control">
+							<option value="Codabar" data-group="1" data-code="CODABAR" data-flag="1">Codabar</option>
+							<option value="Code 11" data-group="1" data-code="CODE_11" data-flag="1">Code 11</option>
+							<option value="Code 2 of 5 - Standard" data-group="1" data-code="CODE25_MATRIX" data-flag="1">Code 2 of 5 - Standard</option>
+							<option value="Code 39 - Standard" data-group="1" data-code="CODE39" data-flag="1">Code 39 - Standard</option>
+							<option value="Code 128 - Code128" data-group="1" data-code="CODE_128" data-flag="1">Code 128 - Code128</option>
+							<option value="EAN 8/13" data-group="1" data-code="EAN" data-flag="1">EAN 8/13</option>
+							<option value="UPC-A" data-group="1" data-code="UPC_A" data-flag="1">UPC-A</option>
+
+                        	<option value="Data Matrix" data-group="2" data-code="DATAMATRIX" data-flag="2">Data Matrix</option>
+							<option value="Maxicode" data-group="2" data-code="MAXICODE" data-flag="2">Maxicode</option>
+							<option value="QR Code" data-group="2" data-code="QR" data-flag="2">QR Code</option>
+							<option value="Micro QR Code" data-group="2" data-code="QR_MICRO" data-flag="2">Micro QR Code</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="row form-group m-1">
+                <div class="col-md-4 col-sm-4 col-xs-12 text-md-end ">
+                    <label class="control-label">Data input FLAG 1</label>
+                </div>
+                <div class="col-md-6 col-sm-6 col-xs-11">
+                    <input class="form-control font-monospace" data-flag="1">
+                </div>
+            </div>
+
+            <div class="row form-group m-1">
+                <div class="col-md-4 col-sm-4 col-xs-12 text-md-end ">
+                    <label class="control-label">Data input FLAG 2</label>
+                </div>
+                <div class="col-md-6 col-sm-6 col-xs-11">
+                    <input class="form-control font-monospace" data-flag="2">
+                </div>
+            </div>
+
+            <div class="row form-group m-1">
+                <div class="col-md-4 col-sm-4 col-xs-12 text-md-end ">
+                    <label class="control-label">Data input GROUP 1 (CODE)</label>
+                </div>
+                <div class="col-md-6 col-sm-6 col-xs-11">
+                    <input class="form-control font-monospace">
+                </div>
+            </div>
+
+            <div class="row form-group m-1">
+                <div class="col-md-4 col-sm-4 col-xs-12 text-md-end ">
+                    <label class="control-label">Data input GROUP 1 (EAN/UPC)</label>
+                </div>
+                <div class="col-md-6 col-sm-6 col-xs-11">
+                    <input class="form-control font-monospace">
+                </div>
+            </div>
+
+            <div class="row form-group m-1">
+                <div class="col-md-4 col-sm-4 col-xs-12 text-md-end ">
+                    <label class="control-label">Data input GROUP 2</label>
+                </div>
+                <div class="col-md-6 col-sm-6 col-xs-11">
+                    <input class="form-control font-monospace">
+                </div>
+            </div>
+        </div>        
+        
+    </gs-form>
+
+</div>
+
+</body>
 </html>

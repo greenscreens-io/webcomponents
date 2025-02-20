@@ -1,8 +1,8 @@
-<gs-nav class="flex-fill px-3" css-nav="nav-pills fw-bold" bar="false">
-    <gs-item title="Settings" icon="bi bi-gear me-2 fs-5" css="flex-fill" css-nav="nav-pill" inject="gs-ext-settings" target="#content" active="true"></gs-item>
-    <gs-item title="Colors"   icon="bi bi-eye-fill me-2 fs-5" css="flex-fill" inject="gs-ext-colors" target="#content"></gs-item>
-    <gs-item title="Sessions" icon="bi bi-display me-2 fs-5" css="flex-fill" inject="gs-ext-sessions" target="#content"></gs-item>
-    <gs-item title="Import Data" icon="bi bi-upload me-2 fs-5" css-nav-wrap="mt-3" selectable="false" action="import"></gs-item>
-    <gs-item title="Export Data" icon="bi bi-download me-2 fs-5" selectable="false" action="export"></gs-item>
-    <gs-item title="About" icon="bi bi-info-circle-fill me-2 fs-5" css="flex-fill" css-nav-wrap="mt-3" inject="//views/about.html" target="#content"></gs-item>
+<gs-nav class="flex-fill px-3" css-nav="fw-bold" type="pills" vertical>
+    <gs-nav-item title="Settings" icon="gear me-2 fs-5" css="flex-fill" css-nav="nav-pill" data-gs-swap="gs-ext-settings" data-gs-target="#content" active></gs-nav-item>
+    <gs-nav-item title="Colors"   icon="eye-fill me-2 fs-5" css="flex-fill" data-gs-swap="gs-ext-colors" data-gs-target="#content"></gs-nav-item>
+    <gs-nav-item title="Sessions" icon="display me-2 fs-5" css="flex-fill" data-gs-swap="gs-ext-sessions" data-gs-target="#content"></gs-nav-item>
+    <gs-nav-item title="Import Data" icon="upload me-2 fs-5" css-nav-wrap="mt-3" selectable="false" data-gs-target="gs-actions" data-gs-action="import"></gs-nav-item>
+    <gs-nav-item title="Export Data" icon="download me-2 fs-5" selectable="false" data-gs-target="gs-actions" data-gs-action="export"></gs-nav-item>
+    <gs-nav-item title="About" icon="info-circle-fill me-2 fs-5" css="flex-fill" css-nav-wrap="mt-3" data-gs-swap="//views/about.html" data-gs-target="#content"></gs-nav-item>
 </gs-nav>

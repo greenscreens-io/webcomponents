@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015, 2022 Green Screens Ltd.
+ * Copyright (C) 2015, 2024 Green Screens Ltd.
  */
 
 /**
@@ -7,7 +7,7 @@
  * @module ColorsUI
  */
 
-import BaseUI from "./BaseUI.mjs"
+import { BaseUI } from "./BaseUI.mjs";
 
 /**
  * ColorsUI handles colors template elements
@@ -16,17 +16,9 @@ import BaseUI from "./BaseUI.mjs"
  */
 class ColorsUI extends BaseUI {
 
-    static {
-        customElements.define('gs-ext-colors', ColorsUI);
-        Object.seal(ColorsUI);
-    }
-
-    async getTemplate(val = '') {
-        return super.getTemplate('//views/colors.html');
-    }
-
     constructor() {
         super();
+        this.template = '//views/colors.html';
         if (self.GS_DEV_MODE) self._ColorsUI = this;
     }
 
@@ -67,6 +59,9 @@ class ColorsUI extends BaseUI {
     async onRemove(data) {
         return true;
     }
-    
+
+    static {
+        BaseUI.define('gs-ext-colors', ColorsUI);
+    }
 }
 

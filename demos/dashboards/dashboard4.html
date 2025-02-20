@@ -5,7 +5,6 @@
     <title>Dashboard test</title>
     <meta charset="utf-8">
 
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="viewport"
@@ -18,15 +17,16 @@
     <meta name="revisit-after" content="3 month">
     <meta name="description" content="WebComponents UI library based on Bootstrap.">
 
-    <script type="text/javascript">
-        self.GS_TEMPLATE_URL = './templates';
+    <script>
+        globalThis.GS_TEMPLATE_URL = '/webcomponents/demos/templates/';
     </script>
 
-    <script type="module" src="/webcomponents/release/esm/io.greenscreens.components.all.esm.min.js"></script>
-
-    <gs-css url="/webcomponents/assets/css/io.greenscreens.bootstrap.min.css"></gs-css>
-    <gs-css url="/webcomponents/assets/icons/bootstrap-icons.css" notheme="true"></gs-css>
-</head>
+    <!-- Optimized CSS loading -->
+    <link rel="preload" href="/webcomponents/assets/css/bootstrap.css" as="style"  data-adoptable="true" data-id="1">
+    <link rel="preload" href="/webcomponents/assets/themes/default.css" as="style" data-adoptable="true" data-id="2">
+    <link rel="preload" href="/webcomponents/assets/icons/bootstrap-icons.css" as="style" data-adoptable="true" data-id="4">
+    <script type="module" src="/webcomponents/release/esm/lit-all.min.js"></script>
+    <script type="module" src="/webcomponents/release/esm/io.greenscreens.components.all.min.js"></script>
 
 <body>
 
@@ -79,7 +79,7 @@
                 <p>Use with combination of GS Elements to add some interactivity.</p>
                 <p>GSTooltip added for sidebar through GSDataAttr observer.</p>
                 <p>Content injection added for sidebar actions through GSDataAttr observer.</p>
-                <p>Injected is a custom WebComponent bsaed oNGSElement, responsible for loading template and rendering UI.</p>
+                <p>Injected is a custom WebComponent bsaed on GSElement, responsible for loading template and rendering UI.</p>
 
                 <!-- injection point ; check sidebar data-bs-inject attributes -->
                 <div id="content"></div>
