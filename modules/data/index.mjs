@@ -2,6 +2,7 @@
  * Copyright (C) 2015, 2025; Green Screens Ltd.
  */
 
+export * from "./DataSelector.mjs";
 export * from "./AbstractReadWrite.mjs";
 export * from "./ReadWrite.mjs";
 export * from "./CachedReadWrite.mjs";

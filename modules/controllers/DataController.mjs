@@ -4,6 +4,7 @@
 
 import { GSLog } from "../base/GSLog.mjs";
 import { GSUtil } from "../base/GSUtil.mjs";
+import { DataSelector } from "../data/DataSelector.mjs";
 import { GSReadWriteRegistry } from "../data/ReadWriteRegistry.mjs";
 
 /**
@@ -95,19 +96,27 @@ export class DataController {
   }
 
   isSelected(val) {
-    return this.store?.isSelected(val);
+    return this.#selector.isSelected(val);
   }
 
   addSelected(val) {
-    return this.store?.addSelected(val);
+    return this.#selector.addSelected(val);
   }
   
   removeSelected(val) {
-    return this.store?.removeSelected(val);
+    return this.#selector.removeSelected(val);
   }
 
   clearSelected(data) {
-    return this.store?.clearSelected(data);
+    return this.#selector.clearSelected(data);
+  }
+
+  getSelected(data) {
+    return GSUtil.asArray(data).filter(o => DataSelector.isSelected(o));
+  }
+
+  get #selector() {
+    return this.store || DataSelector;
   }
 
   get store() {

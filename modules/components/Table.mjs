@@ -9,6 +9,7 @@ import { GSData } from '../base/GSData.mjs';
 import { GSItem } from '../base/GSItem.mjs';
 import { GSDOM } from '../base/GSDOM.mjs';
 import { GSUtil } from '../base/GSUtil.mjs';
+import { DataSelector } from '../data/DataSelector.mjs';
 
 /**
  * A HTML Table renderer for tabular data representation.
@@ -316,7 +317,8 @@ export class GSTableElement extends GSElement {
 
   #renderRecord(entry, index) {
     const me = this;
-    const selected = me.dataController?.isSelected(entry);
+    const controller = me.dataController || DataSelector;
+    const selected = controller?.isSelected(entry);
     const color = me.colorSelect && selected ? `table-${me.colorSelect}` : '';
     const cells = me.#remapRecord(entry);
     return html`
@@ -439,7 +441,7 @@ export class GSTableElement extends GSElement {
     // if context menu is attached and right click made
     if (e.button === 2 && !me.query('gs-context')) return;
     
-    const controller = me.dataController;
+    const controller = me.dataController || DataSelector;
     if (!controller) return;
 
     const record = me.data[tr.index];
@@ -451,15 +453,15 @@ export class GSTableElement extends GSElement {
         controller.addSelected(record);
       }
     } else if (me.toggle) {
-      if (isSelected) {
-        controller.clearSelected(me.data);
-      } else {
+      controller.clearSelected(me.data);
+      if (!isSelected) {
         controller.addSelected(record);
       }
     } else {
       controller.clearSelected(me.data);
       controller.addSelected(record);
     }
+    me.requestUpdate();
     me.emit('select');
   }
 

@@ -1,9 +1,9 @@
-<gs-data-handler id="attributes" type="cached" limit="20">
+<gs-data-handler id="attributes" type="cached" limit="20" mode="">
     <gs-item name="key"></gs-item>
     <gs-item name="value"></gs-item>
 </gs-data-handler>
 
-<gs-table storage="attributes" css="border table table-light table-hover table-striped user-select-none m-0"
+<gs-table selectable hover storage="attributes" css="border table table-light table-hover table-striped user-select-none m-0"
 css-select="table-active table-dark _fw-bold" css-header="user-select-none table-light">
 <gs-item title="Property" width="500px" name="key" filter></gs-item>
 <gs-item  title="Value" name="value"></gs-item>
@@ -12,5 +12,5 @@ css-select="table-active table-dark _fw-bold" css-header="user-select-none table
     <gs-item name="Clear Queue" action="purge-jobs"></gs-item>
     <gs-item name="Refresh" action="refresh"></gs-item>
 </gs-context>
-<gs-pagination slot="extra" storage="attributes" pages="5" label-previous="&laquo;" label-next="&raquo;" css="justify-content-center m-2" previous next></gs-pagination>
 </gs-table>
+<gs-pagination storage="attributes" pages="5" label-previous="&laquo;" label-next="&raquo;" css="justify-content-center m-2" previous next></gs-pagination>

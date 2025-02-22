@@ -17,11 +17,11 @@ export class IPPView extends BaseView {
     }
 
     get #attributes() {
-        return this.query('gs-ipp-attributes');
+        return this.query('gs-ipp-attributes', true);
     }
 
     get #jobs() {
-        return this.query('gs-ipp-jobs');
+        return this.query('gs-ipp-jobs', true);
     }
 
     get uri() {

@@ -28,7 +28,7 @@ export class IPPConsole extends GSElement {
     }
 
     get #console() {
-        return this.query('gs-highlight');
+        return this.query('gs-highlight', true);
     }
 
     static {

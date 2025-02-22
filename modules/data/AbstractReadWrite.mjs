@@ -5,7 +5,7 @@
 import { GSID } from "../base/GSID.mjs";
 import { GSEvent } from "../base/GSEvent.mjs";
 import { GSReadWriteRegistry } from "./ReadWriteRegistry.mjs";
-import { GSUtil } from "../base/GSUtil.mjs";
+import { DataSelector } from "./DataSelector.mjs";
 
 /**
  * A module loading GSAbstractReadWrite class
@@ -147,7 +147,7 @@ export class GSAbstractReadWrite extends GSEvent {
      */
     addSelected(val) {
         if (!val) return false;
-        GSUtil.asArray(val).forEach(o => o[GSAbstractReadWrite.#SELECT] = true);
+        DataSelector.addSelected(val);
         const me = this;
         me.emit('selection-add', val);
         me.emit('select');
@@ -160,7 +160,7 @@ export class GSAbstractReadWrite extends GSEvent {
      */
     removeSelected(val) {
         if (!val) return false;
-        delete val[GSAbstractReadWrite.#SELECT];
+        DataSelector.removeSelected(val);
         const me = this;
         me.emit('selection-remove', val);
         me.emit('select');
@@ -171,8 +171,8 @@ export class GSAbstractReadWrite extends GSEvent {
      * Remove all selections
      */
     clearSelected(data) {
+        DataSelector.clearSelected(data);
         const me = this;
-        GSUtil.asArray(data).forEach(o => me.removeSelected(o));
         me.emit('selection-clear');
         me.emit('select');
     }
@@ -181,8 +181,7 @@ export class GSAbstractReadWrite extends GSEvent {
      * Return list of all selected record id's
      */
     getSelected(data = []) {
-        const me = this;        
-        return GSUtil.asArray(data).filter(o => me.isSelected(o));
+        return DataSelector.getSelected(data);
     }
 
     /**
@@ -191,7 +190,7 @@ export class GSAbstractReadWrite extends GSEvent {
      * @returns 
      */
     isSelected(val) {
-        return val ? val[GSAbstractReadWrite.#SELECT] === true : false;
+        return DataSelector.isSelected(val);
     }
 
     /**

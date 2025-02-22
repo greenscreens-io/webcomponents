@@ -11,7 +11,7 @@
     <div class="col-md-12 p-2">
         <div class="input-group">
             <input class="form-control fw-bold" id="printerURI" name="uri" title="IPP Printer URI address" placeholder="http://printer.local:631/printers/Laserjet" value="http://printer.local:631/printers/Laserjet">
-            <gs-button css="btn btn-outline-secondary fw-bold" action="register" id="btnReg" title="Register"></gs-button>
+            <gs-button css="btn btn-outline-secondary fw-bold" data-gs-action="register" id="btnReg" title="Register"></gs-button>
           </div>
     </div>
 </div>
@@ -19,7 +19,7 @@
 <div class="row border p-2 m-1 shadow-sm text-nowrap text-bg-light">    
 
     <gs-tab-group type="tabs" placement="top">
-        <gs-tab name="tab1" slot="tabs" autofocus title="Printer Attributes"></gs-tab>
+        <gs-tab name="tab1" slot="tabs" title="Printer Attributes" active autofocus></gs-tab>
         <gs-tab name="tab2" slot="tabs" title="Printer Jobs"></gs-tab>
         <gs-tab name="tab3" slot="tabs" title="Printer Console"></gs-tab>
 
