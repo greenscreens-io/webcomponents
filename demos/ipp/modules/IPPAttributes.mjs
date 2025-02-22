@@ -12,6 +12,10 @@ import { GSElement } from "/webcomponents/release/esm/io.greenscreens.components
 /**
  * IPPPrinterAttributes UI lists printer attributes
  */
+
+/**
+ * IPPPrinterAttributes UI lists printer attributes
+ */
 export class IPPAttributes extends GSElement {
 
     constructor() {
@@ -27,15 +31,19 @@ export class IPPAttributes extends GSElement {
         if (!data) return;
         data = data['printer-attributes'] ||data;
         const list = Object.entries(data).map(t => { return {key: t[0], value : t[1]} } );
-        this.#store.setData(list);
+        // this.#table.data = list;
+        // uses gs-data-handler
+        this.#controller.store?.clear?.();
+        this.#controller.write(list);
+        this.#controller.read();
+    }
+
+    get #controller() {
+        return this.#table.dataController;
     }
 
     get #table() {
-        return this.query('gs-table');
-    }
-
-    get #store() {
-        return this.#table.store;
+        return this.query('gs-table', true);
     }
 
     static {
