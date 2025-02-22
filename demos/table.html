@@ -18,27 +18,15 @@
     <meta name="description" content="WebComponents UI library based on Bootstrap.">
 
     <script>
-        globalThis.GS_TEMPLATE_URL='/bootstrap-lit/demos/templates/';
+        globalThis.GS_LIT_URL='/webcomponents/release/esm/lit-all.min.js';        
+        globalThis.GS_TEMPLATE_URL='/webcomponents/demos/templates/';
     </script>
 
     <!-- Optimized CSS loading -->
-    <link rel="preload" href="/bootstrap-lit/assets/css/bootstrap.css" as="style"  data-adoptable="true">
-    <link rel="preload" href="/bootstrap-lit/assets/themes/default.css" as="style" data-adoptable="true">
-    <link rel="preload" href="/bootstrap-lit/assets/icons/bootstrap-icons.css" as="style" data-adoptable="true">
-
-    <script type="module" src="/bootstrap-lit/modules/base/GSAdoptedEngine.mjs"></script>
-    <script type="module" src="/bootstrap-lit/modules/base/GSTheme.mjs"></script>
-    <script type="module" src="/bootstrap-lit/modules/components/Template.mjs"></script>
-    <script type="module" src="/bootstrap-lit/modules/components/Table.mjs"></script>
-    <script type="module" src="/bootstrap-lit/modules/components/Icon.mjs"></script>
-    
-    <script type="module" src="/bootstrap-lit/modules/components/Center.mjs"></script>
-    <script type="module" src="/bootstrap-lit/modules/components/FormGroup.mjs"></script>
-    <script type="module" src="/bootstrap-lit/modules/components/Form.mjs"></script>
-    
-    <script type="module" src="/bootstrap-lit/modules/data/CachedReadWrite.mjs"></script>    
-    <script type="module" src="/bootstrap-lit/modules/components/DataHandler.mjs"></script>
-    <script type="module" src="/bootstrap-lit/modules/components/ext/index.mjs"></script>
+    <link rel="preload" href="/webcomponents/assets/css/bootstrap.css" as="style"  data-adoptable="true">
+    <link rel="preload" href="/webcomponents/assets/themes/default.css" as="style" data-adoptable="true">
+    <link rel="preload" href="/webcomponents/assets/icons/bootstrap-icons.css" as="style" data-adoptable="true">
+    <script type="module" src="/webcomponents/release/esm/io.greenscreens.components.all.min.js"></script>
 
     <template id="colors">
         <select class="form-select">

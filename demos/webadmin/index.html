@@ -19,6 +19,7 @@
     <meta name="description" content="Green Screens Web Admin console.">
     
     <script>
+        globalThis.GS_LIT_URL = '/webcomponents/release/esm/lit-all.min.js';        
         globalThis.GS_TEMPLATE_URL = '/webcomponents/demos/webadmin/templates/';
         globalThis.GS_ROUTER_URL =  '/webcomponents/demos/webadmin/data/routers/';
         globalThis.GS_NO_CACHE = true;
@@ -35,7 +36,6 @@
     <link rel="preload" href="/webcomponents/assets/icons/bootstrap-icons.css" as="style" data-adoptable="true" data-id="4">
     <link rel="preload" href="./style.css" as="style" data-adoptable="true" data-id="3">
 
-	<script type="module" src="/webcomponents/release/esm/lit-all.min.js"></script>
 	<script type="module" src="/webcomponents/release/esm/io.greenscreens.components.all.min.js"></script>
     <script type="module" src="modules/index.mjs"></script>
 </head>
