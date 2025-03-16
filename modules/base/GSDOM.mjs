@@ -176,6 +176,22 @@ export default class GSDOM {
 	}
 
 	/**
+	 * Check if given element is of type HTMLSelectElement
+	 * @returns {Boolean}
+	 */
+	static isSelect(el) {
+		return el instanceof HTMLSelectElement;
+	}
+
+	/**
+	 * Check if given element is of type HTMLSlotElement
+	 * @returns {Boolean}
+	 */
+	static isSlotElement(el) {
+		return el instanceof HTMLSlotElement;
+	}
+		
+	/**
 	 * Check if given element is of type HTMLElement
 	 * @returns {boolean}
 	 */

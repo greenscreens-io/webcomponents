@@ -19,9 +19,10 @@ export default class GSPrinting extends BaseViewUI {
         return super.getTemplate('//views/printing.html');
     }
 
-    async onLoad() {
+    async onLoad(e) {
         const me = this;
         const filter = me.filter;
+		if (e?.detail?.source?.shiftKey) await io.greenscreens.Printers.reload();
         const o = DEMO ? DEMO : await io.greenscreens.Printers.list(me.store.skip, me.store.limit, filter);
         return o.data;
     }

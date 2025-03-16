@@ -45,9 +45,10 @@ export default class GSFilterFido extends BaseViewUI {
         }
     }
 
-    async onLoad() {
+    async onLoad(e) {
         const me = this;
         const filter = me.filter;
+		if (e?.detail?.source?.shiftKey) await io.greenscreens.Fido.reload();
         const o = DEMO ? DEMO : await io.greenscreens.Fido.list(me.store.skip, me.store.limit, filter);
         return o.data;
     }

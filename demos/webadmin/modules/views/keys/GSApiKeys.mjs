@@ -24,9 +24,10 @@ export default class GSApiKeys extends BaseViewUI {
         return super.getTemplate('//views/keys-api.html');
     }
 
-    async onLoad() {
+    async onLoad(e) {
         const me = this;
         const filter = me.filter;
+		if (e?.detail?.source?.shiftKey) await io.greenscreens.ApiKeys.reload();
         const o = DEMO ? DEMO : await io.greenscreens.ApiKeys.list(me.store.skip, me.store.limit, filter);
         return o.data;
     }
@@ -46,12 +47,12 @@ export default class GSApiKeys extends BaseViewUI {
         return o.success;
     }
 
-    onViewToggle(e) {
+    async onViewToggle(e) {
         const data = e.detail.data[0];
         if (!data) return Utils.inform(false, 'Record not selected!');
         data.active = !data.active;
         const me = this;
-        me.onUpdate(data);
-        me.onViewRefresh();
+        await me.onUpdate(data);
+        await me.onViewRefresh();
     }
 }

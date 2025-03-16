@@ -59,6 +59,7 @@ export default class GSConfiguration extends BaseViewUI {
     }
 
     async onLoad(e) {
+		if (e?.detail?.source?.shiftKey) await io.greenscreens.Hosts.reload();
         const o = DEMO ? DEMO : await io.greenscreens.Hosts.list(false);
         return o.data;
     }

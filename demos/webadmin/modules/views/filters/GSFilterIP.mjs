@@ -46,9 +46,10 @@ export default class GSFilterIP extends BaseViewUI {
         return super.getTemplate('//views/filter-ip.html');
     }
 
-    async onLoad() {
+    async onLoad(e) {
         const me = this;
         const filter = me.filter;
+		if (e?.detail?.source?.shiftKey) await io.greenscreens.Filter.reload();
         const o = DEMO ? DEMO : await io.greenscreens.Filter.list(me.store.skip, me.store.limit, filter);
         return o.data;
     }

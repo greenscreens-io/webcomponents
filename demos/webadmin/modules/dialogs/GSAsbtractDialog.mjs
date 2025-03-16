@@ -26,7 +26,7 @@ export default class GSAsbtractDialog extends GSDialog {
     connectedCallback() {
         super.connectedCallback();
         const me = this;
-        me.cssHeader = 'p-3 dialog-title';
+        me.cssHeader = 'p-3';
         //me.cssTitle = 'fs-5 fw-bold text-muted';
         //me.cssBody = 'p-0';
     }
@@ -52,26 +52,24 @@ export default class GSAsbtractDialog extends GSDialog {
 
         if (me.dialogTemplate) {
             let tpl = await GSLoader.getTemplate(me.dialogTemplate);
+			const hasNotify = tpl.indexOf('gs-notification') > -1;
             tpl = GSDOM.parse(tpl);
             tpl.body.firstElementChild.slot = 'body';
             GSDOM.appendChild(me, tpl.body.firstElementChild);
+			if (!hasNotify) {
+				tpl = GSDOM.parse('<gs-notification id="notification"></gs-notification>');
+				tpl.body.firstElementChild.slot = 'extra';
+				GSDOM.appendChild(me, tpl.body.firstElementChild);	
+            }			
             //GSDOM.setHTML(me, tpl);
         }
         if (me.dialogTitle) me.title = me.dialogTitle;
     }
 
-    /**
-     * Override parent class method
-     * @param {*} data 
-     */
 	open(data) {
 		this.#data = data;
 		super.open(data);
 	}
-
-    afterOpen() {
-        this.#update(this.#data);
-    }
 
     /**
      * Used by inherited dialogs to process confirmed dialog form
@@ -86,6 +84,20 @@ export default class GSAsbtractDialog extends GSDialog {
      */
     get waiter() {
         return Utils.waiter;
+    }
+
+	get notify() {
+		return GSDOM.query(this, 'gs-notification');
+	}
+	
+	afterOpen() {
+	    this.#update(this.#data);
+	}
+	
+	async onFormInit(form, data) {
+		// quick fix
+	  await GSUtil.timeout(1000);
+	  super.onFormInit(form, data);
     }
 
     /**
@@ -107,6 +119,9 @@ export default class GSAsbtractDialog extends GSDialog {
     async #onFormData(e) {
         // GSEvents.prevent(e);
         const me = this;
+        const generic = me.constructor === GSAsbtractDialog;
+		if (generic) return;
+
         let sts = false;
         try {
             me.disable();
@@ -127,4 +142,3 @@ export default class GSAsbtractDialog extends GSDialog {
     }
 
 }
-

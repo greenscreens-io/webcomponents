@@ -26,15 +26,16 @@ export default class GSOtp extends BaseViewUI {
         return super.getTemplate('//views/keys-otp.html');
     }
 
-    async onLoad() {
+    async onLoad(e) {
         const me = this;
         const filter = me.filter;
+		if (e?.detail?.source?.shiftKey) await io.greenscreens.OAuth.reload();
         const o = DEMO ? DEMO : await io.greenscreens.OAuth.list(me.store.skip, me.store.limit, filter);
         return o.data;
     }
 
     async onUpdate(data) {
-        const o = DEMO ? DEMO : await io.greenscreens.OAuth.update(data.id, data.active);
+        const o = DEMO ? DEMO : await io.greenscreens.OAuth.update(data.id, data.status);
         return o.success;
     }
 
@@ -43,12 +44,12 @@ export default class GSOtp extends BaseViewUI {
         return o.success;
     }
 
-    onViewToggle(e) {
+    async onViewToggle(e) {
         const data = e.detail.data[0];
         if (!data) return Utils.inform(false, 'Record not selected!');
         data.active = !data.active;
         const me = this;
-        me.onUpdate(data);
-        me.onViewRefresh();
+        await me.onUpdate(data);
+        await me.onViewRefresh();
     }
 }

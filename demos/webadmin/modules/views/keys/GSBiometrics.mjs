@@ -19,9 +19,10 @@ export default class GSBiometrics extends BaseViewUI {
         return super.getTemplate('//views/keys-bio.html');
     }
 
-    async onLoad() {
+    async onLoad(e) {
         const me = this;
         const filter = me.filter;
+		if (e?.detail?.source?.shiftKey) await io.greenscreens.WebAuth.reload();
         const o = DEMO ? DEMO : await io.greenscreens.WebAuth.list(me.store.skip, me.store.limit, filter);
         return o.data;
     }

@@ -26,7 +26,7 @@ export default class GSWorkstations extends BaseViewUI {
     async onLoad() {
         const me = this;
         const filter = me.filter;
-        const o = DEMO ? DEMO : await io.greenscreens.Manage.listSessions(me.store.skip, me.store.limit, filter);
+        const o = DEMO ? DEMO : await io.greenscreens.Workstations.listSessions(me.store.skip, me.store.limit, filter);
         return o.data;
     }
 
@@ -35,11 +35,10 @@ export default class GSWorkstations extends BaseViewUI {
         const msg = prompt('Enter message to send');
         if (!(msg?.trim().length > 0)) return;
 
-        const me = this;
         try {
             const data = e.detail.data[0];
             data.message = msg;
-            const o = DEMO ? DEMO : await io.greenscreens.Manage.sendMessage(data.sessionID, data.deviceID, data.message);
+            const o = DEMO ? DEMO : await io.greenscreens.Workstations.sendMessage(data.sessionID, data.deviceID, data.message);
             Utils.inform(true, 'Message sent!');
         } catch (e) {
             Utils.handleError(e);
@@ -47,10 +46,9 @@ export default class GSWorkstations extends BaseViewUI {
     }
 
     async onViewLogging(e) {
-        const me = this;
         try {
             const data = e.detail.data[0];
-            const o = DEMO ? DEMO : await io.greenscreens.Manage.loging(data);
+            const o = DEMO ? DEMO : await io.greenscreens.Workstations.loging(data);
             if (o.msg === 'false') {
                 const url = location.origin + '/services/logs?id=' + o.code;
                 Utils.download('server.log', url);
@@ -61,10 +59,9 @@ export default class GSWorkstations extends BaseViewUI {
     }
 
     async onViewKill(e) {
-        const me = this;
         try {
             const data = e.detail.data[0];
-            const o = DEMO ? DEMO : await io.greenscreens.Manage.killDevice(data);
+            const o = DEMO ? DEMO : await io.greenscreens.Workstations.killDevice(data);
             Utils.inform(true, 'Kill signal sent!');
         } catch (e) {
             Utils.handleError(e);
@@ -80,7 +77,7 @@ export default class GSWorkstations extends BaseViewUI {
         try {
             const data = Object.assign(me.filter);
             data.message = msg;
-            const o = DEMO ? DEMO : await io.greenscreens.Manage.sendMessages(me.filter);
+            const o = DEMO ? DEMO : await io.greenscreens.Workstations.sendMessages(me.filter);
             Utils.inform(true, 'Message sent!');
         } catch (e) {
             Utils.handleError(e);
@@ -90,7 +87,7 @@ export default class GSWorkstations extends BaseViewUI {
     async onViewKillFilter(e) {
         const me = this;
         try {
-            const o = DEMO ? DEMO : await io.greenscreens.Manage.killSessions(me.filter);
+            const o = DEMO ? DEMO : await io.greenscreens.Workstations.killSessions(me.filter);
             Utils.inform(true, 'Kill signal sent!');
         } catch (e) {
             Utils.handleError(e);
@@ -100,7 +97,7 @@ export default class GSWorkstations extends BaseViewUI {
     async onViewExport(e) {
         const me = this;
         try {
-            const o = DEMO ? DEMO : await io.greenscreens.Manage.export(0, 0, me.filter);
+            const o = DEMO ? DEMO : await io.greenscreens.Workstations.export(0, 0, me.filter);
             const tmp = JSON.stringify(o.data);
             Utils.download('workstations.json', tmp);
         } catch (e) {
@@ -153,7 +150,7 @@ export default class GSWorkstations extends BaseViewUI {
     async #updateScreen(win, data) {
         if (!win?.Tn5250) return;
         try {
-            const o = await io.greenscreens.Manage.getScreen(data.sessionID, data.deviceID);
+            const o = await io.greenscreens.Workstations.getScreen(data.sessionID, data.deviceID);
             win.Tn5250.Application.test(win.Tn5250.Binary.fromHex(o.msg));
         } catch (e) {
             console.log(e);

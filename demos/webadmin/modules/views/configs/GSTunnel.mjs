@@ -20,9 +20,10 @@ export default class GSTunnel extends BaseViewUI {
         return super.getTemplate('//views/tunnel.html');
     }
 
-    async onLoad() {
+    async onLoad(e) {
         const me = this;
         const filter = me.filter;
+		if (e?.detail?.source?.shiftKey) await io.greenscreens.Proxy.reload();
         const o = DEMO ? DEMO : await io.greenscreens.Proxy.list(me.store.skip, me.store.limit, filter);
         return o.data;
     }
@@ -50,28 +51,25 @@ export default class GSTunnel extends BaseViewUI {
     }
 
     async onViewSstart(e) {
-        const me = this;
         const data = e.detail.data[0];
         const o = DEMO ? DEMO : await io.greenscreens.Proxy.start(data.id);
         Utils.inform(o.success, 'Tunnel started');
     }
 
     async onViewStop(e) {
-        const me = this;
         const data = e.detail.data[0];
         const o = DEMO ? DEMO : await io.greenscreens.Proxy.stop(data.id);
         Utils.inform(o.success, 'Tunnel stopped');
     }
 
     async onViewRestart(e) {
-        const me = this;
         const data = e.detail.data[0];
         const o = DEMO ? DEMO : await io.greenscreens.Proxy.restart(data.id);
         Utils.inform(o.success, 'Tunnel restarted');
     }
 
     async onViewDownload(e) {
-        const me = this;
+
         const data = e.detail.data[0];
         const o = DEMO ? DEMO : await io.greenscreens.Proxy.download(data.id);
 

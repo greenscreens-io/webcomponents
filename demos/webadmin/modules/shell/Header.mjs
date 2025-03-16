@@ -40,6 +40,7 @@ export default class HeaderUI extends GSElement {
             const action = GSUtil.capitalizeAttr(fnName);
             const fn = me[action];
             if (GSFunction.isFunction(fn)) {
+				GSEvents.prevent(e);		
                 if (GSFunction.isFunctionAsync(fn)) {
                     await me[action](e);
                 } else {
@@ -80,6 +81,13 @@ export default class HeaderUI extends GSElement {
     }
     */
 
+	// reload certificates into server
+	async certServerRefresh() {
+        const o = DEMO ? DEMO : await io.greenscreens.Certificate.reload();
+        const msg = o.msg || 'Certificates applied to the server.';
+        Utils.inform(true, msg);
+	}
+
     // toggle client verification
     async certClientVerify() {
         const o = DEMO ? DEMO : await io.greenscreens.Certificate.verifySSLClient(2);
@@ -95,10 +103,14 @@ export default class HeaderUI extends GSElement {
 
     // generate server cert request
     async certGenReq() {
-        const o = DEMO ? DEMO : await io.greenscreens.Certificate.request(true);
-        Utils.download("server_request.txt", o.data.requestPem);
-        Utils.download("server_private.txt", o.data.privatePem);
-        //Utils.download("server_public.txt", data.publicPem);
+        const o = DEMO ? DEMO : await io.greenscreens.Certificate.request();
+        const csr = o.data?.data?.commonNameServer || 'server_request';
+        Utils.download(csr + '.csr', o.data.requestPem);
+        const sts = globalThis.confirm('Do you want to download a private key also?');
+        if (!sts) return;
+        const key = o.data?.data?.commonNameServer || 'server_request';
+        Utils.download(key + '.key', o.data.privatePem);
+        //Utils.download(key + '.pem', data.publicPem);
     }
 
     // generate server cert
@@ -118,6 +130,9 @@ export default class HeaderUI extends GSElement {
         Utils.openInNewTab(`${location.origin}/admin/explorer`, 'toolbar=no,scrollbars=yes,resizable=yes');
     }
 
+    downloadSavf() {
+        Utils.openInNewTab(`${location.origin}/services/admintransfer?type=savf`);
+    }
     downloadConfig() {
         Utils.openInNewTab(`${location.origin}/services/admintransfer?type=conf`);
     }

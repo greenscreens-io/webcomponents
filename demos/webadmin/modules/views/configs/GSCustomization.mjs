@@ -20,8 +20,9 @@ export default class GSCustomization extends BaseViewUI {
         return super.getTemplate('//views/customizations.html');
     }
 
-    async onLoad() {
+    async onLoad(e) {
         const me = this;
+		if (e?.detail?.source?.shiftKey) await io.greenscreens.Scripts.reload();
         const o = DEMO ? DEMO : await io.greenscreens.Scripts.getScripts();
         me.header.value = o.data?.header || '';
         me.footer.value = o.data?.footer || '';

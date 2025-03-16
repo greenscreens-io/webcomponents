@@ -30,7 +30,7 @@ export default class GSWebmodules extends BaseViewUI {
         const data = e.detail.data[0];
         const o = DEMO ? DEMO : await io.greenscreens.WebModules.start(data.name);
         Utils.inform(o.success, 'Module started!');
-        me.onViewRefresh();
+        await me.onViewRefresh();
     }
 
     async onViewStop(e) {
@@ -38,7 +38,7 @@ export default class GSWebmodules extends BaseViewUI {
         const data = e.detail.data[0];
         const o = DEMO ? DEMO : await io.greenscreens.WebModules.stop(data.name);
         Utils.inform(o.success, 'Module stopped!');
-        me.onViewRefresh();
+        await me.onViewRefresh();
     }
 
     async onViewRestart(e) {
@@ -46,6 +46,6 @@ export default class GSWebmodules extends BaseViewUI {
         const data = e.detail.data[0];
         const o = DEMO ? DEMO : await io.greenscreens.WebModules.restart(data.name);
         Utils.inform(o.success, 'Module restarted!');
-        me.onViewRefresh();
+        await me.onViewRefresh();
     }
 }

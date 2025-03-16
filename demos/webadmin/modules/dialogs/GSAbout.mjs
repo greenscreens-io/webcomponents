@@ -29,12 +29,16 @@ export default class GSAbout extends GSModal {
         me.confirm(undefined, me.#html);
     }
 
+    get opt() {
+        return globalThis.Tn5250?.opt || {};
+    }
+    
     get version() {
-        return globalThis.Tn5250?.opt?.version || GSAbout.#version;
+        return this.opt.version || GSAbout.#version;
     }
 
     get build() {
-        return globalThis.Tn5250?.opt?.build || GSAbout.#build;
+        return this.opt.build || GSAbout.#build;
     }
 
     get #html() {

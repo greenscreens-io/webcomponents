@@ -7,7 +7,7 @@
  * @module BaseUI
  */
 
-import { GSUtil, GSElement, GSEvents, GSAttr } from '/webcomponents/release/esm/io.greenscreens.components.all.esm.min.js';
+import { GSUtil, GSElement, GSEvents } from '/webcomponents/release/esm/io.greenscreens.components.all.esm.min.js';
 
 import Utils from "../utils/Utils.mjs";
 
@@ -183,6 +183,7 @@ export default class BaseViewUI extends GSElement {
 			Utils.notify.warn('', 'Record updated!', false, 2, 0);
 			await me.store.load();
 			await me.onViewRefresh();
+			Utils.notify.warn('', 'Record updated!', false, 2, 0);											 
 		} else {
 			me.onViewDetails(e);
 		}
@@ -249,7 +250,9 @@ export default class BaseViewUI extends GSElement {
 				await me.store.load();
 			}
 			if (e === true) me.#table.resize();
-            if (e?.detail?.action === 'refresh') Utils.notify.info('', 'Data refreshed!', false, 2, 0);
+            if (e?.detail?.action === 'refresh'){
+				Utils.notify.info('', 'Data refreshed!', false, 2, 0);
+			}
 		} catch (e) {
 			me.onError(e);
 		} finally {

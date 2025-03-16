@@ -46,9 +46,10 @@ export default class GSFilterMobile extends BaseViewUI {
         return super.getTemplate('//views/filter-mobile.html');
     }
 
-    async onLoad() {
+    async onLoad(e) {
         const me = this;
         const filter = me.filter;
+		if (e?.detail?.source?.shiftKey) await io.greenscreens.Mobile.reload();
         const o = DEMO ? DEMO : await io.greenscreens.Mobile.list(me.store.skip, me.store.limit, filter);
         return o.data;
     }

@@ -16,16 +16,29 @@ import {GSComponents,GSDOM,GSFunction,GSUtil} from '/webcomponents/release/esm/i
 export default class Utils {
 
     static setUI(value) {
-        const el = document.createElement(value);
-        document.body.insertAdjacentElement('beforeend', el);
+		return GSEvents.waitAnimationFrame(()=> {			
+	        const el = document.createElement(value);
+	        document.body.insertAdjacentElement('beforeend', el);
+			return el;
+        });
     }
 
     static unsetUI(value) {
-        const list = GSDOM.queryAll(value);
-        list.forEach(el => el.remove());
+        return GSEvents.waitAnimationFrame(() => {
+            const list = GSDOM.queryAll(value);
+            list.forEach(el => el.remove());
+        });
     }
 
     static get notify() {
+		let notify = null;
+		if (GSDialog.top) {
+			notify = GSDialog.top.notify;
+			if (!notify) {
+			 const dlg = GSDialog.opened.filter(d => d.notify).shift();
+			 notify = dlg?.notify;
+			}
+        }
         return GSComponents.get('notification');
     }
 
@@ -42,9 +55,9 @@ export default class Utils {
      */
     static inform(success = false, msg) {
         if (success) {
-			Utils.notify?.info('Info', msg);
+			Utils.notify?.info('Info', msg, false, 2, 0);
 		} else {
-        	Utils.notify?.danger('Error', msg);			
+        	Utils.notify?.danger('Error', msg, false, 2, 0);
 		}
         return success;
     }
@@ -52,13 +65,13 @@ export default class Utils {
     static handleError(e) {
         console.log(e);
         const msg = e.data?.error || e.msg || e.message || e.toString();
-        Utils.inform(false, msg);
+        Utils.inform(false, msg, false, 2, 0);
         return msg;
     }
 
     static handleResponse(msg) {
         const txt = (msg.message || msg)?.toString();
-        if (txt) Utils.inform(msg.success === true, txt);
+        if (txt) Utils.inform(msg.success === true, txt, false, 2, 0);
     }    
 
     /**
@@ -74,7 +87,11 @@ export default class Utils {
 
         return new Uint8Array(a);
     }
-
+	
+    static toHex(data) {
+        data = Utils.#validateData(data);
+        return [...data].map(x => x.toString(16).padStart(2, '0')).join('');
+    }
     /**
      * Detect data and convert to Uint8Array
      * 
