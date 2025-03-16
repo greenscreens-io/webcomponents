@@ -63,6 +63,7 @@ export default class GSPrinterSetup extends GSAsbtractDialog {
             data.hostTransform = parseInt(data.hostTransform) === 1;
             const o = DEMO ? DEMO : await io.greenscreens.Printer.setup(data);
             success = o.success;
+            if (success) super.onData(data);
         } catch (e) {
             me.visible = true;
             throw e;

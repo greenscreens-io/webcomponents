@@ -64,7 +64,7 @@
       </datalist>
 
     <gs-form-group css="m-1" data-group="true" name="printerModel" label="Printer Model" list="models" disabled
-        css-field="text-uppercase" maxlength="10" pattern="[0-9a-zA-Z]+"
+        css-field="text-uppercase" maxlength="10" pattern="[0-9a-zA-Z]+" value="*SAME"
         description="Use printer model for SCS data transform.">
     </gs-form-group>
 
@@ -93,7 +93,7 @@
     <gs-form-group css="m-1" data-group="true" name="drawer1" label="Drawer 1" disabled
         description="Printer drawer paper size.">
         <template>
-            <select class="form-select"  name="drawer2" disabled>
+            <select class="form-select" name="drawer1" disabled>
                 <option value="*SAME" selected>*SAME</option>
                 <option value="*NONE">*NONE</option>
                 <option value="*MFRTYPMDL">*MFRTYPMDL</option>
@@ -115,7 +115,7 @@
     <gs-form-group css="m-1" data-group="true" name="drawer2" label="Drawer 2" disabled
         description="Printer drawer paper size.">
         <template>
-            <select class="form-select"  name="drawer2" disabled>
+            <select class="form-select" name="drawer2" disabled>
                 <option value="*SAME" selected>*SAME</option>
                 <option value="*NONE">*NONE</option>
                 <option value="*MFRTYPMDL">*MFRTYPMDL</option>
