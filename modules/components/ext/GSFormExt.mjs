@@ -130,7 +130,9 @@ export default class GSFormExt extends HTMLFormElement {
 
     reset() {
         super.reset();
-        this.read();
+        const me = this;
+        me.elements.forEach(el => GSDOM.reset(el));
+        me.read();
     }
 
     submit() {

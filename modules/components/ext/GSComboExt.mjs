@@ -98,5 +98,8 @@ export default class GSComboExt extends HTMLSelectElement {
         return seg.join(' ');
     }
 
+    reset() {
+        GSDOM.resetSelect(this);
+    }    
 }
 

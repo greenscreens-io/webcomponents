@@ -40,7 +40,7 @@ export default class GSModal extends GSElement {
       if (me.visible) {
         me.#showEL('.modal');
         me.#showEL('.modal-backdrop');
-        me.focusable().focus();
+        me.focusable()?.focus();
       } else {
         me.#hideEL('.modal');
         me.#hideEL('.modal-backdrop');

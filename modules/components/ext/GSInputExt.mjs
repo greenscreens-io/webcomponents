@@ -481,6 +481,10 @@ export default class GSInputExt extends HTMLInputElement {
         return me.#updateText(tmp.join(''));
     }
 
+    reset() {
+        GSDOM.reset(this);
+    }
+        
     #updateText(value = '') {
         const map = GSCSSMap.styleValue(this, 'text-transform');
         if (map) value = GSUtil.textTransform(map.value, value);

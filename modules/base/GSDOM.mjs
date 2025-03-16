@@ -636,33 +636,45 @@ export default class GSDOM {
 	/**
 	 * Get proper value from element
 	 * @param {HTMLElement} el 
-	 * @returns {string|number}
+	 * @param {Boolean} defaults Set default value for form reset 
+	 * @returns {String|Number}
 	 */
-	static getValue(el) {
+	static getValue(el, defaults = false) {
+		let val = null;
 		switch (el.type) {
 			case 'datetime-local':
 			case 'number':
-				return el.value ? el.valueAsNumber : el.value;
+				val = el.value ? el.valueAsNumber : el.value;
+				break;
 			case 'select-multiple':
-				return Array.from(el.selectedOptions).map(o => o.value);
+				val = Array.from(el.selectedOptions).map(o => o.value);
+				break;
 			case 'checkbox':
-				if (el.hasAttribute('value')) {
-					return el.checked ? el.value : null;
-				} 
-				return el.checked;
+				if (el.hasAttribute('value') && el.value) {
+					val = el.checked ? el.value : null;
+				} else {
+					val = el.checked;
+				}
+				break;
 			default:
-				return el.value;
+				val = el.value;
 		}
+
+		if (GSUtil.isNull(val) && defaults) {
+			val = el.defaultValue;
+		}
+		return val;
 	}
 
 	/**
 	 * Get value from form element
 	 * @param {HTMLElement} el 
-	 * @returns {string}
+	 * @param {Boolean} defaults Set default value for form reset 
+	 * @returns {String}
 	 */
-	static toValue(el) {
+	static toValue(el, defaults = false) {
 		if (!GSDOM.isHTMLElement(el)) return undefined;
-		let value = GSDOM.getValue(el);
+		let value = GSDOM.getValue(el, defaults);
 		if ('text' === el.type) {
 			const map = GSCSSMap.styleValue(el, 'text-transform');
 			if (map) value = GSUtil.textTransform(map.value, value);
@@ -673,10 +685,10 @@ export default class GSDOM {
 	/**
 	 * Set element value, taking chekbox into consideration
 	 * @param {HTMLElement} el 
-	 * @param {string|boolean|number} val 
-	 * @returns 
+	 * @param {String|Boolean|Number} val 
+	 * @param {Boolean} defaults Set default value for form reset
 	 */
-	static fromValue(el, val) {
+	static fromValue(el, val, defaults = false) {
 		if (!GSDOM.isHTMLElement(el)) return;
 		const data = Array.isArray(val) ? val[0] || '' : val;
 
@@ -687,87 +699,116 @@ export default class GSDOM {
 				} else {
 					el.checked = data == true;		
 				}
+				if (defaults) el.defaultValue = el.checked;
 				break;
 			default :
-				el.value = data;
+			el.value = GSUtil.normalize(data);
+			if (defaults) el.defaultValue = el.value;
 		}
 	}
 
 	/**
 	 * Convert form elements into JSON object
 	 * @param {HTMLElement} owner 
-	 * @param {string} qry 
-	 * @param {boolean} invalid Should include invalid fields
-	 * @returns {object}
+	 * @param {String} qry 
+	 * @param {Boolean} invalid Should include invalid fields
+	 * @param {Boolean} defaults Set default value for form reset
+	 * @returns {Object}
 	 */
-	static toObject(owner, qry = 'input, textarea, select, output', invalid = true) {
+	static toObject(owner, qry = 'input, textarea, select, output', invalid = true, defaults = false) {
 		const root = GSDOM.unwrap(owner);
 		const params = {};
 		GSDOM.queryAll(root, qry)
 			.filter(el => el.name)
 			.filter(el => el.dataset.ignore !== 'true')
 			.filter(el => invalid ? true : el.checkValidity())
-			.forEach(el => {
-				if (el.type !== 'radio') {
-					//params[el.name] = GSDOM.toValue(el);
-					GSData.writeToOject(params, el.name, GSDOM.toValue(el));
-				} else if (el.checked) {
-					//params[el.name] = GSDOM.toValue(el);
-					GSData.writeToOject(params, el.name, GSDOM.toValue(el));
-				}
-			});
+			.forEach(el => GSDOM.fromElement2Object(el, params, defaults));
 		return params;
 	}
 
 	/**
 	 * Convert JSON Object into HTMLElements (input)
 	 * @param {HTMLElement} owner Root selector (form)
-	 * @param {object} obj Data source key/value pairs
-	 * @param {string} qry Element type selector,defaults to form elements 
-	 * @returns 
+	 * @param {Object} obj Data source key/value pairs
+	 * @param {String} qry Element type selector,defaults to form elements 
+	 * @param {Boolean} defaults Set default value for form reset  
+	 * @returns {Object}
 	 */
-	static fromObject(owner, obj, qry = 'input, textarea, select, output') {
+	static fromObject(owner, obj, qry = 'input, textarea, select, output', defaults = false) {
 		obj = GSUtil.toJson(obj);
 		const root = GSDOM.unwrap(owner);
 		const list = GSDOM.queryAll(root, qry); // root.querySelectorAll(qry);
-		Array.from(list).forEach(el => GSDOM.fromObject2Element(el, obj));
+		Array.from(list).forEach(el => GSDOM.fromObject2Element(el, obj, defaults));
 	}
 
 	/**
 	 * Convert JSON Object into HTMLElement (input)
 	 * @param {HTMLElement} owner Element to populate
-	 * @param {object} obj Data source key/value pairs
-	 */	
-	static fromObject2Element(el, obj) {
+	 * @param {Object} obj Data source key/value pairs
+	 * @param {Boolean} defaults Set default value for form reset
+	 */
+	static fromObject2Element(el, obj, defaults = false) {
 		if (!GSData.objectPathExist(obj, el?.name)) return;
 		const val = GSData.readFromObject(obj, el.name);
 		if (el.type !== 'radio') {
 			//GSDOM.fromValue(el, obj[el.name]);
-			GSDOM.fromValue(el, val);
+			GSDOM.fromValue(el, val, defaults);
 		} else if (el.value === val) el.checked = true; 
+	}
+
+	/**
+	 * Convert HTMLElement (input) value to JSON Object  
+	 * @param {HTMLElement} owner Element value source
+	 * @param {Object} obj Object to populate 
+	 * @param {Boolean} defaults Set default value for form reset
+	 */
+	static fromElement2Object(el, obj, defaults = false) {
+		if (el.type !== 'radio') {
+			//params[el.name] = GSDOM.toValue(el);
+			GSData.writeToOject(obj, el.name, GSDOM.toValue(el, defaults));
+		} else if (el.checked) {
+			//params[el.name] = GSDOM.toValue(el);
+			GSData.writeToOject(obj, el.name, GSDOM.toValue(el, defaults));
+		}
 	}
 
 	/**
 	 * Convert HTMLElement into a JSON object
 	 * @param {HTMLElement|Array} own 
-	 * @param {boolean} recursive 
-	 * @returns {object}
+	 * @param {Boolean} recursive 
+	 * @param {Boolean} plain  If false, will include #tagName
+	 * @param {Object} definitions Json data type definitions	
+	 * @returns {Object}
 	 */
-	static toJson(own, recursive = true) {
-		if (Array.isArray(own)) return own.map(o => GSDOM.toJson(o, recursive));
+	static toJson(own, recursive = true, plain = false, definitions) {
+		if (Array.isArray(own)) return own.map(o => GSDOM.toJson(o, recursive,plain,definitions));
 		const obj = {};
 		if (!GSDOM.isHTMLElement(own)) return obj;
 
-		obj['#tagName'] = own.tagName.toLowerCase();
+		if (!plain) obj['#tagName'] = own.tagName.toLowerCase();
+		obj['$text'] = own.innerText;
 
-		Array.from(own.attributes).forEach(v => obj[v.name] = v.value);
+		//obj.dataset = Object.assign({}, own.dataset);
+
+		const props = definitions || GSDOM.allProperties(own);
+		Array.from(own.attributes).forEach(v => {
+			const type = props[v.name]?.type;
+			switch (type) {
+				case Boolean:
+					obj[v.name] = own.hasAttribute(v.name);
+					break;
+				case Number:
+					obj[v.name] = GSAttr.getAsNum(own, v.name);
+					break;
+				default:
+					obj[v.name] = v.value;
+					break;
+			}
+		});
 
 		if (recursive) {
-			const children = Array.from(own.children);
-			if (children.length > 0) {
-				obj.items = [];
-				children.forEach(el => obj.items.push(GSDOM.toJson(el)));
-			}
+			const children = Array.from(own.children).map(el => GSDOM.toJson(el, recursive, plain, definitions));
+			if (children.length > 0) obj.items = children;
 		}
 
 		return obj;
@@ -893,13 +934,14 @@ export default class GSDOM {
 
 	/**
 	 * Set value to a element by css selector
-	 * @param {string} qry 
-	 * @param {string} val 
-	 * @param {HTMLElement} own 
+	 * @param {String} qry 
+	 * @param {String} val 
+	 * @param {HTMLElement} own
+	 * @param {Boolean} defaults Set default value for form reset 
 	 */
-	static setValue(qry, val, own) {
+	static setValue(qry, val, own, defaults = false) {
 		const el = GSDOM.queryAll(own, qry);
-		el.forEach(it => GSDOM.fromValue(it, val));
+		el.forEach(it => GSDOM.fromValue(it, val, defaults));
 	}
 
 	/**
@@ -986,6 +1028,38 @@ export default class GSDOM {
 			sts = false;
 		}
 		return sts;
+	}
+
+	/**
+	 * Reset form element
+	 * @param {*} element 
+	 * @returns 
+	 */
+	static reset(element) {
+		if(GSDOM.isFormElement(element)) {
+			if (!GSDOM.resetSelect(element)) {
+				element.dataset.typed = false;
+				element.value = element.defaultValue;
+				GSDOM.#dispatch(element);
+				return true;	
+			}
+		} 		
+	}
+
+	/**
+	 * Reset select element to default value
+	 * @param {HTMLSelectElement} element 
+	 */
+	static resetSelect(element) {
+		if (GSDOM.isSelect(element)) {
+			Array.from(element.options).forEach(el => el.selected = el.hasAttribute('selected'));
+			GSDOM.#dispatch(element);
+			return true;
+		}
+	}
+	
+	static #dispatch(element) {
+		element.dispatchEvent(new Event('change', { bubbles: true, composed: true }));
 	}
 
 	static {
