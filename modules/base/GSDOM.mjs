@@ -1090,28 +1090,6 @@ export class GSDOM {
 	}
 
 	/**
-	 * Extract and merge all static properties definition from WebComponent instance
-	 * @param {GSElement} obj 
-	 * @returns {Object}
-	 */
-	static allProperties(obj) {
-		const list = [...GSDOM.inheritance(obj)].map(o => o.properties).filter(o => o);
-		list.push(obj.constructor?.properties || obj.properties);
-		return GSData.mergeObjects(list);
-	}
-
-	/**
-	 * Return element template ref
-	 * @param {GSElement} host 
-	 * @returns 
-	 */
-	static templateRef(host) {
-		if (!host) return;
-		if (host.tagName === 'GS-TEMPLATE') return host.src;
-		return host.template || host.query?.('template', false);
-	}
-
-	/**
 	 * Reset form element
 	 * @param {*} element 
 	 * @returns 
@@ -1143,6 +1121,29 @@ export class GSDOM {
 		element.dispatchEvent(new Event('change', { bubbles: true, composed: true }));
 	}
 
+
+	/**
+	 * Extract and merge all static properties definition from WebComponent instance
+	 * @param {GSElement} obj 
+	 * @returns {Object}
+	 */
+	static allProperties(obj) {
+		const list = [...GSDOM.inheritance(obj)].map(o => o.properties).filter(o => o);
+		list.push(obj.constructor?.properties || obj.properties);
+		return GSData.mergeObjects(list);
+	}
+
+	/**
+	 * Return element template ref
+	 * @param {GSElement} host 
+	 * @returns 
+	 */
+	static templateRef(host) {
+		if (!host) return;
+		if (host.tagName === 'GS-TEMPLATE') return host.src;
+		return host.template || host.query?.('template', false);
+	}
+		
 	static {
 		Object.seal(GSDOM);
 		globalThis.GSDOM = GSDOM;
