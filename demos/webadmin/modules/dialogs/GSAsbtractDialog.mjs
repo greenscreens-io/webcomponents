@@ -107,8 +107,7 @@ export default class GSAsbtractDialog extends GSDialog {
     #update(data) {
         if (GSUtil.isJson(data)) {
             const me = this;
-            me.reset();
-            me.forms.forEach(f => f.data = data);
+            me.reset(data);
             me.emit('change');
         }
     }

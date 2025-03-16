@@ -249,7 +249,10 @@ export default class GSDialog extends GSElement {
 
   reset(data, index = 0) {
     const me = this;
-    me.forms.forEach(f => {f.reset(); GSDOM.fromObject(f, data);});
+    me.forms.forEach(f => {
+      f.reset(); 
+      if(data) GSDOM.fromObject(f, data);
+    });
     const tab = me.query('GS-TAB');
     if (tab && index > -1) tab.index = GSUtil.asNum(index, 0);
   }
