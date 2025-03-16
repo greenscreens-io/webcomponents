@@ -90,7 +90,9 @@ export default class GSAsbtractDialog extends GSDialog {
 	}
 	
 	afterOpen() {
-	    this.#update(this.#data);
+		const me = this;
+		me.reset();
+	    me.#update(me.#data);
 	}
 	
 	async onFormInit(form, data) {
