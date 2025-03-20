@@ -693,7 +693,7 @@ export class GSDOM {
 				val = Array.from(el.selectedOptions).map(o => o.value);
 				break;
 			case 'checkbox':
-				if (el.hasAttribute('value') && el.value) {
+				if (GSUtil.isStringNonEmpty(el.value)) {
 					val = el.checked ? el.value : null;
 				} else {
 					val = el.checked;
@@ -737,7 +737,7 @@ export class GSDOM {
 
 		switch (el.type) {
 			case 'checkbox':
-				if (el.hasAttribute('value')) {
+				if (GSUtil.isStringNonEmpty(el.value)) {
 					el.checked = data === el.value;
 				} else {
 					el.checked = data == true;
