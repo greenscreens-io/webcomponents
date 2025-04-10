@@ -1,5 +1,8 @@
 # [WebComponents](https://webcomponents.greenscreens.ltd/) for [Bootstrap 5.2.0+](https://getbootstrap.com/)
 
+# Release v1.9.7 (10.04.2025.)
+ - GSInputExt - input flags fix
+
 # Release v1.9.6 (06.01.2025.)
  - GSIcon added
  - GSButton update for GSIcon
