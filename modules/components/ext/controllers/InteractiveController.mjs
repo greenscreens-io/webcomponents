@@ -147,7 +147,9 @@ export class InteractiveController {
       isMatch ? GSDOM.show(el) : GSDOM.hide(el);
     }
 
-    this.formElements.forEach(el => GSAttr.set(el, 'data-ignore', isMatch ? null : true));
+    //this.formElements.forEach(el => GSAttr.set(el, 'data-ignore', isMatch ? null : true));
+    GSAttr.set(el, 'data-ignore', isMatch ? null : true);
+    GSDOM.queryAll(el, 'input,textarea,select').forEach(el => GSAttr.set(el, 'data-ignore', isMatch ? null : true));
   }
 
   #isInList() {
