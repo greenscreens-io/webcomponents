@@ -2,6 +2,8 @@
 
 # Release v1.9.7 (10.04.2025.)
  - GSInputExt - input flags fix
+ - GSDialog - added "actions" slot
+ - GSModal - added "actions" slot
 
 # Release v1.9.6 (06.01.2025.)
  - GSIcon added

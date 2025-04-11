@@ -535,6 +535,7 @@ export default class GSDialog extends GSElement {
               <slot name="body"></slot>
             </div>
             <div class="card-footer d-flex user-select-none justify-content-${me.align} ${me.cssFooter}">
+              <slot name="actions"></slot>
               <button class="btn ${me.cssButtonCancel} dialog-cancel" data-action="cancel">${me.buttonCancel}</button>
               &nbsp;
               <button class="btn ${me.cssButtonOk} dialog-ok" data-action="ok">${me.buttonOk}</button>

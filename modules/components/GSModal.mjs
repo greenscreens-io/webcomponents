@@ -475,6 +475,7 @@ export default class GSModal extends GSElement {
                <slot name="body"></slot>
              </div>
              <div class="modal-footer border-0 user-select-none justify-content-${me.align} ${me.cssFooter}">
+               <slot name="actions"></slot>
                <button class="btn ${me.cssButtonCancel} modal-cancel" data-action="cancel">${me.buttonCancel}</button>
                <button class="btn ${me.cssButtonOk} modal-ok" data-action="ok">${me.buttonOk}</button>
              </div>
