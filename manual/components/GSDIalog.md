@@ -39,6 +39,7 @@ This is browser native version t oBootstrap Modal. If ```<dialog>``` si not supp
 
 | Name               | Description                                              |
 |--------------------|----------------------------------------------------------|
+| actions            | Place HTML content into button area                      |
 | title              | Place HTML content into title position                   |
 | body               | Place HTML content into body position                    |
 | extra              | Place extra HTML content for out of UI elements          |

@@ -154,6 +154,7 @@ export class GSDialogElement extends GSElement {
     const isFooter = me.cancelable || me.closable;
     if (!isFooter) return '';
     return html`<div class="card-footer d-flex user-select-none justify-content-${me.buttonAlign} ${me.cssFooter}">
+       <slot name="actions"></slot>
       ${me.#renderCancel()} &nbsp;${me.#renderConfirm()}
       </div>`;
   }
