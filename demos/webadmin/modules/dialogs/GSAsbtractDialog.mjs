@@ -53,14 +53,16 @@ export default class GSAsbtractDialog extends GSDialog {
             let tpl = await GSLoader.getTemplate(me.dialogTemplate);
 			const hasNotify = tpl.indexOf('gs-notification') > -1;
             tpl = GSDOM.parse(tpl);
-            tpl.body.firstElementChild.slot = 'body';
+            Array.from(tpl.body.children).forEach(el => {
+                if (!el.slot) el.slot="body";
+                GSDOM.appendChild(me, el);
+            });   
             GSDOM.appendChild(me, tpl.body.firstElementChild);
 			if (!hasNotify) {
 				tpl = GSDOM.parse('<gs-notification id="notification"></gs-notification>');
 				tpl.body.firstElementChild.slot = 'extra';
 				GSDOM.appendChild(me, tpl.body.firstElementChild);	
-            }			
-            //GSDOM.setHTML(me, tpl);
+            }
         }
         if (me.dialogTitle) me.title = me.dialogTitle;
     }

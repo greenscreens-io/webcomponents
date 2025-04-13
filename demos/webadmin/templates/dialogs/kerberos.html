@@ -3,8 +3,8 @@
 	<gs-form-group css="m-1" name="sso" label="Status" autocomplete="off"
 	    description="Enable Single Sign On. IBM system must be configured to use Kerberos for signon.">
 	    <template>
-	        <select class="form-select" id="sso" name="sso" required="" selected="false">
-	            <option value="false">Disabled</option>
+	        <select class="form-select" id="sso" name="sso" required>
+	            <option value="false" selected>Disabled</option>
 	            <option value="true">Enabled</option>
 	      </select>        
 	    </template>
@@ -17,15 +17,46 @@
 	</gs-form-group>
 	
 	<gs-form-group css="m-1" name="ssoSPN" label="SPN" autocomplete="off" list="spn"
+		placeholder="HTTP/host.domain.com@REALM.COM"
 	    description="SPN name for this service.">
 		<datalist slot="footer" id="spn" is="gs-ext-datalist"></datalist>
 	</gs-form-group>
-	
-	<gs-form-group css="m-1" name="btnKDC" label="" icon="false" placement="start"
-	    description="Resync data from KDC">
+
+	<br>
+
+	<gs-form-group css="m-1" name="ldap" label="LDAP" autocomplete="off"
+	    description="Use LDAP to retrieve user details (groups)">
 	    <template>
-	        <gs-button action="reload" id="btnKDC" css="btn btn-sm btn-secondary d-inline" title="Reload"></gs-button>
-	    </template>
+	        <select class="form-select" id="ldap" name="ldap" required>
+	            <option value="false" selected>Disabled</option>
+	            <option value="true">Enabled</option>
+	      </select>        
+	    </template>	    
 	</gs-form-group>
 
+
+	<gs-form-group css="m-1" name="ldapSecure" label="LDAP Secured" autocomplete="off" 
+	    description="Use LDAP secured network">
+	    <template>
+	        <select class="form-select" id="ldapSecure" name="ldapSecure" required>
+	            <option value="false" selected>Disabled</option>
+	            <option value="true">Enabled</option>
+	      </select>        
+	    </template>	    
+	</gs-form-group>
+
+	<gs-form-group css="m-1" name="ldapPort" label="LDAP Port" autocomplete="off" list="ports"
+		placeholder="LDAP port to connect to"
+	    description="SPN name for this service.">
+		<datalist slot="footer" id="ports" is="gs-ext-datalist">
+		  <option value="389"></option>
+  		  <option value="636"></option>
+		</datalist>
+	</gs-form-group>
+	
 </form>
+
+<gs-button slot="actions" description="Resync data from KDC" 
+		action="reload-kerberos" id="btnKDC" title="Reload"
+		css="btn btn-secondary me-1 d-inline"></gs-button>
+		

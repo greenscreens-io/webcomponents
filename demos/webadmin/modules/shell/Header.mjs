@@ -7,7 +7,7 @@
  * @module shell
  */
 
-import { GSComponents, GSFunction, GSElement, GSUtil } from '/webcomponents/release/esm/io.greenscreens.components.all.esm.min.js';
+import { GSComponents, GSElement, GSEvents } from '/webcomponents/release/esm/io.greenscreens.components.all.esm.min.js';
 import Utils from "../utils/Utils.mjs";
 
 /**
@@ -28,28 +28,7 @@ export default class HeaderUI extends GSElement {
 
     onReady() {
         super.onReady();
-        const me = this;
-        me.on('action', me.#onAction.bind(me));
-        me.queryAll('gs-dropdown').forEach(el => me.attachEvent(el, 'action', me.#onAction.bind(me)));
-    }
-
-    async #onAction(e) {
-        const me = this;
-        try {
-            const fnName = e?.detail?.action || e?.detail?.source?.target?.dataset?.action;
-            const action = GSUtil.capitalizeAttr(fnName);
-            const fn = me[action];
-            if (GSFunction.isFunction(fn)) {
-				GSEvents.prevent(e);		
-                if (GSFunction.isFunctionAsync(fn)) {
-                    await me[action](e);
-                } else {
-                    me[action](e);
-                }
-            }
-        } catch (e) {
-            Utils.handleError(e);
-        }
+        GSEvents.monitorAction(this);
     }
 
     /**
@@ -82,27 +61,27 @@ export default class HeaderUI extends GSElement {
     */
 
 	// reload certificates into server
-	async certServerRefresh() {
+	async onCertServerRefresh() {
         const o = DEMO ? DEMO : await io.greenscreens.Certificate.reload();
         const msg = o.msg || 'Certificates applied to the server.';
         Utils.inform(true, msg);
 	}
 
     // toggle client verification
-    async certClientVerify() {
+    async onCertClientVerify() {
         const o = DEMO ? DEMO : await io.greenscreens.Certificate.verifySSLClient(2);
         const msg = o.msg || 'Client SSL verification changed.';
         Utils.inform(true, msg + '<br>Restart server to apply changes.');
     }
 
     // regenerate session keys
-    async certGenTerm() {
+    async onCertGenTerm() {
         const o = DEMO ? DEMO : await io.greenscreens.Server.regenerate();
         if (o.code === 'RSA') Utils.inform(true, 'New encryption keys generated');
     }
 
     // generate server cert request
-    async certGenReq() {
+    async onCertGenReq() {
         const o = DEMO ? DEMO : await io.greenscreens.Certificate.request();
         const csr = o.data?.data?.commonNameServer || 'server_request';
         Utils.download(csr + '.csr', o.data.requestPem);
@@ -114,30 +93,31 @@ export default class HeaderUI extends GSElement {
     }
 
     // generate server cert
-    async certGenSvr() {
+    async onCertGenSvr() {
         const sts = confirm('Are you sure? Action will overwrite existnig certificate.');
         if (!sts) return;
         const o = DEMO ? DEMO : await io.greenscreens.Certificate.generate(true);
         Utils.inform(true, 'New server certificate generated! <br> Please, restart server for changes to apply.');
     }
 
-    certExport() {
+    onCertExport() {
         Utils.openInNewTab(`${location.origin}/services/certificate?id=0`);
         Utils.openInNewTab(`${location.origin}/services/certificate?id=1`);
     }
 
-    explorer() {
+    onExplorer() {
         Utils.openInNewTab(`${location.origin}/admin/explorer`, 'toolbar=no,scrollbars=yes,resizable=yes');
     }
 
-    downloadSavf() {
+    onDownloadSavf() {
         Utils.openInNewTab(`${location.origin}/services/admintransfer?type=savf`);
     }
-    downloadConfig() {
+
+    onDownloadConfig() {
         Utils.openInNewTab(`${location.origin}/services/admintransfer?type=conf`);
     }
 
-    downloadLogs() {
+    onDownloadLogs() {
         Utils.openInNewTab(`${location.origin}/services/admintransfer?type=log`);
     }
 

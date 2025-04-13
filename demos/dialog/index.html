@@ -23,7 +23,8 @@
         <script type="module" src="/webcomponents/modules/components/GSButton.mjs"></script>
         <script type="module" src="/webcomponents/modules/components/GSDialog.mjs"></script>
         <script type="module" src="/webcomponents/modules/components/toast/index.mjs"></script>
-        
+
+
         <gs-css url="/webcomponents/assets/css/io.greenscreens.bootstrap.css"></gs-css>
         <gs-css url="/webcomponents/assets/icons/bootstrap-icons.css" notheme="true"></gs-css>
         
@@ -42,11 +43,13 @@
         <a class="btn btn-primary " data-bs-toggle="dialog" href="#dialog1">Toggle with A Tag</a>
         <gs-button css="btn-primary" title="Toggle with GS-BUTTON" toggle="dialog" target="#dialog1"
             icon="bi-alarm me-1"></gs-button>
+
+        <a class="btn btn-primary " data-bs-toggle="dialog" href="#dialog2">Toggle second</a>
     </div>
 
     <gs-dialog id="dialog1" visible="true" css="shadow-sm rounded p-3" _closable="false" _cancelable="false">
         <h4 slot="title">Login</h4>
-        <gs-template slot="body" href="dialog.tpl"></gs-template>
+        <gs-template slot="body" href="dialog.html"></gs-template>
         <gs-button slot="actions" css="btn-primary me-1" title="Custom action" icon="bi-alarm me-1" toggle="dialog" target="#dialog1"></gs-button>
     </gs-dialog>
 
