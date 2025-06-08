@@ -213,7 +213,7 @@ export default class GSFormGroup extends GSElement {
                ${me.#autocomplete} ${me.#autocapitalize} ${me.#multiple} ${checked}
                ${me.#mask} ${me.#pattern} ${value} ${me.#list} ${me.#accept}
                ${me.#step} ${me.#min} ${me.#max} 
-               ${me.#minlength} ${me.#maxlength} title="${me.description}"
+               ${me.#minlength} ${me.#maxlength} title="${GSUtil.sanitize(me.description)}"
                ${me.#readonly} ${me.#required} ${me.#disabled} ${me.#reveal}
                >`;
    }
@@ -323,7 +323,7 @@ export default class GSFormGroup extends GSElement {
    get #tooltip() {
       const me = this;
       const tgt = me.hasIcon ? '' : `target="${me.name}"`;
-      return me.description.trim() ? `<gs-tooltip placement="${me.placement}" title="${me.description}" ${tgt}></gs-tooltip>` : '';
+      return me.description.trim() ? `<gs-tooltip placement="${me.placement}" title="${GSUtil.sanitize(me.description)}" ${tgt}></gs-tooltip>` : '';
    }
 
    get #placeholder() {

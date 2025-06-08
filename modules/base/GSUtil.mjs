@@ -156,8 +156,14 @@ export default class GSUtil {
 			'"': '&quot;',
 			"'": '&#x27;',
 			"/": '&#x2F;',
+			"\n": '<br>',
+			"\r": '<br>',
+			"\t": '&nbsp;&nbsp;&nbsp;&nbsp;',
+			' ': '&nbsp;',
+			'\\': '&#x5C;',
+			'`': '&#x60;'
 		};
-		const reg = /[&<>"'/]/ig;
+		const reg = new RegExp(`[${Object.keys(map).join('')}]`, 'ig');
 		return string.replace(reg, (match) => (map[match]));
 	}
 

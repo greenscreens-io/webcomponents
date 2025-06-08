@@ -636,7 +636,7 @@ export default class GSElement extends HTMLElement {
 	}
 
 	/**
-	 * Called after component is generated, with all tempaltes inplace.
+	 * Called after component is generated, with all templates inplace.
 	 * Use in inherited classes t odo a preprocessing before notifying / register component.
 	 */
 	async onBeforeReady() {
