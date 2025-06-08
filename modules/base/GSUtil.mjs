@@ -141,7 +141,7 @@ export class GSUtil {
 	 * @param {string} string 
 	 * @returns 
 	 */
-	static sanitize(string = '') {
+	static sanitize(string = '') {		
 		const map = {
 			'&': '&amp;',
 			'<': '&lt;',
@@ -149,8 +149,14 @@ export class GSUtil {
 			'"': '&quot;',
 			"'": '&#x27;',
 			"/": '&#x2F;',
+			"\n": '<br>',
+			"\r": '<br>',
+			"\t": '&nbsp;&nbsp;&nbsp;&nbsp;',
+			' ': '&nbsp;',
+			'\\': '&#x5C;',
+			'`': '&#x60;'
 		};
-		const reg = /[&<>"'/]/ig;
+		const reg = new RegExp(`[${Object.keys(map).join('')}]`, 'ig');
 		return string.replace(reg, (match) => (map[match]));
 	}
 		

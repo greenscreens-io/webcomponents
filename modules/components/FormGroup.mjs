@@ -494,6 +494,11 @@ export class GSFormGroupElement extends GSElement {
     if (!allowed) throw new Error(GSDOM.toValidationError(me, tagList));
   }
 
+  translate(value = '') {
+    value = GSUtil.sanitize(value);
+    return super.translate(value);
+  }
+
   get isFloating() {
     return this.layout === 'floating';
   }
