@@ -67,6 +67,15 @@ export class CacheEngine {
     return cache.match(request);
   }
 
+  async #store(request, response, event) {
+      const me = this;
+      if (event) {
+        event.waitUntil(me.putInCache(request, response.clone()));
+      } else {
+        await me.putInCache(request, response.clone());
+      }
+  }
+
   /**
    * Fetch resource from network and cache it before returning the result.
    * @param {*} request 
@@ -77,11 +86,7 @@ export class CacheEngine {
     const me = this;
     const fetchedResponse = await fetch(request);
     if (fetchedResponse.ok) {
-      if (event) {
-        event.waitUntil(me.putInCache(request, fetchedResponse.clone()));
-      } else {
-        await me.putInCache(request, fetchedResponse.clone());
-      }
+      await me.#store(request, fetchedResponse);
     }
     return fetchedResponse;
   }
@@ -103,7 +108,7 @@ export class CacheEngine {
     // Next try to use (and cache) the preloaded response, if it's there
     const preloadResponse = await event?.preloadResponse;
     if (preloadResponse) {
-      event.waitUntil(me.putInCache(request, preloadResponse.clone()));
+      await me.#store(request, fetchedResponse);
       return preloadResponse;
     }    
 

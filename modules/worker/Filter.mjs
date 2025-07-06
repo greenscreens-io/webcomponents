@@ -9,8 +9,10 @@
 export class FilterEngine {
 
   #filters = new Map();
+  #ignores = new Map();
 
-  constructor(filters) {
+  constructor(filters, nocache) {
+    this.registerAll([{name: 'nocache', rule: nocache, ignore: true}]);
     this.registerAll(filters);
   }
 
@@ -27,9 +29,9 @@ export class FilterEngine {
       }
 
       if (filter.fn) {
-        me.register(filter.name, filter.fn);
+        me.register(filter.name, filter.fn, filter.ignore);
       } else if (filter.rule instanceof RegExp) {
-        me.register(filter.name, me.#regexFilter(filter));
+        me.register(filter.name, me.#regexFilter(filter), filter.ignore);
       }
     }
   }
@@ -46,24 +48,37 @@ export class FilterEngine {
     };
   }
 
-  register(name, filter) {
-    if (this.#filters.has(name)) {
+  register(name, filter, ignore = false) {
+    const me = this;
+    if (me.#filters.has(name)) {
       console.warn(`Filter with name ${name} already exists.`);
       return;
     }
-    this.#filters.set(name, filter);
+    if (ignore) {
+      me.#ignores.set(name, filter);
+    } else {
+      me.#filters.set(name, filter);
+    }
   }
 
   unregister(name) {
-    if (!this.#filters.has(name)) {
+    const me = this;
+    if (!me.#filters.has(name)) {
       console.warn(`Filter with name ${name} does not exist.`);
       return;
     }
-    this.#filters.delete(name);
+    me.#filters.delete(name);
   }
 
   match(request) {
-    for (const [name, filter] of this.#filters.entries()) {
+
+    for (const filter of this.#ignores.values()) {
+      if (filter(request)) {
+        return false; 
+      }
+    }
+
+    for (const filter of this.#filters.values()) {
       if (filter(request)) {
         return true;
       }

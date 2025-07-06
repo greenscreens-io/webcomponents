@@ -26,6 +26,7 @@ const filters = [
 const options = {
   trace: true,
   preload: true,
+  nocache: '_dc=\\d{10,}',
   cacheName: 'GSAdminCache_v1',
   preCacheURL: "/files-to-cache.json",
   precachedAssets: precachedAssets,
