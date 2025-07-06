@@ -32,12 +32,12 @@ export class GSDialogElement extends GSElement {
     escapable: { reflect: true, type: Boolean },
     disabled: { reflect: true, type: Boolean },
 
-    size : size,
+    size: size,
 
     title: { reflect: true },
     message: { reflect: true },
-    cancelText: { reflect: true, attribute:'text-cancel' },
-    confirmText: { reflect: true, attribute:'text-confirm'},
+    cancelText: { reflect: true, attribute: 'text-cancel' },
+    confirmText: { reflect: true, attribute: 'text-confirm' },
 
     minWidth: { reflect: true, type: Number, attribute: 'min-width' },
     buttonAlign: { reflect: true, attribute: 'button-align' },
@@ -59,6 +59,7 @@ export class GSDialogElement extends GSElement {
 
   }
 
+  #pass = false;
   #styleID = GSID.id;
   #dialogRef = createRef();
   #btnConfirmRef = createRef();
@@ -92,6 +93,34 @@ export class GSDialogElement extends GSElement {
   disconnectedCallback() {
     super.disconnectedCallback();
     GSDialogElement.#updateStack();
+  }
+
+  firstUpdated() {
+    super.firstUpdated();
+    this.#pass = true;
+  }
+
+  _shouldUpdate(changed) {
+    const me = this;
+    return me.opened === true || me.#pass;
+  }
+
+  shouldUpdate(changed) {
+    const me = this;
+    const allowed = me.opened === true || me.#pass;
+    // initially hidden dialogs rendering are posponed
+    if (!allowed) {
+      GSUtil.timeout(1000).then(() => {
+        queueMicrotask(() => { 
+          const allowed = me.opened === true || me.#pass;
+          if (!allowed) {
+            me.#pass = true;
+            if (me.isConnected) me.requestUpdate();
+          }
+        });          
+      });
+    }
+    return allowed;
   }
 
   updated(changed) {
@@ -161,8 +190,8 @@ export class GSDialogElement extends GSElement {
 
   renderUI() {
     const me = this;
-    const styles = { 
-      'min-width': me.minWidth > 0 ? `${me.minWidth}px` : undefined 
+    const styles = {
+      'min-width': me.minWidth > 0 ? `${me.minWidth}px` : undefined
     };
     me.dynamicStyle(me.#styleID, styles);
     return html`
@@ -326,7 +355,7 @@ export class GSDialogElement extends GSElement {
    * @param {*} e 
    */
   #onForm(e) {
-    let  sts = true;
+    let sts = true;
     const me = this;
     const data = e.detail;
     switch (data.type) {
@@ -336,7 +365,7 @@ export class GSDialogElement extends GSElement {
         //me.opened = false;
         break;
       case 'valid':
-        me.disabled = data.data === false;     
+        me.disabled = data.data === false;
         break;
     }
     return sts;
@@ -360,7 +389,7 @@ export class GSDialogElement extends GSElement {
   static get top() {
     GSDialogElement.#updateStack();
     const size = GSDialogElement.size;
-    return size === 0 ? null :  GSDialogElement.#STACK[size - 1];
+    return size === 0 ? null : GSDialogElement.#STACK[size - 1];
   }
 
   static get opened() {

@@ -325,8 +325,8 @@ export class GSFormGroupElement extends GSElement {
   #textArea(id, name, value) {
     const me = this;
     me.#initStyle();
-    const placeholder = me.placeholder ? me.translate(me.placeholder) : null;
-    const title = me.title ? me.translate(me.title) : null;
+    const placeholder = me.placeholder ? me.translate(me.placeholder, false) : null;
+    const title = me.title ? me.translate(me.title, false) : null;
 
     return html`<textarea  is="gs-ext-text" 
             ${ref(me.#inputRef)}
@@ -370,10 +370,10 @@ export class GSFormGroupElement extends GSElement {
     const me = this;
     const type = me.isSwitch ? 'checkbox' : me.type;
     let title = me.isRange ? me.value : me.title;
-    title = title ? me.translate(me.title) : title;
+    title = title ? me.translate(me.title, false) : title;
 
-    const placeholder = me.placeholder ? me.translate(me.placeholder) : null;
-    const description = me.description ? me.translate(me.description) : null;
+    const placeholder = me.placeholder ? me.translate(me.placeholder, false) : null;
+    const description = me.description ? me.translate(me.description, false) : null;
     
     me.#initStyle();
 
@@ -494,9 +494,9 @@ export class GSFormGroupElement extends GSElement {
     if (!allowed) throw new Error(GSDOM.toValidationError(me, tagList));
   }
 
-  translate(value = '') {
-    value = GSUtil.sanitize(value);
-    return super.translate(value);
+  translate(value = '', sanitize) {
+    value = super.translate(value);
+    return sanitize? GSUtil.sanitize(value) : value;
   }
 
   get isFloating() {

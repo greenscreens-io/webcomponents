@@ -19,6 +19,11 @@ export class TemplateController {
   static #scheduled = false;
   static #tasks = new Set();
   static #cache = new Map();
+  static #refs = new Set();
+
+  static get isPrefetch() {
+    return globalThis.GS_TEMPLATE_PREFETCH || false;
+  }
 
   constructor(host) {
     const me = this;
@@ -28,7 +33,12 @@ export class TemplateController {
 
   // inherited
   hostConnected() {
-
+    const me = this;
+    /* 
+    if(TemplateController.isPrefetch) {
+      me.hostUpdate();
+    }
+    */
   }
 
   // inherited
@@ -48,7 +58,9 @@ export class TemplateController {
     if (me.#lastRef !== ref) {
       me.#template = TemplateController.#cache.get(ref);      
       me.#lastRef = ref;
-      if (ref && !me.#template) TemplateController.#schedule(this);
+      if (ref && !me.#template) {
+        TemplateController.#schedule(this);
+      }
     }
   }
 
@@ -66,6 +78,13 @@ export class TemplateController {
     const me = this;
     const ref = me.templateRef;
     if (!ref) return;
+    /* prevents double load, but also creates a render issue
+    if (TemplateController.#refs.has(ref)) {
+      // already scheduled
+      return;
+    }
+    TemplateController.#refs.add(ref);
+    */
     let template = null;
     const isTplEl = ref instanceof HTMLTemplateElement;
     const cacheable = GSUtil.isString(ref);
@@ -73,14 +92,19 @@ export class TemplateController {
       template = TemplateController.#cache.get(ref);
     }
     if (!template) {
-      template = isTplEl ? ref : await GSTemplateCache.loadTemplate(true, ref, ref);
+      try {
+        template = isTplEl ? ref : await GSTemplateCache.loadTemplate(true, ref, ref);
+      } catch (err) {
+        TemplateController.#refs.delete(ref);
+        throw err;
+      }
       if (cacheable) {
         TemplateController.#cache.set(ref, template);
       }       
     }
     if (template) {
       me.#template = template;
-      me.#host.requestUpdate();
+      me.#host?.requestUpdate();
     }
   }
 

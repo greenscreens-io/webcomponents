@@ -39,8 +39,8 @@ export class GSAsbtractDialog extends GSDialogElement {
     }
 
     firstUpdated() {
-        super.firstUpdated();
         const me = this;
+        super.firstUpdated();
         me.on('data', me.#onFormData.bind(me));
         me.on('error', me.#onFormError.bind(me));
         me.on('notify', me.#onNotify.bind(me));
@@ -68,7 +68,7 @@ export class GSAsbtractDialog extends GSDialogElement {
     }
 
     afterClose() {
-
+        this.#data = null
     }
 
     get isHashed() {
@@ -89,7 +89,7 @@ export class GSAsbtractDialog extends GSDialogElement {
     }    
 
     async loadDefaults() {
-        return null;
+        return this.#data;
     }
 
     /**

@@ -71,6 +71,17 @@ const extra = {
 };
 
 
+const serviceWorker = {
+    input: 'modules/worker/index.mjs',
+    output: [
+        { file: 'release/esm/io.greenscreens.worker.min.js', format: 'esm', sourcemap: true, plugins: [minesm, sourcemaps] }
+    ],
+    plugins: [
+        gzipPlugin()
+    ]
+};
+
 //export default [core, all, extra]; 
-export default [all];
+//export default [serviceWorker];
+export default [all, serviceWorker];
 

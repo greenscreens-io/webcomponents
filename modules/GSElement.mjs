@@ -128,12 +128,10 @@ export class GSElement extends LitElement {
   willUpdate(changed) {
     const me = this;
     if (changed.has('storage')) {
+      me.#dataController?.hostDisconnected();
+      me.#dataController = undefined;
       if (me.storage) {
-        me.#dataController ??= new DataController(me);
-        me.#dataController.relink?.();
-      } else {
-        me.#dataController?.hostDisconnected();
-        me.#dataController = undefined;
+        me.#dataController = new DataController(me);
       }
     }
   }

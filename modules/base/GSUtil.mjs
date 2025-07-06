@@ -53,6 +53,8 @@ export class GSUtil {
 
 	static extractNumber = (val = '') => val.match(/[\d,\.]*\d/)?.[0];
 
+	static nonNull = value => !GSUtil.isNull(value);
+
 	static asArray(val) {
 		return Array.isArray(val) ? val : [val];
 	}

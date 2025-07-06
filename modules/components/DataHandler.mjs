@@ -92,9 +92,7 @@ export class GSDataHandler extends GSElement {
         const me = this;
         me.#handler = GSReadWriteRegistry.newHandler(me.type, me.storage, false);
         if (me.#config?.length > 0) me.#handler?.addProcessor(me);
-        me.#updateHandler();
-        me.#handler?.enable();
-        me.dataController?.read();
+        me.#updateHandler(true);                
     }
 
     willUpdate(changed) {
@@ -104,7 +102,7 @@ export class GSDataHandler extends GSElement {
         if (changed.has('autorefresh')) me.schedule(me.autorefresh);
     }
 
-    #updateHandler() {
+    #updateHandler(first = false) {
         const me = this;
         if (!me.#handler) return;
 
@@ -120,6 +118,13 @@ export class GSDataHandler extends GSElement {
         me.#handler.sort = me.formatSort(me.sort);
         me.#handler.filter = me.formatFilter(me.filter);
         if (me.autoload) me.read();
+        if (first) {
+            me.#handler.enable();
+            // to prevent double read by this component and table
+            if (me.autoload) {
+                me.dataController?.read();
+            } 
+        }
     }
 
     get isDebug() {

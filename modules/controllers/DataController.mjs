@@ -40,12 +40,6 @@ export class DataController {
     me.#host.removeController(me);
   }
 
-  async relink(read = true) {
-    const me = this;
-    me.#unlisten();
-    me.#listen(read);
-  }
-
   async read(obj) {
     return this.store?.read(this.#host);
   }
@@ -144,20 +138,24 @@ export class DataController {
   async #listen(read = true) {
     const me = this;
     const storage = await me.storage();
-    storage?.on('read', me.#readCallback);
-    storage?.on('write', me.#writeCallback);
-    storage?.on('error', me.#errorCallback);
-    storage?.on('select', me.#selectCallback);
-    if (read) storage.read(me.#host);
+    if (storage) {
+      storage.on('read', me.#readCallback);
+      storage.on('write', me.#writeCallback);
+      storage.on('error', me.#errorCallback);
+      storage.on('select', me.#selectCallback);
+      if (read) storage.read(me.#host);
+    }
   }
 
   #unlisten() {
     const me = this;
     const storage = me.store;
-    storage?.off('read', me.#readCallback);
-    storage?.off('write', me.#writeCallback);
-    storage?.off('error', me.#errorCallback);
-    storage?.off('select', me.#selectCallback);
+    if (storage) {
+      storage.off('read', me.#readCallback);
+      storage.off('write', me.#writeCallback);
+      storage.off('error', me.#errorCallback);
+      storage.off('select', me.#selectCallback);
+    }
   }
 
   #onSelect(e) {

@@ -186,7 +186,7 @@ export class BaseViewUI extends GSElement {
 			me.onError(e);
 		} finally {
 			me.waiter.close();
-			modal.enable();
+			//modal.enable();
 			if (sts) {
 				modal.reset();
 				await modal.close();
@@ -195,7 +195,7 @@ export class BaseViewUI extends GSElement {
 
 		if (sts) {		
 			Utils.notify.warn('', 'Record updated!', false, 2, 0);
-			await me.store.load();
+			await me.store.read();
 			await me.onViewRefresh();
 		} else {
 			me.onViewDetails(e);
@@ -225,7 +225,7 @@ export class BaseViewUI extends GSElement {
 			me.onError(e);
 		} finally {
 			me.waiter.close();
-			modal.enable();
+			//modal.enable();
 			if (sts) {		
 				modal.reset();
 				await modal.close();		
@@ -234,7 +234,7 @@ export class BaseViewUI extends GSElement {
 
 		if (sts) {		
 			Utils.notify.warn('', 'Record created!', false, 2, 0);
-			await me.store.load();
+			await me.store.read();
 			await me.onViewRefresh();
 		} else {
 			me.onViewCreate(e);
