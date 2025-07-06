@@ -24,7 +24,7 @@ export class GSButtonElement extends GSElement {
     title: {},
     tooltip: {},
     text: {},
-    url: {},
+    url: {}
   };
 
   #refEl = createRef();
@@ -85,8 +85,9 @@ export class GSButtonElement extends GSElement {
   #onClick(e) {
     const me = this;
     if(me.toggling) me.toggle();
-    me.iconEl?.animate();
+    me.iconEl?.animate?.();
     me.#onHref(e)
+    if (me.dataset.event) return me.emit(me.dataset.event, null, me.dataset.bubbles, me.dataset.composed, true);
     if (me.isReset) return me.form?.reset();
     if (me.isSubmit) return me.form?.submit();
     me.notify();
@@ -103,11 +104,11 @@ export class GSButtonElement extends GSElement {
   }
 
   #onMouseOver() {
-    this.iconEl?.hover(true);
+    this.iconEl?.hover?.(true);
   }
 
   #onMouseOut() {
-    this.iconEl?.hover(false);
+    this.iconEl?.hover?.(false);
   }
 
   get isReset() {

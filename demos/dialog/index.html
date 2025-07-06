@@ -32,6 +32,7 @@
     <script type="module" src="/bootstrap-lit/modules/components/Dialog.mjs"></script>
     <script type="module" src="/bootstrap-lit/modules/components/Form.mjs"></script>
     <script type="module" src="/bootstrap-lit/modules/components/Button.mjs"></script>
+    <script type="module" src="/bootstrap-lit/modules/components/Icon.mjs"></script>
     <script type="module" src="/bootstrap-lit/modules/components/toast/index.mjs"></script>
 </head>
 
@@ -46,7 +47,7 @@
 
     <gs-dialog id="dialog1" css="shadow-sm rounded p-3" onready="initialize" opened escapable closable cancelable>
         <h4 slot="title">Login</h4>
-        <gs-template slot="body" src="./dialog.tpl"></gs-template>
+        <gs-template slot="body" src="./dialog.htm"></gs-template>
     </gs-dialog>
 
     <gs-dialog id="dialog2" button-align="center" shadow rounded css="p-3" escapable closable cancelable></gs-dialog>

@@ -22,8 +22,11 @@
     <div class="row m-1">
         <div class="col"></div>
         <div class="col d-flex">
+            <!-- can be used if multiple forms exist on a dialog, to prevent dialog closing, will submit only a single form -->
             <gs-button type="submit" color="primary" css="me-1" title="Submit"></gs-button>
-            <gs-button type="button" color="secondary" css="ms-1" title="Cancel"></gs-button>
+            <!-- can be used within dialog to submit all dialog forms and auto close  -->
+            <gs-button type="button" color="primary" css="me-1" title="Confirm" data-gs-event="confirm" data-gs-bubbles="true" data-gs-composed="true"></gs-button>
+            <gs-button type="button" color="secondary" css="ms-1" title="Cancel" data-gs-event="cancel" data-gs-bubbles="true" data-gs-composed="true"></gs-button>
         </div>
         <div class="col d-flex justify-content-end">
             <gs-button type="reset" color="light" css="ms-1" title="Reset"></gs-button>

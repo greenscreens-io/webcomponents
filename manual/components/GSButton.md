@@ -24,13 +24,15 @@ GSButton WebComponent extends [GSElement](../base/GSElement.md) and all its attr
 | toggling           | Enable button active state changes                            |
 | toggle-color       | Button Bootstrap color when in active state (toggled)         |
  
+ 
+
 <br>
  
 **NOTE:**
 
 AttributeController is attached to the button. 
  
-Please refer to the [AttributeController](../base/AttributeController.md) for attributes click handling options.
+Please refer to the [AttributeController](../controllers/AttributeController.md) for attributes click handling options.
  
 <br>
  
@@ -67,6 +69,8 @@ For more details, check [button.html](../../demos/button.html)
 <!-- Toggle self state with 'active' class -->
 <gs-button color="primary" title="Toggler" tooltip="Test"></gs-button>
  
+ <!-- Send a nevent to parent component -->
+ <gs-button color="primary" title="Confirm" data-gs-event="confirm" data-gs-bubbles="true" data-gs-composed="true"></gs-button>
 ```
 
 <br>

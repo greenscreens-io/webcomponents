@@ -272,6 +272,7 @@ export class GSFormElement extends GSElement {
       if (field.validity.valid) me.onFieldChange(field);
     }
     me.#toggle(me.isValid);
+    me.#notify(me.isValid);
   }
 
   #notify(isValid = false) {

@@ -201,6 +201,7 @@ export class GSDialogElement extends GSElement {
             @cancel="${me.#onCancel.bind(me)}"
             @keydown="${me.#onKeyDown.bind(me)}"
             @form="${me.#onForm.bind(me)}"
+            @confirm="${me.#onConfirm.bind(me)}"
             @submit="${me.#onSubmit.bind(me)}"
             class="${classMap(me.renderClass())}">
             <div class="card ${me.cssContent}">

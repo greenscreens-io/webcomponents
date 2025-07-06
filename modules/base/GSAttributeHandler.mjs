@@ -24,6 +24,7 @@ import { GSTemplateCache } from "./GSTemplateCache.mjs";
  * - data-gs-anchor - where to anchor injected html (self, beforebegin, afterbegin, etc.)
  * - data-gs-attribute - toggle element attribute (receive k=v;k1=v1 or JSON format)
  * - data-gs-call - calls a function on a given target (multiple functions supported)
+ * - data-gs-event - emit event (can bubble or compose)
  * - data-gs-exec - execute a function (alternative to the call)
  * - data-gs-inject - inject HTML content; used for WebComponent append
  * - data-gs-property - togle element property (receive k=v;k1=v1 or JSON format)
@@ -54,6 +55,11 @@ export class GSAttributeHandler {
         anchor: { attribute: 'data-gs-anchor' },
         attribute: { attribute: 'data-gs-attribute' },
         call: { attribute: 'data-gs-call' },
+        
+        event: { attribute: 'data-gs-event' },
+        bubbles: { attribute: 'data-gs-bubbles', type: Boolean },
+        composed: { attribute: 'data-gs-composed', type: Boolean },
+
         exec: { attribute: 'data-gs-exec' },
         inject: { attribute: 'data-gs-inject' },
         property: { attribute: 'data-gs-property' },
@@ -109,6 +115,7 @@ export class GSAttributeHandler {
         me.#handleProperty(target);
         me.#handleToggle(target);
         me.#handleTrigger(target, evt);
+        me.#handleEvent(host, evt);
         me.#handleCall(host, target, evt);
         me.#handleExec(host, target, evt);
         me.#handleTemplate(host, target);
@@ -256,6 +263,10 @@ export class GSAttributeHandler {
         this.triggers.forEach(v => GSEvents.send(target, v, evt));
     }
 
+    #handleEvent(host, evt) {
+        host.emit(this.event, evt, this.bubbles, this.composed, true);
+    }
+
     #handleContent(host, target, value, clean = false) {
         const me = this;
         if (value) {
@@ -388,6 +399,9 @@ export class GSAttributeHandler {
     get anchor() { return this.#proxy.anchor; }
     get attribute() { return this.#proxy.attribute; }
     get exec() { return this.#proxy.exec; }
+    get event() { return this.#proxy.event; }
+    get bubbles() { return this.#proxy.bubbles; }
+    get composed() { return this.#proxy.composed; }
     get call() { return this.#proxy.call; }
     get inject() { return this.#proxy.inject; }
     get property() { return this.#proxy.property; }
