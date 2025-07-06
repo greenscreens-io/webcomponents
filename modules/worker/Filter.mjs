@@ -12,7 +12,6 @@ export class FilterEngine {
   #ignores = new Map();
 
   constructor(filters, nocache) {
-    this.registerAll([{name: 'nocache', rule: nocache, ignore: true}]);
     this.registerAll(filters);
   }
 

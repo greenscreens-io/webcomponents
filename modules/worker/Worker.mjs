@@ -33,7 +33,7 @@ export class WorkerEngine {
     const me = this;
     me.#options = options || {};
     me.#trace = options?.trace || false;
-    me.#filter = new FilterEngine(options?.filters || [], options?.nocache);
+    me.#filter = new FilterEngine(options?.filters || []);
     me.#cache = new CacheEngine(options?.cacheName || 'DefaultCache');
     self.addEventListener('install', me.#onInstall.bind(me));
     self.addEventListener('activate', me.#onActivate.bind(me));

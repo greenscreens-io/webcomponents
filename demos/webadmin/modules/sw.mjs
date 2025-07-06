@@ -18,6 +18,7 @@ const precachedAssets = [
 // json filter example will cache only static json files; ones without query parameters
 // image filter example will cache all image files ergardless query parameters
 const filters = [
+  { name: 'nocache', rule: "_dc=\\d{10,}", ignore : true },
   { name: 'templateFilter', fn: (request) => request.url.includes('/templates/') },
   { name: 'jsonFilter', rule: "\.json$" },
   { name: 'imageFilter', rule: /\.(png|jpg|jpeg|gif|svg)$/, parsed : true },
@@ -26,7 +27,6 @@ const filters = [
 const options = {
   trace: true,
   preload: true,
-  nocache: '_dc=\\d{10,}',
   cacheName: 'GSAdminCache_v1',
   preCacheURL: "/files-to-cache.json",
   precachedAssets: precachedAssets,
