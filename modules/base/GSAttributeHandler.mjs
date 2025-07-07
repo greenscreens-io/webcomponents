@@ -264,7 +264,8 @@ export class GSAttributeHandler {
     }
 
     #handleEvent(host, evt) {
-        host.emit(this.event, evt, this.bubbles, this.composed, true);
+        //host.emit?.(this.event, evt, this.bubbles, this.composed, true);
+        GSEvents.send(host, this.event, evt, this.bubbles, this.composed, true);
     }
 
     #handleContent(host, target, value, clean = false) {

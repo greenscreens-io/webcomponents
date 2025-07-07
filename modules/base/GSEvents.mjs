@@ -209,6 +209,7 @@ export class GSEvents {
 	 * @returns {Boolean} false if event is cancelable, and at least one of the event handlers which received event called Event.preventDefault(). Otherwise true.
 	 */
 	static send(sender = document, name, obj = '', bubbles = false, composed = false, cancelable = false) {
+		if (!GSUtil.isString(name) || name.length === 0) return false;
 		const opt = { detail: obj, bubbles: bubbles, composed: composed, cancelable: cancelable };
 		const event = new CustomEvent(name, opt);
 		return sender?.dispatchEvent(event);
