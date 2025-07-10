@@ -68,7 +68,7 @@ export class GSCacheStyles {
 	/**
 	 * Retrieve stylesheet by unique ID
 	 * @param {String} id 
-	 * @returns {Boolean}
+	 * @returns {CSSStyleSheet}
 	 */
 	static get(id) {
 		return this.#store.get(id);
@@ -126,9 +126,11 @@ export class GSCacheStyles {
 		return Array.from(new Map([...GSCacheStyles.#store].sort((a, b) => String(a[0]).localeCompare(b[0]))).values());
 	}
 
-	/*
-	* Inject CSS used by framework across all shadows
-	*/
+	/**
+	 * Inject CSS used by framework across all shadows
+	 * @param {string} css CSS string to inject
+	 * @param {number} [hash=0] Optional hash for the style
+	 */
 	static adopt(css = '', hash = 0) {
 		if (!css) return;
 		try {

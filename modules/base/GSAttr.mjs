@@ -31,7 +31,7 @@ export class GSAttr {
 	  * Generic function to change element node attribute
 	  * 
 	  * @param {HTMLElement} el Target to receive attribute value
-	  * @param {String} name Attribite name
+	  * @param {String} name Attribute name
 	  * @param {Boolean} val Attribute value
 	  */
 	static toggle(el, name, val = false) {
@@ -109,7 +109,7 @@ export class GSAttr {
 	 * @returns {JSON}
 	 */
 	static getAsJson(el, name = '', val = '0') {
-		const attr = GSAttr.get(el, name, val, {});
+		const attr = GSAttr.get(el, name, val);
 		return GSUtil.toJson(attr);
 	}
 
@@ -141,7 +141,7 @@ export class GSAttr {
 	 * Store data into attribute as JSON string
 	 * @param {HTMLElement} el Element containing attribute
 	 * @param {String} name Attribute name
-	 * @param {string val Default value
+	 * @param {string} val Default value
 	 */
 	static setAsJson(el, name = '', val = '0') {
 		GSAttr.set(el, name, JSON.stringify(val), '{}');
@@ -163,7 +163,7 @@ export class GSAttr {
 	static jsonToAttr(obj, el) {
 		if (!GSAttr.isHTMLElement(el)) return;
 		Object.entries(obj || {})
-		.filter(kv => kv != 'items')
+		.filter(kv => kv[0] != 'items')
 		.filter(kv => kv[0][0] != '#')
 		.filter(kv => kv[0][0] != '$')
 		.map(kv => GSAttr.set(el, kv[0], kv[1]));
@@ -194,6 +194,9 @@ export class GSAttr {
 	/**
 	 * Generic attribute retriever 
 	 * opt format { prop: {type:Number, attribute: 'alt-prop-name'}}
+	 * @param {HTMLElement} host The host element to proxify
+	 * @param {Object} [opt={}] Options object describing attribute mapping and types
+	 * @param {String} [recursive='items'] Property name for recursive proxification of children
 	 * @returns {Proxy}
 	 */
 	static proxify(host, opt = {}, recursive = 'items') {

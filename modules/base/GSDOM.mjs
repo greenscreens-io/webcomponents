@@ -809,10 +809,10 @@ export class GSDOM {
 	static fromElement2Object(el, obj, defaults = false) {
 		if (el.type !== 'radio') {
 			//params[el.name] = GSDOM.toValue(el);
-			GSData.writeToOject(obj, el.name, GSDOM.toValue(el, defaults));
+			GSData.writeToObject(obj, el.name, GSDOM.toValue(el, defaults));
 		} else if (el.checked) {
 			//params[el.name] = GSDOM.toValue(el);
-			GSData.writeToOject(obj, el.name, GSDOM.toValue(el, defaults));
+			GSData.writeToObject(obj, el.name, GSDOM.toValue(el, defaults));
 		}
 	}
 

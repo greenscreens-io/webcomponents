@@ -218,7 +218,7 @@ export class GSAttributeHandler {
         if (tout === 0) {
             toggles.forEach(v => GSDOM.toggleClass(target, v));
         } else {
-            if (target[me.#symbol]) toggles = toggles.reverse();
+            if (target[me.#symbol]) toggles = toggles.slice().reverse();
             for (const v of toggles) {
                 await GSUtil.timeout(tout);
                 GSDOM.toggleClass(target, v);
@@ -421,12 +421,12 @@ export class GSAttributeHandler {
 
     get attributes() {
         const val = this.#proxy.attribute || '';
-        return val.split(/[,;]/g).map(v => v.split('=')).filter(v => GSUtil.isStringNonEmpty(v));
+        return val.split(/[,;]/g).map(v => v.split('=')).filter(v => GSUtil.isStringNonEmpty(v[0]));
     }
 
     get properties() {
         const val = this.#proxy.property || '';
-        return val.split(/[,;]/g).map(v => v.split('=')).filter(v => GSUtil.isStringNonEmpty(v));
+        return val.split(/[,;]/g).map(v => v.split('=')).filter(v => GSUtil.isStringNonEmpty(v[0]));
     }
 
     /**
@@ -453,7 +453,7 @@ export class GSAttributeHandler {
     }
 
     /**
-     * Process data-gs-* attributtes on a element
+     * Process data-gs-* attributes on a element
      * @param {HTMLElement} el 
      * @param {Event} e 
      * @returns 
@@ -483,7 +483,7 @@ export class GSAttributeHandler {
      * Clone element attributes (GS-ITEM to real WebComponent)
      * @param {HTMLElement} from 
      * @param {HTMLElement} to 
-     * @param {boolean} override If 'false' will skip existing atributes
+     * @param {boolean} override If 'false' will skip existing attributes
      */
     static clone(from, to, override = true) {
         const def = GSAttributeHandler.DEFINITION;

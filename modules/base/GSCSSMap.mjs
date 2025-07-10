@@ -45,7 +45,9 @@ export class GSCSSMap {
         if (GSCSSMap.#modern && GSFunction.isFunction(val?.to)) {
             if (val.unit !== 'number') val = val.to('px');
         }
-        return GSUtil.asNum(GSCSSMap.#modern ? val?.value : val.match(/\d*(\.\d*)?/g).filter(v => GSUtil.isNumber(v)).shift());
+        if (GSCSSMap.#modern) return GSUtil.asNum(val?.value);
+        const num = val?.match(/\d*(\.\d*)?/g).filter(v => GSUtil.isNumber(v)).shift();
+        return GSUtil.asNum(num);
     }
 
     matches(name, value) {

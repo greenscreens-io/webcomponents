@@ -16,6 +16,7 @@ const observer = Symbol();
  */
 export class GSAdoptedEngine {
 
+  static timeout = 1000; // Default timeout for adopting stylesheets
   static #timerID = 0;
   static #ID = Date.now();
   static #scheduled = false;

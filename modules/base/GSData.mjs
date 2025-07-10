@@ -24,7 +24,7 @@ export class GSData {
      * @param {Array} data 
      * @returns {Array}
      */
-    static uniqe(data) {
+    static unique(data) {
         return Array.from(new Set(data));
     }
 
@@ -51,7 +51,7 @@ export class GSData {
 
     /**
      * Simple array merge, without duplicates. Used by observableAttributes
-     * TODo improve https://www.geeksforgeeks.org/how-to-convert-array-of-objects-into-unique-array-of-objects-in-javascript/
+     * TODO: improve https://www.geeksforgeeks.org/how-to-convert-array-of-objects-into-unique-array-of-objects-in-javascript/
      * @param {Array} first 
      * @param {Array} second 
      * @param {Boolean} advanced Used when data is Object instead of string
@@ -387,12 +387,12 @@ export class GSData {
      * @param {Boolean} ignoreNull  
      * @param {Object} value 
      */
-    static writeToOject(obj, name, value, ignoreNull = true) {
+    static writeToObject(obj, name, value, ignoreNull = true) {
         if (ignoreNull && GSUtil.isNull(value)) return;
 
         const seg = name.split('.');
         if (seg.length === 1) {
-            return GSData.#writeSingleToOject(obj, name, value);
+            return GSData.#writeSingleToObject(obj, name, value);
         }
 
         const tree = seg.slice(0, -1);
@@ -403,10 +403,10 @@ export class GSData {
             obj = obj[v];
         });
 
-        return GSData.#writeSingleToOject(obj, key, value);
+        return GSData.#writeSingleToObject(obj, key, value);
     }
 
-    static #writeSingleToOject(obj, name, value) {
+    static #writeSingleToObject(obj, name, value) {
         if (obj.hasOwnProperty(name)) {
             if (!Array.isArray(obj[name])) {
                 obj[name] = [obj[name]];

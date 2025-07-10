@@ -23,7 +23,7 @@ export class GSDate extends Date {
 
     format(val = GSDate.DEFAULT_FORMAT, language) {
         const me = this;
-        me.language = language;
+        if (language) me.language = language;
         const obj = me.asJSON();
         return val.replace(GSDate.REGEX_FORMAT, (match, val) => val || obj[match]);
     }
@@ -39,8 +39,12 @@ export class GSDate extends Date {
 
         const mondayFirst = me.#isMondayFirst();
 
-        const shifter = mondayFirst ? -2 : -1;
-        const days = first === 0 ? [] : ' '.repeat(first + shifter).split(' ');
+        const dayOffset = mondayFirst ? -2 : -1;
+        const days = first === 0 ? [] : ' '.repeat(first + dayOffset).split(' ');
+        /*
+        const emptyDays =  first === 0 ? 0 : first + dayOffset;
+        const days = Array.from({ length: emptyDays }, () => '');
+        */
         let i = 1;
         while (i <= last) {
             days.push(i.toString());

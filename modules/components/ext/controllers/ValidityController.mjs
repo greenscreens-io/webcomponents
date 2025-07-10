@@ -36,20 +36,21 @@ export class ValidityController {
 
   hostConnected() {
     const me = this;
-    me.#host.on?.('invalid', me.#invalidCallback);
-    me.#host.on?.('blur', me.#blurCallback);
-    me.#host.on?.('focus', me.#focusCallback);
-    me.#host.on?.('change', me.#changeCallback);
+    me.#host.on('invalid', me.#invalidCallback);
+    me.#host.on('blur', me.#blurCallback);
+    me.#host.on('focus', me.#focusCallback);
+    me.#host.on('change', me.#changeCallback);
     me.#host.on('input', me.#inputCallback);
   }
 
   hostDisconnected() {
     const me = this;
+    delete me.#host.dataset.typed;
     me.#host.removeController?.(me);
-    me.#host.off?.('invalid', me.#invalidCallback);
-    me.#host.off?.('blur', me.#blurCallback);
-    me.#host.off?.('focus', me.#focusCallback);
-    me.#host.off?.('change', me.#changeCallback);
+    me.#host.off('invalid', me.#invalidCallback);
+    me.#host.off('blur', me.#blurCallback);
+    me.#host.off('focus', me.#focusCallback);
+    me.#host.off('change', me.#changeCallback);
     me.#host.off('input', me.#inputCallback);
   }
 
@@ -118,8 +119,11 @@ export class ValidityController {
   }
 
   #onInput(e) {
-    this.#host.dataset.typed = true;
-    this.#processing = false;
+    const me = this;
+    if (!me.#host.dataset.typed) {
+      me.#host.dataset.typed = true;
+    }
+    me.#processing = false;
   }
 
   #onFocus(e) {
