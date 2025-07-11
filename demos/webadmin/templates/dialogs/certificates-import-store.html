@@ -15,10 +15,14 @@
         description="Certificate store password.">
     </gs-form-group>                
     <div class="row form-group m-1">
-        <div class="col-12">
+        <div class="col"></div>
+        <div class="col-8">
             <gs-filebox multiple="false" elid="file" name="file" 
             accept="application/pkcs12,application/x-pkcs12,.p12,.pfx,.pem,.cer"
-            css="" css-input="" css-label="mb-2 text-secondary" css-list="text-info"></gs-filebox>
+            css="" 
+            css-input="form-control d-none" 
+            css-label="mb-2 text-secondary btn btn-secondary text-light py-4" 
+            css-list="text-info"></gs-filebox>
         </div>
     </div>
 
