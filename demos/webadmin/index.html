@@ -22,7 +22,14 @@
         globalThis.GS_LIT_URL = '/webcomponents/release/esm/lit-all.min.js';        
         globalThis.GS_TEMPLATE_URL = '/webcomponents/demos/webadmin/templates/';
         globalThis.GS_ROUTER_URL =  '/webcomponents/demos/webadmin/data/routers/';
+        
+        // This is used to disable caching of templates and data. 
+        // When FALSE, prepends _dc to the URL with dynamic data such as timestamp.
         globalThis.GS_NO_CACHE = true;
+        
+        // This is used to prefetch templates before the component is activated.
+        globalThis.GS_TEMPLATE_PREFETCH = true;
+
         self.DEMO = {success: true, code:'0', data:[], msg:'Test ok'};
         self.GSC = {
             company : 'Green Screens Ltd.'
@@ -41,6 +48,12 @@
 </head>
  
 <body class="overflow-hidden">
+    <!--
+        For service worker to intercept the fetch, it must be served from the root of the domain or use custom scope,
+        Cutom scope to work, web server must respond with "Service-Worker-Allowed : /" header for the service worker file.
+        <gs-service-worker src="./modules/sw.mjs" scope="/"  trace module></gs-service-worker>
+     -->
+    <gs-service-worker src="/sw.mjs" trace module></gs-service-worker>
     <gs-admin-shell visible="true"></gs-admin-shell>
 </body>
 </html>
