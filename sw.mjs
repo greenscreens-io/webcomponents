@@ -27,7 +27,7 @@ const options = {
   trace: true,
   preload: true,
   cacheName: 'GSAdminCache_v1',
-  preCacheURL: "/files-to-cache.json",
+  preCacheURL: "/webcomponents/files-to-cache.json",
   precachedAssets: precachedAssets,
   filters: filters
 }
