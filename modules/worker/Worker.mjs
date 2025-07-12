@@ -215,10 +215,10 @@ export class WorkerEngine {
     const me = this;
     if (event?.data === 'TRACE_ON') {
       me.#trace = true;
-      console.log('Service Worker trace enabled');
+      console.warn('Service Worker trace enabled');
     } else if (event?.data === 'TRACE_OFF') {
       me.#trace = false;
-      console.log('Service Worker trace disabled');
+      console.warn('Service Worker trace disabled');
     }
 
     if (me.#trace) {
@@ -247,7 +247,7 @@ export class WorkerEngine {
 
   trace(message, data = '') {
     if (this.#trace) {
-      console.log(message, data);
+      console.trace(message, data);
     }
   }
 
