@@ -56,11 +56,13 @@ export class ElementNavigationController {
     const me = this;
     if (me.#attached) return;
     me.#attached = true;
-    me.#host.attachEvent(el, 'keydown', e => me.onKeyDown(e));
-    me.#host.attachEvent(el, 'keyup', e => me.onKeyUp(e));
-    me.#host.attachEvent(el, 'click', e => me.onClick(e));
-    me.#host.attachEvent(el, 'focusin', e => me.onFocusIn(e));
-    me.#host.attachEvent(el, 'focusout', e => me.onFocusOut(e));
+    if (me.#host) {
+      me.#host.attachEvent(el, 'keydown', e => me.onKeyDown(e));
+      me.#host.attachEvent(el, 'keyup', e => me.onKeyUp(e));
+      me.#host.attachEvent(el, 'click', e => me.onClick(e));
+      me.#host.attachEvent(el, 'focusin', e => me.onFocusIn(e));
+      me.#host.attachEvent(el, 'focusout', e => me.onFocusOut(e));
+    }
   }
 
   previous() {

@@ -6,6 +6,9 @@ import { GSUtil } from "../base/GSUtil.mjs";
 import { GSTemplateCache } from "../base/GSTemplateCache.mjs";
 import { GSDOM } from "../base/GSDOM.mjs";
 
+// unternal hidden flag to prevent douple injection
+const RENDER_SYMBOL = Symbol.for("GS-TEMPLATE-RENDER");
+
 /**
  * Handle element template and signal rerender when ready
  * Sequencial template load is used to prevent multiple request for the same URL
@@ -28,6 +31,7 @@ export class TemplateController {
   constructor(host) {
     const me = this;
     me.#host = host;
+    host[RENDER_SYMBOL] = false;
     host.addController(this);
   }
 
@@ -45,6 +49,7 @@ export class TemplateController {
   hostDisconnected() {
     const me = this;
     me.#host.removeController(me);
+    delete me.#host[RENDER_SYMBOL];
     me.#host = null;
     me.#lastRef = null;
     me.#template = null;
@@ -56,7 +61,8 @@ export class TemplateController {
     if (me.#template) return;
     const ref = me.templateRef;
     if (me.#lastRef !== ref) {
-      me.#template = TemplateController.#cache.get(ref);
+      const template = TemplateController.#cache.get(ref);
+      me.#applyTemplate(template);
       me.#lastRef = ref;
       if (ref && !me.#template) {
         TemplateController.#schedule(this);
@@ -73,6 +79,44 @@ export class TemplateController {
       host.removeController(me);
       host.templateInjected?.();
     }
+
+  }
+
+  #bindTemplate(template) {
+    if (template.content.childElementCount > 0) {
+      const me = this;
+      me.#template = template;
+      me.#host?.requestUpdate();
+    }
+  }
+
+  #applyTemplate(template) {
+    if (!GSDOM.isTemplateElement(template)) return;
+    
+    // is template does not contain slots
+    const simple = template[RENDER_SYMBOL] == true;
+
+    const me = this;
+
+    if (simple) {
+      me.#bindTemplate(template);
+      return;
+    }
+
+    const templateClone = template.cloneNode(true);
+
+    const slots = Array.from(templateClone.content.children)
+    .filter(el => el.hasAttribute('slot'));
+    
+    // slot elements msut be added only once 
+    if (me.#host[RENDER_SYMBOL] === false) {
+      me.#host[RENDER_SYMBOL] = true;
+      slots.forEach(el => me.#host?.appendChild(el));
+    } else {
+      slots.forEach(el => el.remove());
+    }
+
+    me.#bindTemplate(templateClone);
 
   }
 
@@ -96,6 +140,10 @@ export class TemplateController {
     if (!template) {
       try {
         template = isTplEl ? ref : await GSTemplateCache.loadTemplate(true, ref, ref);
+        const slots = Array.from(template.content.children)
+        .filter(el => el.hasAttribute('slot'));
+        // mark template simple (no slot injections)
+        template[RENDER_SYMBOL] = slots.length == 0;               
       } catch (err) {
         TemplateController.#refs.delete(ref);
         throw err;
@@ -105,20 +153,7 @@ export class TemplateController {
       }
     }
 
-    // slot element msut be added only once 
-    if (template) {
-      me.#template = template.cloneNode(true);
-      if (me.#host.dataset.xTemplate !== 'true') {
-        me.#host.dataset.xTemplate = 'true';
-        Array.from(me.#template.content.children)
-          .filter(el => el.hasAttribute('slot'))
-          .forEach(el => me.#host?.appendChild(el));
-      }
-      Array.from(me.#template.content.children)
-        .filter(el => el.hasAttribute('slot'))
-        .forEach(el => el.remove());
-      me.#host?.requestUpdate();
-    }
+    me.#applyTemplate(template);
   }
 
   get isTemplateElement() {
