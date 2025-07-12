@@ -17,11 +17,6 @@
 		<datalist slot="footer" id="spn" is="gs-ext-datalist"></datalist>
 	</gs-form-group>
 	
-	<gs-form-group css="m-1" name="btnKDC" label="" icon="false" placement="start"
-	    description="Resync data from KDC">
-	    <template>
-	        <gs-button data-gs-action="reload-kerberos" id="btnKDC" css="btn btn-sm btn-secondary d-inline" title="Reload"></gs-button>
-	    </template>
-	</gs-form-group>
-
 </gs-form>
+
+<gs-button slot="actions" color="secondary" css="mx-1" data-gs-action="reload-kerberos" id="btnKDC" title="Reload" tooltip="Resync data from KDC"></gs-button>

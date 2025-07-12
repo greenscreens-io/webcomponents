@@ -56,7 +56,7 @@ export class TemplateController {
     if (me.#template) return;
     const ref = me.templateRef;
     if (me.#lastRef !== ref) {
-      me.#template = TemplateController.#cache.get(ref);      
+      me.#template = TemplateController.#cache.get(ref);
       me.#lastRef = ref;
       if (ref && !me.#template) {
         TemplateController.#schedule(this);
@@ -68,9 +68,11 @@ export class TemplateController {
   hostUpdated() {
     const me = this;
     if (me.#template) {
-      this.#host.removeController(this);
-      me.#host.templateInjected?.();
-    } 
+      const host = me.#host;
+      //me.hostDisconnected();
+      host.removeController(me);
+      host.templateInjected?.();
+    }
 
   }
 
@@ -100,10 +102,21 @@ export class TemplateController {
       }
       if (cacheable) {
         TemplateController.#cache.set(ref, template);
-      }       
+      }
     }
+
+    // slot element msut be added only once 
     if (template) {
-      me.#template = template;
+      me.#template = template.cloneNode(true);
+      if (me.#host.dataset.xTemplate !== 'true') {
+        me.#host.dataset.xTemplate = 'true';
+        Array.from(me.#template.content.children)
+          .filter(el => el.hasAttribute('slot'))
+          .forEach(el => me.#host?.appendChild(el));
+      }
+      Array.from(me.#template.content.children)
+        .filter(el => el.hasAttribute('slot'))
+        .forEach(el => el.remove());
       me.#host?.requestUpdate();
     }
   }

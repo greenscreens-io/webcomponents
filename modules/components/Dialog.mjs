@@ -215,12 +215,13 @@ export class GSDialogElement extends GSElement {
                   ${me.translate(me.message)}
                   ${me.renderTemplate()}
                   </slot>
-                </div>
-                ${me.#renderFooter()}
-            </div>
-            <slot name="extra"></slot>
-            <div class="toast-container position-fixed"></slot></div>
-        </dialog>`
+                  </div>
+                  ${me.#renderFooter()}
+                  </div>
+                  <slot name="extra"></slot>
+                  <div class="toast-container position-fixed"></slot></div>
+                  </dialog>
+                  `;
   }
 
   renderClass() {
