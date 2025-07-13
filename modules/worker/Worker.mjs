@@ -169,6 +169,12 @@ export class WorkerEngine {
       return;
     }
 
+    if (event.data === 'REFRESH_CACHE') {
+      event.waitUntil( me.#precacheURL());
+      return;
+    }
+    
+
     // handle worker update notification
     if (event.data === 'NOTIFICATION_WAITING') {
       event.waitUntil(

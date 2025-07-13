@@ -83,6 +83,14 @@ export class ServiceWorkkerElement extends GSElement {
     }
 
     /**
+     * Request the service worker to pupdate preloads
+     * @returns 
+     */
+    refresh() {
+        return this.postMessage("REFRESH_CACHE");
+    }
+
+    /**
      * Send a message to the service worker.
      * @param {*} message The message to send to the service worker.
      * @returns {boolean} Returns true if the message was sent, false if the service worker is not active or not registered.
