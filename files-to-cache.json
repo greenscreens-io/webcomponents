@@ -3,7 +3,8 @@
     "/webcomponents/assets/css/bootstrap.css",
     "/webcomponents/assets/themes/default.css",
     "/webcomponents/assets/icons/bootstrap-icons.css",
-    "/webcomponents/modules/index.all.mjs",
+    "/webcomponents/release/esm/lit-all.min.js",
+    "/webcomponents/release/esm/io.greenscreens.components.all.min.js",
     "/webcomponents/assets/icons/fonts/bootstrap-icons.woff2?1fa40e8900654d2863d011707b9fb6f2",
 
     "/webcomponents/demos/webadmin/templates/dialogs/certificates-client.html",
@@ -70,8 +71,6 @@
     "/webcomponents/demos/webadmin/templates/shell/login.html",
     "/webcomponents/demos/webadmin/templates/shell/sidebar.html",
     "/webcomponents/demos/webadmin/templates/shell/toolbar.html",
-    "/webcomponents/demos/webadmin/templates/shell/_header_.html",
-    "/webcomponents/demos/webadmin/templates/shell/_sidebar_.html",
     "/webcomponents/demos/webadmin/templates/views/configurations.html",
     "/webcomponents/demos/webadmin/templates/views/customizations.html",
     "/webcomponents/demos/webadmin/templates/views/filter-fido.html",
