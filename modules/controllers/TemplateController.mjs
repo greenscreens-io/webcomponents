@@ -62,10 +62,10 @@ export class TemplateController {
     const ref = me.templateRef;
     if (me.#lastRef !== ref) {
       const template = TemplateController.#cache.get(ref);
-      me.#applyTemplate(template);
+      if (GSUtil.isJsonType(template)) me.#applyTemplate(template);
       me.#lastRef = ref;
       if (ref && !me.#template) {
-        TemplateController.#schedule(this);
+        TemplateController.#schedule(me);
       }
     }
   }
@@ -82,42 +82,55 @@ export class TemplateController {
 
   }
 
-  #bindTemplate(template) {
-    if (template.content.childElementCount > 0) {
-      const me = this;
-      me.#template = template;
-      me.#host?.requestUpdate();
+  // applly template opts {simple, slots}
+  #applyTemplate({ simple, slots }) {
+
+    // is template does not contain slots
+    const me = this;
+    const hasSlots = GSDOM.isTemplateElement(slots);
+    const hasSimple = GSDOM.isTemplateElement(simple);
+
+    let signal = true;
+
+    if (hasSlots) {
+      // slot elements msut be added only once 
+      if (me.#host[RENDER_SYMBOL] === false) {
+        me.#host[RENDER_SYMBOL] = true;
+        const clone = slots.cloneNode(true);
+        Array.from(clone.content.children).forEach(el => me.#host?.appendChild(el));
+      }
     }
+
+    if (hasSimple) {
+      if (simple.content.childElementCount > 0) {
+        signal = false;
+        me.#template = simple.cloneNode(true);
+        me.#host?.requestUpdate();
+      }
+    }
+
+    if (signal) me.#host?.templateInjected?.();
+
   }
 
-  #applyTemplate(template) {
-    if (!GSDOM.isTemplateElement(template)) return;
-    
-    // is template does not contain slots
-    const simple = template[RENDER_SYMBOL] == true;
-
-    const me = this;
-
-    if (simple) {
-      me.#bindTemplate(template);
-      return;
+  // separate first level nodes into sloted nodes and plain shadow injectable node 
+  #preprocessTemplate(template) {
+    let templateSimple = null;
+    let templateSlots = null;
+    const slots = Array.from(template.content.children).filter(el => el.hasAttribute('slot'));
+    const hasSlots = slots.length > 0;
+    const hasSimple = template.content.childElementCount > slots.length;
+    if (hasSlots) {
+      if (hasSimple) {
+        templateSlots = document.createElement('template');
+        slots.forEach(el => templateSlots.content.appendChild(el));
+      } else {
+        templateSlots = template;
+      }
     }
-
-    const templateClone = template.cloneNode(true);
-
-    const slots = Array.from(templateClone.content.children)
-    .filter(el => el.hasAttribute('slot'));
-    
-    // slot elements msut be added only once 
-    if (me.#host[RENDER_SYMBOL] === false) {
-      me.#host[RENDER_SYMBOL] = true;
-      slots.forEach(el => me.#host?.appendChild(el));
-    } else {
-      slots.forEach(el => el.remove());
-    }
-
-    me.#bindTemplate(templateClone);
-
+    templateSimple = hasSimple && template?.content.childElementCount > 0 ? template : null;
+    templateSlots = hasSlots && templateSlots?.content.childElementCount > 0 ? templateSlots : null;
+    return { simple: templateSimple, slots: templateSlots };
   }
 
   async #load() {
@@ -125,35 +138,36 @@ export class TemplateController {
     const ref = me.templateRef;
     if (!ref) return;
     /* prevents double load, but also creates a render issue
+    */
     if (TemplateController.#refs.has(ref)) {
       // already scheduled
-      return;
+      if (me.#host.tagName !== 'GS-TEMPLATE') return;
     }
     TemplateController.#refs.add(ref);
-    */
-    let template = null;
+    /**/
+
+    let templates = null;
+
     const isTplEl = ref instanceof HTMLTemplateElement;
     const cacheable = GSUtil.isString(ref);
     if (cacheable) {
-      template = TemplateController.#cache.get(ref);
+      templates = TemplateController.#cache.get(ref);
     }
-    if (!template) {
+
+    if (!templates) {
       try {
-        template = isTplEl ? ref : await GSTemplateCache.loadTemplate(true, ref, ref);
-        const slots = Array.from(template.content.children)
-        .filter(el => el.hasAttribute('slot'));
-        // mark template simple (no slot injections)
-        template[RENDER_SYMBOL] = slots.length == 0;               
+        const template = isTplEl ? ref : await GSTemplateCache.loadTemplate(true, ref, ref);
+        templates = me.#preprocessTemplate(template);
       } catch (err) {
         TemplateController.#refs.delete(ref);
         throw err;
       }
       if (cacheable) {
-        TemplateController.#cache.set(ref, template);
+        TemplateController.#cache.set(ref, templates);
       }
     }
 
-    me.#applyTemplate(template);
+    me.#applyTemplate(templates);
   }
 
   get isTemplateElement() {

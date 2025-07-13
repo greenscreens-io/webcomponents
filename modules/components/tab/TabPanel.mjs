@@ -31,7 +31,7 @@ export class GSTabPanelElement extends GSElement {
     return html`<div  dir="${ifDefined(me.direction)}" 
       class="${classMap(this.renderClass())}">
       <slot>
-      ${this.template ? html`<gs-template flat src="${this.template}"></gs-template>` : ''}
+      ${me.renderTemplate()}
       </slot></div>`;
   }
 

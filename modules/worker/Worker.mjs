@@ -122,19 +122,21 @@ export class WorkerEngine {
    * @returns 
    */
   #onFetch(event) {
+    
     const me = this;
 
     // Check if the request matches any filter
-    if (!me.#filter.match(event.request)) {
-      me.trace('Fetch filter skip for:', event.request.url);  
-      return;
-    } 
-    
-    me.trace('Fetch event for:', event.request.url);
+    const isOk = me.#filter.match(event.request);
 
-    event.respondWith(
-      me.#cache.cacheFirst(event.request, event)
-    );
+    if (isOk) {
+      me.trace('Fetch event for:', event.request.url);
+      event.respondWith(
+        me.#cache.cacheFirst(event.request, event)
+      );      
+    }  else {
+      me.trace('Fetch filter skip for:', event.request.url);  
+    }
+    
   }
 
   /**
