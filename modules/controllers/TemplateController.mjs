@@ -61,7 +61,7 @@ export class TemplateController {
     if (me.#template) return;
     const ref = me.templateRef;
     if (me.#lastRef !== ref) {
-      const template = TemplateController.#cache.get(ref);
+      const template = TemplateController.#cache.get(me.#toKey(ref));
       if (GSUtil.isJsonType(template)) me.#applyTemplate(template);
       me.#lastRef = ref;
       if (ref && !me.#template) {
@@ -80,6 +80,15 @@ export class TemplateController {
       host.templateInjected?.();
     }
 
+  }
+
+  #toKey(ref) {
+    const me = this;
+    return GSUtil.isString(ref) ? `${ref}@${me.#host?.tagName || ''}` : ref;
+  }
+
+  #hasKey(key) {
+    return TemplateController.#refs.has(key) || TemplateController.#cache.has(key);
   }
 
   // applly template opts {simple, slots}
@@ -134,39 +143,44 @@ export class TemplateController {
   }
 
   async #load() {
+
     const me = this;
     const ref = me.templateRef;
+    
     if (!ref) return;
-    /* prevents double load, but also creates a render issue
-    */
-    if (TemplateController.#refs.has(ref)) {
+    const key = me.#toKey(ref);
+
+    // prevents double load
+    if (me.#hasKey(key)) {
       // already scheduled
-      if (me.#host.tagName !== 'GS-TEMPLATE') return;
+      return;
     }
-    TemplateController.#refs.add(ref);
-    /**/
+    TemplateController.#refs.add(key);
 
     let templates = null;
 
-    const isTplEl = ref instanceof HTMLTemplateElement;
+    const isTplEl = GSDOM.isTemplateElement(ref);
     const cacheable = GSUtil.isString(ref);
     if (cacheable) {
-      templates = TemplateController.#cache.get(ref);
+      templates = TemplateController.#cache.get(key);
     }
 
     if (!templates) {
+      
       try {
         const template = isTplEl ? ref : await GSTemplateCache.loadTemplate(true, ref, ref);
         templates = me.#preprocessTemplate(template);
       } catch (err) {
-        TemplateController.#refs.delete(ref);
+        TemplateController.#refs.delete(key);
         throw err;
       }
+
       if (cacheable) {
-        TemplateController.#cache.set(ref, templates);
+        TemplateController.#cache.set(key, templates);
       }
     }
-
+    
+    TemplateController.#refs.delete(key);
     me.#applyTemplate(templates);
   }
 
