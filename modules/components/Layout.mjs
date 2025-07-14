@@ -113,6 +113,8 @@ export class GSLayoutElement extends GSElement {
             ${template && tc ? html`<gs-template flat src="${template}"></gs-template>` : ''}
             ${slot}
             </div>`;
+            // ${tc ? me.renderTemplate() : ''}
+            
 
         if (!el.resizable) return src;
 

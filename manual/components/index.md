@@ -71,6 +71,7 @@ Components library contains all WebComponents UI elements based on Bootstrap 5.2
     2. [GSHighlight](./extra/GSHighlight.md)
     3. [GSMarkdown](./extra/GSMarkdown.md)
     4. [GSMonaco](./extra/GSMonaco.md)
+48.  [ServiceWorker](./GSServiceWorker.md)
 <br>
 
 &copy; Green Screens Ltd. 2016 - 2025
