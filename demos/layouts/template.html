@@ -1,0 +1,56 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Bootstrap-Lit</title>
+    <meta charset="utf-8">
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0">
+
+    <meta name="subject" content="Green Scereens Ltd.">
+    <meta name="author" content="www.greenscreens.ltd">
+    <meta name="keywords" content="JavaScript,WebComponents">
+    <meta name="robots" content="index, follow">
+    <meta name="revisit-after" content="3 month">
+    <meta name="description" content="WebComponents UI library based on Bootstrap.">
+
+    <script>
+        globalThis.GS_TEMPLATE_URL='/bootstrap-lit/demos/templates/';
+    </script>
+
+    <!-- Optimized CSS loading -->
+    <link rel="preload" href="/bootstrap-lit/assets/css/bootstrap.css" as="style"  data-adoptable="true" data-id="1">
+    <link rel="preload" href="/bootstrap-lit/assets/themes/default.css" as="style" data-adoptable="true" data-id="2">
+    <link rel="preload" href="/bootstrap-lit/assets/icons/bootstrap-icons.css" as="style" data-adoptable="true" data-id="4">
+
+    <script type="module" src="/bootstrap-lit/modules/base/GSAdoptedEngine.mjs"></script>
+    <script type="module" src="/bootstrap-lit/modules/base/GSTheme.mjs"></script>
+    <script type="module" src="/bootstrap-lit/modules/components/Layout.mjs"></script>
+    <script type="module" src="/bootstrap-lit/modules/components/Splitter.mjs"></script>
+    <script type="module" src="/bootstrap-lit/modules/components/Template.mjs"></script>
+
+    <script type="module" src="/bootstrap-lit/modules/components/Form.mjs"></script>
+    <script type="module" src="/bootstrap-lit/modules/components/FormGroup.mjs"></script>
+    
+    <template id="sidebar">sidebar</template>
+    <template id="center">template centered data</template>
+</head>
+<body class="vh-100">
+
+    <!-- left-sidebar main right-sidebar -->
+    <gs-layout type="vertical">
+        <gs-item  id="content"
+            v-pos="center"
+            h-pos="center"            
+            template="//record.html">
+        </gs-item>
+    </gs-layout>
+
+
+
+</body>
+
+</html>
