@@ -21,7 +21,17 @@ export class GSDialogElement extends GSElement {
 
   static #STACK = [];
 
-  static styles = css`dialog{--bs-modal-width: 500px;width:var(--bs-modal-width);outline:none;}dialog::backdrop{backdrop-filter: blur(4px);}`;
+  static styles = css`dialog {
+      --bs-modal-width: 500px;
+      width:var(--bs-modal-width);
+      outline:none;
+    }
+    dialog::backdrop {
+      backdrop-filter: blur(4px);
+      backdrop-filter: blur(var(--gs-backdrop-blur));      
+      background-color: var(--gs-backdrop-color);
+      display: var(--gs-backdrop-display);
+    }`;
 
   static properties = {
 
@@ -188,6 +198,34 @@ export class GSDialogElement extends GSElement {
       </div>`;
   }
 
+  #renderContent() {
+    const me = this;
+    const css = {
+      card : true,
+      [`p-${me.padding}`]: me.padding >= 0,
+      [`m-${me.margin}`]: me.margin >= 0      
+    }
+    me.cssContent?.match(/[^ ]+/g).forEach(v => css[v]=true);
+    return css;
+  }
+
+  renderClass() {
+    const me = this;
+    const size = SizeTypes[me.size];
+    //...super.renderClass(),
+    const css = {
+      'dialog': true,
+      'p-0': true,
+      'border': me.bordered,
+      'border-0': !me.bordered,
+      'shadow-sm': me.shadow,
+      'rounded': me.rounded,      
+      [me.#styleID]: true,
+      [`modal-${size}`]: size ? true : false
+    }
+    return css;
+  }
+
   renderUI() {
     const me = this;
     const styles = {
@@ -204,7 +242,7 @@ export class GSDialogElement extends GSElement {
             @confirm="${me.#onConfirm.bind(me)}"
             @submit="${me.#onSubmit.bind(me)}"
             class="${classMap(me.renderClass())}">
-            <div class="card ${me.cssContent}">
+            <div class="${classMap(me.#renderContent())}">
                 <div class="card-header user-select-none ${me.cssHeader}">
                   <div class="card-title ${me.cssTitle}">
                     <slot name="title">${me.translate(me.title)}</slot>
@@ -222,20 +260,6 @@ export class GSDialogElement extends GSElement {
                   <div class="toast-container position-fixed"></slot></div>
                   </dialog>
                   `;
-  }
-
-  renderClass() {
-    const me = this;
-    const size = SizeTypes[me.size];
-    const css = {
-      ...super.renderClass(),
-      'dialog': true,
-      'p-0': true,
-      'border-0': true,
-      [me.#styleID]: true,
-      [`modal-${size}`]: size ? true : false
-    }
-    return css;
   }
 
   /**

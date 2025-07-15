@@ -6,6 +6,7 @@ import './utils/Fingerprint.mjs';
 import './utils/Utils.mjs';
 import './utils/WebAuthn.mjs';
 
+import './controllers/index.mjs';
 import './shell/index.mjs';
 import './views/index.mjs';
 import './dialogs/index.mjs';

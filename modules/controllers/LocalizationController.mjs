@@ -31,6 +31,7 @@ export class LocalizationController {
     me.#host.removeController(me);
   }
 
+  // called every time host is updated
   hostUpdate() {
     const me = this;
     if (me.#language !== me.#host?.language) {

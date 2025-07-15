@@ -58,7 +58,7 @@ export class GSFinigerprint {
     }
 
     static #canvas(width = 200, height = 50) {
-        if (globalThis.OffscreenCanvas) return new OffscreenCanvas(width, height);
+        if(globalThis.OffscreenCanvas) return new OffscreenCanvas(width, height);
         const canvas = document.createElement("canvas");
         canvas.width = width;
         canvas.height = height;
@@ -75,7 +75,7 @@ export class GSFinigerprint {
     static #safeCall(fn, args) {
         try {
             return fn.apply(null, Array.isArray(args) ? args : [args]);
-        } catch (e) {
+        } catch(e) {
             return "";
         }
     }
@@ -102,10 +102,10 @@ export class GSFinigerprint {
 
         tmp = me.#safeCall(Math.expm1, 1);
         results += tmp;
-
+        
         tmp = me.#safeCall(Math.sinh, 1);
         results += tmp;
-
+                
         tmp = me.#safeCall(Math.tan, -1e308);
         results += tmp;
 
@@ -114,7 +114,7 @@ export class GSFinigerprint {
 
         tmp = me.#safeCall(me.#asinhPf, 1e300);
         results += tmp;
-
+        
         tmp = me.#safeCall(me.#coshPf, 1);
         results += tmp;
 
@@ -315,7 +315,7 @@ export class GSFinigerprint {
     static async #computeSession(ip = '') {
         const me = GSFinigerprint;
         return {
-            ip: ip,
+            ip : ip,
             mediaDevices: await me.#MediaDevices()
         };
     }
@@ -327,7 +327,7 @@ export class GSFinigerprint {
     static async #computeUnstable(ip = '') {
         const me = GSFinigerprint;
         return {
-            ip: ip,
+            ip : ip,
             devicePixelRatio: me.#DevicePixelRatio,
             brands: me.#Brands,
             fonts: me.#Fonts,
@@ -339,14 +339,14 @@ export class GSFinigerprint {
     static async #computeStable(ip = '') {
         const me = GSFinigerprint;
         return {
-            ip: ip,
+            ip : ip,
             timeZone: me.#TimeZone,
             platform: me.#Platform,
             processors: me.#Processors,
             canvas2dRender: await me.#Canvas2dRender,
             webglRender: await me.#WebglRender,
             webglInfo: me.#WebglInfo,
-            math: me.#math
+            math : me.#math
         };
     }
 

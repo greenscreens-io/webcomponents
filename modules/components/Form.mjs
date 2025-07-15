@@ -2,7 +2,7 @@
  * Copyright (C) 2015, 2025; Green Screens Ltd.
  */
 
-import { createRef, html, ifDefined, ref } from '../lib.mjs';
+import { classMap, createRef, html, ifDefined, ref, templateContent } from '../lib.mjs';
 import { GSElement } from '../GSElement.mjs';
 import { GSDOM } from '../base/GSDOM.mjs';
 import { GSLog } from '../base/GSLog.mjs';
@@ -17,17 +17,17 @@ export class GSFormElement extends GSElement {
     disabled: { type: Boolean },
     data: { type: Object },
 
-    name: { reflect : true},
-    rel: { reflect : true},
-    acceptCharset : {reflect : true, attribute: 'accept-charset'},
-    autocapitalize: { reflect : true},
-    autocomplete: { reflect : true},
+    name: { reflect: true },
+    rel: { reflect: true },
+    acceptCharset: { reflect: true, attribute: 'accept-charset' },
+    autocapitalize: { reflect: true },
+    autocomplete: { reflect: true },
 
-    action: { reflect : true},
-    enctype: { reflect : true},
-    method: { reflect : true},
-    novalidate: { reflect : true, type: Boolean},
-    target: { reflect : true},
+    action: { reflect: true },
+    enctype: { reflect: true },
+    method: { reflect: true },
+    novalidate: { reflect: true, type: Boolean },
+    target: { reflect: true },
 
     block: { type: Boolean },
     beep: { type: Boolean },
@@ -50,6 +50,7 @@ export class GSFormElement extends GSElement {
       id="${ifDefined(me.name)}"
       name="${ifDefined(me.name)}"
       dir="${ifDefined(me.direction)}"
+      class="${classMap(me.renderClass())}"
       @change="${me.#onChange}"
       @blur="${me.#onBlur}"
       @invalid="${me.#onInvalid}"
@@ -66,7 +67,9 @@ export class GSFormElement extends GSElement {
       target="${ifDefined(me.target)}"
 
       ?novalidate="${me.novalidate}">
-      <slot></slot>
+      ${templateContent(me.#elementTemplate)}
+      <slot>
+      </slot>
     </form>`;
   }
 
@@ -75,7 +78,7 @@ export class GSFormElement extends GSElement {
     const me = this;
     me.dataController?.read();
   }
-  
+
   updated(changed) {
     const me = this;
     if (changed.has('disabled')) {
@@ -98,7 +101,7 @@ export class GSFormElement extends GSElement {
     const me = this;
     me.#doFilter(me.#filterField);
     me.invalid[0]?.focus();
-	}  
+  }
 
   async reset(e) {
     const me = this;
@@ -120,7 +123,7 @@ export class GSFormElement extends GSElement {
     if (!me.validate()) return;
     const json = me.asJSON;
     await me.dataController?.write(json);
-    const data = { type: 'submit', data: json, source: e, owner : me};
+    const data = { type: 'submit', data: json, source: e, owner: me };
     return me.emit('form', data, true, true, true);
   }
 
@@ -131,15 +134,15 @@ export class GSFormElement extends GSElement {
   get submitButton() {
     return this.#button('submit');
   }
-  
+
   get resetButton() {
     return this.#button('reset');
   }
-  
+
   get form() {
     return this.#formRef.value;
   }
-  
+
   /**
   * Overide native to pickup all form elements, including ones in shadow dom
   */
@@ -161,14 +164,14 @@ export class GSFormElement extends GSElement {
 
   get asJSON() {
     const data = {};
-    this.elements.forEach(field => GSDOM.fromElement2Object(field, data));    
+    this.elements.forEach(field => GSDOM.fromElement2Object(field, data));
     return data;
   }
 
   set asJSON(data) {
     const me = this;
     //me.form.reset(); do not use, create a circular calls
-    me.elements.forEach(field => GSDOM.fromObject2Element(field, data));    
+    me.elements.forEach(field => GSDOM.fromObject2Element(field, data));
     me.#doFilter(me.#filterField);
     me.validate();
   }
@@ -180,17 +183,17 @@ export class GSFormElement extends GSElement {
   }
 
   checkValidity() {
-    return this.form.checkValidity() && 
-    this.elements
-      .filter(el => !el.disabled)
-      .filter(el => !el.checkValidity()).length === 0;;
+    return this.form.checkValidity() &&
+      this.elements
+        .filter(el => !el.disabled)
+        .filter(el => !el.checkValidity()).length === 0;;
   }
 
   reportValidity() {
     this.elements
       .filter(el => !el.disabled)
       .filter(el => !el.validity?.valid)
-      .forEach(el => el.reportValidity() );
+      .forEach(el => el.reportValidity());
     return this.form.reportValidity();
   }
 
@@ -205,12 +208,12 @@ export class GSFormElement extends GSElement {
     return isValid;
   }
 
-  disable() {
-    GSDOM.disableInput(this, 'gs-form-group, input, textarea, select, .btn', false, 'gsForm');
+  disable(all = false) {
+    GSDOM.disableInput(this, 'gs-form-group, input, textarea, select, .btn', all, 'gsForm');
   }
 
-  enable() {
-    GSDOM.enableInput(this, 'gs-form-group, input, textarea, select, .btn', false, 'gsForm');
+  enable(all = false) {
+    GSDOM.enableInput(this, 'gs-form-group, input, textarea, select, .btn', all, 'gsForm');
   }
 
   onDataRead(data) {
@@ -250,7 +253,7 @@ export class GSFormElement extends GSElement {
     const me = this;
     me.prevent(e);
     const field = me.#findField(e);
-    if(field) me.onFieldInvalid(field);
+    if (field) me.onFieldInvalid(field);
     me.#toggle(false);
     me.#notify(false);
   }
@@ -279,15 +282,15 @@ export class GSFormElement extends GSElement {
     const me = this;
     if (me.#lastState === isValid) return;
     me.#lastState = isValid;
-    const data = { type: 'valid', data: isValid, owner : me};
-    me.emit('form', data, true, true);    
+    const data = { type: 'valid', data: isValid, owner: me };
+    me.emit('form', data, true, true);
   }
 
   #toggle(isValid = false) {
     const me = this;
     const btn = me.submitButton;
     if (btn) btn.disabled = !isValid;
-  }  
+  }
 
   #findField(e) {
     if (!(e instanceof Event)) return;
@@ -298,7 +301,7 @@ export class GSFormElement extends GSElement {
         .filter(el => me.#isField(el))
         .pop();
     }
-    if(!me.#isField(field)) field = me.#findField(e.detail);
+    if (!me.#isField(field)) field = me.#findField(e.detail);
     return me.#isField(field) ? field : null;
   }
 
@@ -311,9 +314,9 @@ export class GSFormElement extends GSElement {
    * @param {HTMLInputElement} field 
    */
   #doFilter(field) {
-    
-    if(!field) return;
-    
+
+    if (!field) return;
+
     const me = this;
 
     const value = me.#fieldValue(field);
@@ -325,7 +328,7 @@ export class GSFormElement extends GSElement {
       me.elements
         .filter(el => el.name != fldName)
         .forEach(el => el.disabled = flag);
-    } 
+    }
 
   }
 
@@ -350,6 +353,11 @@ export class GSFormElement extends GSElement {
   get #filterField() {
     const me = this;
     return me.elements.filter(el => el.name === me.dataset.gsfDisable).pop();
+  }
+
+  get #elementTemplate() {
+    const tplEl = this.firstElementChild;
+    return GSDOM.isTemplateElement(tplEl) ? tplEl : undefined;
   }
 
   static {

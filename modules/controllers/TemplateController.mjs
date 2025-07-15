@@ -96,6 +96,8 @@ export class TemplateController {
 
     // is template does not contain slots
     const me = this;
+    if (!me.#host) return;
+
     const hasSlots = GSDOM.isTemplateElement(slots);
     const hasSimple = GSDOM.isTemplateElement(simple);
 
@@ -106,7 +108,7 @@ export class TemplateController {
       if (me.#host[RENDER_SYMBOL] === false) {
         me.#host[RENDER_SYMBOL] = true;
         const clone = slots.cloneNode(true);
-        Array.from(clone.content.children).forEach(el => me.#host?.appendChild(el));
+        Array.from(clone.content.children).forEach(el => me.#host.appendChild(el));
       }
     }
 
@@ -114,11 +116,11 @@ export class TemplateController {
       if (simple.content.childElementCount > 0) {
         signal = false;
         me.#template = simple.cloneNode(true);
-        me.#host?.requestUpdate();
+        me.#host.requestUpdate();
       }
     }
 
-    if (signal) me.#host?.templateInjected?.();
+    if (signal) me.#host.templateInjected?.();
 
   }
 

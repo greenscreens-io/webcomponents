@@ -17,15 +17,16 @@ export class WebAuthn {
         Object.freeze(WebAuthn);
     }
 
-    static #fromBinary(o) {
-        return Uint8Array.from(atob(o), (c) => {
-            return c.charCodeAt(0)
-        });
-    }
+	static #base64Tobase64URL(str) {
+	  const base64Encoded = str.replace(/-/g, '+').replace(/_/g, '/');
+	  const padding = str.length % 4 === 0 ? '' : '='.repeat(4 - (str.length % 4));
+	  return base64Encoded + padding;
+	}
 
-    static #toBinary(data) {
-        return btoa(String.fromCharCode.apply(null, new Uint8Array(data)))
-    }
+	static #fromBase64(o) {
+		o = WebAuthn.#base64Tobase64URL(o);		
+	    return Uint8Array.from(atob(o), (c) => c.charCodeAt(0));
+	}
 
     static isAllowed() {
         return (!WebAuthn.#IP_REGEXP.test(location.hostname) && location.protocol === 'https:') || location.hostname === 'localhost';
@@ -48,8 +49,8 @@ export class WebAuthn {
 
         const resp = await WebAuthn.#callRemote('register', false, data);
         const o = resp.data;
-        const challenge = WebAuthn.#fromBinary(o.challenge);
-        const uid = WebAuthn.#fromBinary(o.uid);
+        const challenge = WebAuthn.#fromBase64(o.challenge);
+        const uid = WebAuthn.#fromBase64(o.uid);
 
         const obj = {
             publicKey: {
@@ -109,14 +110,8 @@ export class WebAuthn {
         const cred = await navigator.credentials.create(obj);
         if (cred == null) throw new Error('Credential not found!');
 
-        const auth = {
-            uid: o.uid,
-            id: cred.id,
-            rawId: WebAuthn.#toBinary(cred.rawId),
-            attestationObject: WebAuthn.#toBinary(cred.response.attestationObject),
-            clientDataJSON: WebAuthn.#toBinary(cred.response.clientDataJSON)
-        };
-
+		const auth = cred.toJSON();
+		auth.uid = o.uid;
         return await WebAuthn.#callRemote('register', true, auth);
 
     }
@@ -125,7 +120,7 @@ export class WebAuthn {
 
         const resp = await WebAuthn.#callRemote(action, false, data);
         const o = resp.data;
-        const challenge = WebAuthn.#fromBinary(o.challenge);
+        const challenge = WebAuthn.#fromBase64(o.challenge);
         const creds = [];
 
         if (action === 'test' && o.uid.length === 0) {
@@ -133,7 +128,7 @@ export class WebAuthn {
         }
 
         o.uid.every((v) => {
-            const uid = WebAuthn.#fromBinary(v);
+            const uid = WebAuthn.#fromBase64(v);
             const o = {
                 type: "public-key",
                 id: uid
@@ -163,15 +158,7 @@ export class WebAuthn {
             throw new Error('Credential not found!');
         }
 
-        const auth = {
-            id: cred.id,
-            rawId: WebAuthn.#toBinary(cred.rawId),
-            authenticatorData: WebAuthn.#toBinary(cred.response.authenticatorData),
-            clientDataJSON: WebAuthn.#toBinary(cred.response.clientDataJSON),
-            signature: WebAuthn.#toBinary(cred.response.signature),
-            userHandle: WebAuthn.#toBinary(cred.response.userHandle)
-        };
-
+		const auth = cred.toJSON();
         return await WebAuthn.#callRemote(action, true, auth);
     }
 

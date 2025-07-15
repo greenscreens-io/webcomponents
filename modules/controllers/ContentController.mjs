@@ -26,6 +26,7 @@ export class ContentController {
     me.#ref = null;
   }
 
+  // called only once, before host.firstUpdate
   hostUpdated() {
     const me = this;
     if (!me.#isSelf() && me.#target) me.#refs.add(me.#target);

@@ -127,7 +127,7 @@ export class GSLayoutElement extends GSElement {
     
     #elementTemplate(el) {
         const tplEl = el.self.firstElementChild;
-        return tplEl instanceof HTMLTemplateElement ? tplEl : undefined;
+        return  GSDOM.isTemplateElement(tplEl) ? tplEl : undefined;
     }
 
     #panelCSS(el, col, did) {

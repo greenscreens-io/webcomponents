@@ -1,18 +1,30 @@
-<gs-form beep block slot="body" css="flex-fill">
+<a href="/" slot="title">
+    <img src="../../assets/img/logo.png" alt="..." height="30" width="180">
+</a>
 
-    <div class="row form-group m-1">
-        <div class="col-3"></div>
-        <div class="col-6">
-            <input class="form-control" id="password"  name="password" type="password" autocomplete="off" placeholder="...enter password" autofocus required disabled>
+<gs-form slot="body" name="login"  css="flex-fill mt-4" novalidate autocomplete="off">
+    <template>
+
+        <div class="row form-group m-1">
+            <div class="col-3"></div>
+            <div class="col-6">
+                <input is="gs-ext-input" form="login" class="form-control" id="user"  name="user" type="text" autocomplete="off" placeholder="...enter user" autofocus required disabled/>
+            </div>
         </div>
-    </div>
-    
-    <div class="row form-group m-1">
-        <div class="col-3"></div>
-        <div class="col-6">
-            <input class="form-control" id="otp" name="otp" type="number" autocomplete="off" maxlength="6" min="0" max="999999"  required disabled placeholder="...enter OTP">
-        </div>
-    </div>
         
-    <gs-notification id="notification"></gs-notification>
+        <div class="row form-group m-1">
+            <div class="col-3"></div>
+            <div class="col-6">
+                <input is="gs-ext-input" form="login" class="form-control" id="password"  name="password" type="password" autocomplete="off" placeholder="...enter password" autofocus required disabled/>
+            </div>
+        </div>
+        
+        <div class="row form-group m-1">
+            <div class="col-3"></div>
+            <div class="col-6">
+                <input is="gs-ext-input" form="login" class="form-control" id="otp" name="otp" type="number" autocomplete="off" maxlength="6" min="0" max="999999"  required disabled placeholder="...enter OTP"/>
+            </div>
+        </div>
+        
+    </template>
 </gs-form>
