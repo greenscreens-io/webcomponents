@@ -53,40 +53,40 @@
 
     <gs-form-group css="m-1" name="hostTransform" label="Host Transform" selectable
         description="Transform SCS spool on IBM I server. If enabled, WSCST object must be defined.">
-        <gs-item value="0" name="Disabled" selected></gs-item>
-        <gs-item value="1" name="Enabled"></gs-item>
+        <gs-item value="0" name="Disabled" data-type="0" selected></gs-item>
+        <gs-item value="1" name="Enabled" data-type="tfr"></gs-item>
     </gs-form-group>
 
     <div class="d-flex flex-column align-items-center">
         <hr class="w-75">
     </div>
     
-    <gs-form-group css="m-1" data-group="true" name="sourceCodePag" label="CHRID (EBCDIC)" disabled
+    <gs-form-group css="m-1" data-type="tfr" name="sourceCodePag" label="CHRID (EBCDIC)" disabled
         maxlength="10" pattern="[0-9a-zA-Z]+"
         description="EBCIDIC code page to convert from.">
     </gs-form-group>
 
-    <gs-form-group css="m-1" data-group="true" name="targetCodePage" label="CHRID (ANSI/ASCII)" disabled
+    <gs-form-group css="m-1" data-type="tfr" name="targetCodePage" label="CHRID (ANSI/ASCII)" disabled
         maxlength="10" pattern="[0-9a-zA-Z]+"
         description="ANSI or ASCII code page to convert to.">
     </gs-form-group>
 
-    <gs-form-group css="m-1" data-group="true" name="wscstObject" label="Host Transform" disabled
+    <gs-form-group css="m-1" data-type="tfr" name="wscstObject" label="Host Transform" disabled        
         list="wscsts" default="*NONE"  maxlength="10"
         description="WSCST object name.">
     </gs-form-group>
 
-    <gs-form-group css="m-1" data-group="true" name="wscstLib" label="WSCST Library" disabled
+    <gs-form-group css="m-1" data-type="tfr" name="wscstLib" label="WSCST Library" disabled        
         maxlength="10" list="libs" default="*LIBL"
         description="Library for WSCST object.">
     </gs-form-group>
 
-    <gs-form-group css="m-1" data-group="true" name="printerModel" label="Printer Model" list="models" disabled
+    <gs-form-group css="m-1" data-type="tfr" name="printerModel" label="Printer Model" list="models" disabled        
         css-field="text-uppercase" _maxlength="10" pattern="[\*0-9a-zA-Z]+"
         description="Use printer model for SCS data transform.">      
     </gs-form-group>
 
-    <gs-form-group css="m-1" data-group="true" name="drawer1" label="Drawer 1" selectable disabled
+    <gs-form-group css="m-1" data-type="tfr" name="drawer1" label="Drawer 1" selectable disabled
         description="Printer drawer paper size.">
         <gs-item value="*SAME" selected></gs-item>
         <gs-item value="*NONE"></gs-item>
@@ -104,7 +104,7 @@
         <gs-item value="*LEDGER"></gs-item>
     </gs-form-group>
 
-    <gs-form-group css="m-1" data-group="true" name="drawer2" label="Drawer 2" selectable disabled
+    <gs-form-group css="m-1" data-type="tfr" name="drawer2" label="Drawer 2" selectable disabled
         description="Printer drawer paper size.">
         <gs-item value="*SAME" selected></gs-item>
         <gs-item value="*NONE"></gs-item>
@@ -122,7 +122,7 @@
         <gs-item value="*LEDGER"></gs-item>
     </gs-form-group>
 
-    <gs-form-group css="m-1" data-group="true" name="envelope" label="Envelope" selectable disabled
+    <gs-form-group css="m-1" data-type="tfr" name="envelope" label="Envelope" selectable disabled
         description="Printer drawer paper size.">
         <gs-item value="*SAME" selected></gs-item>
         <gs-item value="*NONE"></gs-item>

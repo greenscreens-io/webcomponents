@@ -36,7 +36,7 @@
 
     <div class="m-4 p-1 bg-light bordered shadow-sm row">
         <div class="col-auto">
-            Conditional toggle based on input selection; sublist is also filtered
+            Conditional toggle based on input selection; sublist is also filtered (using form)
         </div>
     </div>
 
@@ -64,18 +64,18 @@
                 <div class="col-md-6 col-sm-6 col-xs-11">
                     <input is="gs-ext-input" required type="text" id="type" list="types" name="type" data-filter="group" placeholder="Barcode Type" class="form-control">
                     <datalist id="types" is="gs-ext-datalist">
-							<option value="Codabar" data-group="1" data-code="CODABAR" data-flag="1">
-							<option value="Code 11" data-group="1" data-code="CODE_11" data-flag="1">
-							<option value="Code 2 of 5 - Standard" data-group="1" data-code="CODE25_MATRIX" data-flag="1">
-							<option value="Code 39 - Standard" data-group="1" data-code="CODE39" data-flag="1">
-							<option value="Code 128 - Code128" data-group="1" data-code="CODE_128" data-flag="1">
-							<option value="EAN 8/13" data-group="1" data-code="EAN" data-flag="1">
-							<option value="UPC-A" data-group="1" data-code="UPC_A" data-flag="1">
+							<option value="Codabar" data-group="1"  data-flag="1">
+							<option value="Code 11" data-group="1" data-flag="1">
+							<option value="Code 2 of 5 - Standard" data-group="1" data-flag="1">
+							<option value="Code 39 - Standard" data-group="1"  data-flag="1">
+							<option value="Code 128 - Code128" data-group="1" data-flag="1">
+							<option value="EAN 8/13" data-group="1"  data-flag="1">
+							<option value="UPC-A" data-group="1" data-flag="1">
 
-                        	<option value="Data Matrix" data-group="2" data-code="DATAMATRIX" data-flag="2">
-							<option value="Maxicode" data-group="2" data-code="MAXICODE" data-flag="2">
-							<option value="QR Code" data-group="2" data-code="QR" data-flag="2">
-							<option value="Micro QR Code" data-group="2" data-code="QR_MICRO" data-flag="2">
+                        	<option value="Data Matrix" data-group="2" data-flag="2">
+							<option value="Maxicode" data-group="2" data-flag="2">
+							<option value="QR Code" data-group="2" data-flag="2">
+							<option value="Micro QR Code" data-group="2" data-flag="2">
                     </datalist>
                 </div>
             </div>
@@ -107,7 +107,7 @@
                 </div>
             </div>
 
-            <div class="row form-group m-1">
+            <div class="row form-group m-1" data-code="UPC_A,EAN,">
                 <div class="col-md-4 col-sm-4 col-xs-12 text-md-end ">
                     <label class="control-label">Data input GROUP 1 (EAN/UPC)</label>
                 </div>
@@ -132,7 +132,7 @@
 
     <div class="m-4 p-1 bg-light bordered shadow-sm row">
         <div class="col-auto">
-            Conditional toggle based on input selection; sublist is also filtered
+            Conditional toggle based on input selection; sublist is also filtered (using gs-form)
         </div>
     </div>
 
@@ -193,7 +193,7 @@
                 </div>
             </div>
 
-            <div class="row form-group m-1">
+            <div class="row form-group m-1"  data-code="CODE_11,CODE25_MATRIX,CODE39,CODE_128">
                 <div class="col-md-4 col-sm-4 col-xs-12 text-md-end ">
                     <label class="control-label">Data input GROUP 1 (CODE)</label>
                 </div>
@@ -202,7 +202,7 @@
                 </div>
             </div>
 
-            <div class="row form-group m-1">
+            <div class="row form-group m-1" data-code="UPC_A,EAN,">
                 <div class="col-md-4 col-sm-4 col-xs-12 text-md-end ">
                     <label class="control-label">Data input GROUP 1 (EAN/UPC)</label>
                 </div>
@@ -211,7 +211,7 @@
                 </div>
             </div>
 
-            <div class="row form-group m-1">
+            <div class="row form-group m-1" data-code="QR,QR_MICRO,">
                 <div class="col-md-4 col-sm-4 col-xs-12 text-md-end ">
                     <label class="control-label">Data input GROUP 2</label>
                 </div>
