@@ -9,6 +9,7 @@ import { GSLog } from '../base/GSLog.mjs';
 import { GSEvents } from '../base/GSEvents.mjs';
 import { GSUtil } from '../base/GSUtil.mjs';
 import { GSAttr } from '../base/GSAttr.mjs';
+import { Utils } from '../../demos/webadmin/modules/utils/Utils.mjs';
 
 export class GSFormElement extends GSElement {
 
@@ -182,6 +183,15 @@ export class GSFormElement extends GSElement {
       .filter(el => !el.validity.valid).length === 0;
   }
 
+  /**
+   * Find field by name
+   * @param {*} name 
+   * @returns 
+   */
+  field(name) {
+    return name && this.fields.filter(f => f.name === name).pop();
+  }
+
   checkValidity() {
     return this.form.checkValidity() &&
       this.elements
@@ -325,8 +335,8 @@ export class GSFormElement extends GSElement {
     const matched = fldName && field.name === fldName;
     const flag = matched && value === fldVal;
     if (matched) {
-      me.elements
-        .filter(el => el.name != fldName)
+      me.elements      
+        .filter(el => el.name != fldName)        
         .forEach(el => el.disabled = flag);
     }
 

@@ -2,6 +2,8 @@
 * Copyright (C) 2015, 2025 Green Screens Ltd.
 */
 
+import { GSAttr } from '../../../../modules/base/GSAttr.mjs';
+import { GSUtil } from '../../../../modules/base/GSUtil.mjs';
 import { GSAsbtractDialog } from '../dialogs/GSAsbtractDialog.mjs';
 
 /**
@@ -19,6 +21,18 @@ export class GSPrinterReset extends GSAsbtractDialog {
         const me = this;
         me.template = "//modals/printer-reset.html";
         me.title = "Printer Reset";
+    }
+
+    get hpt() {
+        return this.form?.field('hostTransform');
+    }
+
+    firstUpdated() {
+        const me = this;
+        requestAnimationFrame(async () => {
+            await GSUtil.timeout(250);
+            me.attachEvent(me.hpt, 'change', me.#onHPT.bind(me));
+        });        
     }
 
     open(data) {
@@ -44,4 +58,14 @@ export class GSPrinterReset extends GSAsbtractDialog {
         return success;
     }
 
+
+    #onHPT(e) {
+        this.#update(e.target.value !== '1');
+    }
+
+    #update(sts) {
+        this.form?.queryAll('[data-group="true"]', true, true)
+            .map(el => el.field || el)
+            .forEach(el => GSAttr.toggle(el, 'disabled', sts));
+    }    
 }

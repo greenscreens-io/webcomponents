@@ -10,6 +10,7 @@ import { GSUtil } from '../base/GSUtil.mjs';
 import { GSDOM } from '../base/GSDOM.mjs';
 import { GSID } from '../base/GSID.mjs';
 import { GSAttr } from '../base/GSAttr.mjs';
+import { dataset } from '../directives/dataset.mjs';
 
 export class GSFormGroupElement extends GSElement {
 
@@ -19,9 +20,9 @@ export class GSFormGroupElement extends GSElement {
   static ICON = 'info-circle-fill';
 
   static #SELECTOPT = {
-    name : {},
-    value : {},
-    selected : {type: Boolean}
+    name: {},
+    value: {},
+    selected: { type: Boolean }
   }
 
   static properties = {
@@ -31,11 +32,11 @@ export class GSFormGroupElement extends GSElement {
 
     label: {},
     description: {},
-    placeholder: {reflect: true},
+    placeholder: { reflect: true },
 
     pattern: {},
     mask: {},
-    
+
     form: {},
     wrap: {},
     spellcheck: {},
@@ -43,11 +44,11 @@ export class GSFormGroupElement extends GSElement {
     type: { ...inputType },
     name: {},
     list: {},
-    accept: {},   
+    accept: {},
     value: {},
 
-    lang: {reflect: true},
-    title: {reflect: true},
+    lang: { reflect: true },
+    title: { reflect: true },
     rows: { type: Number, reflect: true, hasChanged: numGT0 },
     cols: { type: Number, reflect: true, hasChanged: numGT0 },
     step: { type: Number, reflect: true, hasChanged: numGT0 },
@@ -76,7 +77,7 @@ export class GSFormGroupElement extends GSElement {
     readonly: { type: Boolean, reflect: true },
     required: { type: Boolean, reflect: true },
 
-    invalidMessage: {reflect: true, attribute: 'invalid-message' },
+    invalidMessage: { reflect: true, attribute: 'invalid-message' },
 
     cellField: { attribute: 'cell-field' },
     cellLabel: { attribute: 'cell-label' },
@@ -104,11 +105,11 @@ export class GSFormGroupElement extends GSElement {
     this.placement = 'top';
     this.layout = 'horizontal';
     this.invalidMessage = 'Invalid input',
-    this.icon = GSFormGroupElement.ICON;
+      this.icon = GSFormGroupElement.ICON;
     this.cssLabel = GSFormGroupElement.CSS_LABEL;
     this.cellLabel = GSFormGroupElement.CSS_LABEL_CELL;
   }
-  
+
   connectedCallback() {
     const me = this;
     const form = me.formComponent;
@@ -120,15 +121,16 @@ export class GSFormGroupElement extends GSElement {
       me.#options = GSItem.proxify(me, GSFormGroupElement.#SELECTOPT);
     } else {
       me.#patterns = GSItem.collect(me)
-      .filter(el => el.dataset.pattern)
-      .map(el => new RegExp(el.dataset.pattern));
-    }      
+        .filter(el => el.dataset.pattern)
+        .map(el => new RegExp(el.dataset.pattern));
+    }
     super.connectedCallback();
   }
 
   updated(changed) {
     const me = this;
-    me.#onRange();
+    //me.#onRange();
+    me.emit('input');
   }
 
   renderUI() {
@@ -263,19 +265,21 @@ export class GSFormGroupElement extends GSElement {
     const style = {
       transform: me.reverse && me.isRange ? 'rotateY(180deg)' : ''
     }
-    me.dynamicStyle(me.#styleID, style);    
+    me.dynamicStyle(me.#styleID, style);
   }
 
   #renderOptions() {
     const me = this;
-    return me.#options.map( el => html`<option value="${el.value}" ?selected=${el.selected}>${el.name || el.innerText || el.value }</option>`);
+    return me.#options.map(el => html`<option ${dataset(el, false)} value="${el.value}" ?selected=${el.selected}>${el.name || el.innerText || el.value}</option>`);
   }
 
   #selectHTML(id, name, value) {
     const me = this;
     me.#initStyle();
 
-    return html`<select ${ref(me.#inputRef)}
+    return html`<select is="gs-ext-select"
+            ${ref(me.#inputRef)}
+            ${dataset(me, false)}
             id=${ifDefined(id)} 
             @change="${me.#onChange.bind(me)}"
             @blur="${me.#onBlur.bind(me)}"
@@ -317,7 +321,7 @@ export class GSFormGroupElement extends GSElement {
   get #isBeep() {
     return this.beep || this.formComponent?.beep || false;
   }
-  
+
   #timeout() {
     return this.timeout || this.formComponent?.timeout || 0;
   }
@@ -328,8 +332,9 @@ export class GSFormGroupElement extends GSElement {
     const placeholder = me.placeholder ? me.translate(me.placeholder, false) : null;
     const title = me.title ? me.translate(me.title, false) : null;
 
-    return html`<textarea  is="gs-ext-text" 
+    return html`<textarea is="gs-ext-text" 
             ${ref(me.#inputRef)}
+            ${dataset(me, false)}
             id=${ifDefined(id)}
             @input="${me.#onRange.bind(me)}"
             @change="${me.#onChange.bind(me)}"
@@ -374,11 +379,13 @@ export class GSFormGroupElement extends GSElement {
 
     const placeholder = me.placeholder ? me.translate(me.placeholder, false) : null;
     const description = me.description ? me.translate(me.description, false) : null;
-    
+
     me.#initStyle();
 
     return html`<input is="gs-ext-input" 
             ${ref(me.#inputRef)}
+            ${dataset(me, false)}
+
             id=${ifDefined(id)} 
             @input="${me.#onRange.bind(me)}"
             @change="${me.#onChange.bind(me)}"
@@ -390,6 +397,7 @@ export class GSFormGroupElement extends GSElement {
             form="${ifDefined(me.form)}"
             value="${ifDefined(value)}"
             title="${ifDefined(title)}"
+
 
             ?block="${me.#isBlock}"
             ?beep="${me.#isBeep}"
@@ -465,18 +473,20 @@ export class GSFormGroupElement extends GSElement {
     return GSUtil.isStringNonEmpty(this.icon);
   }
 
-  #onRange(e) { 
-    this.emit('input', e);
+  #onRange(e) {
+    this.emit(e.type, e);
   }
 
   #onBlur(e) {
-    this.emit('blur', e, true, true);
+    this.emit(e.type, e, true, true);
   }
 
   #onChange(e) {
     const me = this;
-    if (me.isRange) me.value = e.target?.value;
-    me.emit('change', e, true, true);
+    if (me.isCheck) me.checked = me.isChecked;
+    if (e?.target) me.value = e.target.value; // me.field;
+    //if (me.isRange) me.value = e.target?.value;
+    me.emit(e.type, e, true, true);    
   }
 
   #onInvalid(e) {
@@ -496,7 +506,7 @@ export class GSFormGroupElement extends GSElement {
 
   translate(value = '', sanitize) {
     value = super.translate(value);
-    return sanitize? GSUtil.sanitize(value) : value;
+    return sanitize ? GSUtil.sanitize(value) : value;
   }
 
   get isFloating() {

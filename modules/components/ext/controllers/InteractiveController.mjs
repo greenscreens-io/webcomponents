@@ -94,8 +94,8 @@ export class InteractiveController {
   #onDataChange(e) {
     const me = this;
     const own = me.owner;
-    let opt = GSDOM.query(me.list, `option[value="${me.value}"]`);
     let clean = false;
+    let opt = GSDOM.query(me.list, `option[value="${me.value}"]`);
     if (!opt) {
         opt = me.list?.querySelector('option');
         clean = true;
@@ -105,15 +105,19 @@ export class InteractiveController {
     Object.entries(obj).forEach(p => {
         const val = clean ? '' : p[1];
         const key = p[0];
-        GSAttr.set(me.#host, `data-${key}`, p[1]);
-        if (key === 'id' || key === 'group') return;
+        if (key === 'id' || key === 'group') {
+          GSAttr.set(me.#host, `data-${key}`, p[1]);
+          return;
+        } 
 
         const filter = `[data-${key}]:not([data-${key}=""]`;
         const els = Array.from(GSDOM.queryAll(own, filter));
         els.filter(el => el.tagName !== 'OPTION')
+            .filter(el => el.tagName !== 'GS-ITEM')
             .filter(el => el !== me.#host)
-            .filter(el => el !== me.filter)            
-            .filter(el => GSAttr.get(el, 'list').length === 0)
+            .filter(el => el !== me.filter) 
+            .filter(v => GSDOM.closest(v, 'gs-form-group') ? false: true ) 
+            //.filter(el => GSAttr.get(el, 'list').length === 0)
             .forEach(el => me.#togleEl(el, key, val))
     });
   }
@@ -139,7 +143,7 @@ export class InteractiveController {
 
     const data = GSAttr.get(el, `data-${key}`, '').split(/[,;;]/);
     const isMatch = value.length > 0 && data.includes(value);
-    const frmel = GSDOM.isFormElement(el) || GSDOM.isButtonElement(el);
+    const frmel = GSDOM.isFormElement(el) || GSDOM.isButtonElement(el) || el.tagName === "GS-FORM-GROUP";
 
     if (frmel) {
       GSAttr.toggle(el, 'disabled', !isMatch);
