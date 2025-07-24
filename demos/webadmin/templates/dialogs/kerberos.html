@@ -1,22 +1,22 @@
 <gs-form beep block slot="body" css="flex-fill" data-gsf-disable="sso" data-gsf-value="false">
-	    
-	<gs-form-group css="m-1" name="sso" label="Status" autocomplete="off" selectable required
-	    description="Enable Single Sign On. IBM system must be configured to use Kerberos for signon.">
-		<gs-item value="false" name="Disabled" selected></gs-item>
-		<gs-item value="true" name="Enabled"></gs-item>		
-	</gs-form-group>
-
-
-	<gs-form-group css="m-1" name="ssoKDC" label="KDC" 
-	    autocomplete="off"
-	    description="Kerberos V5 service. If empty, auto discovery is used. DNS SRV must be properly set. Useful if multiple KDC services used.">
-	</gs-form-group>
+    <template>        
+		<gs-formui-handler data-disable="sso" data-value="false"></gs-formui-handler>
+		<gs-form-group css="m-1" name="sso" label="Status" autocomplete="off" selectable required
+			description="Enable Single Sign On. IBM system must be configured to use Kerberos for signon.">
+			<gs-item value="false" name="Disabled" selected></gs-item>
+			<gs-item value="true" name="Enabled"></gs-item>		
+		</gs-form-group>
 	
-	<gs-form-group css="m-1" name="ssoSPN" label="SPN" autocomplete="off" list="spn" required
-	    description="SPN name for this service.">
-		<datalist slot="footer" id="spn" is="gs-ext-datalist"></datalist>
-	</gs-form-group>
 	
+		<gs-form-group css="m-1" name="ssoKDC" label="KDC" 
+			autocomplete="off"
+			description="Kerberos V5 service. If empty, auto discovery is used. DNS SRV must be properly set. Useful if multiple KDC services used.">
+		</gs-form-group>
+		
+		<gs-form-group css="m-1" name="ssoSPN" label="SPN" autocomplete="off" list="spn" required
+			description="SPN name for this service.">
+			<datalist slot="footer" id="spn" is="gs-ext-datalist"></datalist>
+		</gs-form-group>
+    </template>	    
 </gs-form>
-
 <gs-button slot="actions" color="secondary" css="mx-1" data-gs-action="reload-kerberos" id="btnKDC" title="Reload" tooltip="Resync data from KDC"></gs-button>

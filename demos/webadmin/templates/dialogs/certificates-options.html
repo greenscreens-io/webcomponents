@@ -1,18 +1,21 @@
 <gs-form beep block slot="body" css="flex-fill">
-    <gs-tab-group type="tabs" css-panel="p-2" css-tab="fw-bold">
-        <gs-tab name="tab1" slot="tabs" title="Root CA" active autofocus ></gs-tab>
-        <gs-tab name="tab2" slot="tabs" title="Intermediate CA"></gs-tab>
-        <gs-tab name="tab3" slot="tabs" title="Server Certificate"></gs-tab>
-        <gs-tab name="tab4" slot="tabs" title="Timestamp"></gs-tab>
-        <gs-tab name="tab5" slot="tabs" title="Options"></gs-tab>
-        <gs-tab name="tab6" slot="tabs" title="ACME Service"></gs-tab>
-    
-        <gs-tab-panel name="tab1" slot="panels" template="//dialogs/certificate/root.html" active></gs-tab-panel>
-        <gs-tab-panel name="tab2" slot="panels" template="//dialogs/certificate/inter.html"></gs-tab-panel>
-        <gs-tab-panel name="tab3" slot="panels" template="//dialogs/certificate/server.html"></gs-tab-panel>
-        <gs-tab-panel name="tab4" slot="panels" template="//dialogs/certificate/timestamp.html"></gs-tab-panel>
-        <gs-tab-panel name="tab5" slot="panels" template="//dialogs/certificate/options.html"></gs-tab-panel>
-        <gs-tab-panel name="tab6" slot="panels" template="//dialogs/certificate/acme.html"></gs-tab-panel>
-    </gs-tab-group>
+    <template>
+        <gs-formui-handler></gs-formui-handler>
+        <gs-tab-group type="tabs" css-panel="p-2" css-tab="fw-bold">
+            <gs-tab name="tab1" slot="tabs" title="Root CA" active autofocus ></gs-tab>
+            <gs-tab name="tab2" slot="tabs" title="Intermediate CA"></gs-tab>
+            <gs-tab name="tab3" slot="tabs" title="Server Certificate"></gs-tab>
+            <gs-tab name="tab4" slot="tabs" title="Timestamp"></gs-tab>
+            <gs-tab name="tab5" slot="tabs" title="Options"></gs-tab>
+            <gs-tab name="tab6" slot="tabs" title="ACME Service"></gs-tab>
+        
+            <gs-tab-panel name="tab1" slot="panels" template="//dialogs/certificate/root.html" active></gs-tab-panel>
+            <gs-tab-panel name="tab2" slot="panels" template="//dialogs/certificate/inter.html"></gs-tab-panel>
+            <gs-tab-panel name="tab3" slot="panels" template="//dialogs/certificate/server.html"></gs-tab-panel>
+            <gs-tab-panel name="tab4" slot="panels" template="//dialogs/certificate/timestamp.html"></gs-tab-panel>
+            <gs-tab-panel name="tab5" slot="panels" template="//dialogs/certificate/options.html"></gs-tab-panel>
+            <gs-tab-panel name="tab6" slot="panels" template="//dialogs/certificate/acme.html"></gs-tab-panel>
+        </gs-tab-group>
+    </template>
 </gs-form>
 

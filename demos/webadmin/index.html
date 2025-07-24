@@ -32,7 +32,10 @@
 
         self.DEMO = {success: true, code:'0', data:[], msg:'Test ok'};
         self.GSC = {
-            company : 'Green Screens Ltd.'
+            cloud : false,
+            company : 'Green Screens Ltd.',
+        	siteUrl : "https://webcomponents.greenscreens.ltd",
+        	logoUrl : "/webcomponents/assets/img/logo.png"
         };
     </script>
  
@@ -40,20 +43,21 @@
     <link rel="preload" href="/webcomponents/assets/css/animate.css" as="style"  data-adoptable="true" data-id="0">
     <link rel="preload" href="/webcomponents/assets/css/bootstrap.css" as="style"  data-adoptable="true" data-id="1">
     <link rel="preload" href="/webcomponents/assets/themes/default.css" as="style" data-adoptable="true" data-id="2">
-    <link rel="preload" href="/webcomponents/assets/icons/bootstrap-icons.css" as="style" data-adoptable="true" data-id="4">
-    <link rel="preload" href="./style.css" as="style" data-adoptable="true" data-id="3">
+    <link rel="preload" href="/webcomponents/assets/css/patterns.css" as="style"  data-adoptable="true" data-id="3">
+    <link rel="preload" href="/webcomponents/assets/icons/bootstrap-icons.css" as="style" data-adoptable="true" data-id="5">
+    <link rel="preload" href="./style.css" as="style" data-adoptable="true" data-id="4">
 
 	<script type="module" src="/webcomponents/release/esm/io.greenscreens.components.all.min.js"></script>
     <script type="module" src="modules/index.mjs"></script>
 </head>
  
-<body class="overflow-hidden">
+<body class="overflow-hidden bg-light pattern-2">
     <!--
         For service worker to intercept the fetch, it must be served from the root of the domain or use custom scope,
         Cutom scope to work, web server must respond with "Service-Worker-Allowed : /" header for the service worker file.
         <gs-service-worker src="./modules/sw.mjs" scope="/"  trace module></gs-service-worker>
      -->
     <gs-service-worker src="/webcomponents/sw.mjs" trace module></gs-service-worker>
-    <gs-admin-shell visible="true"></gs-admin-shell>
+    <gs-admin-shell visible></gs-admin-shell>
 </body>
 </html>

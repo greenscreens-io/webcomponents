@@ -66,7 +66,7 @@ export class GSAsbtractDialog extends GSDialogElement {
     }
 
     afterClose() {
-
+        this.#data = null
     }
 
     get isHashed() {

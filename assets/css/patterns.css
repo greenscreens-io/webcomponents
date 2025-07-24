@@ -1,0 +1,114 @@
+:root { 
+	--pattern-color: #f7f7f7;
+}
+
+.pattern-1 {
+	background-image: repeating-linear-gradient(45deg, #ffffff 25%, transparent 25%,
+		transparent 75%, #ffffff 75%, #ffffff),
+		repeating-linear-gradient(45deg, #ffffff 25%, var(--pattern-color)
+		25%, var(--pattern-color) 75%, #ffffff 75%, #ffffff);
+	background-position: 0px 0px, 10px 10px;
+	background-size: 20px 20px;
+}
+
+.pattern-2 {
+	background-image: linear-gradient(45deg, transparent 34%, var(--pattern-color)
+		35%, var(--pattern-color) 40%, transparent 41%, transparent 59%,
+		var(--pattern-color) 60%, var(--pattern-color) 65%, transparent 66%),
+		linear-gradient(135deg, transparent 34%, var(--pattern-color) 35%,
+		var(--pattern-color) 40%, transparent 41%, transparent 59%,
+		var(--pattern-color) 60%, var(--pattern-color) 65%, transparent 66%);
+	background-size: 2em 2em;
+}
+
+.pattern-3 {
+	background-image: linear-gradient(45deg, transparent 14%, var(--pattern-color)
+		15%, var(--pattern-color) 20%, transparent 21%, transparent 79%,
+		var(--pattern-color) 80%, var(--pattern-color) 85%, transparent 86%),
+		linear-gradient(135deg, transparent 14%, var(--pattern-color) 15%,
+		var(--pattern-color) 20%, transparent 21%, transparent 79%,
+		var(--pattern-color) 80%, var(--pattern-color) 85%, transparent 86%),
+		radial-gradient(transparent 14%, var(--pattern-color) 15%,
+		var(--pattern-color) 25%, transparent 26%);
+	background-size: 2em 2em;
+}
+
+.pattern-4 {
+	background-image: radial-gradient(circle at top, transparent 14%, var(--pattern-color)
+		15%, var(--pattern-color) 19%, transparent 20%),
+		radial-gradient(circle at bottom, transparent 14%, var(--pattern-color)
+		15%, var(--pattern-color) 19%, transparent 20%),
+		radial-gradient(circle at right, transparent 14%, var(--pattern-color)
+		15%, var(--pattern-color) 19%, transparent 20%),
+		radial-gradient(circle at left, transparent 14%, var(--pattern-color)
+		15%, var(--pattern-color) 19%, transparent 20%),
+		radial-gradient(circle at center, var(--pattern-color) 25%,
+		transparent 26%),
+		radial-gradient(circle at bottom left, var(--pattern-color) 12%,
+		transparent 13%),
+		radial-gradient(circle at bottom right, var(--pattern-color) 12%,
+		transparent 13%),
+		radial-gradient(circle at top left, var(--pattern-color) 12%,
+		transparent 13%),
+		radial-gradient(circle at top right, var(--pattern-color) 12%,
+		transparent 13%);
+	background-size: 2em 2em;
+}
+
+.pattern-5 {
+	background-image: radial-gradient(transparent 29%, var(--pattern-color)
+		30%, var(--pattern-color) 50%, transparent 51%, transparent 74%,
+		var(--pattern-color) 75%, var(--pattern-color) 95%, transparent 96%);
+	background-size: 2em 2em;
+}
+
+.pattern-6 {
+	background-image: radial-gradient(circle at center, var(--pattern-color),
+		var(--pattern-color) 10%, transparent 10%, transparent 20%,
+		var(--pattern-color) 20%, var(--pattern-color) 30%, transparent 30%,
+		transparent 40%, var(--pattern-color) 40%, var(--pattern-color) 50%,
+		transparent 50%, transparent 60%, var(--pattern-color) 60%,
+		var(--pattern-color) 70%, transparent 70%, transparent 80%,
+		var(--pattern-color) 80%, var(--pattern-color) 90%, transparent 90%);
+	background-size: 2em 2em;
+}
+
+.pattern-7 {
+	background-image: radial-gradient(var(--pattern-color) 10%, transparent
+		10%, transparent 39%, var(--pattern-color) 40%, var(--pattern-color)
+		45%, transparent 46%),
+		radial-gradient(circle at top left, var(--pattern-color) 4%,
+		transparent 5%, transparent 19%, var(--pattern-color) 20%,
+		var(--pattern-color) 22%, transparent 23%),
+		radial-gradient(circle at top right, var(--pattern-color) 4%,
+		transparent 5%, transparent 19%, var(--pattern-color) 20%,
+		var(--pattern-color) 22%, transparent 23%),
+		radial-gradient(circle at bottom left, var(--pattern-color) 4%,
+		transparent 5%, transparent 19%, var(--pattern-color) 20%,
+		var(--pattern-color) 22%, transparent 23%),
+		radial-gradient(circle at bottom right, var(--pattern-color) 4%,
+		transparent 5%, transparent 19%, var(--pattern-color) 20%,
+		var(--pattern-color) 22%, transparent 23%);
+	background-size: 2em 2em;
+}
+
+.pattern-8 {
+	background-image: linear-gradient(25deg, transparent 65%, var(--pattern-color),
+		transparent 70%),
+		linear-gradient(-25deg, transparent 65%, var(--pattern-color),
+		transparent 70%),
+		linear-gradient(-25deg, transparent 30%, var(--pattern-color),
+		transparent 35%),
+		linear-gradient(25deg, transparent 30%, var(--pattern-color),
+		transparent 35%),
+		linear-gradient(65deg, transparent 65%, var(--pattern-color),
+		transparent 70%),
+		linear-gradient(-65deg, transparent 65%, var(--pattern-color),
+		transparent 70%),
+		linear-gradient(-65deg, transparent 30%, var(--pattern-color),
+		transparent 35%),
+		linear-gradient(65deg, transparent 30%, var(--pattern-color),
+		transparent 35%);
+	background-size: 5em 2em, 5em 2em, 5em 2em, 5em 2em, 2em 5em, 2em 5em,
+		2em 5em, 2em 5em;
+}

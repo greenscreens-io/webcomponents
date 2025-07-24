@@ -35,6 +35,23 @@
     <gs-template src="//header.html"></gs-template>
     
     <div class="m-4 p-1 bg-light bordered shadow-sm row">
+        <div class="col-auto">Toggle options : </div>
+        <div class="col-auto">
+            <gs-button color="primary" data-gs-target="input,select,textarea" data-gs-attribute="disabled" title="Disabled"></gs-button>
+            <gs-button color="primary" data-gs-target="input" data-gs-attribute="required" title="Required"></gs-button>
+            <gs-button color="primary" data-gs-target="input" data-gs-attribute="beep" title="Beep"></gs-button>
+            <gs-button color="primary" data-gs-target="input" data-gs-attribute="block" title="Block"></gs-button>            
+            <gs-button color="primary" data-gs-target="input" data-gs-attribute="autocopy" title="Autocopy"></gs-button>
+            <gs-button color="primary" data-gs-target="input" data-gs-attribute="autoselect" title="Autoselect"></gs-button>
+            <gs-button color="primary" data-gs-target="input" data-gs-attribute="autoreport" title="Autoreport"></gs-button>
+            <gs-button color="primary" data-gs-target="input" data-gs-attribute="autovalidate" title="Autovalidate"></gs-button>
+        </div>
+        <div class="col-auto">
+            <gs-button color="primary" data-gs-target="form" data-gs-call="reset" title="Reset form"></gs-button>            
+        </div>
+    </div>
+        
+    <div class="m-4 p-1 bg-light bordered shadow-sm row">
         JSON generated form and fields.
     </div>
 

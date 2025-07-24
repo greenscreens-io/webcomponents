@@ -3,10 +3,15 @@
  */
 import { GSEvents, GSElement } from "/webcomponents/release/esm/io.greenscreens.components.all.min.js";
 
+import { Utils } from '../utils/Utils.mjs';
+import { ShellController } from '../controllers/ShellController.mjs';
+
 /*
  * Class handling application UI
  */
 class Shell extends GSElement {
+
+    #controller = null;
 
     constructor() {
         super();
@@ -14,13 +19,28 @@ class Shell extends GSElement {
         me.template = "//shell.html";
     }
 
+
+	hostConnected() {
+        super.hostConnected();
+        const me = this;
+        me.#controller = new ShellController(me);
+	}
+	
+	hostDisconnected() {
+        super.hostDisconnected();
+        this.#controller = null;    
+    }
+
     firstUpdated() {
         super.firstUpdated();
-        GSEvents.monitorAction(this);
+        const me = this;
+        me.controller = new ShellController(me);
+        GSEvents.monitorAction(me);
     }
 
     async onLogout(e) {
-        debugger;
+        await Utils.clear();
+        Utils.setUI('gs-admin-shell-login');	
     }
 
     onExplorer(e) {

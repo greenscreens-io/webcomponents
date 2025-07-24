@@ -1,16 +1,16 @@
 <gs-form beep block slot="body" css="flex-fill">
-
-    <gs-form-group css="m-1" name="module" label="Module" readonly
-        description="Service module">
-    </gs-form-group>
-
-    <gs-form-group css="m-1" name="property" label="Property" readonly
-        description="Service property">
-    </gs-form-group>
+    <template>        
+        <gs-form-group css="m-1" name="module" label="Module" readonly
+            description="Service module">
+        </gs-form-group>
     
-    <gs-form-group css="m-1" name="value" label="Value"
-        type="number" min="0" max="10000000" 
-        description="Service value">
-    </gs-form-group>
-
+        <gs-form-group css="m-1" name="property" label="Property" readonly
+            description="Service property">
+        </gs-form-group>
+        
+        <gs-form-group css="m-1" name="value" label="Value"
+            type="number" min="0" max="10000000" 
+            description="Service value">
+        </gs-form-group>
+    </template>
 </gs-form>

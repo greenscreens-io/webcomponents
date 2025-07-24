@@ -35,14 +35,23 @@
     <gs-template src="//header.html"></gs-template>
 
     <div class="m-4 p-1 bg-light bordered shadow-sm row">
+        <div class="col-auto">Toggle options : </div>
         <div class="col-auto">
-            <gs-button color="primary" data-gs-target="form" data-gs-call="reset" title="Reset form"></gs-button>
-            <gs-button color="primary" data-gs-target="input" data-gs-attribute="disabled" title="Toggle fields"></gs-button>
-            <gs-button color="primary" data-gs-target="input" data-gs-attribute="required" title="Toggle required"></gs-button>
+            <gs-button color="primary" data-gs-target="input,select,textarea" data-gs-attribute="disabled" title="Disabled"></gs-button>
+            <gs-button color="primary" data-gs-target="input" data-gs-attribute="required" title="Required"></gs-button>
+            <gs-button color="primary" data-gs-target="input" data-gs-attribute="beep" title="Beep"></gs-button>
+            <gs-button color="primary" data-gs-target="input" data-gs-attribute="block" title="Block"></gs-button>            
+            <gs-button color="primary" data-gs-target="input" data-gs-attribute="autocopy" title="Autocopy"></gs-button>
+            <gs-button color="primary" data-gs-target="input" data-gs-attribute="autoselect" title="Autoselect"></gs-button>
+            <gs-button color="primary" data-gs-target="input" data-gs-attribute="autoreport" title="Autoreport"></gs-button>
+            <gs-button color="primary" data-gs-target="input" data-gs-attribute="autovalidate" title="Autovalidate"></gs-button>
+        </div>
+        <div class="col-auto">
+            <gs-button color="primary" data-gs-target="form" data-gs-call="reset" title="Reset form"></gs-button>            
         </div>
     </div>
 
-    <form>
+    <form is="gs-ext-form">
 
         <div class="m-4 p-1 bg-light bordered shadow-sm">
             <div class="row form-group m-1">
@@ -95,7 +104,7 @@
                 </div>
                 <div class="col-md-6 col-sm-6 col-xs-11">
                     <!-- if data-slot and data-accept not defined, engine will try t odetect on its own   -->
-                    <input class="form-control font-monospace" is="gs-ext-input" type="text" mask="XX:XX:XX:XX:XX:XX" data-slots="X" data-accept="[\dA-H]">
+                    <input class="form-control font-monospace" is="gs-ext-input" type="text" mask="XX:XX:XX:XX:XX:XX" data-slots="X" data-accept="[\dA-Ha-h]">
                 </div>
             </div>
         </div>
@@ -169,5 +178,4 @@
     </form>
 
 </body>
-
 </html>

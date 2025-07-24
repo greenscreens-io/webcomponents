@@ -3,7 +3,9 @@
  */
 
 
-import { GSUtil, GSDOM, GSFunction} from "/webcomponents/release/esm/io.greenscreens.components.all.min.js";
+import { GSUtil, GSDOM, GSFunction, GSEvents, GSDialogElement} from "/webcomponents/release/esm/io.greenscreens.components.all.min.js";
+
+
 
 /**
  * A module loading Utils class
@@ -16,18 +18,38 @@ import { GSUtil, GSDOM, GSFunction} from "/webcomponents/release/esm/io.greenscr
  */
 export class Utils {
 
+	static async clear() {
+		await Utils.unsetUI('gs-admin-shell-login');
+		await Utils.unsetUI('gs-admin-shell');
+	}
+		
     static setUI(value) {
-        const el = document.createElement(value);
-        document.body.insertAdjacentElement('beforeend', el);
+		return GSEvents.waitAnimationFrame(()=> {			
+	        const el = document.createElement(value);
+	        document.body.insertAdjacentElement('beforeend', el);
+			return el;
+		});
     }
 
     static unsetUI(value) {
-        const list = GSDOM.queryAll(value);
-        list.forEach(el => el.remove());
+        return GSEvents.waitAnimationFrame(() => {
+            const list = GSDOM.queryAll(value);
+            list.forEach(el => el.remove());
+        });
     }
 
     static get notify() {
-        return GSDOM.getByID('notification');
+		let notify = null;
+		if (GSDialogElement.top) {
+			notify = GSDialogElement.top.query('gs-notification', true);
+			if (!notify) {
+			 notify = GSDialogElement.opened
+                .map(d => d.query?.('gs-notification', true))
+                .filter(d => GSUtil.nonNull(d))
+                .shift();
+			}
+		} 
+        return notify || GSDOM.getByID('notification');
     }
 
     static get waiter() {
@@ -38,30 +60,43 @@ export class Utils {
      * Used by inherited dialogs to show notification on remote data fetch
      * 
      * @param {boolean} success Status message info/danger
-     * @param {string} msg Message t oshow
+     * @param {string} msg Message to show
      * @returns {boolean}
      */
     static inform(success = false, msg) {
         if (success) {
-			Utils.notify?.info('Info', msg);
+			Utils.notify?.info('Info', msg, false, 2, 0);
 		} else {
-        	Utils.notify?.danger('Error', msg);			
+        	Utils.notify?.danger('Error', msg, false, 2, 0);
 		}
         return success;
     }
 
-    static handleError(e) {
-        console.log(e);
-        const msg = e.data?.error || e.msg || e.message || e.toString();
-        Utils.inform(false, msg);
-        return msg;
+    static handleError(e) {	
+        return Utils.handleResponse(e);
     }
-
-    static handleResponse(msg) {
-        const txt = (msg.message || msg)?.toString();
-        if (txt) Utils.inform(msg.success === true, txt);
+    
+    static handleResponse(obj) {
+		console.log(obj);
+		const success = Utils.responseStatus(obj);
+        const txt = Utils.responseMessage(obj);
+        if (txt) Utils.inform(success, txt, false, 2, 0);
+		return success;
     }    
 
+	static responseStatus(obj) {
+		return (obj?.data?.success || obj?.success) == true;
+	}
+
+	static responseMessage(obj) {
+		const msg = Utils.#toMessage(obj.data) || Utils.#toMessage(obj);
+		return  msg || obj?.toString() || 'Unknown error!';
+	}
+	
+	static #toMessage(obj) {
+		return obj?.error || obj?.msg || obj?.message;
+	}
+		
     /**
      * Convert hex string to Uint8Array
      * @param {string} data 
@@ -76,6 +111,11 @@ export class Utils {
         return new Uint8Array(a);
     }
 
+    static toHex(data) {
+        data = Utils.#validateData(data);
+        return [...data].map(x => x.toString(16).padStart(2, '0')).join('');
+    }
+    
     /**
      * Detect data and convert to Uint8Array
      * 

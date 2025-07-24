@@ -1,34 +1,36 @@
-<gs-form beep block slot="body" css="flex-fill" data-gsf-disable="active" data-gsf-value="false">
+<gs-form beep block slot="body" css="flex-fill">
+    <template>
+        <gs-formui-handler data-disable="active" data-value="false"></gs-formui-handler>
+        <input id="id" name="id" type="hidden">
     
-    <input id="id" name="id" type="hidden">
-
-    <gs-form-group  selectable required
-        css="m-1" name="active" label="Status" 
-        description="Enable or disable this rule.">
-        <gs-item value="true" name="Enabled"></gs-item>
-        <gs-item value="false" name="Disabled"></gs-item>
-    </gs-form-group>
-
-    <gs-form-group  selectable required
-        css="m-1" name="rule" label="Rule" 
-        description="Allow or deny network access based on matched criteria.">
-        <gs-item value="0" name="Allow"></gs-item>
-        <gs-item value="1" name="Deny"></gs-item>
-    </gs-form-group>
-
-    <gs-form-group css="m-1" name="deviceID" label="Application UUID" required 
-            maxlength="36" 
-            mask="XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX"
-            _pattern="^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
-        description="Mobile phone application unique ID">
-    </gs-form-group>
+        <gs-form-group  selectable required
+            css="m-1" name="active" label="Status" 
+            description="Enable or disable this rule.">
+            <gs-item value="true" name="Enabled"></gs-item>
+            <gs-item value="false" name="Disabled"></gs-item>
+        </gs-form-group>
     
-    <gs-form-group css="m-1" name="mobile" label="Mobile number"
-        description="Mobile phone number">
-    </gs-form-group>
+        <gs-form-group  selectable required
+            css="m-1" name="rule" label="Rule" 
+            description="Allow or deny network access based on matched criteria.">
+            <gs-item value="0" name="Allow"></gs-item>
+            <gs-item value="1" name="Deny"></gs-item>
+        </gs-form-group>
+    
+        <gs-form-group css="m-1" name="deviceID" label="Application UUID" required 
+                maxlength="36" 
+                mask="XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX"
+                _pattern="^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+            description="Mobile phone application unique ID">
+        </gs-form-group>
+        
+        <gs-form-group css="m-1" name="mobile" label="Mobile number"
+            description="Mobile phone number">
+        </gs-form-group>
+    
+        <gs-form-group css="m-1" name="fullname" label="Owner name" autocomplete="off"
+            description="Mobile phone owner">
+        </gs-form-group>
 
-    <gs-form-group css="m-1" name="fullname" label="Owner name" autocomplete="off"
-        description="Mobile phone owner">
-    </gs-form-group>
-
+    </template>        
 </gs-form>

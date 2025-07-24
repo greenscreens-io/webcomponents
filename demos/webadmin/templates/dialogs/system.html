@@ -1,17 +1,18 @@
 <gs-form beep block slot="body" css="flex-fill">
-    
-    <gs-tab-group type="tabs" css-panel="p-2" css-tab="fw-bold">
-        <gs-tab name="tab1" slot="tabs" title="Admin Access" active autofocus ></gs-tab>
-        <gs-tab name="tab2" slot="tabs" title="Central Server"></gs-tab>
-        <gs-tab name="tab3" slot="tabs" title="File Transfer"></gs-tab>
-        <gs-tab name="tab4" slot="tabs" title="Security"></gs-tab>
-        <gs-tab name="tab5" slot="tabs" title="Tunnel"></gs-tab>
-    
-        <gs-tab-panel name="tab1" slot="panels" template="//dialogs/system/admin.html" active></gs-tab-panel>
-        <gs-tab-panel name="tab2" slot="panels" template="//dialogs/system/central.html"></gs-tab-panel>
-        <gs-tab-panel name="tab3" slot="panels" template="//dialogs/system/transfer.html"></gs-tab-panel>
-        <gs-tab-panel name="tab4" slot="panels" template="//dialogs/system/security.html"></gs-tab-panel>
-        <gs-tab-panel name="tab5" slot="panels" template="//dialogs/system/tunnel.html"></gs-tab-panel>
-    </gs-tab-group>
-
+    <template>
+        <gs-formui-handler></gs-formui-handler>
+        <gs-tab-group type="tabs" css-panel="p-2" css-tab="fw-bold">
+            <gs-tab name="tab1" slot="tabs" title="Admin Access" active autofocus ></gs-tab>
+            <gs-tab name="tab2" slot="tabs" title="Central Server"></gs-tab>
+            <gs-tab name="tab3" slot="tabs" title="File Transfer"></gs-tab>
+            <gs-tab name="tab4" slot="tabs" title="Security"></gs-tab>
+            <gs-tab name="tab5" slot="tabs" title="Tunnel"></gs-tab>
+        
+            <gs-tab-panel name="tab1" slot="panels" template="//dialogs/system/admin.html" active></gs-tab-panel>
+            <gs-tab-panel name="tab2" slot="panels" template="//dialogs/system/central.html"></gs-tab-panel>
+            <gs-tab-panel name="tab3" slot="panels" template="//dialogs/system/transfer.html"></gs-tab-panel>
+            <gs-tab-panel name="tab4" slot="panels" template="//dialogs/system/security.html"></gs-tab-panel>
+            <gs-tab-panel name="tab5" slot="panels" template="//dialogs/system/tunnel.html"></gs-tab-panel>
+        </gs-tab-group>
+    </template>    
 </gs-form>

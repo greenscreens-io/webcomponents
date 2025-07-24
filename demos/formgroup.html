@@ -30,15 +30,31 @@
     <script type="module" src="/webcomponents/release/esm/io.greenscreens.components.all.min.js"></script>
 
 </head>
-
 <body>
     <gs-template src="//header.html"></gs-template>
 
     <div class="m-4 p-1 bg-light bordered shadow-sm row">
+        <div class="col-auto">Toggle options : </div>
+        <div class="col-auto">
+            <gs-button color="primary" data-gs-target="input,select,textarea" data-gs-attribute="disabled" title="Disabled"></gs-button>
+            <gs-button color="primary" data-gs-target="input" data-gs-attribute="required" title="Required"></gs-button>
+            <gs-button color="primary" data-gs-target="input" data-gs-attribute="beep" title="Beep"></gs-button>
+            <gs-button color="primary" data-gs-target="input" data-gs-attribute="block" title="Block"></gs-button>            
+            <gs-button color="primary" data-gs-target="input" data-gs-attribute="autocopy" title="Autocopy"></gs-button>
+            <gs-button color="primary" data-gs-target="input" data-gs-attribute="autoselect" title="Autoselect"></gs-button>
+            <gs-button color="primary" data-gs-target="input" data-gs-attribute="autoreport" title="Autoreport"></gs-button>
+            <gs-button color="primary" data-gs-target="input" data-gs-attribute="autovalidate" title="Autovalidate"></gs-button>
+        </div>
+        <div class="col-auto">
+            <gs-button color="primary" data-gs-target="form" data-gs-call="reset" title="Reset form"></gs-button>            
+        </div>
+    </div>
+        
+    <div class="m-4 p-1 bg-light bordered shadow-sm row">
         Horizontal layout
     </div>
     
-    <form>
+    <form is="gs-ext-form">
         <div class="container justify-content-center w-50 bordered p-4 shadow-sm bg-light">
             <gs-form-group css="mt-2" name="nativedate" mask="DD-MM-YYYY" label="Date" type="date" description="Date input"></gs-form-group>
             <gs-form-group css="mt-2" name="date" mask="DD-MM-YYYY" label="Date" description="Text as masked date input"></gs-form-group>
@@ -60,7 +76,7 @@
             <gs-form-group css="mt-2" name="field3" label="Switch box"   type="switch" checked></gs-form-group>
             <gs-form-group css="mt-2" name="field4" label="Range"        type="range" min="0" max="100" step="2"></gs-form-group>
 
-            <gs-form-group css="mt-2" name="field5" label="Password (ALT+CTRL+SHIFT)"   type="password" reveal checked></gs-form-group>
+            <gs-form-group css="mt-2" name="field5" label="Password (ALT+CTRL+SHIFT)"   type="password" autocomplete="off" reveal checked></gs-form-group>
 
             <gs-form-group css="mt-2" name="active" label="Status" description="test" required selectable>
                 <gs-item value="true" name="Enabled"></gs-item>
@@ -73,7 +89,7 @@
         Vertical layout
     </div>
     
-    <form>
+    <form is="gs-ext-form">
         <div class="container justify-content-center w-50 bordered p-4 shadow-sm bg-light">
 
             <gs-form-group css="mt-2" layout="vertical" name="date" mask="DD-MM-YYYY" label="Date" description="Masked date input"></gs-form-group>
@@ -98,7 +114,7 @@
         Floating layout
     </div>
     
-    <form>
+    <form is="gs-ext-form">
         <div class="container justify-content-center w-50 bordered p-4 shadow-sm bg-light">
 
             <gs-form-group css="mt-2" layout="floating" css-label="fw-bold text-muted" name="date" mask="DD-MM-YYYY" label="Date" description="Masked date input"></gs-form-group>
@@ -123,7 +139,7 @@
         Tooltip without icon
     </div>
     
-    <form>
+    <form is="gs-ext-form">
         <div class="container justify-content-center w-50 bordered p-4 shadow-sm bg-light">
 
             <gs-form-group css="mt-2" layout="horizontal" css-label="fw-bold text-muted" name="date" mask="DD-MM-YYYY" label="Date" description="Masked date input" icon=""></gs-form-group>
@@ -146,5 +162,4 @@
     <br><br><br><br><br><br><br><br><br><br>
     
 </body>
-
 </html>

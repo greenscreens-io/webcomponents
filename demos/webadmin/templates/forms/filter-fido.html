@@ -1,30 +1,31 @@
-<gs-form beep block slot="body" css="flex-fill" data-gsf-disable="active" data-gsf-value="false">
-    
-    <input id="id" name="id" type="hidden">
+<gs-form beep block slot="body" css="flex-fill">
+    <template>
+        <gs-formui-handler data-disable="active" data-value="false"></gs-formui-handler>
+        <input id="id" name="id" type="hidden">
 
-    <gs-form-group  selectable required
-        css="m-1" name="active" label="Status"
-        description="Enable or disable this rule.">
-        <gs-item value="true" name="Enabled"></gs-item>
-        <gs-item value="false" name="Disabled"></gs-item>
-    </gs-form-group>
+        <gs-form-group  selectable required
+            css="m-1" name="active" label="Status"
+            description="Enable or disable this rule.">
+            <gs-item value="true" name="Enabled"></gs-item>
+            <gs-item value="false" name="Disabled"></gs-item>
+        </gs-form-group>
 
-    <gs-form-group  selectable required
-        css="m-1" name="rule" label="Rule"
-        description="Allow or deny access based on matched criteria.">
-        <gs-item value="0" name="Allow"></gs-item>
-        <gs-item value="1" name="Deny"></gs-item>
-    </gs-form-group>
+        <gs-form-group  selectable required
+            css="m-1" name="rule" label="Rule"
+            description="Allow or deny access based on matched criteria.">
+            <gs-item value="0" name="Allow"></gs-item>
+            <gs-item value="1" name="Deny"></gs-item>
+        </gs-form-group>
 
-    <gs-form-group css="m-1" name="aaguid" label="AAGUID" required 
-        autocomplete="off" maxlength="36"
-        _pattern="^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
-        mask="XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX"    
-        description="FIDO Key ID.">
-    </gs-form-group>
-    
-    <gs-form-group css="m-1" name="description" label="Description" autocomplete="off"
-        description="Device description, usually token type and version.">
-    </gs-form-group>
-    
+        <gs-form-group css="m-1" name="aaguid" label="AAGUID" required 
+            autocomplete="off" maxlength="36"
+            _pattern="^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+            mask="XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX"    
+            description="FIDO Key ID.">
+        </gs-form-group>
+        
+        <gs-form-group css="m-1" name="description" label="Description" autocomplete="off"
+            description="Device description, usually token type and version.">
+        </gs-form-group>
+    </template>       
 </gs-form>
