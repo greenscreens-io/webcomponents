@@ -237,7 +237,7 @@ export class GSFormGroupElement extends GSElement {
   #renderOutput() {
     const me = this;
     if (!me.isRange) return "";
-    return html`<span ${ref(me.#ouptutRef)} class="position-absolute px-1">${me.defaultValue}</span>`;
+    return html`<span ${ref(me.#ouptutRef)} class="position-absolute px-1">${me.value}</span>`;
   }
 
   #renderInput() {
@@ -245,7 +245,7 @@ export class GSFormGroupElement extends GSElement {
     const me = this;
 
     const idattr = me.autoid ? me.name : undefined;
-    const val = me.isFieldset ? me.values.split(',') : me.defaultValue;
+    const val = me.isFieldset ? me.values.split(',') : me.value;
 
     if (Array.isArray(val)) {
       const wrap = me.dataset.radioLayout === 'vertical';
@@ -253,11 +253,11 @@ export class GSFormGroupElement extends GSElement {
         .map((o, i) => me.#fieldSet(me.name + i, o.v, me.#inputHTML(o.id, me.name, o.v), wrap));
     }
 
-    if (me.selectable) return me.#selectHTML(idattr, me.name, me.defaultValue);
+    if (me.selectable) return me.#selectHTML(idattr, me.name, me.value);
 
-    if (me.#isTextArea) return me.#textArea(idattr, me.name, me.defaultValue);
+    if (me.#isTextArea) return me.#textArea(idattr, me.name, me.value);
 
-    return me.#inputHTML(idattr, me.name, me.defaultValue);
+    return me.#inputHTML(idattr, me.name, me.value);
   }
 
   #fieldSet(id, val, fld, vertical = false) {
@@ -525,6 +525,7 @@ export class GSFormGroupElement extends GSElement {
     me.#internals?.setFormValue(field.value);
     me.#internals?.setValidity(field.validity, field.validationMessage, field);
     if (!e.composed) me.emit(e.type, e, true, true);
+    me.requestUpdate();
   }
 
   #onInvalid(e) {

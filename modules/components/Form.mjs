@@ -250,7 +250,7 @@ export class GSFormElement extends GSElement {
 
   #onChange(e) {
     const me = this;
-    me.prevent(e, false, true, false);
+    //me.prevent(e, false, true, false);
     me.#notify(me.isValid, e);
   }
 
