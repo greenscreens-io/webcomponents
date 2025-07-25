@@ -2,6 +2,7 @@
     --bs-body-bg: #f7f7f7;
     --bs-body-bg-rgb: 247, 247, 247;
     --gs-secondary-rgb: 244, 248, 251;
+    --gs-backdrop-blur : 4px;
 }
 
 dialog {

@@ -22,6 +22,7 @@ export class Login extends GSAsbtractDialog {
     constructor() {
         super();
         const me = this;
+		me.bordered = true;
 		me.escapable = false;
 		me.cancelable = false;
 		me.opened = true;

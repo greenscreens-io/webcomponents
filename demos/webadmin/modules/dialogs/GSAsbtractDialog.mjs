@@ -27,6 +27,7 @@ export class GSAsbtractDialog extends GSDialogElement {
         super();
         const me = this;
         me.dismissable = false;
+        me.bordered = true;
         me.opened = false;
         me.closable = true;
         me.cancelable = true;
