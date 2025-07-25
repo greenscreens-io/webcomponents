@@ -4,8 +4,8 @@
 
 - Many form/field improvements in handling data and events. 
   
-NOTE: Chcnges as temporary, browsers dows not support form associated elements within multiple shadow dom levels.
-Incomming Chrome and Edge v140 or newer shold bring such support. Code will be updated accordingly as soon as browser release the fix.
+NOTE: Chcages as temporary, browsers doe not support form associated elements within multiple shadow dom levels.
+Incomming Chrome and Edge v140 or newer shold bring such support. Code will be updated accordingly as soon as browsers release the fix.
 
 
 # Release v2.0.0 BETA (10.01.2025.)
