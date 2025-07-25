@@ -12,24 +12,23 @@ export class TextController {
 
   #host;
 
-  #inputCallback;
-
   constructor(host) {
     const me = this;
     me.#host = host;
-    me.#inputCallback = me.#onInput.bind(me);
     host.addController(me);
   }
 
   hostConnected() {
     const me = this;
-    me.#host.on('input', me.#inputCallback);
   }
 
   hostDisconnected() {
     const me = this;
     me.#host.removeController(me);
-    me.#host.off('input', me.#inputCallback);
+  }
+
+  get raw() {
+    return this.#host.raw;
   }
 
   get value() {
@@ -44,15 +43,29 @@ export class TextController {
     return this.#host?.type;
   }
 
-  #onInput(e) {
-    const me = this;
-    if (me.type === 'text') me.value = me.#updateText(me.value);
+  onInput(e) {
+    const input = e.target;
+    const start = input.selectionStart;
+    const end = input.selectionEnd;
+    input.value = this.#transform();
+    input.setSelectionRange(start, end);
   }
 
-  #updateText(value = '') {
-    const map = GSCSSMap.styleValue(this.#host, 'text-transform');
-    if (map) value = GSUtil.textTransform(map.value, value);
-    return value;
+  onChange(e) {
+    this.value = this.#transform();
+  }
+
+  onBlur(e) {
+    this.value = this.#transform();
+  }
+
+  #transform() {
+    const me = this;
+    if (me.type === 'text') {
+      const map = GSCSSMap.styleValue(this.#host, 'text-transform');
+      if (map) return GSUtil.textTransform(map.value, me.raw);
+    }
+    return me.value;
   }
 
 }  

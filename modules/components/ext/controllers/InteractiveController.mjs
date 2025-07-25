@@ -8,22 +8,23 @@ import { GSEvents } from "../../../base/GSEvents.mjs";
 
 /**
  * Handle data filtering for options atribute (combo and data lists)
- * Changes in one field list, update available selections in another field selections.
+ * Changes in one field list, updates available selections in another field selections.
+ * 
+ * Options element data-* attributes matching other elements changes 
+ * "disabled" attribute for fields, and visibility for non field elements.
+ * 
+ * NOTE: This applies only for "gs-form" or "form" child elements.
  */
 export class InteractiveController {
 
   #host;
 
   #monitorCallback;
-  #changeCallback;
-  #blurCallback;
 
   constructor(host) {
     const me = this;
     me.#host = host;
-    me.#blurCallback = me.#onBlur.bind(me);
     me.#monitorCallback = me.#onMonitor.bind(me);
-    me.#changeCallback = me.#onDataChange.bind(me);
     host.addController(me);
   }
 
@@ -31,8 +32,6 @@ export class InteractiveController {
     const me = this;
     const list = me.list;
     if (list) {
-      me.#host.on('blur', me.#blurCallback);
-      me.#host.on('change', me.#changeCallback);
       me.#host.attachEvent(me.filter, 'change', me.#monitorCallback);
     }
   }
@@ -40,15 +39,13 @@ export class InteractiveController {
   hostDisconnected() {
     const me = this;
     me.#host.removeController(me);
-    me.#host.off('blur', me.#blurCallback);
-    me.#host.off('change', me.#changeCallback);
     me.#host.removeEvent(me.filter, 'change', me.#monitorCallback);
   }
 
   hostUpdated() {
     // trigger only first time
     if (!this.#host.hasUpdated) {
-      this.#onDataChange();
+      this.onChange();
     }
   }
 
@@ -87,11 +84,12 @@ export class InteractiveController {
     return GSAttr.get(this.#host, 'strict', '');
   }
 
-  #onBlur(e) {
+  onBlur(e) {
     if (!this.#isInList()) GSEvents.send(this.#host, 'strict', { ok: false, source: e });
   }
 
-  #onDataChange(e) {
+  onChange(e) {
+
     const me = this;
     const own = me.owner;
     let clean = false;

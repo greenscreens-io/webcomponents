@@ -2,6 +2,8 @@
  * Copyright (C) 2015, 2025; Green Screens Ltd.
  */
 
+import { GSUtil } from "../base/GSUtil.mjs";
+
 export class ButtonTypes {
 
     static values = ['button', 'reset', 'submit'];
@@ -11,11 +13,25 @@ export class ButtonTypes {
     }
 
     static isReset(val) {
-        return ButtonTypes.values.indexOf(val) === 1;
+        return  ButtonTypes.isType(val, 'reset');
     }
 
     static isSubmit(val) {
-        return ButtonTypes.values.indexOf(val) === 2;
+        return  ButtonTypes.isType(val, 'submit');
+    }
+
+    /**
+     * Check button type, by spec, if not set, default is 'submit'
+     * @param {*} type - button type
+     * @param {*} value - matching value
+     * @returns 
+     */
+    static isType(type, value) {
+        return ButtonTypes.#normalize(type) === value;
+    }
+
+    static #normalize(type) {
+        return GSUtil.normalize(type, 'submit').toLowerCase();
     }
 } 
 

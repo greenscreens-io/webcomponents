@@ -286,7 +286,8 @@ export class GSAttributeHandler {
             }
 
             if (clean) { 
-                target.innerHTML = '';
+                //target.innerHTML = '';
+                GSDOM.cleanup(target);
             }
 
             content.dataset.gsHashed = me.hashed;

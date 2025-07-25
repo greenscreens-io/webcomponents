@@ -3,7 +3,7 @@
  */
 
 import { classMap, ifDefined, html, createRef, ref } from '../lib.mjs';
-import { NavTypes, PlacementTypes } from '../properties/index.mjs';
+import { NavTypes, PlacementTypes, color } from '../properties/index.mjs';
 import { GSElement } from '../GSElement.mjs';
 
 export class GSNavItemElement extends GSElement {
@@ -16,17 +16,27 @@ export class GSNavItemElement extends GSElement {
     disabled: { type: Boolean },
     autofocus: { type: Boolean },
     active: { type: Boolean, reflect: true },
-    tooltip: {} // Add tooltip property
+    tooltip: {}, // Add tooltip property
+    badge: { type: Boolean },
+    badgeColor: {...color},
+    badgeValue: { }
   }
 
   #refEl = createRef();
 
   constructor() {
     super();
+    this.badgeColor = 'danger';
+    this.badgeValue = '!';
   }
 
+  disconnectedCallback() {
+    delete this[Symbol.for('gs-element')];
+    super.disconnectedCallback();
+  }
+  
   shouldUpdate(changedProperties) {
-    return this.parentComponent?.tagName === 'GS-NAV';
+    return this.parentComponent?.tagName === this.parentType;
   }
 
   firstUpdated(changed) {
@@ -36,7 +46,7 @@ export class GSNavItemElement extends GSElement {
 
   renderUI() {
     const me = this;
-    return html`<div class="nav-item ${classMap(me.renderClass())}">${me.#button}</div>`;
+    return html`<div class="nav-item position-relative ${classMap(me.renderClass())}">${me.#button}${me.#badgeUI}</div>`;
   }
 
   renderClass() {
@@ -53,6 +63,10 @@ export class GSNavItemElement extends GSElement {
 
   focus() {
     requestAnimationFrame(() => this.#refEl.value?.focus());
+  }
+
+  get parentType() {
+    return 'GS-NAV';
   }
 
   get isNav() {
@@ -100,6 +114,18 @@ export class GSNavItemElement extends GSElement {
         ${me.#first} 
         ${me.#second}
       </a>`;
+  }
+
+  get #badgeUI() {
+    const me = this;
+    if (!me.badge) return '';
+    const css = {
+      'top-0' : true,
+      'end-0' : true,
+      'translate-middle-y' : true,
+      [`text-bg-${me.badgeColor}`]: me.badgeColor,
+    };
+    return html`<span class="badge rounded-pill position-absolute ${classMap(css)}">${me.badgeValue}</span>`;
   }
 
   get #itemsCSS() {

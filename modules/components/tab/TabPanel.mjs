@@ -22,13 +22,23 @@ export class GSTabPanelElement extends GSElement {
     this.active = false;
   }
 
-  shouldUpdate(changedProperties) {
-    return this.parentComponent?.tagName === 'GS-TAB-GROUP';
+  disconnectedCallback() {
+    delete this[Symbol.for('gs-element')];
+    super.disconnectedCallback();
   }
 
+  shouldUpdate(changedProperties) {
+    return this.parentComponent?.tagName === this.parentType;
+  }
+
+  /*
+  @invalid="${me.#onInvalid}"
+  @change="${me.#onChange}"
+  */
   renderUI() {
     const me = this;
-    return html`<div  dir="${ifDefined(me.direction)}" 
+    return html`<div  
+      dir="${ifDefined(me.direction)}" 
       class="${classMap(this.renderClass())}">
       <slot>
       ${me.renderTemplate()}
@@ -45,9 +55,42 @@ export class GSTabPanelElement extends GSElement {
     return css;
   }
 
-  get owner() {
-    return this.closest('gs-tab-group') || GSDOM.component(this);
+  get parentType() {
+    return 'GS-TAB-GROUP';
   }
+
+  get owner() {
+    return this.closest(this.parentType.toLowerCase(), -1, true) || GSDOM.component(this);
+  }
+
+  get form() {
+    return this.closest('form', -1, true);
+  }
+
+  get tab() {
+    const me = this;
+    const key = Symbol.for('gs-element');
+    return me[key] || me.owner.tabByName(me.name);
+  }
+
+  get tabs() {
+    return this.owner.tabs;
+  }
+
+  /*
+  #onChange(e) {
+    const me = this;
+    if (me.form) {
+      const isValid = me.form.isValid;
+      me.tabs?.forEach(el => el.badge = !isValid);
+    }
+  }
+
+  #onInvalid(e) {
+    const me = this;
+    if (me.form) me.badge = false;
+  }
+  */
 
   static {
     this.define('gs-tab-panel');

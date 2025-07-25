@@ -20,6 +20,10 @@ export class GSTemplateCache {
 
 	static #store = new Map();
 
+	 static clear() {
+		GSTemplateCache.#store.clear();
+	}
+
 	/**
 	 * Store pre-processed template into a cache under given name. 
 	 * Name is usually a path to a template.

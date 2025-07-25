@@ -168,18 +168,21 @@ export class GSGroupElement extends GSElement {
     
   get items() {
     const me = this;
-    return me.queryAll(me.childTagName);
+    return me.queryAll(me.childTagName, true);
   }
 
   get generated() {
-    const me = this;
-    return this.queryAll(`${me.childTagName}[generated]`);
+    return this.items.filter(el => el.hasAttribute('generated'));
   }
 
   get active() {
     const me = this;
-    if (me.multiple) return me.queryAll(`${me.childTagName}[active]`);
-    return me.query(`${me.childTagName}[active]`);
+    const list = me.items.filter(el => el.hasAttribute('active'));
+    return me.multiple ? list : list.pop();
+  }
+
+  childByName(name = '', shadow = false) {
+    return this.query(`${this.childTagName}[name="${name}"]`, shadow, true);
   }
 
   settings(el) {

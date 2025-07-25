@@ -31,7 +31,10 @@ export class GSUtil {
 
 	static toBinary = (value = 0) => value.toString(2);
 
-	static asBool = (val = false) => val?.toString().trim().toLowerCase() === 'true';
+	static asBool = (val = false) => {
+		const v = GSUtil.normalize(val).toLowerCase();
+		return v === 'true' || v === '1';
+	};
 
 	static fromLiteral = (str = '', obj) => str.replace(/\${(.*?)}/g, (x, g) => obj[g]);
 

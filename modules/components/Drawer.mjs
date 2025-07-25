@@ -110,7 +110,7 @@ export class GSDrawerElement extends GSElement {
   }
 
   get #headSlot() {
-    return this.querySelector('[slot="header"]');
+    return this.querySelector('[slot="header"]', false, true);
   }
 
   get #hasHeader() {

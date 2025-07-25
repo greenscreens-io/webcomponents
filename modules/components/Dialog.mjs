@@ -318,15 +318,15 @@ export class GSDialogElement extends GSElement {
   }
 
   get form() {
-    return this.query('gs-form', true);
+    return this.query('gs-form', true, true);
   }
 
   get forms() {
-    return this.queryAll('gs-form', true);
+    return this.queryAll('gs-form', true, true);
   }
 
   get tab() {
-    return this.query('gs-tab', true);
+    return this.query('gs-tab', true, true);
   }
 
   get #dialog() {

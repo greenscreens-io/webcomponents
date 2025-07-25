@@ -29,7 +29,9 @@
     <script type="module" src="/bootstrap-lit/modules/base/GSTheme.mjs"></script>
     <script type="module" src="/bootstrap-lit/modules/base/GSDOM.mjs"></script>
     <script type="module" src="/bootstrap-lit/modules/components/Template.mjs"></script>
+    <script type="module" src="/bootstrap-lit/modules/components/Button.mjs"></script>
     <script type="module" src="/bootstrap-lit/modules/components/FormGroup.mjs"></script>
+    <script type="module" src="/bootstrap-lit/modules/components/Form.mjs"></script>
     <script type="module" src="/bootstrap-lit/modules/components/FormPanel.mjs"></script>
     <script type="module" src="/bootstrap-lit/modules/components/Tooltip.mjs"></script>
     <script type="module" src="/bootstrap-lit/modules/components/Icon.mjs"></script>
@@ -41,7 +43,24 @@
     <gs-template src="//header.html"></gs-template>
     
     <div class="m-4 p-1 bg-light bordered shadow-sm row">
-        JSON generated form and fields.
+        <div class="col-auto">Toggle options : </div>
+        <div class="col-auto">
+            <gs-button color="primary" data-gs-target="input" data-gs-attribute="disabled" title="Disabled"></gs-button>
+            <gs-button color="primary" data-gs-target="input" data-gs-attribute="required" title="Required"></gs-button>
+            <gs-button color="primary" data-gs-target="input" data-gs-attribute="beep" title="Beep"></gs-button>
+            <gs-button color="primary" data-gs-target="input" data-gs-attribute="block" title="Block"></gs-button>            
+            <gs-button color="primary" data-gs-target="input" data-gs-attribute="autocopy" title="Autocopy"></gs-button>
+            <gs-button color="primary" data-gs-target="input" data-gs-attribute="autoselect" title="Autoselect"></gs-button>
+            <gs-button color="primary" data-gs-target="input" data-gs-attribute="autoreport" title="Autoreport"></gs-button>
+            <gs-button color="primary" data-gs-target="input" data-gs-attribute="autovalidate" title="Autovalidate"></gs-button>
+        </div>
+        <div class="col-auto">
+            <gs-button color="primary" data-gs-target="form" data-gs-call="reset" title="Reset form"></gs-button>            
+        </div>
+    </div>
+
+    <div class="m-4 p-1 bg-light bordered shadow-sm row">
+        JSON generated form and fields. 
     </div>
 
         <div class="container justify-content-center w-50 bordered p-4 shadow-sm bg-light">

@@ -26,17 +26,35 @@
     <link rel="preload" href="/bootstrap-lit/assets/icons/bootstrap-icons.css" as="style" data-adoptable="true" data-id="4">
 
     <script type="module" src="/bootstrap-lit/modules/base/GSAdoptedEngine.mjs"></script>
+    <script type="module" src="/bootstrap-lit/modules/base/GSDOM.mjs"></script>
     <script type="module" src="/bootstrap-lit/modules/base/GSTheme.mjs"></script>
     <script type="module" src="/bootstrap-lit/modules/components/Template.mjs"></script>
     <script type="module" src="/bootstrap-lit/modules/components/Button.mjs"></script>
-    <script type="module" src="/bootstrap-lit/modules/components/ext/GSInputElement.mjs"></script>
+    <script type="module" src="/bootstrap-lit/modules/components/ext/index.mjs"></script>
 
 </head>
 <body>
 
     <gs-template src="//header.html"></gs-template>
 
-    <form>
+    <div class="m-4 p-1 bg-light bordered shadow-sm row">
+        <div class="col-auto">Toggle options : </div>
+        <div class="col-auto">
+            <gs-button color="primary" data-gs-target="input" data-gs-attribute="disabled" title="Disabled"></gs-button>
+            <gs-button color="primary" data-gs-target="input" data-gs-attribute="required" title="Required"></gs-button>
+            <gs-button color="primary" data-gs-target="input" data-gs-attribute="beep" title="Beep"></gs-button>
+            <gs-button color="primary" data-gs-target="input" data-gs-attribute="block" title="Block"></gs-button>            
+            <gs-button color="primary" data-gs-target="input" data-gs-attribute="autocopy" title="Autocopy"></gs-button>
+            <gs-button color="primary" data-gs-target="input" data-gs-attribute="autoselect" title="Autoselect"></gs-button>
+            <gs-button color="primary" data-gs-target="input" data-gs-attribute="autoreport" title="Autoreport"></gs-button>
+            <gs-button color="primary" data-gs-target="input" data-gs-attribute="autovalidate" title="Autovalidate"></gs-button>
+        </div>
+        <div class="col-auto">
+            <gs-button color="primary" data-gs-target="form" data-gs-call="reset" title="Reset form"></gs-button>            
+        </div>
+    </div>
+
+    <form is="gs-ext-form">
 
         <div class="m-4 p-1 bg-light bordered shadow-sm">
             <div class="row form-group m-1">
@@ -44,7 +62,7 @@
                     <label class="control-label">IP Address input</label>
                 </div>
                 <div class="col-md-6 col-sm-6 col-xs-11">
-                    <input class="form-control font-monospace" is="gs-ext-input" type="text" name="ipaddress" required>
+                    <input class="form-control font-monospace" is="gs-ext-input" type="text" name="ipaddress" >
                 </div>
             </div>
 
@@ -65,12 +83,14 @@
         "^(?:(?:25[0-5]|(?:2[0-4]|1\\d|[1-9]|)\\d)\\.?\\b){4}(?:\\\/[1-9]{1,2})?$",
         "^(?:(?:25[0-5]|(?:2[0-4]|1\\d|[1-9]|)\\d|\\*)\\.){3}(?:(?:25[0-5]|(?:2[0-4]|1\\d|[1-9]|)\\d|\\*))$",
         "^(?:(?:(?:25[0-5]|(?:2[0-4]|1\\d|[1-9]|)\\d)(?:\\-(?:25[0-5]|(?:2[0-4]|1\\d|[1-9]|)\\d))?)\\.?){3}(?:(?:25[0-5]|(?:2[0-4]|1\\d|[1-9]|)\\d)(?:-(?:25[0-5]|(?:2[0-4]|1\\d|[1-9]|)\\d))?)$"
-    ]
-    const el = document.querySelector('input[name="ipaddress"]');
-    el.multipattern = patterns.map(v => new RegExp(v));
-
+    ].map(v => new RegExp(v));
+    
+    const el = document.querySelector('input[name="ipaddress"]'); 
+    globalThis.addEventListener('gs-ext-input', e => {
+        el.multipattern = patterns;
+        el.focus();
+    });
     </script>
 
 </body>
-
 </html>

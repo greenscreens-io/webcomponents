@@ -35,7 +35,7 @@ export class GSAccordionElement extends GSElement {
   }
 
   get items() {
-    return this.queryAll('gs-accordion-item');
+    return this.queryAll('gs-accordion-item', false, true);
   }
 
   get settings() {

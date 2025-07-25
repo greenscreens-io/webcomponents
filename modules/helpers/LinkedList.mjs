@@ -18,28 +18,44 @@ export class LinkedList {
     #next = null;
     #previous = null;
 
-    constructor(value, next = null, previous = null) {
+    constructor(value) {
         this.#value = value;
-        this.#next = next;
-        this.#previous = previous;
+    }
+
+    [Symbol.for('gs-next')](val) {
+        this.#next = val;
+    }
+
+    [Symbol.for('gs-prev')](val) {
+        this.#previous = val;
     }
 
     remove() {
-        this.#previous.#next = this.#next;
-        this.#next.#previous = this.#previous;
-        this.#release();
+        const me = this;
+        me.#previous?.[Symbol.for('gs-next')](me.#next);
+        me.#next?.[Symbol.for('gs-prev')](me.#previous);
+        return me.#release();
     }
 
+    delete() {
+        return this.remove();
+    }
+    
     /**
      * Append node after 
      * @param {*} node 
      */
     append(node) {
-        node = this.#wrap(node);
+
+        node = LinkedList.wrap(node);
         node.#next = this.#next;
         node.#previous = this;
         this.#next = node;
         return node;
+    }
+
+    add(node) {
+        return this.append(node);
     }
 
     /**
@@ -47,7 +63,7 @@ export class LinkedList {
      * @param {*} node 
      */
     insert(node) {
-        node = this.#wrap(node);
+        node = LinkedList.wrap(node);
         node.#previous = this.#previous;
         node.#next = this;
         this.#previous = node;
@@ -59,8 +75,39 @@ export class LinkedList {
         return this;
     }
 
-    #wrap(node) {
-        return node instanceof LinkedList ? node : new LinkedList(node);
+    find(cb) {
+        return this.iterator.find(cb);
+    }
+
+    filter(cb) {
+        return this.iterator.filter(cb);
+    }
+
+    map(cb) {
+        return this.iterator.map(cb);
+    }
+
+    forEach(cb) {
+        for (let n of this.iterator) {
+            cb(n, -1, this);
+        }
+    }
+    
+    every(cb) {
+        let result = undefined;
+        for (let n of this.iterator) {
+            result = cb(n, -1, this);
+            if (result) break;
+        }
+        return result;
+    }
+
+    toArray(values = true) {
+        return values ? this.asValues : this.asNodes;
+    }
+
+    toJSON() {
+        return this.value;
     }
 
     /**
@@ -70,12 +117,9 @@ export class LinkedList {
         this.#value = undefined;
         this.#next = undefined;
         this.#previous = undefined;
+        return this;
     }
-
-    toJSON() {
-        return this.#value;
-    }
-
+        
     get head() {
         return this.previous?.head || this;
     }
@@ -96,19 +140,29 @@ export class LinkedList {
         return this.#value;
     }
 
-    static isNode(val) {
-        return val instanceof LinkedList;
+    set value(val) {
+        this.#value = val;
+    }    
+
+    get asValues() {
+        return [...this].map(v => v.value);
     }
 
-    /**
-     * Convert array to linked list
-     * @param {*} data 
-     * @returns 
-     */
-    static from(data) {
-        if (!Array.isArray(data)) return null;
-        const root = new LinkedList();
-        data.reduce((node, val, idx) => idx === 1 ? root.update(node).append((val)) : node.append(val));
-        return root;
+    get asNodes() {
+        return [...this];
     }
+    
+    get iterator() {
+        return this[Symbol.iterator]();
+    }
+
+    *[Symbol.iterator]() {
+        yield this;
+        if (this.#next) yield* this.#next.iterator;        
+    }
+
+    static wrap(node) {
+        return node instanceof LinkedList ? node : new LinkedList(node);
+    }
+    
 }

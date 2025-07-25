@@ -36,7 +36,7 @@ export class GSAttr {
 	  */
 	static toggle(el, name, val = false) {
 		if (!GSAttr.isHTMLElement(el)) return;
-		if (val) {
+		if (GSUtil.asBool(val)) {
 			el.setAttribute(name, '');
 		} else {
 			el.removeAttribute(name);
@@ -108,9 +108,9 @@ export class GSAttr {
 	 * @param {String} val Default value
 	 * @returns {JSON}
 	 */
-	static getAsJson(el, name = '', val = '0') {
+	static getAsJson(el, name = '', val = '{}') {
 		const attr = GSAttr.get(el, name, val);
-		return GSUtil.toJson(attr);
+		return GSUtil.toJson(attr, val);
 	}
 
 	/**
@@ -120,6 +120,7 @@ export class GSAttr {
 	 * @param {Boolean} val Default value
 	 */
 	static setAsBool(el, name = '', val = 'false') {
+		//GSAttr.toggle(el, name, GSUtil.asBool(val));
 		GSAttr.set(el, name, GSUtil.asBool(val), false);
 		/*
 		if (!GSAttr.isHTMLElement(el)) return;
@@ -143,8 +144,8 @@ export class GSAttr {
 	 * @param {String} name Attribute name
 	 * @param {string} val Default value
 	 */
-	static setAsJson(el, name = '', val = '0') {
-		GSAttr.set(el, name, JSON.stringify(val), '{}');
+	static setAsJson(el, name = '', val = '{}') {
+		GSAttr.set(el, name, JSON.stringify(val), val);
 	}
 
 	/**

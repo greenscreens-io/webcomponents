@@ -2,11 +2,12 @@
 * Copyright (C) 2015, 2025 Green Screens Ltd.
 */
 
-import { GSEvents } from '../../../../modules/base/GSEvents.mjs';
 import { GSUtil } from '../../../../modules/base/GSUtil.mjs';
+import { GSEvents } from '../../../../modules/base/GSEvents.mjs';
 import { GSDialogElement } from '../../../../modules/components/Dialog.mjs';
 
 import { Utils } from '../utils/Utils.mjs';
+
 
 /**
  * A module loading GSAsbtractDialog class

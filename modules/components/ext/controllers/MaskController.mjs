@@ -35,38 +35,20 @@ export class MaskController {
 
   #host;
 
-  #keyDownCallback;
-  #inputCallback;
-  #focusCallback;
-  #changeCallback;
-
   constructor(host) {
     const me = this;
     me.#host = host;
-    me.initRules();
-    me.#keyDownCallback = me.#onKeyDown.bind(me);
-    me.#inputCallback = me.#format.bind(me);
-    me.#focusCallback = me.#onFocus.bind(me);
-    me.#changeCallback = me.#onChange.bind(me);
     host.addController(me);
   }
 
   hostConnected() {
     const me = this;
     me.initRules();
-    me.#host.on('keydown', me.#keyDownCallback);
-    me.#host.on('input', me.#inputCallback);
-    me.#host.on('focus', me.#focusCallback);
-    me.#host.on('change', me.#changeCallback);
   }
 
   hostDisconnected() {
     const me = this;
     me.#host.removeController(me);
-    me.#host.off('keydown', me.#keyDownCallback);
-    me.#host.off('input', me.#inputCallback);
-    me.#host.off('focus', me.#focusCallback);
-    me.#host.off('change', me.#changeCallback);
   }
 
   initRules() {
@@ -79,14 +61,11 @@ export class MaskController {
     me.#toPattern();
   }
 
-  checkValidity() {  
+  validate() {  
     const me = this;  
-    let isMatch = true;
-    if (me.isValid) {
-      isMatch = me.isEmpty || me.isMatch;
-      if (!isMatch) me.setCustomValidity('Mask not matched!');
-    }
-    return me.isValid && isMatch;
+    const isMatch = me.isEmpty ? true :me.isMatch;
+    me.setCustomValidity(isMatch ? '' : 'Mask not matched!');
+    return isMatch;
   }
 
   setCustomValidity(val) {
@@ -108,6 +87,14 @@ export class MaskController {
   get isValid() {
     return this.#host.validity.valid;
   }
+
+  get disabled() {
+    return this.#host.disabled;
+  }
+
+  get required() {
+    return this.#host.required;
+  }    
 
   get value() {
     const [i, j] = this.#range();
@@ -158,19 +145,33 @@ export class MaskController {
     return isMatch;
   }
 
-  #onKeyDown(e) {
-    this.#back = e.key === "Backspace";
+  onInput(e) {
+    this.#format();
   }
 
-  #onFocus(e) {
+  onKeyDown(e) {
+    const me = this;
+    me.#back = e.key === "Backspace";
+    const isTab = e.key === "Tab";
+    if (isTab) {
+      me.#format();
+      me.validate();
+    }
+  }
+
+  onFocus(e) {
     const me = this;
     me.#format();
     if (me.autoselect) me.select();
   }
 
-  #onChange(e) {
+  onChange(e) {
     const me = this;
     me.#format();
+  }
+
+  onBlur(e) {
+    this.validate();
   }
 
   /**

@@ -85,7 +85,7 @@ export class GSTabGroupElement extends GSNavElement {
         .active="${ifDefined(o.active === true)}"
         .autofocus="${ifDefined(o.autofocus === true)}"
         .disabled="${ifDefined(o.disabled === true)}" 
-        icon="${ifDefined(o.icon)}"    
+        icon="${ifDefined(o.icon)}"
         title="${ifDefined(o.title)}"
         name="${o.name}"></gs-tab>`;
     });    
@@ -128,6 +128,22 @@ export class GSTabGroupElement extends GSNavElement {
     return 'GS-TAB';
   }
 
+  get tabs() {
+    return this.items;
+  }
+
+  get panels() {
+    return this.queryAll('gs-tab-panel', false, true);
+  }
+
+  tabByName(name = '', shadow = false) {
+    return super.childByName(name, shadow);
+  }
+
+  panelByName(name = '', shadow = false) {
+    return this.query(`gs-tab-panel[name="${name}"]`, shadow, true);
+  }
+
   /**
    * Selected Tab node name is used to find the panel.
    * If panel found, auto-link it with node element
@@ -136,10 +152,13 @@ export class GSTabGroupElement extends GSNavElement {
   #findPanel(el) {
     if (!el) return null;
     const me = this;
-    const key = Symbol.for('gs-element');
     const generated = me.data?.length > 0;
-    let panel = el[key] || me.query(`gs-tab-panel[name="${el.name}"]`, generated);
-    if (!el[key]) el[key] = panel;
+    const key = Symbol.for('gs-element');
+    let panel = el[key] || me.panelByName(el.name, generated);
+    if (panel && !el[key]) {
+      el[key] = panel;
+      panel[key] = el;
+    }
     return panel;
   }
 

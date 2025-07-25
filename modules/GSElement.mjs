@@ -2,7 +2,7 @@
  * Copyright (C) 2015, 2025; Green Screens Ltd.
  */
 
-import { templateContent, noChange, LitElement } from './lib.mjs';
+import { templateContent, noChange, LitElement, CSSResult } from './lib.mjs';
 
 import { GSEvents } from './base/GSEvents.mjs';
 import { GSEnvironment } from './base/GSEnvironment.mjs';
@@ -25,6 +25,7 @@ import { GSData } from './base/GSData.mjs';
 import { GSUtil } from './base/GSUtil.mjs';
 import { SlotController } from './controllers/SlotController.mjs';
 import { GSAttributeHandler } from './base/GSAttributeHandler.mjs';
+import { GSDOMObserver } from './base/GSDOMObserver.mjs';
 
 /**
  * Main WebComponent used by all other GS-* components
@@ -56,15 +57,19 @@ export class GSElement extends LitElement {
     template: {}
   }
 
-  #adopted;
-  #uiHandler;
-  #orientation;
-  #localization;
-  #dataController;
-  #slotController;
-  #themes
-  #template;
-  #content;
+  #adopted = undefined;
+  #uiHandler = undefined;
+  #orientation = undefined;
+  #localization = undefined;
+  #dataController = undefined;
+  #slotController = undefined;
+  #themes = undefined;
+  #template = undefined;
+  #content = undefined;
+  
+  #ref = undefined;
+  #refs = undefined;
+  #refx = undefined;
 
   constructor() {
     super();
@@ -88,13 +93,46 @@ export class GSElement extends LitElement {
     super.connectedCallback();
     const me = this;
     const tpl = GSDOM.templateRef(me);
-    if (tpl) me.#template = new TemplateController(me);    
+    if (tpl) me.#template = new TemplateController(me);
     if (me.isBindable) me.binded();
   }
 
   disconnectedCallback() {
+    const me = this;
     GSEvents.detachListeners(this);
     super.disconnectedCallback();
+    me.#ref?.clear();
+    me.#refs?.clear();
+    me.#refx?.clear();
+    me.#ref = null;
+    me.#refs = null;
+    me.#refx = null;
+    me.#adopted = null;
+    me.#uiHandler = null;
+    me.#orientation = null;
+    me.#localization = null;
+    me.#dataController = null;
+    me.#slotController = null;
+    me.#themes = null;
+    me.#template = null;
+    me.#content = null;
+    //me.renderOptions = null;
+    me.adoptedStyleSheets = [];
+    const shadow = this.shadowRoot;
+    if (shadow) {
+      //if (shadow._$litPart$) shadow._$litPart$ = null;
+      shadow.adoptedStyleSheets = [];
+      // shadow.innerHTML = '';
+      //GSDOM.cleanup(shadow);
+      queueMicrotask(() => GSDOM.cleanup(shadow));
+    }
+    queueMicrotask(() => GSDOM.cleanup(me));
+    // GSDOM.cleanup(me);
+    // console.log('removed', me);
+  }
+
+  shouldUpdate(changedProperties) {
+    return this.isConnected; // && this.isAllowRender;
   }
 
   /**
@@ -188,8 +226,8 @@ export class GSElement extends LitElement {
    * Called when asynchronnous template is injected into component
    */
   templateInjected() {
-    
-	}
+
+  }
 
   /**
    * Attach bindings
@@ -231,7 +269,7 @@ export class GSElement extends LitElement {
    * @returns {CSSStyleRule}
    */
   dynamicStyle(id, value, isGlobal = false) {
-    return this.#adopted.style(id, value, isGlobal);
+    return this.#adopted?.style(id, value, isGlobal);
   }
 
   /**
@@ -249,8 +287,21 @@ export class GSElement extends LitElement {
    * @param {Number} levels - walk limit
    * @returns {HTMLElement}
    */
-  closest(query = '', levels = -1) {
-    return GSDOM.closest(this, query, levels);
+  closest(query = '', levels = -1, cached = false) {
+    const me = this;
+
+    let result = me.#refx?.get(query);
+    if (result && !result.isConnected) {
+      result = undefined;
+      me.#refx?.delete(query);
+    }
+    result ??= GSDOM.closest(this, query, levels);
+    
+    if (result && cached && !me.#ref?.has(query)) {
+      me.#refx ??= new Map();
+      me.#refx.set(query, result);
+    }
+    return result;
   }
 
   /**
@@ -258,8 +309,21 @@ export class GSElement extends LitElement {
    * @param {String} name 
    * @returns {HTMLElement}
    */
-  query(query = '', shadow = false) {
-    return GSDOM.query(this, query, false, shadow);
+  query(query = '', shadow = false, cached = false) {
+    const me = this;
+
+    let result = me.#refs?.get(query);
+    if (result && !result.isConnected) {
+      result = undefined;
+      me.#refs?.delete(query);
+    }
+    result ??= GSDOM.query(this, query, false, shadow);
+    
+    if (result && cached && !me.#ref?.has(query)) {
+      me.#ref ??= new Map();
+      me.#ref.set(query, result);
+    }
+    return result;
   }
 
   /**
@@ -267,8 +331,19 @@ export class GSElement extends LitElement {
    * @param {String} query 
    * @returns {Array<HTMLElement>}
    */
-  queryAll(query = '', shadow = false) {
-    return GSDOM.queryAll(this, query, false, shadow);
+  queryAll(query = '', shadow = false, cached = false) {
+    const me = this;
+    let result = me.#refs?.get(query);
+    if (result && !result.isConnected) {
+      result = undefined;
+      me.#refs?.delete(query);
+    }
+    result ??= GSDOM.queryAll(this, query, false, shadow);
+    if (result && cached && !me.#refs?.has(query)) {
+      me.#refs ??= new Map();
+      me.#refs.set(query, result);
+    } 
+    return result;        
   }
 
   /**
@@ -336,8 +411,8 @@ export class GSElement extends LitElement {
    * Prevent event firing up the DOM tree
    * @param {Event} e 
    */
-  prevent(e) {
-    GSEvents.prevent(e);
+  prevent(e, defaults, propagate, immediate) {
+    return GSEvents.prevent(e, defaults, propagate, immediate);
   }
 
   /**
@@ -433,7 +508,7 @@ export class GSElement extends LitElement {
    * Reference to rendered content
    */
   get contentRef() {
-    return this.#content.contentRef;
+    return this.#content?.contentRef;
   }
 
   /**
@@ -448,6 +523,7 @@ export class GSElement extends LitElement {
   * @returns {Boolean} 
   */
   get isAllowRender() {
+    // this.isConnected &&
     return this.isValidEnvironment
       && this.isValidBrowser
       && this.isValidOS
@@ -529,7 +605,18 @@ export class GSElement extends LitElement {
    * Get instance of internal styles
    */
   get elementStyles() {
-    return this.constructor.elementStyles.map(s => Object.values(s).filter(o => o instanceof CSSStyleSheet).pop()).pop();
+    return this.constructor.elementStyles
+        .filter(o => o instanceof CSSStyleSheet || o.styleSheet instanceof CSSStyleSheet)
+        .map(o => o.styleSheet || o)
+        .pop();    
+    /*
+    .map(s => {
+       Object.values(s)
+        .filter(o => o instanceof CSSStyleSheet || o instanceof CSSResult)
+        .map(o => o.styleSheet || o)
+        .pop()
+    }).pop();
+    */
   }
 
   /**
@@ -538,7 +625,7 @@ export class GSElement extends LitElement {
    * @returns 
    */
   cssRule(name) {
-    return Array.from(this.elementStyles.rules).filter(r => r.selectorText === name).pop();
+    return Array.from(this.elementStyles?.rules ?? []).filter(r => r.selectorText === name).pop();
   }
 
   /**
@@ -549,7 +636,7 @@ export class GSElement extends LitElement {
    * @param {*} value 
    */
   setCSSProperty(rule, name, value) {
-    this.cssRule(rule).style.setProperty(name, value);
+    this.cssRule(rule)?.style?.setProperty(name, value);
   }
 
   /**
@@ -568,9 +655,12 @@ export class GSElement extends LitElement {
    * @param {Object} opt Options, used only when extending non HTMLElement class  
    */
   static define(name, clazz, opt) {
-    if (!customElements.get(name)) {
-      customElements.define(name, clazz || this, opt);
-    }
+    return GSDOM.define(name, clazz || this, opt);
   }
 
+  static {
+    GSElement.define('gs-element', GSElement);
+    // global document element removal monitor, help GS cleanup
+    GSDOMObserver.registerFilter(el => true, el => { GSDOM.cleanup(el) }, true, document.body);
+  }
 }

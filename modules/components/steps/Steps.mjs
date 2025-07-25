@@ -42,7 +42,7 @@ export default class GSStepsElement extends GSElement {
     }
 
     get steps() {
-        return this.queryAll('gs-step');
+        return this.queryAll('gs-step', false, true);
     }
 
     get length() {

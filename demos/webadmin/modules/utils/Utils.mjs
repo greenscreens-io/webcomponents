@@ -43,10 +43,12 @@ export class Utils {
     static get notify() {
 		let notify = null;
 		if (GSDialogElement.top) {
-			notify = GSDialogElement.top.notify;
+			notify = GSDialogElement.top.query('gs-notification', true);
 			if (!notify) {
-			 const dlg = GSDialogElement.opened.filter(d => d.notify).shift();
-			 notify = dlg?.notify;
+			 notify = GSDialogElement.opened
+                .map(d => d.query?.('gs-notification', true))
+                .filter(d => GSUtil.nonNull(d))
+                .shift();
 			}
 		} 
         return notify || GSDOM.getByID('notification');

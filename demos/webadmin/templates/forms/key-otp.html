@@ -1,18 +1,18 @@
 <gs-form beep block slot="body" css="flex-fill">
-
-    <input id="id" name="id" type="hidden">
-
-    <gs-form-group css="m-1" name="uuid" label="UUID" readony disabled></gs-form-group>
-
-    <gs-form-group css="m-1" name="host" label="Host" readony disabled></gs-form-group>
-
-    <gs-form-group css="m-1" name="user" label="User" readony disabled></gs-form-group>
-
-    <gs-form-group selectable required
-        css="m-1" name="active" label="Active"
-        description="Enable or disable this account.">
-        <gs-item value="true" name="Enabled"></gs-item>
-        <gs-item value="false" name="Disabled"></gs-item>
-    </gs-form-group>
-   
+    <template>        
+        <input id="id" name="id" type="hidden">
+    
+        <gs-form-group css="m-1" name="uuid" label="UUID" readony disabled></gs-form-group>
+    
+        <gs-form-group css="m-1" name="host" label="Host" readony disabled></gs-form-group>
+    
+        <gs-form-group css="m-1" name="user" label="User" readony disabled></gs-form-group>
+    
+        <gs-form-group selectable required
+            css="m-1" name="active" label="Active"
+            description="Enable or disable this account.">
+            <gs-item value="true" name="Enabled"></gs-item>
+            <gs-item value="false" name="Disabled"></gs-item>
+        </gs-form-group>
+    </template>
 </gs-form>

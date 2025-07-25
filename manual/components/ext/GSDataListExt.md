@@ -8,7 +8,7 @@ Input field names "type" is linked to a **<datalist>** named **types**. When **<
  
 ```html
 <input type="text" list="types" name="type" class="form-control">
-<datalist id="types" is="gs-ext-datalist" data="datalist.json"></datalist>
+<datalist id="types" is="gs-ext-datalist" url="datalist.json"></datalist>
 ```
 <br>
 

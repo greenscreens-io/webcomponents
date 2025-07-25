@@ -213,7 +213,7 @@ export class GSTableElement extends GSElement {
   }
 
   get #input() {
-    return this.queryAll('th > input, th > select', true);
+    return this.queryAll('th > input, th > select', true, true);
   }
 
   get #hasFilters() {
@@ -439,7 +439,7 @@ export class GSTableElement extends GSElement {
     if (!tr) return;
     
     // if context menu is attached and right click made
-    if (e.button === 2 && !me.query('gs-context')) return;
+    if (e.button === 2 && !me.query('gs-context', false, true)) return;
     
     const controller = me.dataController || DataSelector;
     if (!controller) return;

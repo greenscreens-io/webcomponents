@@ -30,6 +30,8 @@ export class ThemeController {
     const me = this;
     ThemeController.#controllers.delete(me);
     me.#host.removeController(me);
+    me.#host = null;
+    me.#theme = null;
   }
 
   hostUpdate() {

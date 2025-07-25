@@ -2,6 +2,8 @@
  * Copyright (C) 2015, 2025; Green Screens Ltd.
  */
 
+import { GSDOM } from "../base/GSDOM.mjs";
+
 /**
  * Handle rendered content cleanup (remove by default)
  * Set "keep" to the component to prevent rendered content removal.
@@ -55,8 +57,10 @@ export class ContentController {
   #removeContent() {
     const me = this;
     if (!me.#host?.keep) {
-      Array.from(me.#refs).forEach(el => el?.remove());
-      me.#refs.clear();
+      Array.from(me.#refs)
+        .filter(el => el ? true : false)
+        .forEach(el => GSDOM.cleanup(el));
     }
+    me.#refs?.clear();
   }
 }  

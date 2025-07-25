@@ -17,8 +17,8 @@ export class CopySelectController {
   constructor(host) {
     const me = this;
     me.#host = host;
-    me.#clickCallback = me.#onClick.bind(me);
-    me.#copyCallback = me.#onCopy.bind(me);
+    me.#clickCallback = me.onClick.bind(me);
+    me.#copyCallback = me.onCopy.bind(me);
     host.addController?.(me);
   }
 
@@ -35,13 +35,13 @@ export class CopySelectController {
     me.#host.off?.('copy', me.#copyCallback);
   }
 
-  #onCopy() {
+  onCopy(e) {
     GSUtil.writeToClipboard(this.#host.value);
   }
 
-  #onClick(e) {
+  onClick(e) {
       const me = this;
-      if (me.#host.autocopy) GSUtil.writeToClipboard(me.#host.value);
+      if (me.#host.autocopy) me.onCopy(e);
       if (me.#host.autoselect) me.#host.select();
   }
 

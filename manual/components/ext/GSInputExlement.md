@@ -4,7 +4,7 @@ GSInputExlement WebComponent is an extension of browser standard HTMLInputElemen
 
 Main support added is masked input through **mask** attribute, validation, datalist integration.
 
-Different controllers will activate bsed on field properties.
+Different controllers will activate based on field properties.
 
 
 ## Example

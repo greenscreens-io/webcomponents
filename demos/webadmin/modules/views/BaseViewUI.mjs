@@ -38,6 +38,14 @@ export class BaseViewUI extends GSElement {
 		});
 	}
 
+	connectedCallback() {
+		super.connectedCallback();
+	}
+
+	disconnectedCallback() {
+		super.disconnectedCallback();
+	}
+
 	/**
 	 * Record key field
 	 */
@@ -56,14 +64,14 @@ export class BaseViewUI extends GSElement {
 	}
 
 	get table() {
-		return this.query('#table-main', true);
+		return this.query('#table-main', true, true);
 	}
 
 	/**
 	 * Record popup
 	 */
 	get modal() {
-		return this.query('#modal-main', true);
+		return this.query('#modal-main', true, true);
 	}
 
 	/**

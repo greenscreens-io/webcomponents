@@ -29,6 +29,20 @@ export class GSDOM {
 	static SPEED = 300;
 
 	/**
+	 * Recursevly clean child elements. Helper for GC
+	 * @param {*} owner 
+	 */
+	static cleanup(owner) {
+		Array.from(GSDOM.walk(owner, false, true, false))
+		.forEach(el => {
+			if (GSDOM.isTemplateElement(el)) GSDOM.cleanup(el.content);
+			el.remove?.();
+			el.innerHTML = '';
+			el.nodeValue = undefined;
+		});
+	}
+
+	/**
 	 * Find active (focused) element	
 	 * @returns {HTMLElement} Focused element
 	 */
@@ -268,6 +282,14 @@ export class GSDOM {
 	 */
 	static isGSExtra(el) {
 		return el?.getAttribute('is')?.indexOf('GS-') === 0;
+	}
+
+	/**
+	 * Check if element is inside shadowDom
+	 * @param {*} el 
+	 */
+	static isShadowed(el) {
+		return GSDOM.parentAll(el).filter(e => e instanceof ShadowRoot).next()?.value;
 	}
 
 	/**
@@ -686,8 +708,10 @@ export class GSDOM {
 		let val = null;
 		switch (el.type) {
 			case 'datetime-local':
-			case 'number':
 				val = el.value ? el.valueAsNumber : el.value;
+				break;
+			case 'number':
+				val = el.value ? el.valueAsNumber : 0;
 				break;
 			case 'select-multiple':
 				val = Array.from(el.selectedOptions).map(o => o.value);
@@ -806,14 +830,20 @@ export class GSDOM {
 	 * @param {Object} obj Object to populate 
 	 * @param {Boolean} defaults Set default value for form reset
 	 */
-	static fromElement2Object(el, obj, defaults = false) {
-		if (el.type !== 'radio') {
-			//params[el.name] = GSDOM.toValue(el);
-			GSData.writeToObject(obj, el.name, GSDOM.toValue(el, defaults));
-		} else if (el.checked) {
-			//params[el.name] = GSDOM.toValue(el);
-			GSData.writeToObject(obj, el.name, GSDOM.toValue(el, defaults));
+	static fromElement2Object(el, obj, defaults = false, noEmpty = false) {
+		if (el?.name) {
+			if (noEmpty && GSUtil.isStringEmpty(el.value)) return obj;
+			if (el.type !== 'radio') {
+				//params[el.name] = GSDOM.toValue(el);
+				GSData.writeToObject(obj, el.name, GSDOM.toValue(el, defaults));
+			} else if (el.checked) {
+				//params[el.name] = GSDOM.toValue(el);
+				GSData.writeToObject(obj, el.name, GSDOM.toValue(el, defaults));
+			}
+		} else {
+			console.warn('Skipping element, name not defined!', el);
 		}
+		return obj;
 	}
 
 	/**
@@ -825,7 +855,7 @@ export class GSDOM {
 	 * @returns {Object}
 	 */
 	static toJson(own, recursive = true, plain = false, definitions) {
-		if (Array.isArray(own)) return own.map(o => GSDOM.toJson(o, recursive,plain,definitions));
+		if (Array.isArray(own)) return own.map(o => GSDOM.toJson(o, recursive, plain, definitions));
 		const obj = {};
 		if (!GSDOM.isHTMLElement(own)) return obj;
 
@@ -969,6 +999,7 @@ export class GSDOM {
 	 * @param {String} qry Default to form
 	 */
 	static enableInput(own, qry = 'input, select, textarea, .btn', all = true, group = '') {
+		group = GSUtil.capitalizeAttr(group);
 		let list = GSDOM.queryAll(own, qry);
 		if (!all && group) list = list.filter(el => GSUtil.asBool(el.dataset[group]))
 		list.forEach(el => el.removeAttribute('disabled'));
@@ -980,6 +1011,7 @@ export class GSDOM {
 	 * @param {String} qry Default to form
 	 */
 	static disableInput(own, qry = 'input, select, textarea, .btn', all = true, group = '') {
+		group = GSUtil.capitalizeAttr(group);
 		GSDOM.queryAll(own, qry)
 			.filter(el => all ? true : !el.disabled)
 			.forEach(el => {
@@ -1095,14 +1127,14 @@ export class GSDOM {
 	 * @returns 
 	 */
 	static reset(element) {
-		if(GSDOM.isFormElement(element)) {
+		if (GSDOM.isFormElement(element)) {
 			if (!GSDOM.resetSelect(element)) {
 				element.dataset.typed = false;
 				element.value = element.defaultValue;
 				GSDOM.#dispatch(element);
-				return true;	
+				return true;
 			}
-		} 		
+		}
 	}
 
 	/**
@@ -1116,7 +1148,7 @@ export class GSDOM {
 			return true;
 		}
 	}
-	
+
 	static #dispatch(element) {
 		element.dispatchEvent(new Event('change', { bubbles: true, composed: true }));
 	}
@@ -1143,16 +1175,35 @@ export class GSDOM {
 		if (host.tagName === 'GS-TEMPLATE') return host.src;
 		return host.template || host.query?.('template', false);
 	}
-		
+
+	static #globalDispatch(name, opt) {
+		queueMicrotask(() => {
+			globalThis.dispatchEvent?.(new CustomEvent(name, opt));
+		});
+	}
+
+	/**
+	 * Register class as WebComponent to the browser
+	 * @param {String} name 
+	 * @param {class} clazz Optional, if not set, use self
+	 * @param {Object} opt Options, used only when extending non HTMLElement class  
+	 */
+	static define(name, clazz, opt) {
+		if (!customElements.get(name)) {
+			customElements.define(name, clazz, opt);
+			GSDOM.#globalDispatch(name, { detail: { customElements: true } });
+		}
+	}
+
 	static {
 		Object.seal(GSDOM);
 		globalThis.GSDOM = GSDOM;
-		globalThis.dispatchEvent?.(new CustomEvent('gs-base-ready', {
+		GSDOM.#globalDispatch('gs-base-ready', {
 			detail: {
-			message: 'GS Base is ready',
-			time: new Date(),
+				message: 'GS Base is ready',
+				time: new Date(),
 			}
-		}));		
+		});
 	}
 }
 

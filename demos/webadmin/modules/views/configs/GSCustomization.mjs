@@ -22,6 +22,14 @@ export class GSCustomization extends BaseViewUI {
         me.template = "//views/customizations.html";
     }
 
+	connectedCallback() {
+		super.connectedCallback();
+	}
+
+	disconnectedCallback() {
+		super.disconnectedCallback();
+	}
+
     async onLoad() {
         const me = this;
         const o = DEMO ? DEMO : await io.greenscreens.Scripts.getScripts();

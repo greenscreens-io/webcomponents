@@ -6,7 +6,7 @@ GSTextArea WebComponent is an extension of a standard HTMLTextAreaElement that a
 ---
  
 ```html
-<textarea is="gs-ext-text" data="data.json"  name="type" class="form-control" beep block timeout="2000"></textarea>
+<textarea is="gs-ext-textarea" url="data.json"  name="type" class="form-control" beep block timeout="2000"></textarea>
 ```
 
 <br>

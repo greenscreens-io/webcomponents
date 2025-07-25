@@ -2,6 +2,8 @@
  * Copyright (C) 2015, 2025; Green Screens Ltd.
  */
 
+import { GSUtil } from "../../../base/GSUtil.mjs";
+
 /**
  * Handle multiple patterns
  */
@@ -23,20 +25,21 @@ export class MultipatternController {
     me.#host.removeController(me);
   }
   
-  checkValidity() {    
+  validate() {    
     const me = this;  
-    let isMatch = true;
-    if (me.isValid) {
-      isMatch = me.isEmpty || me.isMatch;
-      if (!isMatch) me.setCustomValidity('Pattern not matched!');
-    }
-    return me.isValid && isMatch;
+    const isMatch = me.isEmpty ? true :me.isMatch;
+    me.setCustomValidity(isMatch ? '' : 'Pattern not matched!');
+    return isMatch;
   }
 
   setCustomValidity(val) {
     return this.#host.setCustomValidity(val);
   }
 
+  get isEmpty() {
+    return GSUtil.isStringEmpty(this.raw);
+  }
+    
   get isValid() {
     return this.#host.validity.valid;
   }
@@ -57,6 +60,14 @@ export class MultipatternController {
     return this.#host.required;
   }
 
+  get disabled() {
+    return this.#host.disabled;
+  }    
+
+  get dataset() {
+    return this.#host.dataset;
+  }
+
   get patterns() {
     const obj = this.#host.multipattern;
     if (obj instanceof RegExp) return [obj];
@@ -64,19 +75,30 @@ export class MultipatternController {
     throw new Error('Invalid multipattern value. Expected RegExp object or array.');
   }
 
-  get dataset() {
-    return this.#host.dataset;
-  }
-
   get isMatch() {
     const me = this;
     let isMatch = true;
     for (const r of me.patterns) {
-      isMatch = r.test(me?.value);
+      isMatch = r.test(me.value);
       if (isMatch) break;
     }
    
     return isMatch;
+  }
+
+  onKeyDown(e) {
+    const isTab = e.key === 'Tab';
+    if (isTab) {
+      this.validate();
+    } 
+  }
+
+  onBlur(e) {
+    this.validate();
+  }
+
+  onChange(e) {
+    this.validate();
   }
 
 }  

@@ -23,7 +23,7 @@ export class GSNavElement extends GSGroupElement {
   }
 
   shouldUpdate(changed) {
-    return this.data.length > 0 || this.query('gs-nav-item');
+    return this.data.length > 0 || this.query('gs-nav-item', false, true);
   }
   
   renderWrappedClass() {
@@ -55,7 +55,8 @@ export class GSNavElement extends GSGroupElement {
         icon="${ifDefined(o.icon)}" 
         href="${ifDefined(o.href)}" 
         target="${ifDefined(o.target)}" 
-        title="${ifDefined(o.title)}"></gs-nav-item>`;
+        title="${ifDefined(o.title)}">
+        </gs-nav-item>`;
     });
   }
 

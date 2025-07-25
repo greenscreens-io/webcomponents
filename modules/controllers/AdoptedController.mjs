@@ -36,8 +36,10 @@ export class AdoptedController {
 
   hostDisconnected() {
     const me = this;
-    AdoptedController.#controllers.delete(me.#host);
+    AdoptedController.#controllers.delete(me);
     me.#host.removeController(me);
+    me.#host = null;
+    me.#dynamic = null;
   }
 
   /**
@@ -77,7 +79,7 @@ export class AdoptedController {
   }
 
   get #root() {
-    return this.#host.renderRoot;
+    return this.#host?.renderRoot;
   }
 
   get #sheets() {

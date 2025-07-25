@@ -3,8 +3,8 @@
  */
 
 import { classMap, ifDefined, html, ref, createRef } from '../lib.mjs';
-import { GSElement } from '../GSElement.mjs';
 import { color, size, buttonType, ButtonTypes, SizeTypes } from '../properties/index.mjs';
+import { GSElement } from '../GSElement.mjs';
 
 export class GSButtonElement extends GSElement {
 
@@ -42,7 +42,8 @@ export class GSButtonElement extends GSElement {
 
   renderUI() {
     const me = this;
-    return html`<button part="button" role="button" ${ref(me.#refEl)}
+    return html`<button is="gs-ext-button" part="button" role="button" 
+        ${ref(me.#refEl)}
         dir="${ifDefined(me.direction)}"
         type="${ifDefined(me.type)}" 
         class="btn ${classMap(me.renderClass())}" 
@@ -50,6 +51,7 @@ export class GSButtonElement extends GSElement {
         ?disabled=${me.disabled}
         @mouseover="${me.#onMouseOver}"
         @mouseout="${me.#onMouseOut}"
+        @disabled="${me.#onDisabled}"
         @click="${me.#onClick}">
           ${me.#first} ${me.#second}</button>`;
   }
@@ -93,6 +95,10 @@ export class GSButtonElement extends GSElement {
     me.notify();
   }
 
+  #onDisabled(e) {
+    this.disabled = this.buttonEl.disabled;
+  }
+
   #onHref(e) {
     const me = this;
     if (!me.url) return;
@@ -122,6 +128,11 @@ export class GSButtonElement extends GSElement {
   get iconEl() {
     return this.#refIco.value;
   }
+
+  get buttonEl() {
+    return this.#refEl.value;
+  }
+  
 
   get form() {
     return this.closest('gs-form, form');

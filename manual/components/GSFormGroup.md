@@ -19,6 +19,8 @@ Except all standard ```<input>``` [tag attributes](https://developer.mozilla.org
 | autoid             | If enabled, id set to field name if not already set      |
 | autocopy           | Copy all text on click into a field                      |
 | autoselect         | Select all text on click into a field                    |
+| autovalidate       | Automatically validate field and sent invalid event      |
+| autoreport         | Autovalidate with user UI info                           |
 | default            | Default value                                            |
 | description        | Tooltip content - describe field purpose                 |
 | icon               | Tooltip icon                                             |
@@ -29,6 +31,8 @@ Except all standard ```<input>``` [tag attributes](https://developer.mozilla.org
 | reveal             | Allow password reveal on shortcut                        |
 | reverse            | Only for "range type" to display max value first         |
 | selectable         | Render select instead of input                           |
+| value              | Field value                                              |
+| values             | List of values for radio ckeck button                    |
 | invalid-message    | Field validity message if input is invalid               |
 
 **NOTE**: All HTML input element attributes are allowed.

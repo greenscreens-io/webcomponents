@@ -1,29 +1,29 @@
 <gs-form beep block slot="body" css="flex-fill">
-
-    <gs-form-group css="m-1" name="type" label="Storage" required selectable
-		description="Storage type. AUTO will import ROOT, INTERMEDIATE, SERVER or TRUST. JRE will import trusted signers for IBM i SSL access.">
-        <gs-item value="0" name="Automatic"></gs-item>
-        <gs-item value="1" name="Root"></gs-item>
-        <gs-item value="2" name="Intermediate"></gs-item>
-        <gs-item value="3" name="Server"></gs-item>
-        <gs-item value="6" name="Timestamp"></gs-item>
-        <gs-item value="4" name="Trust"></gs-item>
-        <gs-item value="7" name="JRE"></gs-item>
-    </gs-form-group>
-            
-    <gs-form-group css="m-1" name="password" label="Password" type="password" autocomplete="off" reveal 
-        description="Certificate store password.">
-    </gs-form-group>                
-    <div class="row form-group m-1">
-        <div class="col"></div>
-        <div class="col-8">
-            <gs-filebox multiple="false" elid="file" name="file" 
-            accept="application/pkcs12,application/x-pkcs12,.p12,.pfx,.pem,.cer"
-            css="" 
-            css-input="form-control d-none" 
-            css-label="mb-2 text-secondary btn btn-secondary text-light py-4" 
-            css-list="text-info"></gs-filebox>
+    <template>        
+        <gs-form-group css="m-1" name="type" label="Storage" required selectable
+            description="Storage type. AUTO will import ROOT, INTERMEDIATE, SERVER or TRUST. JRE will import trusted signers for IBM i SSL access.">
+            <gs-item value="0" name="Automatic"></gs-item>
+            <gs-item value="1" name="Root"></gs-item>
+            <gs-item value="2" name="Intermediate"></gs-item>
+            <gs-item value="3" name="Server"></gs-item>
+            <gs-item value="6" name="Timestamp"></gs-item>
+            <gs-item value="4" name="Trust"></gs-item>
+            <gs-item value="7" name="JRE"></gs-item>
+        </gs-form-group>
+                
+        <gs-form-group css="m-1" name="password" label="Password" type="password" autocomplete="off" reveal 
+            description="Certificate store password.">
+        </gs-form-group>                
+        <div class="row form-group m-1">
+            <div class="col"></div>
+            <div class="col-8">
+                <gs-filebox multiple="false" elid="file" name="file" 
+                accept="application/pkcs12,application/x-pkcs12,.p12,.pfx,.pem,.cer"
+                css="" 
+                css-input="form-control d-none" 
+                css-label="mb-2 text-secondary btn btn-secondary text-light py-4" 
+                css-list="text-info"></gs-filebox>
+            </div>
         </div>
-    </div>
-
+    </template>
 </gs-form>

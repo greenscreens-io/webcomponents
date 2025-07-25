@@ -2,7 +2,7 @@
  * Copyright (C) 2015, 2025; Green Screens Ltd.
  */
 
-import { createRef, html, ifDefined, ref, repeat } from '../lib.mjs';
+import { createRef, html, render, unsafeHTML, templateContent, ifDefined, ref, repeat } from '../lib.mjs';
 import { GSLog } from '../base/GSLog.mjs';
 import { GSItem } from '../base/GSItem.mjs';
 import { GSAttr } from '../base/GSAttr.mjs';
@@ -35,137 +35,151 @@ export class GSFormPanelElement extends GSElement {
   renderUI() {
     const me = this;
     const data = me.data || {};
-    const items = me.data?.items || [];
+    // const tpl = me.#renderContent(); 
+    const tpl = me.#renderTemplate();
     return html`<gs-form ${ref(me.#formRef)}
 
-      .storage="${ifDefined(data.storage)}" 
-      ?disabled=${ifDefined(data.disabled)}.
-      .data="${ifDefined(data.data)}"
+      storage="${ifDefined(data.storage)}" 
+      disabled=${ifDefined(data.disabled)}.
+      data="${ifDefined(data.data)}"
       
-      .name="${ifDefined(data.name)}"
-      .rel="${ifDefined(data.rel)}"
-      .acceptCharset="${ifDefined(data.acceptCharset)}"
-      .autocapitalize="${ifDefined(data.autocapitalize)}"
-      .autocomplete="${ifDefined(data.autocomplete)}"
+      name="${ifDefined(data.name)}"
+      rel="${ifDefined(data.rel)}"
+      acceptCharset="${ifDefined(data.acceptCharset)}"
+      autocapitalize="${ifDefined(data.autocapitalize)}"
+      autocomplete="${ifDefined(data.autocomplete)}"
 
-      .action="${ifDefined(data.action)}"
-      .enctype="${ifDefined(data.enctype)}"
-      .method="${ifDefined(data.method)}"
-      ?novalidate="${ifDefined(data.novalidate)}"
-      .target="${ifDefined(data.target)}"
+      action="${ifDefined(data.action)}"
+      enctype="${ifDefined(data.enctype)}"
+      method="${ifDefined(data.method)}"
+      novalidate="${ifDefined(data.novalidate)}"
+      target="${ifDefined(data.target)}"
 
-      ?block="${ifDefined(data.block)}"
-      ?beep="${ifDefined(data.beep)}"
-      .timeout="${ifDefined(data.timeout)}"
+      block="${ifDefined(data.block)}"
+      beep="${ifDefined(data.beep)}"
+      timeout="${ifDefined(data.timeout)}"
 
-      ?flat="${ifDefined(data.flat)}"
-      ?rtl="${ifDefined(data.rtl)}"
-      ?hide="${ifDefined(data.hide)}"
-      ?padding="${ifDefined(data.padding)}"
-      ?margin="${ifDefined(data.margin)}"
-      ?rounded="${ifDefined(data.rounded)}"
-      ?bordered="${ifDefined(data.bordered)}"
-      ?shadow="${ifDefined(data.shadow)}"
-      ?keep="${ifDefined(data.keep)}"
-      .css="${ifDefined(data.css)}"
-      .theme="${ifDefined(data.theme)}"
-      .os="${ifDefined(data.os)}"
-      .browser="${ifDefined(data.browser)}"
-      .language="${ifDefined(data.language)}"
-      .environment="${ifDefined(data.environment)}"
-      .orientation="${ifDefined(data.orientation)}"
-      .protocol="${ifDefined(data.protocol)}"
-      .template="${ifDefined(data.template)}"      
-      >
-      <slot>
-        ${repeat(items, (item) => me.#renderFormGroup(me.data, item))}
-      </slot>
-    </gs-form>`;
+      flat="${ifDefined(data.flat)}"
+      rtl="${ifDefined(data.rtl)}"
+      hide="${ifDefined(data.hide)}"
+      padding="${ifDefined(data.padding)}"
+      margin="${ifDefined(data.margin)}"
+      rounded="${ifDefined(data.rounded)}"
+      bordered="${ifDefined(data.bordered)}"
+      shadow="${ifDefined(data.shadow)}"
+      keep="${ifDefined(data.keep)}"
+      css="${ifDefined(data.css)}"
+      theme="${ifDefined(data.theme)}"
+      os="${ifDefined(data.os)}"
+      browser="${ifDefined(data.browser)}"
+      language="${ifDefined(data.language)}"
+      environment="${ifDefined(data.environment)}"
+      orientation="${ifDefined(data.orientation)}"
+      protocol="${ifDefined(data.protocol)}"
+      template="${ifDefined(data.template)}"      
+      >${tpl}</gs-form>`;
+    //${templateContent(tpl)}
+    //${unsafeHTML(tpl.outerHTML)}
   }
 
+  #renderTemplate() {
+    const tpl = document.createElement('template');
+    const content = this.#renderContent();
+    render(content, tpl.content);
+    return tpl;
+  }
+
+  #renderContent() {
+    const me = this;
+    const items = me.data?.items || [];
+    return html`${repeat(items, (item) => me.#renderFormGroup(me.data, item))}`;
+  }
+
+  // to generate into a template, all properties must be attributes, 
+  // as properties are not transferable outside of template
   #renderFormGroup(definition, item) {
     return html`<gs-form-group 
-      .icon="${ifDefined(item.icon)}"
-      .layout="${ifDefined(item.layout)}"
-      .placement="${ifDefined(item.placement)}"
+      icon="${ifDefined(item.icon)}"
+      layout="${ifDefined(item.layout)}"
+      placement="${ifDefined(item.placement)}"
 
-      .label="${ifDefined(item.label)}"
-      .description="${ifDefined(item.description)}"
-      .placeholder="${ifDefined(item.placeholder)}"
+      label="${ifDefined(item.label)}"
+      description="${ifDefined(item.description)}"
+      placeholder="${ifDefined(item.placeholder)}"
       
-      .pattern="${ifDefined(item.pattern)}"
-      .mask="${ifDefined(item.mask)}"
+      pattern="${ifDefined(item.pattern)}"
+      mask="${ifDefined(item.mask)}"
 
-      .form="${ifDefined(item.form)}"
-      .formaction="${ifDefined(item.formaction)}"
-      .formenctype="${ifDefined(item.formenctype)}"
-      .formmethod="${ifDefined(item.formmethod)}"
-      .formnovalidate="${ifDefined(item.formnovalidate)}"
-      .formtarget="${ifDefined(item.formtarget)}"
-      .wrap="${ifDefined(item.wrap)}"
-      .spellcheck="${ifDefined(item.spellcheck)}"
+      form="${ifDefined(item.form)}"
+      formaction="${ifDefined(item.formaction)}"
+      formenctype="${ifDefined(item.formenctype)}"
+      formmethod="${ifDefined(item.formmethod)}"
+      formnovalidate="${ifDefined(item.formnovalidate)}"
+      formtarget="${ifDefined(item.formtarget)}"
+      wrap="${ifDefined(item.wrap)}"
+      spellcheck="${ifDefined(item.spellcheck)}"
 
-      .type="${ifDefined(item.type)}"
-      .name="${ifDefined(item.name)}"
-      .list="${ifDefined(item.list)}"
-      .accept="${ifDefined(item.accept)}"
-      .value="${ifDefined(item.value)}"
+      type="${ifDefined(item.type)}"
+      name="${ifDefined(item.name)}"
+      list="${ifDefined(item.list)}"
+      accept="${ifDefined(item.accept)}"
+      value="${ifDefined(item.value)}"
       
-      .lang="${ifDefined(item.lang)}"
-      .title="${ifDefined(item.title)}"
-      .cols="${ifDefined(item.cols)}"
-      .rows="${ifDefined(item.rows)}"
-      .step="${ifDefined(item.step)}"
-      .min="${ifDefined(item.min)}"
-      .max="${ifDefined(item.max)}"
-      .maxlength="${ifDefined(item.maxlength)}"
-      .minlength="${ifDefined(item.minlength)}"
+      lang="${ifDefined(item.lang)}"
+      title="${ifDefined(item.title)}"
+      cols="${ifDefined(item.cols)}"
+      rows="${ifDefined(item.rows)}"
+      step="${ifDefined(item.step)}"
+      min="${ifDefined(item.min)}"
+      max="${ifDefined(item.max)}"
+      maxlength="${ifDefined(item.maxlength)}"
+      minlength="${ifDefined(item.minlength)}"
 
-      ?reverse="${ifDefined(item.reverse)}"
-      ?selectable="${ifDefined(item.selectable)}"
+      reverse="${ifDefined(item.reverse)}"
+      selectable="${ifDefined(item.selectable)}"
 
-      ?autoid="${ifDefined(item.autoid)}"
-      ?autocopy="${ifDefined(item.autocopy)}"
-      ?autoselect="${ifDefined(item.autoselect)}"
+      autoid="${ifDefined(item.autoid)}"
+      autocopy="${ifDefined(item.autocopy)}"
+      autoselect="${ifDefined(item.autoselect)}"
 
-      .autocapitalize="${ifDefined(item.autocapitalize)}"
-      .autocorrect="${ifDefined(item.autocorrect)}"
-      .autocomplete="${ifDefined(item.autocomplete)}"
+      autocapitalize="${ifDefined(item.autocapitalize)}"
+      autocorrect="${ifDefined(item.autocorrect)}"
+      autocomplete="${ifDefined(item.autocomplete)}"
 
-      ?autofocus="${ifDefined(item.autofocus)}"
-      ?autoselect="${ifDefined(item.autoselect)}"
+      autofocus="${ifDefined(item.autofocus)}"
+      autoselect="${ifDefined(item.autoselect)}"
 
-      ?disabled="${ifDefined(item.disabled)}"
-      ?checked="${ifDefined(item.checked)}"
-      ?multiple="${ifDefined(item.multiple)}"
-      ?reveal="${ifDefined(item.reveal)}"
-      ?readonly="${ifDefined(item.readonly)}"
-      ?required="${ifDefined(item.required)}"
+      disabled="${ifDefined(item.disabled)}"
+      checked="${ifDefined(item.checked)}"
+      multiple="${ifDefined(item.multiple)}"
+      reveal="${ifDefined(item.reveal)}"
+      readonly="${ifDefined(item.readonly)}"
+      required="${ifDefined(item.required)}"
 
-      .invalidMessage="${ifDefined(item.invalidMessage)}"  
+      invalidMessage="${ifDefined(item.invalidMessage)}"  
       
-      ?block="${ifDefined(item.block || definition.block)}"
-      ?beep="${ifDefined(item.beep || definition.beep)}"
-      ?timeout="${ifDefined(item.timeout || definition.timeout)}"
+      block="${ifDefined(item.block || definition.block)}"
+      beep="${ifDefined(item.beep || definition.beep)}"
+      timeout="${ifDefined(item.timeout || definition.timeout)}"
 
-      ?flat="${ifDefined(item.flat)}"
-      ?rtl="${ifDefined(item.rtl)}"
-      ?hide="${ifDefined(item.hide)}"
-      ?padding="${ifDefined(item.padding)}"
-      ?margin="${ifDefined(item.margin)}"
-      ?rounded="${ifDefined(item.rounded)}"
-      ?bordered="${ifDefined(item.bordered)}"
-      ?shadow="${ifDefined(item.shadow)}"
-      ?keep="${ifDefined(item.keep)}"
-      .css="${ifDefined(item.css)}"
-      .theme="${ifDefined(item.theme)}"
-      .os="${ifDefined(item.os)}"
-      .browser="${ifDefined(item.browser)}"
-      .language="${ifDefined(item.language || definition.language)}"
-      .environment="${ifDefined(item.environment)}"
-      .orientation="${ifDefined(item.orientation)}"
-      .protocol="${ifDefined(item.protocol)}"
-      .template="${ifDefined(item.template)}">
+      flat="${ifDefined(item.flat)}"
+      rtl="${ifDefined(item.rtl)}"
+      hide="${ifDefined(item.hide)}"
+      padding="${ifDefined(item.padding)}"
+      margin="${ifDefined(item.margin)}"
+      rounded="${ifDefined(item.rounded)}"
+      bordered="${ifDefined(item.bordered)}"
+      shadow="${ifDefined(item.shadow)}"
+      keep="${ifDefined(item.keep)}"
+      css="${ifDefined(item.css)}"
+      theme="${ifDefined(item.theme)}"
+      os="${ifDefined(item.os)}"
+      browser="${ifDefined(item.browser)}"
+      language="${ifDefined(item.language || definition.language)}"
+      environment="${ifDefined(item.environment)}"
+      orientation="${ifDefined(item.orientation)}"
+      protocol="${ifDefined(item.protocol)}"
+      template="${ifDefined(item.template)}">
       </gs-form-group>`;
   }
 

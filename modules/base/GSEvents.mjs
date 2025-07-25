@@ -186,14 +186,19 @@ export class GSEvents {
 	}
 
 	/**
-	 * Generic prevent event bubling
+	 * Generic prevent event
+	 *  default - prevent system default event handling
+	 *  propagation - prevent all bubbling
+	 *  immedate - prevent all bubbling + this element 
 	 * 
 	 * @param {Event} e 
 	 */
-	static prevent(e, full = true) {
-		if (GSFunction.hasFunction(e, 'preventDefault')) e.preventDefault();
-		if (GSFunction.hasFunction(e, 'stopPropagation')) e.stopPropagation();
-		if (full && GSFunction.hasFunction(e, 'stopImmediatePropagation')) e.stopImmediatePropagation();
+	static prevent(e, defaults = true, propagate = true, immediate = true) {
+		if (e) {
+			if (defaults) e.preventDefault?.();
+			if (propagate) e.stopPropagation?.();
+			if (immediate) e.stopImmediatePropagation?.();
+		}
 	}
 
 	/**
@@ -329,7 +334,7 @@ export class GSEvents {
 
 	/**
 	* Generic event listener appender
-	 * @param {HTMLElement} own Event owner
+	 * @param {HTMLElement} own Event owner (used to store event handler for later release by element destruction )
 	 * @param {HTMLElement} el Owner element to monitor
 	 * @param {String} name Event name to monitor
 	 * @param {Function} fn Callback to trigger on event

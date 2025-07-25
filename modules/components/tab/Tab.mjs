@@ -24,8 +24,14 @@ export class GSTabItemElement extends GSNavItemElement {
     return me.shouldUpdate() ? GSUtil.normalize(me.parentComponent?.tabCSS) : '';
   }
 
-  shouldUpdate(changed) {
-    return this.parentComponent?.tagName === 'GS-TAB-GROUP';
+  get parentType() {
+    return 'GS-TAB-GROUP';
+  }
+
+  get panel() {
+    const me = this;
+    const key = Symbol.for('gs-element');
+    return me[key] || me.owner.panelByName(me.name);
   }
 
   static {

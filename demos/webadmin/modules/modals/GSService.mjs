@@ -16,7 +16,6 @@ export class GSService extends GSAsbtractDialog {
         this.define('gs-admin-dialog-service');
     }
 
-
     constructor() {
         super();
         const me = this;

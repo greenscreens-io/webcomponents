@@ -40,7 +40,7 @@ export class GSTreeItemElement extends GSElement {
   }
 
   updated() {
-    if (this.focused) this.query('a')?.focus();
+    if (this.focused) this.#link?.focus();
     this.dataset.visible = this.visible;
   }
 

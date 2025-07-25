@@ -65,7 +65,7 @@ export class GSAlertElement extends GSElement {
             ...super.renderClass(),
             'show': !me.closed,
             'alert-dismissible': me.closable,
-            [`alert-${this.color}`]: me.color,
+            [`alert-${me.color}`]: me.color,
 
         }
         return css;

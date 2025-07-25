@@ -6,7 +6,7 @@ import { GSUtil } from "../base/GSUtil.mjs";
 import { GSTemplateCache } from "../base/GSTemplateCache.mjs";
 import { GSDOM } from "../base/GSDOM.mjs";
 
-// unternal hidden flag to prevent douple injection
+// internal hidden flag to prevent double injection
 const RENDER_SYMBOL = Symbol.for("GS-TEMPLATE-RENDER");
 
 /**
@@ -78,6 +78,7 @@ export class TemplateController {
       //me.hostDisconnected();
       host.removeController(me);
       host.templateInjected?.();
+      queueMicrotask(()=> me.hostDisconnected());
     }
 
   }
@@ -104,7 +105,7 @@ export class TemplateController {
     let signal = true;
 
     if (hasSlots) {
-      // slot elements msut be added only once 
+      // slot elements must be added only once 
       if (me.#host[RENDER_SYMBOL] === false) {
         me.#host[RENDER_SYMBOL] = true;
         const clone = slots.cloneNode(true);
@@ -141,6 +142,8 @@ export class TemplateController {
     }
     templateSimple = hasSimple && template?.content.childElementCount > 0 ? template : null;
     templateSlots = hasSlots && templateSlots?.content.childElementCount > 0 ? templateSlots : null;
+    // cache copy for page inejcted tempkates as they might be cleared elswhere
+    templateSimple = templateSimple?.isConnected ? templateSimple.cloneNode(true) : templateSimple;
     return { simple: templateSimple, slots: templateSlots };
   }
 
@@ -178,6 +181,7 @@ export class TemplateController {
       }
 
       if (cacheable) {
+        if (templates.simple) templates.simple.dataset.gsCache = true;
         TemplateController.#cache.set(key, templates);
       }
     }
@@ -213,6 +217,13 @@ export class TemplateController {
       me.#scheduled = true;
       queueMicrotask(() => me.#process(me.#tasks).finally(me.#scheduled = false));
     }
+  }
+
+  static clear() {
+    GSTemplateCache.clear();
+    TemplateController.#tasks.clear();
+    TemplateController.#cache.clear();
+    TemplateController.#refs.clear();
   }
 
 }  

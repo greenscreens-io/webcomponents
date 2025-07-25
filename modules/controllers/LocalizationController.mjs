@@ -29,6 +29,8 @@ export class LocalizationController {
     const me = this;
     LocalizationController.#controllers.delete(me);
     me.#host.removeController(me);
+    me.#host = null;
+    me.#language = null;
   }
 
   // called every time host is updated

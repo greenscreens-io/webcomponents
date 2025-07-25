@@ -11,32 +11,23 @@ export class PasswordController {
 
   #revealing = false;
 
-  #keyUpCallback;
-  #keyDownCallback;
-
   constructor(host) {
     const me = this;
     me.#host = host;
-    me.#keyUpCallback = me.#onKeyUp.bind(me);
-    me.#keyDownCallback = me.#onKeyDown.bind(me);
     host.addController(me);
   }
 
   hostConnected() {
     const me = this;
-    me.#host.on('keyup', me.#keyUpCallback);
-    me.#host.on('keydown', me.#keyDownCallback);
   }
 
   hostDisconnected() {
     const me = this;
     me.#host.removeController(me);
-    me.#host.off('keyup', me.#keyUpCallback);
-    me.#host.off('keydown', me.#keyDownCallback);
   }
 
   get reveal() {
-    return this.#host.hasAttribute('reveal');
+    return this.#host.reveal;
   }
 
   get type() {
@@ -48,17 +39,17 @@ export class PasswordController {
   }
 
   #isReveal(e) {
-    return this.reveal && e.key === 'Shift' && e.altKey && e.shiftKey && this.type === 'password';
+    return this.reveal && e.key === 'Shift' && e.altKey && e.ctrlKey && e.shiftKey && this.type === 'password';
   }
 
-  #onKeyUp(e) {
+  onKeyUp(e) {
     const me = this;
     if (e.key === 'Shift' && me.#revealing) {
       me.type = 'password';
     }
   }
 
-  #onKeyDown(e) {
+  onKeyDown(e) {
     const me = this;
     if (me.#isReveal(e)) {
       me.#revealing = true;
