@@ -1,5 +1,6 @@
 /**
  * Install tools
+ * npm install rolldown -g
  * npm install rolldown -d
  * npm i @swc/core rollup-plugin-swc3 -d
  * 
