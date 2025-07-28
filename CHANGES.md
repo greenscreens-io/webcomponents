@@ -6,7 +6,7 @@
 - Web Admin demo template fixes
 - Manual updates
 - Tab component updates, renamed gs-tab to gs-tab-header
-- Listitem component fixes
+- ListItem component fixes
 - added build support / config with Rolldown
 
 NOTE: Changes are temporary, browsers do not support form associated elements within multiple shadow DOM levels.
