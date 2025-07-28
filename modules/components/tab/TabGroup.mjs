@@ -8,7 +8,7 @@ import { PlacementTypes } from '../../properties/placement.mjs';
 import { GSNavElement } from '../Nav.mjs';
 
 /**
- * Panel with tabs component (gs-tab-group), generate childrens gs-tab and gs-tab-panel 
+ * Panel with tabs component (gs-tab-group), generate childrens gs-tab-header and gs-tab-panel 
  */
 export class GSTabGroupElement extends GSNavElement {
 
@@ -81,13 +81,13 @@ export class GSTabGroupElement extends GSNavElement {
   #renderTabs() {    
     return this.data.map(o => {
       if (!o.name) o.name = GSID.id;
-      return html`<gs-tab generated slot="tabs"
+      return html`<gs-tab-header generated slot="tabs"
         .active="${ifDefined(o.active === true)}"
         .autofocus="${ifDefined(o.autofocus === true)}"
         .disabled="${ifDefined(o.disabled === true)}" 
         icon="${ifDefined(o.icon)}"
         title="${ifDefined(o.title)}"
-        name="${o.name}"></gs-tab>`;
+        name="${o.name}"></gs-tab-header>`;
     });    
   }
 
@@ -125,7 +125,7 @@ export class GSTabGroupElement extends GSNavElement {
   }
 
   get childTagName() {
-    return 'GS-TAB';
+    return 'GS-TAB-HEADER';
   }
 
   get tabs() {

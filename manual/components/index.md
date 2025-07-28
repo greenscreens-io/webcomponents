@@ -52,7 +52,7 @@ Components library contains all WebComponents UI elements based on Bootstrap 5.2
     2. [GSStep](./steps/GSStep.md)
     3. [GSStepsStyle](./steps/GSStepStyle.md)
 39. [Tab Elements](./GSTab.md)
-    1. [GSTab](./tab/GSTab.md)
+    1. [GSTabHeader](./tab/GSTabHeader.md)
     2. [GSTabGroup](./tab/GSTabGroup.md)
     3. [GSTabPanel](./tab/GSTabPanel.md)
 40. [GSTable](./GSTable.md)    

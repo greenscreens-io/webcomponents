@@ -1,11 +1,16 @@
 # [WebComponents](https://webcomponents.greenscreens.ltd/).
 
-# Release v2.1.0 BETA (24.07.2025.)
+# Release v2.1.0 BETA (28.07.2025.)
 
 - Many form/field improvements in handling data and events. 
-  
-NOTE: Chcages as temporary, browsers doe not support form associated elements within multiple shadow dom levels.
-Incomming Chrome and Edge v140 or newer shold bring such support. Code will be updated accordingly as soon as browsers release the fix.
+- Web Admin demo template fixes
+- Manual updates
+- Tab component updates, renamed gs-tab to gs-tab-header
+- Listitem component fixes
+- added build support / config with Rolldown
+
+NOTE: Changes are temporary, browsers do not support form associated elements within multiple shadow DOM levels.
+Incoming Chrome and Edge v140 or newer should bring such support. Code will be updated accordingly as soon as browsers release the fix.
 
 
 # Release v2.0.0 BETA (10.01.2025.)

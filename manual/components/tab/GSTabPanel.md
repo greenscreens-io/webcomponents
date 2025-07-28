@@ -1,8 +1,8 @@
-# GSTab GSTabPanel
+# GSTabPanel
  
-GSTab GSTabPanel is a renderer for Bootstrap Tab Panel
+GSTabPanel is a renderer for Bootstrap Tab Panel
  
-## Attributes ```<gs-tab>```
+## Attributes ```<gs-tab-panel>```
 ---
  
 | Name               | Description                                              |
@@ -36,7 +36,7 @@ GSTab GSTabPanel is a renderer for Bootstrap Tab Panel
 For more details, check [Tab Demo](../../demos/tab/)
  
 ```html
-<gs-tab css="m-4 p-1 bg-light border shadow-sm" css-nav="nav-tabs nav-pills" css-panel="">
+<gs-tab-group css="m-4 p-1 bg-light border shadow-sm" css-nav="nav-tabs nav-pills" css-panel="">
     <gs-item title="Home"  template="//content.tpl" css-nav="nav-pill active" css-pane=""></gs-item>
     <gs-item title="Test1" flat="true" template="//content2.tpl" icon="alarm ms-1"></gs-item>
     <gs-item title="Test2" template="#test"></gs-item>
@@ -48,7 +48,7 @@ For more details, check [Tab Demo](../../demos/tab/)
     <gs-item title="Contact" css-nav="" css-panel="">
         <h1>This is internal text to be shown in tab panel</h1>
     </gs-item>
-</gs-tab>
+</gs-tab-group>
 ```
  
 <br>

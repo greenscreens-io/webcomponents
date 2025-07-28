@@ -39,6 +39,8 @@ export class GSListItemElement extends GSElement {
   firstUpdated(changed) {
         // allow single setting at the gs-list to apply to the child
         // GSAttributeHandler.clone(this.parentComponent, this, false);
+        const me = this;
+        if (me.isMatchHashBang) me.active = true;
   }
 
   renderUI() {
@@ -61,13 +63,21 @@ export class GSListItemElement extends GSElement {
       'list-group-item-action': true,
       [`fs-${me.size}`]: me.size > 0,
       [me.#itemCSS] : true,
-      'active': me.active && me.isSelectable()
+      'active': me.isActive
     }
     return me.mapCSS(me.#itemStatusCSS, css);
   }
 
-  isSelectable() {
+  get isActive() {
+    return this.active && this.isSelectable;
+  }
+
+  get isSelectable() {
     return !GSUtil.asBool(this.disabled) || GSUtil.asBool(this.parentComponent.selectable);
+  }
+
+  get isMatchHashBang() {
+    return GSUtil.isStringNonEmpty(this.url) && this.url === location.hash;
   }
 
   #renderIcon() {
@@ -120,7 +130,7 @@ export class GSListItemElement extends GSElement {
   }
 
   get #itemStatusCSS() {
-    return this.active && this.isSelectable() ? this.#activeCSS : this.#inactiveCSS;
+    return this.isActive ? this.#activeCSS : this.#inactiveCSS;
   }
 
   static {

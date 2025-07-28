@@ -6,7 +6,7 @@ import { GSUtil } from '../../base/GSUtil.mjs';
 import { GSNavItemElement } from '../NavItem.mjs';
 
 /**
- * Tab component (gs-tab), generate selectable/switchable tabs on a panel
+ * Tab component (gs-tab-header), generate selectable/switchable tabs on a panel
  */
 export class GSTabItemElement extends GSNavItemElement {
 
@@ -35,7 +35,7 @@ export class GSTabItemElement extends GSNavItemElement {
   }
 
   static {
-    this.define('gs-tab');
+    this.define('gs-tab-header');
   }
 
 }

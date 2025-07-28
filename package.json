@@ -3,6 +3,7 @@
     "type": "module",
     "scripts": {
         "build": "rollup -c",
+        "build2": "rolldown -c",
         "manual": "jsdoc -c ./jsdoc.json",
         "doc1": "jsdoc -c ./doc/.defs/base.json",
         "doc2": "jsdoc -c ./doc/.defs/components.json",
@@ -12,8 +13,11 @@
         "doc": "npm run doc1 && npm run doc2 && npm run doc3 && npm run doc4 && npm run doc5"
     },
     "devDependencies": {
+        "@swc/core": "^1.13.2",
+        "rolldown": "^1.0.0-beta.29",
         "rollup-plugin-gzip": "^3.1.1",
         "rollup-plugin-sourcemaps": "^0.6.3",
+        "rollup-plugin-swc3": "^0.12.1",
         "rollup-plugin-terser": "^7.0.2"
     }
 }

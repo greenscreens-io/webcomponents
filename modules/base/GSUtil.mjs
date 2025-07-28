@@ -127,6 +127,17 @@ export class GSUtil {
 	}
 
 	/**
+	 * Check if number is in range, inclusive
+	 * @param {Number} x 
+	 * @param {Number} min 
+	 * @param {Number} max 
+	 * @returns {Boolean}
+	 */
+	static inRange(x = 0, min = 0, max = 0) {
+		return x >= min && x <= max;
+	}
+
+	/**
 	 * Try to find data format based on language
 	 * @param {string} language 
 	 * @returns 
