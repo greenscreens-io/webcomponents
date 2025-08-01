@@ -55,7 +55,7 @@ export class GSAttributeHandler {
         anchor: { attribute: 'data-gs-anchor' },
         attribute: { attribute: 'data-gs-attribute' },
         call: { attribute: 'data-gs-call' },
-        
+
         event: { attribute: 'data-gs-event' },
         bubbles: { attribute: 'data-gs-bubbles', type: Boolean },
         composed: { attribute: 'data-gs-composed', type: Boolean },
@@ -80,14 +80,16 @@ export class GSAttributeHandler {
 
     #host;
     #proxy;
+    #targetList = null
     #active = false;
     #callback;
 
-    constructor(el) {
+    constructor(el, target) {
         const me = this;
-        me.#host =  el.isProxy ? el.self : el;
+        me.#host = el.isProxy ? el.self : el;
         me.#callback = me.handle.bind(me);
         me.#proxy = el.isProxy ? el : GSAttributeHandler.proxify(me.#host);
+        if (target) me.#targetList = Array.isArray(target) ? target : [target];
     }
 
     /**
@@ -275,8 +277,8 @@ export class GSAttributeHandler {
             const useDef = GSUtil.asBool(value);
             if (useDef) {
                 src = GSDOM.fromJsonAsString(me.definition);
-            } else {                
-                src = me.#toHTML(value);                
+            } else {
+                src = me.#toHTML(value);
             }
 
             const content = GSDOM.parse(src, true);
@@ -285,7 +287,7 @@ export class GSAttributeHandler {
                 GSAttr.jsonToAttr(me.definition, content);
             }
 
-            if (clean) { 
+            if (clean) {
                 //target.innerHTML = '';
                 GSDOM.cleanup(target);
             }
@@ -337,7 +339,7 @@ export class GSAttributeHandler {
      * @param {GSElement} host 
      * @param {HTMLElement} target 
      * @param {HTMLTemplateElement} template 
-     */    
+     */
     #applyTemplate(host, target, template) {
         const content = GSTemplateCache.clone(template);
         this.#applyContent(host, target, content);
@@ -348,7 +350,7 @@ export class GSAttributeHandler {
      * @param {GSElement} host 
      * @param {HTMLElement} target 
      * @param {HTMLTemplateElement} content 
-     */    
+     */
     #applyContent(host, target, content) {
         if (host?.anchor) {
             GSDOM.insertAdjacent(target, content, host.anchor);
@@ -377,7 +379,14 @@ export class GSAttributeHandler {
     }
 
     get targets() {
+
         const me = this;
+
+        // if target not set (element #id), use owner element where to inject actions
+        if (!me.target && me.#targetList) {
+            return me.#targetList;
+        }
+
         switch (me.target) {
             case 'this':
             case 'self':
@@ -388,7 +397,8 @@ export class GSAttributeHandler {
             case 'parent':
                 return [me.#host.parentElement];
         }
-        const list = GSDOM.queryAll(document.body, me.target, false, true).filter(el => el.tagName !== 'GS-ITEM'); 
+
+        const list = GSDOM.queryAll(document.body, me.target, false, true).filter(el => el.tagName !== 'GS-ITEM');
         if (list.length === 0) list.push(me.#host);
         return list;
     }
@@ -490,7 +500,7 @@ export class GSAttributeHandler {
         const def = GSAttributeHandler.DEFINITION;
         Object.values(def)
             .filter(o => from.hasAttribute(o.attribute))
-            .filter(o => override || !to.hasAttribute(o.attribute))          
+            .filter(o => override || !to.hasAttribute(o.attribute))
             .forEach(o => to.setAttribute(o.attribute, from.getAttribute(o.attribute)));
     }
 

@@ -2,8 +2,10 @@
  * Copyright (C) 2015, 2025; Green Screens Ltd.
  */
 
+import { GSID } from '../base/GSID.mjs';
 import { GSRouter } from '../base/GSRouter.mjs';
 import { GSElement } from '../GSElement.mjs';
+import { html } from '../lib1.mjs';
 
 export class GSRouterElement extends GSElement {
 
@@ -17,25 +19,30 @@ export class GSRouterElement extends GSElement {
 
   constructor() {
     super();
-    this.logging = false;
-    this.#router = new GSRouter();
-    this.#router.log = false;
+    const me = this;
+    me.id = GSID.next();
+    me.logging = false;
+    me.#router = new GSRouter(me);
+    me.#router.log = false;
   }
 
   renderUI() {
-    return '';
+    //return super.renderUI();
+    return html`<slot><slot/>`;
   }
 
   updated(changed) {
-    this.#router.log = this.logging;
+    const me = this;
+    me.#router.log = me.logging;
     if (changed.has('url')) {
-      this.#router.initialize(this.url);
+      me.#router.initialize(me.url);
     }
   }
 
   disconnectedCallback() {
-    this.#router?.disable();
-    this.#router = null;
+    const me = this;
+    me.#router?.disable();
+    me.#router = null;
   }
 
   static {

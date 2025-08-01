@@ -24,13 +24,18 @@ import { GSAttributeHandler } from "./GSAttributeHandler.mjs";
  */
 export class GSRouter {
 
+    #owner = null;
     #logging = true;
     #enabled = false;
     #hashCallback = null;
+    #cache = null;
     #definition = {};
 
-    constructor() {
-        this.#hashCallback = this.#onHashChange.bind(this);
+    constructor(owner) {
+        const me = this;
+        me.#owner = owner;
+        me.#cache ??= new Map();
+        me.#hashCallback = me.#onHashChange.bind(me);
     }
 
     /**
@@ -49,6 +54,7 @@ export class GSRouter {
      */
     async initialize(url, wait = 0) {
         const me = this;
+        me.#cache.clear();        
         if (GSUtil.isStringNonEmpty(url)) {
             me.#definition = await me.loadDefinition(url);
         }
@@ -115,19 +121,36 @@ export class GSRouter {
         this.#logging = GSUtil.asBool(val);
     }
 
-    #onHashChange() {
+    #onHashChange(e) {
         const me = this;
+        const hash = me.hash;
+        let px = me.#cache.get(hash);
+        if (!px) {   
+            px = me.#proxify();         
+            if (px) me.#cache.set(hash, px);
+        }
+        // 1. 31.07.2025.
+        // GSAttributeHandler.process(px);
+        px?.handle(e);
+    }
+
+    #proxify() {
+        let px = undefined;
+        const me = this;
+        const hash = me.hash;
         const def = me.#definition["#def"] || {};
         const defaults = me.#definition["#defaults"] || {};
-        const route = me.#definition[me.hash];
+        const route = me.#definition[hash];
         if (route) {
             const el = GSDOM.fromJson(Object.assign({}, route, def, defaults));
             el.dataset.gsHashed = true;
-            const px = GSAttributeHandler.proxify(el);
-            GSAttributeHandler.process(px);
+            // 1. 31.07.2025.
+            //px = GSAttributeHandler.proxify(el);
+            px = new GSAttributeHandler(el, me.#owner);
         } else if (me.#logging) {
-            GSLog.warn(null, `No routing definition found for: ${me.hash}`);
+            GSLog.warn(null, `No routing definition found for: ${hash}`);
         }
+        return px;
     }
 
     static {

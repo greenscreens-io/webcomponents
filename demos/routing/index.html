@@ -48,10 +48,18 @@
     Hashtag routing is used to navigate between different content. Usable for SPA applications or dynamic webb page content loading.
   </div>
 
-    <div id="content" class="container justify-content-center w-50 bordered">
+    <!--
+       If definition contain "data-gs-target":"#content", this will be the target.
+       Try to change router.json file and add "data-gs-target" attribute.
+    -->
+    <div id="content">
 
     </div>
 
+    <!--
+       If definition does not contain "data-gs-target" attribute, the default target is gs-router element.
+       Try to change router.json file and remove "data-gs-target" attribute.
+    -->
     <gs-router url="./router.json"></gs-router>
 </body>
 </html>

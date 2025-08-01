@@ -1,5 +1,10 @@
 # [WebComponents](https://webcomponents.greenscreens.ltd/).
 
+# Release v2.1.0 BETA (01.08.2025.)
+ - Experimental AI support for browser AI API (WiP) 
+ - GSRouter self-inject if target not specified in JSON definition
+ - GSFunction added debounce for button clicks and form inputs
+
 # Release v2.1.0 BETA (28.07.2025.)
 
 - Many form/field improvements in handling data and events. 

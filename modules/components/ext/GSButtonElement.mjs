@@ -11,6 +11,9 @@ import { ButtonTypes } from '../../properties/index.mjs';
 import { GSDOM } from "../../base/GSDOM.mjs";
 import { GSEvents } from "../../base/GSEvents.mjs";
 import { mixin } from "./EventsMixin.mjs";
+import { GSAttr } from '../../base/GSAttr.mjs';
+import { GSUtil } from '../../base/GSUtil.mjs';
+import { GSFunction } from '../../base/GSFunction.mjs';
 
 /**
  * Add JSON loader to select element
@@ -79,7 +82,9 @@ export class GSButtonElement extends HTMLButtonElement {
         if (me.isSubmit && form) {
             me.attachEvent(form, 'change', me.#onFormState.bind(me));
             me.attachEvent(form, 'invalid', me.#onFormState.bind(me));
-            me.on('click', me.#onClick.bind(me));
+            const callback = me.#onClick.bind(me);
+            const clickFn = me.rateLimit > 0 ? GSFunction.debounce(callback, me.rateLimit, true) : callback;
+            me.on('click', clickFn);
         }
     }
 
@@ -120,6 +125,14 @@ export class GSButtonElement extends HTMLButtonElement {
 
     get isReset() {
         return ButtonTypes.isReset(this.type);
+    }
+
+    /**
+     * Limit button click rate ini milliseconds.
+     * If set to 0, no limit is applied.
+     */
+    get rateLimit() {
+        return GSAttr.getAsNum(this, 'rate-limit', 0);
     }
 
     /**

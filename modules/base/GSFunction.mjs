@@ -91,7 +91,7 @@ export class GSFunction {
      */
     static isFunctionGenerator(fn) {
         if (!GSFunction.isFunction(fn)) return false;
-        const GeneratorFunction = (function*(){}).constructor;
+        const GeneratorFunction = (function* () { }).constructor;
         return fn instanceof GeneratorFunction;
     }
 
@@ -205,6 +205,50 @@ export class GSFunction {
                 });
             });
         }
+    }
+
+    /**
+     * Debounce function makes sure that code is only triggered once per user input. 
+     * Search box suggestions, text-field auto-saves, and eliminating double-button clicks are all use cases for debounce.
+     * @param {Function} func 
+     * @param {Number} timeout 
+     * @returns {Function}
+     */
+    static debounce(func, timeout = 300, leading = false) {
+        return leading ? GSFunction.#debounceLifo(func, timeout) : GSFunction.#debounceFifo(func, timeout);
+    }
+
+    /**
+     * Call only last function call within timeout period.
+     * @param {Function} func 
+     * @param {Number} timeout 
+     * @returns {Function}
+     */
+    static #debounceLifo(func, timeout = 300) {
+        let timer;
+        return (...args) => {
+            clearTimeout(timer);
+            timer = setTimeout(() => { func.apply(this, args); }, timeout);
+        };
+    }
+
+    /**
+     * Call only first function call within timeout period.
+     * @param {*} func 
+     * @param {*} timeout 
+     * @returns 
+     */
+    static #debounceFifo(func, timeout = 300) {
+        let timer;
+        return (...args) => {
+            if (!timer) {
+                func.apply(this, args);
+            }
+            clearTimeout(timer);
+            timer = setTimeout(() => {
+                timer = undefined;
+            }, timeout);
+        };
     }
 
     static {

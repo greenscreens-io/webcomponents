@@ -28,7 +28,7 @@ export class GSID {
 	 * @returns {String} A generated ID
 	 */
 	static next(prefx = 'GSId-') {
-		return `${prefx}${this.#id++}`;
+		return `${prefx}${++this.#id}`;
 	}
 
 	/**

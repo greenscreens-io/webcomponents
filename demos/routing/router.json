@@ -1,7 +1,9 @@
 {
+    "#defaults" : {
+        "data-gs-target": "#content"
+    },      
     "version1": {
         "data-gs-swap": "gs-copyright",
-        "data-gs-target": "#content",
         "#def": {
             "company": "Green Screens Ltd.",
             "url": "https://webcomponents.greenscreens.ltd",
@@ -10,7 +12,6 @@
     },
     "version2": {
         "data-gs-swap": true,
-        "data-gs-target": "#content",
         "#def": {
             "#tagName": "gs-copyright",
             "company": "My company Ltd.",
@@ -20,7 +21,6 @@
     },
     "version3": {
         "data-gs-inject": "gs-copyright",
-        "data-gs-target": "#content",
         "#def": {
             "company": "One2One Ltd.",
             "url": "https://webcomponents.greenscreens.ltd",
@@ -29,7 +29,6 @@
     },
     "version4": {
         "data-gs-inject": true,
-        "data-gs-target": "#content",
         "#def": {
             "#tagName": "gs-copyright",
             "company": "Tech Advisory Ltd.",
@@ -38,8 +37,7 @@
         }
     },
     "reset": {
-        "data-gs-swap": "span",
-        "data-gs-target": "#content"
+        "data-gs-swap": "span"
     }    
 
 }
