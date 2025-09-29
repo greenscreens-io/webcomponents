@@ -1,0 +1,22 @@
+<gs-form beep block slot="body" css="flex-fill" autocomplete="off">
+    <template>        
+		<gs-formui-handler data-disable="status" data-value="false"></gs-formui-handler>
+		<gs-form-group css="m-1" name="status" label="Status" autocomplete="off" selectable required
+			description="Enable logging to Syslog server.">
+			<gs-item value="false" name="Disabled" selected></gs-item>
+			<gs-item value="true" name="Enabled"></gs-item>		
+		</gs-form-group>
+	
+	
+		<gs-form-group css="m-1" name="port" label="Port" 
+			value="515" type="number" min="1" max="65535" step="1"
+			autocomplete="off"
+			description="Syslog server port. Default is 515.">
+		</gs-form-group>
+		
+		<gs-form-group css="m-1" name="intf" label="Address" autocomplete="off" required
+			value="127.0.0.1"
+			description="Syslog server address. Default is localhost.">
+		</gs-form-group>
+    </template>	    
+</gs-form>
