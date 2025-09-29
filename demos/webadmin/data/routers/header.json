@@ -47,5 +47,8 @@
     },
     "system": {
         "data-gs-swap": "gs-admin-dialog-system"
-    }        
+    },
+    "syslog": {
+        "data-gs-swap": "gs-admin-dialog-syslog"
+    }      
 }

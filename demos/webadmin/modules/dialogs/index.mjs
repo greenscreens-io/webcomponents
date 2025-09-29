@@ -9,6 +9,7 @@ import './GSCertOpt.mjs';
 import './GSLoginAdmin.mjs';
 import './GSLoginDefaults.mjs';
 import './GSSystem.mjs';
+import './GSSyslog.mjs';
 import './GSKerberos.mjs';
 import './GSNetwork.mjs';
 import './GSOtpOptions.mjs';
