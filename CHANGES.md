@@ -1,5 +1,8 @@
 # [WebComponents](https://webcomponents.greenscreens.ltd/).
 
+# Release v2.1.0 FINAL (29.09.2025.)
+ - Apply beta chenges into final release
+
 # Release v2.1.0 BETA (01.08.2025.)
  - Experimental AI support for browser AI API (WiP) 
  - GSRouter self-inject if target not specified in JSON definition
@@ -16,7 +19,6 @@
 
 NOTE: Changes are temporary, browsers do not support form associated elements within multiple shadow DOM levels.
 Incoming Chrome and Edge v140 or newer should bring such support. Code will be updated accordingly as soon as browsers release the fix.
-
 
 # Release v2.0.0 BETA (10.01.2025.)
 
