@@ -76,12 +76,20 @@ export class TemplateController {
   hostUpdated() {
     const me = this;
     const host = me.#host;
+    // after fixing gselement.#updateHide this controller can be auto-removed
+    // in case of issues, replace with commented block
+    if (me.#template && host.hasUpdated) {
+      host.removeController(me);
+      host.templateInjected?.();
+      queueMicrotask(()=> me.hostDisconnected());
+    }
+
+    /*
     if (me.#template && me.#once) {
       me.#once = false;
-      //host.removeController(me);
       host.templateInjected?.();
-      //queueMicrotask(()=> me.hostDisconnected());
     }
+    */
 
   }
 
@@ -144,7 +152,7 @@ export class TemplateController {
     }
     templateSimple = hasSimple && template?.content.childElementCount > 0 ? template : null;
     templateSlots = hasSlots && templateSlots?.content.childElementCount > 0 ? templateSlots : null;
-    // cache copy for page inejcted tempkates as they might be cleared elswhere
+    // cache copy for page injected templates as they might be cleared elswhere
     templateSimple = templateSimple?.isConnected ? templateSimple.cloneNode(true) : templateSimple;
     return { simple: templateSimple, slots: templateSlots };
   }

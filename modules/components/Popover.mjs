@@ -28,13 +28,14 @@ export class GSPopoverElement extends GSElement { // Fixed typo: GSPopoverlement
 
   constructor() {
     super();
+    const me = this;
     // added to the GSCacheStyle
-    //this.style.position = 'fixed';
-    this.placement = 'top';
-    this.trigger = 'hover';
-    this.content = '';
-    this.dynamicStyle(this.#styleID);
-    this.dynamicStyle(this.#arrowID);
+    //me.style.position = 'fixed';
+    me.placement = 'top';
+    me.trigger = 'hover';
+    me.content = '';
+    me.dynamicStyle(me.#styleID);
+    me.dynamicStyle(me.#arrowID);
   }
 
   firstUpdated(changed) {

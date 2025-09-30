@@ -97,8 +97,8 @@ export class GSCacheStyles {
 	 * @param {String} id 
 	 * @returns {CSSRule}
 	 */
-	static getRule(id = '') {
-		return GSCacheStyles.dynamic.getRule(id);
+	static getRule(id = '', raw = false) {
+		return GSCacheStyles.dynamic.getRule(id, raw);
 	}
 
 	/**
@@ -106,16 +106,16 @@ export class GSCacheStyles {
 	 * @param {String} id 
 	 * @param {string|object} style 
 	 */
-	static setRule(id = '', style = '', sync = false) {
-		return GSCacheStyles.dynamic.setRule(id, style, sync);
+	static setRule(id = '', style = '', sync = false, raw = false) {
+		return GSCacheStyles.dynamic.setRule(id, style, sync, raw);
 	}
 
 	/**
 	 * Remove dynamic element rule
 	 * @param {String} id  
 	 */
-	static deleteRule(id = '') {
-		GSCacheStyles.dynamic.deleteRule(id);
+	static deleteRule(id = '', raw = false) {
+		GSCacheStyles.dynamic.deleteRule(id, raw);
 	}
 
 	/**

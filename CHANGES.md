@@ -3,6 +3,7 @@
 # Release v2.1.0 FINAL (30.09.2025.)
  - Apply beta chenges into final release
  - Fix TemplateController callbacks
+ - Improvement - GSElement rendering when using "hide" attribute
 
 # Release v2.1.0 BETA (01.08.2025.)
  - Experimental AI support for browser AI API (WiP) 

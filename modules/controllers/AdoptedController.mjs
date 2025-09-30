@@ -3,19 +3,18 @@
  */
 import { GSEvents } from '../base/GSEvents.mjs';
 import { GSDynamicStyle } from '../base/GSDynamicStyle.mjs';
-import { GSID } from '../base/GSID.mjs';
 import { GSCacheStyles } from '../base/GSCacheStyles.mjs';
 
 /**
  * Controller register self to gs-adopted event listener list.
- * Every time even gs-adopted is triggered by the GSAdoptedEngien class,
- * all registerd controller will be processed for reapplaying stylesheet 
+ * Every time gs-adopted event is triggered by the GSAdoptedEngine class,
+ * all registerd controllers will be processed for reapplaying stylesheet 
  * Also, this controlelr takes care of adding custom dynamic styles 
  * to the end fo the list.
  * 
  * Custom dynamic styles are used internally by the components for dynamic 
- * style changes to preven dom node polution; 
- * Style  changes  are not visible directly on DOM node.
+ * style changes to prevent DOM node polution; 
+ * Style changes are not visible directly on DOM node.
  */
 export class AdoptedController {
 

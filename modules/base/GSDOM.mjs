@@ -637,11 +637,14 @@ export class GSDOM {
 		if (GSDOM.isHTMLElement(el)) el = [el];
 		if (!(Array.isArray(el) && el.length > 0)) return false;
 		requestAnimationFrame(() => {
+			el.forEach(it => Object.assign(it.style, obj));
+			/*
 			el.forEach(it => {
 				Object.entries(obj).forEach(kv => {
 					it.style[kv[0]] = kv[1];
 				});
 			});
+			*/
 		});
 	}
 

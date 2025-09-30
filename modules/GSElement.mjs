@@ -2,7 +2,7 @@
  * Copyright (C) 2015, 2025; Green Screens Ltd.
  */
 
-import { templateContent, noChange, LitElement, CSSResult } from './lib.mjs';
+import { templateContent, noChange, LitElement } from './lib.mjs';
 
 import { GSEvents } from './base/GSEvents.mjs';
 import { GSEnvironment } from './base/GSEnvironment.mjs';
@@ -26,6 +26,8 @@ import { GSUtil } from './base/GSUtil.mjs';
 import { SlotController } from './controllers/SlotController.mjs';
 import { GSAttributeHandler } from './base/GSAttributeHandler.mjs';
 import { GSDOMObserver } from './base/GSDOMObserver.mjs';
+import { GSID } from './base/GSID.mjs';
+import { GSCacheStyles } from './base/GSCacheStyles.mjs';
 
 /**
  * Main WebComponent used by all other GS-* components
@@ -118,6 +120,7 @@ export class GSElement extends LitElement {
     me.#content = null;
     //me.renderOptions = null;
     me.adoptedStyleSheets = [];
+    GSCacheStyles.deleteRule(me.#ruleName, true);
     const shadow = this.shadowRoot;
     if (shadow) {
       //if (shadow._$litPart$) shadow._$litPart$ = null;
@@ -128,7 +131,7 @@ export class GSElement extends LitElement {
     }
     queueMicrotask(() => GSDOM.cleanup(me));
     // GSDOM.cleanup(me);
-    // console.log('removed', me);
+    // console.log('deleted', me);
   }
 
   shouldUpdate(changedProperties) {
@@ -165,12 +168,32 @@ export class GSElement extends LitElement {
    */
   willUpdate(changed) {
     const me = this;
+    if (changed.has('hide')) {
+      me.#updateHide();
+    }
     if (changed.has('storage')) {
-      me.#dataController?.hostDisconnected();
-      me.#dataController = undefined;
-      if (me.storage) {
-        me.#dataController = new DataController(me);
-      }
+      me.#updateStorage();
+    }
+  }
+
+  get #ruleName() {
+    const me = this;
+    me.id = me.id ? me.id : GSID.id;
+    return `${me.tagName.toLowerCase()}#${me.id}`;
+  }
+
+  #updateHide() {
+    const me = this;
+    const value = me.hide ? 'none' : '';
+    GSCacheStyles.setRule(me.#ruleName, {display:value}, false, true);
+  }
+  
+  #updateStorage() {
+    const me = this;
+    me.#dataController?.hostDisconnected();
+    me.#dataController = undefined;
+    if (me.storage) {
+      me.#dataController = new DataController(me);
     }
   }
 
@@ -187,7 +210,9 @@ export class GSElement extends LitElement {
    * @returns {*} Parsed lit html structure
    */
   render() {
-    return this.isAllowRender && !this.hide ? this.renderUI() : '';
+    // repalced by #updateHide
+    //return this.isAllowRender && !this.hide ? this.renderUI() : '';
+    return this.isAllowRender ? this.renderUI() : '';
   }
 
   /**
@@ -247,7 +272,8 @@ export class GSElement extends LitElement {
   /**
    * Parse CSS string into JSON object
    * @param {String} css CSS string to parse into JSON object
-   * @param {Object} obj JSON object to witch to add parsed CSS
+   * @param {Object} obj JSON object to which to add parsed CSS
+   * @param {boolean} flag Default activation (true|false) for each CSS property
    * @returns {Object} css parsed JSON object 
    */
   mapCSS(css, obj, flag = true) {
@@ -255,7 +281,7 @@ export class GSElement extends LitElement {
     (css || '').split(' ')
       .map(v => v.trim())
       .filter(v => v.length > 0)
-      .map(v => obj[v.trim()] = flag);
+      .forEach(v => obj[v.trim()] = flag);
     return obj;
   }
 
