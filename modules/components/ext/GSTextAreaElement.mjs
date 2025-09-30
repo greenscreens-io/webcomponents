@@ -23,12 +23,12 @@ import { mixin } from "./EventsMixin.mjs";
  * @class
  * @extends { HTMLTextAreaElement }
  */
-export class GSTextAreaElement extends HTMLTextAreaElement {
+export class GSExtTextAreaElement extends HTMLTextAreaElement {
 
     static {
-        mixin(GSTextAreaElement);
-        GSDOM.define('gs-ext-textarea', GSTextAreaElement, { extends: 'textarea' });
-        Object.seal(GSTextAreaElement);
+        mixin(GSExtTextAreaElement);
+        GSDOM.define('gs-ext-textarea', GSExtTextAreaElement, { extends: 'textarea' });
+        Object.seal(GSExtTextAreaElement);
     }
 
     #hasUpdated = false;

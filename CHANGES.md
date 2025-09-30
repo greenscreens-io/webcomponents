@@ -1,7 +1,8 @@
 # [WebComponents](https://webcomponents.greenscreens.ltd/).
 
-# Release v2.1.0 FINAL (29.09.2025.)
+# Release v2.1.0 FINAL (30.09.2025.)
  - Apply beta chenges into final release
+ - Fix TemplateController callbacks
 
 # Release v2.1.0 BETA (01.08.2025.)
  - Experimental AI support for browser AI API (WiP) 

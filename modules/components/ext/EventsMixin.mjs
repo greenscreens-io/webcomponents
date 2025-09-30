@@ -155,7 +155,7 @@ const EventsMixin = {
   * @param {Boolean} once Listen only once
   * @returns {Boolean} State if attachment was successful
   */
-  attachEvent: (el, name = '', fn, once = false) => {
+  attachEvent(el, name = '', fn, once = false) {
     return GSEvents.attach(this, el, name, fn, once);
   },
 

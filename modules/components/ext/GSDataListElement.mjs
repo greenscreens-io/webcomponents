@@ -28,12 +28,12 @@ import { ControllerHandler } from "./ControllerHandler.mjs";
  * @class
  * @extends {HTMLDataListElement}
  */
-export class GSDataListElement extends HTMLDataListElement {
+export class GSExtDataListElement extends HTMLDataListElement {
 
     static {
-        mixin(GSDataListElement);
-        GSDOM.define('gs-ext-datalist', GSDataListElement, { extends: 'datalist' });
-        Object.seal(GSDataListElement);
+        mixin(GSExtDataListElement);
+        GSDOM.define('gs-ext-datalist', GSExtDataListElement, { extends: 'datalist' });
+        Object.seal(GSExtDataListElement);
     }
 
     #data = [];

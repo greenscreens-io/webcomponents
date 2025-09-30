@@ -2,7 +2,7 @@
  * Copyright (C) 2015, 2025; Green Screens Ltd.
  */
 
-import { createRef, html, render, unsafeHTML, templateContent, ifDefined, ref, repeat } from '../lib.mjs';
+import { createRef, html, render, ifDefined, ref, repeat } from '../lib.mjs';
 import { GSLog } from '../base/GSLog.mjs';
 import { GSItem } from '../base/GSItem.mjs';
 import { GSAttr } from '../base/GSAttr.mjs';

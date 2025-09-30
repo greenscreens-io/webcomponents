@@ -12,7 +12,6 @@ import { GSDOM } from "../../base/GSDOM.mjs";
 import { GSEvents } from "../../base/GSEvents.mjs";
 import { mixin } from "./EventsMixin.mjs";
 import { GSAttr } from '../../base/GSAttr.mjs';
-import { GSUtil } from '../../base/GSUtil.mjs';
 import { GSFunction } from '../../base/GSFunction.mjs';
 
 /**
@@ -24,12 +23,12 @@ import { GSFunction } from '../../base/GSFunction.mjs';
  * @class
  * @extends { HTMLButtonElement }
  */
-export class GSButtonElement extends HTMLButtonElement {
+export class GSExtButtonElement extends HTMLButtonElement {
 
     static {
-        mixin(GSButtonElement);
-        GSDOM.define('gs-ext-button', GSButtonElement, { extends: 'button' });
-        Object.seal(GSButtonElement);
+        mixin(GSExtButtonElement);
+        GSDOM.define('gs-ext-button', GSExtButtonElement, { extends: 'button' });
+        Object.seal(GSExtButtonElement);
     }
 
     static get observedAttributes() {

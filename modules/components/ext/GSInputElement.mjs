@@ -18,12 +18,12 @@ import { mixin } from './EventsMixin.mjs';
  * Extended HTMLInputElement with controllers support
  * adding various features such as masked input support 
  */
-export class GSInputElement extends HTMLInputElement {
+export class GSExtInputElement extends HTMLInputElement {
 
   static {
-    mixin(GSInputElement);
-    GSDOM.define('gs-ext-input', GSInputElement, { extends: 'input' });
-    Object.seal(GSInputElement);
+    mixin(GSExtInputElement);
+    GSDOM.define('gs-ext-input', GSExtInputElement, { extends: 'input' });
+    Object.seal(GSExtInputElement);
   }
 
   static get observedAttributes() {

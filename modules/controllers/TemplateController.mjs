@@ -18,6 +18,7 @@ export class TemplateController {
   #host;
   #template;
   #lastRef;
+  #once;
 
   static #scheduled = false;
   static #tasks = new Set();
@@ -31,6 +32,7 @@ export class TemplateController {
   constructor(host) {
     const me = this;
     me.#host = host;
+    me.#once = true;
     host[RENDER_SYMBOL] = false;
     host.addController(this);
   }
@@ -73,12 +75,12 @@ export class TemplateController {
   // inherited
   hostUpdated() {
     const me = this;
-    if (me.#template) {
-      const host = me.#host;
-      //me.hostDisconnected();
-      host.removeController(me);
+    const host = me.#host;
+    if (me.#template && me.#once) {
+      me.#once = false;
+      //host.removeController(me);
       host.templateInjected?.();
-      queueMicrotask(()=> me.hostDisconnected());
+      //queueMicrotask(()=> me.hostDisconnected());
     }
 
   }

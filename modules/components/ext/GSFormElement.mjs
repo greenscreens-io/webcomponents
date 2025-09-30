@@ -21,12 +21,12 @@ import { GSLoader } from "../../base/GSLoader.mjs";
  * @class
  * @extends { HTMLFormElement }
  */
-export class GSFormElement extends HTMLFormElement {
+export class GSExtFormElement extends HTMLFormElement {
 
     static {
-        mixin(GSFormElement);
-        GSDOM.define('gs-ext-form', GSFormElement, { extends: 'form' });
-        Object.seal(GSFormElement);
+        mixin(GSExtFormElement);
+        GSDOM.define('gs-ext-form', GSExtFormElement, { extends: 'form' });
+        Object.seal(GSExtFormElement);
     }
 
     static get observedAttributes() {

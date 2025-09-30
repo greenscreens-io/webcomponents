@@ -25,12 +25,12 @@ import { ControllerHandler } from "./ControllerHandler.mjs";
  * @class
  * @extends {HTMLSelectElement}
  */
-export class GSSelectElement extends HTMLSelectElement {
+export class GSExtSelectElement extends HTMLSelectElement {
 
     static {
-        mixin(GSSelectElement);
-        GSDOM.define('gs-ext-select', GSSelectElement, { extends: 'select' });
-        Object.seal(GSSelectElement);
+        mixin(GSExtSelectElement);
+        GSDOM.define('gs-ext-select', GSExtSelectElement, { extends: 'select' });
+        Object.seal(GSExtSelectElement);
     }
 
     #data = [];
