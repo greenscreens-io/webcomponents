@@ -1,6 +1,7 @@
 :root {
     --bs-body-bg: #f7f7f7;
     --bs-body-bg-rgb: 247, 247, 247;
+    --gs-backdrop-blur: 8px;
 }
 
 .offcanvas,

@@ -4,4 +4,5 @@
 import './IOActions.mjs'
 import './GSSearch.mjs'
 import './GSColorCombo.mjs'
+import './dialogs/index.mjs'
 import './views/index.mjs'
