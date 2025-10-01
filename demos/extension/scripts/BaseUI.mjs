@@ -256,7 +256,7 @@ export class BaseUI extends GSElement {
         const store = me.store;
         store.clear?.();
         store.read();
-        Messenger.load();
+        globalThis.Messenger?.load();
     }
 
     /**

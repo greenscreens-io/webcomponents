@@ -157,6 +157,8 @@ export class GSAttributeHandler {
     #handleAttribute(target) {
         const me = this;
 
+        if (GSUtil.isNull(me.attribute) && me.attributes.length === 0) return;
+
         if (me.inject) target = GSDOM.query(target, me.inject);
         if (me.swap) target = GSDOM.query(target, me.swap);
 
@@ -175,6 +177,7 @@ export class GSAttributeHandler {
      */
     #handleProperty(target) {
         const me = this;
+        if (GSUtil.isNull(me.property) && me.properties.length === 0) return;
         if (me.inject) target = GSDOM.query(target, me.inject);
         if (me.swap) target = GSDOM.query(target, me.swap);
         if (me.isPropertyJSON) {
@@ -316,7 +319,7 @@ export class GSAttributeHandler {
     }
 
     /**
-     * Convert value as URL to a tempalte or as a component name to inject
+     * Convert value as URL to a template or as a component name to inject
      * @param {String} value 
      * @returns {String}
      */

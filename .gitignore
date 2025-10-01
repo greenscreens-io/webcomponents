@@ -2,7 +2,5 @@ node_modules/
 test/
 TODO.md
 GIT.md
-demos/license/
-demos/syslog/
 ReactiveEngine.mjs
 ReactiveInput2.mjs

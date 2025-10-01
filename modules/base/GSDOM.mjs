@@ -36,7 +36,9 @@ export class GSDOM {
 		Array.from(GSDOM.walk(owner, false, true, false))
 		.forEach(el => {
 			if (GSDOM.isTemplateElement(el)) GSDOM.cleanup(el.content);
-			el.remove?.();
+			//el.remove?.();
+			//owner.removeChild(el);
+			el.parentElement?.removeChild?.(el);
 			el.innerHTML = '';
 			el.nodeValue = undefined;
 		});
