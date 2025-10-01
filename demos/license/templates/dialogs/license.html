@@ -1,0 +1,27 @@
+<gs-form css="text-start"  autocomplete="off">
+<template>
+    <gs-form-group css="mt-2" css-field="text-uppercase" layout="horizontal" type="text"
+        minLength="7" maxLength="7" pattern=".{7}"
+        name="serial" label="System ID" 
+        placeholder="...system serial" 
+        description="Workstations used"
+        required>
+    </gs-form-group>
+
+    <gs-form-group css="mt-2" layout="horizontal" type="number" 
+        min="1" max="999999" default="1"
+        name="workstations" label="Workstations" 
+        placeholder="...workstations" 
+        description="Workstations used"
+        required>
+    </gs-form-group>
+
+    <gs-form-group css="mt-2" layout="horizontal" type="range" 
+        min="1" max="36" default="1"
+        name="expire" label="Expiration" 
+        placeholder="...expiration in months" 
+        description="License expiration in months"
+        required>
+    </gs-form-group>   
+</template>
+</gs-form>

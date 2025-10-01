@@ -1,0 +1,55 @@
+
+<gs-layout type="horizontal" css="">
+
+    <gs-item type="vertical" v-pos="center" h-pos="center" min="62" 
+        css="p-3 border-bottom shadow-sm text-bg-light">
+        <gs-item min="1"></gs-item>
+        <gs-item h-pos="center">
+            <template>
+                <img src="/bootstrap-lit/assets/img/logo.png" height="32">
+            </template>
+        </gs-item>
+        <gs-item min="1">
+            <template>
+                <gs-link icon="person" size="5" tooltip="Admin user" text="secondary" data-gs-swap="gs-dialog-admin" data-gs-target="#dialogs"></gs-link>
+                <gs-link icon="door-open" size="5" tooltip="Log out" text="secondary" data-gs-action="logout" data-gs-target="gs-shell"></gs-link>
+            </template>
+        </gs-item>
+    </gs-item>
+
+    <gs-item css="p-3" id="content" v-pos="top" h-pos="center">
+        <template>
+            <gs-view-licences></gs-view-licences>
+        </template>
+    </gs-item>
+
+</gs-layout>
+
+<gs-drawer css="border-end shadow-sm" css-head="p-0 border-bottom" css-body="p-0 overflow-hidden" autoclose min="65" max="260">
+
+    <div slot="header" class="flex-fill p-3">
+        <div class="d-flex justify-content-start align-items-center fs-5">
+            <span><img src="/bootstrap-lit/assets/img/icon.png" height="26"></span>
+            <span class="d-flex ms-4 overflow-hidden text-nowrap"><b>Admin Panel</b></span>
+        </div>
+    </div>
+
+    <gs-list slot="body" selectable="true" 
+        data-css-active="text-bg-secondary"
+        data-css-inactive="bg-transparent"
+        data-css-item="d-flex w-100 justify-content-start align-items-center border-0">
+        <gs-list-item size="5" data-gs-swap="gs-view-licences" data-gs-target="#content">
+            <gs-icon slot="icon" name="house" size="3" css="pe-4"></gs-icon>
+            <span slot="title">Home</span>
+        </gs-list-item>
+        <gs-list-item size="5" data-gs-swap="gs-view-history" data-gs-target="#content">
+            <gs-icon slot="icon" name="book" size="3" css="pe-4"></gs-icon>
+            <span slot="title">History</span>
+        </gs-list-item>
+    </gs-list>
+
+</gs-drawer>
+
+<div id="dialogs"></div>
+
+<gs-copyright year="2015" company="Green Screens Ltd."></gs-copyright>
