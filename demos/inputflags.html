@@ -30,8 +30,9 @@
     <script type="module" src="/bootstrap-lit/modules/components/Template.mjs"></script>
     <script type="module" src="/bootstrap-lit/modules/components/Form.mjs"></script>
     <script type="module" src="/bootstrap-lit/modules/components/ext/GSInputElement.mjs"></script>
-    <script type="module" src="/bootstrap-lit/modules/components/ext/GSDataListExt.mjs"></script>
-    <script type="module" src="/bootstrap-lit/modules/components/ext/GSComboExt.mjs"></script>
+    <script type="module" src="/bootstrap-lit/modules/components/ext/GSDataListElement.mjs"></script>
+    <script type="module" src="/bootstrap-lit/modules/components/ext/GSSelectElement.mjs"></script>
+    <script type="module" src="/bootstrap-lit/modules/components/ext/GSFormElement.mjs"></script>
 
 </head>
 <body>
@@ -63,7 +64,7 @@
 
             <div class="row form-group m-1">
                 <div class="col-md-4 col-sm-4 col-xs-12 text-md-end ">
-                    <label class="control-label">Seelct SUB-GROUP</label>
+                    <label class="control-label">Select SUB-GROUP</label>
                 </div>
                 <div class="col-md-6 col-sm-6 col-xs-11">
                     <input is="gs-ext-input" required type="text" id="type" list="types" name="type" data-filter="group" placeholder="Barcode Type" class="form-control">
@@ -89,7 +90,7 @@
                     <label class="control-label">Data input FLAG 1</label>
                 </div>
                 <div class="col-md-6 col-sm-6 col-xs-11">
-                    <input class="form-control font-monospace" data-flag="1">
+                    <input class="form-control font-monospace" data-flag="1" name="flag1">
                 </div>
             </div>
 
@@ -98,7 +99,7 @@
                     <label class="control-label">Data input FLAG 2</label>
                 </div>
                 <div class="col-md-6 col-sm-6 col-xs-11">
-                    <input class="form-control font-monospace" data-flag="2">
+                    <input class="form-control font-monospace" data-flag="2" name="flag2">
                 </div>
             </div>
 
@@ -107,7 +108,7 @@
                     <label class="control-label">Data input GROUP 1 (CODE)</label>
                 </div>
                 <div class="col-md-6 col-sm-6 col-xs-11">
-                    <input class="form-control font-monospace">
+                    <input class="form-control font-monospace" name="grup">
                 </div>
             </div>
 
@@ -116,7 +117,7 @@
                     <label class="control-label">Data input GROUP 1 (EAN/UPC)</label>
                 </div>
                 <div class="col-md-6 col-sm-6 col-xs-11">
-                    <input class="form-control font-monospace">
+                    <input class="form-control font-monospace" name="grup1">
                 </div>
             </div>
 
@@ -125,7 +126,7 @@
                     <label class="control-label">Data input GROUP 2</label>
                 </div>
                 <div class="col-md-6 col-sm-6 col-xs-11">
-                    <input class="form-control font-monospace">
+                    <input class="form-control font-monospace"  name="grup2">
                 </div>
             </div>
         </div>        
@@ -143,7 +144,7 @@
     <div class="container">
         
     <gs-form>
-
+        <template>
         <div class="m-4 p-1 bg-light bordered shadow-sm">
             <div class="row form-group m-1">
                 <div class="col-md-4 col-sm-4 col-xs-12 text-md-end ">
@@ -184,7 +185,7 @@
                     <label class="control-label">Data input FLAG 1</label>
                 </div>
                 <div class="col-md-6 col-sm-6 col-xs-11">
-                    <input class="form-control font-monospace" data-flag="1">
+                    <input class="form-control font-monospace" data-flag="1" name="flag1">
                 </div>
             </div>
 
@@ -193,7 +194,7 @@
                     <label class="control-label">Data input FLAG 2</label>
                 </div>
                 <div class="col-md-6 col-sm-6 col-xs-11">
-                    <input class="form-control font-monospace" data-flag="2">
+                    <input class="form-control font-monospace" data-flag="2"  name="flag2">
                 </div>
             </div>
 
@@ -202,7 +203,7 @@
                     <label class="control-label">Data input GROUP 1 (CODE)</label>
                 </div>
                 <div class="col-md-6 col-sm-6 col-xs-11">
-                    <input class="form-control font-monospace">
+                    <input class="form-control font-monospace" name="group1">
                 </div>
             </div>
 
@@ -211,7 +212,7 @@
                     <label class="control-label">Data input GROUP 1 (EAN/UPC)</label>
                 </div>
                 <div class="col-md-6 col-sm-6 col-xs-11">
-                    <input class="form-control font-monospace">
+                    <input class="form-control font-monospace" name="group2">
                 </div>
             </div>
 
@@ -220,11 +221,11 @@
                     <label class="control-label">Data input GROUP 2</label>
                 </div>
                 <div class="col-md-6 col-sm-6 col-xs-11">
-                    <input class="form-control font-monospace">
+                    <input class="form-control font-monospace" name="group3">
                 </div>
             </div>
         </div>        
-        
+       </template> 
     </gs-form>
 
 </div>

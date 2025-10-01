@@ -164,7 +164,7 @@ export class GSFormElement extends GSElement {
   }
 
   get asJSON() {
-    return this.form?.asJSON;
+    return this.form?.asJSON || {};
   }
 
   set asJSON(data) {
@@ -194,7 +194,7 @@ export class GSFormElement extends GSElement {
 
   validate(e) {
     const me = this;
-    let isValid = me.form?.validate();
+    let isValid = me.checkValidity();
     isValid = me.onValidate(isValid);
     me.#notify(isValid, e);
     me.invalid[0]?.focus();
