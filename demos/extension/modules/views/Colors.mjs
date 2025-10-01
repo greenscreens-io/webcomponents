@@ -3,30 +3,30 @@
  */
 
 /**
- * A module loading SessionsUI class
- * @module SessionsUI
+ * A module loading ColorsUI class
+ * @module ColorsUI
  */
 
-import { BaseUI } from "./BaseUI.mjs"
+import { BaseView } from "./BaseView.mjs";
 
 /**
- * SessionsUI handles session template elements
+ * ColorsUI handles colors template elements
  * @class
- * @extends {BaseUI}
+ * @extends {BaseView}
  */
-class SessionsUI extends BaseUI {
-    
+class ColorsView extends BaseView {
+
     constructor() {
         super();
-        this.template = '//views/sessions.html';
-        if (self.GS_DEV_MODE) self._SessionsUI = this;
+        this.template = '//views/colors.html';
+        if (self.GS_DEV_MODE) self._ColorsView = this;
     }
 
     /**
-     * Table record action - start terminal session
+     * Table record action - export to CSS
      * @param {*} e 
      */
-    async start(e) {
+    async export(e) {
 
     }
 
@@ -61,7 +61,7 @@ class SessionsUI extends BaseUI {
     }
 
     static {
-        BaseUI.define('gs-ext-sessions', SessionsUI);
-    }    
+        BaseView.define('gs-ext-colors', ColorsView);
+    }
 }
 

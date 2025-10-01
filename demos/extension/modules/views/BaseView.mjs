@@ -6,16 +6,16 @@
  * A module loading BaseUI class
  * @module BaseUI
  */
-import { GSElement } from "../../../modules/GSElement.mjs";
-import { GSDOM } from "../../../modules/base/GSDOM.mjs";
-import { GSFunction } from "../../../modules/base/GSFunction.mjs";
+import { GSElement } from "../../../../modules/GSElement.mjs";
+import { GSDOM } from "../../../../modules/base/GSDOM.mjs";
+import { GSFunction } from "../../../../modules/base/GSFunction.mjs";
 
 /**
  * BaseUI handles basic screen (used by other UI elements)
  * @class
  * @extends {GSElement}
  */
-export class BaseUI extends GSElement {
+export class BaseView extends GSElement {
 
     #listener = null;
     #data = null;
