@@ -26,14 +26,17 @@ export default class BaseViewUI extends GSElement {
 	onReady() {
 		const me = this;
 		super.onReady();
+		if (!me.isConnected) return;
 		//globalThis.GS_LOG_ACTION = true;
 		GSEvents.monitorAction(me, 'view');
 
 		requestAnimationFrame(async () => {
-			if (!me.#table) return;
+			if (!me.isConnected) return;
 			await GSUtil.timeout(100);
-			me.store.filter = me.#table.filters;
-			me.store.sort = me.#table.sorters;
+			if (me.#table) {
+				me.store.filter = me.#table.filters;
+				me.store.sort = me.#table.sorters;
+			}
 			me.onViewRefresh();
 		});
 	}
@@ -180,7 +183,7 @@ export default class BaseViewUI extends GSElement {
 		}
 
 		if (sts) {		
-			Utils.notify.warn('', 'Record updated!', false, 2, 0);
+			await GSUtil.timeout(1000);
 			await me.store.load();
 			await me.onViewRefresh();
 			Utils.notify.warn('', 'Record updated!', false, 2, 0);											 

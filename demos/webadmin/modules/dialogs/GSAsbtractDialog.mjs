@@ -118,16 +118,21 @@ export default class GSAsbtractDialog extends GSDialog {
         Utils.inform(false, 'Some fields are invalid!');
     }
 
-    async #onFormData(e) {
-        // GSEvents.prevent(e);
+    #onFormData(e) {
         const me = this;
         const generic = me.constructor === GSAsbtractDialog;
-		if (generic) return;
+		if (generic) return;        
+        // prevent close on confirm click
+        GSEvents.prevent(e);
+        me.#handleFormData(e);
+    }
 
+    async #handleFormData(e) {
+        const me = this;
         let sts = false;
         try {
             me.disable();
-            sts = await me.onData(e.detail.data);
+            sts = await me.onData(e.detail.data || e.detail);
         } catch (e) {
             Utils.handleError(e);
         } finally {

@@ -14,10 +14,10 @@
 export default class GSVersion {
 
     get version() {
-        return '1.9.5';
+        return '1.9.9';
     }
 
     get build() {
-        return 20241227;
+        return 20251009;
     }
 }

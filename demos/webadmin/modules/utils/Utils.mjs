@@ -2,7 +2,7 @@
  * Copyright (C) 2015, 2022 Green Screens Ltd.
  */
 
-import {GSComponents,GSDOM,GSFunction,GSUtil} from '/webcomponents/release/esm/io.greenscreens.components.all.esm.min.js';
+import { GSComponents, GSDOM, GSFunction, GSUtil, GSDialog } from '/webcomponents/release/esm/io.greenscreens.components.all.esm.min.js';
 
 /**
  * A module loading Utils class
@@ -16,10 +16,10 @@ import {GSComponents,GSDOM,GSFunction,GSUtil} from '/webcomponents/release/esm/i
 export default class Utils {
 
     static setUI(value) {
-		return GSEvents.waitAnimationFrame(()=> {			
-	        const el = document.createElement(value);
-	        document.body.insertAdjacentElement('beforeend', el);
-			return el;
+        return GSEvents.waitAnimationFrame(() => {
+            const el = document.createElement(value);
+            document.body.insertAdjacentElement('beforeend', el);
+            return el;
         });
     }
 
@@ -31,13 +31,13 @@ export default class Utils {
     }
 
     static get notify() {
-		let notify = null;
-		if (GSDialog.top) {
-			notify = GSDialog.top.notify;
-			if (!notify) {
-			 const dlg = GSDialog.opened.filter(d => d.notify).shift();
-			 notify = dlg?.notify;
-			}
+        let notify = null;
+        if (GSDialog.top) {
+            notify = GSDialog.top.notify;
+            if (!notify) {
+                const dlg = GSDialog.opened.filter(d => d.notify).shift();
+                notify = dlg?.notify;
+            }
         }
         return GSComponents.get('notification');
     }
@@ -55,10 +55,10 @@ export default class Utils {
      */
     static inform(success = false, msg) {
         if (success) {
-			Utils.notify?.info('Info', msg, false, 2, 0);
-		} else {
-        	Utils.notify?.danger('Error', msg, false, 2, 0);
-		}
+            Utils.notify?.info('Info', msg, false, 2, 0);
+        } else {
+            Utils.notify?.danger('Error', msg, false, 2, 0);
+        }
         return success;
     }
 
@@ -72,7 +72,7 @@ export default class Utils {
     static handleResponse(msg) {
         const txt = (msg.message || msg)?.toString();
         if (txt) Utils.inform(msg.success === true, txt, false, 2, 0);
-    }    
+    }
 
     /**
      * Convert hex string to Uint8Array
@@ -87,7 +87,7 @@ export default class Utils {
 
         return new Uint8Array(a);
     }
-	
+
     static toHex(data) {
         data = Utils.#validateData(data);
         return [...data].map(x => x.toString(16).padStart(2, '0')).join('');
