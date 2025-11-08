@@ -305,7 +305,7 @@ export default class GSDate extends Date {
 
     #isMondayFirst() {
         // TODO Firefox does not support it
-        return new Intl.Locale(this.#locale)?.weekInfo?.firstDay === 1;
+        return new Intl.Locale(this.#locale)?.getWeekInfo()?.firstDay === 1;
     }
 
     #capitalize(val = '') {

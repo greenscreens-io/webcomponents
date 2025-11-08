@@ -58,11 +58,12 @@
     <gs-template href="/webcomponents/demos/header.tpl" ></gs-template>
 
     <div class="container mt-4">
-        <gs-filebox multiple="true" elid="file" name="files" css="" css-input="" css-label="mb-2 text-secondary"
-            css-list="text-info"></gs-filebox>
+        <div class="mb-2 text-secondary">File upload</div>
+        <gs-filebox multiple="true" elid="file" name="files" css="" css-input="" css-label="mb-2 text-secondary" css-list="text-info"></gs-filebox>
     </div>
 
     <div class="container mt-4">
+        <div class="mb-2 text-secondary">Directory upload (multiple files)</div>
         <gs-filebox id="other" flat="true" multiple="true" directory="true" elid="test" name="dir"></gs-filebox>
     </div>
 </body>

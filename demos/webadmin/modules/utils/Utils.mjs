@@ -2,7 +2,7 @@
  * Copyright (C) 2015, 2022 Green Screens Ltd.
  */
 
-import { GSComponents, GSDOM, GSFunction, GSUtil, GSDialog } from '/webcomponents/release/esm/io.greenscreens.components.all.esm.min.js';
+import { GSComponents, GSDOM, GSFunction, GSUtil, GSDialog, GSAttachment } from '/webcomponents/release/esm/io.greenscreens.components.all.esm.min.js';
 
 /**
  * A module loading Utils class
@@ -140,26 +140,6 @@ export default class Utils {
         return new Blob([data], { type: 'application/octet-stream' });
     }
 
-    /**
-     * Download raw data 
-     * @param {string} name 
-     * @param {string|array} data 
-     */
-    static download(name, data) {
-        if (!data) return false;
-        const blob = GSUtil.isString(data) ? Utils.stringToBlob(data) : Utils.binaryToBlob(data);
-        const link = URL.createObjectURL(blob);
-        try {
-            const a = document.createElement('a');
-            a.download = name;
-            a.href = link;
-            a.click();
-        } finally {
-            setTimeout(() => URL.revokeObjectURL(link), 250);
-        }
-        return true;
-    }
-
     static revokeObjectURL(url) {
         if (url?.indexOf('blob:') === 0) URL.revokeObjectURL(url)
     }
@@ -176,5 +156,19 @@ export default class Utils {
         });
 
         return win;
+    }
+
+    static async upload(mime = '*/*', forceBinary = false) {
+        return GSAttachment.upload(mime, forceBinary);
+    }
+
+    /**
+     * Download data 
+     * @param {string} name 
+     * @param {string|array} data 
+     * @param {string} mime
+     */
+    static download(filename, content, mime) {
+        return GSAttachment.download(filename, content, mime);
     }
 }

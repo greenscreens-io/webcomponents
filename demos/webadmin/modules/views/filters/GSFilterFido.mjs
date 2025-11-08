@@ -67,4 +67,16 @@ export default class GSFilterFido extends BaseViewUI {
         const o = DEMO ? DEMO : await io.greenscreens.Fido.remove(data.id);
         return o.success;
     }
+
+    async onViewUpload() {
+        const data = await Utils.upload('aplication/json');
+        const o = DEMO ? DEMO : await io.greenscreens.Fido.import(data);
+        return o.success;
+    }
+
+    async onViewDownload() {
+        const o = DEMO ? DEMO : await io.greenscreens.Fido.export();
+        Utils.download('filter.fido.json', o.data, 'aplication/json');
+        return o.success;
+    }    
 }

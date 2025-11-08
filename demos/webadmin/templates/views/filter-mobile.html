@@ -17,7 +17,11 @@
     <div class="row border shadow-sm rounded ms-4 pb-4 bg-light ">
 
         <div class="col-12 border-bottom d-flex justify-content-end p-1 align-items-center">
-
+            <gs-button action="upload" select="false" comment="Import data" css="text-bg-light"
+                icon="bi bi-upload fs-4 fw-bold"></gs-button>
+            <gs-button action="download" select="false" comment="Export data" css="text-bg-light"
+                icon="bi bi-download fs-4 fw-bold"></gs-button>  
+            <span>|</span>  
             <gs-button action="create" select="false" comment="Add new configuration" css="text-bg-light"
                 icon="bi bi-file-earmark fs-4 fw-bold"></gs-button>                
             <gs-button action="refresh" select="false" comment="Refresh data" css="text-bg-light"
