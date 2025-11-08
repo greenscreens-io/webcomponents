@@ -73,4 +73,17 @@ export class GSFilterIP extends BaseViewUI {
         const o = DEMO ? DEMO : await io.greenscreens.Filter.remove(data.id);
         return o.success;
     }
+
+    async onViewUpload() {
+        const data = await Utils.upload('aplication/json');
+        const o = DEMO ? DEMO : await io.greenscreens.Filter.import(data);
+        return o.success;
+    }
+
+    async onViewDownload() {
+        const o = DEMO ? DEMO : await io.greenscreens.Filter.export();
+        Utils.download('filter.ip.json', o.data, 'aplication/json');
+        return o.success;
+    }     
+
 }
