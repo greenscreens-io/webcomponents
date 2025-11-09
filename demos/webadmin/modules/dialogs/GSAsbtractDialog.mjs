@@ -88,7 +88,7 @@ export class GSAsbtractDialog extends GSDialogElement {
     }    
 
     async loadDefaults() {
-        return null;
+        return this.#data;
     }
 
     /**
