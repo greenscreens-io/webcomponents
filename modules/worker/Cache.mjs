@@ -108,7 +108,7 @@ export class CacheEngine {
     // Next try to use (and cache) the preloaded response, if it's there
     const preloadResponse = await event?.preloadResponse;
     if (preloadResponse) {
-      await me.#store(request, fetchedResponse);
+      await me.#store(request, preloadResponse);
       return preloadResponse;
     }    
 

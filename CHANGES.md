@@ -1,5 +1,8 @@
 # [WebComponents](https://webcomponents.greenscreens.ltd/).
 
+# Release v2.1.1 FINAL (10.11.2025.)
+ - Fix Cache worker
+
 # Release v2.1.0 FINAL (30.09.2025.)
  - Apply beta chenges into final release
  - Fix TemplateController callbacks

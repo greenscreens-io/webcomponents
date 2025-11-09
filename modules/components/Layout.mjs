@@ -132,7 +132,8 @@ export class GSLayoutElement extends GSElement {
 
     #panelCSS(el, col, did) {
 
-        const resizable = this.#resizable(el);
+        const me = this;
+        const resizable = me.#resizable(el);
         const grow = resizable ? '' : 'flex-grow-1';
 
         let vpos = el.vPos;
@@ -141,7 +142,7 @@ export class GSLayoutElement extends GSElement {
         hpos = hpos ? `align-items-${hpos}` : '';
         vpos = vpos ? `justify-content-${vpos}` : '';
 
-        const css = this.mapCSS(el.css, {
+        const css = me.mapCSS(el.css, {
             [did] : resizable,
             [col] : col,
             [grow] : grow,
