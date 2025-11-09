@@ -249,7 +249,9 @@ export class WorkerEngine {
     const me = this;
     me.trace('Notification received:', options);
     if (options) {
-      return self.registration.showNotification(options.title, options);
+      if (self.Notification.permission === 'granted') {
+        return self.registration.showNotification(options.title, options);
+      }
     }
   }
 
