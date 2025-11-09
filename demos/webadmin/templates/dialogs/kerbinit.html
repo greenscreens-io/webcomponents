@@ -1,0 +1,48 @@
+<gs-form beep block slot="body" css="flex-fill" autocomplete="off">
+    <template>        	    
+
+		<gs-form-group css="m-1" name="ldapUser" autocomplete="off" required
+			label="User" description="Service user used for delegation">
+		</gs-form-group>
+		
+		<gs-form-group css="m-1" name="ldapPassword" required
+			autocomplete="off" type="password"
+			label="Password" description="Service user credentials">
+		</gs-form-group>
+				
+		<gs-form-group css="m-1" name="query" required
+			placeholder="greenscreens.lan" autocomplete="off" 
+			label="Realm" description="KDC Realm">
+		</gs-form-group>	
+			
+		<gs-form-group css="m-1" name="ldapServer" required
+			placeholder="localhost"  autocomplete="off" 
+			label="LDAP Server" description="LDAP server IP/DNS">
+		</gs-form-group>
+		
+		<gs-form-group css="m-1" name="ldapPort" autocomplete="off" required 
+			placeholder="389" value="389" list="ports" 
+			type="number" min="1" max="65535" 
+			label="LDAP Port" description="LDAP server port (default: 389 or 636 SSL )">
+			<datalist slot="footer" id="ports" is="gs-ext-datalist">
+				<option value="389"></option>
+				<option value="636"></option>
+			</datalist>
+		</gs-form-group>
+			
+		<gs-form-group css="m-1" name="ldapSecure" label="Secured"  selectable required
+			autocomplete="off" description="Use secured access (SSL)">
+			<gs-item value="0" name="NONE" selected></gs-item>
+			<gs-item value="1" name="TLS"></gs-item>
+			<gs-item value="2" name="SSL"></gs-item>
+		</gs-form-group>
+		
+		<gs-form-group css="m-1" name="ldapAuth" label="Authentication" selectable required
+			autocomplete="off" description="Password protection mechanism">
+			<gs-item value="1" name="SIMPLE" selected></gs-item>
+			<gs-item value="2" name="DIGEST-MD5"></gs-item>
+			<gs-item value="3" name="CRAM-MD5"></gs-item>
+		</gs-form-group>
+		
+	</template>	
+</gs-form>

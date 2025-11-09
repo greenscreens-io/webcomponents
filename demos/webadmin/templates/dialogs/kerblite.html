@@ -1,0 +1,15 @@
+<gs-form beep block slot="body" css="flex-fill" autocomplete="off">
+    <template>        	    
+		<gs-formui-handler data-disable="enabled" data-value="false"></gs-formui-handler>
+
+        <gs-tab-group type="tabs" css-panel="p-2" css-tab="fw-bold">
+			<gs-tab-header name="tab1" slot="tabs" title="Credentials" active autofocus></gs-tab-header>
+            <gs-tab-header name="tab2" slot="tabs" title="Connection"></gs-tab-header>
+            <gs-tab-header name="tab3" slot="tabs" title="Options"></gs-tab-header>
+        
+			<gs-tab-panel name="tab1" slot="panels" template="//dialogs/kerblite/credentials.html" active></gs-tab-panel>
+            <gs-tab-panel name="tab2" slot="panels" template="//dialogs/kerblite/connection.html" active></gs-tab-panel>
+            <gs-tab-panel name="tab3" slot="panels" template="//dialogs/kerblite/options.html"></gs-tab-panel>        
+        </gs-tab-group>
+	</template>	
+</gs-form>

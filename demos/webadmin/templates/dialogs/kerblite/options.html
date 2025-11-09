@@ -1,0 +1,31 @@
+		<gs-form-group css="m-1" name="rootDN" required
+			autocomplete="off" label="Root DN" 
+            description="Ldap root for query">
+		</gs-form-group>
+
+		<gs-form-group css="m-1" name="query" required
+			autocomplete="off" label="Query" 
+            placeholder="(sAMAccountName=${0})"
+            description="Ldap query to execute. Use ${...} for attribute mapping.">
+		</gs-form-group>
+
+		<gs-form-group css="m-1" name="attributes" required
+			placeholder="name,credentials" autocomplete="off" 
+			label="Attributes" description="Ldap attributes to retrieve. (comma separated)">
+		</gs-form-group>
+
+		<gs-form-group css="m-1" name="principal" required
+			autocomplete="off" label="Principal"
+            description="Attribute name to map to Kerberos principal.">
+		</gs-form-group>
+
+		<gs-form-group css="m-1" name="attrUser" required
+			autocomplete="off" label="IBM User" 
+            description="Attribute name to retrieve IBM i user.">
+		</gs-form-group>
+
+		<gs-form-group css="m-1" name="attrCred" required
+			autocomplete="off" label="IBM Password" 
+            description="Attribute name to retrieve IBM i password.">
+		</gs-form-group>
+
