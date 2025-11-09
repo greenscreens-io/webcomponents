@@ -39,8 +39,14 @@
     "otp-options": {
         "data-gs-swap": "gs-admin-dialog-otpopt"
     },
+    "kerbinit": {
+        "data-gs-swap": "gs-admin-dialog-kerbinit"
+    },
     "kerberos": {
         "data-gs-swap": "gs-admin-dialog-kerberos"
+    },    
+    "kerblite": {
+        "data-gs-swap": "gs-admin-dialog-kerblite"
     },
     "network": {
         "data-gs-swap": "gs-admin-dialog-network"
