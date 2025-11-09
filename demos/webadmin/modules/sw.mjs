@@ -10,7 +10,7 @@ import { WorkerEngine } from "/bootstrap-lit/modules/worker/index.mjs";
 
 // Assets to precache
 const precachedAssets = [
-    '/bootstrap-lit/assets/img/logo.png'
+    '/bootstrap-lit/assets/img/logo.png?dc=v20251109'
 ];
 
 // fetch filter to determine which resources are cached
