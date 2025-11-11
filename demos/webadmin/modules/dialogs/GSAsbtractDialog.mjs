@@ -67,6 +67,14 @@ export default class GSAsbtractDialog extends GSDialog {
         if (me.dialogTitle) me.title = me.dialogTitle;
     }
 
+	async beforeClose(data, ok) {
+		if (ok) {			
+			const notifier = GSComponents.get('notification');
+			notifier?.secondary('', 'Changes applied!', false, 1.5);
+		}
+		return true;
+	}
+
 	open(data) {
 		this.#data = data;
 		super.open(data);
@@ -130,16 +138,16 @@ export default class GSAsbtractDialog extends GSDialog {
     async #handleFormData(e) {
         const me = this;
         let sts = false;
+        const data = e.detail.data || e.detail;
         try {
             me.disable();
-            sts = await me.onData(e.detail.data || e.detail);
+            sts = await me.onData(data);
         } catch (e) {
             Utils.handleError(e);
         } finally {
             me.enable();
             if (sts) {
-                me.close();
-                //Utils.notify.secondary('', 'Changes applied!', false, 0.75);
+                me.close(data, sts);
             }
         }
     }
