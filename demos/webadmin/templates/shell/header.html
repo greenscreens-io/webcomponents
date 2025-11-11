@@ -2,6 +2,7 @@
     
         <gs-router url="//header.json"></gs-router>
 
+        <gs-button id="restart" css="shadow-none fs-3" icon="arrow-repeat" tooltip="Restart server" text="secondary" url="#restart"></gs-button>
         <gs-button id="explorer" css="shadow-none fs-3" icon="folder-symlink" tooltip="Open resource explorer" text="secondary" data-gs-action="explorer" data-gs-src="/admin/explorer/"></gs-button>
         <gs-dropdown simple auto dark group="header" icon="download fs-3" id="menu1" css="px-1" tooltip="Downloads">
             <!--   
@@ -11,7 +12,6 @@
             <gs-item name="Download Logs" data-gs-action="download-logs"></gs-item>
         </gs-dropdown>
 
-        <gs-button id="restart" css="shadow-none fs-3" icon="arrow-repeat" tooltip="Restart server" text="secondary" url="#restart"></gs-button>
         <gs-button id="migrate" css="shadow-none fs-3" icon="database" tooltip="Migrate Storage from previous version" text="secondary" url="#migrate"></gs-button>
         <gs-dropdown simple auto dark group="header" icon="postcard fs-3" id="menu2" css="px-1" tooltip="Digital Certificate Tools">
             <gs-item name="Regenerate Terminal Keys" data-gs-action="cert-gen-term"></gs-item>
