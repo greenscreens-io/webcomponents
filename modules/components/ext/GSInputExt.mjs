@@ -290,10 +290,12 @@ export default class GSInputExt extends HTMLInputElement {
     }
 
     #onPaste(e) {
-        GSEvents.prevent(e);
-        const val = e.clipboardData.getData('text');
         const me = this;
-        me.value = me.formatMask(val);
+        if (me.mask) {
+            GSEvents.prevent(e);
+            const val = e.clipboardData.getData('text');
+            me.value = me.formatMask(val);
+        }
     }
 
     #isReveal(e) {
