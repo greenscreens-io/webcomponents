@@ -1,0 +1,15 @@
+{
+    "enabled": "false",
+    "ldapUser": "admin",
+    "ldapPassword": "admin",
+    "ldapServer": "localhost",
+    "ldapPort": 389,
+    "ldapSecure": "0",
+    "ldapAuth": "1",
+    "rootDN": "CN=Users,DC=greenscreens,DC=lan",
+    "query": "(sAMAccountName=${sAMAccountName})",
+    "attributes": "sAMAccountName,memberOf",
+    "principal": "sAMAccountName",
+    "attrUser": "ibmUser",
+    "attrCred": "ibmPassword"
+}
