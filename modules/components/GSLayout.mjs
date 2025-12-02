@@ -12,6 +12,9 @@ import GSElement from "../base/GSElement.mjs";
 import GSID from "../base/GSID.mjs";
 import GSAttr from "../base/GSAttr.mjs";
 import GSCSSMap from "../base/GSCSSMap.mjs";
+import GSComponents from "../base/GSComponents.mjs";
+import GSCacheStyles from "../head/GSCacheStyles.mjs";
+
 
 /**
  * Renderer for panel layout 
