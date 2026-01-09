@@ -69,6 +69,7 @@ export class GSPagerElement extends GSElement {
     const css = {
       ...super.renderClass(),
       'pagination': true,
+      'user-select-none': true,
       [`pagination-${size}`]: size,
 
     }

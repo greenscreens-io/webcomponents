@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Bootstrap-Lit</title>
+    <meta charset="utf-8">
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0">
+
+    <meta name="subject" content="Green Scereens Ltd.">
+    <meta name="author" content="www.greenscreens.ltd">
+    <meta name="keywords" content="JavaScript,WebComponents">
+    <meta name="robots" content="index, follow">
+    <meta name="revisit-after" content="3 month">
+    <meta name="description" content="WebComponents UI library based on Bootstrap.">
+
+    <script>
+        globalThis.GS_TEMPLATE_URL = '/bootstrap-lit/demos/templates/';
+    </script>
+
+    <!-- Optimized CSS loading -->
+    <link rel="preload" href="/bootstrap-lit/assets/css/bootstrap.css" as="style" data-adoptable="true">
+    <link rel="preload" href="/bootstrap-lit/assets/themes/default.css" as="style" data-adoptable="true">
+    <link rel="preload" href="/bootstrap-lit/assets/icons/bootstrap-icons.css" as="style" data-adoptable="true">
+
+    <script type="module" src="/bootstrap-lit/modules/base/GSAdoptedEngine.mjs"></script>
+    <script type="module" src="/bootstrap-lit/modules/base/GSTheme.mjs"></script>
+    <script type="module" src="/bootstrap-lit/modules/components/Template.mjs"></script>
+    <script type="module" src="/bootstrap-lit/modules/components/Icon.mjs"></script>
+
+    <style>
+        .HeaderMenu-dropdown.dropdown-menu {
+            --bs-dropdown-bg: white;
+        }
+
+        .HeaderMenu-dropdown .dropdown-menu {
+            --bs-tertiary-bg: rgb(255, 255, 255);
+        }
+
+        .HeaderMenu-dropdown .list-group-item {
+            --bs-list-group-bg: transparent;
+        }
+        [data-bs-theme="dark"] {
+            --bs-tertiary-bg: rgb(55, 55, 55);
+            --bs-dark: #d2d2d2;
+            --bs-dark-rgb: 210, 210, 210;  
+            --bs-link-color: #f1f1e8;
+            --bs-link-hover-color: #cbd9ed;
+            --bs-link-color-rgb: 243, 253, 243;
+            --bs-link-hover-color-rgb: 239, 235, 254;                      
+        }
+    </style>
+</head>
+
+<body>
+
+    <gs-template src="//header.html"></gs-template>
+
+    <div
+        style="width:fit-content; height:fit-content;";
+        class="HeaderMenu-dropdown dropdown-menu rounded m-0 p-0 pt-2 pt-lg-4 position-relative position-lg-absolute left-0 left-lg-n3 dropdown-menu-wide border-1 show bg-white-">
+        <div class="d-lg-flex dropdown-menu-wide">
+            <div class="HeaderMenu-column px-lg-4">
+                <div>
+
+                    <ul class="list-group list-style-none list-group-flush ">
+                        <li class="list-group-item list-group-item-action border-0 p-0 ">
+                            <a class="HeaderMenu-dropdown-link d-block text-decoration-none position-relative py-2 d-flex flex-items-center mb-lg-3"
+                                href="https://github.com/features/copilot">
+                                <gs-icon css="mx-1" name="discord" size="3"></gs-icon>
+                                <div class="ms-2 me-auto">
+                                    <div class="h4">
+                                        GitHub Copilot
+                                    </div>
+                                    Write better code with AI
+                                </div>
+                            </a>
+                        </li>
+
+                        <li class="list-group-item list-group-item-action border-0 p-0">
+                            <a class="HeaderMenu-dropdown-link d-block text-decoration-none position-relative py-2 d-flex flex-items-center mb-lg-3"
+                                href="https://github.com/features/spark">
+                                <gs-icon css="me-2" name="star" size="4" ></gs-icon>
+                                <div>
+                                    <div class="h4">
+                                        GitHub Spark
+                                        <span class="HeaderMenu-label badge text-primary fs-6 fw-normal">
+                                            New
+                                        </span>
+                                    </div>
+                                    Build and deploy intelligent apps
+                                </div>
+                            </a>
+                        </li>
+
+                        <li class="list-group-item list-group-item-action border-0 p-0">
+                            <a class="HeaderMenu-dropdown-link d-block position-relative py-2 d-flex flex-items-center mb-lg-3 text-decoration-none"
+                                href="https://github.com/features/models">
+                                <gs-icon css="me-2" name="bounding-box" size="4" ></gs-icon>
+                                <div>
+                                    <div class="h4">
+                                        GitHub Models
+                                        <span class="HeaderMenu-label badge text-primary fs-6 fw-normal">New</span>
+                                    </div>
+                                    Manage and compare prompts
+                                </div>
+                            </a>
+                        </li>
+
+                        <li class="list-group-item list-group-item-action border-0 p-0">
+                            <a class="HeaderMenu-dropdown-link d-block position-relative py-2 d-flex flex-items-center mb-lg-3 text-decoration-none"
+                                href="https://github.com/security/advanced-security">
+                                <gs-icon css="me-2" name="shield-check" size="4" ></gs-icon>
+                                <div>
+                                    <div class="h4">
+                                        GitHub Advanced Security
+                                    </div>
+                                    Find and fix vulnerabilities
+                                </div>
+                            </a>
+                        </li>
+
+                        <li class="list-group-item list-group-item-action border-0 p-0">
+                            <a class="HeaderMenu-dropdown-link d-block position-relative py-2 d-flex flex-items-center text-decoration-none"
+                                href="https://github.com/features/actions">
+                                <gs-icon css="me-2" name="share" size="4" ></gs-icon>
+                                <div>
+                                    <div class="h4">
+                                        Actions
+                                    </div>
+                                    Automate any workflow
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="HeaderMenu-column px-lg-4 pb-3 pb-lg-0 border-end">
+                <div>
+
+                    <ul class="list-style-none list-group list-group-flush ">
+                        <li class="list-group-item list-group-item-action border-0 p-0">
+                            <a class="HeaderMenu-dropdown-link d-block position-relative py-2 d-flex flex-items-center mb-lg-3 text-decoration-none"
+                                href="https://github.com/features/codespaces">
+                                <gs-icon css="me-2" name="pc-display-horizontal" size="4" ></gs-icon>
+                                <div>
+                                    <div class="h4">
+                                        Codespaces
+                                    </div>
+                                    Instant dev environments
+                                </div>
+                            </a>
+                        </li>
+
+                        <li class="list-group-item list-group-item-action border-0 p-0">
+                            <a class="HeaderMenu-dropdown-link d-block position-relative py-2 d-flex flex-items-center mb-lg-3 text-decoration-none"
+                                href="https://github.com/features/issues">
+                                <gs-icon css="me-2" name="record-circle" size="4" ></gs-icon>
+                                <div>
+                                    <div class="h4">
+                                        Issues
+                                    </div>
+                                    Plan and track work
+                                </div>
+                            </a>
+                        </li>
+
+                        <li class="list-group-item list-group-item-action border-0 p-0">
+                            <a class="HeaderMenu-dropdown-link d-block position-relative py-2 d-flex flex-items-center mb-lg-3 text-decoration-none"
+                                href="https://github.com/features/code-review">
+                                <gs-icon css="me-2" name="code-slash" size="4" ></gs-icon>
+                                <div>
+                                    <div class="h4">
+                                        Code Review
+                                    </div>
+                                    Manage code changes
+                                </div>
+                            </a>
+                        </li>
+
+                        <li class="list-group-item list-group-item-action border-0 p-0">
+                            <a class="HeaderMenu-dropdown-link d-block position-relative py-2 d-flex flex-items-center mb-lg-3 text-decoration-none"
+                                href="https://github.com/features/discussions">
+                                <gs-icon css="me-2" name="chat-square-text" size="4" ></gs-icon>
+                                <div>
+                                    <div class="h4">
+                                        Discussions
+                                    </div>
+                                    Collaborate outside of code
+                                </div>
+                            </a>
+                        </li>
+
+                        <li class="list-group-item list-group-item-action border-0 p-0">
+                            <a class="HeaderMenu-dropdown-link d-block position-relative py-2 d-flex flex-items-center text-decoration-none"
+                                href="https://github.com/features/code-search">
+                                <gs-icon css="me-2" name="code-square" size="4" ></gs-icon>
+                                <div>
+                                    <div class="h4">
+                                        Code Search
+                                    </div>
+                                    Find more, search less
+                                </div>
+                            </a>
+                        </li>
+
+                    </ul>
+                </div>
+            </div>
+            <div class="HeaderMenu-column px-lg-4">
+                <div class="pb-lg-0 mb-3 pb-3">
+
+                    <span class="d-block h4 my-1" id="platform-explore-heading">Explore</span>
+
+                    <ul class="list-style-none list-group list-group-flush"
+                        aria-labelledby="platform-explore-heading">
+                        <li class="list-group-item list-group-item-action border-0 p-0">
+                            <a class="HeaderMenu-dropdown-link d-block position-relative py-2 text-decoration-none"
+                                href="https://github.com/why-github">
+                                Why GitHub
+                            </a>
+                        </li>
+
+                        <li class="list-group-item list-group-item-action border-0 p-0">
+                            <a class="HeaderMenu-dropdown-link d-block position-relative py-2 Link--external text-decoration-none"
+                                target="_blank" href="https://docs.github.com">
+                                Documentation
+                                <gs-icon css="me-2" name="box-arrow-up-right" size="6" ></gs-icon>
+                            </a>
+                        </li>
+
+                        <li class="list-group-item list-group-item-action border-0 p-0">
+                            <a class="HeaderMenu-dropdown-link d-block position-relative py-2 Link--external text-decoration-none"
+                                target="_blank" href="https://skills.github.com">
+                                GitHub Skills
+                                <gs-icon css="me-2" name="box-arrow-up-right" size="6" ></gs-icon>
+                            </a>
+                        </li>
+
+                        <li class="list-group-item list-group-item-action border-0 p-0">
+                            <a class="HeaderMenu-dropdown-link d-block position-relative py-2 Link--external text-decoration-none"
+                                target="_blank" href="https://github.blog">
+                                Blog
+                                <gs-icon css="me-2" name="box-arrow-up-right" size="6" ></gs-icon>
+                            </a>
+                        </li>
+
+                    </ul>
+                </div>
+                <div class="pb-lg-0 pb-3">
+
+                    <span class="d-block h4 my-1" id="platform-integrations-heading">Integrations</span>
+
+                    <ul class="list-style-none list-group list-group-flush">
+                        <li class="list-group-item list-group-item-action border-0 p-0">
+                            <a class="HeaderMenu-dropdown-link d-block position-relative py-2 text-decoration-none"
+                                href="https://github.com/marketplace">
+                                GitHub Marketplace
+                            </a>
+                        </li>
+
+                        <li class="list-group-item list-group-item-action border-0 p-0">
+                            <a class="HeaderMenu-dropdown-link d-block position-relative py-2 text-decoration-none"
+                                href="https://github.com/mcp">
+                                MCP Registry
+                            </a>
+                        </li>
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="HeaderMenu-trailing-link rounded-bottom-2 mt-lg-4 px-lg-4 py-4 py-lg-3 text-semibold bg-light">
+            <a href="https://github.com/features">
+                View all features
+                <gs-icon css="me-2" name="chevron-right" size="6" ></gs-icon>
+            </a>
+        </div>
+    </div>
+
+</body>
+</html>
