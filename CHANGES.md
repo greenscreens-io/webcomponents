@@ -1,5 +1,8 @@
 # [WebComponents](https://webcomponents.greenscreens.ltd/).
 
+# Release v2.1.2 FINAL (09.01.2026.)
+ - Fix Paginator cusrsor select
+
 # Release v2.1.1 FINAL (10.11.2025.)
  - Fix Cache worker
 
