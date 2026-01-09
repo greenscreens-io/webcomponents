@@ -1,5 +1,8 @@
 # [WebComponents](https://webcomponents.greenscreens.ltd/) for [Bootstrap 5.2.0+](https://getbootstrap.com/)
 
+# Release v1.9.8 (09.01.2026.)
+ - Fix GSPaginator cusrsor select
+
 # Release v1.9.7 (10.04.2025.)
  - GSInputExt - input flags fix
  - GSDialog - added "actions" slot
