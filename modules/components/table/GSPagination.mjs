@@ -39,7 +39,7 @@ export default class GSPagination extends GSElement {
         const pages = this.pages;
 
         const html = [];
-        html.push('<nav><ul class="pagination justify-content-center m-3">');
+        html.push('<nav><ul class="pagination justify-content-center user-select-none m-3">');
 
         if (firstlast) html.push(me.#getHtml(me.first, 'first', 'First page'));
         if (nextprev) html.push(me.#getHtml(me.previous, 'previous', 'Previous page'));
