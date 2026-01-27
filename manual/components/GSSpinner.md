@@ -9,8 +9,9 @@ GSSpinner WebComponent is a wrapper around Bootstrap Spinner control
  
 | Name               | Description                                              |
 |--------------------|----------------------------------------------------------|
-| color              | Bootstrap color (primary, secondary...)                   |
+| color              | Bootstrap color (primary, secondary...)                  |
 | size               | Icon size (normal, small,large)                          |
+| pulsar             | Boolean - true to pulse                                  |
 
 <br>
  

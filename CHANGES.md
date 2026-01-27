@@ -1,5 +1,13 @@
 # [WebComponents](https://webcomponents.greenscreens.ltd/).
 
+# Release v2.1.3 FINAL (28.01.2026.)
+ - Fix GSDate - calendar padding calculation
+ - Fix GSCalendar - month switch on navigate
+ - Fix AdoptedStyleSheet duplicates
+ - Fix ServiceWorker class naming typo
+ - Fix TemplateController cacheed template
+ - Manual GSSpinner manual update
+
 # Release v2.1.2 FINAL (09.01.2026.)
  - Fix Paginator cusrsor select
 

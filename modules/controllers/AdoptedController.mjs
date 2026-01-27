@@ -4,17 +4,17 @@
 import { GSEvents } from '../base/GSEvents.mjs';
 import { GSDynamicStyle } from '../base/GSDynamicStyle.mjs';
 import { GSCacheStyles } from '../base/GSCacheStyles.mjs';
+import { GSUtil } from '../base/GSUtil.mjs';
 
 /**
  * Controller register self to gs-adopted event listener list.
  * Every time gs-adopted event is triggered by the GSAdoptedEngine class,
- * all registerd controllers will be processed for reapplaying stylesheet 
- * Also, this controlelr takes care of adding custom dynamic styles 
+ * all registered controllers will be processed for reapplaying stylesheet. 
+ * Also, this controller takes care of adding a custom dynamic styles 
  * to the end fo the list.
  * 
  * Custom dynamic styles are used internally by the components for dynamic 
- * style changes to prevent DOM node polution; 
- * Style changes are not visible directly on DOM node.
+ * style changes to prevent DOM node pollution.
  */
 export class AdoptedController {
 
@@ -57,7 +57,7 @@ export class AdoptedController {
       me.#dynamic = me.#dynamic ?? new GSDynamicStyle('dynamic');      
       style = me.#dynamic;
     }    
-    if (values === null && style.rules.length > 0 ) return style.removeRule(name);
+    if (values === null && style.cssRules.length > 0 ) return style.removeRule(name);
     return style.setRule(name, values, true);
   }
 
@@ -66,13 +66,24 @@ export class AdoptedController {
     if (!me.#sheets) return;
     if (forced || me.#changed) {
       const sheets = [...document.adoptedStyleSheets];
-      // support for lit "static styles = css``"
-      const internal = Array.from(me.#sheets);
-      if (me.#dynamic) internal.push(me.#dynamic);
-      me.#root.adoptedStyleSheets = [...sheets, ...internal];
+      const internal = me.#staticRules;
+      if (me.#hasRules) internal.push(me.#dynamic);
+      me.#root.adoptedStyleSheets = [...sheets, ...internal].filter(v => v.cssRules.length > 0);
+      me.#root.adoptedStyleSheets.id = document.adoptedStyleSheets.id;
     }
   }
+  
+  // support for lit "static styles = css``"
+  get #staticRules() {
+    return this.#sheets?.filter(v => GSUtil.isNull(v.id)) || [];
+  }
 
+  // is there any dynamic rules set
+  get #hasRules() {
+    return this.#dynamic?.cssRules.length > 0 || false;
+  }
+
+  // have adopted styles changed in document
   get #changed() {
     return document.adoptedStyleSheets.id !== this.#sheets?.id;
   }

@@ -121,7 +121,7 @@ export class GSElement extends LitElement {
     //me.renderOptions = null;
     me.adoptedStyleSheets = [];
     GSCacheStyles.deleteRule(me.#ruleName, true);
-    const shadow = this.shadowRoot;
+    const shadow = me.shadowRoot;
     if (shadow) {
       //if (shadow._$litPart$) shadow._$litPart$ = null;
       shadow.adoptedStyleSheets = [];
@@ -140,7 +140,7 @@ export class GSElement extends LitElement {
 
   /**
    * Override Lit element createRenderRoot function.
-   * If flat, do not create shadowDom, render within self
+   * If flat, do not create shadowRoot, render within self
    * @returns 
    */
   createRenderRoot() {

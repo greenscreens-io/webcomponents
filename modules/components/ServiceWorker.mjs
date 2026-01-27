@@ -34,6 +34,7 @@ export class ServiceWorkkerElement extends GSElement {
 
     constructor() {
         super();
+        this.flat = true;
     }
 
     connectedCallback() {

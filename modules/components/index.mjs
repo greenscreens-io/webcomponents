@@ -57,4 +57,4 @@ export * from "./steps/index.mjs";
 export * from "./toast/index.mjs";
 export * from "./tree/index.mjs";
 
-export * from "./ServiceWorkker.mjs";
+export * from "./ServiceWorker.mjs";

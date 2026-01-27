@@ -228,9 +228,9 @@ export class GSCalendarElement extends GSElement {
 
   #monthsHTML() {
     const me = this;
-    const current = me.#date.MMMM;
+    const current = me.#date.MMMM.toLowerCase();
     const months = GSDate.monthList(false, me.language);
-    const list = months.map((v, i) => html`<option value="${i}" selected=${ifDefined(current == v ? true : undefined)}>${v}</option>`);
+    const list = months.map((v, i) => html`<option value="${i}" selected=${ifDefined(current == v.toLowerCase() ? true : undefined)}>${v}</option>`);
     return html`<select @change="${me.#onMonth}" name="month" class="month ${me.cssMonth}" value="${months.indexOf(current)}">${list}</select>`;
   }
 

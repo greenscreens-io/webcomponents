@@ -165,6 +165,12 @@ export class TemplateController {
     if (!ref) return;
     const key = me.#toKey(ref);
 
+    // if already cached, just apply it
+    if (TemplateController.#cache.has(key)) {
+      me.#applyTemplate(TemplateController.#cache.get(key));
+      return;
+    }
+
     // prevents double load
     if (me.#hasKey(key)) {
       // already scheduled

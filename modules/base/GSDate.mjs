@@ -36,15 +36,10 @@ export class GSDate extends Date {
         const me = this;
         const last = me.last.getDate();
         const first = me.first.getDay();
-
         const mondayFirst = me.#isMondayFirst();
+        const dayOffset = mondayFirst ? (first + 6) % 7 : first;
+        const days = Array(dayOffset).fill('');
 
-        const dayOffset = mondayFirst ? -2 : -1;
-        const days = first === 0 ? [] : ' '.repeat(first + dayOffset).split(' ');
-        /*
-        const emptyDays =  first === 0 ? 0 : first + dayOffset;
-        const days = Array.from({ length: emptyDays }, () => '');
-        */
         let i = 1;
         while (i <= last) {
             days.push(i.toString());
@@ -351,7 +346,7 @@ export class GSDate extends Date {
         const regex = GSDate.#getFormattedDateRegex(format);
         return GSDate.#parseFormattedDate(value, regex);
     }
-    
+
     static #getFormattedDateRegex(format) {
         return new RegExp(
             '^\\s*' + format.toUpperCase().replaceAll(/([MDY])\1*/g, '(?<$1>\\d+)') + '\\s*$'
