@@ -34,11 +34,10 @@ export default class GSDate extends Date {
         const me = this;
         const last = me.last.getDate();
         const first = me.first.getDay();
-
         const mondayFirst = me.#isMondayFirst();
+        const dayOffset = mondayFirst ? (first + 6) % 7 : first;
+        const days = Array(dayOffset).fill('');
 
-        const shifter = mondayFirst ? -2 : -1;
-        const days = first === 0 ? [] : ' '.repeat(first + shifter).split(' ');
         let i = 1;
         while (i <= last) {
             days.push(i.toString());
