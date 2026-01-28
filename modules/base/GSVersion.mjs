@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015, 202$ Green Screens Ltd.
+ * Copyright (C) 2015, 2026 Green Screens Ltd.
  */
 
 /**
@@ -18,6 +18,6 @@ export class GSVersion {
     }
 
     static get build() {
-        return 2025.0131;
+        return 2026.0128;
     }
 }
