@@ -407,20 +407,23 @@ export class GSElement extends LitElement {
    * Listen once for triggered event
    * @param {String} name  A name of the event
    * @param {Function} func A callback function on event trigger
+   * @param {Boolean} capture Capture event on the way down
    * @returns {Boolean}
    */
-  once(name, func) {
-    return this.listen(name, func, true);
+  once(name, func, capture = false) {
+    return this.listen(name, func, true, capture);
   }
 
   /**
    * Alternative function for event listen
    * @param {String} name  A name of the event
    * @param {Function} func A callback function on event trigger
+   * @param {Boolean} once Listen only once
+   * @param {Boolean} capture Capture event on the way down
    * @returns {Boolean}
    */
-  on(name, func, once = false) {
-    return this.listen(name, func, once);
+  on(name, func, once = false, capture = false) {
+    return this.listen(name, func, once, capture);
   }
 
   /**
@@ -445,10 +448,12 @@ export class GSElement extends LitElement {
    * Attach event to this element
    * @param {String} name  A name of the event
    * @param {Function} func A callback function on event trigger
+   * @param {Boolean} once Listen only once
+   * @param {Boolean} capture Capture event on the way down
    * @returns {Boolean}
    */
-  listen(name, func, once = false) {
-    return this.attachEvent(this, name, func, once);
+  listen(name, func, once = false, capture = false) {
+    return this.attachEvent(this, name, func, once, capture);
   }
 
   /**
@@ -468,10 +473,11 @@ export class GSElement extends LitElement {
   * @param {String} name Event name to watch for
   * @param {Function} fn Event trigger callback
   * @param {Boolean} once Listen only once
+  * @param {Boolean} capture Capture event on the way down
   * @returns {Boolean} State if attachment was successful
   */
-  attachEvent(el, name = '', fn, once = false) {
-    return GSEvents.attach(this, el, name, fn, once);
+  attachEvent(el, name = '', fn, once = false, capture = false) {
+    return GSEvents.attach(this, el, name, fn, once, capture);
   }
 
   /**

@@ -25,6 +25,13 @@
     <link rel="preload" href="/bootstrap-lit/assets/themes/default.css" as="style" data-adoptable="true" data-id="2">
     <link rel="preload" href="/bootstrap-lit/assets/icons/bootstrap-icons.css" as="style" data-adoptable="true" data-id="4">
 
+    <style data-adoptable="true" data-id="5">
+        .btn-check:checked + .btn, :not(.btn-check) + .btn:active, .btn:first-child:active, .btn.active, .btn.show {
+            --bs-btn-active-color: greenyellow;
+            --bs-btn-font-weight: 500;
+        }
+    </style>
+
     <script type="module" src="/bootstrap-lit/modules/base/GSAdoptedEngine.mjs"></script>
     <script type="module" src="/bootstrap-lit/modules/base/GSTheme.mjs"></script>
 
@@ -46,14 +53,14 @@
     <div class="m-4 p-1 bg-light bordered shadow-sm row">
         <div class="col-auto">Toggle options : </div>
         <div class="col-auto">
-            <gs-button color="primary" data-gs-target="input,select,textarea" data-gs-attribute="disabled" title="Disabled"></gs-button>
-            <gs-button color="primary" data-gs-target="input" data-gs-attribute="required" title="Required"></gs-button>
-            <gs-button color="primary" data-gs-target="input" data-gs-attribute="beep" title="Beep"></gs-button>
-            <gs-button color="primary" data-gs-target="input" data-gs-attribute="block" title="Block"></gs-button>            
-            <gs-button color="primary" data-gs-target="input" data-gs-attribute="autocopy" title="Autocopy"></gs-button>
-            <gs-button color="primary" data-gs-target="input" data-gs-attribute="autoselect" title="Autoselect"></gs-button>
-            <gs-button color="primary" data-gs-target="input" data-gs-attribute="autoreport" title="Autoreport"></gs-button>
-            <gs-button color="primary" data-gs-target="input" data-gs-attribute="autovalidate" title="Autovalidate"></gs-button>
+                <gs-button color="primary" data-gs-target="gs-form" data-gs-attribute="disabled" title="Disabled" toggling></gs-button>
+                <gs-button color="primary" data-gs-target="input,select,textarea" data-gs-attribute="required" title="Required" toggling></gs-button>
+                <gs-button color="primary" data-gs-target="gs-form" data-gs-attribute="beep" title="Beep" toggling></gs-button>
+                <gs-button color="primary" data-gs-target="gs-form" data-gs-attribute="block" title="Block" toggling></gs-button>            
+                <gs-button color="primary" data-gs-target="gs-form" data-gs-attribute="autocopy" title="Autocopy" toggling></gs-button>
+                <gs-button color="primary" data-gs-target="gs-form" data-gs-attribute="autoselect" title="Autoselect" toggling></gs-button>
+                <gs-button color="primary" data-gs-target="gs-form" data-gs-attribute="autoreport" title="Autoreport" toggling></gs-button>
+                <gs-button color="primary" data-gs-target="gs-form" data-gs-attribute="autovalidate" title="Autovalidate" toggling></gs-button>                
         </div>
         <div class="col-auto">
             <gs-button color="primary" data-gs-target="form" data-gs-call="reset" title="Reset form"></gs-button>            
@@ -66,48 +73,51 @@
 
     <div class="container justify-content-center w-50 bordered p-4 shadow-sm bg-light">
 
-        <!-- form (and fields) are disabled when "active" input(select) is changed into "false" value ; data-gsf-* attributes -->
-        <gs-form storage="mystore" name="myform" data-gsf-disable="active" data-gsf-value="false" block beep timeout="2000">
+        <gs-form storage="mystore" name="myform" timeout="2000">
             <template>
                 
                 <gs-form-group css="mt-2" name="date" mask="DD-MM-YYYY" label="Date" description="Masked date input"></gs-form-group>
                 <gs-form-group css="mt-2" name="hexa" mask="XXXXXXXXXXXXXXXX" label="Hexadecimal input with" description="Masked hexadecimal input"></gs-form-group>
-
+                
                 <gs-form-group css="mt-2" name="client.ip" label="IP Address" description="IP Address, CIDR or wildcard" required>
                     <gs-item data-pattern="^(?:(?:25[0-5]|(?:2[0-4]|1\d|[1-9]|)\d)\.?\b){4}(?:/[1-9]{1,2})?$"></gs-item>
                     <gs-item data-pattern="^(?:(?:25[0-5]|(?:2[0-4]|1\d|[1-9]|)\d|\*)\.){3}(?:(?:25[0-5]|(?:2[0-4]|1\d|[1-9]|)\d|\*))$"></gs-item>
                     <gs-item data-pattern="^(?:(?:(?:25[0-5]|(?:2[0-4]|1\d|[1-9]|)\d)(?:\-(?:25[0-5]|(?:2[0-4]|1\d|[1-9]|)\d))?)\.?){3}(?:(?:25[0-5]|(?:2[0-4]|1\d|[1-9]|)\d)(?:-(?:25[0-5]|(?:2[0-4]|1\d|[1-9]|)\d))?)$"></gs-item>
                 </gs-form-group>
-
+                
                 <gs-form-group css="mt-2" name="client.user" placeholder="...enter user name" label="User" description="Login user"></gs-form-group>
-
+                
                 <gs-form-group css="mt-2" name="field1" label="Check box" type="checkbox" checked></gs-form-group>
                 <gs-form-group css="mt-2" name="field2" label="Radio button" type="radio" checked values="a,b,c"></gs-form-group>
                 <gs-form-group css="mt-2" name="field3" label="Switch box" type="switch" checked></gs-form-group>
                 <gs-form-group css="mt-2" name="field4" label="Range" type="range" min="0" max="100" step="2"></gs-form-group>
-
+                
                 <gs-form-group css="mt-2" name="field5" label="Password (ALT+CTRL+SHIFT)" type="password" reveal required></gs-form-group>
-
+                
                 <gs-form-group css="m-1" name="description" label="Description" autocomplete="off" rows="5" required>
                 </gs-form-group>
-                            
-                <gs-form-group selectable
-                    css="mt-2" name="active" label="Status" description="test">
-                    <gs-item value="true" selected>Enabled</gs-item>
-                    <gs-item value="false">Disabled</gs-item>
-                </gs-form-group>
-
-                <div class="row form-group mt-4 pt-4">
-                    <div class=" col-md-9 col-sm-9"></div>
-                    <div class="col-auto">
-                        <gs-button type="reset" title="Reset" color="danger"></gs-button>
-                        <gs-button type="submit" title="Submit" color="primary"></gs-button>
-                    </div>
+                
+                <!-- when toggling set, fields are disabled (data-gsf-attribute)
+                     when input(select) is changed into "false" value; (data-gsf-value)
+                     fields can be filtered by query (data-gsf-target)
+                     data-gsf-* attributes -->
+                <gs-form-group selectable toggling data-gsf-attribute="disabled" data-gsf-value="false"
+                css="mt-2" name="active" label="Status" description="test">
+                <gs-item value="true" selected>Enabled</gs-item>
+                <gs-item value="false">Disabled</gs-item>
+            </gs-form-group>
+            
+            <div class="row form-group mt-4 pt-4">
+                <div class=" col-md-9 col-sm-9"></div>
+                <div class="col-auto">
+                    <gs-button type="reset" title="Reset" color="danger"></gs-button>
+                    <gs-button type="submit" title="Submit" color="primary"></gs-button>
                 </div>
-              
-            </template>
-        </gs-form>
-    </div>
+            </div>
+            
+        </template>
+    </gs-form>
+</div>
 
 </body>
 </html>

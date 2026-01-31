@@ -63,6 +63,7 @@ export class GSFormGroupElement extends GSElement {
 
     reverse: { reflect: true, type: Boolean },
     selectable: { reflect: true, type: Boolean },
+    toggling: { reflect: true, type: Boolean },
 
     autoid: { type: Boolean, reflect: true },
     autocopy: { type: Boolean, reflect: true },
@@ -113,7 +114,7 @@ export class GSFormGroupElement extends GSElement {
     this.placement = 'top';
     this.layout = 'horizontal';
     this.invalidMessage = 'Invalid input',
-      this.icon = GSFormGroupElement.ICON;
+    this.icon = GSFormGroupElement.ICON;
     this.cssLabel = GSFormGroupElement.CSS_LABEL;
     this.cellLabel = GSFormGroupElement.CSS_LABEL_CELL;
   }
@@ -297,7 +298,7 @@ export class GSFormGroupElement extends GSElement {
 
     // not used 
     // id=${ifDefined(id)} 
-    return html`<select ais="gs-ext-select"
+    return html`<select is="gs-ext-select"
             ${ref(me.#inputRef)}
             ${dataset(me, false)}
 
@@ -314,6 +315,7 @@ export class GSFormGroupElement extends GSElement {
             ?autovalidate="${me.autovalidate || me.form?.autovalidate}"
             ?autoreport="${me.autoreport || me.form?.autoreport}"
 
+            ?toggling="${me.toggling}"
             ?readonly="${me.readonly}"
             ?required="${me.required}"
             ?disabled="${me.disabled}">

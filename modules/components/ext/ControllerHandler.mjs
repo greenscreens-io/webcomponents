@@ -27,6 +27,7 @@ export class ControllerHandler {
   #typeController = undefined;
   #validityController = undefined;
   #comboController = undefined;
+  #buttonController = undefined;
 
   #formController = undefined;
   #dataController = undefined;
@@ -39,10 +40,15 @@ export class ControllerHandler {
     const me = this;
     const host = me.#host;
 
+    if (me.isButton) {
+      return me.#invoke((c) => c.hostConnected?.());
+    }
+
     if (me.isForm) {
       host.on('reset', me.#onReset.bind(me));
       host.on('submit', me.#onSubmit.bind(me));
       host.on('formdata', me.#onFormData.bind(me));
+      host.on('validation', me.#onValidation.bind(me));
     } else {
       host.on('keydown', me.#onKeyDown.bind(me));
       host.on('keyup', me.#onKeyUp.bind(me));
@@ -50,10 +56,11 @@ export class ControllerHandler {
       host.on('focus', me.#onFocus.bind(me));
     }
 
-    // field events catched at the form level also 
-    host.on('change', me.#onChange.bind(me));
-    host.on('blur', me.#onBlur.bind(me));
-    host.on('invalid', me.#onInvalid.bind(me));
+    // field events catched at the form level also
+    const capture = me.isForm;
+    host.on('change', me.#onChange.bind(me), false, capture);
+    host.on('blur', me.#onBlur.bind(me), false, capture);
+    host.on('invalid', me.#onInvalid.bind(me), false, capture);
 
     me.#invoke((c) => c.hostConnected?.());
   }
@@ -69,7 +76,7 @@ export class ControllerHandler {
     me.#handlers = undefined;
     me.#controllers = undefined;
     me.#comboController = undefined;
-
+    me.#buttonController = undefined;
     me.#formController = undefined;
     me.#dataController = undefined;
 
@@ -80,15 +87,13 @@ export class ControllerHandler {
 
   hostUpdated(name) {
     const me = this;
-    if (!me.#host.hostUpdated) {
-      me.#initControllers();
-      me.#host.checkValidity?.();
+    if (!me.#host.hostUpdated) {      
+      if (!me.isButton) {
+        me.#initControllers();
+        me.#host.checkValidity?.();
+      }
     }
-    this.#invoke((c) => c.hostUpdated?.(name));
-  }
-
-  validate() {
-    this.#invoke((c) => c.validate?.());
+    me.#invoke((c) => c.hostUpdated?.(name));
   }
 
   addController(controller) {
@@ -119,12 +124,12 @@ export class ControllerHandler {
     }
   }
 
-  validate(e) {
-    return this.#handlers ? this.#handlers.every(c => c.validate ? c.validate(e) : true) : true;
-  }
-
-  #onInvalid(e) {
-    this.#invoke(c => c.onInvalid?.(e));
+  /**
+   * Used by input fields to update UI
+   *  field reset, check, report calls
+   */
+  validate() {
+    this.#invoke((c) => c.validate?.());
   }
 
   #onKeyDown(e) {
@@ -143,6 +148,10 @@ export class ControllerHandler {
     this.#invoke(c => c.onFocus?.(e));
   }
 
+  #onInvalid(e) {
+    this.#invoke(c => c.onInvalid?.(e));
+  }
+
   #onChange(e) {
     this.#invoke(c => c.onChange?.(e));
   }
@@ -154,17 +163,22 @@ export class ControllerHandler {
   #onReset(e) {
     this.#invoke(c => c.onReset?.(e));
   }
-  
+
   #onSubmit(e) {
     this.#invoke(c => c.onSubmit?.(e));
   }
-  
+
   #onFormData(e) {
     this.#invoke(c => c.onFormData?.(e));
   }
 
+  #onValidation(e) {
+    this.#invoke(c => c.onValidation?.(e));
+  }
+
   #initControllers() {
-    const me = this;
+
+    const me = this;    
     const host = me.#host;
 
     if (me.isForm) {
@@ -177,17 +191,17 @@ export class ControllerHandler {
     }
 
     if (host.storage) {
-      if (me.isSelect || me.isDataList ) {
+      if (me.isSelect || me.isDataList) {
         me.#dataController ??= new DataController(host);
       }
     }
   }
 
   #initTextAreaControllers() {
-      const me = this;
-      const host = me.#host;
-      me.#typeController ??= new TextController(host);
-      me.#copyselect ??= new CopySelectController(host);
+    const me = this;
+    const host = me.#host;
+    me.#typeController ??= new TextController(host);
+    me.#copyselect ??= new CopySelectController(host);
   }
 
   #initIinputControllers() {
@@ -236,4 +250,8 @@ export class ControllerHandler {
   get isDataList() {
     return (this.tagName === 'DATALIST');
   }
+
+  get isButton() {
+    return (this.tagName === 'BUTTON');
+  }  
 }

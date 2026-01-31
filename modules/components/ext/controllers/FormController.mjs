@@ -2,15 +2,15 @@
  * Copyright (C) 2015, 2025; Green Screens Ltd.
  */
 
+import { GSDOM } from "../../../base/GSDOM.mjs";
+
 export class FormController {
 
   #host = undefined;
-  #processing = false;
 
   constructor(host) {
     const me = this;
     me.#host = host;
-    me.#processing = false;
     host.addController(me);
   }
 
@@ -22,7 +22,6 @@ export class FormController {
     const me = this;
     me.#host.removeController(me);
     me.#host = undefined;
-    me.#processing = false;
   }
 
   hostUpdated() {
@@ -34,18 +33,18 @@ export class FormController {
 
   /**
    * Form reset event
-   * @param {*} e 
+   * @param {Event} e 
    */
-  onReset(Event) {
+  onReset(e) {
     const me = this;
-
+    me.#scheduleValidate(e);
   }
 
   /**
    * Form submit event
-   * @param {*} e 
+   * @param {Event} e 
    */
-  onSubmit(Event) {
+  onSubmit(e) {
     const me = this;
 
   }
@@ -60,37 +59,88 @@ export class FormController {
   }
 
   /**
+   * Event triggered after form validation.
+   * Triggers after burst of field events like 'change', 'blur', 'invalid'.
+   * @param {Event} e 
+   */
+  onValidation(e) {
+    // console.debug('Form validation result: ', e.detail, e);
+  }
+
+  /**
    * Field event propagated to the form
    * @param {Event} e 
    */
   onInvalid(e) {
-    const me = this;
-
+    this.#scheduleValidate(e);
   }
 
   /**
    * Field event propagated to the form
    * @param {Event} e 
-   */  
+   */
   onChange(e) {
-    const me = this;
-
+    this.#scheduleValidate(e);
   }
 
   /**
    * Field event propagated to the form
    * @param {Event} e 
-   */  
+   */
   onBlur(e) {
+    this.#scheduleValidate(e);
+  }
 
-  }  
+  validate() {
+    this.#scheduleValidate();
+  }
 
   get form() {
-    return this.#host.form;
+    return this.#host;
   }
 
   get inputs() {
     return this.form?.inputs;
   }
 
+  #isScheduled = false;
+  #fields = new Set();
+
+  #scheduleValidate(e) {
+    const me = this;
+
+    const field = e?.detail?.target || e?.target;
+    const isFormField = GSDOM.isFormElement(field);
+    if (isFormField && !field.validity.valid) {
+      me.#fields.add(field);
+    }
+
+    if (me.#isScheduled) {
+      return;
+    }
+    me.#isScheduled = true;
+
+    requestAnimationFrame(() => {
+      if (!me.form) {
+        me.#isScheduled = false;
+        return;
+      }
+      try {
+        // valid might be incorrect if 
+        // - gs-form content is not wrapped in template
+        // - fields are outside of gs-form / form, injected thrugh slots
+        // thus we need to check individual fields too
+        const valid = me.form.checkValidity();
+        me.form.onvalidation?.(valid);
+        const fields = Array.from(me.#fields).filter(f => !f.validity.valid);
+        me.#fields.clear();
+        const obj = { valid: valid && fields.length === 0, fields: fields };
+        me.form.emit('validation', obj, true, true);
+      } catch (error) {
+        console.error('Error during form validation scheduling:', error);
+      } finally {
+        me.#isScheduled = false;
+      }
+    });
+  }
 }

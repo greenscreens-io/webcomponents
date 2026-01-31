@@ -11,6 +11,10 @@ import { GSElement } from "../../GSElement.mjs";
 */
 const EventsMixin = {
 
+  /**
+   * Get shadow dom owner
+   * @returns 
+   */
   [Symbol.for('gs-owner')]() {
     const own = GSDOM.root(this);
     return GSDOM.unwrap(own);
@@ -92,20 +96,23 @@ const EventsMixin = {
    * Listen once for triggered event
    * @param {String} name  A name of the event
    * @param {Function} func A callback function on event trigger
+   * @param {Boolean} capture Allow event capture
    * @returns {Boolean}
    */
-  once(name, func) {
-    return this.listen(name, func, true);
+  once(name, func, capture = false) {
+    return this.listen(name, func, true, capture);
   },
 
   /**
    * Alternative function for event listen
    * @param {String} name  A name of the event
    * @param {Function} func A callback function on event trigger
+   * @param {Boolean} once Listen only once
+   * @param {Boolean} capture Allow event capture
    * @returns {Boolean}
    */
-  on(name, func, once = false) {
-    return this.listen(name, func, once);
+  on(name, func, once = false, capture = false) {
+    return this.listen(name, func, once, capture);
   },
 
   /**
@@ -130,10 +137,12 @@ const EventsMixin = {
    * Attach event to this element
    * @param {String} name  A name of the event
    * @param {Function} func A callback function on event trigger
+   * @param {Boolean} once Listen only once
+   * @param {Boolean} capture Allow event capture
    * @returns {Boolean}
    */
-  listen(name, func, once = false) {
-    return this.attachEvent(this, name, func, once);
+  listen(name, func, once = false, capture = false) {
+    return this.attachEvent(this, name, func, once, capture);
   },
 
   /**
@@ -153,10 +162,11 @@ const EventsMixin = {
   * @param {String} name Event name to watch for
   * @param {Function} fn Event trigger callback
   * @param {Boolean} once Listen only once
+  * @param {Boolean} capture Allow event capture
   * @returns {Boolean} State if attachment was successful
   */
-  attachEvent(el, name = '', fn, once = false) {
-    return GSEvents.attach(this, el, name, fn, once);
+  attachEvent(el, name = '', fn, once = false, capture = false) {
+    return GSEvents.attach(this, el, name, fn, once, capture);
   },
 
   /**

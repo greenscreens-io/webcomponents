@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Bootstrap-Lit</title>
+    <meta charset="utf-8">
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0">
+
+    <meta name="subject" content="Green Scereens Ltd.">
+    <meta name="author" content="www.greenscreens.ltd">
+    <meta name="keywords" content="JavaScript,WebComponents">
+    <meta name="robots" content="index, follow">
+    <meta name="revisit-after" content="3 month">
+    <meta name="description" content="WebComponents UI library based on Bootstrap.">
+
+    <script>
+        globalThis.GS_TEMPLATE_URL = '/bootstrap-lit/demos/templates/';
+    </script>
+
+    <!-- Optimized CSS loading -->
+    <link rel="preload" href="/bootstrap-lit/assets/css/bootstrap.css" as="style" data-adoptable="true" data-id="1">
+    <link rel="preload" href="/bootstrap-lit/assets/themes/default.css" as="style" data-adoptable="true" data-id="2">
+    <link rel="preload" href="/bootstrap-lit/assets/icons/bootstrap-icons.css" as="style" data-adoptable="true"
+        data-id="4">
+
+    <script type="module" src="/bootstrap-lit/modules/base/GSAdoptedEngine.mjs"></script>
+    <script type="module" src="/bootstrap-lit/modules/base/GSTheme.mjs"></script>
+
+    <script type="module" src="/bootstrap-lit/modules/components/Template.mjs"></script>
+    <script type="module" src="/bootstrap-lit/modules/components/DataHandler.mjs"></script>
+    <script type="module" src="/bootstrap-lit/modules/components/Button.mjs"></script>
+    <script type="module" src="/bootstrap-lit/modules/components/Form.mjs"></script>
+    <script type="module" src="/bootstrap-lit/modules/components/FormGroup.mjs"></script>
+    <script type="module" src="/bootstrap-lit/modules/components/ext/index.mjs"></script>
+
+    <script type="module" src="./MyStore.mjs"></script>
+</head>
+
+<body>
+
+
+    <div class="container justify-content-center w-50 bordered p-4 shadow-sm bg-light">
+
+        <!-- form (and fields) are disabled when "active" input(select) is changed into "false" value ; data-gsf-* attributes -->
+        <gs-form storage="mystore" name="myform" data-gsf-disable="active" data-gsf-value="false" block beep
+            timeout="2000">
+            <template>
+
+                <div class="row form-group  mt-2 ">
+
+                    <div class=" text-md-end col-md-4 col-sm-4 col-xs-2">
+                        <label class=" user-select-none fw-small fw-light text-secondary user-select-none"
+                            for="date">Date</label>
+                    </div>
+                    <div class=" col-md-6 col-sm-6 col-xs-11">
+                        
+                            <input is="gs-ext-input" name="date" type="text" form="myform" value=""
+                                  timeout="2000" class="form-control font-monospace GSId-23"
+                                description="Masked date input" multipattern="[]" mask="DD-MM-YYYY"
+                                placeholder="DD-MM-YYYY" >
+                    </div>
+                </div>
+                
+                <div class="row form-group  mt-2 ">
+
+                    <div class=" text-md-end col-md-4 col-sm-4 col-xs-2"><label
+                            class=" user-select-none fw-small fw-light text-secondary user-select-none"
+                            for="hexa">Hexadecimal input with</label></div>
+                    <div class=" col-md-6 col-sm-6 col-xs-11">
+                        
+                            <input is="gs-ext-input" name="hexa" type="text" form="myform" value=""  
+                                timeout="2000" class="form-control font-monospace GSId-24"
+                                description="Masked hexadecimal input" multipattern="[]" mask="XXXXXXXXXXXXXXXX"
+                                placeholder="XXXXXXXXXXXXXXXX" >
+                        
+                    </div>
+                </div>
+                
+                <div class="row form-group  mt-2 ">
+
+                    <div class=" text-md-end col-md-4 col-sm-4 col-xs-2"><label
+                            class=" user-select-none fw-small fw-light text-secondary user-select-none"
+                            for="client.ip">IP Address</label></div>
+                    <div class=" col-md-6 col-sm-6 col-xs-11">
+                        
+                            <input is="gs-ext-input" name="client.ip" type="text" form="myform" value="" 
+                                 timeout="2000" class="form-control GSId-25"
+                                description="IP Address, CIDR or wildcard"
+                                multipattern="[&quot;^(?:(?:25[0-5]|(?:2[0-4]|1\\d|[1-9]|)\\d)\\.?\\b){4}(?:\\/[1-9]{1,2})?$&quot;,&quot;^(?:(?:25[0-5]|(?:2[0-4]|1\\d|[1-9]|)\\d|\\*)\\.){3}(?:(?:25[0-5]|(?:2[0-4]|1\\d|[1-9]|)\\d|\\*))$&quot;,&quot;^(?:(?:(?:25[0-5]|(?:2[0-4]|1\\d|[1-9]|)\\d)(?:\\-(?:25[0-5]|(?:2[0-4]|1\\d|[1-9]|)\\d))?)\\.?){3}(?:(?:25[0-5]|(?:2[0-4]|1\\d|[1-9]|)\\d)(?:-(?:25[0-5]|(?:2[0-4]|1\\d|[1-9]|)\\d))?)$&quot;]"
+                                required="" >
+                        
+                    </div>
+                </div>
+                
+                <div class="row form-group  mt-2 ">
+
+                    <div class=" text-md-end col-md-4 col-sm-4 col-xs-2"><label
+                            class=" user-select-none fw-small fw-light text-secondary user-select-none"
+                            for="client.user">User</label></div>
+                    <div class=" col-md-6 col-sm-6 col-xs-11">
+                        
+                            <input is="gs-ext-input" name="client.user" type="text" form="myform" value="" 
+                                 timeout="2000" class="form-control GSId-26" placeholder="...enter user name"
+                                description="Login user" multipattern="[]" >
+                        
+                    </div>
+                </div>
+
+                <div class="row form-group  mt-2 ">
+                    <div class=" text-md-end col-md-4 col-sm-4 col-xs-2">
+                        <label
+                            class="form-check-label user-select-none fw-small fw-light text-secondary user-select-none"
+                            for="field1">Check box</label>
+                    </div>
+                    <div class="form-check col-md-6 col-sm-6 col-xs-11">
+                        <input is="gs-ext-input" name="field1" type="checkbox" form="myform" value=""
+                                  timeout="2000" class="form-check-input ms-0 GSId-27" multipattern="[]"
+                                checked="" >
+                    </div>
+                </div>
+                
+                <div class="row form-group  mt-2 ">
+
+                    <div class=" text-md-end col-md-4 col-sm-4 col-xs-2">
+                        <label
+                            class="form-check-label user-select-none fw-small fw-light text-secondary user-select-none"
+                            for="field2">Radio button</label>
+                    </div>
+                    <div class=" col-md-6 col-sm-6 col-xs-11">
+                        
+                            <span class="me-3"><input is="gs-ext-input" name="field2" type="radio" form="myform"
+                                    value="a"   timeout="2000" class="form-check-input ms-0 GSId-28"
+                                    multipattern="[]" checked="" data-value="a"><label class="ms-1"
+                                    for="field20">a</label></span><span class="me-3"><input is="gs-ext-input"
+                                    name="field2" type="radio" form="myform" value="b"   timeout="2000"
+                                    class="form-check-input ms-0 GSId-28" multipattern="[]" checked=""
+                                    data-value="b"><label class="ms-1" for="field21">b</label></span><span
+                                class="me-3"><input is="gs-ext-input" name="field2" type="radio" form="myform" value="c"
+                                      timeout="2000" class="form-check-input ms-0 GSId-28"
+                                    multipattern="[]" checked="" data-value="c"><label class="ms-1"
+                                    for="field22">c</label></span>
+                        
+                    </div>
+
+                </div>
+
+                
+                <div class="row form-group  mt-2 ">
+                    <div class=" text-md-end col-md-4 col-sm-4 col-xs-2">
+                        <label
+                            class="form-check-label user-select-none fw-small fw-light text-secondary user-select-none"
+                            for="field3">Switch box</label>
+                    </div>
+                    <div class="form-check form-switch ps-3 fs-5 col-md-6 col-sm-6 col-xs-11">
+                        
+                            <input is="gs-ext-input" name="field3" type="checkbox" form="myform" value="" 
+                                 timeout="2000" class="form-check-input ms-0 GSId-29" multipattern="[]"
+                                checked="" >
+                        
+                    </div>
+
+                </div>
+                
+                <div class="row form-group  mt-2 ">
+                    <div class=" text-md-end col-md-4 col-sm-4 col-xs-2">
+                        <label class=" user-select-none fw-small fw-light text-secondary user-select-none"
+                            for="field4">Range</label>
+                    </div>
+                    <div class=" col-md-6 col-sm-6 col-xs-11">
+                        <input is="gs-ext-input" name="field4" type="range" form="myform" value=""
+                                title=""   timeout="2000" class="form-range GSId-30" multipattern="[]"
+                                step="2" min="0" max="100" data-value="50"><span class="position-absolute px-1"></span>
+                        
+                    </div>
+
+                </div>
+                
+                <div class="row form-group  mt-2 ">
+                    <div class=" text-md-end col-md-4 col-sm-4 col-xs-2"><label
+                            class=" user-select-none fw-small fw-light text-secondary user-select-none"
+                            for="field5">Password (ALT+CTRL+SHIFT)</label></div>
+                    <div class=" col-md-6 col-sm-6 col-xs-11">
+                        
+                            <input is="gs-ext-input" name="field5" type="password" form="myform" value="" 
+                                 timeout="2000" class="form-control GSId-31" multipattern="[]" required=""
+                                reveal="" >
+                        
+                    </div>
+
+                </div>
+                
+                <div class="row form-group  m-1 ">
+
+                    <div class=" text-md-end col-md-4 col-sm-4 col-xs-2">
+                        <label class=" user-select-none fw-small fw-light text-secondary user-select-none"
+                            for="description">Description</label>
+                    </div>
+                    <div class=" col-md-6 col-sm-6 col-xs-11">
+                        
+                            <textarea is="gs-ext-textarea" cols="0" rows="5"   timeout="2000"
+                                form="myform" name="description" value="w" class="form-control GSId-32"
+                                autocomplete="off" required=""></textarea>
+                        
+                    </div>
+
+                </div>
+                
+                <div class="row form-group  mt-2 ">
+
+                    <div class=" text-md-end col-md-4 col-sm-4 col-xs-2"><label
+                            class=" user-select-none fw-small fw-light text-secondary user-select-none"
+                            for="active">Status</label></div>
+                    <div class=" col-md-6 col-sm-6 col-xs-11">
+                        <select is="gs-ext-select" name="active" form="myform"
+                                class="form-select ms-0 GSId-33">
+                                <option value="true" selected="">
+                                    Enabled</option>
+                                <option value="false">
+                                    Disabled</option>
+                            </select>
+                    </div>
+                </div>
+                
+                <div class="row form-group mt-4 pt-4">
+                    <div class=" col-md-9 col-sm-9"></div>
+                    <div class="col-auto">
+                        <gs-button type="reset" title="Reset" color="danger"></gs-button>
+                        <gs-button type="submit" title="Submit" color="primary"></gs-button>
+                    </div>
+                </div>                
+
+            </template>
+        </gs-form>
+    </div>
+
+</body>
+</html>

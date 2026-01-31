@@ -46,9 +46,13 @@
         <gs-button icon="alarm me-1" css="btn-primary" title="Open prompt"  data-gs-property="opened;cancelable=true;title=Prompt;message=Are you sure" data-gs-target="#dialog2"></gs-button>
     </div>
 
-    <gs-dialog id="dialog1" css="shadow-sm rounded p-3" onready="initialize" opened escapable closable cancelable>
+    <gs-dialog id="dialog1" css="shadow-sm rounded p-3" 
+        onready="initialize" template="./dialog.htm"
+        opened escapable closable cancelable>
         <h4 slot="title">Login</h4>
-        <gs-template slot="body" src="./dialog.htm"></gs-template>
+        <!--
+            <gs-template slot="body" src="./dialog.htm"></gs-template>
+        -->
     </gs-dialog>
 
     <gs-dialog id="dialog2" button-align="center" shadow rounded css="p-3" escapable closable cancelable></gs-dialog>

@@ -1136,7 +1136,7 @@ export class GSDOM {
 			if (!GSDOM.resetSelect(element)) {
 				element.dataset.typed = false;
 				element.value = element.defaultValue;
-				GSDOM.#dispatch(element);
+				//GSDOM.#dispatch(element);
 				return true;
 			}
 		}
@@ -1149,7 +1149,7 @@ export class GSDOM {
 	static resetSelect(element) {
 		if (GSDOM.isSelect(element)) {
 			Array.from(element.options).forEach(el => el.selected = el.hasAttribute('selected'));
-			GSDOM.#dispatch(element);
+			//GSDOM.#dispatch(element);
 			return true;
 		}
 	}

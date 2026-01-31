@@ -41,8 +41,8 @@ export class CopySelectController {
 
   onClick(e) {
       const me = this;
-      if (me.#host.autocopy) me.onCopy(e);
-      if (me.#host.autoselect) me.#host.select();
+      if (me.#host.isAutocopy) me.onCopy(e);
+      if (me.#host.isAutoselect) me.#host.select();
   }
 
 }  

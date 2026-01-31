@@ -25,6 +25,13 @@
     <link rel="preload" href="/bootstrap-lit/assets/themes/default.css" as="style" data-adoptable="true" data-id="2">
     <link rel="preload" href="/bootstrap-lit/assets/icons/bootstrap-icons.css" as="style" data-adoptable="true" data-id="4">
 
+    <style data-adoptable="true" data-id="5">
+        .btn-check:checked + .btn, :not(.btn-check) + .btn:active, .btn:first-child:active, .btn.active, .btn.show {
+            --bs-btn-active-color: greenyellow;
+            --bs-btn-font-weight: 500;
+        }
+    </style>
+
     <script type="module" src="/bootstrap-lit/modules/base/GSAdoptedEngine.mjs"></script>
     <script type="module" src="/bootstrap-lit/modules/base/GSTheme.mjs"></script>
     <script type="module" src="/bootstrap-lit/modules/components/Template.mjs"></script>
@@ -42,14 +49,14 @@
     <div class="m-4 p-1 bg-light bordered shadow-sm row">
         <div class="col-auto">Toggle options : </div>
         <div class="col-auto">
-            <gs-button color="primary" data-gs-target="input,select" data-gs-attribute="disabled" title="Disabled"></gs-button>
-            <gs-button color="primary" data-gs-target="input" data-gs-attribute="required" title="Required"></gs-button>
-            <gs-button color="primary" data-gs-target="input" data-gs-attribute="beep" title="Beep"></gs-button>
-            <gs-button color="primary" data-gs-target="input" data-gs-attribute="block" title="Block"></gs-button>            
-            <gs-button color="primary" data-gs-target="input" data-gs-attribute="autocopy" title="Autocopy"></gs-button>
-            <gs-button color="primary" data-gs-target="input" data-gs-attribute="autoselect" title="Autoselect"></gs-button>
-            <gs-button color="primary" data-gs-target="input" data-gs-attribute="autoreport" title="Autoreport"></gs-button>
-            <gs-button color="primary" data-gs-target="input" data-gs-attribute="autovalidate" title="Autovalidate"></gs-button>
+            <gs-button color="primary" data-gs-target="form" data-gs-attribute="disabled" title="Disabled" toggling></gs-button>
+            <gs-button color="primary" data-gs-target="input" data-gs-attribute="required" title="Required" toggling></gs-button>
+            <gs-button color="primary" data-gs-target="orm" data-gs-attribute="beep" title="Beep" toggling></gs-button>
+            <gs-button color="primary" data-gs-target="form" data-gs-attribute="block" title="Block" toggling></gs-button>            
+            <gs-button color="primary" data-gs-target="form" data-gs-attribute="autocopy" title="Autocopy" toggling></gs-button>
+            <gs-button color="primary" data-gs-target="form" data-gs-attribute="autoselect" title="Autoselect" toggling></gs-button>
+            <gs-button color="primary" data-gs-target="form" data-gs-attribute="autoreport" title="Autoreport" toggling></gs-button>
+            <gs-button color="primary" data-gs-target="form" data-gs-attribute="autovalidate" title="Autovalidate" toggling></gs-button>
         </div>
         <div class="col-auto">
             <gs-button color="primary" data-gs-target="form" data-gs-call="reset" title="Reset form"></gs-button>            
@@ -120,7 +127,7 @@
         Floating layout
     </div>
     
-    <form>
+    <form is="gs-ext-form">
         <div class="container justify-content-center w-50 bordered p-4 shadow-sm bg-light">
 
             <gs-form-group css="mt-2" layout="floating" css-label="fw-bold text-muted" name="date" mask="DD-MM-YYYY" label="Date" description="Masked date input"></gs-form-group>

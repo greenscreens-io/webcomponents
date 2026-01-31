@@ -239,6 +239,7 @@ export class GSDialogElement extends GSElement {
             @cancel="${me.#onCancel.bind(me)}"
             @keydown="${me.#onKeyDown.bind(me)}"
             @form="${me.#onForm.bind(me)}"
+            @validation="${me.#onFormValidation.bind(me)}"
             @confirm="${me.#onConfirm.bind(me)}"
             @submit="${me.#onSubmit.bind(me)}"
             class="${classMap(me.renderClass())}">
@@ -292,7 +293,8 @@ export class GSDialogElement extends GSElement {
   reset(data, index = 0) {
     index = GSUtil.asNum(index, 0);
     const me = this;
-    me.forms?.forEach?.(f => { f.reset(); f.data = data; });
+    //me.forms?.forEach?.(f => { f.reset(); f.data = data; });
+    me.forms?.forEach?.(f => { f.data = data; });
     const tab = me.tab;
     if (tab && index > -1) tab.index = index;
   }
@@ -374,6 +376,11 @@ export class GSDialogElement extends GSElement {
         me.close();
       }
     }
+  }
+
+  #onFormValidation(e) {
+    const me = this;
+    me.#btnConfirm.disabled = e.detail.valid === false;
   }
 
   /**

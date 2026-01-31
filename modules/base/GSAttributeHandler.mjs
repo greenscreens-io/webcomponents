@@ -189,9 +189,10 @@ export class GSAttributeHandler {
     }
 
     #toggleAttribute(target, name, value) {
-
+        const me = this;
         if (GSUtil.isBool(target[name])) {
-            return GSAttr.toggle(target, name, !target[name]);
+            const value = me.isToggling ? me.isActive : !target[name];
+            return GSAttr.toggle(target, name, value);
         } else if (GSUtil.isNumber(target[name])) {
             value = GSUtil.asNum(value);
         }
@@ -408,6 +409,10 @@ export class GSAttributeHandler {
 
     get host() { return this.#host; }
 
+    // if host is button with toggling flag, then use that for data-attribute
+    get isActive() { return this.#host.active || false; }
+    get isToggling() { return this.#host.toggling || false; }
+
     get definition() { return this.#proxy[Symbol.for('#def')]; }
 
     get action() { return this.#proxy.action; }
@@ -473,7 +478,8 @@ export class GSAttributeHandler {
      * @returns 
      */
     static process(el, e) {
-        if (!el?.hasAttribute('data-gs-target')) return;
+        //if (!el?.hasAttribute('data-gs-target')) return;
+        if (!el?.dataset?.gsTarget) return;
         let me = el[GSAttributeHandler.#link];
         if (!(me instanceof GSAttributeHandler)) {
             me = new GSAttributeHandler(el);

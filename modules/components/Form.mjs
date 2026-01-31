@@ -25,7 +25,6 @@ export class GSFormElement extends GSElement {
 
     // default settings for FormGroup or gs-ext-* form elements
     autocopy: { reflect: true, type: Boolean },
-    autofocus: { reflect: true, type: Boolean },
     autoselect: { reflect: true, type: Boolean },
     autovalidate: { reflect: true, type: Boolean },
     autoreport: { reflect: true, type: Boolean },
@@ -46,9 +45,17 @@ export class GSFormElement extends GSElement {
 
   constructor() {
     super();
-    this.data = {};
-    this.disabled = false;
-    this.method = "dialog";
+    const me = this;
+    me.data = {};
+    me.disabled = false;
+    me.autocopy = false;
+    me.autoselect = false;
+    me.autovalidate = false;
+    me.autoreport = false;
+    me.block = false;
+    me.beep = false;
+    me.timeout = 0;
+    me.method = "dialog";
   }
 
   renderUI() {
@@ -60,9 +67,6 @@ export class GSFormElement extends GSElement {
       dir="${ifDefined(me.direction)}"
       class="${classMap(me.renderClass())}"
       
-      @blur="${me.#onBlur}"
-      @change="${me.#onChange}"
-      @invalid="${me.#onInvalid}"
       @submit="${me.submit}"
       @reset="${me.reset}"
       
@@ -76,6 +80,14 @@ export class GSFormElement extends GSElement {
       action="${ifDefined(me.action)}"
       enctype="${ifDefined(me.enctype)}"
       target="${ifDefined(me.target)}"
+
+      .beep="${me.beep}"
+      .block="${me.block}"
+      .disabled="${me.disabled}"
+      .autocopy="${me.autocopy}"
+      .autoselect="${me.autoselect}"
+      .autovalidate="${me.autovalidate}"
+      .autoreport="${me.autoreport}"
 
       ?novalidate="${me.novalidate}">
       ${templateContent(me.#elementTemplate)}
@@ -93,7 +105,8 @@ export class GSFormElement extends GSElement {
     const me = this;
     if (changed.has('data')) {
       if (GSUtil.isNull(me.data)) {
-        me.reset();
+        //me.reset();
+        me.form?.reset();
       } else {
         me.asJSON = Object.assign(me.asJSON, me.data);
       }
@@ -106,16 +119,16 @@ export class GSFormElement extends GSElement {
 
   async reset(e) {
     const me = this;
-    me.form?.reset();
     me.data = {};
     await me.dataController?.read(me.asJSON);
+    // me.checkValidity();
   }
 
   async submit(e) {
     GSEvents.prevent(e, true, false, false);
     const me = this;
     if (me.disabled) return;
-    if (!me.validate()) return;
+    if (!me.checkValidity()) return;
     const json = me.asJSON;
     await me.dataController?.write(json);
     const data = { type: 'submit', data: json, source: e, owner: me };
@@ -171,7 +184,6 @@ export class GSFormElement extends GSElement {
     const me = this;
     if (me.form) {
       me.form.asJSON = data;
-      me.validate();
     }
   }
 
@@ -190,23 +202,6 @@ export class GSFormElement extends GSElement {
 
   reportValidity() {
     return this.form?.reportValidity();
-  }
-
-  validate(e) {
-    const me = this;
-    let isValid = me.checkValidity();
-    isValid = me.onValidate(isValid);
-    me.#notify(isValid, e);
-    me.invalid[0]?.focus();
-    return isValid;
-  }
-
-  disable(all = false) {
-    this.form?.disable(all);
-  }
-
-  enable(all = false) {
-    this.form?.enable(all);
   }
 
   /**
@@ -229,37 +224,6 @@ export class GSFormElement extends GSElement {
 
   onDataError(e) {
     GSLog.error(this, e);
-  }
-
-  onValidate(sts) {
-
-    return sts;
-  }
-
-  #onInvalid(e) {
-    const me = this;
-    me.prevent(e, false, true, false);
-    me.#notify(false, e);
-  }
-
-  #onBlur(e) {
-    const me = this;
-    me.prevent(e, false, true, false);
-    me.#notify(me.isValid, e);
-  }
-
-  #onChange(e) {
-    const me = this;
-    //me.prevent(e, false, true, false);
-    me.#notify(me.isValid, e);
-  }
-
-  #notify(isValid = false, e) {
-    const me = this;
-    if (me.#lastState === isValid) return;
-    me.#lastState = isValid;
-    const data = { type: 'valid', data: isValid, owner: me, event: e };
-    me.emit('form', data, true, true);
   }
 
   get #elementTemplate() {

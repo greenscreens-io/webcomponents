@@ -136,6 +136,10 @@ export class GSTabGroupElement extends GSNavElement {
     return this.queryAll('gs-tab-panel', false, true);
   }
 
+  clear() {
+    this.tabs.forEach(t => t.badge = false);
+  }
+
   tabByName(name = '', shadow = false) {
     return super.childByName(name, shadow);
   }

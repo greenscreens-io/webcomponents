@@ -28,6 +28,7 @@ export class GSNavItemElement extends GSElement {
     super();
     this.badgeColor = 'danger';
     this.badgeValue = '!';
+    this.badge = false;
   }
 
   disconnectedCallback() {

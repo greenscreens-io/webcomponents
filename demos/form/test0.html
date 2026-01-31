@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Bootstrap-Lit</title>
+    <meta charset="utf-8">
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0">
+
+    <meta name="subject" content="Green Scereens Ltd.">
+    <meta name="author" content="www.greenscreens.ltd">
+    <meta name="keywords" content="JavaScript,WebComponents">
+    <meta name="robots" content="index, follow">
+    <meta name="revisit-after" content="3 month">
+    <meta name="description" content="WebComponents UI library based on Bootstrap.">
+
+    <!-- Optimized CSS loading -->
+    <link rel="stylesheet" href="/bootstrap-lit/assets/css/bootstrap.css">
+    <link rel="stylesheet" href="/bootstrap-lit/assets/themes/default.css">
+
+</head>
+
+<body>
+
+    <div class="container justify-content-center w-50 bordered p-4 shadow-sm bg-light">
+
+        <form is="gs-ext-form" id="myform" name="myform" class="  " method="dialog">
+
+                <div class="row form-group  mt-2 ">
+                    <div class=" text-md-end col-md-4 col-sm-4 col-xs-2"><label class=" user-select-none fw-small fw-light text-secondary user-select-none" for="client.user">User</label></div>
+                    <div class=" col-md-6 col-sm-6 col-xs-11">                        
+                            <input is="gs-ext-input" name="client.user" type="text" form="myform" value="" timeout="2000" class="form-control GSId-26" placeholder="...enter user name" description="Login user" data-value="" required>
+                    </div>
+                </div>
+                <div class="row form-group  mt-2 ">
+                    <div class=" text-md-end col-md-4 col-sm-4 col-xs-2"><label class=" user-select-none fw-small fw-light text-secondary user-select-none" for="client.user">Pass</label></div>
+                    <div class=" col-md-6 col-sm-6 col-xs-11">                        
+                            <input is="gs-ext-input" name="client.pass" type="text" form="myform" value="" timeout="2000" class="form-control GSId-26" placeholder="...enter pass" description="Password" data-value="" required>
+                    </div>
+                </div>
+         
+                <div class="row form-group mt-4 pt-4">
+                    <div class=" col-md-9 col-sm-9"></div>
+                    <div class="col-auto">
+                        <button is="gs-ext-button" part="button" role="button" type="reset" class="btn  btn-danger " title="">Reset</button>
+                        <button is="gs-ext-button" part="button" role="button" type="submit" class="btn  btn-primary ">Submit</button>
+                    </div>
+                </div>                
+
+            </template>
+        </gs-form>
+    </div>
+<script>
+const form = document.querySelector('form');
+let isScheduled = false;
+
+// only for throtling - might trigger multiple times
+function scheduleValidate1(e) {
+   console.log('schedule...', e)
+  if (isScheduled) return;
+  isScheduled = true;
+  console.log('queueing...')
+  queueMicrotask(async () => {
+    console.log('validating...')
+    const valid = form.checkValidity();
+    console.log('dispatching...')
+    form.dispatchEvent(new CustomEvent('test', {detail: valid} ));
+    console.log('unqueueing...')
+    isScheduled = false;
+  });
+}
+
+// works - handle across ticks
+function scheduleValidate2(e) {
+   console.log('schedule...', e)
+  if (isScheduled) return;
+  isScheduled = true;
+  console.log('queueing...')
+  setTimeout(() => {
+    console.log('validating...')
+    const valid = form.checkValidity();
+    console.log('dispatching...')
+    form.dispatchEvent(new CustomEvent('test', {detail: valid} ));
+    console.log('unqueueing...')
+    isScheduled = false;
+  }, 0);
+}
+
+// best choice - handle across ticks, only on Ui update
+function scheduleValidate3(e) {
+   console.log('schedule...', e)
+  if (isScheduled) return;
+  isScheduled = true;
+  console.log('queueing...')
+  requestAnimationFrame(() => {
+    console.log('validating...')
+    const valid = form.checkValidity();
+    console.log('dispatching...')
+    form.dispatchEvent(new CustomEvent('test', {detail: valid} ));
+    console.log('unqueueing...')
+    isScheduled = false;
+  });
+}
+
+['change', 'blur', 'invalid'].forEach(type => {
+  form.addEventListener(type, scheduleValidate3, { capture: true });
+});
+
+form.addEventListener('test', (e) => console.log('FORM ->> ', e.detail));
+
+</script>
+</body>
+</html>

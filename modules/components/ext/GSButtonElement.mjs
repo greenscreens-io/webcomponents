@@ -35,19 +35,19 @@ export class GSExtButtonElement extends HTMLButtonElement {
         return ['disabled'];
     }
 
+    #formBind = false;
+    #formEl = undefined;
     #hasUpdated = false;
     #controllerHandler = undefined;
-    #formEl = undefined;
 
     constructor() {
         super();
-        //this.#controllerHandler = ???
+        // this.#controllerHandler = new ControllerHandler(this);
     }
 
     connectedCallback() {
         const me = this;
-        me.#controllerHandler?.connectedCallback();
-        me.#formEl = me.form;
+        me.#controllerHandler?.connectedCallback();        
         me.#preupdate();
     }
 
@@ -57,6 +57,7 @@ export class GSExtButtonElement extends HTMLButtonElement {
         me.#controllerHandler?.disconnectedCallback();
         me.#controllerHandler = undefined;
         me.#formEl = undefined;
+        me.#formBind = false;
     }
 
     attributeChangedCallback(name, oldValue, newValue) {
@@ -68,7 +69,8 @@ export class GSExtButtonElement extends HTMLButtonElement {
 
     #preupdate(name) {
         const me = this;
-        if (!me.#hasUpdated) {
+        me.form;
+        if (!me.#hasUpdated) {            
             me.firstUpdated(name);
             me.#controllerHandler?.hostUpdated(name);
             me.#hasUpdated = true;
@@ -76,15 +78,12 @@ export class GSExtButtonElement extends HTMLButtonElement {
     }
 
     firstUpdated(changed) {
-        const me = this;
-        const form = me.#formEl;
-        if (me.isSubmit && form) {
-            me.attachEvent(form, 'change', me.#onFormState.bind(me));
-            me.attachEvent(form, 'invalid', me.#onFormState.bind(me));
-            const callback = me.#onClick.bind(me);
-            const clickFn = me.rateLimit > 0 ? GSFunction.debounce(callback, me.rateLimit, true) : callback;
-            me.on('click', clickFn);
-        }
+      const me = this;
+      if (me.isReset || me.isSubmit) {
+          const callback = me.#onClick.bind(me);
+          const clickFn = me.rateLimit > 0 ? GSFunction.debounce(callback, me.rateLimit, true) : callback;
+          me.on('click', clickFn);        
+      }
     }
 
     willUpdate(changed, oldValue, newValue) {
@@ -115,7 +114,19 @@ export class GSExtButtonElement extends HTMLButtonElement {
 
     get form() {
         const me = this;
-        return super.form || me.owner?.form || me.closest?.('form');
+        me.#formEl ??= super.form || me.owner?.form || me.closest?.('form');
+        if (!me.#formBind && me.#formEl && me.isSubmit) {
+            const callback = me.#onFormValidation.bind(me);
+            // not helping, on last field, if invalid, skips button focus
+            //['blur', 'change', 'invalid'].forEach(v => me.attachEvent(me.#formEl, v, callback, false, true));
+            me.attachEvent(me.#formEl, 'validation', callback);
+            me.#formBind = true;
+        }
+        return me.#formEl;
+    }
+    
+    get isValid() {
+        return this.form ? this.form.checkValidity() : true;
     }
 
     get isSubmit() {
@@ -134,45 +145,28 @@ export class GSExtButtonElement extends HTMLButtonElement {
         return GSAttr.getAsNum(this, 'rate-limit', 0);
     }
 
-    /**
-     * If the button is part fo the form, check if form is valid
-     * ba iterating all field elements and checkin it's validity state.
-     * If not part of the form, always return true.
-     * We use basic functionality, to support native non-extended form also
-     */
-    get isValid() {
-        const elements = this.#formEl?.elements;
-        return elements ? Array.from(elements)
-            .filter(el => GSDOM.isFormElement(el))
-            .filter(el => el.validity?.valid === false)
-            .length === 0
-            : true;
-    }
-
-    /**
-     * If form is available, monitor elements change events
-     * and validate form for validity to update disabled state button[type="submit"]
-     * 
-     * @param {*} e 
-     */
-    #onFormState(e) {
+    #onFormValidation(e) {
         const me = this;
-        if (me.#formEl && me.isSubmit) {
-            me.disabled = me.isValid === false;
-        }
+        me.disabled = e.detail.valid == false;
     }
 
     #onClick(e) {
+        
         const me = this;
-        if (me.#formEl && me.isSubmit) {
+        if (me.form?.disabled) return;
+        
+        if (me.isReset) {
+            return me.form?.reset();
+        } 
+        
+        if (me.isSubmit) {
             if (me.isValid) {
-                if (me.isSubmit) me.#formEl.requestSubmit();
-                if (me.isReset) me.#formEl.reset();
+                me.form?.requestSubmit();
             } else {
-                GSEvents.prevent(e);
                 me.disabled = true;
+                GSEvents.prevent(e);
             }
         }
-    }
+    }    
 }
 

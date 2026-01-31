@@ -77,6 +77,10 @@ export class GSTabPanelElement extends GSElement {
     return this.owner.tabs;
   }
 
+  clear() {
+    this.tab.badge = false;
+  }
+
   /*
   #onChange(e) {
     const me = this;

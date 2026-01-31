@@ -223,6 +223,22 @@ export class GSExtInputElement extends HTMLInputElement {
     super.value = this.mask === val ? '' : val;
   }
 
+  get isAutocopy() {
+    return this.autocopy || this.form?.autocopy;
+  }
+
+  get isAutoselect() {
+    return this.autoselect || this.form?.autoselect;
+  }
+
+  get isAutovalidate() {
+    return this.autovalidate || this.form?.autovalidate;
+  }
+  
+  get isAutoreport() {
+    return this.autoreport || this.form?.autoreport;
+  }
+
   /**
    * Return true if current element or chadow dom child is focused
    */
@@ -243,20 +259,20 @@ export class GSExtInputElement extends HTMLInputElement {
     const me = this;
     me.setCustomValidity('');
     GSDOM.reset(me);
-    return me.validate();
+    me.#validate();
   }
 
   checkValidity() {
-    this.validate();
+    this.#validate();
     return super.checkValidity();
   }
 
   reportValidity() {
-    this.validate();
+    this.#validate();
     return super.reportValidity();
   }
 
-  validate(e) {
+  #validate(e) {
     return this.#controllerHandler.validate(e);
   }
 
@@ -294,7 +310,7 @@ export class GSExtInputElement extends HTMLInputElement {
     }
 
     if (changed === 'required' || changed === 'disabled') {
-      me.validate();
+      me.#validate();
     }
   }
 
@@ -307,7 +323,7 @@ export class GSExtInputElement extends HTMLInputElement {
       me.firstUpdated(name);
       me.#controllerHandler?.hostUpdated(name);
       me.#hasUpdated = true;
-      me.validate();
+      me.#validate();
     }
   }
 

@@ -1,5 +1,27 @@
 # [WebComponents](https://webcomponents.greenscreens.ltd/).
 
+# Release v2.2.0 FINAL (01.02.2026.)
+ - Manual updated
+ - GSEvents extended to support event capture
+ - GSElement updated for event capture flag
+ - GSAttributeHandler - attribute toggling added button toggling flag
+ - GSDOM - remove event dispatch on field data reset
+ - GSEvents - added event redispatch function
+ - GSButton - added toggling flag  
+ - GSFormGroup - added toggling flag for select element  
+ - GSDialog - added form validation event support
+ - GSForm - code cleanup
+ - EventsMixin - updated to support event capture
+ - ControllerHandler - added form validation event support
+ - ComboController - added data-gsf-* flags to set field attributes basd on selection
+ - CopySelectController - added global form flag support
+ - ValidityController - added global form flag support
+ - FormController - added event sinkhole for validation event
+ - GSExtSelectElement - added toggling support
+ - GSExtInputElement - added global form flags support
+ - GSExtButtonElement - improved form validity behaviour
+ - Demos updated and improved
+
 # Release v2.1.3 FINAL (28.01.2026.)
  - Fix GSDate - calendar padding calculation
  - Fix GSCalendar - month switch on navigate

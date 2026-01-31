@@ -88,7 +88,7 @@ export class GSExtSelectElement extends HTMLSelectElement {
 
         if (changed === 'url') this.load(newValue);
         if (changed === 'required' || changed === 'disabled') {
-            this.validate();
+            this.#validate();
         }
     }
 
@@ -114,6 +114,14 @@ export class GSExtSelectElement extends HTMLSelectElement {
 
     set asJSON(data) {
         this.apply(data);
+    }
+
+    get toggling() {
+        return this.hasAttribute('toggling');
+    }
+
+    set toggling(value) {
+        GSAttr.toggle(this, 'toggling', value);
     }
 
     /**
@@ -149,16 +157,16 @@ export class GSExtSelectElement extends HTMLSelectElement {
     }
 
     checkValidity() {
-        this.validate();
+        this.#validate();
         return super.checkValidity();
     }
 
     reportValidity() {
-        this.validate();
+        this.#validate();
         return super.reportValidity();
     }
 
-    validate(e) {
+    #validate(e) {
         return this.#controllerHandler.validate(e);
     }
 

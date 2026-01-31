@@ -32,13 +32,13 @@ export class ValidityController {
     me.#host = undefined;
     me.#processing = false;
   }
-  
-  get autoreport() {
-    return this.#host.autoreport;
+
+  get isAutoreport() {
+    return this.#host.isAutoreport;
   }
 
-  get autovalidate() {
-    return this.#host.autovalidate;
+  get isAutovalidate() {
+    return this.#host.isAutovalidate;
   }
 
   get isValid() {
@@ -94,17 +94,22 @@ export class ValidityController {
   }
 
   onInvalid(e) {
-    this.validate();
+    const me = this;
+    me.validate();
+    // if (!e.composed) me.#host.emit('invalid', e, true, true);
   }
 
   onChange(e) {
-    this.#onAutoValidity(e);    
+    const me = this;
+    me.#onAutoValidity(e);
+    // if (!e.composed) me.#host.emit('change', e, true, true);
   }
 
   onBlur(e) {
     const me = this;
     me.#onBlock(e);
     me.#onAutoValidity(e);
+    // if (!e.composed) me.#host.emit('blur', e, true, true);
   }
 
   #onBlock(e) {    
@@ -117,7 +122,7 @@ export class ValidityController {
   }
 
   #onAutoValidity(e) {
-    return this.autoreport ? this.#reportValidity() : this.autovalidate ? this.#checkValidity() : this.validate();
+    return this.isAutoreport ? this.#reportValidity() : this.isAutovalidate ? this.#checkValidity() : this.validate();
   }  
 
   #focus() {

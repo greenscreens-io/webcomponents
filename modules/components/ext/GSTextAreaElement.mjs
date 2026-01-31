@@ -31,6 +31,10 @@ export class GSExtTextAreaElement extends HTMLTextAreaElement {
         Object.seal(GSExtTextAreaElement);
     }
 
+    static get observedAttributes() {
+        return ['required', 'disabled'];
+    }
+
     #hasUpdated = false;
     #controllerHandler = undefined;
 
@@ -65,6 +69,7 @@ export class GSExtTextAreaElement extends HTMLTextAreaElement {
             me.firstUpdated(name);
             me.#controllerHandler?.hostUpdated(name);
             me.#hasUpdated = true;
+            me.#validate();
         }
     }
 
@@ -77,7 +82,7 @@ export class GSExtTextAreaElement extends HTMLTextAreaElement {
 
     willUpdate(changed, oldValue, newValue) {
         if (changed === 'required' || changed === 'disabled') {
-            this.validate();
+            this.#validate();
         }
     }
 
@@ -93,25 +98,25 @@ export class GSExtTextAreaElement extends HTMLTextAreaElement {
         const me = this;
         me.setCustomValidity('');
         GSDOM.reset(me);
-        me.validate();
+        me.#validate();
     }
 
     checkValidity() {
-        this.validate();
+        this.#validate();
         return super.checkValidity();
     }
 
     reportValidity() {
-        this.validate();
+        this.#validate();
         return super.reportValidity();
     }
 
-    validate(e) {
+    #validate(e) {
         return this.#controllerHandler.validate(e);
     }
 
     get owner() {
-        return this[Symbol.for('gs-onwner')]();
+        return this[Symbol.for('gs-owner')]();
     }
 
     get parentComponent() {
@@ -187,6 +192,22 @@ export class GSExtTextAreaElement extends HTMLTextAreaElement {
     get form() {
         const me = this;
         return super.form || me.owner?.form || me.closest?.('form');
+    }
+
+    get isAutocopy() {
+        return this.autocopy || this.form?.autocopy;
+    }
+
+    get isAutoselect() {
+        return this.autoselect || this.form?.autoselect;
+    }
+
+    get isAutovalidate() {
+        return this.autovalidate || this.form?.autovalidate;
+    }
+    
+    get isAutoreport() {
+        return this.autoreport || this.form?.autoreport;
     }
 
     async load(url = '') {

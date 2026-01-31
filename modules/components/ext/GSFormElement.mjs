@@ -14,6 +14,7 @@ import { ControllerHandler } from "./ControllerHandler.mjs";
 import { mixin } from './EventsMixin.mjs';
 import { GSLog } from "../../base/GSLog.mjs";
 import { GSLoader } from "../../base/GSLoader.mjs";
+import { GSUtil } from "../../base/GSUtil.mjs";
 
 /**
  * Extended native forn with additional functionality
@@ -30,12 +31,14 @@ export class GSExtFormElement extends HTMLFormElement {
     }
 
     static get observedAttributes() {
-        return ['disabled', 'url'];
+        return ['url', 'disabled'];
     }
 
     #hasUpdated = false;
     #controllerHandler = undefined;
 
+    onvalid = undefined;
+    
     constructor() {
         super();
         this.#controllerHandler = new ControllerHandler(this);
@@ -81,7 +84,7 @@ export class GSExtFormElement extends HTMLFormElement {
         const me = this;
         if (changed === 'url') me.load(newValue);
         if (changed === 'disabled') {
-            me.disable ? me.disable(true) : me.enable(true);
+            me.disabled ? me.disable(true) : me.enable(true);
         }
     }
 
@@ -95,46 +98,37 @@ export class GSExtFormElement extends HTMLFormElement {
 
     reset() {
         const me = this;
-        // reset non shadeowed
-        super.reset();
         // reset shadowed
         me.inputs
-            .filter(el => GSDOM.isShadowed(el))
-            .forEach(el => GSDOM.reset(el));
-        me.validate();
+        .filter(el => GSDOM.isShadowed(el))
+        .forEach(el => GSDOM.reset(el));
+        // reset non shadowed
+        super.reset();        
     }
 
-    checkValidity() {
-        this.validate();
-        return super.checkValidity();
-    }
-
-    reportValidity() {
-        this.validate();
-        return super.reportValidity();
-    }
-
+    /**
+     * Check validity of the form and each individual field, 
+     * return true only if all valid.
+     * Trigger 'invalid' event on invalid fields.
+     * 
+     * @returns {Boolean} Returns true if form is valid
+     */
     checkValidity() {
         return super.checkValidity() &&
-            this.inputs
+                this.inputs
                 .filter(el => !el.disabled)
                 .every(el => el.checkValidity());
     }
 
+    /**
+     * The same as checkValidity, but also shows validation messages
+     * @returns {Boolean} Returns true if form is valid
+     */
     reportValidity() {
         return super.reportValidity() &&
-            this.inputs
+                this.inputs
                 .filter(el => !el.disabled)
                 .every(el => el.reportValidity());
-    }
-    /**
-     * Validate each individual field, return true only if all fields are valid
-     * @returns 
-     */
-    validate(e) {
-        return this.inputs
-            .filter(el => !el.disabled)
-            .every(c => c.validate ? c.validate(e) : true);
     }
 
     /**
@@ -147,15 +141,17 @@ export class GSExtFormElement extends HTMLFormElement {
     }
 
     disable(all = false) {
-        GSDOM.disableInput(this, 'input, textarea, select', all, 'gs-ext-form');
-        const btn = this.submitButton;
-        if (btn) btn.disabled = true;
+        const me = this;
+        GSDOM.disableInput(me, 'input, textarea, select', all, 'gs-ext-form');
+        me.queryAll('button', true).forEach(b => b.disabled = true);
+        me.emit("disabled");        
     }
 
     enable(all = false) {
-        GSDOM.enableInput(this, 'input, textarea, select', all, 'gs-ext-form');
-        const btn = this.submitButton;
-        if (btn) btn.disabled = false;
+        const me = this;
+        GSDOM.enableInput(me, 'input, textarea, select', all, 'gs-ext-form');
+        me.queryAll('button', true).forEach(b => b.disabled = false);
+        me.emit("enabled");
     }
 
     async load(url = '') {
@@ -198,18 +194,26 @@ export class GSExtFormElement extends HTMLFormElement {
     set asJSON(data) {
         const me = this;
         me.inputs.forEach(field => GSDOM.fromObject2Element(field, data));
-        me.validate();
+        me.#controllerHandler?.validate();
     }
-        
+
+    get autocopy() {
+        return this.hasAttribute('autocopy');
+    }
+    
+    get autoselect() {
+        return this.hasAttribute('autoselect');
+    }
+
     /**
-     * If set, autoamtically calls reportValidity
+     * If set, automatically calls reportValidity
      */
     get autoreport() {
         return this.hasAttribute('autoreport');
     }
 
     /**
-     * If set, autoamtically calls checkValidity
+     * If set, automatically calls checkValidity
      */
     get autovalidate() {
         return this.hasAttribute('autovalidate');
@@ -227,20 +231,36 @@ export class GSExtFormElement extends HTMLFormElement {
         return GSAttr.getAsNum(this, 'timeout', 0);
     }
 
+    get disabled() {
+        return this.hasAttribute('disabled');
+    }
+
+    set disabled(value) {
+        GSAttr.toggle(this, 'disabled', GSUtil.asBool(value));
+    }
+
+    set autocopy(value) {
+        GSAttr.toggle(this, 'autocopy', GSUtil.asBool(value));
+    }
+
+    set autoselect(value) {
+        GSAttr.toggle(this, 'autoselect', GSUtil.asBool(value));
+    }
+
     set autoreport(value) {
-        GSAttr.toggle(this, 'autoreport', value);
+        GSAttr.toggle(this, 'autoreport', GSUtil.asBool(value));
     }
 
     set autovalidate(value) {
-        GSAttr.toggle(this, 'autovalidate', value);
+        GSAttr.toggle(this, 'autovalidate', GSUtil.asBool(value));
     }
 
     set block(val = false) {
-        GSAttr.toggle(this, 'block', val);
+        GSAttr.toggle(this, 'block', GSUtil.asBool(val));
     }
 
     set beep(val = false) {
-        GSAttr.toggle(this, 'beep', val);
+        GSAttr.toggle(this, 'beep', GSUtil.asBool(val));
     }
 
     set timeout(val = 0) {

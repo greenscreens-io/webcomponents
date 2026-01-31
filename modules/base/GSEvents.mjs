@@ -221,6 +221,16 @@ export class GSEvents {
 	}
 
 	/**
+	 * Redispatch event to target, preventing original event handling
+	 * @param {HTMLElement} target
+	 * @param {Event} e 
+	 */
+	static redispatch(target, e) {
+		GSEvents.prevent(e, true, true, true);
+    	GSEvents.send(target, e.type, e.detail, e.bubbles, e.composed, e.cancelable );
+	}	
+
+	/**
 	 * Convert event type to native event
 	 * @param {String} type 
 	 * @param {Object} opt 

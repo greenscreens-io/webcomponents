@@ -1,9 +1,9 @@
 <gs-form beep block slot="body" css="flex-fill" autocomplete="off">
     <template>
-        <gs-formui-handler data-disable="active" data-value="false"></gs-formui-handler>
         <input id="id" name="id" type="hidden">
     
         <gs-form-group  selectable required
+            toggling data-gsf-attribute="disabled" data-gsf-value="false"
             css="m-1" name="active" label="Status" 
             description="Enable or disable this rule.">
             <gs-item value="true" name="Enabled"></gs-item>
