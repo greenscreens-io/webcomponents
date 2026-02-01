@@ -1,16 +1,18 @@
 [
     {
-        "name": "SERVER_SSH2",
+        "name": "SERVER_INTERNAL",
         "localPort": 1080,
         "unix": false,
-        "enabled": false,
+        "enabled": true,
         "active": false,
-        "type": 2,
+        "type": 3,
         "connections": 0,
         "timestamp": 0,
         "port": 2222,
-        "id": 967939410,
-        "ip": "127.0.0.1"
+        "id": 2345433,
+        "ip": "127.0.0.1",
+        "authType" : 1,
+        "user" : "DEMO"
     },
     {
         "name": "SERVER",

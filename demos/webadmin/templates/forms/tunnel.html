@@ -1,39 +1,9 @@
-<gs-form beep block slot="body" css="flex-fill">
+<gs-form beep block slot="body" css="flex-fill" autocomplete="off">
     <template>
-        <gs-formui-handler data-disable="enabled" data-value="false"></gs-formui-handler>
-        <gs-form-group css="m-1" name="enabled" label="Status" selectable required    
-            description="Enable or disable network tunnel.">
-            <gs-item selected value="true" name="Enabled"></gs-item>
-            <gs-item value="false" name="Disabled"></gs-item>
-        </gs-form-group>
-
-        <gs-form-group css="m-1" name="type" label="Type" selectable required     
-            description="Select network tunnel type.">
-            <gs-item value="0" name="SOCK5"></gs-item>
-            <gs-item selected value="2" name="SSH"></gs-item>
-            <gs-item value="1" name="VPN"></gs-item>
-        </gs-form-group>
-        
-        <gs-form-group css="m-1" name="unix" label="Protocol" selectable required     
-            description="Select network connection type.">
-            <gs-item selected value="false" name="AF_TCP"></gs-item>
-            <gs-item value="true" name="AF_UNIX"></gs-item>
-        </gs-form-group>  
-        
-        <gs-form-group css="m-1" name="name" label="Name" required 
-            css-field="text-uppercase"    
-            description="Configuration name. Used it inside host settings as a reference.">
-        </gs-form-group>    
-        
-        <gs-form-group css="m-1" name="ip" label="IP Address" required    
-            pattern="^((25[0-5]|(2[0-4]|1\d|[1-9]|)\d)\.?\b){4}$" 
-            _mask="NNN.NNN.NNN.NNN"
-            description="Remote tunnel address.">
-        </gs-form-group>
-        
-        <gs-form-group css="m-1" name="port" label="Port" required  
-            type="number" min="1" max="65535" 
-            description="Remote tunnel port.">
-        </gs-form-group>
+        <gs-formui-handler></gs-formui-handler>
+        <gs-tab-group type="tabs" css-tab="fw-bold" css-panel="p-2" data-css-item="">
+            <gs-item title="General" template="//forms/tunnel/general.html" active></gs-item>
+            <gs-item title="Security" template="//forms/tunnel/security.html"></gs-item>
+        </gs-tab-group>
     </template>
 </gs-form>

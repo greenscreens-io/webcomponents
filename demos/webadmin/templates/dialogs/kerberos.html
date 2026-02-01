@@ -1,12 +1,12 @@
-<gs-form beep block slot="body" css="flex-fill" data-gsf-disable="sso" data-gsf-value="false">
+<gs-form beep block slot="body" css="flex-fill" autocomplete="off">
     <template>        
-		<gs-formui-handler data-disable="sso" data-value="false"></gs-formui-handler>
-		<gs-form-group css="m-1" name="sso" label="Status" autocomplete="off" selectable required
+
+		<gs-form-group css="m-1" name="sso" label="Status" autocomplete="off" 
+			selectable required toggling data-gsf-attribute="disabled" data-gsf-value="false"
 			description="Enable Single Sign On. IBM system must be configured to use Kerberos for signon.">
 			<gs-item value="false" name="Disabled" selected></gs-item>
 			<gs-item value="true" name="Enabled"></gs-item>		
 		</gs-form-group>
-	
 	
 		<gs-form-group css="m-1" name="ssoKDC" label="KDC" 
 			autocomplete="off"

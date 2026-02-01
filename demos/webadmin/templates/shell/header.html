@@ -3,11 +3,9 @@
         <gs-router url="//header.json"></gs-router>
 
         <gs-button id="restart" css="shadow-none fs-3" icon="arrow-repeat" tooltip="Restart server" text="secondary" url="#restart"></gs-button>
+
         <gs-button id="explorer" css="shadow-none fs-3" icon="folder-symlink" tooltip="Open resource explorer" text="secondary" data-gs-action="explorer" data-gs-src="/admin/explorer/"></gs-button>
         <gs-dropdown simple auto dark group="header" icon="download fs-3" id="menu1" css="px-1" tooltip="Downloads">
-            <!--   
-                <gs-item name="Download SAVF" data-gs-action="download-savf"></gs-item>
-             -->
             <gs-item name="Download Configuration" data-gs-action="download-config"></gs-item>
             <gs-item name="Download Logs" data-gs-action="download-logs"></gs-item>
         </gs-dropdown>
@@ -34,7 +32,7 @@
             <gs-item name="Autoconfigure" url="#kerbinit"></gs-item>
             <gs-item name="Kerberos" url="#kerberos"></gs-item>
             <gs-item name="SSO Lite" url="#kerblite" tooltip="SSO based on LDAP"></gs-item>
-        </gs-dropdown>        
+        </gs-dropdown>
         <gs-dropdown simple auto dark group="header" icon="gear fs-3" dark id="menu3" css="px-1" tooltip="General preferences">
             <gs-item name="Admin Login" url="#login-admin"></gs-item>
             <gs-item name="Login Defaults" url="#login-defaults"></gs-item>

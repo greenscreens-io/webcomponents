@@ -17,6 +17,15 @@
     <div class="row border shadow-sm rounded ms-4 pb-4 bg-light ">
 
         <div class="col-12 d-flex justify-content-end p-1 ">
+            <gs-button data-gs-action="upload" tooltip="Import data" 
+                color="light" text="dark" -hover-css="gs-pulse" click-css="gs-shake" css="shadow-none border-0"
+                icon="upload fs-4 fw-bold"></gs-button>
+            <gs-button data-gs-action="download" tooltip="Export data" 
+                color="light" text="dark" -hover-css="gs-pulse" click-css="gs-shake" css="shadow-none border-0"
+                icon="download fs-4 fw-bold"></gs-button>  
+            
+            <span class="mt-3 text-secondary">|</span>
+                        
             <gs-button data-gs-action="create" tooltip="Add new configuration" 
             color="light" text="dark" -hover-css="gs-pulse" click-css="gs-shake" css="shadow-none border-0"
             icon="file-earmark fs-4 fw-bold"></gs-button>

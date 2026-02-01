@@ -26,6 +26,12 @@
     <link rel="preload" href="/webcomponents/assets/themes/default.css" as="style" data-adoptable="true" data-id="2">
     <link rel="preload" href="/webcomponents/assets/icons/bootstrap-icons.css" as="style" data-adoptable="true" data-id="4">
 
+    <style data-adoptable="true" data-id="5">
+        .btn-check:checked + .btn, :not(.btn-check) + .btn:active, .btn:first-child:active, .btn.active, .btn.show {
+            --bs-btn-active-color: greenyellow;
+            --bs-btn-font-weight: 500;
+        }
+    </style>
 
     <script type="module" src="/webcomponents/release/esm/io.greenscreens.components.all.min.js"></script>
 
@@ -37,22 +43,22 @@
     <div class="m-4 p-1 bg-light bordered shadow-sm row">
         <div class="col-auto">Toggle options : </div>
         <div class="col-auto">
-            <gs-button color="primary" data-gs-target="input,select,textarea" data-gs-attribute="disabled" title="Disabled"></gs-button>
-            <gs-button color="primary" data-gs-target="input" data-gs-attribute="required" title="Required"></gs-button>
-            <gs-button color="primary" data-gs-target="input" data-gs-attribute="beep" title="Beep"></gs-button>
-            <gs-button color="primary" data-gs-target="input" data-gs-attribute="block" title="Block"></gs-button>            
-            <gs-button color="primary" data-gs-target="input" data-gs-attribute="autocopy" title="Autocopy"></gs-button>
-            <gs-button color="primary" data-gs-target="input" data-gs-attribute="autoselect" title="Autoselect"></gs-button>
-            <gs-button color="primary" data-gs-target="input" data-gs-attribute="autoreport" title="Autoreport"></gs-button>
-            <gs-button color="primary" data-gs-target="input" data-gs-attribute="autovalidate" title="Autovalidate"></gs-button>
+            <gs-button color="primary" data-gs-target="gs-form" data-gs-attribute="disabled" title="Disabled" toggling></gs-button>
+            <gs-button color="primary" data-gs-target="input" data-gs-attribute="required" title="Required" toggling></gs-button>
+            <gs-button color="primary" data-gs-target="gs-form" data-gs-attribute="beep" title="Beep" toggling></gs-button>
+            <gs-button color="primary" data-gs-target="gs-form" data-gs-attribute="block" title="Block" toggling></gs-button>            
+            <gs-button color="primary" data-gs-target="gs-form" data-gs-attribute="autocopy" title="Autocopy" toggling></gs-button>
+            <gs-button color="primary" data-gs-target="gs-form" data-gs-attribute="autoselect" title="Autoselect" toggling></gs-button>
+            <gs-button color="primary" data-gs-target="gs-form" data-gs-attribute="autoreport" title="Autoreport" toggling></gs-button>
+            <gs-button color="primary" data-gs-target="gs-form" data-gs-attribute="autovalidate" title="Autovalidate" toggling></gs-button>
         </div>
         <div class="col-auto">
             <gs-button color="primary" data-gs-target="form" data-gs-call="reset" title="Reset form"></gs-button>            
         </div>
     </div>
-        
+
     <div class="m-4 p-1 bg-light bordered shadow-sm row">
-        JSON generated form and fields.
+        JSON generated form and fields. 
     </div>
 
         <div class="container justify-content-center w-50 bordered p-4 shadow-sm bg-light">
