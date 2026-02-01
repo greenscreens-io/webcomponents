@@ -41,16 +41,11 @@ export class GSTunnel extends GSAsbtractDialog {
     afterOpen() {
         super.afterOpen();
         const me = this;
-        me.#updateType();
         me.#updateSecurity();
     }
 
     get typeField() {
         return this.query('select[name=type]', true);
-    }
-
-    get protocolField() {
-        return this.query('select[name=unix]', true);
     }
 
     get authTypeField() {
@@ -73,34 +68,12 @@ export class GSTunnel extends GSAsbtractDialog {
 
     #onForm(e) {
         const me = this;
-        me.#updateType();
         me.#updateSecurity();
     }
 
     #onChange(e) {
         const me = this;
-        me.#updateType();
         me.#updateSecurity();
-    }
-
-    #updateType() {
-        const me = this;
-        const typeFld = me.typeField;
-        if (typeFld.disabled) return;
-        const type = typeFld.value;
-        const protFld = me.protocolField;
-        const unixProt = protFld?.options[1];
-        switch (type) {
-            case '0': //SOCK5
-            case '3': //INTERNAL
-                protFld.selectedIndex = 0;
-                unixProt.disabled = true;
-                break;
-            default:
-                unixProt.disabled = false;
-                break;
-        }       
-
     }
 
     #updateSecurity() {
