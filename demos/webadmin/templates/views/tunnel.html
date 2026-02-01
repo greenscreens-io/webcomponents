@@ -24,7 +24,6 @@
                 <gs-item name="id" key></gs-item>
                 <gs-item name="name"></gs-item>
                 <gs-item name="localPort"></gs-item>
-                <gs-item name="unix"></gs-item>
                 <gs-item name="enabled"></gs-item>
                 <gs-item name="active"></gs-item>
                 <gs-item name="type"></gs-item>
@@ -42,10 +41,6 @@
                 <gs-item title="Remote IP" name="ip"></gs-item>
                 <gs-item title="Remote Port" name="port"></gs-item>
                 <gs-item title="Local Port" name="localPort"></gs-item>
-                <gs-item title="Protocol" name="unix">
-                    <gs-item value="true" map="AF_UNIX"></gs-item>
-                    <gs-item value="false" map="AF_TCP"></gs-item>
-                </gs-item>
                 <gs-item title="Type" name="type">
                     <gs-item value="0" map="SOCK5"></gs-item>
                     <gs-item value="1" map="VPN"></gs-item>
@@ -70,8 +65,6 @@
                     <gs-item name="Start" data-gs-action="start"></gs-item>
                     <gs-item name="Stop" data-gs-action="stop"></gs-item>
                     <gs-item name="Restart" data-gs-action="rstart"></gs-item>
-                    <gs-item></gs-item>
-                    <gs-item name="Download" data-gs-action="download"></gs-item>
                 </gs-context>
             </gs-table>
             
