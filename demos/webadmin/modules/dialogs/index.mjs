@@ -24,3 +24,4 @@ import './GSActivate.mjs';
 import './GSKerberos.mjs';
 import './GSMigrate.mjs';
 import './GSCertImportStore.mjs';
+import './GSTunnel.mjs';
