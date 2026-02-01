@@ -68,20 +68,4 @@ export default class GSTunnel extends BaseViewUI {
         Utils.inform(o.success, 'Tunnel restarted');
     }
 
-    async onViewDownload(e) {
-
-        const data = e.detail.data[0];
-        const o = DEMO ? DEMO : await io.greenscreens.Proxy.download(data.id);
-
-        const conf = [
-            'auto: true',
-            'mode: cloud',
-            'cloud: ' + location.origin,
-            'token: ' + o.code,
-            'tls: 1',
-            'tlsVerify: true'
-        ];
-        Utils.download(data.name + '.bin', Utils.fromHex(o.msg));
-        Utils.download('server.config', conf.join('\n'));
-    }
 }

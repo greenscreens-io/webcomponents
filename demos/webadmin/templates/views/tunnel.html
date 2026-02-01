@@ -25,17 +25,10 @@
                     <gs-column title="Remote IP" name="ip"></gs-column>
                     <gs-column title="Remote Port" name="port"></gs-column>
                     <gs-column title="Local Port" name="localPort"></gs-column>
-                    <gs-column title="Protocol" name="unix">
-                        <gs-item map="true">
-                            <gs-item value="true" map="AF_UNIX"></gs-item>
-                            <gs-item value="false" map="AF_TCP"></gs-item>
-                        </gs-item>                         
-                    </gs-column>
                     <gs-column title="Type" name="type">
                         <gs-item map="true">
                             <gs-item value="0" map="SOCK5"></gs-item>
-                            <gs-item value="1" map="VPN"></gs-item>
-                            <gs-item value="2" map="SSH"></gs-item>
+                            <gs-item value="1" map="SSH"></gs-item>
                         </gs-item>                        
                     </gs-column>
                     <gs-column title="Rule" name="enabled">
@@ -56,7 +49,6 @@
                 <gs-store src="data/proxy.json" id="sessions" limit=15>
                     <gs-item name="name"></gs-item>
                     <gs-item name="localPort"></gs-item>
-                    <gs-item name="unix"></gs-item>
                     <gs-item name="enabled"></gs-item>
                     <gs-item name="active"></gs-item>
                     <gs-item name="type"></gs-item>
@@ -75,8 +67,6 @@
                     <gs-item name="Start" action="start"></gs-item>
                     <gs-item name="Stop" action="stop"></gs-item>
                     <gs-item name="Restart" action="rstart"></gs-item>
-                    <gs-item></gs-item>
-                    <gs-item name="Download" action="download"></gs-item>
                 </gs-context>
                 <gs-pager slot="extra" previous="&laquo;" next="&raquo;" firstlast="false" pages="0"></gs-pager>
             </gs-table>
