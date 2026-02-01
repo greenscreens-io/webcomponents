@@ -81,8 +81,8 @@ export class GSTunnel extends GSAsbtractDialog {
         const typeFld = me.typeField;
         if (typeFld.disabled) return;
        
-        const enabled = typeFld.value === '3';        
-        me.securityFields.forEach(fld => fld.disabled = !enabled); //INTERNAL
+        const enabled = typeFld.value === '1'; //SSH        
+        me.securityFields.forEach(fld => fld.disabled = !enabled);
         if (!enabled) return;
 
         const authFld = me.authTypeField;
