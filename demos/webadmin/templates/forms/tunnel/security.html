@@ -1,17 +1,15 @@
-<gs-form-group selectable required css="m-1" name="authType" label="Auth Type" data-cat="security"
-    description="Authentication type for the tunnel connection.">
-    <gs-item value="0" name="Basic"></gs-item>
-    <gs-item value="1" name="Enhanced" selected></gs-item>
-</gs-form-group>
-
 <gs-form-group css="m-1" name="user" label="User" data-cat="security" required 
     description="Connection user name.">
 </gs-form-group>
 
-<gs-form-group css="m-1" name="password" label="Pasword" data-cat="security" required disabled
-    type="password" description="Connection user password.">
+<gs-form-group css="m-1" name="password" label="Pasword" data-cat="security"
+    type="password" description="Connection user password. (optional)">
 </gs-form-group>
 
-<gs-form-group css="m-1" name="key" label="Access Key" data-cat="security" required 
-    type="text" rows="5" description="Base64 encoded PEM private key.">
+<gs-form-group css="m-1" css-field="text-nowrap" name="key" label="Access Key" data-cat="security"
+    type="text" rows="5" description="Base64 encoded PEM private key. (optional)">
+</gs-form-group>
+
+<gs-form-group css="m-1" css-field="text-nowrap" name="signatures" label="Signatures" data-cat="security"
+    type="text" rows="5" description="Optional list of SSH server keys hashes to protect from MITM.">
 </gs-form-group>

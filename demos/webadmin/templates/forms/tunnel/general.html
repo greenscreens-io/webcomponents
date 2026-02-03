@@ -10,6 +10,13 @@
     <gs-item value="1" name="SSH" selected></gs-item>
 </gs-form-group>
 
+<!--
+    <gs-form-group css="m-1" name="unix" label="Protocol" selectable required description="Select network connection type.">
+        <gs-item value="false" name="AF_TCP" selected></gs-item>
+        <gs-item value="true" name="AF_UNIX"></gs-item>
+    </gs-form-group>
+-->
+
 <gs-form-group css="m-1" name="name" label="Name" required css-field="text-uppercase"
     description="Configuration name. Used it inside host settings as a reference.">
 </gs-form-group>
@@ -20,4 +27,8 @@
 
 <gs-form-group css="m-1" name="port" label="Port" required type="number" min="1" max="65535"
     description="Remote tunnel port.">
+</gs-form-group>
+
+<gs-form-group css="m-1" name="localPort" label="Forwarding Port" required type="number" min="1" max="65535"
+    description="SOCK5 Forwarding port.">
 </gs-form-group>
