@@ -1,0 +1,18 @@
+<gs-form-group selectable required css="m-1" name="useKnownHost" label="Use KnownHost" data-cat="options"
+    description="Use useKnownHost file in user/.shh to match remote server public key hash">
+    <gs-item value="true" name="Enabled" selected></gs-item>
+    <gs-item value="false" name="Disabled"></gs-item>
+</gs-form-group>
+
+<gs-form-group selectable required css="m-1" name="rejectUnknown" label="Reject Unknown" data-cat="options"
+    description="Reject connection for unverified server public keys.">
+    <gs-item value="true" name="Enabled" selected></gs-item>
+    <gs-item value="false" name="Disabled"></gs-item>
+</gs-form-group>
+
+<gs-form-group selectable required css="m-1" name="strict" label="Strict" data-cat="options"
+    description="Linux only. Check .ssh folder strict access permissions">
+    <gs-item value="true" name="Enabled" selected></gs-item>
+    <gs-item value="false" name="Disabled"></gs-item>
+</gs-form-group>
+
