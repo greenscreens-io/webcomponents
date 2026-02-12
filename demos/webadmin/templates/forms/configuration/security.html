@@ -37,12 +37,14 @@
     <option value="604800">1 Week</option>
 </datalist>
 
-<gs-form-group selectable required
+<!--
+    <gs-form-group selectable required
     css="m-1" name="mobileAccess" label="Mobile Access"
     description="Allow use by mobile application.">
     <gs-item value="true" name="Enabled"></gs-item>
     <gs-item value="false" name="Disabled" selected></gs-item>    
 </gs-form-group>
+-->
 
 <gs-form-group selectable required
     css="m-1" name="localOnly" label="Network access"
@@ -70,6 +72,15 @@
     description="Enable or disable screen sharing feature.">
     <gs-item value="true" name="Enabled"></gs-item>
     <gs-item value="false" name="Disabled" selected></gs-item>    
+</gs-form-group>
+
+<gs-form-group selectable required
+    css="m-1" name="signon" label="Signon Screen"
+    description="Block automated access to 5250 sign-on screen optional input fields.">
+    <gs-item value="0" name="Default" selected></gs-item>    
+    <gs-item value="1" name="Block Program"></gs-item>
+    <gs-item value="2" name="Block Menu"></gs-item>
+    <gs-item value="3" name="Block Menu & Program"></gs-item>
 </gs-form-group>
 
 <gs-form-group selectable required 

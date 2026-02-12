@@ -1,3 +1,11 @@
+
+<gs-form-group selectable required css="m-1" name="active" label="Status"
+    toggling data-gsf-attribute="disabled" data-gsf-value="false"
+    description="Enable or disable this configuration for use. Default is ENABLED">
+    <gs-item value="true" name="Enabled" selected></gs-item>
+    <gs-item value="false" name="Disabled"></gs-item>
+</gs-form-group>
+
 <gs-form-group css="m-1" name="uuid" label="UUID" css-field="text-uppercase"
     maxlength="64" pattern="[a-zA-Z10-9_]{1,10}" required
     description="Configuration group. Used on login form along with virtual host name.">
@@ -6,16 +14,4 @@
 <gs-form-group css="m-1" name="name" label="Host" css-field="text-uppercase"
     maxlength="64" pattern="[a-zA-Z10-9_]{1,64}" required
     description="Virtual server name used on login screen. It is an alias for server IP address.">
-</gs-form-group>
-
-<gs-form-group css="m-1" name="controller" label="Virtual Controller"
-    css-filed="text-uppercase" maxlength="10" pattern="[a-zA-Z10-9]{1,10}" placeholder="QPACTL01"
-    description="Printer or Display virtual controller. For pre 6.1 releases default is QVIRCD0001 or any QVIRCDxxxx and for newer releases it is QPACTL01 or any QPACTLxx.">
-</gs-form-group>
-
-<gs-form-group selectable required css="m-1" name="active" label="Status"
-    toggling data-gsf-attribute="disabled" data-gsf-value="false"
-    description="Enable or disable this configuration for use. Default is ENABLED">
-    <gs-item value="true" name="Enabled" selected></gs-item>
-    <gs-item value="false" name="Disabled"></gs-item>
 </gs-form-group>

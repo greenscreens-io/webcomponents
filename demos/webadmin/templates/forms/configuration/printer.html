@@ -1,18 +1,3 @@
-<gs-form-group css="m-1" name="displayPrefix" label="Display Name Prefix"
-    maxlength="9" pattern="[a-zA-Z10-9_]{0,9}"
-    description="Prefix to add to Display Name value on login screen. For example, WEB + given to detect users connecting with web terminal at the AS/400 side.">
-</gs-form-group>
-
-<gs-form-group selectable css="m-1" name="autoconf" label="Display auto configure"
-    description="Auto configure display name to avoid duplicate names. 
-    NOTE 1: For this option to work, QAUTOCFG must be on or workstation devices must exist on remote system.        
-    NOTE 2: User can override this through browser extension tool.">
-    <gs-item value="" name="None" selected></gs-item>
-    <gs-item value="0" name="This Workstation"></gs-item>
-    <gs-item value="1" name="Other Workstation"></gs-item>
-    <gs-item value="2" name="All Workstation"></gs-item>
-</gs-form-group>
-
 <gs-form-group selectable required css="m-1" name="blockPrinter" label="Virtual Printer"
     description="Disable or enable users to start virtual printer.">
     <gs-item value="false" name="Disabled" selected></gs-item>

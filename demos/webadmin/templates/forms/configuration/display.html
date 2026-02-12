@@ -1,0 +1,93 @@
+<gs-form-group css="m-1" name="displayPrefix" label="Display Name Prefix"
+    maxlength="9" pattern="[a-zA-Z10-9_]{0,9}"
+    description="Prefix to add to Display Name value on login screen. For example, WEB + given to detect users connecting with web terminal at the AS/400 side.">
+</gs-form-group>
+
+<gs-form-group selectable css="m-1" name="autoconf" label="Display auto configure"
+    description="Auto configure display name to avoid duplicate names. 
+    NOTE 1: For this option to work, QAUTOCFG must be on or workstation devices must exist on remote system.        
+    NOTE 2: User can override this through browser extension tool.">
+    <gs-item value="" name="None" selected></gs-item>
+    <gs-item value="0" name="This Workstation"></gs-item>
+    <gs-item value="1" name="Other Workstation"></gs-item>
+    <gs-item value="2" name="All Workstation"></gs-item>
+</gs-form-group>
+
+<gs-form-group  selectable required
+    css="m-1" name="codePage" label="Code page"
+    description="Terminal EBCIDIC codepage">
+    <gs-item value="037" name="Cp037 (US-Canada)" selected></gs-item>
+    <gs-item value="256" name="Cp256 (Netherland)"></gs-item>
+    <gs-item value="273" name="Cp273 (Germany)"></gs-item>
+    <gs-item value="277" name="Cp277 (Denmark-Norway)"></gs-item>
+    <gs-item value="278" name="Cp278 (Finland-Sweden)"></gs-item>
+    <gs-item value="280" name="Cp280 (Italy)"></gs-item>
+    <gs-item value="284" name="Cp284 (Spain)"></gs-item>
+    <gs-item value="285" name="Cp285 (UK)"></gs-item>
+    <gs-item value="290" name="Cp290 (Japanese Katakana-Kanji)"></gs-item>
+    <gs-item value="297" name="Cp297 (France)"></gs-item>
+    <gs-item value="420" name="Cp420 (Arabic)"></gs-item>
+    <gs-item value="423" name="Cp423 (Greek)"></gs-item>
+    <gs-item value="424" name="Cp424 (Hebrew)"></gs-item>
+    <gs-item value="500" name="Cp500 (International)"></gs-item>
+    <gs-item value="833" name="Cp833 (Korean)"></gs-item>
+    <gs-item value="836" name="Cp836 (Simplified Chinese)"></gs-item>
+    <gs-item value="838" name="Cp838 (Thai)"></gs-item>
+    <gs-item value="870" name="Cp870 (Multilingual Latin-2)"></gs-item>
+    <gs-item value="871" name="Cp871 (Icelandic)"></gs-item>
+    <gs-item value="875" name="Cp875 (Greek Modern)"></gs-item>
+    <gs-item value="880" name="Cp880 (Cyrilic Russian)"></gs-item>
+    <gs-item value="905" name="Cp905 (Turkey)"></gs-item>
+    <gs-item value="918" name="Cp918 (Urdu)"></gs-item>
+    <gs-item value="924" name="Cp924 (Latin 9)"></gs-item>
+    <gs-item value="1025" name="Cp1025 (Cyrillic Serbian-Bulgarian)"></gs-item>
+    <gs-item value="1026" name="Cp1026 (Turkish Latin-5)"></gs-item>
+    <gs-item value="1097" name="Cp1097 (Farsi)"></gs-item>
+    <gs-item value="1140" name="Cp1140 (US-Canada-Euro)"></gs-item>
+    <gs-item value="1141" name="Cp1141 (Germany-Euro)"></gs-item>
+    <gs-item value="1142" name="Cp1142 (Denmark-Norway-Euro)"></gs-item>
+    <gs-item value="1143" name="Cp1143 (Finland-Sweden-Euro)"></gs-item>
+    <gs-item value="1144" name="Cp1144 (Italy-Euro)"></gs-item>
+    <gs-item value="1145" name="Cp1145 (Spain-Euro)"></gs-item>
+    <gs-item value="1146" name="Cp1146 (UK-Euro)"></gs-item>
+    <gs-item value="1147" name="Cp1147 (France-Euro)"></gs-item>
+    <gs-item value="1148" name="Cp1148 (International-Euro)"></gs-item>
+    <gs-item value="1149" name="Cp1149 (Icelandic-Euro)"></gs-item>
+    <gs-item value="1112" name="Cp1112 (Baltic)"></gs-item>
+    <gs-item value="1122" name="Cp1122 (Estonia)"></gs-item>
+    <gs-item value="1123" name="Cp1123 (Ukraine)"></gs-item>
+    <gs-item value="1130" name="Cp1130 (Vietnamese)"></gs-item>
+    <gs-item value="1132" name="Cp1132 (Lao)"></gs-item>
+    <gs-item value="1137" name="Cp1137 (Devanagari)"></gs-item>
+    <gs-item value="1153" name="Cp1153 (Multilingual Latin-2 Euro)"></gs-item>
+    <gs-item value="1154" name="Cp1154 (Cyrillic Serbian-Bulgarian Euro)"></gs-item>
+    <gs-item value="1155" name="Cp1155 (Turkish Latin-5 Euro)"></gs-item>
+    <gs-item value="1156" name="Cp1156 (Baltic-Euro)"></gs-item>
+    <gs-item value="1157" name="Cp1157 (Estonia-Euro)"></gs-item>
+    <gs-item value="1158" name="Cp1158 (Ukraine-Euro)"></gs-item>
+    <gs-item value="1160" name="Cp1160 (Thai-Euro)"></gs-item>
+    <gs-item value="1164" name="Cp1164 (Vietnamese-Euro)"></gs-item>
+</gs-form-group>
+
+<gs-form-group selectable required css="m-1" name="detection" label="Screen detection"
+    description="Disable or enable unique screen detection. (slower, for automation or special applications).">
+    <gs-item value="false" name="Disabled" selected></gs-item>
+    <gs-item value="true" name="Enabled"></gs-item>  
+</gs-form-group>
+
+<gs-form-group css="m-1" name="controller" label="Virtual Controller"
+    css-filed="text-uppercase" maxlength="10" pattern="[a-zA-Z10-9]{1,10}" placeholder="QPACTL01"
+    description="Printer or Display virtual controller. For pre 6.1 releases default is QVIRCD0001 or any QVIRCDxxxx and for newer releases it is QPACTL01 or any QPACTLxx.">
+</gs-form-group>
+
+<gs-form-group selectable required
+    css="m-1" name="qpwdlvl" label="QPWDLVL"
+    description="Value must be the same as shown with DSPSYSVAL QPWDLVL on remote host for successful bypass-signon.
+    If set to N/A, bypass sign-on will not use encryption. Password will be exchanged in clear text.">
+    <gs-item value="-1" name="N/A" selected></gs-item>
+    <gs-item value="0" name="Level 0"></gs-item>
+    <gs-item value="1" name="Level 1"></gs-item>
+    <gs-item value="2" name="Level 2"></gs-item>
+    <gs-item value="3" name="Level 3"></gs-item>
+    <gs-item value="4" name="Level 4"></gs-item>
+</gs-form-group>
