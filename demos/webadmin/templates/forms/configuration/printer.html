@@ -1,0 +1,46 @@
+<gs-form-group selectable required css="m-1" name="blockPrinter" label="Virtual Printer"
+    description="Disable or enable users to start virtual printer.">
+    <gs-item value="false" name="Disabled" selected></gs-item>
+    <gs-item value="true" name="Enabled"></gs-item>  
+</gs-form-group>
+
+<gs-form-group selectable required css="m-1" name="createPrinter" label="Auto create printer"
+    description="Automatic printer device and writer creation on request. Service user must have *IOSYSCFG authority.">
+    <gs-item value="false" name="Disabled" selected></gs-item>
+    <gs-item value="true" name="Enabled"></gs-item>
+</gs-form-group>
+
+<gs-form-group required selectable css="m-1" name="verifyPrinter" label="Verify Printer"
+    description="">
+    <gs-item value="false" name="Disabled" selected></gs-item>
+    <gs-item value="true" name="Enabled"></gs-item>
+</gs-form-group>
+
+
+<gs-form-group selectable required css="m-1" name="drawer1" label="Drawer 1"
+    description="Default paper size for printer sessions for drawer 1. When user select DEFAULT, this option will be used.">
+    <gs-item value="1" name="LETTER"></gs-item>
+    <gs-item value="2" name="LEGAL"></gs-item>
+    <gs-item value="3" name="EXECUTIVE"></gs-item>
+    <gs-item value="4" name="A4"></gs-item>
+    <gs-item value="5" name="A5"></gs-item>
+    <gs-item value="6" name="B5"></gs-item>
+    <gs-item value="9" name="LEDGER" selected></gs-item>
+    <gs-item value="10" name="A3"></gs-item>
+    <gs-item value="11" name="B4"></gs-item>
+    <gs-item value="12" name="NONE"></gs-item>
+</gs-form-group>
+
+<gs-form-group selectable required css="m-1" name="drawer2" label="Drawer 2"
+    description="Default paper size for printer sessions for drawer 2. When user select DEFAULT, this option will be used.">
+    <gs-item value="1" name="LETTER"></gs-item>
+    <gs-item value="2" name="LEGAL"></gs-item>
+    <gs-item value="3" name="EXECUTIVE"></gs-item>
+    <gs-item value="4" name="A4"></gs-item>
+    <gs-item value="5" name="A5"></gs-item>
+    <gs-item value="6" name="B5"></gs-item>
+    <gs-item value="9" name="LEDGER" selected></gs-item>
+    <gs-item value="10" name="A3"></gs-item>
+    <gs-item value="11" name="B4"></gs-item>
+    <gs-item value="12" name="NONE"></gs-item>
+</gs-form-group>
