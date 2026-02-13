@@ -19,8 +19,21 @@ import GSStore from "./GSStore.mjs";
 // - if data attr set to gs-store id find el
 // - if internal gs-store el, use that
 
+/* TODO
+  use colgroup for column width definition
+  issue when multiple heasers with different column count, 
+  or when auto generated headers from data with different column count
+  <colgroup>
+    <col style="width: 15%">
+    <col style="width: 15%">
+    <col style="width: 30%">
+    <col style="width: 30%">
+    <col style="width: 10%">
+  </colgroup>
+*/
+
 /**
- * Boottrap table WebComponent
+ * Bootsrap table WebComponent
  * @class
  * @extends {GSElement}
  */

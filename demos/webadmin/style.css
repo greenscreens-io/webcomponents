@@ -12,6 +12,11 @@ dialog::backdrop {
     transform: translate3d(0px, 0px, 0px);
 }
 
+.table-fixed {
+    table-layout: fixed;
+    width: 100%;
+}
+
 .offcanvas,
 .offcanvas-xxl,
 .offcanvas-xl,

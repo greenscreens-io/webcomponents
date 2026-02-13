@@ -31,4 +31,9 @@ export default class GSBiometrics extends BaseViewUI {
         const o = DEMO ? DEMO : await io.greenscreens.WebAuth.remove(data);
         return o.success;
     }
+
+    onFilter(e) {
+        const isValid = e.detail?.filter(o => o.name !== 'origin').length === 3;
+        if (isValid) this.onLoad(e);
+    }
 }

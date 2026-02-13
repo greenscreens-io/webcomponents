@@ -36,6 +36,7 @@ export default class BaseViewUI extends GSElement {
 			if (me.#table) {
 				me.store.filter = me.#table.filters;
 				me.store.sort = me.#table.sorters;
+				me.#table.on('filter', me.onFilter.bind(me));
 			}
 			me.onViewRefresh();
 		});
@@ -262,6 +263,9 @@ export default class BaseViewUI extends GSElement {
 			me.waiter.close();
 		}
 
+	}
+
+	onFilter(e) {
 	}
 
 	/**
