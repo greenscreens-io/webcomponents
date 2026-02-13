@@ -1,5 +1,8 @@
 # [WebComponents](https://webcomponents.greenscreens.ltd/) for [Bootstrap 5.2.0+](https://getbootstrap.com/)
 
+# Release v1.9.13 (13.02.2026.)
+ - Fix GSInputEx - masked input
+
 # Release v1.9.12 (28.01.2026.)
  - Fix GSDate - calendar padding calculation
 

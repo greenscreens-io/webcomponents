@@ -71,16 +71,18 @@ export default class GSInputExt extends HTMLInputElement {
         if (me.placeholder.length === 0) {
             if (me.mask) me.placeholder = me.mask;
         }
-        me.#toPattern();
+        // me.#toPattern();
         me.#attachEvents();
         GSComponents.store(me);
         if (me.autofocus) me.focus();
-        setTimeout(me.#onDataChange.bind(me), 250);
+        setTimeout(() => {
+            me.#onDataChange.bind(me);
+        }, 250);
     }
 
     disconnectedCallback() {
         const me = this;
-        me.#masks = [];
+        //me.#masks = [];
         GSComponents.remove(me);
         GSEvents.deattachListeners(me);
     }
