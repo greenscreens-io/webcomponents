@@ -1,7 +1,7 @@
 /*
  * Copyright (C) 2015, 2024 Green Screens Ltd.
  */
-import { GSDOM } from "../../../modules/base/GSDOM.mjs";
+import { GSDOM } from "../../../../modules/base/GSDOM.mjs";
 
 class GSColorCombo extends HTMLSelectElement {
 

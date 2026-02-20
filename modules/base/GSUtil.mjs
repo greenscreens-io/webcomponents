@@ -52,7 +52,7 @@ export class GSUtil {
 
 	static isPrimitive = (o) => !Array.isArray(o) && (this.isBool(o) || this.isDate(o) || this.isNumber(o) || this.isString(o));
 
-	static range = (val = 0, min = 10, max = 100) => (Math.max(Math.min(max, val), min));
+	static range = (val = 0, min = 0, max = 100) => (Math.max(Math.min(max, val), min));
 
 	static extractNumber = (val = '') => val.match(/[\d,\.]*\d/)?.[0];
 
@@ -70,7 +70,6 @@ export class GSUtil {
 		}
 		return GSUtil.isNumber(val) ? parseFloat(val) : dft;
 	}
-
 
 	/**
 	 * Validate string for url format

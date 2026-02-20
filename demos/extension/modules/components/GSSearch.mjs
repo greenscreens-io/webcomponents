@@ -6,10 +6,10 @@
  * A module loading GSSearch class
  * @module GSSearch
  */
-import { GSElement } from "../../../modules/GSElement.mjs";
-import { GSEnvironment } from "../../../modules/base/GSEnvironment.mjs";
-import { GSEvents } from "../../../modules/base/GSEvents.mjs";
-import { html } from "../../../modules/lib.mjs";
+import { GSElement } from "../../../../modules/GSElement.mjs";
+import { GSEnvironment } from "../../../../modules/base/GSEnvironment.mjs";
+import { GSEvents } from "../../../../modules/base/GSEvents.mjs";
+import { html } from "../../../../modules/lib.mjs";
 
 /**
  * Search input box WebComponent which emits searh event to upper tree.

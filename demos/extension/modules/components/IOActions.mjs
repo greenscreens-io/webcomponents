@@ -7,8 +7,8 @@
  * @module IOActions
  */
 
-import { GSElement } from "../../../modules/GSElement.mjs";
-import { GSFunction } from "../../../modules/base/GSFunction.mjs";
+import { GSElement } from "../../../../modules/GSElement.mjs";
+import { GSFunction } from "../../../../modules/base/GSFunction.mjs";
 
 /**
  * IOActions handles dynmic actions from side bar menu
