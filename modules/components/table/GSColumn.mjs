@@ -151,8 +151,8 @@ export default class GSColumn extends HTMLElement {
     get cssField() {
         const me = this;
         const def = me.list ? 'form-select' : 'form-control';
-        const val = GSAttr.get(me, 'css-field', def)
-        return GSAttr.get(me.#header, 'css-field', val);
+        const val = GSAttr.get(me, 'css-field', '')
+        return  def + ' ' + GSAttr.get(me.#header, 'css-field', val);
     }
 
     get filter() {
