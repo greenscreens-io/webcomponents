@@ -120,8 +120,7 @@ export class BaseView extends GSElement {
             // update locally to refresh ui
             me.store.append?.(rec);
             me.store.read();
-            me.#notify.secondary('', 'Record cloned!');
-
+            me.#notify.secondary('', 'Record cloned!');            
         } catch (e) {
             console.log(e);
             me.#notify.danger('', e.message || e.toString())
@@ -148,8 +147,7 @@ export class BaseView extends GSElement {
             // update locally to refresh ui
             me.store.remove?.(data);
             me.store.read();
-            me.#notify.danger('', 'Record removed!');
-
+            me.#notify.danger('', 'Record removed!');            
         } catch (e) {
             console.log(e);
             me.#notify.danger('', e.message || e.toString())
@@ -176,36 +174,23 @@ export class BaseView extends GSElement {
     async details(e) {
 
         const me = this;
+        const modal = me.#modal;
         const data = me.#selected;
         if (!data) return;
 
-        const modal = me.#modal;
-        const tab = modal.query('gs-tab', true);
-        if (tab) tab.index = 0;
-
-        const frm = modal.query('gs-form', true);
-        if(frm)  {
-            frm.data = {};
-            frm.data = data;
-        }
-
-        modal.open();
-        const result = await modal.waitEvent('data');
-
-        try {
-
+        try {            
+            modal.open(data);
+            const result = await modal.waitEvent('confirmed');
             const sts = await me.onUpdate(result.detail);
-            if (!sts) throw new Error('Record not updated!');
+            if (!sts) throw new Error('Record not created!');
 
-            modal.reset();
             // update locally to refresh ui
             Object.assign(data, result.detail);
             me.store.read();
-            me.#notify.warn('', 'Record updated!');
-
+            me.#notify.warn('', 'Record updated!');            
         } catch (e) {
             console.log(e);
-            me.#notify.danger('', e.message || e.toString())
+            me.#notify.danger('', e.message || e.toString());
         }
 
     }
@@ -218,27 +203,20 @@ export class BaseView extends GSElement {
     async create(e) {
 
         const me = this;
-
         const modal = me.#modal;
-        const tab = modal.query('GS-TAB', true);
-        if (tab) tab.index = 0;
 
-        const frm = modal.query('gs-form', true);
-        if(frm) frm.reset();
-
-        modal.open();
-        const result = await modal.waitEvent('data');
-
+        
         try {
+            modal.open();
+            const result = await modal.waitEvent('confirmed');
 
-            const sts = await me.onCreate(result.detail.data);
+            const sts = await me.onCreate(result.detail);
             if (!sts) throw new Error('Record not created!');
-            modal.reset();
-            // update locally to refresh ui
-            me.store.data.push(result.detail.data);
-            me.store.read();
-            me.#notify.primary('', 'Record created!');
 
+            // update locally to refresh ui
+            me.store.data.push(result.detail);
+            me.store.read();
+            me.#notify.primary('', 'Record created!');            
         } catch (e) {
             console.log(e);
             me.#notify.danger('', e.message || e.toString())

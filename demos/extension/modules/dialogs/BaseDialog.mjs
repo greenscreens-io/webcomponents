@@ -2,10 +2,8 @@
  * Copyright (C) 2015, 2024 Green Screens Ltd.
  */
 
-import { GSUtil } from '../../../../modules/base/GSUtil.mjs';
 import { GSEvents } from '../../../../modules/base/GSEvents.mjs';
 import { GSDialogElement } from '../../../../modules/components/Dialog.mjs';
-
 import { Utils } from '../Utils.mjs';
 
 
@@ -16,10 +14,6 @@ import { Utils } from '../Utils.mjs';
 
 export class BaseDialog extends GSDialogElement {
 
-    static properties = {
-        dismissable: { reflect: true, type: Boolean },
-    }
-
     #data = null;
 
     constructor() {
@@ -27,7 +21,6 @@ export class BaseDialog extends GSDialogElement {
         const me = this;
         me.bordered = true;
         me.shadow = true;
-        me.dismissable = false;
         me.opened = false;
         me.closable = true;
         me.cancelable = true;
@@ -35,47 +28,56 @@ export class BaseDialog extends GSDialogElement {
         me.size = "medium";
         me.cssBody = 'p-0';
         me.cssHeader = 'p-3 dialog-title';
-        //me.cssTitle = 'fs-5 fw-bold text-muted';
     }
 
+    /**
+     * Override parent class method
+     * @param {*} data 
+     */
+    async templateInjected() {
+        const form = this.form;
+        if (form) form.data = this.#data;
+    }    
+
+    /**
+     * Override parent class method
+     * @param {*} data 
+     */
     firstUpdated() {
         const me = this;
         super.firstUpdated();
         me.on('data', me.#onFormData.bind(me));
-        me.on('error', me.#onFormError.bind(me));
-        me.on('notify', me.#onNotify.bind(me));
-        GSEvents.monitorAction(this);
     }
-
 
     /**
      * Override parent class method
      * @param {*} data 
      */
 	open(data) {
-		this.#data = data;
+        const me = this;
+        const tab = me.tab;
+        if (tab) tab.index = 0;
+		me.#data = data;
 		super.open();
 	}
 
     /**
-     * Update dialog forms 
+     * Override parent class method
+     * @param {*} data 
      */
     afterOpen() {
         const me = this;
         me.reset(me.#data);
-        if (GSUtil.isJson(me.#data)) {
-            me.emit('change');
-        }
     }
 
+    /**
+     * Override parent class method
+     * @param {*} data 
+     */
     afterClose() {
-        this.#data = null
+        this.#data = null;
+        this.reset();
     }
-
-    get isHashed() {
-        return GSUtil.asBool(this.dataset.gsHashed);
-    }
-    
 
     /**
      * Used by inherited dialogs to process confirmed dialog form
@@ -85,53 +87,12 @@ export class BaseDialog extends GSDialogElement {
         return true;
     }
 
-    async templateInjected() {
-        const form = this.form;
-        if (form) form.data = await this.loadDefaults();
-    }    
-
-    async loadDefaults() {
-        return this.#data;
-    }
-
-    /**
-     * Wait dialog
-     */
-    get waiter() {
-        return Utils.waiter;
-    }
-
-    /**
-     * Get dialog form
-     */
-    get form() {
-        return this.query('gs-form', true);
-    }
-
-    // auto remove on close
-    #onNotify(e) {
-        const me = this;
-        if (!me.opened && me.dismissable && e.detail === 'closing') me.remove();
-        if (me.opened) {
-            me.afterOpen();
-        } else {
-            me.afterClose();
-        }
-    }
-
-    #onFormError(e) {
-        Utils.inform(false, 'Some fields are invalid!');
-    }
-
-    #onFormData(e) {
+    async #onFormData(e) {
         // prevent close on confirm click
         GSEvents.prevent(e);
-        this.#handleFormData(e);
-    }
-
-    async #handleFormData(e) {
         const me = this;
         let sts = false;
+
         try {
             me.disabled = true;
             sts = await me.onData(e.detail);
@@ -141,12 +102,9 @@ export class BaseDialog extends GSDialogElement {
             me.disabled = false;
             if (sts) {
                 me.close();
-                //Utils.notify.secondary('', 'Changes applied!', false, 0.75);
+                me.emit('confirmed', e.detail);
             }
         }
     }
 
-    onError(e) {
-        Utils.handleError(e);
-    }    
 }

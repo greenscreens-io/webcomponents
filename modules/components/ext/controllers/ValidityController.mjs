@@ -73,6 +73,10 @@ export class ValidityController {
     return GSDOM.isVisible(this.#host);
   }
 
+  get form() {
+    return this.#host.form;
+  }
+
   validate() {
     const me = this;    
     const sts = me.isValid || me.disabled;
@@ -87,10 +91,16 @@ export class ValidityController {
   onKeyDown(e) {
     const me = this;
     const isTab = e.key === 'Tab';
+    const isEnter = e.key === 'Enter';
     if (isTab && !me.validate()) {
         me.#onBlock(e);
         me.#report();
     }
+
+    if (isEnter) {
+      const form = me.#host.form;
+      if (form?.autosubmit) form.requestSubmit();
+    }    
   }
 
   onInvalid(e) {

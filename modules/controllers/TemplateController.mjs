@@ -105,7 +105,6 @@ export class TemplateController {
   // applly template opts {simple, slots}
   #applyTemplate({ simple, slots }) {
 
-    // is template does not contain slots
     const me = this;
     if (!me.#host) return;
 

@@ -160,11 +160,11 @@ export class GSExtButtonElement extends HTMLButtonElement {
         } 
         
         if (me.isSubmit) {
+            GSEvents.prevent(e);
             if (me.isValid) {
                 me.form?.requestSubmit();
             } else {
                 me.disabled = true;
-                GSEvents.prevent(e);
             }
         }
     }    

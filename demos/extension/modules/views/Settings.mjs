@@ -7,7 +7,7 @@
  * @module SettingsUI
  */
 
-import { GSElement } from "../../../../modules/GSElement.mjs";
+import { GSFormElement } from "../../../../modules/components/Form.mjs";
 import { GSDOM } from "../../../../modules/base/GSDOM.mjs";
 
 /**
@@ -15,36 +15,41 @@ import { GSDOM } from "../../../../modules/base/GSDOM.mjs";
  * @class
  * @extends {GSElement}
  */
-class SettingsView extends GSElement {
+class SettingsView extends GSFormElement {
 
     constructor() {
         super();
-        this.className = 'w-100';
-        this.template = '//views/settings.html';
+        const me = this;
+        me.className = 'w-100';
+        me.template = '//views/settings.html';
+        me.autosubmit = true;
         if (self.GS_DEV_MODE) self._SettingsView = this;
     }
 
-    renderUI() {
-        return this.renderTemplate();
-    }
-
-	templateInjected() {
+	firstUpdated() {
 		const me = this;
         me.attachEvent(me, 'form', me.#onForm.bind(me));
 	}
 
     async #onForm(e) {
-        const form = e.detail.owner;
-        const data = form.asJSON;
+        const data = e.detail.data; //form.asJSON;
         
         if (!data) {
-            return this.notify?.danger('', 'Not all required fields valid!');
+            return this.danger('Not all required fields valid!');
         }
 
         // TODO save data        
-        console.log(form.asJSON);
+        console.log(data);
         
-        this.notify?.warn('', 'Record updated!');
+        this.warn('Record updated!');
+    }
+
+    danger(msg = '') {
+        if (msg) this.notify?.danger('', msg);
+    }
+
+    warn(msg = '') {
+        if (msg) this.notify?.warn('', msg);
     }
 
     get notify() {
@@ -52,7 +57,7 @@ class SettingsView extends GSElement {
     }
 
     static {
-        GSElement.define('gs-ext-settings', SettingsView);
+        GSFormElement.define('gs-ext-settings', SettingsView);
     }
 
 }

@@ -68,7 +68,9 @@ export class GSElement extends LitElement {
   #themes = undefined;
   #template = undefined;
   #content = undefined;
-  
+
+  #controllers = undefined;
+
   #ref = undefined;
   #refs = undefined;
   #refx = undefined;
@@ -134,6 +136,20 @@ export class GSElement extends LitElement {
     // console.log('deleted', me);
   }
 
+  addController(controller) {
+    const me = this;
+    if (controller.templateInjected) {
+      (me.#controllers ??= new Set()).add(controller);
+    }
+    super.addController?.(controller);
+  }
+
+  removeController(controller) {
+    this.#controllers?.delete(controller);
+    super.removeController?.(controller);
+  }
+
+
   shouldUpdate(changedProperties) {
     return this.isConnected; // && this.isAllowRender;
   }
@@ -185,9 +201,9 @@ export class GSElement extends LitElement {
   #updateHide() {
     const me = this;
     const value = me.hide ? 'none' : '';
-    GSCacheStyles.setRule(me.#ruleName, {display:value}, false, true);
+    GSCacheStyles.setRule(me.#ruleName, { display: value }, false, true);
   }
-  
+
   #updateStorage() {
     const me = this;
     me.#dataController?.hostDisconnected();
@@ -210,7 +226,7 @@ export class GSElement extends LitElement {
    * @returns {*} Parsed lit html structure
    */
   render() {
-    // repalced by #updateHide
+    // replaced by #updateHide
     //return this.isAllowRender && !this.hide ? this.renderUI() : '';
     return this.isAllowRender ? this.renderUI() : '';
   }
@@ -251,7 +267,8 @@ export class GSElement extends LitElement {
    * Called when asynchronnous template is injected into component
    */
   templateInjected() {
-
+    const me = this;
+    me.#controllers?.forEach((c) => c.templateInjected?.(me));
   }
 
   /**
@@ -322,7 +339,7 @@ export class GSElement extends LitElement {
       me.#refx?.delete(query);
     }
     result ??= GSDOM.closest(this, query, levels);
-    
+
     if (result && cached && !me.#ref?.has(query)) {
       me.#refx ??= new Map();
       me.#refx.set(query, result);
@@ -344,7 +361,7 @@ export class GSElement extends LitElement {
       me.#refs?.delete(query);
     }
     result ??= GSDOM.query(this, query, false, shadow);
-    
+
     if (result && cached && !me.#ref?.has(query)) {
       me.#ref ??= new Map();
       me.#ref.set(query, result);
@@ -368,8 +385,8 @@ export class GSElement extends LitElement {
     if (result && cached && !me.#refs?.has(query)) {
       me.#refs ??= new Map();
       me.#refs.set(query, result);
-    } 
-    return result;        
+    }
+    return result;
   }
 
   /**
@@ -638,9 +655,9 @@ export class GSElement extends LitElement {
    */
   get elementStyles() {
     return this.constructor.elementStyles
-        .filter(o => o instanceof CSSStyleSheet || o.styleSheet instanceof CSSStyleSheet)
-        .map(o => o.styleSheet || o)
-        .pop();    
+      .filter(o => o instanceof CSSStyleSheet || o.styleSheet instanceof CSSStyleSheet)
+      .map(o => o.styleSheet || o)
+      .pop();
     /*
     .map(s => {
        Object.values(s)

@@ -182,14 +182,14 @@ export class BaseViewUI extends GSElement {
 		let sts = false;
 		const modal = me.modal;
 		modal.open(data);
-		const result = await modal.waitEvent('data');
+		const result = await modal.waitEvent('confirmed');
 		
 		try {
 			me.waiter.open();
-			sts = await me.onUpdate(result.detail.data);
+			sts = await me.onUpdate(result.detail);
 			if (!sts) throw new Error('Record not updated!');
 			// update locally to refresh ui
-			Object.assign(data, result.detail.data);
+			Object.assign(data, result.detail);
 		} catch (e) {
 			me.onError(e);
 		} finally {
@@ -222,11 +222,11 @@ export class BaseViewUI extends GSElement {
 		const modal = me.modal;
 
 		modal.open();
-		const result = await modal.waitEvent('data');
+		const result = await modal.waitEvent('confirmed');
 
 		try {
 			me.waiter.open();
-			sts = await me.onCreate(result.detail.data);
+			sts = await me.onCreate(result.detail);
 			if (!sts) throw new Error('Record not created!');
 
 		} catch (e) {

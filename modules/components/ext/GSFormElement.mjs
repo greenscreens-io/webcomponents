@@ -219,6 +219,14 @@ export class GSExtFormElement extends HTMLFormElement {
         return this.hasAttribute('autovalidate');
     }
 
+    /**
+     * If set, automatically submit form on field enter.
+     * Forms auto submit only if there is a input or a button of type="submit"
+     */
+    get autosubmit() {
+        return this.hasAttribute('autosubmit');
+    }
+
     get block() {
         return this.hasAttribute('block');
     }
@@ -253,6 +261,10 @@ export class GSExtFormElement extends HTMLFormElement {
 
     set autovalidate(value) {
         GSAttr.toggle(this, 'autovalidate', GSUtil.asBool(value));
+    }
+
+    set autosubmit(value) {
+        GSAttr.toggle(this, 'autosubmit', GSUtil.asBool(value));
     }
 
     set block(val = false) {

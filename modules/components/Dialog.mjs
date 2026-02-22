@@ -158,7 +158,8 @@ export class GSDialogElement extends GSElement {
       GSDialogElement.#STACK.pop();
       me.#dialog?.close();
     }
-    me.notify(true, false, state);
+    const sts = me.opened ? me.afterOpen?.() : me.afterClose?.();
+    if (sts !== false) me.notify(true, false, state);
   }
 
   #renderConfirm() {

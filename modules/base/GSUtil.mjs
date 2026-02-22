@@ -18,6 +18,7 @@ export class GSUtil {
 	static FLAT = globalThis.GS_FLAT == true;
 	static ALPHANUM = /^[a-zA-Z0-9-_]+$/;
 	static #JSON_NORMALIZE = /(['"])?([a-z0-9A-Z_]+)(['"])?\s*:/g;
+	static #JSON_CHECK = /^(\{.*\}$|\[.*\]$)/g;
 
 	static isNumber = (n) => { return !isNaN(parseFloat(n)) && isFinite(n); };
 
@@ -176,7 +177,8 @@ export class GSUtil {
 	}
 		
 	static isJsonString(val = '') {
-		return typeof val == 'string' && (val.startsWith('{') || val.startsWith('['));
+		GSUtil.#JSON_CHECK.lastIndex = 0;
+		return typeof val == 'string' && GSUtil.#JSON_CHECK.test(val);
 	}
 
 	/**

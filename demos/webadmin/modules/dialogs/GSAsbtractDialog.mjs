@@ -46,7 +46,6 @@ export class GSAsbtractDialog extends GSDialogElement {
         super.firstUpdated();
         me.on('data', me.#onFormData.bind(me));
         me.on('error', me.#onFormError.bind(me));
-        me.on('notify', me.#onNotify.bind(me));
         GSEvents.monitorAction(this);
     }
 
@@ -55,8 +54,11 @@ export class GSAsbtractDialog extends GSDialogElement {
      * @param {*} data 
      */
 	open(data) {
-		this.#data = data;
-		super.open();
+        const me = this;
+        const tab = me.tab;
+        if (tab) tab.index = 0;
+		me.#data = data;
+		super.open();        
 	}
 
     /**
@@ -71,11 +73,9 @@ export class GSAsbtractDialog extends GSDialogElement {
     }
 
     afterClose() {
-        this.#data = null
-    }
-
-    get isHashed() {
-        return GSUtil.asBool(this.dataset.gsHashed);
+        this.#data = null;
+        this.reset();
+        if (me.dismissable) me.remove();
     }
 
     /**
@@ -102,35 +102,13 @@ export class GSAsbtractDialog extends GSDialogElement {
         return Utils.waiter;
     }
 
-    /**
-     * Get dialog form
-     */
-    get form() {
-        return this.query('gs-form', true);
-    }
-
-    // auto remove on close
-    #onNotify(e) {
-        const me = this;
-        if (!me.opened && me.dismissable && e.detail === 'closing') me.remove();
-        if (me.opened) {
-            me.afterOpen();
-        } else {
-            me.afterClose();
-        }
-    }
-
     #onFormError(e) {
         Utils.inform(false, 'Some fields are invalid!');
     }
 
-    #onFormData(e) {
+    async #onFormData(e) {
         // prevent close on confirm click
         GSEvents.prevent(e);
-        this.#handleFormData(e);
-    }
-
-    async #handleFormData(e) {
         const me = this;
         let sts = false;
         try {
@@ -142,7 +120,7 @@ export class GSAsbtractDialog extends GSDialogElement {
             me.disabled = false;
             if (sts) {
                 me.close();
-                //Utils.notify.secondary('', 'Changes applied!', false, 0.75);
+                me.emit('confirmed', e.detail);            
             }
         }
     }

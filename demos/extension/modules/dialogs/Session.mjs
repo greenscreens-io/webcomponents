@@ -17,7 +17,4 @@ export class Session extends BaseDialog {
         me.template = "//forms/session.html";
     }
 
-    async onData(data) {
-        return true;
-    }
 }

@@ -28,6 +28,7 @@ export class GSFormElement extends GSElement {
     autoselect: { reflect: true, type: Boolean },
     autovalidate: { reflect: true, type: Boolean },
     autoreport: { reflect: true, type: Boolean },
+    autosubmit: { reflect: true, type: Boolean },
 
     action: { reflect: true },
     enctype: { reflect: true },
@@ -52,6 +53,7 @@ export class GSFormElement extends GSElement {
     me.autoselect = false;
     me.autovalidate = false;
     me.autoreport = false;
+    me.autosubmit = false;
     me.block = false;
     me.beep = false;
     me.timeout = 0;
@@ -88,6 +90,7 @@ export class GSFormElement extends GSElement {
       .autoselect="${me.autoselect}"
       .autovalidate="${me.autovalidate}"
       .autoreport="${me.autoreport}"
+      .autosubmit="${me.autosubmit}"
 
       ?novalidate="${me.novalidate}">
       ${templateContent(me.#elementTemplate)}
@@ -228,7 +231,7 @@ export class GSFormElement extends GSElement {
 
   get #elementTemplate() {
     const tplEl = this.firstElementChild;
-    return GSDOM.isTemplateElement(tplEl) ? tplEl : undefined;
+    return GSDOM.isTemplateElement(tplEl) ? tplEl : this.templateRef;
   }
 
   static {
