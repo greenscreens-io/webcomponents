@@ -214,7 +214,7 @@ export class BaseView extends GSElement {
             if (!sts) throw new Error('Record not created!');
 
             // update locally to refresh ui
-            me.store.data.push(result.detail);
+            me.store.append(result.detail);
             me.store.read();
             me.#notify.primary('', 'Record created!');            
         } catch (e) {

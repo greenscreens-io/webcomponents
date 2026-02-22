@@ -73,8 +73,9 @@ export class GSAsbtractDialog extends GSDialogElement {
     }
 
     afterClose() {
-        this.#data = null;
-        this.reset();
+        const me = this;
+        me.#data = null;
+        me.reset();
         if (me.dismissable) me.remove();
     }
 
