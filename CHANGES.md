@@ -1,5 +1,16 @@
 # [WebComponents](https://webcomponents.greenscreens.ltd/).
 
+# Release v2.2.1 FINAL (23.02.2026.)
+ - GSUtil - fix isJson method detection
+ - GSElement - added templateInjected to callbacks
+ - GSDialog improvements, added afterOpen and afterClose methods
+ - GSButton form double submit fix
+ - GSForm added autosubmit on enter
+ - GSForm template injection fix
+ - ValidityController added autosubmit support
+ - Demo "extension" cleanup
+ - Demo "webadmin" cleanup
+ 
 # Release v2.2.0 FINAL (01.02.2026.)
  - Manual updated
  - GSEvents extended to support event capture
