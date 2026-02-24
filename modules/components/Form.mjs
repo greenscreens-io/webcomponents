@@ -3,7 +3,7 @@
  */
 
 import { classMap, createRef, html, ifDefined, ref, templateContent } from '../lib.mjs';
-import { GSElement } from '../GSElement.mjs';
+import { GSElement, HANDLER_KEY } from '../GSElement.mjs';
 import { GSDOM } from '../base/GSDOM.mjs';
 import { GSLog } from '../base/GSLog.mjs';
 import { GSEvents } from '../base/GSEvents.mjs';
@@ -71,6 +71,7 @@ export class GSFormElement extends GSElement {
       
       @submit="${me.submit}"
       @reset="${me.reset}"
+      @change="${me.formChange}"
       
       method="${me.method}"      
       url="${ifDefined(me.url)}"
@@ -124,6 +125,7 @@ export class GSFormElement extends GSElement {
     const me = this;
     me.data = {};
     await me.dataController?.read(me.asJSON);
+    await me.formReset();
     // me.checkValidity();
   }
 
@@ -134,8 +136,34 @@ export class GSFormElement extends GSElement {
     if (!me.checkValidity()) return;
     const json = me.asJSON;
     await me.dataController?.write(json);
+    await me.formSubmit();
     const data = { type: 'submit', data: json, source: e, owner: me };
     return me.emit('form', data, true, true, true);
+  }
+
+  async formChange(e) {
+    const me = this;
+    me[HANDLER_KEY]?.forEach((c) => c.formChange?.(me));
+    return me.emit('formchange', null, false, false, true);
+  }
+
+  async formSubmit() {
+    const me = this;
+    me[HANDLER_KEY]?.forEach((c) => c.formSubmit?.(me));
+    return me.emit('formreset', null, false, false, true);
+  }
+
+  async formReset() {
+    const me = this;
+    me[HANDLER_KEY]?.forEach((c) => c.formReset?.(me));
+    return me.emit('formsubmit', null, false, false, true);
+  }
+
+  addController(controller) {
+    if (controller.formSubmit || controller.formReset || controller.formChange) {
+      this[HANDLER_KEY]?.add(controller);
+    }
+    super.addController?.(controller);
   }
 
   get submitButton() {

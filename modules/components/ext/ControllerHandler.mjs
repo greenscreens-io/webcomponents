@@ -12,6 +12,7 @@ import { TextController } from './controllers/TextController.mjs';
 import { ComboController } from './controllers/ComboController.mjs';
 import { FormController } from './controllers/FormController.mjs';
 import { DataController } from "../../controllers/DataController.mjs";
+import { PropagateController } from './controllers/PropagateController.mjs';
 
 /**
  * Helper class wizh shared code for form elements to process controllers.
@@ -28,6 +29,7 @@ export class ControllerHandler {
   #validityController = undefined;
   #comboController = undefined;
   #buttonController = undefined;
+  #propagateController = undefined;
 
   #formController = undefined;
   #dataController = undefined;
@@ -53,14 +55,12 @@ export class ControllerHandler {
       host.on('keydown', me.#onKeyDown.bind(me));
       host.on('keyup', me.#onKeyUp.bind(me));
       host.on('input', me.#onInput.bind(me));
-      host.on('focus', me.#onFocus.bind(me));
+      // these events are also forwarded to form controller
+      host.on('change', me.onChange.bind(me));
+      host.on('focus', me.onFocus.bind(me));
+      host.on('blur', me.onBlur.bind(me));
+      host.on('invalid', me.onInvalid.bind(me));
     }
-
-    // field events catched at the form level also
-    const capture = me.isForm;
-    host.on('change', me.#onChange.bind(me), false, capture);
-    host.on('blur', me.#onBlur.bind(me), false, capture);
-    host.on('invalid', me.#onInvalid.bind(me), false, capture);
 
     me.#invoke((c) => c.hostConnected?.());
   }
@@ -79,6 +79,7 @@ export class ControllerHandler {
     me.#buttonController = undefined;
     me.#formController = undefined;
     me.#dataController = undefined;
+    me.#propagateController = undefined;
 
     me.#copyselect = undefined;
     me.#typeController = undefined;
@@ -87,7 +88,7 @@ export class ControllerHandler {
 
   hostUpdated(name) {
     const me = this;
-    if (!me.#host.hostUpdated) {      
+    if (!me.#host.hostUpdated) {
       if (!me.isButton) {
         me.#initControllers();
         me.#host.checkValidity?.();
@@ -144,19 +145,19 @@ export class ControllerHandler {
     this.#invoke(c => c.onInput?.(e));
   }
 
-  #onFocus(e) {
+  onFocus(e) {
     this.#invoke(c => c.onFocus?.(e));
   }
 
-  #onInvalid(e) {
+  onInvalid(e) {
     this.#invoke(c => c.onInvalid?.(e));
   }
 
-  #onChange(e) {
+  onChange(e) {
     this.#invoke(c => c.onChange?.(e));
   }
 
-  #onBlur(e) {
+  onBlur(e) {
     this.#invoke(c => c.onBlur?.(e));
   }
 
@@ -178,7 +179,7 @@ export class ControllerHandler {
 
   #initControllers() {
 
-    const me = this;    
+    const me = this;
     const host = me.#host;
 
     if (me.isForm) {
@@ -188,6 +189,7 @@ export class ControllerHandler {
       if (me.isInput) me.#initIinputControllers();
       if (me.isTextArea) me.#initTextAreaControllers();
       if (me.isSelect) me.#comboController ??= new ComboController(host);
+      me.#propagateController ??= new PropagateController(host);
     }
 
     if (host.storage) {
@@ -253,5 +255,5 @@ export class ControllerHandler {
 
   get isButton() {
     return (this.tagName === 'BUTTON');
-  }  
+  }
 }

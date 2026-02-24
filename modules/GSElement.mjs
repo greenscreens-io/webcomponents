@@ -29,6 +29,8 @@ import { GSDOMObserver } from './base/GSDOMObserver.mjs';
 import { GSID } from './base/GSID.mjs';
 import { GSCacheStyles } from './base/GSCacheStyles.mjs';
 
+export const HANDLER_KEY = Symbol.for('gs-handler');
+
 /**
  * Main WebComponent used by all other GS-* components
  */
@@ -68,8 +70,6 @@ export class GSElement extends LitElement {
   #themes = undefined;
   #template = undefined;
   #content = undefined;
-
-  #controllers = undefined;
 
   #ref = undefined;
   #refs = undefined;
@@ -149,6 +149,10 @@ export class GSElement extends LitElement {
     super.removeController?.(controller);
   }
 
+  get #controllers() {
+    this[HANDLER_KEY] ??= new Set();
+    return this[HANDLER_KEY];
+  }
 
   shouldUpdate(changedProperties) {
     return this.isConnected; // && this.isAllowRender;

@@ -24,11 +24,9 @@ export class FormController {
     me.#host = undefined;
   }
 
+  // trigger only first time
   hostUpdated() {
-    // trigger only first time
-    if (!this.#host.hasUpdated) {
 
-    }
   }
 
   /**
@@ -89,6 +87,14 @@ export class FormController {
    */
   onBlur(e) {
     this.#scheduleValidate(e);
+  }
+
+  /**
+   * Field event propagated to the form
+   * @param {Event} e 
+   */  
+  onFocus(e) {
+  
   }
 
   validate() {

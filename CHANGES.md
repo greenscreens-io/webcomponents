@@ -1,5 +1,12 @@
 # [WebComponents](https://webcomponents.greenscreens.ltd/).
 
+# Release v2.2.2 FINAL (23.02.2026.)
+ - GSDialog - new callbacks and events for open/close
+ - GSDialog - callback handlers suppport addded
+ - GSForm - callback handlers suppport addded
+ - GSFormElement - field callback handler improved
+ - PropagateController -new controller to link fields and links
+
 # Release v2.2.1 FINAL (23.02.2026.)
  - GSUtil - fix isJson method detection
  - GSElement - added templateInjected to callbacks

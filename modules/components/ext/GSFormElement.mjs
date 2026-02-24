@@ -16,6 +16,8 @@ import { GSLog } from "../../base/GSLog.mjs";
 import { GSLoader } from "../../base/GSLoader.mjs";
 import { GSUtil } from "../../base/GSUtil.mjs";
 
+const HANDLER_KEY = Symbol.for('gs-handler');
+
 /**
  * Extended native forn with additional functionality
  * 
@@ -35,13 +37,12 @@ export class GSExtFormElement extends HTMLFormElement {
     }
 
     #hasUpdated = false;
-    #controllerHandler = undefined;
 
     onvalid = undefined;
     
     constructor() {
         super();
-        this.#controllerHandler = new ControllerHandler(this);
+        this[HANDLER_KEY] = new ControllerHandler(this);
     }
 
     connectedCallback() {
@@ -53,7 +54,7 @@ export class GSExtFormElement extends HTMLFormElement {
     disconnectedCallback() {
         const me = this;
         me.#controllerHandler?.disconnectedCallback?.();
-        me.#controllerHandler = undefined;
+        me[HANDLER_KEY] = undefined;
         GSEvents.detachListeners(me);
     }
 
@@ -318,5 +319,8 @@ export class GSExtFormElement extends HTMLFormElement {
         return this.invalid.length === 0;
     }
 
+    get #controllerHandler() {
+        return this[HANDLER_KEY];
+    }
 }
 

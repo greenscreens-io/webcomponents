@@ -3,7 +3,7 @@
  */
 
 import { classMap, createRef, css, html, ifDefined, ref } from '../lib.mjs';
-import { GSElement } from '../GSElement.mjs';
+import { GSElement, HANDLER_KEY } from '../GSElement.mjs';
 import { GSEvents } from '../base/GSEvents.mjs';
 import { GSDOM } from '../base/GSDOM.mjs';
 import { GSUtil } from '../base/GSUtil.mjs';
@@ -158,8 +158,27 @@ export class GSDialogElement extends GSElement {
       GSDialogElement.#STACK.pop();
       me.#dialog?.close();
     }
-    const sts = me.opened ? me.afterOpen?.() : me.afterClose?.();
+    const sts = me.opened ? me.afterOpen() : me.afterClose();
     if (sts !== false) me.notify(true, false, state);
+  }
+
+  addController(controller) {
+    if (controller.afterOpen || controller.afterClose) {
+      this[HANDLER_KEY]?.add(controller);
+    }
+    super.addController?.(controller);
+  }
+
+  afterOpen() {
+    const me = this;
+    me[HANDLER_KEY]?.forEach((c) => c.afterOpen?.(me));
+    return me.emit('open', null, false, false, true);
+  }
+
+  afterClose() {
+    const me = this;
+    me[HANDLER_KEY]?.forEach((c) => c.afterClose?.(me));
+    return me.emit('close', null, false, false, true);
   }
 
   #renderConfirm() {

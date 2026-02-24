@@ -12,3 +12,4 @@ export * from "./InteractiveController.mjs";
 export * from "./ComboController.mjs";
 export * from "./ListController.mjs";
 export * from "./ValidityController.mjs";
+export * from "./PropagateController.mjs";
