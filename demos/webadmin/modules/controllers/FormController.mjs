@@ -36,8 +36,7 @@ export class FormController extends HTMLElement {
 
   onValidation(e) {
     this.tabGroup?.clear();
-    e.detail.fields
-      .map(el => el.closest('gs-tab-panel'))
+    e.detail.fields?.map(el => el.closest('gs-tab-panel'))
       .filter(el => GSUtil.nonNull(el))
       .map(el => { el.clear(); return el;})
       .forEach(el => el.tab.badge = true);

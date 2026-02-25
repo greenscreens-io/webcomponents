@@ -72,6 +72,9 @@ export class GSFormElement extends GSElement {
       @submit="${me.submit}"
       @reset="${me.reset}"
       @change="${me.formChange}"
+      @validation="${me.formValidation}"
+      @enabled="${me.formEnabled}"
+      @disabled="${me.formDisabled}"
       
       method="${me.method}"      
       url="${ifDefined(me.url)}"
@@ -125,42 +128,63 @@ export class GSFormElement extends GSElement {
     const me = this;
     me.data = {};
     await me.dataController?.read(me.asJSON);
-    return await me.formReset();
+    return me.formReset(e);
   }
 
   async submit(e) {
     GSEvents.prevent(e, true, false, false);
     const me = this;
-    if (me.disabled) return;
-    if (!me.checkValidity()) return;
-    const json = me.asJSON;
-    await me.dataController?.write(json);
-    return await me.formSubmit();
+    if (me.disabled ||!me.isValid) return;
+    await me.dataController?.write(me.asJSON);
+    return me.formSubmit(e);
   }
 
-  async formChange(e) {
+  formValidation(e) {
+    const me = this;
+    me[HANDLER_KEY]?.forEach((c) => c.formValidation?.(me));
+    me.emit('validation', e?.detail, true, true);
+  }
+
+  formEnabled(e) {
+    const me = this;
+    me[HANDLER_KEY]?.forEach((c) => c.formEnabled?.(me));
+    me.emit('enabled', e?.detail, true, true);    
+  }
+  
+  formDisabled(e) {
+    const me = this;
+    me[HANDLER_KEY]?.forEach((c) => c.formDisabled?.(me));
+    me.emit('disabled', e?.detail, true, true);    
+  }
+
+  formChange(e) {
     const me = this;
     me[HANDLER_KEY]?.forEach((c) => c.formChange?.(me));
-    return me.emit('formchange', null, false, false, true);
+    me.emit('formchange', e?.detail, true, true);
   }
 
-  async formSubmit() {
+  formSubmit(e) {
     const me = this;
     me[HANDLER_KEY]?.forEach((c) => c.formSubmit?.(me));
-    return me.emit('formreset', null, false, false, true);
+    return me.emit('formsubmit', e?.detail, true, true, true);
   }
 
-  async formReset() {
+  formReset(e) {
     const me = this;
     me[HANDLER_KEY]?.forEach((c) => c.formReset?.(me));
-    return me.emit('formsubmit', null, false, false, true);
+    me.emit('formreset', e?.detail, true, true);
   }
 
   addController(controller) {
-    if (controller.formSubmit || controller.formReset || controller.formChange) {
+    if (controller.isForm) {
       this[HANDLER_KEY]?.add(controller);
     }
     super.addController?.(controller);
+  }
+
+  removeController(controller) {
+    this[HANDLER_KEY]?.delete(controller);
+    super.removeController?.(controller);
   }
 
   get submitButton() {

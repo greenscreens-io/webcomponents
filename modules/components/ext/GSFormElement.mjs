@@ -143,20 +143,12 @@ export class GSExtFormElement extends HTMLFormElement {
 
     disable() {
         const me = this;
-        /*
-        GSDOM.disableInput(me, 'input, textarea, select');
-        me.queryAll('button', true).forEach(b => b.disabled = true);
-        */
         GSDOM.disableInput(me);
         me.emit("disabled");        
     }
 
     enable() {
         const me = this;
-        /*
-        GSDOM.enableInput(me, 'input, textarea, select');
-        me.queryAll('button', true).forEach(b => b.disabled = false);
-        */
         GSDOM.enableInput(me);
         me.emit("enabled");
     }

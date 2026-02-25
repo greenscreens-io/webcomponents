@@ -110,15 +110,10 @@ export class GSDialogElement extends GSElement {
     this.#pass = true;
   }
 
-  _shouldUpdate(changed) {
-    const me = this;
-    return me.opened === true || me.#pass;
-  }
-
   shouldUpdate(changed) {
     const me = this;
     const allowed = me.opened === true || me.#pass;
-    // initially hidden dialogs rendering are posponed
+    // initially hidden dialogs rendering are postponed
     if (!allowed) {
       GSUtil.timeout(1000).then(() => {
         queueMicrotask(() => { 
@@ -163,7 +158,7 @@ export class GSDialogElement extends GSElement {
   }
 
   addController(controller) {
-    if (controller.afterOpen || controller.afterClose) {
+    if (controller.isDialog) {
       this[HANDLER_KEY]?.add(controller);
     }
     super.addController?.(controller);
@@ -186,7 +181,7 @@ export class GSDialogElement extends GSElement {
     if (!me.closable) return '';
     return html`<gs-button type="button"
       ${ref(me.#btnConfirmRef)} 
-      @click="${me.#onConfirm.bind(me)}" 
+      @click="${me.#onBtnConfirm.bind(me)}" 
       icon="${ifDefined(me.iconConfirm)}"
       language="${ifDefined(me.language)}"
       .disabled="${me.disabled}"  
@@ -201,7 +196,7 @@ export class GSDialogElement extends GSElement {
     if (!me.cancelable) return '';
     return html`<gs-button type="button"
       ${ref(me.#btnCancelRef)}      
-      @click="${me.#onCancel.bind(me)}" 
+      @click="${me.#onBtnCancel.bind(me)}" 
       icon="${ifDefined(me.iconCancel)}"
       language="${ifDefined(me.language)}"
       css="${ifDefined(me.cssCancel)}" 
@@ -255,15 +250,14 @@ export class GSDialogElement extends GSElement {
     };
     me.dynamicStyle(me.#styleID, styles);
     return html`
-        <dialog tabindex="-1" ${ref(me.#dialogRef)} 
+        <dialog closedby="none" tabindex="-1" ${ref(me.#dialogRef)} 
             dir="${ifDefined(me.direction)}"
-            @close="${me.#onCancel.bind(me)}"
-            @cancel="${me.#onCancel.bind(me)}"
+            @close="${me.#onDlgClose.bind(me)}"
+            @cancel="${me.#onDlgCancel.bind(me)}"
             @keydown="${me.#onKeyDown.bind(me)}"
-            @form="${me.#onForm.bind(me)}"
+            @formsubmit="${me.#onBtnConfirm.bind(me)}"
+            @submit="${me.#onBtnConfirm.bind(me)}"
             @validation="${me.#onFormValidation.bind(me)}"
-            @confirm="${me.#onConfirm.bind(me)}"
-            @submit="${me.#onSubmit.bind(me)}"
             class="${classMap(me.renderClass())}">
             <div class="${classMap(me.#renderContent())}">
                 <div class="card-header user-select-none ${me.cssHeader}">
@@ -301,7 +295,7 @@ export class GSDialogElement extends GSElement {
     me.cancelable = cancelable;
     me.escapable = cancelable;
     me.open();
-    if (closable || cancelable) return me.waitEvent('click-action');
+    if (closable || cancelable) return me.waitEvent('close');
   }
 
   confirm(title = '', message = '') {
@@ -331,6 +325,10 @@ export class GSDialogElement extends GSElement {
 
   toggle() {
     this.opened = !this.opened;
+  }
+
+  async waitClose() {
+    return this.waitEvent('close');
   }
 
   /**
@@ -378,16 +376,28 @@ export class GSDialogElement extends GSElement {
     return me;
   }
 
-  async #onConfirm(e) {
-    const me = this;
-    if (me.disabled) return;
-    const ret = await Promise.all(me.forms?.map?.(form => form.submit()));
-    if (ret.indexOf(false) < 0) me.close();
+  #onDlgClose(e) {
+    this.close();
   }
 
-  #onCancel(e) {
+  #onDlgCancel(e) {
     const me = this;
+    const forms = me.forms;
+    if (forms) {
+      const isInvalid = forms.map(form => form.isValid).filter(v => v === false).length > 0;
+      if (isInvalid) return GSEvents.prevent(e);
+    }
     me.close();
+  }
+
+  #onBtnConfirm(e) {
+    const me = this;
+    if (me.disabled) return;
+    me.#dialog?.requestClose();
+  }
+
+  #onBtnCancel(e) {
+    this.close();
   }
 
   #onKeyDown(e) {
@@ -403,31 +413,6 @@ export class GSDialogElement extends GSElement {
   #onFormValidation(e) {
     const me = this;
     me.#btnConfirm.disabled = e.detail.valid === false;
-  }
-
-  /**
-   * Handle injected form events
-   * @param {*} e 
-   */
-  #onForm(e) {
-    let sts = true;
-    const me = this;
-    const data = e.detail;
-    switch (data.type) {
-      case 'submit':
-        sts = me.emit('data', data.data, false, false, true);
-        if (!sts) GSEvents.prevent(e);
-        //me.opened = false;
-        break;
-      case 'valid':
-        me.disabled = data.data === false;
-        break;
-    }
-    return sts;
-  }
-
-  #onSubmit(e) {
-    debugger;
   }
 
   static #updateStack() {

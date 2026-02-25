@@ -65,6 +65,7 @@ export class GSAsbtractDialog extends GSDialogElement {
      * Update dialog forms 
      */
     afterOpen() {
+        super.afterOpen();
         const me = this;
         me.reset(me.#data);
         if (GSUtil.isJson(me.#data)) {
@@ -77,6 +78,7 @@ export class GSAsbtractDialog extends GSDialogElement {
         me.#data = null;
         me.reset();
         if (me.dismissable) me.remove();
+        super.afterClose();
     }
 
     /**

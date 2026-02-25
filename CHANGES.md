@@ -1,11 +1,13 @@
 # [WebComponents](https://webcomponents.greenscreens.ltd/).
 
-# Release v2.2.2 FINAL (23.02.2026.)
+# Release v2.2.2 FINAL (25.02.2026.)
  - GSDialog - new callbacks and events for open/close
  - GSDialog - callback handlers suppport addded
  - GSForm - callback handlers suppport addded
  - GSFormElement - field callback handler improved
  - GSButtonElement - field callback handler improved
+ - Buttons and Forms better integration and UI handling
+ - GSAttributeHandler - added data-gs-base for query start point
  - PropagateController -new controller to link fields and forms
 
 # Release v2.2.1 FINAL (23.02.2026.)

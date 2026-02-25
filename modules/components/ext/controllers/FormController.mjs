@@ -141,7 +141,7 @@ export class FormController {
         const fields = Array.from(me.#fields).filter(f => !f.validity.valid);
         me.#fields.clear();
         const obj = { valid: valid && fields.length === 0, fields: fields };
-        me.form.emit('validation', obj, true, true);
+        me.form.emit('validation', obj);
       } catch (error) {
         console.error('Error during form validation scheduling:', error);
       } finally {
