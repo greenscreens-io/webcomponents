@@ -125,8 +125,7 @@ export class GSFormElement extends GSElement {
     const me = this;
     me.data = {};
     await me.dataController?.read(me.asJSON);
-    await me.formReset();
-    // me.checkValidity();
+    return await me.formReset();
   }
 
   async submit(e) {
@@ -136,9 +135,7 @@ export class GSFormElement extends GSElement {
     if (!me.checkValidity()) return;
     const json = me.asJSON;
     await me.dataController?.write(json);
-    await me.formSubmit();
-    const data = { type: 'submit', data: json, source: e, owner: me };
-    return me.emit('form', data, true, true, true);
+    return await me.formSubmit();
   }
 
   async formChange(e) {

@@ -41,13 +41,9 @@ export class Login extends GSAsbtractDialog {
 	firstUpdated() {
 		super.firstUpdated();
 		const me = this;
-		me.on('form', me.onForm.bind(me));
+		me.on('formchange', me.requestUpdate.bind(me));
 		me.#authController = new AuthController(me);
 		me.#loginController = new LoginController(me);
-	}
-
-	onForm(e) {
-		this.requestUpdate();
 	}
 
 	async onData(data) {

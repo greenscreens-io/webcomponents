@@ -28,7 +28,7 @@ class SettingsView extends GSFormElement {
 
 	firstUpdated() {
 		const me = this;
-        me.attachEvent(me, 'form', me.#onForm.bind(me));
+        me.attachEvent(me, 'formsubmit', me.#onForm.bind(me));
 	}
 
     async #onForm(e) {

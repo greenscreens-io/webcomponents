@@ -12,7 +12,8 @@ import { GSDOM } from "../../base/GSDOM.mjs";
 import { GSEvents } from "../../base/GSEvents.mjs";
 import { mixin } from "./EventsMixin.mjs";
 import { GSAttr } from '../../base/GSAttr.mjs';
-import { GSFunction } from '../../base/GSFunction.mjs';
+import { ControllerHandler } from './ControllerHandler.mjs';
+import { ButtonController } from './controllers/ButtonController.mjs';
 
 /**
  * Add JSON loader to select element
@@ -35,18 +36,20 @@ export class GSExtButtonElement extends HTMLButtonElement {
         return ['disabled'];
     }
 
-    #formBind = false;
     #formEl = undefined;
     #hasUpdated = false;
     #controllerHandler = undefined;
+    #buttonController = undefined;
 
     constructor() {
         super();
-        // this.#controllerHandler = new ControllerHandler(this);
     }
 
     connectedCallback() {
         const me = this;
+        if (me.isSubmit || me.isReset) {
+            me.#buttonController = new ButtonController(me);
+        }        
         me.#controllerHandler?.connectedCallback();        
         me.#preupdate();
     }
@@ -57,7 +60,6 @@ export class GSExtButtonElement extends HTMLButtonElement {
         me.#controllerHandler?.disconnectedCallback();
         me.#controllerHandler = undefined;
         me.#formEl = undefined;
-        me.#formBind = false;
     }
 
     attributeChangedCallback(name, oldValue, newValue) {
@@ -69,7 +71,6 @@ export class GSExtButtonElement extends HTMLButtonElement {
 
     #preupdate(name) {
         const me = this;
-        me.form;
         if (!me.#hasUpdated) {            
             me.firstUpdated(name);
             me.#controllerHandler?.hostUpdated(name);
@@ -78,12 +79,7 @@ export class GSExtButtonElement extends HTMLButtonElement {
     }
 
     firstUpdated(changed) {
-      const me = this;
-      if (me.isReset || me.isSubmit) {
-          const callback = me.#onClick.bind(me);
-          const clickFn = me.rateLimit > 0 ? GSFunction.debounce(callback, me.rateLimit, true) : callback;
-          me.on('click', clickFn);        
-      }
+
     }
 
     willUpdate(changed, oldValue, newValue) {
@@ -93,7 +89,9 @@ export class GSExtButtonElement extends HTMLButtonElement {
     }
 
     addController(controller) {
-        this.#controllerHandler?.addController(controller);
+        const me = this;
+        me.#controllerHandler ??= new ControllerHandler(me);
+        me.#controllerHandler?.addController(controller);
     }
 
     removeController(controller) {
@@ -115,13 +113,6 @@ export class GSExtButtonElement extends HTMLButtonElement {
     get form() {
         const me = this;
         me.#formEl ??= super.form || me.owner?.form || me.closest?.('form');
-        if (!me.#formBind && me.#formEl && me.isSubmit) {
-            const callback = me.#onFormValidation.bind(me);
-            // not helping, on last field, if invalid, skips button focus
-            //['blur', 'change', 'invalid'].forEach(v => me.attachEvent(me.#formEl, v, callback, false, true));
-            me.attachEvent(me.#formEl, 'validation', callback);
-            me.#formBind = true;
-        }
         return me.#formEl;
     }
     
@@ -138,35 +129,12 @@ export class GSExtButtonElement extends HTMLButtonElement {
     }
 
     /**
-     * Limit button click rate ini milliseconds.
+     * Limit button click rate in milliseconds.
      * If set to 0, no limit is applied.
      */
     get rateLimit() {
         return GSAttr.getAsNum(this, 'rate-limit', 0);
     }
 
-    #onFormValidation(e) {
-        const me = this;
-        me.disabled = e.detail.valid == false;
-    }
-
-    #onClick(e) {
-        
-        const me = this;
-        if (me.form?.disabled) return;
-        
-        if (me.isReset) {
-            return me.form?.reset();
-        } 
-        
-        if (me.isSubmit) {
-            GSEvents.prevent(e);
-            if (me.isValid) {
-                me.form?.requestSubmit();
-            } else {
-                me.disabled = true;
-            }
-        }
-    }    
 }
 

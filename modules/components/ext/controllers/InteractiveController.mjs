@@ -40,6 +40,7 @@ export class InteractiveController {
     const me = this;
     me.#host.removeController(me);
     me.#host.removeEvent(me.filter, 'change', me.#monitorCallback);
+    me.#host = undefined;
   }
 
   hostUpdated() {
