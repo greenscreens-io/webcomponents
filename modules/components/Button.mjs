@@ -42,7 +42,8 @@ export class GSButtonElement extends GSElement {
 
   renderUI() {
     const me = this;
-    return html`<button is="gs-ext-button" part="button" role="button" 
+    return html`<button is="gs-ext-button" part="button" role="button"
+        data-gs-type="${me.dataset.gsType || ''}" 
         ${ref(me.#refEl)}
         dir="${ifDefined(me.direction)}"
         type="${ifDefined(me.type)}" 

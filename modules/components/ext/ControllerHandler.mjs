@@ -51,6 +51,8 @@ export class ControllerHandler {
       host.on('submit', me.#onSubmit.bind(me));
       host.on('formdata', me.#onFormData.bind(me));
       host.on('validation', me.#onValidation.bind(me));
+      host.on('enabled', me.#onEnable.bind(me));
+      host.on('disabled', me.#onDisable.bind(me));
     } else {
       host.on('keydown', me.#onKeyDown.bind(me));
       host.on('keyup', me.#onKeyUp.bind(me));
@@ -123,6 +125,22 @@ export class ControllerHandler {
     if (typeof callback === 'function') {
       this.#handlers?.forEach(callback);
     }
+  }
+
+  /**
+   * Form disable callback
+   * @param {*} all 
+   */
+  #onDisable(all = false) {
+    this.#invoke((c) => c.onDisable?.(all));
+  }
+
+  /**
+   * Form enable callback
+   * @param {*} all 
+   */  
+  #onEnable(all = false) {
+    this.#invoke((c) => c.onEnable?.(all));
   }
 
   /**

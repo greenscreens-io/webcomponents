@@ -67,18 +67,25 @@ export class ButtonController {
   onClick(e) {
     const btn = this.button;
     const form = this.form;
-    if (form?.disabled) {
+    if (form.disabled) {
       return GSEvents.prevent(e);
     }
     if (btn.isReset) {
       return form?.reset();
     }
-    if (btn.isSubmit) {
+    if (form && btn.isSubmit) {
       GSEvents.prevent(e);
-      if (form?.checkValidity()) {
-        form?.requestSubmit();
+      if (form.isValid) {
+        form.requestSubmit();
       } else {
         btn.disabled = true;
+      }
+      return;
+    }
+    if (form && btn.isManaged) {
+      if (!form.isValid) {
+        btn.disabled = true;
+        GSEvents.prevent(e);
       }
     }
   }
@@ -86,7 +93,7 @@ export class ButtonController {
   updateState() {
     const btn = this.button;
     const form = this.form;
-    if (btn.isSubmit && form?.disabled === false) btn.disabled = form.isValid === false;
+    if ((btn.isSubmit || btn.isManaged) && form?.disabled === false) btn.disabled = form.isValid === false;
   }
 
   get button() {

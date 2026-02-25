@@ -2,15 +2,15 @@
     <template>
         <div class="mb-3">
             <label for="email" class="form-label">Email address</label>
-        <input name="email" type="email" class="form-control" placeholder="email" required="">
+        <input is="gs-ext-input" name="email" type="email" class="form-control" placeholder="email" required="">
         <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
     </div>
     <div class="mb-3">
         <label for="password" class="form-label">Password</label>
-        <input name="password" type="password" class="form-control" placeholder="enter password" required="">
+        <input is="gs-ext-input" name="password" type="password" class="form-control" placeholder="enter password" required="">
     </div>
     <div class="mb-3 form-check">
-        <input type="checkbox" class="form-check-input" name="remember">
+        <input is="gs-ext-input" type="checkbox" class="form-check-input" name="remember">
         <label class="form-check-label" for="exampleCheck1">Remember me</label>
     </div>
     <!--
@@ -26,7 +26,7 @@
                 <!-- can be used if multiple forms exist on a dialog, to prevent dialog closing, will submit only a single form -->
                 <gs-button type="submit" color="primary" css="me-1" title="Submit"></gs-button>
                 <!-- can be used within dialog to submit all dialog forms and auto close  -->
-                <gs-button type="button" color="primary" css="me-1" title="Confirm" data-gs-event="confirm" data-gs-bubbles="true" data-gs-composed="true"></gs-button>
+                <gs-button data-gs-type="submit" type="button" color="primary" css="me-1" title="Confirm" data-gs-event="confirm" data-gs-bubbles="true" data-gs-composed="true"></gs-button>
                 <gs-button type="button" color="secondary" css="ms-1" title="Cancel" data-gs-event="cancel" data-gs-bubbles="true" data-gs-composed="true"></gs-button>
             </div>
             <div class="col d-flex justify-content-end">

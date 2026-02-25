@@ -82,12 +82,12 @@ export class Login extends GSAsbtractDialog {
 		const me = this;
 		if (sts) {			
 			me.disabled = false;
-			me.form?.enable(true);
+			me.form?.enable();
 			me.form?.reset();
 			me.form?.elements[0]?.focus();
 		} else {
 			me.disabled = true;
-			me.form?.disable(true);
+			me.form?.disable();
 		}
 	}
 

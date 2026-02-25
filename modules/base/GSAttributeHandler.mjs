@@ -29,6 +29,7 @@ import { GSTemplateCache } from "./GSTemplateCache.mjs";
  * - data-gs-inject - inject HTML content; used for WebComponent append
  * - data-gs-property - togle element property (receive k=v;k1=v1 or JSON format)
  * - data-gs-swap - swap HTML content; used for WebComponent replacement
+ * - data-gs-base - CSS query for a target owner (from where to start querying)
  * - data-gs-target - CSS query for a target or targets
  * - data-gs-template - template to load and inject template
  * - data-gs-timeout - a timeout between class toggle
@@ -64,6 +65,7 @@ export class GSAttributeHandler {
         inject: { attribute: 'data-gs-inject' },
         property: { attribute: 'data-gs-property' },
         swap: { attribute: 'data-gs-swap' },
+        base: { attribute: 'data-gs-base' },
         target: { attribute: 'data-gs-target' },
         template: { attribute: 'data-gs-template' },
         toggle: { attribute: 'data-gs-toggle' },
@@ -402,7 +404,8 @@ export class GSAttributeHandler {
                 return [me.#host.parentElement];
         }
 
-        const list = GSDOM.queryAll(document.body, me.target, false, true).filter(el => el.tagName !== 'GS-ITEM');
+        const owner = me.base ? GSDOM.query(me.base) : document.body;
+        const list = GSDOM.queryAll(owner, me.target, false, true).filter(el => el.tagName !== 'GS-ITEM');
         if (list.length === 0) list.push(me.#host);
         return list;
     }
@@ -427,6 +430,7 @@ export class GSAttributeHandler {
     get property() { return this.#proxy.property; }
     get swap() { return this.#proxy.swap; }
     get target() { return this.#proxy.target; }
+    get base() { return this.#proxy.base; }
     get toggle() { return this.#proxy.toggle; }
     get trigger() { return this.#proxy.trigger; }
     get timeout() { return this.#proxy.timeout; }

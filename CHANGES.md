@@ -5,7 +5,8 @@
  - GSDialog - callback handlers suppport addded
  - GSForm - callback handlers suppport addded
  - GSFormElement - field callback handler improved
- - PropagateController -new controller to link fields and links
+ - GSButtonElement - field callback handler improved
+ - PropagateController -new controller to link fields and forms
 
 # Release v2.2.1 FINAL (23.02.2026.)
  - GSUtil - fix isJson method detection

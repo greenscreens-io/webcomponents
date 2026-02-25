@@ -85,7 +85,7 @@ export class GSExtFormElement extends HTMLFormElement {
         const me = this;
         if (changed === 'url') me.load(newValue);
         if (changed === 'disabled') {
-            me.disabled ? me.disable(true) : me.enable(true);
+            me.disabled ? me.disable() : me.enable();
         }
     }
 
@@ -141,17 +141,23 @@ export class GSExtFormElement extends HTMLFormElement {
         return name && this.inputs.filter(f => f.name === name);
     }
 
-    disable(all = false) {
+    disable() {
         const me = this;
-        GSDOM.disableInput(me, 'input, textarea, select', all, 'gs-ext-form');
+        /*
+        GSDOM.disableInput(me, 'input, textarea, select');
         me.queryAll('button', true).forEach(b => b.disabled = true);
+        */
+        GSDOM.disableInput(me);
         me.emit("disabled");        
     }
 
-    enable(all = false) {
+    enable() {
         const me = this;
-        GSDOM.enableInput(me, 'input, textarea, select', all, 'gs-ext-form');
+        /*
+        GSDOM.enableInput(me, 'input, textarea, select');
         me.queryAll('button', true).forEach(b => b.disabled = false);
+        */
+        GSDOM.enableInput(me);
         me.emit("enabled");
     }
 

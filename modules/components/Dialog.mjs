@@ -184,7 +184,8 @@ export class GSDialogElement extends GSElement {
   #renderConfirm() {
     const me = this;
     if (!me.closable) return '';
-    return html`<gs-button  ${ref(me.#btnConfirmRef)} 
+    return html`<gs-button type="button"
+      ${ref(me.#btnConfirmRef)} 
       @click="${me.#onConfirm.bind(me)}" 
       icon="${ifDefined(me.iconConfirm)}"
       language="${ifDefined(me.language)}"
@@ -198,7 +199,8 @@ export class GSDialogElement extends GSElement {
   #renderCancel() {
     const me = this;
     if (!me.cancelable) return '';
-    return html`<gs-button ${ref(me.#btnCancelRef)}
+    return html`<gs-button type="button"
+      ${ref(me.#btnCancelRef)}      
       @click="${me.#onCancel.bind(me)}" 
       icon="${ifDefined(me.iconCancel)}"
       language="${ifDefined(me.language)}"

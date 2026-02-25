@@ -536,6 +536,8 @@ export class GSDOM {
 	 * 
 	 * @param {HTMLElement} el Root node to start from
 	 * @param {String} qry CSS query
+	 * @param {boolean} all If true, filter text elements also
+	 * @param {boolean} shadow If true, will cross shadow boundary
 	 * @returns {HTMLElement} 
 	 */
 	static query(el, qry, all = false, shadow = true) {
@@ -552,12 +554,20 @@ export class GSDOM {
 	/**
 	 * Query DOM tree with support for Shadow DOM
 	 * 
-	 * @param {HTMLElement} el Root node to start from
+	 * @param {HTMLElement|String} el Root node to start from
 	 * @param {String} qry CSS query
+	 * @param {boolean} all If true, filter text elements also
+	 * @param {boolean} shadow If true, will cross shadow boundary
 	 * @returns {Array<HTMLElement>}
 	*/
 	static queryAll(el, qry, all = false, shadow = true) {
-		if (typeof el === 'string') return GSDOM.queryAll(document.documentElement, el, all, shadow);
+		if (typeof el === 'string') {
+			if (qry) {
+				el = GSDOM.query(el);
+			} else {
+				return GSDOM.queryAll(document.documentElement, el, all, shadow);
+			}
+		} 
 		const res = [];
 		if (!(el && qry)) return res;
 		const it = GSDOM.walk(el, false, all, shadow);
@@ -998,31 +1008,29 @@ export class GSDOM {
 		return owner ? owner.self || owner : document;
 	}
 
+	static #filter(own, qry = '', group = '') {
+		group = GSUtil.capitalizeAttr(group);
+		return GSDOM.queryAll(own, qry).filter(el => group ? GSUtil.asBool(el.dataset[group]) : true) ;
+	}
+
 	/**
 	 * Enable input on all input elements under provided owner
 	 * @param {HTMLElement} own 
 	 * @param {String} qry Default to form
+	 * @param {String} group Filter specific group if defined
 	 */
-	static enableInput(own, qry = 'input, select, textarea, .btn', all = true, group = '') {
-		group = GSUtil.capitalizeAttr(group);
-		let list = GSDOM.queryAll(own, qry);
-		if (!all && group) list = list.filter(el => GSUtil.asBool(el.dataset[group]))
-		list.forEach(el => el.removeAttribute('disabled'));
+	static enableInput(own, qry = 'input, select, textarea, button, .btn', group) {
+		GSDOM.#filter(own, qry, group).forEach(el => el.removeAttribute('disabled'));
 	}
 
 	/**
 	 * Disable input on all input elements under provided owner
 	 * @param {HTMLElement} own 
 	 * @param {String} qry Default to form
+	 * @param {String} group Filter specific group if defined
 	 */
-	static disableInput(own, qry = 'input, select, textarea, .btn', all = true, group = '') {
-		group = GSUtil.capitalizeAttr(group);
-		GSDOM.queryAll(own, qry)
-			.filter(el => all ? true : !el.disabled)
-			.forEach(el => {
-				el.setAttribute('disabled', '');
-				if (group) el.dataset[group] = true;
-			});
+	static disableInput(own, qry = 'input, select, textarea, button, .btn', group) {
+		GSDOM.#filter(own, qry, group).forEach(el => el.setAttribute('disabled', ''));
 	}
 
 	/**

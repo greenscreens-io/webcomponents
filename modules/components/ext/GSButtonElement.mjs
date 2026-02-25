@@ -47,7 +47,7 @@ export class GSExtButtonElement extends HTMLButtonElement {
 
     connectedCallback() {
         const me = this;
-        if (me.isSubmit || me.isReset) {
+        if (me.isSubmit || me.isReset || me.isManaged) {
             me.#buttonController = new ButtonController(me);
         }        
         me.#controllerHandler?.connectedCallback();        
@@ -118,6 +118,15 @@ export class GSExtButtonElement extends HTMLButtonElement {
     
     get isValid() {
         return this.form ? this.form.checkValidity() : true;
+    }
+
+    /**
+     * If attribute subtype is "submit", will manage 
+     * disable / enable state as a submit button.
+     * Used for cusotm buttons to be disabled on form validation state.
+     */
+    get isManaged() {
+        return this.dataset.gsType==='submit';
     }
 
     get isSubmit() {
