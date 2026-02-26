@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015, 2025; Green Screens Ltd.
+ * Copyright (C) 2015, 2026; Green Screens Ltd.
  */
 
 export const SizeTypes = { 'default' : '', 'normal': '',  'medium': '', 'small': 'sm', 'large': 'lg', 'big' : 'lg', 'extra' : 'xl' };

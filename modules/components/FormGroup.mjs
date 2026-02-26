@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015, 2025; Green Screens Ltd.
+ * Copyright (C) 2015, 2026; Green Screens Ltd.
  */
 
 import { classMap, createRef, ref, html, unsafeHTML, ifDefined } from '../lib.mjs';

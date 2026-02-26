@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015, 2025; Green Screens Ltd.
+ * Copyright (C) 2015, 2026; Green Screens Ltd.
  */
 
 export * from "./Attachment.mjs";
