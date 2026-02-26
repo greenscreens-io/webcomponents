@@ -8,6 +8,7 @@
  */
 
 import { ButtonTypes } from '../../properties/index.mjs';
+import { OWNER, PARENT } from "../../base/GSConst.mjs";
 import { GSDOM } from "../../base/GSDOM.mjs";
 import { GSEvents } from "../../base/GSEvents.mjs";
 import { mixin } from "./EventsMixin.mjs";
@@ -99,11 +100,11 @@ export class GSExtButtonElement extends HTMLButtonElement {
     }
 
     get owner() {
-        return this[Symbol.for('gs-owner')]();
+        return this[OWNER]();
     }
 
     get parentComponent() {
-        return this[Symbol.for('gs-parent')]();
+        return this[PARENT]();
     }
 
     get hasUpdated() {

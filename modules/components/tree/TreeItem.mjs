@@ -3,6 +3,7 @@
  */
 
 import { html } from '../../lib.mjs';
+import { KEY } from '../../base/GSConst.mjs';
 import { TreeNode } from '../../data/TreeNode.mjs';
 import { GSElement } from '../../GSElement.mjs';
 import { GSLinklement } from '../Link.mjs';
@@ -36,7 +37,7 @@ export class GSTreeItemElement extends GSElement {
 
   willUpdate(changed) {
     super.willUpdate(changed);
-    if (changed.has('node')) this.node[Symbol.for('gs-element')] = this;
+    if (changed.has('node')) this.node[KEY] = this;
   }
 
   updated() {
@@ -106,15 +107,6 @@ export class GSTreeItemElement extends GSElement {
 
   handle(e) {
     GSAttributeHandler.process(this.#link, e);
-    /*
-    const me = this;
-    const isIcon = e.target.tagName === 'GS-ICON';
-    if (me.multiselect && isIcon) {
-      me.toggleSelection();
-    } else {
-      GSAttributeHandler.process(me.#link, e);
-    }
-    */
   }
 
   get #link() {
@@ -155,7 +147,7 @@ export class GSTreeItemElement extends GSElement {
   }
 
   get parentItem() {
-    const item = this.parent?.[Symbol.for('gs-element')];
+    const item = this.parent?.[KEY];
     return item instanceof GSTreeItemElement ? item : undefined;
   }
 
@@ -205,10 +197,7 @@ export class GSTreeItemElement extends GSElement {
   get #cssCheck() { return this.owner.cssCheck || ''; }
   get #checkColor() { return this.owner.checkColor || 'secondary'; }
   get #checkColorSelected() { return this.owner.checkColorSelected || 'primary'; }
-
-  get #border() {
-    return this.value?.border === true || this.owner.border === true;
-  }
+  get #border() { return this.value?.border === true || this.owner.border === true;}
 
   get #icon() {
     const me = this;

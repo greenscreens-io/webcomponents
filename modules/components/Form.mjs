@@ -3,7 +3,8 @@
  */
 
 import { classMap, createRef, html, ifDefined, ref, templateContent } from '../lib.mjs';
-import { GSElement, HANDLER_KEY } from '../GSElement.mjs';
+import { GSElement } from '../GSElement.mjs';
+import { HANDLER } from '../base/GSConst.mjs';
 import { GSDOM } from '../base/GSDOM.mjs';
 import { GSLog } from '../base/GSLog.mjs';
 import { GSEvents } from '../base/GSEvents.mjs';
@@ -141,49 +142,49 @@ export class GSFormElement extends GSElement {
 
   formValidation(e) {
     const me = this;
-    me[HANDLER_KEY]?.forEach((c) => c.formValidation?.(me));
+    me[HANDLER]?.forEach((c) => c.formValidation?.(me));
     me.emit('validation', e?.detail, true, true);
   }
 
   formEnabled(e) {
     const me = this;
-    me[HANDLER_KEY]?.forEach((c) => c.formEnabled?.(me));
+    me[HANDLER]?.forEach((c) => c.formEnabled?.(me));
     me.emit('enabled', e?.detail, true, true);    
   }
   
   formDisabled(e) {
     const me = this;
-    me[HANDLER_KEY]?.forEach((c) => c.formDisabled?.(me));
+    me[HANDLER]?.forEach((c) => c.formDisabled?.(me));
     me.emit('disabled', e?.detail, true, true);    
   }
 
   formChange(e) {
     const me = this;
-    me[HANDLER_KEY]?.forEach((c) => c.formChange?.(me));
+    me[HANDLER]?.forEach((c) => c.formChange?.(me));
     me.emit('formchange', e?.detail, true, true);
   }
 
   formSubmit(e) {
     const me = this;
-    me[HANDLER_KEY]?.forEach((c) => c.formSubmit?.(me));
+    me[HANDLER]?.forEach((c) => c.formSubmit?.(me));
     return me.emit('formsubmit', e?.detail, true, true, true);
   }
 
   formReset(e) {
     const me = this;
-    me[HANDLER_KEY]?.forEach((c) => c.formReset?.(me));
+    me[HANDLER]?.forEach((c) => c.formReset?.(me));
     me.emit('formreset', e?.detail, true, true);
   }
 
   addController(controller) {
     if (controller.isForm) {
-      this[HANDLER_KEY]?.add(controller);
+      this[HANDLER]?.add(controller);
     }
     super.addController?.(controller);
   }
 
   removeController(controller) {
-    this[HANDLER_KEY]?.delete(controller);
+    this[HANDLER]?.delete(controller);
     super.removeController?.(controller);
   }
 

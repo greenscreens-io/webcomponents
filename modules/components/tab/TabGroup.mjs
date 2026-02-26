@@ -2,8 +2,9 @@
  * Copyright (C) 2015, 2025; Green Screens Ltd.
  */
 
-import { GSID } from '../../base/GSID.mjs';
 import { html, ifDefined } from '../../lib.mjs';
+import { GSID } from '../../base/GSID.mjs';
+import { KEY } from '../../base/GSConst.mjs';
 import { PlacementTypes } from '../../properties/placement.mjs';
 import { GSNavElement } from '../Nav.mjs';
 
@@ -157,11 +158,10 @@ export class GSTabGroupElement extends GSNavElement {
     if (!el) return null;
     const me = this;
     const generated = me.data?.length > 0;
-    const key = Symbol.for('gs-element');
-    let panel = el[key] || me.panelByName(el.name, generated);
-    if (panel && !el[key]) {
-      el[key] = panel;
-      panel[key] = el;
+     let panel = el[KEY] || me.panelByName(el.name, generated);
+    if (panel && !el[KEY]) {
+      el[KEY] = panel;
+      panel[KEY] = el;
     }
     return panel;
   }

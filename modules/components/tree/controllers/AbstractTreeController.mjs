@@ -2,6 +2,8 @@
  * Copyright (C) 2015, 2025; Green Screens Ltd.
  */
 
+import { KEY } from '../../../base/GSConst.mjs';
+
 /**
  * Controller managing data tree navigation.
  * Controller is added to every gs-tree-node and 
@@ -52,7 +54,7 @@ export class AbstractTreeController {
     }
 
     host(node) {
-        return node[Symbol.for('gs-element')] || this.#host;
+        return node[KEY] || this.#host;
     }
 
     match(node) {

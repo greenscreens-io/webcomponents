@@ -8,6 +8,7 @@
  - GSButtonElement - field callback handler improved
  - Buttons and Forms better integration and UI handling
  - GSAttributeHandler - added data-gs-base for query start point
+ - GSDialog and GSForm integration improvement
  - PropagateController -new controller to link fields and forms
 
 # Release v2.2.1 FINAL (23.02.2026.)

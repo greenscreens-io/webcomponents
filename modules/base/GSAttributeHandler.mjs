@@ -2,6 +2,7 @@
  * Copyright (C) 2015, 2025; Green Screens Ltd.
  */
 
+import { DEF } from './GSConst.mjs';
 import { GSLog } from "./GSLog.mjs";
 import { GSDOM } from "./GSDOM.mjs";
 import { GSAttr } from "./GSAttr.mjs";
@@ -416,7 +417,7 @@ export class GSAttributeHandler {
     get isActive() { return this.#host.active || false; }
     get isToggling() { return this.#host.toggling || false; }
 
-    get definition() { return this.#proxy[Symbol.for('#def')]; }
+    get definition() { return this.#proxy[DEF]; }
 
     get action() { return this.#proxy.action; }
     get anchor() { return this.#proxy.anchor; }

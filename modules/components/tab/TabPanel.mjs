@@ -2,9 +2,10 @@
  * Copyright (C) 2015, 2025; Green Screens Ltd.
  */
 
-import { GSElement } from '../../GSElement.mjs';
-import { GSDOM } from '../../base/GSDOM.mjs';
 import { classMap, html, ifDefined } from '../../lib.mjs';
+import { KEY } from '../../base/GSConst.mjs';
+import { GSDOM } from '../../base/GSDOM.mjs';
+import { GSElement } from '../../GSElement.mjs';
 
 /**
  * Container for individual tab; part of tabed panel
@@ -23,7 +24,7 @@ export class GSTabPanelElement extends GSElement {
   }
 
   disconnectedCallback() {
-    delete this[Symbol.for('gs-element')];
+    delete this[KEY];
     super.disconnectedCallback();
   }
 
@@ -69,8 +70,7 @@ export class GSTabPanelElement extends GSElement {
 
   get tab() {
     const me = this;
-    const key = Symbol.for('gs-element');
-    return me[key] || me.owner.tabByName(me.name);
+    return me[KEY] || me.owner.tabByName(me.name);
   }
 
   get tabs() {

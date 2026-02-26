@@ -2,6 +2,7 @@
  * Copyright (C) 2015, 2025; Green Screens Ltd.
  */
 
+import { OWNER, PARENT } from "../../base/GSConst.mjs";
 import { GSDOM } from "../../base/GSDOM.mjs";
 import { GSEvents } from "../../base/GSEvents.mjs";
 import { GSElement } from "../../GSElement.mjs";
@@ -15,7 +16,7 @@ const EventsMixin = {
    * Get shadow dom owner
    * @returns 
    */
-  [Symbol.for('gs-owner')]() {
+  [OWNER]() {
     const own = GSDOM.root(this);
     return GSDOM.unwrap(own);
   },
@@ -23,7 +24,7 @@ const EventsMixin = {
   /**
    * Get parent GS-* component
    */
-  [Symbol.for('gs-parent')]() {
+  [PARENT]() {
     return GSDOM.parentAll(this).filter(x => x instanceof GSElement).next()?.value;
   },
 

@@ -2,6 +2,8 @@
  * Copyright (C) 2015, 2025; Green Screens Ltd.
  */
 
+import { HANDLER } from "../../../base/GSConst.mjs";
+
 /**
  * Propagate event to a parent form controller
  */
@@ -32,7 +34,6 @@ export class PropagateController {
   hostUpdated() {
 
   }
-
 
   /**
    * Field event propagated to the form
@@ -68,7 +69,7 @@ export class PropagateController {
 
   get handler() {
     const me = this;
-    me.#handler ??= me.#host?.closest('form')?.[Symbol.for('gs-handler')];
+    me.#handler ??= me.#host?.closest('form')?.[HANDLER];
     return me.#handler;
   }
 }

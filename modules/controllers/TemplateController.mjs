@@ -2,12 +2,12 @@
  * Copyright (C) 2015, 2025; Green Screens Ltd.
  */
 
+import { RENDER } from '../base/GSConst.mjs';
 import { GSUtil } from "../base/GSUtil.mjs";
 import { GSTemplateCache } from "../base/GSTemplateCache.mjs";
 import { GSDOM } from "../base/GSDOM.mjs";
 
-// internal hidden flag to prevent double injection
-const RENDER_SYMBOL = Symbol.for("GS-TEMPLATE-RENDER");
+
 
 /**
  * Handle element template and signal rerender when ready
@@ -33,7 +33,7 @@ export class TemplateController {
     const me = this;
     me.#host = host;
     me.#once = true;
-    host[RENDER_SYMBOL] = false;
+    host[RENDER] = false;
     host.addController(this);
   }
 
@@ -51,7 +51,7 @@ export class TemplateController {
   hostDisconnected() {
     const me = this;
     me.#host.removeController(me);
-    delete me.#host[RENDER_SYMBOL];
+    delete me.#host[RENDER];
     me.#host = null;
     me.#lastRef = null;
     me.#template = null;
@@ -115,8 +115,8 @@ export class TemplateController {
 
     if (hasSlots) {
       // slot elements must be added only once 
-      if (me.#host[RENDER_SYMBOL] === false) {
-        me.#host[RENDER_SYMBOL] = true;
+      if (me.#host[RENDER] === false) {
+        me.#host[RENDER] = true;
         const clone = slots.cloneNode(true);
         Array.from(clone.content.children).forEach(el => me.#host.appendChild(el));
       }

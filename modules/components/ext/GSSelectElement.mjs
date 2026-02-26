@@ -7,6 +7,7 @@
  * @module components/ext/GSDataListExt
  */
 
+import { OWNER, PARENT } from "../../base/GSConst.mjs";
 import { GSDOM } from "../../base/GSDOM.mjs";
 import { GSLoader } from "../../base/GSLoader.mjs";
 import { GSEvents } from "../../base/GSEvents.mjs";
@@ -101,11 +102,11 @@ export class GSExtSelectElement extends HTMLSelectElement {
     }
 
     get owner() {
-        return this[Symbol.for('gs-owner')]();
+        return this[OWNER]();
     }
 
     get parentComponent() {
-        return this[Symbol.for('gs-parent')]();
+        return this[PARENT]();
     }    
 
     get asJSON() {

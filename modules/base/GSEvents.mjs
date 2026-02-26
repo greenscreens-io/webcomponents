@@ -7,6 +7,7 @@
  * @module base/GSEvents
  */
 
+import { EVENTID } from './GSConst.mjs';
 import { GSFunction } from "./GSFunction.mjs";
 import { GSID } from "./GSID.mjs";
 import { GSUtil } from "./GSUtil.mjs";
@@ -462,10 +463,10 @@ export class GSEvents {
 	}
 
 	static #getElementID(el) {
-		let elid = el[Symbol.for('gs-event-id')];
+		let elid = el[EVENTID];
 		if (!elid) {
 			elid = GSID.id;
-			el[Symbol.for('gs-event-id')] = elid;
+			el[EVENTID] = elid;
 		}
 		return elid;
 	}

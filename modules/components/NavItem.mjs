@@ -4,6 +4,7 @@
 
 import { classMap, ifDefined, html, createRef, ref } from '../lib.mjs';
 import { NavTypes, PlacementTypes, color } from '../properties/index.mjs';
+import { KEY } from '../base/GSConst.mjs';
 import { GSElement } from '../GSElement.mjs';
 
 export class GSNavItemElement extends GSElement {
@@ -32,7 +33,7 @@ export class GSNavItemElement extends GSElement {
   }
 
   disconnectedCallback() {
-    delete this[Symbol.for('gs-element')];
+    delete this[KEY];
     super.disconnectedCallback();
   }
   

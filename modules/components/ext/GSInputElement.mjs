@@ -4,7 +4,7 @@
 
 import { GSDOM } from '../../base/GSDOM.mjs';
 import { GSEvents } from '../../base/GSEvents.mjs';
-
+import { OWNER, PARENT } from "../../base/GSConst.mjs";
 import { MaskController } from './controllers/MaskController.mjs';
 import { MultipatternController } from './controllers/MultipatternController.mjs';
 import { ListController } from './controllers/ListController.mjs';
@@ -82,14 +82,14 @@ export class GSExtInputElement extends HTMLInputElement {
   }
 
   get owner() {
-    return this[Symbol.for('gs-owner')]();
+    return this[OWNER]();
   }
 
   /**
    * Get parent GS-* component
    */
   get parentComponent() {
-    return this[Symbol.for('gs-parent')]();
+    return this[PARENT]();
   }
 
 

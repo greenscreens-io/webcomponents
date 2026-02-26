@@ -7,7 +7,7 @@
  * @module components/ext/GSDataListElement
  */
 
-
+import { OWNER, PARENT } from "../../base/GSConst.mjs";
 import { GSID } from "../../base/GSID.mjs";
 import { GSDOM } from "../../base/GSDOM.mjs";
 import { GSUtil } from "../../base/GSUtil.mjs";
@@ -104,11 +104,11 @@ export class GSExtDataListElement extends HTMLDataListElement {
     }
     
     get owner() {
-        return this[Symbol.for('gs-owner')]();
+        return this[OWNER]();
     }
 
     get parentComponent() {
-        return this[Symbol.for('gs-parent')]();
+        return this[PARENT]();
     }    
 
     get asJSON() {

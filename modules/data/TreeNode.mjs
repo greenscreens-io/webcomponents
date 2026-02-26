@@ -127,16 +127,6 @@ export class TreeNode extends Tree {
         return this.selected && this.hasChildren && this.nodes.length > this.nodes.filter(n => n.selected).length;
     }
 
-    /* hide from public
-    get host() {
-        return this[Symbol.for('gs-element')];
-    }
-
-    set host(el) {
-        this[Symbol.for('gs-element')] = el;
-    }
-    */
-
     selectAll() {
         const root = this.root;
         if (!root.multi) {

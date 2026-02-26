@@ -7,6 +7,7 @@
  * @module components/ext/GSDataListExt
  */
 
+import { OWNER, PARENT, HANDLER } from "../../base/GSConst.mjs";
 import { GSDOM } from "../../base/GSDOM.mjs";
 import { GSEvents } from "../../base/GSEvents.mjs";
 import { GSAttr } from "../../base/GSAttr.mjs";
@@ -15,8 +16,6 @@ import { mixin } from './EventsMixin.mjs';
 import { GSLog } from "../../base/GSLog.mjs";
 import { GSLoader } from "../../base/GSLoader.mjs";
 import { GSUtil } from "../../base/GSUtil.mjs";
-
-const HANDLER_KEY = Symbol.for('gs-handler');
 
 /**
  * Extended native forn with additional functionality
@@ -42,7 +41,7 @@ export class GSExtFormElement extends HTMLFormElement {
     
     constructor() {
         super();
-        this[HANDLER_KEY] = new ControllerHandler(this);
+        this[HANDLER] = new ControllerHandler(this);
     }
 
     connectedCallback() {
@@ -54,7 +53,7 @@ export class GSExtFormElement extends HTMLFormElement {
     disconnectedCallback() {
         const me = this;
         me.#controllerHandler?.disconnectedCallback?.();
-        me[HANDLER_KEY] = undefined;
+        me[HANDLER] = undefined;
         GSEvents.detachListeners(me);
     }
 
@@ -173,11 +172,11 @@ export class GSExtFormElement extends HTMLFormElement {
     }
 
     get owner() {
-        return this[Symbol.for('gs-owner')]();
+        return this[OWNER]();
     }
 
     get parentComponent() {
-        return this[Symbol.for('gs-parent')]();
+        return this[PARENT]();
     }    
 
     get hasUpdated() {
@@ -318,7 +317,7 @@ export class GSExtFormElement extends HTMLFormElement {
     }
 
     get #controllerHandler() {
-        return this[HANDLER_KEY];
+        return this[HANDLER];
     }
 }
 

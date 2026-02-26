@@ -3,6 +3,7 @@
  */
 
 import { classMap, html, css, createRef, ref, repeat, ifDefined } from '../../lib.mjs';
+import { KEY } from '../../base/GSConst.mjs';
 import { GSElement } from '../../GSElement.mjs';
 import { GSDOM } from '../../base/GSDOM.mjs';
 import { TreeNode } from '../../data/TreeNode.mjs';
@@ -71,7 +72,7 @@ export class GSTreeElement extends GSElement {
     me.openIcon = 'folder2-open'; // caret-down; chevron-down
     me.cssSelected = 'active'; // fw-bold
     me.cssFocus = 'focus-ring';
-    me.node[Symbol.for('gs-element')] = me;
+    me.node[KEY] = me;
     me.#controller = new TreeController(me);
   }
 
@@ -188,14 +189,14 @@ export class GSTreeElement extends GSElement {
    * Previous visible ge-node-item
    */
   get previousItem() {
-    return this.focused?.node.find(n => n?.visible, true, true)?.[Symbol.for('gs-element')];
+    return this.focused?.node.find(n => n?.visible, true, true)?.[KEY];
   }
 
   /**
    * Next visible ge-node-item
    */
   get nextItem() {
-    return this.focused?.node.find(n => n?.visible, true)?.[Symbol.for('gs-element')];
+    return this.focused?.node.find(n => n?.visible, true)?.[KEY];
   }
 
   get #list() {
@@ -211,10 +212,7 @@ export class GSTreeElement extends GSElement {
   }
 
   #host(node) {
-    if (Array.isArray(node)) {
-      return node.map(n =>n[Symbol.for('gs-element')]).filter( n=> n);
-    }
-    return node?.[Symbol.for('gs-element')];
+    return Array.isArray(node) ? node.map(n =>n[KEY]).filter(n => n) : node?.[KEY];
   }
 
   #onClick(e) {

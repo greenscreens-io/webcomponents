@@ -2,6 +2,7 @@
  * Copyright (C) 2015, 2025; Green Screens Ltd.
  */
 
+import { KEY } from '../../base/GSConst.mjs';
 import { GSUtil } from '../../base/GSUtil.mjs';
 import { GSNavItemElement } from '../NavItem.mjs';
 
@@ -30,8 +31,7 @@ export class GSTabItemElement extends GSNavItemElement {
 
   get panel() {
     const me = this;
-    const key = Symbol.for('gs-element');
-    return me[key] || me.owner.panelByName(me.name);
+    return me[KEY] || me.owner.panelByName(me.name);
   }
 
   static {

@@ -28,8 +28,8 @@ import { GSAttributeHandler } from './base/GSAttributeHandler.mjs';
 import { GSDOMObserver } from './base/GSDOMObserver.mjs';
 import { GSID } from './base/GSID.mjs';
 import { GSCacheStyles } from './base/GSCacheStyles.mjs';
+import { HANDLER } from "./base/GSConst.mjs";
 
-export const HANDLER_KEY = Symbol.for('gs-handler');
 
 /**
  * Main WebComponent used by all other GS-* components
@@ -150,8 +150,8 @@ export class GSElement extends LitElement {
   }
 
   get #controllers() {
-    this[HANDLER_KEY] ??= new Set();
-    return this[HANDLER_KEY];
+    this[HANDLER] ??= new Set();
+    return this[HANDLER];
   }
 
   shouldUpdate(changedProperties) {

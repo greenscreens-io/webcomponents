@@ -2,11 +2,11 @@
  * Copyright (C) 2015, 2025; Green Screens Ltd.
  */
 
+import { NEXT, PREV } from '../base/GSConst.mjs';
+
 /*
 const list = new LinkedList(1);
-
 list.append(2).append(3).append(4);
-
 */
 
 /**
@@ -22,18 +22,18 @@ export class LinkedList {
         this.#value = value;
     }
 
-    [Symbol.for('gs-next')](val) {
+    [NEXT](val) {
         this.#next = val;
     }
 
-    [Symbol.for('gs-prev')](val) {
+    [PREV](val) {
         this.#previous = val;
     }
 
     remove() {
         const me = this;
-        me.#previous?.[Symbol.for('gs-next')](me.#next);
-        me.#next?.[Symbol.for('gs-prev')](me.#previous);
+        me.#previous?.[NEXT](me.#next);
+        me.#next?.[PREV](me.#previous);
         return me.#release();
     }
 

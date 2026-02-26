@@ -7,6 +7,7 @@
  * @module base/GSDOM
  */
 
+import { DEF } from './GSConst.mjs';
 import { GSAttr } from "./GSAttr.mjs";
 import { GSCSSMap } from "./GSCSSMap.mjs";
 import { GSData } from "./GSData.mjs";
@@ -938,7 +939,7 @@ export class GSDOM {
 			.forEach(v => el.setAttribute(v, obj[v]));
 
 		if (obj["#def"]) {
-			el[Symbol.for("#def")] = obj["#def"];
+			el[DEF] = obj["#def"];
 		}
 
 		if (Array.isArray(obj.items)) {
