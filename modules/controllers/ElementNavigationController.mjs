@@ -2,28 +2,80 @@
  * Copyright (C) 2015, 2026; Green Screens Ltd.
  */
 
+import { GROUP, DEF } from "../base/GSConst.mjs";
+import { GSEvents } from "../base/GSEvents.mjs";
 import { GSElement } from "../GSElement.mjs";
 
 /**
  * Controller for child element navigation / selection / focusing
+ * Used for button, navs, tabs and element groups
  */
 export class ElementNavigationController {
 
   #host;
-  #attached;
   #focused;
+  #hostUpdated = false;
+  #tagName = undefined;
+
+  #onClickListener = undefined;
+  #onKeyUpListener = undefined;
+  #onKeyDownListener = undefined;
+  #onFocusInListener = undefined;
+  #onFocusOutListener = undefined;
 
   constructor(host) {
     const me = this;
     me.#host = host;
+    me.#tagName = me.#childTagName;
+    me.#onClickListener = me.onClick.bind(me);
+    me.#onKeyUpListener = me.onKeyUp.bind(me);
+    me.#onKeyDownListener = me.onKeyDown.bind(me);
+    me.#onFocusInListener = me.onFocusIn.bind(me);
+    me.#onFocusOutListener = me.onFocusOut.bind(me);
+
     host.addController(me);
+  }
+
+  hostConnected() {
+    const me = this;
   }
 
   hostDisconnected() {
     const me = this;
+    const target = me.#target;
+    if (target) {
+      me.#host.removeEvent(target, 'keydown', me.#onKeyDownListener);
+      me.#host.removeEvent(target, 'keyup', me.#onKeyUpListener);
+      me.#host.removeEvent(target, 'click', me.#onClickListener);
+      me.#host.removeEvent(target, 'focusin', me.#onFocusInListener);
+      me.#host.removeEvent(target, 'focusout', me.#onFocusOutListener);
+    }    
     me.#host.removeController(me);
     me.#host = null;
-    me.#attached = false;
+  }
+
+  hostUpdated() {
+    const me = this;
+    if (!me.#hostUpdated) {
+      me.#hostUpdated = true;
+      me.firstUpdate();
+    }
+  }
+
+  /**
+   * Called on first update from host component
+   */
+  firstUpdate() {
+    const me = this;
+    me.#tagName = me.first?.tagName || '';
+    const target = me.#target;
+    if (target) {
+      me.#host.attachEvent(target, 'keydown', me.#onKeyDownListener);
+      me.#host.attachEvent(target, 'keyup', me.#onKeyUpListener);
+      me.#host.attachEvent(target, 'click', me.#onClickListener);
+      me.#host.attachEvent(target, 'focusin', me.#onFocusInListener);
+      me.#host.attachEvent(target, 'focusout', me.#onFocusOutListener);
+    }
   }
 
   get circular() {
@@ -39,37 +91,46 @@ export class ElementNavigationController {
   }
 
   get selected() {
-    return this.#host.active;
-  }
-
-  /**
-   * Called on first update from host component
-   */
-  init() {
-
-  }
-
-  /**
-   * Called on first update from host component
-   */  
-  attach(el) {
     const me = this;
-    if (me.#attached) return;
-    me.#attached = true;
-    if (me.#host) {
-      me.#host.attachEvent(el, 'keydown', e => me.onKeyDown(e));
-      me.#host.attachEvent(el, 'keyup', e => me.onKeyUp(e));
-      me.#host.attachEvent(el, 'click', e => me.onClick(e));
-      me.#host.attachEvent(el, 'focusin', e => me.onFocusIn(e));
-      me.#host.attachEvent(el, 'focusout', e => me.onFocusOut(e));
-    }
+    const list = me.items.filter(el => el.active);
+    return me.multiple ? list : list.pop();
+  }
+
+  get items() {
+    const me = this;    
+    return Array.from(me.#host.children)
+    .filter(el => el.tagName !== 'GS-ITEM')
+    .filter(el => me.#tagName ? el.tagName === me.#tagName : true);
+  }
+
+  get first() {
+    return this.items.shift();
+  }
+
+  get last() {
+    return this.items.pop();
+  }
+
+  /**
+   * Element that listens for events
+   */
+  get #target() {
+    return this.#host[DEF] || this.#host.shadowRoot.firstElementChild;
+  }
+
+  /**
+   * As default use data-gs-child-tag-name
+   */
+  get #childTagName() {
+    const me = this;
+    return (me.#host.dataset.gsChildTagName || me.#host[GROUP] || '').toUpperCase();
   }
 
   previous() {
     const me = this;
     let el = me.#focused?.previousElementSibling;
     while (el?.disabled) el = el.previousElementSibling;
-    if (me.circular && !el) el = me.lastElementChild;
+    if (me.circular && !el) el = me.last;
     el?.focus();
   }
 
@@ -77,7 +138,7 @@ export class ElementNavigationController {
     const me = this;
     let el = me.#focused?.nextElementSibling;
     while (el?.disabled) el = el.nextElementSibling;
-    if (me.circular && !el) el = me.firstElementChild;
+    if (me.circular && !el) el = me.first;
     el?.focus();
   }
 
@@ -97,6 +158,7 @@ export class ElementNavigationController {
       active.blur();
     }
     me.#focused = undefined;
+    me.#host?.onReset?.(el);
     me.#host?.emit('group-reset', undefined, true);
   }
 
@@ -134,12 +196,12 @@ export class ElementNavigationController {
    * @returns 
    */
   #isNavigable(el) {
-    return this.#host?.isNavigable ? this.#host?.isNavigable(el) : true;
+    return el?.tagName === this.#tagName || el?.isNav || false;
   }
+
 
   #focus(el) {
     const me = this;
-    if (!me.#isNavigable(el)) return;
     me.#focused = el;
     if (el) {
       me.#onFocused(me.#focused);
@@ -147,9 +209,7 @@ export class ElementNavigationController {
   }
 
   #toggle(el) {
-    if (!el) return;
     const me = this;
-    if (!me.#isNavigable(el)) return;
     if (el.active) {
       me.#onSelected(el);
     } else {
@@ -159,8 +219,6 @@ export class ElementNavigationController {
 
   #select(el) {
     const me = this;
-    if (!me.#isNavigable(el)) return;
-
     const active = me.selected;
     if (active && !me.multiple) {
       active.active = false;
@@ -181,14 +239,16 @@ export class ElementNavigationController {
   }
 
   onFocusIn(e) {
-    if (!e.target.isNav) return;
     const me = this;
-    if(e.relatedTarget?.isNav) {
-      me.#focus(e.target)
-    } else {
-      me.selected?.focus();
+    if(me.#isNavigable(e.target)) {
+      if(me.#isNavigable(e.relatedTarget)) {
+        me.#focus(e.target)
+      } else if (me.multiple) {
+        me.selected?.pop?.()?.focus?.();
+      } else {
+        me.selected?.focus();
+      }
     }
-
   }
 
   onClick(e) {
@@ -196,36 +256,43 @@ export class ElementNavigationController {
     const el = e.composedPath()
     .filter(el => el instanceof GSElement)
     .filter(el => el.parentComponent === me.#host).pop();
-    if (!me.#isNavigable(el)) return;
-    if (e.ctrlKey) me.reset();
-    me.#onDeselected(me.selected);
-    me.#select(el);
+    if(me.#isNavigable(e.target)) {
+      if (e.ctrlKey) me.reset();
+      me.#onDeselected(me.selected);
+      me.#select(el);
+    }
   }
 
-  onKeyDown(e) {
+  onKeyDown(e) {    
     const me = this;
-    if (!e.target.isNav) return;
-    switch (e.code) {
-      case 'ArrowUp':
-      case 'ArrowLeft':
-        me.previous();
-        break;
-      case 'ArrowDown':
-      case 'ArrowRight':
-        me.next();
-        break;
+    if(me.#isNavigable(e.target)) {
+      switch (e.code) {
+        case 'ArrowUp':
+        case 'ArrowLeft':
+          me.previous();
+          break;
+        case 'ArrowDown':
+        case 'ArrowRight':
+          me.next();
+          break;
+        case 'Space':
+        case 'Enter':
+          GSEvents.prevent(e);
+          break;        
+      }
     }
-
   }
 
   onKeyUp(e) {
     const me = this;
-    if (!e.target.isNav) return;
-    switch (e.code) {
-      case 'Space':
-      case 'Enter':
-        me.#focused?.click();
-        break;
+    if(me.#isNavigable(e.target)) {
+      switch (e.code) {
+        case 'Space':
+        case 'Enter':
+          //me.#focused?.click();
+          e.target.click();
+          break;
+      }
     }
   }
 

@@ -4,7 +4,7 @@
 
 import { html, ifDefined } from '../../lib.mjs';
 import { GSID } from '../../base/GSID.mjs';
-import { KEY } from '../../base/GSConst.mjs';
+import { KEY, GROUP } from '../../base/GSConst.mjs';
 import { PlacementTypes } from '../../properties/placement.mjs';
 import { GSNavElement } from '../Nav.mjs';
 
@@ -20,6 +20,7 @@ export class GSTabGroupElement extends GSNavElement {
 
   constructor() {
     super();
+    this[GROUP] = 'GS-TAB-HEADER';
   }
    
   firstUpdated(changed) {
@@ -106,14 +107,18 @@ export class GSTabGroupElement extends GSNavElement {
     });
   }
 
+  #updatePanelState(el, state = false) {
+    const panel = this.#findPanel(el);
+    if (panel) panel.active = state;    
+  }
+
+
   /**
    * Callback when tab selected
    * @param {GSTabElement} el 
    */
   onSelected(el) {
-    el?.click();
-    const panel = this.#findPanel(el);
-    if (panel) panel.active = true;
+    this.#updatePanelState(el, true);
   }
 
   /**
@@ -121,12 +126,7 @@ export class GSTabGroupElement extends GSNavElement {
    * @param {GSTabElement} el 
    */
   onDeselected(el) {
-    const panel = this.#findPanel(el);
-    if (panel) panel.active = false;
-  }
-
-  get childTagName() {
-    return 'GS-TAB-HEADER';
+    this.#updatePanelState(el, false);
   }
 
   get tabs() {
@@ -137,12 +137,19 @@ export class GSTabGroupElement extends GSNavElement {
     return this.queryAll('gs-tab-panel', false, true);
   }
 
+  reset() {
+    const me = this;
+    me.panels.forEach((el, idx) => el.active = idx === 0 ? true : false);
+    me.tabs.forEach((el, idx) => el.active = idx === 0 ? true : false);
+    super.reset();
+  }
+
   clear() {
     this.tabs.forEach(t => t.badge = false);
   }
 
   tabByName(name = '', shadow = false) {
-    return super.childByName(name, shadow);
+    return this.query(`gs-tab-header[name="${name}"]`, shadow, true);
   }
 
   panelByName(name = '', shadow = false) {

@@ -10,6 +10,7 @@
 import { GSElement } from '../GSElement.mjs';
 import { GSAttr } from '../base/GSAttr.mjs';
 import { GSAttributeHandler } from '../base/GSAttributeHandler.mjs';
+import { DEF } from '../base/GSConst.mjs';
 import { GSDOM } from '../base/GSDOM.mjs';
 import { GSItem } from '../base/GSItem.mjs';
 import { ElementNavigationController } from '../controllers/ElementNavigationController.mjs';
@@ -27,8 +28,8 @@ export class GSGroupElement extends GSElement {
 
   static properties = {
     // multiple lists with single select across 
-    group : {},
-    storage: {},    
+    group: {},
+    storage: {},
     circular: { type: Boolean },
     multiple: { type: Boolean },
     data: { type: Array },
@@ -53,8 +54,7 @@ export class GSGroupElement extends GSElement {
     Array.from(me.children).forEach(it => {
       GSAttributeHandler.clone(me, it, false);
     });
-  }  
-
+  }
 
   #prerender() {
     const me = this;
@@ -66,18 +66,10 @@ export class GSGroupElement extends GSElement {
       Array.of(...tpl.children).forEach(el => GSDOM.appendChild(me, el));
     }
   }
-  
-  firstUpdated(changed) {
-    const me = this;
-    me.#controller.init();
-    me.#controller.attach(me.#elRef.value);
-    super.firstUpdated(changed);
-    //me.#prerender();
-  }  
 
   willUpdate(changed) {
     const me = this;
-    if (changed.has('data')) {      
+    if (changed.has('data')) {
       me.#prerender();
     }
     super.willUpdate(changed);
@@ -120,6 +112,31 @@ export class GSGroupElement extends GSElement {
     this.#controller.next();
   }
 
+  get [DEF]() {
+    return this.#elRef.value;
+  }
+
+  get first() {
+    return this.#controller.first;
+  }
+
+  get last() {
+    return this.#controller.last;
+  }
+
+  get index() {
+    return this.items.indexOf(this.selected);
+  }
+
+  set index(val = 0) {
+    const me = this;
+    const items = me.items;
+    if (val >= 0 && val < items.length) {
+      me.reset();
+      items[val].click();
+    }
+  }
+
   /**
    * Reset focus / selection
    */
@@ -127,29 +144,19 @@ export class GSGroupElement extends GSElement {
     this.#controller.reset();
   }
 
-  /**
-   * Element navigation filter where we can select if focused element is navigable
-   * @param {*} el 
-   * @returns 
-   */
-  isNavigable(el) {
-    return el?.tagName === this.childTagName;
-  }
-
   onDataRead(data) {
     this.data = data;
   }
 
   onBusEvent(e) {
-    let owner, item;  
-    ({owner, item} = e.detail);
+    const { owner, item } = e.detail;
     if (owner != this) {
       if (!item?.disabled || owner?.selectable) {
         this.reset();
       }
     }
   }
-  
+
   onSelected(el) {
     this.#controllerGroup.notify(el);
   }
@@ -162,13 +169,8 @@ export class GSGroupElement extends GSElement {
     return this.#controller.selected;
   }
 
-  get childTagName() {
-    return '';
-  }
-    
   get items() {
-    const me = this;
-    return me.queryAll(me.childTagName, true);
+    return this.#controller.items;
   }
 
   get generated() {
@@ -176,19 +178,13 @@ export class GSGroupElement extends GSElement {
   }
 
   get active() {
-    const me = this;
-    const list = me.items.filter(el => el.hasAttribute('active'));
-    return me.multiple ? list : list.pop();
-  }
-
-  childByName(name = '', shadow = false) {
-    return this.query(`${this.childTagName}[name="${name}"]`, shadow, true);
+    return this.#controller.selected;
   }
 
   settings(el) {
     const tagName = customElements.getName(el)?.toUpperCase() || 'GS-ITEM';
     const cfg = GSElement.allProperties(el);
-    const items = Array.from(this.children).filter(e => e.tagName === tagName ).map(el => GSAttr.proxify(el, cfg));
+    const items = Array.from(this.children).filter(e => e.tagName === tagName).map(el => GSAttr.proxify(el, cfg));
     const active = items.filter(el => el.active);
     active.forEach((el, idx) => el.active = idx === 0);
     return items;

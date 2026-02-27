@@ -2,6 +2,7 @@
  * Copyright (C) 2015, 2026; Green Screens Ltd.
  */
 
+import { GROUP } from '../base/GSConst.mjs';
 import { html, ifDefined } from '../lib.mjs';
 import { GSGroupElement } from './Group.mjs';
 
@@ -16,6 +17,7 @@ export class GSListElement extends GSGroupElement {
     this.circular = false;
     this.multiple = false;
     this.selectable = false;
+    this[GROUP] = 'GS-LIST-ITEM';
   }
 
   shouldUpdate(changed) {
@@ -35,6 +37,7 @@ export class GSListElement extends GSGroupElement {
   }
 
   reset() {
+    super.reset();
     this.items.forEach(el => el.reset());
     this.notify();
   }
@@ -55,11 +58,7 @@ export class GSListElement extends GSGroupElement {
   isNavigable(el) {
     return super.isNavigable(el) && this.selectable;
   }
-
-  get childTagName() {
-    return 'GS-LIST-ITEM';
-  }
-
+ 
   static {
     this.define('gs-list');
   }

@@ -6,6 +6,7 @@ export const KEY = Symbol.for('gs-element');
 export const OWNER = Symbol.for('gs-owner');
 export const PARENT = Symbol.for('gs-parent');
 export const HANDLER = Symbol.for('gs-handler');
+export const GROUP = Symbol.for('gs-group');
 export const EVENTID = Symbol.for('gs-event-id')
 export const NEXT = Symbol.for('gs-next');
 export const PREV = Symbol.for('gs-prev');

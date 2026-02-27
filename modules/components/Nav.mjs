@@ -3,6 +3,7 @@
  */
 
 import { html, ifDefined } from '../lib.mjs';
+import { GROUP } from '../base/GSConst.mjs';
 import { GSGroupElement } from './Group.mjs';
 import { PlacementTypes, nav, placement } from '../properties/index.mjs';
 
@@ -20,10 +21,11 @@ export class GSNavElement extends GSGroupElement {
     this.multiple = false;
     this.type = 'pills';
     this.placement = 'start';
+    this[GROUP] = 'GS-NAV-ITEM';
   }
 
   shouldUpdate(changed) {
-    return this.data.length > 0 || this.query('gs-nav-item', false, true);
+    return this.data.length > 0 || this.items.length > 0;
   }
   
   renderWrappedClass() {
@@ -58,18 +60,6 @@ export class GSNavElement extends GSGroupElement {
         title="${ifDefined(o.title)}">
         </gs-nav-item>`;
     });
-  }
-
-  /**
-   * Callback when child element focused
-   * @param {*} el 
-   */
-  onFocused(el) {
-    // el?.click();
-  }
-
-  get childTagName() {
-    return 'GS-NAV-ITEM';
   }
 
   static {

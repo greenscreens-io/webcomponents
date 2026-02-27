@@ -349,7 +349,7 @@ export class GSDialogElement extends GSElement {
   }
 
   get tab() {
-    return this.query('gs-tab', true, true);
+    return this.query('gs-tab-group', true, true);
   }
 
   get #dialog() {
