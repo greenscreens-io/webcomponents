@@ -10,7 +10,7 @@
 import { GSElement } from '../GSElement.mjs';
 import { GSAttr } from '../base/GSAttr.mjs';
 import { GSAttributeHandler } from '../base/GSAttributeHandler.mjs';
-import { DEF } from '../base/GSConst.mjs';
+import { DEF, HANDLER } from '../base/GSConst.mjs';
 import { GSDOM } from '../base/GSDOM.mjs';
 import { GSItem } from '../base/GSItem.mjs';
 import { ElementNavigationController } from '../controllers/ElementNavigationController.mjs';
@@ -47,6 +47,20 @@ export class GSGroupElement extends GSElement {
     me.#controllerGroup = new GroupController(me);
   }
 
+  addController(controller) {
+    if (controller.isNavigation) {
+      const me = this;
+      me[HANDLER] ??= new Set();
+      me[HANDLER]?.add(controller);
+    }
+    super.addController?.(controller);
+  }
+
+  removeController(controller) {
+    this[HANDLER]?.delete(controller);
+    super.removeController?.(controller);
+  }
+  
   connectedCallback() {
     super.connectedCallback();
     const me = this;
@@ -157,8 +171,21 @@ export class GSGroupElement extends GSElement {
     }
   }
 
+  onReset(el) {
+    this[HANDLER]?.forEach(c => c.onReset?.(el));
+  }
+  
+  onFocused(el) {
+    this[HANDLER]?.forEach(c => c.onFocused?.(el));
+  }
+
+  onDeselected(el) {
+    this[HANDLER]?.forEach(c => c.onDeselected?.(el));
+  }
+
   onSelected(el) {
     this.#controllerGroup.notify(el);
+    this[HANDLER]?.forEach(c => c.onSelected?.(el));
   }
 
   get focused() {

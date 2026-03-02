@@ -160,9 +160,16 @@ export class GSDialogElement extends GSElement {
 
   addController(controller) {
     if (controller.isDialog) {
-      this[HANDLER]?.add(controller);
+      const me = this;
+      me[HANDLER] ??= new Set();
+      me[HANDLER]?.add(controller);
     }
     super.addController?.(controller);
+  }
+
+  removeController(controller) {
+    this[HANDLER]?.delete(controller);
+    super.removeController?.(controller);
   }
 
   afterOpen() {

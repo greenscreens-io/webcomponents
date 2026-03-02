@@ -178,7 +178,9 @@ export class GSFormElement extends GSElement {
 
   addController(controller) {
     if (controller.isForm) {
-      this[HANDLER]?.add(controller);
+      const me = this;
+      me[HANDLER] ??= new Set();
+      me[HANDLER]?.add(controller);
     }
     super.addController?.(controller);
   }
