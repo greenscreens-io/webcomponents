@@ -28,6 +28,17 @@ GSTabGroup is a renderer for Bootstrap Tab Panel
 | title              | Tab panel title                                          |
 | template           | Tab panel content loaded from external resource          |
  
+## Events 
+---
+All events from [GSGroup](./GSGroup.md).
+
+<br>
+
+## Custom controllers
+
+Controller definition is the same as from [GSGroup](./GSGroup.md).
+
+<br>
  
 ## Example
 ---

@@ -23,7 +23,18 @@ NOTE: GS-LIST-ITEM supports [GSAttributeHandler](../base/GSAttributeHandler.md) 
 
 <br>
  
- 
+## Events 
+---
+All events from [GSGroup](./GSGroup.md).
+
+<br>
+
+## Custom controllers
+
+Controller definition is the same as from [GSGroup](./GSGroup.md).
+
+<br>
+
 ## Example
 ---
  

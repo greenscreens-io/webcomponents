@@ -15,6 +15,31 @@ GSGroup WebComponent handles grouped elements navigation, selection and focus fo
 | storage            | Load list items from JSON storage.                       |
 | data               | Load list items from JSON data.                          |
 
+## Events 
+---
+ 
+| Name               | Description                                              |
+|--------------------|----------------------------------------------------------|
+| group-reset        | Trigger when position is reset to the first element      |
+| group-focused      | Trigger when navigable element is focused                |
+| group-selected     | Trigger when navigable element is selected               |
+| group-deselected   | Trigger when navigable element is deselected             |
+
+<br>
+
+## Custom controllers
+
+To register a custom controller, use getter "isNavigation" 
+
+```JavaScript
+class MyController {
+    get isNavigation() {return true};
+    onReset(el) {}
+    onFocused(el) {}
+    onDeselected(el) {}
+    onSelected(el) {}
+}
+```
 
 <br>
 
