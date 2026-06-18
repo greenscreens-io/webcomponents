@@ -61,8 +61,21 @@ export default class GSTooltip extends GSElement {
         super();
     }
 
+   	connectedCallback() {
+        super.connectedCallback();
+        // justified text
+        const ccs = {
+            "text-align": "justify !important",
+            "text-justify": "inter-word",
+            "word-break": "keep-all",
+            "hyphens": "none"
+        };
+        GSCacheStyles.setRule(this.#tipID, ccs);
+    }
+
     disconnectedCallback() {
         GSCacheStyles.deleteRule(this.#arrowID);
+        GSCacheStyles.deleteRule(this.#tipID);
         super.disconnectedCallback();
     }
 
@@ -90,12 +103,21 @@ export default class GSTooltip extends GSElement {
         return `${this.styleID}-arrow`;
     }
 
-    get #html() {
+    get #tipID() {
+        return `${this.styleID}-tip`;
+    }
+
+    async #html() {
         const me = this;
+        let content = me.preprocess ? me.#parse(me.title) : me.title; 
+        if (me.title.startsWith('#')) {
+            content = await me.getTemplate(me.title);
+        }
+
         return `
          <div class="tooltip bs-tooltip-auto fade " data-popper-placement="${me.placement}" role="tooltip">
             <div class="tooltip-arrow ${me.#arrowID}" data-css-id="${me.#arrowID}"></div>
-            <div class="tooltip-inner">${me.title}</div>
+            <div class="tooltip-inner ${me.#tipID}" data-css-id="${me.#tipID}">${content}</div>
         </div>        
         `;
     }
@@ -129,6 +151,14 @@ export default class GSTooltip extends GSElement {
         return GSAttr.set(me, 'title', val);
     }
 
+    get preprocess() {
+        return GSAttr.getAsBool(this, 'preprocess');
+    }
+
+    set preprocess(val = false) {
+        return GSAttr.setAsBool(this, 'preprocess', val);
+    }
+
     get placement() {
         const me = this;
         return GSAttr.get(me, 'placement', me.target?.dataset?.bsPlacement || 'top');
@@ -147,8 +177,9 @@ export default class GSTooltip extends GSElement {
      */
     show() {
         const me = this;
-        requestAnimationFrame(() => {
-            const el = GSDOM.parse(me.#html, true);
+        requestAnimationFrame(async () => {
+            const content = await me.#html();
+            const el = GSDOM.parse(content, true);
             me.insertAdjacentElement('afterbegin', el);
             me.#popup();
             GSDOM.toggleClass(me.firstElementChild, 'show', true);
@@ -177,13 +208,99 @@ export default class GSTooltip extends GSElement {
     }
 
     /**
+     * A simple modified MarkDown
+     * 
+     * &#10; - new line 
+     * ** - bold
+     * *  - italic
+     * *** - both
+     * --- hr
+     * $ - strong 
+     * % - small 
+     * 
+     * @param {*} text 
+     * @returns 
+     */
+    #parse(text) {
+        if (!text) return '';
+
+        // 1. Normalize line breaks and handle common HTML entities
+        let normalized = text.replace(/&#10;/g, '\n');
+
+        // 2. Tokenize or split safely by newlines OR sentence endings (. ! ?) 
+        // This lookbehind handles spaces after punctuation perfectly without losing the character.
+        let lines = normalized
+            .split(/(?<=[!\.\?]+)(?=\s|---|%)|\n/)
+            .map(line => line.trim())
+            .filter(line => line.length > 0);
+
+        let htmlOutput = '';
+        let inSmallBlock = false;
+
+        for (let i = 0; i < lines.length; i++) {
+            let line = lines[i];
+
+            // Structural Rule: Small block toggle
+            if (line === '%') {
+                if (!inSmallBlock) {
+                    htmlOutput += '<small class="text-warning ">';
+                    inSmallBlock = true;
+                } else {
+                    htmlOutput += '</small>';
+                    inSmallBlock = false;
+                }
+                continue;
+            }
+
+            // Structural Rule: Horizontal Rule
+            if (line === '---') {
+                htmlOutput += '<hr class="">';
+                continue;
+            }
+
+            // Inline formatting replacements (Fixed regex syntax)
+            line = line
+                .replace(/\$(.*?)\$/g, '<strong>$1</strong>')
+                .replace(/\*\*\*(.*?)\*\*\*/g, '<strong><em>$1</em></strong>')
+                .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                .replace(/\*(.*?)\*/g, '<em>$1</em>');
+
+            // Render layout tags based on block state
+            if (inSmallBlock) {
+                // Check if the line is purely a strong label header (e.g., <strong>NOTE:</strong>)
+                if (line.startsWith('<strong>') && line.endsWith('</strong>')) {
+                    htmlOutput += line + ' ';
+                } else {
+                    // Mimic the exact spacing requirements from your target template
+                    let pClass = htmlOutput.endsWith('</strong> ') ? 'mb-1' : '';
+                    if (pClass) {
+                        htmlOutput += `<p class="${pClass}">${line}</p> `;
+                    } else {
+                        htmlOutput += `<p>${line}</p>`;
+                    }
+                }
+            } else {
+                // Default outer paragraphs
+                htmlOutput += `<p class="text-start mb-1">${line}</p>`;
+            }
+        }
+
+        // Fallback cleanup if structural tags are left unclosed
+        if (inSmallBlock) {
+            htmlOutput += '</small>';
+        }
+
+        return htmlOutput;
+    }
+
+    /**
      * Check if element has attached tooltip
      * @param {HTMLElement} el 
      * @returns {boolean} 
      */
     static #hasTooltip(el) {
-        return (el?.firstElementChild || el?.nextElementSibling) instanceof GSTooltip;
-    }
+    return (el?.firstElementChild || el?.nextElementSibling) instanceof GSTooltip;
+}
 
     /**
      * Check if standard element is tooltip defined
@@ -191,8 +308,8 @@ export default class GSTooltip extends GSElement {
      * @returns {boolean} 
      */
     static #isTooltip(el) {
-        return el?.title && el?.dataset?.bsToggle === 'tooltip';
-    }
+    return el?.title && el?.dataset?.bsToggle === 'tooltip';
+}
 
 }
 

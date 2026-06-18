@@ -1,5 +1,8 @@
 # [WebComponents](https://webcomponents.greenscreens.ltd/) for [Bootstrap 5.2.0+](https://getbootstrap.com/)
 
+# Release v1.9.14 (18.06.2026.)
+ - GSTooltip - added preprocessing, style improved
+
 # Release v1.9.13 (13.02.2026.)
  - Fix GSInputEx - masked input
 

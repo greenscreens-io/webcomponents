@@ -77,7 +77,7 @@ export default class GSPopup extends GSElement {
             });
         }
 
-        return `<div class="position-${me.position} ${me.css} ${state} ${me.styleID}"  data-css-id="${this.styleID}"><slot></slot></div>`;
+        return `<div class="position-${me.position} ${me.css} ${state} ${me.styleID}"  data-css-id="${me.styleID}"><slot></slot></div>`;
     }
 
     async onBeforeReady() {
