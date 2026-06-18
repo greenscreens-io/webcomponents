@@ -1,5 +1,9 @@
 # [WebComponents](https://webcomponents.greenscreens.ltd/).
 
+# Release v2.2.3 FINAL (18.06.2026.)
+ - GSTooltip - added preproecssing
+ - GSTooltip - style improvement
+
 # Release v2.2.2 FINAL (02.03.2026.)
  - GSDialog - new callbacks and events for open/close
  - GSDialog - callback handlers suppport addded
