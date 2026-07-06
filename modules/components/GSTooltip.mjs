@@ -117,7 +117,7 @@ export default class GSTooltip extends GSElement {
         return `
          <div class="tooltip bs-tooltip-auto fade " data-popper-placement="${me.placement}" role="tooltip">
             <div class="tooltip-arrow ${me.#arrowID}" data-css-id="${me.#arrowID}"></div>
-            <div class="tooltip-inner ${me.#tipID}" data-css-id="${me.#tipID}">${content}</div>
+            <div class="tooltip-inner ${me.#tipID}" data-css-id="${me.#tipID}">${content.replaceAll('&nbsp;', ' ')}</div>
         </div>        
         `;
     }

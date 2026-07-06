@@ -44,6 +44,7 @@ export default class Login extends GSAsbtractDialog {
         super.connectedCallback();
         const me = this;
         //me.visible = true;
+        me.autovalidate = false;
         me.cancelable = false;
         me.align = 'center';
         me.cssTitle = 'd-flex justify-content-center w-100';

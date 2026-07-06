@@ -25,6 +25,7 @@ export default class GSAsbtractDialog extends GSDialog {
     connectedCallback() {
         super.connectedCallback();
         const me = this;
+        me.autovalidate = true;
         me.cssHeader = 'p-3';
         //me.cssTitle = 'fs-5 fw-bold text-muted';
         //me.cssBody = 'p-0';

@@ -107,8 +107,15 @@ export default class GSDialog extends GSElement {
   }
 
   async onFormInit(form, data) {
+    const me = this;
     form?.reset();
-    if (form && data) form.data = data;
+    if (form && data) {
+      form.data = data;
+      if (me.autovalidate) {
+        // form.isValid ? me.enable () : me.disable();	
+        me.#buttonOkEl.disabled =  !form.isValid;
+      }
+    } 
   }
 
   #notify(cfg) {
@@ -410,7 +417,15 @@ export default class GSDialog extends GSElement {
   set visible(val = false) {
     const me = this;
     if (me.#disabled && val === false) return;    
-    GSAttr.setAsBool(this, 'visible', val);
+    GSAttr.setAsBool(me, 'visible', val);
+  }
+
+  get autovalidate() {
+    return GSAttr.getAsBool(this, 'autovalidate', false);
+  }
+
+  set autovalidate(val = false) {
+    GSAttr.setAsBool(this, 'autovalidate', val);
   }
 
   get closable() {

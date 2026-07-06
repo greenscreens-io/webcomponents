@@ -1,5 +1,9 @@
 # [WebComponents](https://webcomponents.greenscreens.ltd/) for [Bootstrap 5.2.0+](https://getbootstrap.com/)
 
+# Release v1.9.15 (06.07.2026.)
+ - GSTooltip - replacing space escape codes with real space
+ - GSDialog - add autovalidate
+
 # Release v1.9.14 (18.06.2026.)
  - GSTooltip - added preprocessing, style improved
 
