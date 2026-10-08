@@ -1,0 +1,76 @@
+
+<gs-form-group css="m-1" name="blockPrinter" label="Virtual Printer"
+    description="Disable or enable users to start virtual printer.">
+    <template>
+        <select class="form-select" id="blockPrinter" name="blockPrinter" required>
+            <option selected value="false">Enabled</option>
+            <option value="true">Disabled</option>
+        </select>        
+    </template>    
+</gs-form-group>
+
+<gs-form-group css="m-1" name="createPrinter" label="Auto create printer"
+    description="Automatic printer device and writer creation on request. Service user must have *IOSYSCFG authority.">
+    <template>
+        <select class="form-select" id="createPrinter" name="createPrinter" required>
+            <option value="true">Enabled</option>
+            <option selected value="false">Disabled</option>
+        </select>        
+    </template>    
+</gs-form-group>
+
+<gs-form-group css="m-1" name="verifyPrinter" label="Verify Printer"
+    description="Prevent creating printer session before sign-on to the system.">
+    <template>
+        <select class="form-select" id="verifyPrinter" name="verifyPrinter" required>
+            <option selected value="true">Enabled</option>
+            <option value="false">Disabled</option>
+        </select>        
+    </template>    
+</gs-form-group>
+
+<gs-form-group css="m-1" name="mailPrint" label="Mail Print"
+    description="Enable printer device mailing feature detection.">
+    <template>
+        <select class="form-select" id="mailPrint" name="mailPrint" required>
+            <option value="true">Enabled</option>
+            <option selected value="false">Disabled</option>
+        </select>        
+    </template>    
+</gs-form-group>
+
+<gs-form-group css="m-1" name="drawer1" label="Drawer 1"
+    description="Default paper size for printer sessions for drawer 1. When user select DEFAULT, this option will be used.">
+    <template>
+        <select class="form-select" name="drawer1" required>
+            <option value="1">LETTER</option>
+            <option value="2">LEGAL</option>
+            <option value="3">EXECUTIVE</option>
+            <option value="4">A4</option>
+            <option value="5">A5</option>
+            <option value="6">B5</option>
+            <option value="9" selected>LEDGER</option>
+            <option value="10">A3</option>
+            <option value="11">B4</option>
+            <option value="12">NONE</option>
+        </select>        
+    </template>    
+</gs-form-group>
+
+<gs-form-group css="m-1" name="drawer2" label="Drawer 2"
+    description="Default paper size for printer sessions for drawer 2. When user select DEFAULT, this option will be used.">
+    <template>
+        <select class="form-select" name="drawer2" required>
+            <option value="1">LETTER</option>
+            <option value="2">LEGAL</option>
+            <option value="3">EXECUTIVE</option>
+            <option value="4">A4</option>
+            <option value="5">A5</option>
+            <option value="6">B5</option>
+            <option value="9" selected>LEDGER</option>
+            <option value="10">A3</option>
+            <option value="11">B4</option>
+            <option value="12">NONE</option>
+        </select>
+    </template>
+</gs-form-group>

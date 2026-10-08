@@ -1,9 +1,9 @@
-<gs-form-group css="m-1" name="key" label="API Key" autocopy autoselect readonly
+<gs-form-group css="m-1" name="key" label="API Key" autocopy autoselect readonly  
     description="IBM i server virtual group name as defined in host configurations.">
 </gs-form-group>
 
 <gs-form-group css="m-1" name="uuid" label="UUID" required css-field="text-uppercase"
-    maxlength="64" pattern="\*|[a-zA-Z10-9_]{1,10}" 
+    maxlength="64" pattern="\*|[a-zA-Z10-9_]{1,10}"  autofocus 
     description="IBM i server virtual name as defined in host configurations.">
 </gs-form-group>
 
@@ -22,8 +22,12 @@
     description="Enable or disable this key.">
     <template>
         <select class="form-select" id="active" name="active" required>
-            <option value="true">Enabled</option>
+            <option value="true" selected>Enabled</option>
             <option value="false">Disabled</option>
         </select>
     </template>
+</gs-form-group>
+
+<gs-form-group css="m-1" name="note" label="Note" 
+	maxlength="256" description="Key description">
 </gs-form-group>

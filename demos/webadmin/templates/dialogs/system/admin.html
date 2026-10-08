@@ -1,4 +1,28 @@
-<gs-form-group css="m-1 text-uppercase" name="adminDisplay" label="Admin Display" 
-    maxlength="10" pattern="[a-zA-Z0-9]{1,10}" autocomplete="off" value="DSPGSADMIN"
+<gs-form-group css="m-1" css-field="text-uppercase" name="adminDisplay" label="Admin Display"    
+    maxlength="10" pattern="[a-zA-Z0-9]{1,10}" autocomplete="off" value="DSPGSADMIN"  autofocus 
     description="Display Name for administration. Does not require License Key to access IBM host. *DEVD will be generated automatically upon product install on the host machine.">
 </gs-form-group>
+
+<gs-form-group css="m-1" name="adminAccess" label="Network type" required
+    description="Enable access to this admin console from local network or all networks (from Internet).">
+    <template>
+      <select class="form-select" id="adminAccess" name="adminAccess" required>              
+         <option value="0" selected>All networks</option>
+         <option value="1">Remote network only</option>
+         <option value="2">Local network only</option>
+         <option value="3">Local computer only</option>            
+      </select>
+    </template>
+</gs-form-group> 
+
+<gs-form-group css="m-1" name="adminLogin" label="Login Type" required
+    description="Admin console login types.<br>SSO user group is 'GS Admins'.<br>IBM user group is 'GSADMINS'.">
+    <template>
+      <select class="form-select" id="adminLogin" name="adminLogin" required>              
+         <option value="0" selected>All types</option>
+		 <option value="1">Simple only</option>
+		 <option value="2">SSO only</option>
+		 <option value="3">IBM only</option>  	            
+      </select>
+    </template>
+</gs-form-group> 

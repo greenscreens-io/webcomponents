@@ -6,7 +6,7 @@
     NOTE: Generated URLs must contain login username and password..">
     <template>
         <select class="form-select" id="bypass" name="bypass">
-            <option value="0">Disabled</option>
+            <option selected value="0">Disabled</option>
             <option value="1">Strict</option>
             <option value="2">Flexible</option>
         </select>
@@ -16,8 +16,8 @@
 <gs-form-group css="m-1" name="transfer" label="File transfer"
     description="Select which transfer types are allowed. Default is NONE.">
     <template>
-        <select class="form-select"  name="transfer" required>
-            <option value="0">None</option>
+        <select class="form-select" id="transfer" name="transfer" required>
+            <option selected value="0">None</option>
             <option value="1">Both</option>
             <option value="2">Download</option>
             <option value="3">Upload</option>
@@ -42,6 +42,7 @@
     <option value="604800">1 Week</option>
 </datalist>
 
+<!-- 
 <gs-form-group css="m-1" name="mobileAccess" label="Mobile Access"
     description="Allow use by mobile application.">
     <template>
@@ -51,31 +52,35 @@
         </select>        
     </template>
 </gs-form-group>
+ -->
 
-<gs-form-group css="m-1" name="localOnly" label="Network access"
+<gs-form-group css="m-1" name="networkAccess" label="Network access"
     description="Allow access from all networks or local network only address range.">
     <template>
-        <select class="form-select" id="localOnly" name="localOnly">
-            <option selected value="false">All networks</option>
-            <option value="true">Local network only</option>
+        <select class="form-select" id="networkAccess" name="networkAccess">        
+            <option selected value="0" selected>All networks</option>
+            <option value="1">Remote network only</option>
+            <option value="2">Local network only</option>
+            <option value="3">Local computer only</option>            
         </select>        
     </template>
 </gs-form-group>
 
-<gs-form-group css="m-1" name="fingerprintFilter" label="Prevent URL Sharing"
-    description="Prevents sharing of encrypted URL between browsers by validating browser fingerprint.">
+<gs-form-group css="m-1" name="urlProtection" label="URL Protection"
+    description="Prevents sharing of encrypted URL between browsers by validating browser fingerprint or IP hash.">
     <template>
-        <select class="form-select" id="fingerprintFilter" name="fingerprintFilter">
-            <option selected value="false">Disabled</option>
-            <option value="true">Enabled</option>
+        <select class="form-select" id="urlProtection" name="urlProtection">
+            <option selected value="0">NONE</option>
+            <option value="1">Fingerprint</option>
+            <option value="2">Hash</option>
         </select>        
     </template>
 </gs-form-group>
 
-<gs-form-group css="m-1" name="screenLog" label="Screen logging"
+<gs-form-group css="m-1" name="logging" label="Screen logging"
     description="Enable user to initiate screen binary logging. (used for debugging or for screen saving for modernization).">
     <template>
-        <select class="form-select" id="screenLog" name="screenLog">
+        <select class="form-select" id="logging" name="logging">
             <option selected value="false">Disabled</option>
             <option value="true">Enabled</option>
         </select>        
@@ -92,6 +97,20 @@
     </template>
 </gs-form-group>
 
+<gs-form-group css="m-1" name="signon" label="Signon Screen"
+    description="Block automated access to 5250 sign-on screen optional input fields.">
+    <template>
+        <select class="form-select" id="signon" name="signon">
+            <option selected value="0">Disabled</option>
+            <option value="0">Default</option>
+            <option value="1">Block Program</option>
+            <option value="2">Block Menu</option>
+            <option value="3">Block Menu & Program</option>
+        </select>        
+    </template>
+</gs-form-group>
+
+
 <gs-form-group css="m-1" name="sql" label="SQL"
     description="Enable SQL execution for data import/export.">
     <template>
@@ -105,13 +124,16 @@
 <gs-form-group css="m-1" name="verification" label="Verification"
     description="NONE - Standard login mode
     OTP - Enable 2FA (2-factor authentication) with TOTP token
-    FIDO - Authentication with FIDO1/FIDO2 devices as mobile fingerprint scan or security key.">
+    FIDO - Authentication with PassKey (FIDO devices) as a mobile fingerprint scan or a security key.">
     <template>
         <select class="form-select" id="verification" name="verification">
             <option selected value="0">NONE</option>
-            <option value="1">OTP</option>
-            <option value="2">FIDO 1</option>
-            <option value="3">FIDO 2</option>
+            <option value="1">OTP 1 (verify)</option>
+            <option value="2">OTP 2 (bypass)</option>
+            <option value="3">OTP 3 (sso)</option>
+            <option value="4">FIDO 1 (verify)</option>
+            <option value="5">FIDO 2 (bypass)</option>
+            <option value="6">FIDO 3 (sso)</option>
         </select>        
     </template>
 </gs-form-group>

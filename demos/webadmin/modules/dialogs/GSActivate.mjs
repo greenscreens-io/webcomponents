@@ -1,5 +1,5 @@
 /*
-* Copyright (C) 2015, 2022 Green Screens Ltd.
+* Copyright (C) 2015, 2026 Green Screens Ltd.
 */
 
 /**
@@ -26,11 +26,29 @@ export default class GSActivate extends GSAsbtractDialog {
         return 'Add license key to the IBM i server';
     }
 
-    async onFormInit(form, data) {
-        data = data || form?.data;
-        data = { ipAddress: data?.ipAddress || '' };
-        super.onFormInit(form, data);
+	async open(data) {
+		this.form?.reset();
+		const obj = {
+			ipAddress : data?.ipAddress ||'',
+			user : data?.user ||'',
+			password : data?.password ||'',
+			usglimit : data?.usglimit || 0,
+		};				
+		super.open(obj);
+	}
+	
+	/*
+	async onFormInit(form, data) {
+		data = data || form?.data;
+        const obj = {
+			ipAddress : data?.ipAddress ||'',
+			user : data?.user ||'',
+			password : data?.password ||'',
+			usglimit : data?.usglimit || 0,
+		};		
+		super.onFormInit(form, obj);
     }
+	*/
 
     async onData(data) {
         const o = DEMO ? DEMO : await io.greenscreens.Activator.activate(data);

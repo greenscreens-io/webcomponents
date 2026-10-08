@@ -46,10 +46,10 @@
             <gs-form-group css="mt-2" name="date" mask="DD-MM-YYYY" label="Date" description="Masked date input"></gs-form-group>
             <gs-form-group css="mt-2" name="hexa" mask="XXXXXXXXXXXXXXXX" label="Hexadecimal input with" description="Masked hexadecimal input"></gs-form-group>
 
-            <gs-form-group css="mt-2" name="client.ip" label="IP Address" description="IP Address, CIDR or wildcard">
-                <gs-item data-pattern="^(?:(?:25[0-5]|(?:2[0-4]|1\d|[1-9]|)\d)\.?\b){4}(?:/[1-9]{1,2})?$"></gs-item>
-                <gs-item data-pattern="^(?:(?:25[0-5]|(?:2[0-4]|1\d|[1-9]|)\d|\*)\.){3}(?:(?:25[0-5]|(?:2[0-4]|1\d|[1-9]|)\d|\*))$"></gs-item>
-                <gs-item data-pattern="^(?:(?:(?:25[0-5]|(?:2[0-4]|1\d|[1-9]|)\d)(?:\-(?:25[0-5]|(?:2[0-4]|1\d|[1-9]|)\d))?)\.?){3}(?:(?:25[0-5]|(?:2[0-4]|1\d|[1-9]|)\d)(?:-(?:25[0-5]|(?:2[0-4]|1\d|[1-9]|)\d))?)$"></gs-item>
+            <gs-form-group css="mt-2" name="client.ip" label="IP Address" description="IP Address, CIDR or wildcard" required>
+                <gs-item data-type="0" data-pattern1="^(?:(?:0|[1-9][0-9]?|1[0-9]{2}|2[0-4][0-9]|25[0-5]|\*)\.){3}(?:0|[1-9][0-9]?|1[0-9]{2}|2[0-4][0-9]|25[0-5]|\*)$"></gs-item>
+                <gs-item data-type="1" data-pattern1="^(?:(?:0|[1-9][0-9]?|1[0-9]{2}|2[0-4][0-9]|25[0-5]|\*)\.){3}(?:0|[1-9][0-9]?|1[0-9]{2}|2[0-4][0-9]|25[0-5]|\*)/(?:[1-9]|[12][0-9]|3[0-2])$"></gs-item>
+                <gs-item data-pattern1="^(?:(?:0|[1-9]\d?|1\d{2}|2[0-4]\d|25[0-5])(?:-(?:0|[1-9]\d?|1\d{2}|2[0-4]\d|25[0-5]))?\.){3}(?:0|[1-9]\d?|1\d{2}|2[0-4]\d|25[0-5])(?:-(?:0|[1-9]\d?|1\d{2}|2[0-4]\d|25[0-5]))?$"></gs-item>
             </gs-form-group>
 
             <gs-form-group css="mt-2" name="client.user" placeholder="...enter user name" label="User" description="Login user"></gs-form-group>

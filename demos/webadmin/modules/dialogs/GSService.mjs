@@ -1,12 +1,12 @@
 /*
-* Copyright (C) 2015, 2022 Green Screens Ltd.
+* Copyright (C) 2015, 2026 Green Screens Ltd.
 */
 
 /**
  * A module loading GSService class
  * @module dialogs/GSService
  */
-import {GSAttr,GSUtil} from '/webcomponents/release/esm/io.greenscreens.components.all.esm.min.js';
+ import { GSAttr, GSUtil } from '/webcomponents/release/esm/io.greenscreens.components.all.esm.min.js';
 import GSAsbtractDialog from './GSAsbtractDialog.mjs';
 
 export default class GSService extends GSAsbtractDialog {
@@ -45,9 +45,11 @@ export default class GSService extends GSAsbtractDialog {
         }
 
         if (GSUtil.isBool(data.value)) {
+			GSAttr.set(me.valueField, 'value');
             me.valueField.type = 'checkbox';
             me.valueField.classList.value = 'form-check-input';
             me.valueField.parentElement.classList.value = 'form-check form-switch fs-5';
+			//me.valueField.checked = GSUtil.asBool(data.value); 
         }
 
         super.open(data);
@@ -59,15 +61,15 @@ export default class GSService extends GSAsbtractDialog {
         const type = GSAttr.get(me.valueField, 'type');
 
         if (type === 'checkbox') {
-            data.value = me.valueField.checked === true;
+            data.value = GSUtil.asBool(me.valueField?.checked);
         }
 
         if (type === 'number') {
             data.value = parseInt(data.value || 0) || 0;
         }
 
-        const o = DEMO ? DEMO : await io.greenscreens.Tweaks.set(data.module, data.property, data.value);
-
+        const o = DEMO ? DEMO : await io.greenscreens.ServiceProperties.set(data.module, data.property, data.value);
+		super.onData();
         return o.success;
     }
 

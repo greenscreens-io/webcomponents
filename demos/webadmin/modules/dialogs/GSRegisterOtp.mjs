@@ -1,5 +1,5 @@
 /*
-* Copyright (C) 2015, 2022 Green Screens Ltd.
+* Copyright (C) 2015, 2026 Green Screens Ltd.
 */
 
 /**
@@ -8,8 +8,12 @@
  */
 import GSAsbtractDialog from './GSAsbtractDialog.mjs';
 import Utils from '../utils/Utils.mjs';
-import {GSDOM} from '/webcomponents/release/esm/io.greenscreens.components.all.esm.min.js';
 
+import {  GSDOM } from '/webcomponents/release/esm/io.greenscreens.components.all.esm.min.js';
+
+/**
+ * Register OTP for Web Admin console
+ */
 export default class GSRegisterOtp extends GSAsbtractDialog {
 
     static #URL = '/barcode/generator?group=Two%20Dimensional&type=QR&composite=&zoom=4&format=png&eci=-1&attGS1=0&attQR1=&attQR2=3&b64=';
@@ -50,10 +54,10 @@ export default class GSRegisterOtp extends GSAsbtractDialog {
         const b64 = self.btoa(token);
         return `${location.origin}${GSRegisterOtp.#URL}${b64}`;
     }
-
+    
     async onFormInit(form) {
         if (DEMO) return;
-        const o = await io.greenscreens.OAuth.register();
+        const o = await io.greenscreens.Otp.register();
         const me = this;
         me.#download(o.data);
         me.#update(o.data);
@@ -62,8 +66,8 @@ export default class GSRegisterOtp extends GSAsbtractDialog {
 
     async beforeOpen() {
         return DEMO ? Utils.inform(false, 'Not available in DEMO!') : true;
-    }
-
+    }    
+    
     async onData() {
         return true;
     }

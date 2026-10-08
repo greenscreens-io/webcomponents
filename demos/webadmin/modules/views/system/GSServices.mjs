@@ -1,5 +1,5 @@
 /*
-* Copyright (C) 2015, 2022 Green Screens Ltd.
+* Copyright (C) 2015, 2026 Green Screens Ltd.
 */
 
 /**
@@ -20,7 +20,7 @@ export default class GSWorkstations extends BaseViewUI {
     }
 
     async onLoad() {
-        const o = DEMO ? DEMO : await io.greenscreens.Tweaks.list();
+        const o = DEMO ? DEMO : await io.greenscreens.ServiceProperties.list();
         return o.data;
     }
 

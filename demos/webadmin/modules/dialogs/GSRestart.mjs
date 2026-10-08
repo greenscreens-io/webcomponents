@@ -1,5 +1,5 @@
 /*
-* Copyright (C) 2015, 2022 Green Screens Ltd.
+* Copyright (C) 2015, 2026 Green Screens Ltd.
 */
 
 /**
@@ -32,9 +32,9 @@ export default class GSRestart extends GSAsbtractDialog {
 		if (DEMO) return DEMO.success;
         let o = null;
         if (data.type == 'true') {
-        	o  = await io.greenscreens.Server.restart();			
+        	o  = await io.greenscreens.system.Server.restart();			
 		} else {
-        	o  = await io.greenscreens.Server.reload();						
+        	o  = await io.greenscreens.system.Server.reload();						
 		}
         return o?.success;
     }

@@ -1,12 +1,13 @@
 /*
-* Copyright (C) 2015, 2022 Green Screens Ltd.
+* Copyright (C) 2015, 2026 Green Screens Ltd.
 */
 
 /**
  * A module loading GSWorkstation class
  * @module dialogs/GSWorkstation
  */
-import {GSLoader} from '/webcomponents/release/esm/io.greenscreens.components.all.esm.min.js';
+
+import { GSLoader } from '/webcomponents/release/esm/io.greenscreens.components.all.esm.min.js';
 import GSAsbtractDialog from './GSAsbtractDialog.mjs';
 
 export default class GSWorkstation extends GSAsbtractDialog {

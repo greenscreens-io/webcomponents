@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015, 2022 Green Screens Ltd.
+ * Copyright (C) 2015, 2026 Green Screens Ltd.
  */
 
 /**
@@ -8,8 +8,7 @@
  */
 
 import { GSUtil, GSElement, GSEvents } from '/webcomponents/release/esm/io.greenscreens.components.all.esm.min.js';
-
-import Utils from "../utils/Utils.mjs";
+import Utils from '../utils/Utils.mjs';
 
 /**
  * BaseUI handles basic screen data view (used by other UI elements)
@@ -28,12 +27,14 @@ export default class BaseViewUI extends GSElement {
 		super.onReady();
 		if (!me.isConnected) return;
 		//globalThis.GS_LOG_ACTION = true;
+		// add prefix to actions
+		// ection="refresh" => onViewRefresh
 		GSEvents.monitorAction(me, 'view');
 
 		requestAnimationFrame(async () => {
 			if (!me.isConnected) return;
 			await GSUtil.timeout(100);
-			if (me.#table) {
+			if (me.#table) {				
 				me.store.filter = me.#table.filters;
 				me.store.sort = me.#table.sorters;
 				me.#table.on('filter', me.onFilter.bind(me));
@@ -168,7 +169,7 @@ export default class BaseViewUI extends GSElement {
 		
 		try {
 			me.waiter.open();
-			sts = await me.onUpdate(result.detail.data);
+			sts = await me.onUpdate(result.detail.data, modal.form);
 			if (!sts) throw new Error('Record not updated!');
 			// update locally to refresh ui
 			Object.assign(data, result.detail.data);
@@ -183,11 +184,11 @@ export default class BaseViewUI extends GSElement {
 			}
 		}
 
-		if (sts) {		
-			await GSUtil.timeout(1000);
+		if (sts) {
+			await GSUtil.timeout(1000);					
 			await me.store.load();
 			await me.onViewRefresh();
-			Utils.notify.warn('', 'Record updated!', false, 2, 0);											 
+			Utils.notify.warn('', 'Record updated!', false, 2, 0);
 		} else {
 			me.onViewDetails(e);
 		}
@@ -211,7 +212,7 @@ export default class BaseViewUI extends GSElement {
 
 		try {
 			me.waiter.open();
-			sts = await me.onCreate(result.detail.data);
+			sts = await me.onCreate(result.detail.data, modal.form);
 			if (!sts) throw new Error('Record not created!');
 
 		} catch (e) {
@@ -254,7 +255,7 @@ export default class BaseViewUI extends GSElement {
 				await me.store.load();
 			}
 			if (e === true) me.#table.resize();
-            if (e?.detail?.action === 'refresh'){
+			if (e?.detail?.action === 'refresh') {
 				Utils.notify.info('', 'Data refreshed!', false, 2, 0);
 			}
 		} catch (e) {
@@ -263,9 +264,6 @@ export default class BaseViewUI extends GSElement {
 			me.waiter.close();
 		}
 
-	}
-
-	onFilter(e) {
 	}
 
 	/**
@@ -339,8 +337,27 @@ export default class BaseViewUI extends GSElement {
 	async onLoad(e) {
 		return false;
 	}
+	
+	/**
+	 * Called to save view data
+	 * @returns {Array<Object>}
+	 * @throws {Error}
+	 */
+	async onSave(e) {
+		return false;
+	}	
 
+	onFilter(e) {
+		const me = this;
+		const names = me.#table.columns
+			.filter(c => c.list=='fixed' && c.filter)
+			.map(c => c.name);
+		const isRemote = e.detail.filter(o => names.includes(o.name)).length > 0;
+		if (isRemote) me.onViewRefresh();
+	}
+	
 	onError(e) {
 		Utils.handleError(e);
 	}
 }
+

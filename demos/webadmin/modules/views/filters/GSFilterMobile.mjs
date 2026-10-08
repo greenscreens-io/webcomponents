@@ -1,5 +1,5 @@
 /*
-* Copyright (C) 2015, 2022 Green Screens Ltd.
+* Copyright (C) 2015, 2026 Green Screens Ltd.
 */
 
 /**
@@ -19,7 +19,8 @@ export default class GSFilterMobile extends BaseViewUI {
     async onReady() {
         super.onReady();
         const me = this;
-        me.modal.large();
+		if (!me.isConnected) return;
+        me.modal?.large();
         try {
             const o = DEMO ? DEMO : await io.greenscreens.Mobile.isActive();
             me.switcher.selectedIndex = parseInt(o.code, 10);
@@ -49,8 +50,8 @@ export default class GSFilterMobile extends BaseViewUI {
     async onLoad(e) {
         const me = this;
         const filter = me.filter;
-		if (e?.detail?.source?.shiftKey) await io.greenscreens.Mobile.reload();
-        const o = DEMO ? DEMO : await io.greenscreens.Mobile.list(me.store.skip, me.store.limit, filter);
+        if (e?.detail?.source?.shiftKey) await io.greenscreens.Mobile.reload();
+        const o = DEMO ? DEMO : await io.greenscreens.Mobile.list(me.store.page - 1, me.store.limit, filter);
         return o.data;
     }
 
@@ -68,16 +69,4 @@ export default class GSFilterMobile extends BaseViewUI {
         const o = DEMO ? DEMO : await io.greenscreens.Mobile.remove(data.id);
         return o.success;
     }
-
-    async onViewUpload() {
-        const data = await Utils.upload('aplication/json');
-        const o = DEMO ? DEMO : await io.greenscreens.Mobile.import(data);
-        return o.success;
-    }
-
-    async onViewDownload() {
-        const o = DEMO ? DEMO : await io.greenscreens.Mobile.export();
-        Utils.download('filter.nobile.json', o.data, 'aplication/json');
-        return o.success;
-    }     
 }

@@ -16,7 +16,7 @@
 
             <gs-table id="table-main" index=false class="flex-fill"
                 css="table table-light table-hover user-select-none m-0" 
-                css-select="table-active table-primary"
+                css-select="table-active table-primary" 
                 css-header="user-select-none" css-columns="table-secondary">
                 <gs-header>
                     <gs-column title="UUID" name="uuid"></gs-column>
@@ -26,6 +26,7 @@
                     <gs-column title="Port" name="port"></gs-column>
                     <gs-column title="SSL" name="ssl">
                         <gs-item map="true">
+                        	<!--
                             <gs-item value="NONE" map="N/A"></gs-item>
                             <gs-item value="SSL" map="SSL"></gs-item>
                             <gs-item value="SSLv2" map="SSL v2"></gs-item>
@@ -33,7 +34,17 @@
                             <gs-item value="TLSv1" map="TLS v1"></gs-item>
                             <gs-item value="TLSv1.1" map="TLS v1.1"></gs-item>
                             <gs-item value="TLSv1.2" map="TLS v1.2"></gs-item>
-                            <gs-item value="TLSv1.3" map="TLS v1.3"></gs-item>
+                            <gs-item value="TLSv1.3" map="TLS v1.3"></gs-item>                        	 
+                        	 -->
+                            <gs-item value="0" map="N/A"></gs-item>
+                            <gs-item value="1" map="SSL"></gs-item>
+                            <gs-item value="4" map="TLS"></gs-item>
+                            <gs-item value="2" map="SSL v2"></gs-item>
+                            <gs-item value="3" map="SSL v3"></gs-item>
+                            <gs-item value="5" map="TLS v1"></gs-item>
+                            <gs-item value="6" map="TLS v1.1"></gs-item>
+                            <gs-item value="7" map="TLS v1.2"></gs-item>
+                            <gs-item value="8" map="TLS v1.3"></gs-item>
                         </gs-item>
                     </gs-column>
                     <gs-column title="QPWDLVL" name="qpwdlvl">
@@ -80,7 +91,7 @@
                         </gs-item>
                     </gs-column>                    
                 </gs-header>
-                <gs-store src="data/configurations.json" id="sessions" limit=15>
+                <gs-store data-src="data/configurations.json" id="sessions" limit=15>
                     <gs-item name="id"></gs-item>
                     <gs-item name="uuid"></gs-item>
                     <gs-item name="name"></gs-item>
@@ -127,7 +138,7 @@
                     <gs-item name="systemID"></gs-item>
                     <gs-item name="roles"></gs-item>
                     <gs-item name="timestamp"></gs-item>
-                    <gs-item name="proxyName"></gs-item>
+
                     <gs-item name="sso"></gs-item>
                     <gs-item name="active"></gs-item>
                 </gs-store>
@@ -141,6 +152,8 @@
                     <gs-item></gs-item>
                     <gs-item name="Reset Printer" action="reset-printer"></gs-item>
                     <gs-item name="Setup Printer" action="setup-printer"></gs-item>
+                    <gs-item name="Setup Mailing" action="mail-printer"></gs-item>
+                    <gs-item></gs-item>
                     <gs-item name="Validate Server" action="validate-server"></gs-item>                    
                 </gs-context>
                 <gs-pager slot="extra" previous="&laquo;" next="&raquo;" firstlast="false" pages="0"></gs-pager>
@@ -149,7 +162,7 @@
             <gs-admin-dialog id="modal-main" visible="false" css-modal="modal-lg" css-body="p-0" css-header="p-3 " 
                     title="IBM i Configuration" content="//forms/configuration.html">
             </gs-admin-dialog>
-
+            
             <gs-dialog id="modal-validate" visible="false" button-align="center" closable="true" cancelable="false" 
             	css-modal="modal-lg" css-body="text-start p-2 m-1 border" css-header="p-3 " >
                 <h4 slot="title">Validation</h4>
@@ -157,10 +170,9 @@
             
             <gs-admin-dialog-printer-setup id="modal-setup"></gs-admin-dialog-printer-setup>
             <gs-admin-dialog-printer-reset id="modal-reset"></gs-admin-dialog-printer-reset>
+            <gs-admin-dialog-printer-mail  id="modal-mail"></gs-admin-dialog-printer-mail>
             
-            <gs-admin-dialog-activate id="modal-activate"></gs-admin-dialog-activate>
-            <gs-admin-dialog-install id="modal-install"></gs-admin-dialog-install>
-            <gs-admin-dialog-license id="modal-license"></gs-admin-dialog-license>
+            <gs-admin-dialog-activate  id="modal-activate"></gs-admin-dialog-activate>
 
         </div>
 

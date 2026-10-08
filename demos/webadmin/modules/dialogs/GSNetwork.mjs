@@ -1,5 +1,5 @@
 /*
-* Copyright (C) 2015, 2022 Green Screens Ltd.
+* Copyright (C) 2015, 2026 Green Screens Ltd.
 */
 
 /**
@@ -20,11 +20,11 @@ export default class GSNetwork extends GSAsbtractDialog {
     }
 
     get dialogTitle() {
-        return 'Netowrk Options';
+        return 'Network Options';
     }
 
     async onFormInit(form) {
-        const o = DEMO ? DEMO : await io.greenscreens.Server.getInterface();
+        const o = DEMO ? DEMO : await io.greenscreens.system.Interface.load();
         o.data.restart = o.data.restart ? '1' : '0';
         super.onFormInit(form, o.data);
     }
@@ -35,7 +35,8 @@ export default class GSNetwork extends GSAsbtractDialog {
         data.redirect = parseInt(data.redirect) === 1;
         data.nodes = parseInt(data.nodes) === 1;
 
-        const o = DEMO ? DEMO : await io.greenscreens.Server.setInterface(data);
+        const o = DEMO ? DEMO : await io.greenscreens.system.Interface.save(data);
+        super.onData();
         return o.success;
     }
 

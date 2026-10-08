@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015, 2022 Green Screens Ltd.
+ * Copyright (C) 2015, 2025 Green Screens Ltd.
  */
 
 /**
@@ -112,12 +112,6 @@ export default class WebAuthn {
 
 		const auth = cred.toJSON();
 		auth.uid = o.uid;
-						
-												  
-																				   
-																			
-		  
-
         return await WebAuthn.#callRemote('register', true, auth);
 
     }
@@ -165,14 +159,6 @@ export default class WebAuthn {
         }
 
 		const auth = cred.toJSON();
-						
-												  
-																				   
-																			 
-																   
-																	
-		  
-
         return await WebAuthn.#callRemote(action, true, auth);
     }
 

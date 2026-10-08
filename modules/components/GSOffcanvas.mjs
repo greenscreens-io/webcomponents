@@ -87,7 +87,7 @@ export default class GSOffcanvas extends GSElement {
 
   #onEnter() {
     const me = this;
-    if (me.min > 0) me.open();
+    if (me.autoopen && me.min > 0) me.open();
   }
 
   #update(name = '', oldValue = '', newValue = '') {
@@ -343,6 +343,15 @@ export default class GSOffcanvas extends GSElement {
 
   set autoclose(val = false) {
     GSAttr.setAsBool(this, 'autoclose', val);
+  }
+
+
+  get autoopen() {
+    return GSAttr.getAsBool(this, 'autoopen', false);
+  }
+
+  set autoopen(val = false) {
+    GSAttr.setAsBool(this, 'autoopen', val);
   }
 
   get closable() {

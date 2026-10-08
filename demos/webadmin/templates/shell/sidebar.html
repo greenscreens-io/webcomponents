@@ -1,12 +1,12 @@
 <gs-offcanvas css="border-end shadow-sm" 
 	css-head="p-0 border-bottom user-select-none" 
 	css-body="overflow-hidden user-select-none" 
-    expanded="false" closable="false" autoclose="true" min="65" max="260">
+    expanded="false" closable="false" autoopen="true" autoclose="true" min="65" max="260">
 
     <div slot="header" class="flex-fill" style="min-height: 64px;">
         <a href="https://webcomponents.greenscreens.ltd" target="_blank"
-            class="m-3 d-flex justify-content-start align-items-center fs-5 text-secondary text-decoration-none">
-            <span><img src="/webcomponents/assets/img/icon.png" height="26" alt="Application icon"></span>
+            class="m-3 d-flex justify-content-start align-items-center fs-5">
+            <span><img src="/webcomponents/assets/img/icon.png" height="26"></span>
             <span class="d-flex ms-4 overflow-hidden text-nowrap"><b>Admin Panel</b></span>
         </a>
     </div>
@@ -44,10 +44,12 @@
                 inject="gs-admin-view-filterip" target="#content">
         </gs-item>
 
+		<!-- 
         <gs-item css="border-0 p-1 d-flex align-items-center fs-5 text-nowrap" 
                 icon="bi-phone fs-4 pe-4" title="Mobile Filter" 
                 inject="gs-admin-view-filtermobile" target="#content">
         </gs-item>
+		 -->
 
     </gs-list>
 
@@ -103,20 +105,25 @@
         </gs-item>
         
         <gs-item css="border-0 p-1 d-flex align-items-center fs-5 text-nowrap" 
-                icon="bi-display fs-4 pe-4" title="Workstations" 
-                inject="gs-admin-view-workstations" target="#content">
-        </gs-item>
-        
-        <gs-item css="border-0 p-1 d-flex align-items-center fs-5 text-nowrap" 
                 icon="bi-x-diamond-fill fs-4 pe-4" title="Web Modules" 
                 inject="gs-admin-view-webmodules" target="#content">
         </gs-item>
           
+        <gs-item css="border-0 p-1 d-flex align-items-center fs-5 text-nowrap" 
+                icon="bi-display fs-4 pe-4" title="Workstations" 
+                inject="gs-admin-view-workstations" target="#content">
+        </gs-item>
+        
     </gs-list>  
 
     <hr slot="body">
     
     <gs-list slot="body" css="" selectable="false">
+
+        <gs-item css="border-0 p-1 d-flex align-items-center fs-5 text-nowrap" 
+                icon="bi-clipboard-data-fill fs-4 pe-4" title="Report" 
+                href="/admin/console/headers.jsp" target="_blank">
+        </gs-item>
         
         <gs-item css="border-0 p-1 d-flex align-items-center fs-5 text-nowrap" 
                 icon="bi-question-circle-fill fs-4 pe-4" title="Documentation" 
@@ -124,8 +131,8 @@
         </gs-item>
         
         <gs-item css="border-0 p-1 d-flex align-items-center fs-5 text-nowrap" 
-                icon="bi-info-circle-fill fs-4 pe-4" title="About" data-attr="{visible:true}"
-                inject="gs-admin-dialog-about" target="#dialogs">
+                icon="bi-info-circle-fill fs-4 pe-4" title="About" 
+                data-attr="{visible:true}" inject="gs-admin-dialog-about" target="#dialogs">
         </gs-item>        
     </gs-list>  
 

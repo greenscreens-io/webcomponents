@@ -1,5 +1,5 @@
 /*
-* Copyright (C) 2015, 2022 Green Screens Ltd.
+* Copyright (C) 2015, 2026 Green Screens Ltd.
 */
 
 /**
@@ -7,8 +7,8 @@
  * @module views/GSWorkstations
  */
 import BaseViewUI from '../BaseViewUI.mjs';
-import Utils from '../../utils/Utils.mjs';
-import {GSFunction} from '/webcomponents/release/esm/io.greenscreens.components.all.esm.min.js';
+import Utils from "../../utils/Utils.mjs";
+import { GSFunction } from '/webcomponents/release/esm/io.greenscreens.components.all.esm.min.js';
 
 export default class GSWorkstations extends BaseViewUI {
 
@@ -26,7 +26,7 @@ export default class GSWorkstations extends BaseViewUI {
     async onLoad() {
         const me = this;
         const filter = me.filter;
-        const o = DEMO ? DEMO : await io.greenscreens.Workstations.listSessions(me.store.skip, me.store.limit, filter);
+        const o = DEMO ? DEMO : await io.greenscreens.Workstations.listSessions(me.store.page - 1, me.store.limit, filter);
         return o.data;
     }
 

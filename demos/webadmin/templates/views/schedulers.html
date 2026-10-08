@@ -29,8 +29,9 @@
                             <gs-item value="2" map="Web Access On"></gs-item>
                             <gs-item value="3" map="Web Access Off"></gs-item>    
                             <gs-item value="4" map="Server Restart"></gs-item>   
-                            <gs-item value="5" map="Modernization Cache"></gs-item>   
+                            <gs-item value="5" map="Facelift Cache"></gs-item>   
                             <gs-item value="6" map="Central Management"></gs-item>
+                            <gs-item value="7" map="Session Cleanup"></gs-item>
                         </gs-item>                        
                     </gs-column>
                     <gs-column title="Name" name="name"></gs-column>
@@ -57,7 +58,7 @@
                         </gs-item>
                     </gs-column>                    
                 </gs-header>
-                <gs-store src="data/schedulers.json" id="sessions" limit=15>
+                <gs-store data-src="data/schedulers.json" id="sessions" limit=15>
                     <gs-item name="id"></gs-item>
                     <gs-item name="status"></gs-item>
                     <gs-item name="internal"></gs-item>
@@ -76,7 +77,7 @@
                 <gs-pager slot="extra" previous="&laquo;" next="&raquo;" firstlast="false" pages="0"></gs-pager>
             </gs-table>
 
-            <gs-admin-dialog id="modal-main" visible="false" css-body="p-0" css-header="p-3 " 
+            <gs-admin-dialog id="modal-main" visible="false" css-body="p-0" css-header="p-3"
                 title="Scheduler Task" content="//forms/scheduler.html">
             </gs-admin-dialog>
 

@@ -51,7 +51,7 @@
                         </gs-item>
                     </gs-column>
                 </gs-header>
-                <gs-store src="data/printing.json" id="sessions" limit=15>
+                <gs-store data-src="data/printing.json" id="sessions" limit=15>
                     <gs-item name="id"></gs-item>
                     <gs-item name="uuid"></gs-item>
                     <gs-item name="host"></gs-item>
@@ -72,8 +72,8 @@
                 <gs-pager slot="extra" previous="&laquo;" next="&raquo;" firstlast="false" pages="0"></gs-pager>
             </gs-table>
 
-            <gs-admin-dialog id="modal-main" visible="false" css-body="p-0" css-header="p-3 " 
-                title="Printer Option"  content="//forms/printing.html">
+            <gs-admin-dialog id="modal-main" visible="false" css-body="p-0" css-header="p-3"
+                title="Printer Option" content="//forms/printing.html">
             </gs-admin-dialog>
 
         </div>

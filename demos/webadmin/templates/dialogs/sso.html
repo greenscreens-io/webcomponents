@@ -1,0 +1,14 @@
+<form slot="body" is="gs-ext-form"  class="flex-fill" novalidate="" autocomplete="off">
+    <gs-tab flat="true" css-nav="nav-tabs fw-bold" css-pane="d-flex justify-content-center border-t flex-fill p-2">
+        <gs-item title="Kerberos" template="//dialogs/sso/kerberos.html" css-pane="flex-fill" active="true"></gs-item>
+        <gs-item title="Ldap" template="//dialogs/sso/ldap.html" css-pane="flex-fill"></gs-item>
+        <!-- 
+        <gs-item title="Tivoli" template="//dialogs/sso/tivoli.html" css-pane="flex-fill"></gs-item>
+         -->  
+    </gs-tab>
+</form>
+
+<gs-button slot="actions" description="Resync data from KDC" 
+		action="reload-kerberos" id="btnKDC" title="Reload"
+		css="btn btn-secondary me-1 d-inline"></gs-button>
+		

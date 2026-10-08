@@ -1,8 +1,8 @@
 /*
- * Copyright (C) 2015, 2022 Green Screens Ltd.
+ * Copyright (C) 2015, 2025 Green Screens Ltd.
  */
 
-import { GSComponents, GSDOM, GSFunction, GSDialog, GSAttachment } from '/webcomponents/release/esm/io.greenscreens.components.all.esm.min.js';
+import { GSEvents, GSDOM, GSFunction, GSUtil, GSDialog } from '/webcomponents/release/esm/io.greenscreens.components.all.esm.min.js';
 
 /**
  * A module loading Utils class
@@ -15,12 +15,17 @@ import { GSComponents, GSDOM, GSFunction, GSDialog, GSAttachment } from '/webcom
  */
 export default class Utils {
 
+	static async clear() {
+		await Utils.unsetUI('gs-admin-shell-login');
+		await Utils.unsetUI('gs-admin-shell');
+	}
+		
     static setUI(value) {
-        return GSEvents.waitAnimationFrame(() => {
-            const el = document.createElement(value);
-            document.body.insertAdjacentElement('beforeend', el);
-            return el;
-        });
+		return GSEvents.waitAnimationFrame(()=> {			
+	        const el = document.createElement(value);
+	        document.body.insertAdjacentElement('beforeend', el);
+			return el;
+		});
     }
 
     static unsetUI(value) {
@@ -31,15 +36,15 @@ export default class Utils {
     }
 
     static get notify() {
-        let notify = null;
-        if (GSDialog.top) {
-            notify = GSDialog.top.notify;
-            if (!notify) {
-                const dlg = GSDialog.opened.filter(d => d.notify).shift();
-                notify = dlg?.notify;
-            }
-        }
-        return GSComponents.get('notification');
+		let notify = null;
+		if (GSDialog.top) {
+			notify = GSDialog.top.notify;
+			if (!notify) {
+			 const dlg = GSDialog.opened.filter(d => d.notify).shift();
+			 notify = dlg?.notify;
+			}
+		} 
+        return notify || GSComponents.get('notification');
     }
 
     static get waiter() {
@@ -55,25 +60,38 @@ export default class Utils {
      */
     static inform(success = false, msg) {
         if (success) {
-            Utils.notify?.info('Info', msg, false, 2, 0);
-        } else {
-            Utils.notify?.danger('Error', msg, false, 2, 0);
-        }
+			Utils.notify?.info('Info', msg, false, 2, 0);
+		} else {
+        	Utils.notify?.danger('Error', msg, false, 2, 0);
+		}
         return success;
     }
 
-    static handleError(e) {
-        console.log(e);
-        const msg = e.data?.error || e.msg || e.message || e.toString();
-        Utils.inform(false, msg, false, 2, 0);
-        return msg;
+    static handleError(e) {	
+        return Utils.handleResponse(e);
     }
+    
+    static handleResponse(obj) {
+		console.log(obj);
+		const success = Utils.responseStatus(obj);
+        const txt = Utils.responseMessage(obj);
+        if (txt) Utils.inform(success, txt, false, 2, 0);
+		return success;
+    }    
 
-    static handleResponse(msg) {
-        const txt = (msg.message || msg)?.toString();
-        if (txt) Utils.inform(msg.success === true, txt, false, 2, 0);
-    }
+	static responseStatus(obj) {
+		return (obj?.data?.success || obj?.success) == true;
+	}
 
+	static responseMessage(obj) {
+		const msg = Utils.#toMessage(obj.data) || Utils.#toMessage(obj);
+		return  msg || obj?.toString() || 'Unknown error!';
+	}
+	
+	static #toMessage(obj) {
+		return obj?.error || obj?.msg || obj?.message;
+	}
+		
     /**
      * Convert hex string to Uint8Array
      * @param {string} data 
@@ -92,6 +110,7 @@ export default class Utils {
         data = Utils.#validateData(data);
         return [...data].map(x => x.toString(16).padStart(2, '0')).join('');
     }
+    
     /**
      * Detect data and convert to Uint8Array
      * 
@@ -140,6 +159,26 @@ export default class Utils {
         return new Blob([data], { type: 'application/octet-stream' });
     }
 
+    /**
+     * Download raw data 
+     * @param {string} name 
+     * @param {string|array} data 
+     */
+    static download(name, data) {
+        if (!data) return false;
+        const blob = GSUtil.isString(data) ? Utils.stringToBlob(data) : Utils.binaryToBlob(data);
+        const link = URL.createObjectURL(blob);
+        try {
+            const a = document.createElement('a');
+            a.download = name;
+            a.href = link;
+            a.click();
+        } finally {
+            setTimeout(() => URL.revokeObjectURL(link), 250);
+        }
+        return true;
+    }
+
     static revokeObjectURL(url) {
         if (url?.indexOf('blob:') === 0) URL.revokeObjectURL(url)
     }
@@ -156,19 +195,5 @@ export default class Utils {
         });
 
         return win;
-    }
-
-    static async upload(mime = '*/*', forceBinary = false) {
-        return GSAttachment.upload(mime, forceBinary);
-    }
-
-    /**
-     * Download data 
-     * @param {string} name 
-     * @param {string|array} data 
-     * @param {string} mime
-     */
-    static download(filename, content, mime) {
-        return GSAttachment.download(filename, content, mime);
     }
 }

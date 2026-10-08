@@ -1,0 +1,15 @@
+<form slot="body" is="gs-ext-form"  class="flex-fill py-3" novalidate="" autocomplete="off">
+    
+    <div class="row m-1">
+        <gs-alert css="alert-info" css-active="fade" message="Server configuration console (advanced usage)!" dismissable="false"></gs-alert>
+    </div>
+
+	<div class="row form-group m-1" proxy="#GSId-1108">
+      <div class=" col-md-12 col-sm-12 col-xs-11">
+        <textarea class="form-control" rows="5" name="commands" id="commands" data-typed="false"  autofocus required></textarea>
+      </div>
+      <div class=" col-md-12 col-sm-12 col-xs-11 mt-3">
+        <output class="form-control text-bg-dark" style="white-space: pre-line;" name="result" id="result"></output>
+      </div>      
+    </div>
+</form>

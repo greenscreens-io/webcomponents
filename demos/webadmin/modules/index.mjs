@@ -1,11 +1,8 @@
 /*
- * Copyright (C) 2015, 2022 Green Screens Ltd.
+ * Copyright (C) 2015, 2025 Green Screens Ltd.
  */
 
-import './utils/Fingerprint.mjs';
-import './utils/Utils.mjs';
-import './utils/WebAuthn.mjs';
-
+import './utils/index.mjs';
 import './shell/index.mjs';
 import './views/index.mjs';
 import './dialogs/index.mjs';

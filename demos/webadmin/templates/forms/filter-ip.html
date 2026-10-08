@@ -1,12 +1,12 @@
-<form slot="body" is="gs-ext-form"  class="flex-fill" novalidate="">
+<form slot="body" is="gs-ext-form"  class="flex-fill py-3" novalidate="" autocomplete="off">
     
-    <input id="id" name="id" type="hidden">
+    <input id="id" name="id" type="hidden" defaultValue="0">
 
     <gs-form-group css="m-1" name="active" label="Active"
         description="Enable or disable this rule.">
         <template>
-            <select class="form-select" id="active" name="active" required>
-                <option value="true">Enabled</option>
+            <select class="form-select" id="active" name="active"  autofocus required>
+                <option value="true" selected>Enabled</option>
                 <option value="false">Disabled</option>
             </select>            
         </template>
@@ -16,7 +16,7 @@
         description="Allow or deny network access based on matched criteria.">
         <template>
             <select class="form-select" id="rule" name="rule" required>
-                <option value="0">Allow</option>
+                <option value="0" selected>Allow</option>
                 <option value="1">Deny</option>
             </select>            
         </template>
@@ -26,7 +26,8 @@
         description="Select filter type.
         IP: Single IP address to match.
         MASK: CIDR format of IP range.
-        EXPR: Expression for more complex ranges such as * or 10.*.*.10-30 or 192.168.1.* etc.">
+        EXPR: Expression for more complex ranges such as * or 10.*.*.10-30 or 192.168.1.* etc.
+        NET: ">
         <template>
             <select class="form-select" id="type" name="type">
                 <option selected value="0">IP</option>
@@ -44,8 +45,4 @@
 		<gs-item data-type="2" data-pattern1="^((?:(?:[0-9]{1,2})|(?:1[0-9]{2,2})|(?:2[0-4][0-9])|(?:25[0-5])|\*)(?:-(?:(?:[0-9]{1,2})|(?:1[0-9]{2,2})|(?:2[0-4][0-9])|(?:25[0-5])|\*))?\.){3}(?:(?:[0-9]{1,2})|(?:1[0-9]{2,2})|(?:2[0-4][0-9])|(?:25[0-5])|\*)(?:-(?:(?:[0-9]{1,2})|(?:1[0-9]{2,2})|(?:2[0-4][0-9])|(?:25[0-5])|\*))?$"></gs-item>        
     </gs-form-group>
     
-
-
-    
-
 </form>

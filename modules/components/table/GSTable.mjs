@@ -263,6 +263,10 @@ export default class GSTable extends GSElement {
         return GSAttr.set(this, 'no-data', val);
     }
 
+    get columns() {
+        return this.queryAll('gs-column');
+    } 
+
     get isFilterable() {
         return this.#headers.filter(o => o.filter).length > 0;
     }

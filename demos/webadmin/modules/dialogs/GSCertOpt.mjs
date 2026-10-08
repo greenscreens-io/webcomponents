@@ -1,12 +1,11 @@
 /*
-* Copyright (C) 2015, 2022 Green Screens Ltd.
+* Copyright (C) 2015, 2026 Green Screens Ltd.
 */
 
 /**
  * A module loading GSCertOpt class
  * @module dialogs/GSCertOpt
  */
-import { GSLoader } from '/webcomponents/release/esm/io.greenscreens.components.all.esm.min.js';
 import GSAsbtractDialog from './GSAsbtractDialog.mjs';
 
 export default class GSCertOpt extends GSAsbtractDialog {
@@ -31,7 +30,7 @@ export default class GSCertOpt extends GSAsbtractDialog {
 
     async onFormInit(form, data) {
         if(DEMO)  {
-            data = await GSLoader.loadSafe('./data/cert.json', 'GET', null, true);            
+            data = DEMO;            
         } else {
             data = await io.greenscreens.Certificate.loadConfig();
             data = data.data;
@@ -40,9 +39,21 @@ export default class GSCertOpt extends GSAsbtractDialog {
     }
 
     async onData(data) {
-        const o = DEMO ? DEMO : await io.greenscreens.Certificate.saveConfig(data);
-		super.onData();			   
-        return o.success;
+		if (DEMO) {
+			super.onData();
+			return true;	
+		}
+
+		if (data.acmeStatus === "1") {
+	        const opt = await io.greenscreens.system.Interface.load();
+	        if (opt.data.port != 80) {
+				const msg = 'For ACME to work properly, port 80 must be open.\nClick \'OK\' to continue.';
+				if (!confirm(msg)) return false;	
+			}			
+		}		
+        const ret = await io.greenscreens.Certificate.saveConfig(data);
+        super.onData();
+        return ret.success;
     }
 
 }

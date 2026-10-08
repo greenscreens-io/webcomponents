@@ -1,14 +1,12 @@
 /*
- * Copyright (C) 2015, 2022 Green Screens Ltd.
+ * Copyright (C) 2015, 2025 Green Screens Ltd.
  */
-
 
 /**
  * A module loading BaseUI class
  * @module shell
  */
-
-import {GSElement} from '/webcomponents/release/esm/io.greenscreens.components.all.esm.min.js';
+import { GSElement } from '/webcomponents/release/esm/io.greenscreens.components.all.esm.min.js';
 
 /**
  * Class representing UI Shell
@@ -17,12 +15,20 @@ import {GSElement} from '/webcomponents/release/esm/io.greenscreens.components.a
  */
 export default class ShellUI extends GSElement {
 
+	#shellController = null;
+	
     static {
         customElements.define('gs-admin-shell', ShellUI);
         Object.seal(ShellUI);
     }
 
+	constructor() {
+		super();
+		// this.#shellController = new ShellController(this);
+	}
+	
     async getTemplate() {
+		// await this.#shellController.start();
         return super.getTemplate('//shell.html');
     }
 

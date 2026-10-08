@@ -1,4 +1,4 @@
-<form slot="body" is="gs-ext-form"  class="flex-fill" novalidate="">
+<form slot="body" is="gs-ext-form"  class="flex-fill py-3" novalidate="" autocomplete="off">
 
     <gs-form-group css="m-1" name="module" label="Module" readonly
         description="Service module">
@@ -9,7 +9,7 @@
     </gs-form-group>
     
     <gs-form-group css="m-1" name="value" label="Value"
-        type="number" min="0" max="10000000" 
+        type="number" min="0" max="10000000"  autofocus 
         description="Service value">
     </gs-form-group>
 

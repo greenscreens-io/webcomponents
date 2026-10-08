@@ -1,5 +1,5 @@
 /*
-* Copyright (C) 2015, 2022 Green Screens Ltd.
+* Copyright (C) 2015, 2026 Green Screens Ltd.
 */
 
 /**
@@ -24,13 +24,14 @@ export default class GSLoginDefaults extends GSAsbtractDialog {
     }
 
     async onFormInit(form) {
-        const o = DEMO ? DEMO : await io.greenscreens.Server.getDefaults();
+        const o = DEMO ? DEMO : await io.greenscreens.Configs.getDefaults();
         delete o.data.password;
         super.onFormInit(form, o.data);
     }
-
+    
     async onData(data) {
-        const o = DEMO ? DEMO : await io.greenscreens.Server.saveDefaults(data);
+        const o = DEMO ? DEMO : await io.greenscreens.Configs.saveDefaults(data);
+        super.onData();
         return o.success;
     }
 

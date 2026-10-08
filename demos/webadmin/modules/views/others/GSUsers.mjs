@@ -1,5 +1,5 @@
 /*
-* Copyright (C) 2015, 2022 Green Screens Ltd.
+* Copyright (C) 2015, 2026 Green Screens Ltd.
 */
 
 /**
@@ -23,8 +23,8 @@ export default class GSUsers extends BaseViewUI {
     async onLoad(e) {
         const me = this;
         const filter = me.filter;
-		if (e?.detail?.source?.shiftKey) await io.greenscreens.Users.reload();
-        const o = DEMO ? DEMO : await io.greenscreens.Users.list(me.store.skip, me.store.limit, filter);
+        if (e?.detail?.source?.shiftKey) await io.greenscreens.Users.reload();
+        const o = DEMO ? DEMO : await io.greenscreens.Users.list(me.store.page - 1, me.store.limit, filter);
         return o.data;
     }
 

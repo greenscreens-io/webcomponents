@@ -1,0 +1,31 @@
+<gs-form-group css="m-1" name="sslUserVerification" label="User UID Verification"
+    description="If enabled, verifies that the client Certificate UID contains a valid sign-on user name.">
+    <template>
+        <select class="form-select" id="sslUserVerification" name="sslUserVerification">
+            <option selected value="false">Disabled</option>
+            <option value="true">Enabled</option>
+        </select>        
+    </template>
+</gs-form-group>
+
+<gs-form-group css="m-1" name="sslVerification" label="Group/Name Verification"
+    description="If enabled, verifies that the client Certificate GROUP/NAME extension matches to the UUID/HOST.">
+    <template>
+        <select class="form-select" id="sslVerification" name="sslVerification">
+            <option selected value="false">Disabled</option>
+            <option value="true">Enabled</option>
+        </select>        
+    </template>
+</gs-form-group>
+
+<!-- 
+<gs-form-group css="m-1" name="sslSso" label="Allow SSO"
+    description="If enabled, use certificate UID as IBM profile or DN for EIM matching for impersonalization. NOTE: Kerberos / EIM required">
+    <template>
+        <select class="form-select" id="sslSso" name="sslSso">
+            <option selected value="false">Disabled</option>
+            <option value="true">Enabled</option>
+        </select>        
+    </template>
+</gs-form-group>
+ -->

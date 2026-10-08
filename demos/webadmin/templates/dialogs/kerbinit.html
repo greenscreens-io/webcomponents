@@ -1,0 +1,55 @@
+<form slot="body" is="gs-ext-form"  class="flex-fill py-3" novalidate="" autocomplete="off">
+	    
+	<gs-form-group css="m-1" name="ldapUser" autocomplete="off"  autofocus required
+		label="User" description="Service user used for delegation">
+	</gs-form-group>
+	
+	<gs-form-group css="m-1" name="ldapPassword" required  reveal
+		autocomplete="off" type="password"
+		label="Password" description="Service user credentials">
+	</gs-form-group>
+			
+	<gs-form-group css="m-1" name="query" required
+		placeholder="greenscreens.lan" autocomplete="off" 
+		label="Realm" description="KDC Realm">
+	</gs-form-group>	
+		
+	<gs-form-group css="m-1" name="ldapServer" required
+		placeholder="localhost"  autocomplete="off" 
+		label="LDAP Server" description="LDAP server IP/DNS">
+	</gs-form-group>
+	
+	<gs-form-group css="m-1" name="ldapPort" autocomplete="off" required 
+	   placeholder="389" value="389" list="ports" 
+	   type="number" min="1" max="65535" 
+	   label="LDAP Port" description="LDAP server port (default: 389 or 636 SSL )">
+		<datalist slot="footer" id="ports" is="gs-ext-datalist">
+		  <option value="389"></option>
+  		  <option value="636"></option>
+		</datalist>
+	</gs-form-group>
+		
+	<gs-form-group css="m-1" name="ldapSecure" label="Secured" 
+	    autocomplete="off" description="Use secured access (SSL)">
+	    <template>
+	        <select class="form-select" id="ldapSecure" name="ldapSecure" required>
+	            <option value="0" selected>NONE</option>
+	            <option value="1">TLS</option>
+	            <option value="2">SSL</option>
+	      </select>        
+	    </template>	    
+	</gs-form-group>
+	
+	<gs-form-group css="m-1" name="ldapAuth" label="Authentication" 
+	    autocomplete="off" description="Password protection mechanism">
+	    <template>
+	        <select class="form-select" id="ldapAuth" name="ldapAuth" required>
+	            <option value="1" selected>SIMPLE</option>
+	            <option value="2">DIGEST-MD5</option>
+	            <option value="3">CRAM-MD5</option>
+	      </select>        
+	    </template>	    
+	</gs-form-group>
+	
+</form>
+

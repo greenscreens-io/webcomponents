@@ -1,5 +1,5 @@
 /*
-* Copyright (C) 2015, 2022 Green Screens Ltd.
+* Copyright (C) 2015, 2026 Green Screens Ltd.
 */
 
 /**
@@ -40,7 +40,7 @@ export default class GSCertImport extends GSAsbtractDialog {
     }
 
     get isPEM() {
-		return this.isExt('.pem');
+		return this.isExt('.pem') || this.isExt('.cer');
 	}
 
     get isPFX() {
@@ -62,12 +62,13 @@ export default class GSCertImport extends GSAsbtractDialog {
         data.hex = await me.fileToHex();
         let o = false;
         if (me.isPEM) {
-	        o = await io.greenscreens.Certificate.loadFromPEM(data.hex, data.password, data.type);
+	        o = await io.greenscreens.Certificate.importFromPEM(data.hex, data.password, data.type);
 		} else if (me.isPFX) {
-        	o = await io.greenscreens.Certificate.loadFromPFX(data.hex, data.password, data.type);			
+        	o = await io.greenscreens.Certificate.importFromPFX(data.hex, data.password, data.type);			
 		} else {
 			throw new Error('PEM or PFX file format supported!');
 		}
+		super.onData();
         return o.success;
     }
 

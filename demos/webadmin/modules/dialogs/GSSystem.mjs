@@ -1,5 +1,5 @@
 /*
-* Copyright (C) 2015, 2022 Green Screens Ltd.
+* Copyright (C) 2015, 2026 Green Screens Ltd.
 */
 
 /**
@@ -29,17 +29,13 @@ export default class GSSystem extends GSAsbtractDialog {
     }
 
     async onFormInit(form) {
-        const o = DEMO ? DEMO : await io.greenscreens.Server.getConfig();
+        const o = DEMO ? DEMO : await io.greenscreens.Configs.getConfig();
         super.onFormInit(form, o.data);
     }
-
+    
     async onData(data) {
-        const o = DEMO ? DEMO : await io.greenscreens.Server.setConfig(data);
-        return o.success;
-    }
-
-    async reloadKerberos() {
-        const o = DEMO ? DEMO : await io.greenscreens.Server.reloadKerberors();
+        const o = DEMO ? DEMO : await io.greenscreens.Configs.setConfig(data);
+        super.onData();
         return o.success;
     }
 

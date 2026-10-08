@@ -1,12 +1,14 @@
 <gs-form-group css="m-1" name="keySize" label="Key Size"
     description="Select Key size. (ECDSA requires Java 11+)">
     <template>
-        <select class="form-select" id="keySize" name="keySize">
+        <select class="form-select" id="keySize" name="keySize" required>
+	    <!-- deprecated in Java 21
             <option value="0">RSA-1024</option>
-            <option value="1">RSA-2048</option>
-            <option value="2">RSA-4096</option>
             <option value="3">ECDSA-160</option>
             <option value="4">ECDSA-224</option>
+	    -->
+            <option value="1" selected>RSA-2048</option>
+            <option value="2">RSA-4096</option>
             <option value="5">ECDSA-256</option>
             <option value="6">ECDSA-384</option>
             <option value="7">ECDSA-512</option>
@@ -17,9 +19,9 @@
 <gs-form-group css="m-1" name="tlsType" label="Key Type"
     description="Select TLS encryption mode.">
     <template>
-        <select class="form-select" id="tlsType" name="tlsType">
+        <select class="form-select" id="tlsType" name="tlsType" required>
             <option value="TLSv1.3">TLSv1.3</option>
-            <option value="TLSv1.2">TLSv1.2</option>
+            <option value="TLSv1.2" selected>TLSv1.2</option>
         </select>
     </template>
 </gs-form-group>
@@ -36,8 +38,8 @@
 <gs-form-group css="m-1" name="urlCA" label="Authority CA"
     description="Add CA download URL to certificate.">
     <template>
-        <select class="form-select" id="urlCA" name="urlCA">
-            <option value="true">Enabled</option>
+        <select class="form-select" id="urlCA" name="urlCA" required>
+            <option value="true" selected>Enabled</option>
             <option value="false">Disabled</option>
         </select>
     </template>
@@ -46,9 +48,9 @@
 <gs-form-group css="m-1" name="urlOCSP" label="Authority OCSP"
     description="Add OCSP certificate verification URL.">
     <template>
-        <select class="form-select" id="urlOCSP" name="urlOCSP">
+        <select class="form-select" id="urlOCSP" name="urlOCSP" required>
             <option value="true">Enabled</option>
-            <option value="false">Disabled</option>
+            <option value="false" selected>Disabled</option>
         </select>
     </template>
 </gs-form-group>
@@ -56,9 +58,9 @@
 <gs-form-group css="m-1" name="urlCRL" label="CRL"
     description="Add CRL certificate verification URL.">
     <template>
-        <select class="form-select" id="urlCRL" name="urlCRL">
+        <select class="form-select" id="urlCRL" name="urlCRL" required>
             <option value="true">Enabled</option>
-            <option value="false">Disabled</option>
+            <option value="false" selected>Disabled</option>
         </select>
     </template>
 </gs-form-group>

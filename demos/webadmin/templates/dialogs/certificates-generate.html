@@ -1,0 +1,23 @@
+<form slot="body" is="gs-ext-form"  class="flex-fill py-3" novalidate="" autocomplete="off">
+    
+    <gs-form-group css="m-1" name="type" label="Root Certificate"  
+		description="Regenerate a new Root CA">
+    	<template>
+			<select class="form-select" id="root" name="root"  autofocus required>
+                <option value="false">False</option>
+            	<option value="true">True</option>
+            </select>
+        </template>
+    </gs-form-group>
+
+    <gs-form-group css="m-1" name="type" label="Intermediate Certificate" 
+		description="Regenerate a new Intermediate CA">
+    	<template>
+			<select class="form-select" id="intermediate" name="intermediate" required>
+                <option value="false">False</option>
+            	<option value="true">True</option>
+            </select>
+        </template>
+    </gs-form-group>
+    
+</form>

@@ -1,11 +1,11 @@
-<form slot="body" is="gs-ext-form"  class="flex-fill" novalidate="">
+<form slot="body" is="gs-ext-form"  class="flex-fill py-3" novalidate="" autocomplete="off">
 
-    <input id="id" name="id" type="hidden">
+    <input id="id" name="id" type="hidden" defaultValue="0">
 
     <gs-form-group css="m-1" name="status" label="Status" required     
         description="Enable or disable this task.">
         <template>
-            <select class="form-select" id="status" name="status" required>
+            <select class="form-select" id="status" name="status"  autofocus required>
                 <option selected value="true">Enabled</option>
                 <option value="false">Disabled</option>
             </select>            
@@ -20,7 +20,12 @@
                 <option value="2">Web Access On</option>
                 <option value="3">Web Access Off</option>
                 <option value="4">Server Restart</option>
+                <!-- 
+					Enable when modernization available 
+				-->
+                <option value="5">GUI Cache</option>
                 <option value="6">Central Management</option>
+                <option value="7">Session Cleanup</option>
             </select>            
         </template>
     </gs-form-group>

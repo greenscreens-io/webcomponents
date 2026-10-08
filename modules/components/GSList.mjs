@@ -74,6 +74,7 @@ export default class GSList extends GSElement {
         const tpl = GSItem.getBody(el);
         const css = GSItem.getCSS(el);
         const href = GSItem.getHref(el);
+        const tooltip = me.#description(el);
 
         const dataAttrs = GSAttr.dataToString(el);
         const dataBS = GSItem.getAttrs(el);
@@ -85,8 +86,12 @@ export default class GSList extends GSElement {
         const select = me.selectable ? 'is="gs-ext-navlink"' : 'ignore';
         const hreftgt = href && href !== '#' ? `target=${GSItem.getTarget(el)}` : '';
 
-        return `<a  ${select} class="list-group-item list-group-item-action ${active} ${css}"
+        return `<a  ${select} class="list-group-item list-group-item-action ${active} ${css}" tooltip="${tooltip}"
                 href="${href}" ${hreftgt} ${dataBS} ${dataAttrs}>${icoCSS} ${tpl || message}</a>`;
+    }
+
+    #description(el) {
+        return GSAttr.get(el, 'description');
     }
 
     #title(el) {

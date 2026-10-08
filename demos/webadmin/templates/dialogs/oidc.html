@@ -1,0 +1,42 @@
+<form slot="body" is="gs-ext-form"  class="flex-fill py-3" novalidate="" autocomplete="off">
+
+	<gs-form-group css="m-1" name="clientID" label="Client ID"  autofocus required  
+	    autocomplete="off" 
+	    description="Client unique name registered at IDP provider.">
+	</gs-form-group>
+
+	<gs-form-group css="m-1" name="providerUrl" label="Provider URL" required
+	    autocomplete="off"
+	    description="IDP provider URL to 'greenscreens-oidc' realm.">
+	</gs-form-group>
+
+	<gs-form-group css="m-1" name="principalAttr" label="Principal Attribute" 
+	    autocomplete="off" value="preferred_username"
+	    description="Response field used to retrieve authorized user name.">
+	</gs-form-group>
+
+    <gs-form-group css="m-1" name="publicClient" label="Public Client" 
+		description="If set to 'true', no client credentials are sent when communicating with the OpenID provider.">
+    	<template>
+			<select class="form-select" id="publicClient" name="publicClient" required>
+                <option value="false">False</option>
+            	<option value="true">True</option>
+            </select>
+        </template>
+    </gs-form-group>
+    
+    <gs-form-group css="m-1" name="sslRequired" label="Secured connection" 
+		description="Is secured connection required">
+    	<template>
+			<select class="form-select" id="sslRequired" name="sslRequired" required>
+                <option value="false">False</option>
+            	<option value="true">True</option>
+            </select>
+        </template>
+    </gs-form-group>
+        
+	<gs-form-group css="m-1" name="secret" label="Access token" required
+	    autocomplete="off" type="password"
+	    description="Secret token to access provider URL.">
+	</gs-form-group>
+</form>

@@ -1,5 +1,13 @@
 # [WebComponents](https://webcomponents.greenscreens.ltd/) for [Bootstrap 5.2.0+](https://getbootstrap.com/)
 
+# Release v1.9.17 (07.10.2026.)
+ - GSOffcanvas - added autoopen flag
+ - GSTable -added columns getter
+
+# Release v1.9.16 (04.09.2026.)
+ - GSMenu - Fix internal undefined error
+ - GSList - added description attribute for tooltip
+
 # Release v1.9.15 (06.07.2026.)
  - GSTooltip - replacing space escape codes with real space
  - GSDialog - add autovalidate

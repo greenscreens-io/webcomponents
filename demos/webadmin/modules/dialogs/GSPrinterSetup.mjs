@@ -1,12 +1,12 @@
 /*
-* Copyright (C) 2015, 2022 Green Screens Ltd.
+* Copyright (C) 2015, 2026 Green Screens Ltd.
 */
 
 /**
  * A module loading GSPrinterSetup class
  * @module dialogs/GSPrinterSetup
  */
-import {GSAttr, GSDOM, GSUtil} from '/webcomponents/release/esm/io.greenscreens.components.all.esm.min.js';
+import { GSAttr, GSDOM, GSUtil } from '/webcomponents/release/esm/io.greenscreens.components.all.esm.min.js';
 import GSAsbtractDialog from './GSAsbtractDialog.mjs';
 
 export default class GSPrinterSetup extends GSAsbtractDialog {
@@ -47,7 +47,7 @@ export default class GSPrinterSetup extends GSAsbtractDialog {
         delete me.#data.drawer2;
         me.form.reset();
         me.#update(true);
-        super.open();
+        super.open(me.#data);
     }
 
     async onFormInit(form) {

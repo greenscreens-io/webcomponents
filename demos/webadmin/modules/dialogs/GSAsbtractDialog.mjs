@@ -1,5 +1,5 @@
 /*
-* Copyright (C) 2015, 2022 Green Screens Ltd.
+* Copyright (C) 2015, 2026 Green Screens Ltd.
 */
 
 /**
@@ -9,27 +9,29 @@
 import { GSAttr, GSDOM, GSLoader, GSDialog, GSUtil } from '/webcomponents/release/esm/io.greenscreens.components.all.esm.min.js';
 import Utils from '../utils/Utils.mjs';
 
+globalThis.GSDialog = GSDialog;
+
 export default class GSAsbtractDialog extends GSDialog {
 
     static {
         customElements.define('gs-admin-dialog', GSAsbtractDialog);
         Object.seal(GSAsbtractDialog);
     }
-
-    #data = null;
-
+	
+	#data = null;
+    
     constructor() {
         super();
     }
-
-    connectedCallback() {
-        super.connectedCallback();
-        const me = this;
-        me.autovalidate = true;
-        me.cssHeader = 'p-3';
-        //me.cssTitle = 'fs-5 fw-bold text-muted';
-        //me.cssBody = 'p-0';
-    }
+        
+	connectedCallback() {
+		super.connectedCallback();
+		const me = this;
+		me.autovalidate = true;
+		me.cssHeader = 'p-3 border-1';
+		//me.cssTitle = 'fs-5 fw-bold text-muted';
+		//me.cssBody = 'p-0 my-2';
+	}
 
     get dialogTemplate() {
         return GSAttr.get(this, 'content', '');
@@ -39,35 +41,35 @@ export default class GSAsbtractDialog extends GSDialog {
         return GSAttr.get(this, 'title', '');
     }
 
-    /**
-     * Override GSDialog method, to attach UI slot
-     */
-    async onBeforeReady() {
+	/**
+	 * Override GSDialog method, to attach UI slot
+	 */
+	async onBeforeReady() {
 
-        await super.onBeforeReady();
-        const me = this;
+		await super.onBeforeReady();
+		const me = this;
 
         me.on('data', me.#onFormData.bind(me));
         me.on('error', me.#onFormError.bind(me));
 
-        if (me.dialogTemplate) {
+		if (me.dialogTemplate) {
             let tpl = await GSLoader.getTemplate(me.dialogTemplate);
 			const hasNotify = tpl.indexOf('gs-notification') > -1;
             tpl = GSDOM.parse(tpl);
-            Array.from(tpl.body.children).forEach(el => {
-                if (!el.slot) el.slot="body";
-                GSDOM.appendChild(me, el);
-            });   
-            GSDOM.appendChild(me, tpl.body.firstElementChild);
+			Array.from(tpl.body.children).forEach(el => {
+			    if (!el.slot) el.slot="body";
+			    GSDOM.appendChild(me, el);
+			});
+			GSDOM.appendChild(me, tpl.body.firstElementChild);
 			if (!hasNotify) {
-				tpl = GSDOM.parse('<gs-notification id="notification"></gs-notification>');
-				tpl.body.firstElementChild.slot = 'extra';
-				GSDOM.appendChild(me, tpl.body.firstElementChild);	
-            }
-        }
-        if (me.dialogTitle) me.title = me.dialogTitle;
-    }
-
+				tpl = GSDOM.parse('<gs-notification id="notification" slot="extra"></gs-notification>');
+				// tpl.body.firstElementChild.slot = 'extra';
+				GSDOM.appendChild(me, tpl.body.firstElementChild);				
+			}
+		}
+		if (me.dialogTitle) me.title = me.dialogTitle;
+	}
+	
 	async beforeClose(data, ok) {
 		if (ok) {			
 			const notifier = GSComponents.get('notification');
@@ -75,29 +77,34 @@ export default class GSAsbtractDialog extends GSDialog {
 		}
 		return true;
 	}
-
+	
 	open(data) {
 		this.#data = data;
 		super.open(data);
 	}
+	/**
+	 * Used by inherited dialogs to process confirmed dialog form
+	 * @param {*} data 
+	 */
+	async onData(data) {
+		//Utils.inform(true, 'Data stored successfully!');
+		//this.emit('formdata', data);
+		return true;
+	}
 
-    /**
-     * Used by inherited dialogs to process confirmed dialog form
-     * @param {*} data 
-     */
-    async onData(data) {
-        return true;
-    }
-
-    /**
-     * Wait dialog
-     */
+	/**
+	 * Wait dialog
+	 */
     get waiter() {
         return Utils.waiter;
     }
-
+	
 	get notify() {
 		return GSDOM.query(this, 'gs-notification');
+	}
+	
+	get isValid() {
+		return this.form?.isValid;
 	}
 	
 	afterOpen() {
@@ -109,18 +116,22 @@ export default class GSAsbtractDialog extends GSDialog {
 	async onFormInit(form, data) {
 		// quick fix
 	  await GSUtil.timeout(1000);
-	  super.onFormInit(form, data);
-    }
-
-    /**
-     * Update dialog forms 
-     */
+	  try {
+		  super.onFormInit(form, data);
+	  } catch(e) {
+		notify.danger('', e.message, false, 2);
+	  }
+	}
+	
+	/**
+	 * Update dialog forms 
+	 */
     #update(data) {
-        if (GSUtil.isJson(data)) {
-            const me = this;
-            me.reset(data);
-            me.emit('change');
-        }
+		if (GSUtil.isJson(data)) {
+		    const me = this;
+		    me.reset(data);
+		    me.emit('change');
+		}
     }
 
     #onFormError(e) {
@@ -128,9 +139,9 @@ export default class GSAsbtractDialog extends GSDialog {
     }
 
     #onFormData(e) {
-        const me = this;
-        const generic = me.constructor === GSAsbtractDialog;
-		if (generic) return;        
+		const me = this;
+		const generic = me.constructor === GSAsbtractDialog;
+		if (generic) return;        		
         // prevent close on confirm click
         GSEvents.prevent(e);
         me.#handleFormData(e);
@@ -139,7 +150,7 @@ export default class GSAsbtractDialog extends GSDialog {
     async #handleFormData(e) {
         const me = this;
         let sts = false;
-        const data = e.detail.data || e.detail;
+		const data = e.detail.data || e.detail;
         try {
             me.disable();
             sts = await me.onData(data);
@@ -149,10 +160,11 @@ export default class GSAsbtractDialog extends GSDialog {
             me.enable();
             if (sts) {
                 me.close(data, sts);
+                //Utils.notify.secondary('', 'Changes applied!', false, 0.75);
             }
         }
     }
-
+	
     onError(e) {
         Utils.handleError(e);
     }

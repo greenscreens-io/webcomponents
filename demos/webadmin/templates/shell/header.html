@@ -10,7 +10,7 @@
             <gs-tooltip placement="bottom" title="Open resource explorer"></gs-tooltip>
         </div>        
         <div>
-            <a type="button" class="btn" data-bs-toggle="dropdown" data-bs-target="#menu1" aria-label="Download Options">
+            <a type="button" class="btn" data-bs-toggle="dropdown" data-bs-target="#menu1">
                 <i class="bi-download fs-3"></i>
             </a>
             <gs-tooltip placement="bottom" title="Downloads"></gs-tooltip>
@@ -27,7 +27,9 @@
             inject="gs-admin-dialog-restart"  target="#dialogs"
             select="false" css="text-bg-light" icon="bi bi-arrow-repeat fs-3"></gs-button>            
             <gs-tooltip placement="bottom" title="Restart server"></gs-tooltip>
-        </div>    
+        </div>         
+        
+        
         <div class="d-flex align-items-center fs-5">        
             <a id="migrate" class="btn" data-attr="{visible:true}" data-inject="gs-admin-dialog-migrate" data-bs-target="#dialogs">
             		<i class="bi bi-database fs-3"></i>
@@ -41,11 +43,11 @@
             <gs-tooltip placement="bottom" title="Digital Certificate Tools"></gs-tooltip>
             <gs-dropdown dark="false" id="menu2">
                 <gs-item name="Regenerate Terminal Keys" action="cert-gen-term"></gs-item>
-				<gs-item></gs-item>
-				<gs-item name="Generate Timestamp Cert" action="cert-gen-tsp"></gs-item>
-                <gs-item name="Generate Server Cert" action="cert-gen-svr"></gs-item>
+                <gs-item></gs-item>
+                <gs-item name="Generate Timestamp Cert" data-attr="{visible:true, timestamp:true}" inject="gs-admin-dialog-certgen" target="#dialogs"></gs-item>
+                <gs-item name="Generate Server Cert" data-attr="{visible:true}" inject="gs-admin-dialog-certgen" target="#dialogs"></gs-item>
                 <gs-item name="Generate Client Cert" data-attr="{visible:true}" inject="gs-admin-dialog-certclient"  target="#dialogs"></gs-item>
-				<gs-item name="Revoke Client" data-attr="{visible:true}" inject="gs-admin-dialog-certrevoke" target="#dialogs"></gs-item>
+                <gs-item name="Revoke Client" data-attr="{visible:true}" inject="gs-admin-dialog-certrevoke" target="#dialogs"></gs-item>
                 <gs-item></gs-item>
                 <gs-item name="Generate Server Req" action="cert-gen-req"></gs-item>
                 <gs-item></gs-item>                
@@ -56,28 +58,55 @@
                 <gs-item name="Reload certificates" action="cert-server-refresh" title="Reload all certificates from storage to the server"></gs-item>
                 <gs-item name="Options" data-attr="{visible:true}" inject="gs-admin-dialog-certopt" target="#dialogs"></gs-item>                
             </gs-dropdown>
-        </div>        
+        </div>
         <div>
             <a type="button" class="btn" data-bs-toggle="dropdown" data-bs-target="#menu3">
+                <i class="bi-shield-lock fs-3"></i>
+            </a>
+            <gs-tooltip placement="bottom" title="SSO preferences"></gs-tooltip>
+            <gs-dropdown dark="false" id="menu3">
+                <gs-item name="SSO Autoconfig" data-attr="{visible:true}" inject="gs-admin-dialog-kerbinit" target="#dialogs"></gs-item>
+                <gs-item name="SSO Lite" data-attr="{visible:true}" inject="gs-admin-dialog-ssolite" target="#dialogs"></gs-item>
+                <gs-item name="SSO Options" data-attr="{visible:true}" inject="gs-admin-dialog-sso" target="#dialogs"></gs-item>
+            </gs-dropdown>
+        </div>
+
+        <div>
+            <a type="button" class="btn" data-bs-toggle="dropdown" data-bs-target="#menu5">
+                <i class="bi-wrench-adjustable-circle fs-3"></i>
+            </a>
+            <gs-tooltip placement="bottom" title="System preferences"></gs-tooltip>
+            <gs-dropdown dark="false" id="menu5">
+            	<gs-item name="Identity Provider" data-attr="{visible:true}" inject="gs-admin-dialog-oidc" target="#dialogs"></gs-item>
+            	<gs-item name="Mail" data-attr="{visible:true}" inject="gs-admin-dialog-mail" target="#dialogs"></gs-item>
+                <gs-item name="Network" data-attr="{visible:true}" inject="gs-admin-dialog-network" target="#dialogs"></gs-item>
+                <gs-item name="Proxy" data-attr="{visible:true}" inject="gs-admin-dialog-proxy" target="#dialogs"></gs-item>
+                <gs-item name="Syslog" data-attr="{visible:true}" inject="gs-admin-dialog-syslog" target="#dialogs"></gs-item>
+                <gs-item></gs-item>
+                <gs-item name="Console" data-attr="{visible:true}" inject="gs-admin-dialog-shell" target="#dialogs"></gs-item>
+            </gs-dropdown>
+        </div>
+
+        <div>
+            <a type="button" class="btn" data-bs-toggle="dropdown" data-bs-target="#menu4">
                 <i class="bi-gear fs-3"></i>
             </a>
             <gs-tooltip placement="bottom" title="General preferences"></gs-tooltip>
-            <gs-dropdown dark="false" id="menu3">
+            <gs-dropdown dark="false" id="menu4">
                 <gs-item name="Admin Login" data-attr="{visible:true}" inject="gs-admin-dialog-loginadm" target="#dialogs"></gs-item>
                 <gs-item name="Login Defaults" data-attr="{visible:true}" inject="gs-admin-dialog-logindefs" target="#dialogs"></gs-item>
                 <gs-item></gs-item>
-                <gs-item name="OTP Options" data-attr="{visible:true}" inject="gs-admin-dialog-otpopt" target="#dialogs"></gs-item>
-                <gs-item name="Register Biometric" data-attr="{visible:true}" inject="gs-admin-dialog-bioreg" target="#dialogs"></gs-item>
+                <gs-item name="Register Biometric" data-attr="{visible:true}" inject="gs-admin-dialog-passkey" target="#dialogs"></gs-item>
                 <gs-item name="Register OTP" data-attr="{visible:true}" inject="gs-admin-dialog-otpreg" target="#dialogs"></gs-item>
-                <gs-item></gs-item>
-                <gs-item name="Kerberos" data-attr="{visible:true}" inject="gs-admin-dialog-kerberos" target="#dialogs"></gs-item>
-                <gs-item name="Network" data-attr="{visible:true}" inject="gs-admin-dialog-network" target="#dialogs"></gs-item>
+                <gs-item name="OTP Options" data-attr="{visible:true}" inject="gs-admin-dialog-otpopt" target="#dialogs"></gs-item>
+                <gs-item></gs-item>                
                 <gs-item name="System" data-attr="{visible:true}" inject="gs-admin-dialog-system" target="#dialogs"></gs-item>
             </gs-dropdown>
         </div>
+
         <div class="d-flex align-items-center fs-5">        
             <gs-button id="action" action="logout" select="false" css="text-bg-light"
-            icon="bi bi-box-arrow-right fs-3" aria-label="Logout"></gs-button>               
+            icon="bi bi-box-arrow-right fs-3"></gs-button>               
             <gs-tooltip placement="start" title="Logout from Web Admin Console"></gs-tooltip>
         </div>
     </div>

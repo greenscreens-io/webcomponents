@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015, 2022 Green Screens Ltd.
+ * Copyright (C) 2015, 2026 Green Screens Ltd.
  */
 
 /**
@@ -7,7 +7,7 @@
  * @module GSSearch
  */
 
-import { GSAttr, GSEvents, GSElement, GSEnvironment } from '/webcomponents/release/esm/io.greenscreens.components.all.esm.min.js';
+import { GSAttr, GSElement, GSEnvironment, GSEvents } from '/webcomponents/release/esm/io.greenscreens.components.all.esm.min.js';
 
 /**
  * Search input box WebComponent which emits searh event to upper tree.

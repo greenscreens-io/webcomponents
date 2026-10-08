@@ -1,5 +1,5 @@
 /*
-* Copyright (C) 2015, 2022 Green Screens Ltd.
+* Copyright (C) 2015, 2026 Green Screens Ltd.
 */
 
 /**
@@ -22,50 +22,50 @@ export default class GSTunnel extends BaseViewUI {
 
     async onLoad(e) {
         const me = this;
-        const filter = me.filter;
-		if (e?.detail?.source?.shiftKey) await io.greenscreens.Proxy.reload();
-        const o = DEMO ? DEMO : await io.greenscreens.Proxy.list(me.store.skip, me.store.limit, filter);
+        if (e?.detail?.source?.shiftKey) await io.greenscreens.Tunnel.reload();
+        const o = DEMO ? DEMO : await io.greenscreens.Tunnel.list(me.store.page - 1, me.store.limit);
         return o.data;
     }
 
     async onCreate(data) {
-        const o = DEMO ? DEMO : await io.greenscreens.Proxy.save(data);
+        const o = DEMO ? DEMO : await io.greenscreens.Tunnel.save(data);
         return o.success;
     }
 
     async onClone(data) {
         delete data.id;
         data.name = `${data.name} - ${Date.now()}`;
-        const o = DEMO ? DEMO : await io.greenscreens.Proxy.save(data);
+        const o = DEMO ? DEMO : await io.greenscreens.Tunnel.save(data);
         return o.success;
     }
 
     async onUpdate(data) {
-        const o = DEMO ? DEMO : await io.greenscreens.Proxy.save(data);
+        const o = DEMO ? DEMO : await io.greenscreens.Tunnel.save(data);
         return o.success;
     }
 
     async onRemove(data) {
-        const o = DEMO ? DEMO : await io.greenscreens.Proxy.remove(data.id);
+        const o = DEMO ? DEMO : await io.greenscreens.Tunnel.remove(data.id);
         return o.success;
     }
 
-    async onViewSstart(e) {
+    async onViewStart(e) {
         const data = e.detail.data[0];
-        const o = DEMO ? DEMO : await io.greenscreens.Proxy.start(data.id);
+        const o = DEMO ? DEMO : await io.greenscreens.Tunnel.start(data.id);
         Utils.inform(o.success, 'Tunnel started');
     }
 
     async onViewStop(e) {
         const data = e.detail.data[0];
-        const o = DEMO ? DEMO : await io.greenscreens.Proxy.stop(data.id);
+        const o = DEMO ? DEMO : await io.greenscreens.Tunnel.stop(data.id);
         Utils.inform(o.success, 'Tunnel stopped');
     }
 
     async onViewRestart(e) {
         const data = e.detail.data[0];
-        const o = DEMO ? DEMO : await io.greenscreens.Proxy.restart(data.id);
+        const o = DEMO ? DEMO : await io.greenscreens.Tunnel.restart(data.id);
         Utils.inform(o.success, 'Tunnel restarted');
     }
+
 
 }

@@ -1,5 +1,5 @@
 /*
-* Copyright (C) 2015, 2022 Green Screens Ltd.
+* Copyright (C) 2015, 2026 Green Screens Ltd.
 */
 
 /**
@@ -24,12 +24,13 @@ export default class GSOtpOptions extends GSAsbtractDialog {
     }
 
     async onFormInit(form) {
-        const o = DEMO ? DEMO : await io.greenscreens.Server.getOtp();
+        const o = DEMO ? DEMO : await io.greenscreens.Configs.getOtp();
         super.onFormInit(form, o.data);
     }
-
+    
     async onData(data) {
-        const o = DEMO ? DEMO : await io.greenscreens.Server.saveOTP(data);
+        const o = DEMO ? DEMO : await io.greenscreens.Configs.saveOTP(data);
+        super.onData();
         return o.success;
     }
 

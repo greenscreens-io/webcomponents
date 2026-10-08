@@ -1,5 +1,5 @@
 /*
-* Copyright (C) 2015, 2022 Green Screens Ltd.
+* Copyright (C) 2015, 2026 Green Screens Ltd.
 */
 
 /**
@@ -23,7 +23,8 @@ export default class GSFilterFido extends BaseViewUI {
     async onReady() {
         super.onReady();
         const me = this;
-        me.modal.large();
+		if (!me.isConnected) return;
+        me.modal?.large();
         try {
             const o = DEMO ? DEMO : await io.greenscreens.Fido.isActive();
             me.switcher.selectedIndex = parseInt(o.code, 10);
@@ -48,8 +49,8 @@ export default class GSFilterFido extends BaseViewUI {
     async onLoad(e) {
         const me = this;
         const filter = me.filter;
-		if (e?.detail?.source?.shiftKey) await io.greenscreens.Fido.reload();
-        const o = DEMO ? DEMO : await io.greenscreens.Fido.list(me.store.skip, me.store.limit, filter);
+        if (e?.detail?.source?.shiftKey) await io.greenscreens.Fido.reload();
+        const o = DEMO ? DEMO : await io.greenscreens.Fido.list(me.store.page - 1, me.store.limit, filter);
         return o.data;
     }
 
@@ -67,16 +68,4 @@ export default class GSFilterFido extends BaseViewUI {
         const o = DEMO ? DEMO : await io.greenscreens.Fido.remove(data.id);
         return o.success;
     }
-
-    async onViewUpload() {
-        const data = await Utils.upload('aplication/json');
-        const o = DEMO ? DEMO : await io.greenscreens.Fido.import(data);
-        return o.success;
-    }
-
-    async onViewDownload() {
-        const o = DEMO ? DEMO : await io.greenscreens.Fido.export();
-        Utils.download('filter.fido.json', o.data, 'aplication/json');
-        return o.success;
-    }    
 }

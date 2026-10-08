@@ -1,5 +1,5 @@
 /*
-* Copyright (C) 2015, 2022 Green Screens Ltd.
+* Copyright (C) 2015, 2026 Green Screens Ltd.
 */
 
 /**
@@ -29,7 +29,7 @@ export default class GSPrinterReset extends GSAsbtractDialog {
         const me = this;
         me.#data = Object.assign({}, data);
         me.#data.host = me.#data.name;
-        super.open();
+        super.open(me.#data);
     }
 
     async onFormInit(form) {
@@ -44,6 +44,7 @@ export default class GSPrinterReset extends GSAsbtractDialog {
             me.visible = false;
             const o = DEMO ? DEMO : await io.greenscreens.Printer.reset(data);
             success = o.success;
+            if (success) super.onData();
         } catch (e) {
             me.visible = true;
             throw e;

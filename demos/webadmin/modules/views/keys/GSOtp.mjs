@@ -1,6 +1,5 @@
-
 /*
-* Copyright (C) 2015, 2022 Green Screens Ltd.
+* Copyright (C) 2015, 2026 Green Screens Ltd.
 */
 
 /**
@@ -19,7 +18,7 @@ export default class GSOtp extends BaseViewUI {
 
     onReady() {
         super.onReady();
-        this.modal.large();
+        this.modal?.large();
     }
 
     async getTemplate() {
@@ -29,18 +28,18 @@ export default class GSOtp extends BaseViewUI {
     async onLoad(e) {
         const me = this;
         const filter = me.filter;
-		if (e?.detail?.source?.shiftKey) await io.greenscreens.OAuth.reload();
-        const o = DEMO ? DEMO : await io.greenscreens.OAuth.list(me.store.skip, me.store.limit, filter);
+        if (e?.detail?.source?.shiftKey) await io.greenscreens.Otp.reload();
+        const o = DEMO ? DEMO : await io.greenscreens.Otp.list(me.store.page - 1, me.store.limit, filter);
         return o.data;
     }
 
     async onUpdate(data) {
-        const o = DEMO ? DEMO : await io.greenscreens.OAuth.update(data.id, data.status);
+        const o = DEMO ? DEMO : await io.greenscreens.Otp.update(data.id, data.status);
         return o.success;
     }
 
     async onRemove(data) {
-        const o = DEMO ? DEMO : await io.greenscreens.OAuth.remove(data.id);
+        const o = DEMO ? DEMO : await io.greenscreens.Otp.remove(data.id);
         return o.success;
     }
 
@@ -52,4 +51,5 @@ export default class GSOtp extends BaseViewUI {
         await me.onUpdate(data);
         await me.onViewRefresh();
     }
+
 }

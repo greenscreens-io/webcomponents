@@ -1,5 +1,5 @@
 /*
-* Copyright (C) 2015, 2022 Green Screens Ltd.
+* Copyright (C) 2015, 2026 Green Screens Ltd.
 */
 
 /**
@@ -16,14 +16,14 @@ export default class GSBiometrics extends BaseViewUI {
     }
 
     async getTemplate() {
-        return super.getTemplate('//views/keys-bio.html');
+        return super.getTemplate('//views/keys-fido.html');
     }
 
     async onLoad(e) {
         const me = this;
         const filter = me.filter;
-		if (e?.detail?.source?.shiftKey) await io.greenscreens.WebAuth.reload();
-        const o = DEMO ? DEMO : await io.greenscreens.WebAuth.list(me.store.skip, me.store.limit, filter);
+        if (e?.detail?.source?.shiftKey) await io.greenscreens.WebAuth.reload();
+        const o = DEMO ? DEMO : await io.greenscreens.WebAuth.list(me.store.page - 1, me.store.limit, filter);
         return o.data;
     }
 
@@ -32,8 +32,8 @@ export default class GSBiometrics extends BaseViewUI {
         return o.success;
     }
 
-    onFilter(e) {
-        const isValid = e.detail?.filter(o => o.name !== 'origin').length === 3;
-        if (isValid) this.onLoad(e);
-    }
+	onFilter(e) {
+	    const isValid = e.detail?.filter(o => o.name !== 'origin').length === 3;
+	    if (isValid) this.onViewRefresh(e);
+	}	
 }

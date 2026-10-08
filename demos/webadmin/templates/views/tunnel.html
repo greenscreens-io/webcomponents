@@ -31,7 +31,7 @@
                             <gs-item value="1" map="SSH"></gs-item>
                         </gs-item>                        
                     </gs-column>
-                    <gs-column title="Rule" name="enabled">
+                    <gs-column title="Enabled" name="enabled">
                         <gs-item map="true" filter="true">
                             <gs-item value="true" map="Enabled"></gs-item>
                             <gs-item value="false" map="Disabled"></gs-item>                         
@@ -46,7 +46,7 @@
                     <gs-column title="Connections" name="connections"></gs-column>
 
                 </gs-header>
-                <gs-store src="data/proxy.json" id="sessions" limit=15>
+                <gs-store data-src="data/proxy.json" id="sessions" limit=15>
                     <gs-item name="name"></gs-item>
                     <gs-item name="localPort"></gs-item>
                     <gs-item name="enabled"></gs-item>
@@ -71,12 +71,9 @@
                 <gs-pager slot="extra" previous="&laquo;" next="&raquo;" firstlast="false" pages="0"></gs-pager>
             </gs-table>
 
-            <gs-admin-dialog-tunnel id="modal-main"  css-body="p-0" css-header="p-3"></gs-admin-dialog-tunnel>
-            <!--
-                <gs-admin-dialog id="modal-main" visible="false" css-modal="modal-lg" css-body="p-0" css-header="p-3"
+            <gs-admin-dialog id="modal-main" visible="false" css-modal="modal-lg" css-body="p-0" css-header="p-3"
                 title="Network tunnel" content="//forms/tunnel.html">
             </gs-admin-dialog>
-            -->
 
         </div>
 

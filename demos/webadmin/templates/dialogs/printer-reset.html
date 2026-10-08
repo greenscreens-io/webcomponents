@@ -1,4 +1,8 @@
-<form slot="body" is="gs-ext-form"  class="flex-fill" novalidate="">
+<form slot="body" is="gs-ext-form"  class="flex-fill py-3" novalidate="" autocomplete="off">
+
+    <div class="row m-1">
+        <gs-alert css="alert-danger" css-active="fade" message="Will stop writer and VRYOFF/VRYON printer device" dismissable="false"></gs-alert>
+    </div>
 
     <gs-form-group css="m-1" name="uuid" label="UUID" readonly disabled>
     </gs-form-group>
@@ -6,8 +10,8 @@
     <gs-form-group css="m-1" name="host" label="Host" readonly disabled>
     </gs-form-group>    
 
-    <gs-form-group css="m-1" name="printerName" label="Printer" required
-        maxlength="10" pattern="[0-9a-zA-Z_]+"
+    <gs-form-group css="m-1" name="printerName" label="Printer"  autofocus required
+        maxlength="10" pattern="[0-9a-zA-Z_]+" css-field="text-uppercase"
         description="Virtual Printer Name">
     </gs-form-group>    
     

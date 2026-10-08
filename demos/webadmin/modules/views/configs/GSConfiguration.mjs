@@ -1,12 +1,12 @@
 /*
-* Copyright (C) 2015, 2022 Green Screens Ltd.
+* Copyright (C) 2015, 2026 Green Screens Ltd.
 */
 
 /**
  * A module loading GSConfiguration class
  * @module views/GSConfiguration
  */
-import { GSComponents, GSUtil } from '/webcomponents/release/esm/io.greenscreens.components.all.esm.min.js';
+import { GSUtil } from '/webcomponents/release/esm/io.greenscreens.components.all.esm.min.js';
 import BaseViewUI from '../BaseViewUI.mjs';
 
 export default class GSConfiguration extends BaseViewUI {
@@ -54,6 +54,10 @@ export default class GSConfiguration extends BaseViewUI {
         return GSComponents.get('modal-setup');
     }
 
+	get printerMailing() {
+	    return GSComponents.get('modal-mail');
+	}
+		
     get validate() {
         return GSComponents.get('modal-validate');
     }
@@ -94,6 +98,11 @@ export default class GSConfiguration extends BaseViewUI {
         this.printerSetup.open(data);
     }
 
+	onViewMailPrinter(e) {
+	    const data = e.detail.data[0];
+		this.printerMailing.open(data);
+	}
+		
     onViewActivate(e) {
         const data = e.detail.data[0];
         this.activateDialog.open(data);

@@ -1,5 +1,5 @@
 /*
-* Copyright (C) 2015, 2022 Green Screens Ltd.
+* Copyright (C) 2015, 2026 Green Screens Ltd.
 */
 
 /**
@@ -21,14 +21,14 @@ export default class GSWebmodules extends BaseViewUI {
     }
 
     async onLoad() {
-        const o = DEMO ? DEMO : await io.greenscreens.WebModules.list();
+        const o = DEMO ? DEMO : await io.greenscreens.system.WebModules.list();
         return o.data;
     }
 
     async onViewStart(e) {
         const me = this;
         const data = e.detail.data[0];
-        const o = DEMO ? DEMO : await io.greenscreens.WebModules.start(data.name);
+        const o = DEMO ? DEMO : await io.greenscreens.system.WebModules.start(data.name);
         Utils.inform(o.success, 'Module started!');
         await me.onViewRefresh();
     }
@@ -36,7 +36,7 @@ export default class GSWebmodules extends BaseViewUI {
     async onViewStop(e) {
         const me = this;
         const data = e.detail.data[0];
-        const o = DEMO ? DEMO : await io.greenscreens.WebModules.stop(data.name);
+        const o = DEMO ? DEMO : await io.greenscreens.system.WebModules.stop(data.name);
         Utils.inform(o.success, 'Module stopped!');
         await me.onViewRefresh();
     }
@@ -44,8 +44,14 @@ export default class GSWebmodules extends BaseViewUI {
     async onViewRestart(e) {
         const me = this;
         const data = e.detail.data[0];
-        const o = DEMO ? DEMO : await io.greenscreens.WebModules.restart(data.name);
+        const o = DEMO ? DEMO : await io.greenscreens.system.WebModules.restart(data.name);
         Utils.inform(o.success, 'Module restarted!');
         await me.onViewRefresh();
     }
+	
+	async onViewOpen(e) {
+		const data = e.detail.data[0];
+		if (data) window.open(`${location.origin}/${data.name.slice(0, -4)}/`);
+	    return true;
+	}	
 }

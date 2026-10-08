@@ -1,5 +1,5 @@
 /*
-* Copyright (C) 2015, 2022 Green Screens Ltd.
+* Copyright (C) 2015, 2026 Green Screens Ltd.
 */
 
 /**
@@ -25,7 +25,7 @@ export default class GSMigrate extends GSAsbtractDialog {
     }
 
     async onData(data) {
-        const o = DEMO ? DEMO : await io.greenscreens.Server.migrate(data.path);
+        const o = DEMO ? DEMO : await io.greenscreens.Configs.migrate(data.path);
         const me = this;
         o.success ? setTimeout(() => me.inform(),500) : me.inform();
         return o.success;

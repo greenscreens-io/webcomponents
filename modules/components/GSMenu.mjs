@@ -210,7 +210,7 @@ export default class GSMenu extends GSUListExt {
 
   get #transform() {
     if (!globalThis.CSSTranslate) return null;
-    return Array.from(GSCSSMap.styleValue(this, 'transform')).filter(v => v instanceof CSSTranslate).pop();
+    return Array.from(GSCSSMap.styleValue(this, 'transform')||0).filter(v => v instanceof CSSTranslate).pop();
   }
 
   #attachDynamic(el) {

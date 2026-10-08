@@ -1,0 +1,50 @@
+<form slot="body" is="gs-ext-form"  class="flex-fill py-3" novalidate="" autocomplete="off">
+
+	<gs-form-group css="m-1" name="status" label="Status" autocomplete="off"
+	    description="Enable logging to the syslog server.">
+	    <template>
+	        <select class="form-select" id="status" name="status"  autofocus required>
+	            <option value="false" selected>Disabled</option>
+	            <option value="true">Enabled</option>
+	      </select>        
+	    </template>
+	</gs-form-group>
+
+    <gs-form-group css="m-1" name="intf" label="Address" required
+        value="127.0.0.1"
+        description="Syslog server address (default 127.0.0.1)">
+    </gs-form-group> 
+
+    <gs-form-group css="m-1" name="port" label="Port" autocomplete="off" required
+    	type="number" value="515" min="0" max="65535"
+        description="Syslog server port (default 515)">
+    </gs-form-group> 
+
+	<gs-form-group css="m-1" name="type" label="Type" autocomplete="off"
+	    description="Logging standard.">
+	    <template>
+	        <select class="form-select" id="type" name="type" required>
+              <option value="0" selected>RFC5424</option>
+              <option value="1">RFC3164</option>
+	      </select>        
+	    </template>
+	</gs-form-group>
+
+	<gs-form-group css="m-1" name="format" label="Pattern" autocomplete="off"
+	    description="Logging data format.">
+	    <template>
+	        <select class="form-select" id="format" name="format" required>
+	            <option value="0" selected>Default</option>
+	            <option value="1">JSON</option>
+	            <option value="2">CEF</option>
+	            <option value="3">LEEF</option>
+	      </select>        
+	    </template>
+	</gs-form-group>
+
+    <gs-form-group css="m-1" name="name" label="Name" required
+        description="Unique source name such as server name ect.">
+    </gs-form-group> 
+    
+      
+</form>

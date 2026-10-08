@@ -22,7 +22,7 @@
     description="Cache value type.">
     <template>
         <select class="form-select" id="cacheTimeout" name="cacheTimeout" selected="0">
-            <option value="0">HOURS</option>
+            <option selected value="0">HOURS</option>
             <option value="1">DAYS</option>
             <option value="2">WEEKS</option>
             <option value="3">MONTHS</option>
@@ -32,5 +32,5 @@
 
 <gs-form-group css="m-1" name="cacheValue" label="Cache Value"
     type="number" min="0" value="0"
-    description="Cache value.Set 0 to unlimited (default).">
+    description="Cache value. Set 0 to unlimited (default).">
 </gs-form-group>

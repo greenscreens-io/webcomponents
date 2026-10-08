@@ -1,0 +1,31 @@
+<gs-form-group css="m-1" name="useKnownHost" label="Use KnownHost" 
+    description="Use useKnownHost file in user/.shh to match remote server public key hash">
+    <template>
+        <select class="form-select" id="useKnownHost" name="useKnownHost" required>
+            <option value="true" selected>Enabled</option>
+            <option value="false">Disabled</option>
+        </select>
+    </template>
+</gs-form-group>
+
+<gs-form-group css="m-1" name="rejectUnknown" label="Reject Unknown" 
+    description="Reject connection for unverified server public keys.">
+    <template>
+        <select class="form-select" id="rejectUnknown" name="rejectUnknown" required>
+            <option value="true" selected>Enabled</option>
+            <option value="false">Disabled</option>
+        </select>
+    </template>
+</gs-form-group>
+
+<gs-form-group css="m-1" name="strict" label="Strict" 
+    description="Linux only. Check .ssh folder strict access permissions">
+    <template>
+        <select class="form-select" id="strict" name="strict" required>
+            <option value="true" selected>Enabled</option>
+            <option value="false">Disabled</option>
+        </select>
+    </template>
+</gs-form-group>
+
+    

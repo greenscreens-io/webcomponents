@@ -1,13 +1,12 @@
 /*
- * Copyright (C) 2015, 2022 Green Screens Ltd.
+ * Copyright (C) 2015, 2025 Green Screens Ltd.
  */
 
 /**
  * A module loading Shell Sidebar class
  * @module shell
  */
-
-import { GSComponents, GSElement, GSEvents } from '/webcomponents/release/esm/io.greenscreens.components.all.esm.min.js';
+import { GSComponents, GSElement} from '/webcomponents/release/esm/io.greenscreens.components.all.esm.min.js';
 import Utils from "../utils/Utils.mjs";
 
 /**
@@ -28,9 +27,10 @@ export default class HeaderUI extends GSElement {
 
     onReady() {
         super.onReady();
-        GSEvents.monitorAction(this);
+        const me = this;
+		GSEvents.monitorAction(me);
     }
-
+	
     /**
      * UI Notificator
      */
@@ -39,26 +39,18 @@ export default class HeaderUI extends GSElement {
     }
 
     // logout and replace with login tag
-    async logout() {
-        try {
-            Utils.unsetUI('gs-admin-shell-login');
-            Utils.unsetUI('gs-admin-shell');
-            const o = DEMO ? DEMO : await io.greenscreens.Session.closeSession();
-            return o.success;
-        } finally {
-            location.reload();
-        }
+    async onLogout() {
+        const o = DEMO ? DEMO : await io.greenscreens.Session.closeSession();		
+        return o.success;
     }
 
     // restart server
-    /*
-    async restart() {
+    async onRestart() {
 		const sts = globalThis.confirm('Are you sure? Action will restart server and terminate all connections.');
         if (!sts) return true;
-        const o = DEMO ? DEMO : await io.greenscreens.Server.restart();
+        const o = DEMO ? DEMO : await io.greenscreens.system.Server.restart();
         Utils.inform(o.success, 'Server is restarting! <br>Wait about 1 min. then refresh browser.');
     }
-    */
 
 	// reload certificates into server
 	async onCertServerRefresh() {
@@ -66,7 +58,7 @@ export default class HeaderUI extends GSElement {
         const msg = o.msg || 'Certificates applied to the server.';
         Utils.inform(true, msg);
 	}
-
+	
     // toggle client verification
     async onCertClientVerify() {
         const o = DEMO ? DEMO : await io.greenscreens.Certificate.verifySSLClient(2);
@@ -76,9 +68,9 @@ export default class HeaderUI extends GSElement {
 
     // regenerate session keys
     async onCertGenTerm() {
-        const o = DEMO ? DEMO : await io.greenscreens.Server.regenerate();
+        const o = DEMO ? DEMO : await io.greenscreens.Configs.regenerate();
         if (o.code === 'RSA') Utils.inform(true, 'New encryption keys generated');
-    }
+    } 
 
     // generate server cert request
     async onCertGenReq() {
@@ -92,17 +84,9 @@ export default class HeaderUI extends GSElement {
         //Utils.download(key + '.pem', data.publicPem);
     }
 
-    // generate server cert
-    async onCertGenSvr() {
-        const sts = confirm('Are you sure? Action will overwrite existnig certificate.');
-        if (!sts) return;
-        const o = DEMO ? DEMO : await io.greenscreens.Certificate.generate(true);
-        Utils.inform(true, 'New server certificate generated! <br> Please, restart server for changes to apply.');
-    }
-
     onCertExport() {
-        Utils.openInNewTab(`${location.origin}/services/certificate?id=0`);
-        Utils.openInNewTab(`${location.origin}/services/certificate?id=1`);
+        Utils.openInNewTab(`${location.origin}/service.ca/certificate?id=0`);
+        Utils.openInNewTab(`${location.origin}/service.ca/certificate?id=1`);
     }
 
     onExplorer() {

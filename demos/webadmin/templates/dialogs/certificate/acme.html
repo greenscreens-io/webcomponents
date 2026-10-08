@@ -1,14 +1,15 @@
 <gs-form-group css="m-1" name="acmeStatus" label="ACME Status"
     description="Enable to activate auto registration. Reset will deactivate account and create a new one.">
     <template>
-        <select class="form-select" id="acmeStatus" name="acmeStatus">
-            <option value="0">Disabled</option>
+        <select class="form-select" id="acmeStatus" name="acmeStatus" required>
+            <option value="0" selected>Disabled</option>
             <option value="1">Enabled</option>
             <option value="2">Reset</option>
         </select>
     </template>
 </gs-form-group>
 
+<!-- 
 <gs-form-group css="m-1" name="acmeRestart" label="Auto restart"
     description="Enable to auto restart server after certificate renewal.">
     <template>
@@ -18,3 +19,4 @@
         </select>
     </template>
 </gs-form-group>
+ -->

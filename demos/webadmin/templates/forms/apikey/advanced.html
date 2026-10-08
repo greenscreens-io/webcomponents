@@ -16,7 +16,7 @@
     description="Allow requester to override credentials.">
     <template>
         <select class="form-select" id="allowOveride" name="allowOveride" required>
-            <option value="true">Enabled</option>
+            <option value="true" selected>Enabled</option>
             <option value="false">Disabled</option>
         </select>
     </template>
@@ -27,7 +27,34 @@
     <template>
         <select class="form-select" id="serviceUser" name="serviceUser" required>
             <option value="true">Enabled</option>
-            <option value="false">Disabled</option>
+            <option value="false" selected>Disabled</option>
         </select>
     </template>
 </gs-form-group>
+    
+<gs-form-group css="m-1" name="otp" label="Require OTP Token" 
+    description="OTP token must be rpovide with the API key.">
+    <template>
+        <select class="form-select" id="otp" name="otp" required>
+            <option value="true">Enabled</option>
+            <option value="false" selected>Disabled</option>
+        </select>
+    </template>
+</gs-form-group>
+    
+<gs-form-group css="m-1" name="level" label="Security level" 
+    description="Use main host configured service user.">
+    <template>
+        <select class="form-select" id="level" name="level" required>
+            <option value="0"  selected>Level 0 - Access control only</option>
+            <option value="1">Level 1 - Bypass Sign-on</option>
+            <option value="2">Level 2 - SSO with Kerberos</option>
+            <option value="3">Level 3 - SSO with delegation</option>
+        </select>
+    </template> 
+</gs-form-group>    
+ 
+<gs-form-group flat="true" css="m-1" name="expiration" label="Expiration"
+    description="API Key expiration time." type="datetime-local" altValue="valueAsNumber">
+</gs-form-group>
+ 

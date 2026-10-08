@@ -1,5 +1,5 @@
 /*
-* Copyright (C) 2015, 2022 Green Screens Ltd.
+* Copyright (C) 2015, 2026 Green Screens Ltd.
 */
 
 /**
@@ -11,7 +11,7 @@ import { GSModal } from '/webcomponents/release/esm/io.greenscreens.components.a
 export default class GSAbout extends GSModal {
 
     static #version = '6.0.0.';
-    static #build = '20.10.2022. 15:00:00';
+    static #build = '01.02.2023. 15:00:00';
 
     static {
         customElements.define('gs-admin-dialog-about', GSAbout);
@@ -41,6 +41,20 @@ export default class GSAbout extends GSModal {
         return this.opt.build || GSAbout.#build;
     }
 
+	/* Security issue
+    get user() {
+        return this.opt['user.name'] || '';
+    }
+    
+    get home() {
+        return this.opt['user.home'] || '';
+    }
+    
+    get root() {
+        return this.opt['user.dir'] || '';
+    }
+    */
+    
     get #html() {
         const me = this;
         return `
@@ -49,5 +63,10 @@ export default class GSAbout extends GSModal {
             <div>Build : <span>${me.build}</span></div>
         </div>
         `;
+        /* Security issue
+            <div>User : <span>${me.user}</span></div>
+            <div>Home : <span>${me.home}</span></div>
+            <div>Root : <span>${me.root}</span></div>
+        */
     }
 }
