@@ -147,7 +147,7 @@ export class FormController {
     try {
           if(scheduled) valid = me.form.checkValidity();
           me.form.onvalidation?.(valid);
-          const fields = me.form.fields.filter(f => !f.validity.valid);
+          const fields = me.form.inputs.filter(f => !f.validity.valid);
           const obj = { valid: validity && valid && fields.length === 0, fields: fields };
           me.form.emit('validation', obj);
         } catch (error) {
