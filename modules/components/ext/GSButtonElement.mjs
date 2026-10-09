@@ -8,7 +8,7 @@
  */
 
 import { ButtonTypes } from '../../properties/index.mjs';
-import { OWNER, PARENT } from "../../base/GSConst.mjs";
+import { HANDLER, OWNER, PARENT } from "../../base/GSConst.mjs";
 import { GSDOM } from "../../base/GSDOM.mjs";
 import { GSEvents } from "../../base/GSEvents.mjs";
 import { mixin } from "./EventsMixin.mjs";
@@ -39,7 +39,7 @@ export class GSExtButtonElement extends HTMLButtonElement {
 
     #formEl = undefined;
     #hasUpdated = false;
-    #controllerHandler = undefined;
+
     #buttonController = undefined;
 
     constructor() {
@@ -59,7 +59,6 @@ export class GSExtButtonElement extends HTMLButtonElement {
         const me = this;
         GSEvents.detachListeners(me);
         me.#controllerHandler?.disconnectedCallback();
-        me.#controllerHandler = undefined;
         me.#formEl = undefined;
     }
 
@@ -91,7 +90,7 @@ export class GSExtButtonElement extends HTMLButtonElement {
 
     addController(controller) {
         const me = this;
-        me.#controllerHandler ??= new ControllerHandler(me);
+        me[HANDLER] ??= new ControllerHandler(me);
         me.#controllerHandler?.addController(controller);
     }
 
@@ -146,5 +145,8 @@ export class GSExtButtonElement extends HTMLButtonElement {
         return GSAttr.getAsNum(this, 'rate-limit', 0);
     }
 
+    get #controllerHandler() {
+        return this[HANDLER];
+    }    
 }
 

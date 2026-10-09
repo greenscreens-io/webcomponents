@@ -69,7 +69,7 @@ export class AdoptedController {
       const internal = me.#staticRules;
       if (me.#hasRules) internal.push(me.#dynamic);
       me.#root.adoptedStyleSheets = [...sheets, ...internal].filter(v => v.cssRules.length > 0);
-      me.#root.adoptedStyleSheets.id = document.adoptedStyleSheets.id;
+      //me.#root.adoptedStyleSheets.id = document.adoptedStyleSheets.id;
     }
   }
   
@@ -85,7 +85,8 @@ export class AdoptedController {
 
   // have adopted styles changed in document
   get #changed() {
-    return document.adoptedStyleSheets.id !== this.#sheets?.id;
+    //return document.adoptedStyleSheets.id !== this.#sheets?.id;
+    return document.adoptedStyleSheets !== this.#sheets;
   }
 
   get #root() {

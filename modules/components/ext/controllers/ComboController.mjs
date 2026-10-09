@@ -30,6 +30,11 @@ export class ComboController extends InteractiveController {
     this.#onAttributeHandler(e);
   }
 
+  // form control (do not call super)
+  onReset(e) {
+    this.#onAttributeHandler(e);
+  }
+
   #onAttributeHandler(e) {
     const me = this;
     if (!me.component.toggling) return;

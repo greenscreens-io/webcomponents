@@ -151,8 +151,8 @@ export class GSTooltipElement extends GSElement {
       content = GSTemplateCache.loadTemplate(true, this.id, me.title);
     } else {
       content = me.preprocess ? me.#parse(me.title) : me.title;
-      content = me.translate(content);
     }
+    content = me.translate(content.replaceAll('&nbsp;', ' '));
     return content;
   }
 

@@ -6,7 +6,7 @@
  * A module loading GSDataListExt class
  * @module components/ext/GSDataListExt
  */
-import { OWNER, PARENT } from "../../base/GSConst.mjs";
+import { OWNER, PARENT, HANDLER } from "../../base/GSConst.mjs";
 import { GSDOM } from "../../base/GSDOM.mjs";
 import { GSLoader } from "../../base/GSLoader.mjs";
 import { GSEvents } from "../../base/GSEvents.mjs";
@@ -36,11 +36,10 @@ export class GSExtTextAreaElement extends HTMLTextAreaElement {
     }
 
     #hasUpdated = false;
-    #controllerHandler = undefined;
 
     constructor() {
         super();
-        this.#controllerHandler = new ControllerHandler(this);
+        this[HANDLER] = new ControllerHandler(this);
     }
 
     connectedCallback() {
@@ -52,7 +51,6 @@ export class GSExtTextAreaElement extends HTMLTextAreaElement {
     disconnectedCallback() {
         const me = this;
         me.#controllerHandler?.disconnectedCallback();
-        me.#controllerHandler = undefined;
         GSEvents.detachListeners(me);
     }
 
@@ -215,5 +213,8 @@ export class GSExtTextAreaElement extends HTMLTextAreaElement {
         this.value = await GSLoader.loadSafe(url, 'GET', null, true);
     }
 
+    get #controllerHandler() {
+        return this[HANDLER];
+    }
 }
 

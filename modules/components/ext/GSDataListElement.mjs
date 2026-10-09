@@ -7,7 +7,7 @@
  * @module components/ext/GSDataListElement
  */
 
-import { OWNER, PARENT } from "../../base/GSConst.mjs";
+import { OWNER, PARENT, HANDLER } from "../../base/GSConst.mjs";
 import { GSID } from "../../base/GSID.mjs";
 import { GSDOM } from "../../base/GSDOM.mjs";
 import { GSUtil } from "../../base/GSUtil.mjs";
@@ -38,12 +38,11 @@ export class GSExtDataListElement extends HTMLDataListElement {
 
     #data = [];
 
-    #controllerHandler = undefined;
     #hasUpdated = false;
 
     constructor() {
         super();
-        this.#controllerHandler = new ControllerHandler(this);
+        this[HANDLER] = new ControllerHandler(this);
     }
 
     static get observedAttributes() {
@@ -60,7 +59,6 @@ export class GSExtDataListElement extends HTMLDataListElement {
     disconnectedCallback() {
         const me = this;
         me.#controllerHandler?.disconnectedCallback();
-        me.#controllerHandler = undefined;
         GSEvents.detachListeners(me);
     }
 
@@ -202,6 +200,10 @@ export class GSExtDataListElement extends HTMLDataListElement {
         }
 
         return seg.join(' ');
+    }
+
+    get #controllerHandler() {
+        return this[HANDLER];
     }
 
 }

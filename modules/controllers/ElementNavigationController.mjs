@@ -152,13 +152,14 @@ export class ElementNavigationController {
       active.forEach(el => {
         el.active = false;
         el.blur();
+        me.#host?.onReset?.(el);
       });
     } else if (active) {
       active.active = false;
       active.blur();
+      me.#host?.onReset?.(active);
     }
     me.#focused = undefined;
-    me.#host?.onReset?.(el);
     me.#host?.emit('group-reset', undefined, true);
   }
 

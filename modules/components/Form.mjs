@@ -43,7 +43,6 @@ export class GSFormElement extends GSElement {
   }
 
   #formRef = createRef();
-  #lastState = undefined;
 
   constructor() {
     super();
@@ -127,14 +126,16 @@ export class GSFormElement extends GSElement {
 
   async reset(e) {
     const me = this;
+    if (!e) return me.form.reset();
     me.data = {};
     await me.dataController?.read(me.asJSON);
     return me.formReset(e);
   }
 
   async submit(e) {
-    GSEvents.prevent(e, true, false, false);
     const me = this;
+    if (!e) return me.form.submit();
+    GSEvents.prevent(e, true, false, false);
     if (me.disabled ||!me.isValid) return;
     await me.dataController?.write(me.asJSON);
     return me.formSubmit(e);
@@ -172,7 +173,7 @@ export class GSFormElement extends GSElement {
 
   formReset(e) {
     const me = this;
-    me[HANDLER]?.forEach((c) => c.formReset?.(me));
+    me[HANDLER]?.forEach((c) => c.formReset?.(me));    
     me.emit('formreset', e?.detail, true, true);
   }
 

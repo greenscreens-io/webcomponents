@@ -1,0 +1,30 @@
+
+	<gs-form-group css="m-1" name="host" label="SMTP Host" 
+	    autocomplete="off"
+	    description="IP address or DNS name for SMTP endpoint.">
+	</gs-form-group>
+	
+	<gs-form-group css="m-1" name="port" label="SMTP Port" 
+	    autocomplete="off" type="number" min="1" max="65535"
+	    description="SMTP endpoint port">
+	</gs-form-group>
+	
+	<gs-form-group selectable required css="m-1" name="security" label="SMTP Security"  autocomplete="off"  
+	    description="SMTP connection mode.">
+		<gs-item value="0" selected>NONE</gs-item>
+		<gs-item value="1">TLS</gs-item>
+		<gs-item value="2">SSL</gs-item>
+	</gs-form-group>
+
+    <hr>
+
+	<gs-form-group css="m-1" name="username" label="User Name" 
+	    autocomplete="off"
+	    description="SMTP endpoint account name">
+	</gs-form-group>
+	    
+	<gs-form-group css="m-1" name="password" label="User Password" 
+	    autocomplete="off" type="password"
+	    description="SMTP endpoint account password">
+	</gs-form-group>
+	

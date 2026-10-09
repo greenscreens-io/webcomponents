@@ -1,5 +1,16 @@
 # [WebComponents](https://webcomponents.greenscreens.ltd/).
 
+# Release v2.2.5 FINAL (09.10.2026.)
+ - Form and FormElement controllers improvements on validation 
+ - Form and FormElement controllers improvements on reset
+ - Form and FormElement controllers improvements on ui updates 
+ - GSDialog - event processing changes
+ - GSDrawer - autoopen flag added
+ - GSListItem - description property added
+
+# Release v2.2.4 FINAL (24.06.2026.)
+ - GSTooltip - replacing space escape codes with real space
+
 # Release v2.2.3 FINAL (18.06.2026.)
  - GSTooltip - added preproecssing
  - GSTooltip - style improvement

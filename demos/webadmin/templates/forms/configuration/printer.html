@@ -11,11 +11,16 @@
 </gs-form-group>
 
 <gs-form-group required selectable css="m-1" name="verifyPrinter" label="Verify Printer"
-    description="">
+    description="If enabled, disable starting printer before user is signed on.">
     <gs-item value="false" name="Disabled" selected></gs-item>
     <gs-item value="true" name="Enabled"></gs-item>
 </gs-form-group>
 
+<gs-form-group required selectable css="m-1" name="mailDetect" label="Mailing Detection"
+    description="If enabled, will use directory entry API to detect printer device mailing options">
+    <gs-item value="false" name="Disabled" selected></gs-item>
+    <gs-item value="true" name="Enabled"></gs-item>
+</gs-form-group>
 
 <gs-form-group selectable required css="m-1" name="drawer1" label="Drawer 1"
     description="Default paper size for printer sessions for drawer 1. When user select DEFAULT, this option will be used.">

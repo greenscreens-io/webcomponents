@@ -85,6 +85,11 @@ export class InteractiveController {
     return GSAttr.get(this.#host, 'strict', '');
   }
 
+  // form action
+  onReset(e) {
+    this.onChange(e);
+  }
+
   onBlur(e) {
     if (!this.#isInList()) GSEvents.send(this.#host, 'strict', { ok: false, source: e });
   }

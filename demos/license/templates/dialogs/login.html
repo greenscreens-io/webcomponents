@@ -1,13 +1,14 @@
 <gs-form css="text-start" autocomplete="off">
 <template>
-    <div class="mb-3">
-        <label for="email" class="form-label">Email address</label>
-        <input name="email" type="email" class="form-control" placeholder="email" required="">
-        <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
-    </div>
-    <div class="mb-3">
-        <label for="password" class="form-label">Password</label>
-        <input name="password" type="password" class="form-control" placeholder="enter password" required="" autocomplete="off">
-    </div>
+	<gs-formui-handler></gs-formui-handler>
+    <gs-form-group layout="vertical" css="mb-3" name="email" label="Email address" 
+	    autocomplete="off" required autofocus autovalidate>
+	</gs-form-group>
+    <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+
+    <gs-form-group layout="vertical" css="mb-3" type="password" name="password" label="Password" 
+	    autocomplete="off" placeholder="enter password" required>
+	</gs-form-group>
+
 </template>    
 </gs-form>

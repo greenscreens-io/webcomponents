@@ -19,14 +19,25 @@ class LoginDialog extends GSDialogElement {
         me.closable = true;
         me.title = "Login";
         me.confirmText = "Continue";
-        me.buttonAlign = "center";
+        me.buttonAlign = "center"; 
         me.cssTitle = "fs-3 fw-bold";
         me.css = "shadow-sm rounded p-3";
         me.template = "//dialogs/login.html";
-        me.on("data", me.onData.bind(me));
+    }
+    
+    firstUpdated() {
+        const me = this;
+        super.firstUpdated();
+        me.on('data', me.#onFormData.bind(me));
+        me.on('error', me.#onFormError.bind(me));
+        GSEvents.monitorAction(this);
     }
 
-    async onData(e) {
+    #onFormError(e) {
+        console.log(e);
+    }
+
+    async #onFormData(e) {
         const me = this;
         const data = e.detail;
         try {

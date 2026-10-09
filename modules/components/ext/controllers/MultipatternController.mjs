@@ -93,6 +93,11 @@ export class MultipatternController {
     } 
   }
 
+  // form action
+  onReset(e) {
+    this.validate();
+  }
+
   onBlur(e) {
     this.validate();
   }

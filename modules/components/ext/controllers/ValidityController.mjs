@@ -103,23 +103,23 @@ export class ValidityController {
     }    
   }
 
+  // form action
+  onReset(e) {
+    this.#onAutoValidity(e);
+  }
+
   onInvalid(e) {
-    const me = this;
-    me.validate();
-    // if (!e.composed) me.#host.emit('invalid', e, true, true);
+    this.validate();
   }
 
   onChange(e) {
-    const me = this;
-    me.#onAutoValidity(e);
-    // if (!e.composed) me.#host.emit('change', e, true, true);
+    this.#onAutoValidity(e);
   }
 
   onBlur(e) {
     const me = this;
     me.#onBlock(e);
     me.#onAutoValidity(e);
-    // if (!e.composed) me.#host.emit('blur', e, true, true);
   }
 
   #onBlock(e) {    

@@ -1,0 +1,32 @@
+<gs-form beep block slot="body" css="flex-fill" autocomplete="off">
+    <template>
+        <gs-form-group css="m-1" name="uuid" label="UUID" readonly disabled>
+        </gs-form-group>
+        
+        <gs-form-group css="m-1" name="host" label="Host" readonly disabled>
+        </gs-form-group>
+
+        <gs-form-group css="m-1" name="printerName" label="Printer Name"  autofocus required
+            maxlength="10" pattern="[0-9a-zA-Z_]+" css-field="text-uppercase"
+            description="Printer device Name.">
+        </gs-form-group>
+
+        <gs-form-group css="m-1" name="clientID" label="Client ID"  readonly
+            css-field="text-uppercase" description="Client ID in IBM directory entry.">
+        </gs-form-group>
+        
+        <div class="d-flex flex-column align-items-center">
+            <hr class="w-75">
+        </div>
+
+        <gs-form-group css="m-1" name="fromMail" label="Sender mail"
+            type="email" description="Email used as an alternative sender field.">
+        </gs-form-group>
+
+        <gs-form-group css="m-1" name="toMail" label="Destination mail" required  
+            type="email" description="Destination email where spoole file will be sent">
+        </gs-form-group>
+
+
+	</template>	
+</gs-form>

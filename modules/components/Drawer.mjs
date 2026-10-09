@@ -10,6 +10,7 @@ import { GSElement } from '../GSElement.mjs';
 export class GSDrawerElement extends GSElement {
 
   static properties = {
+    autoopen: { reflect: true, type: Boolean },
     autoclose: { reflect: true, type: Boolean },
     closable: { reflect: true, type: Boolean },
     backdrop: { reflect: true, type: Boolean },
@@ -130,7 +131,7 @@ export class GSDrawerElement extends GSElement {
 
   #onEnter() {
     const me = this;
-    if (me.min > 0) me.open();
+    if (me.autoopen && me.min > 0) me.open();
   }
 
   open() {

@@ -13,6 +13,7 @@ export class GSListItemElement extends GSElement {
     target: {},
     title: {},
     icon: {},
+    description: {},
     size: { type: Number },
     autofocus: { type: Boolean, reflect: true },
     disabled: { type: Boolean, reflect: true },
@@ -48,6 +49,7 @@ export class GSListItemElement extends GSElement {
     return html`<a  tabindex="0" ${ref(me.#refEl)}
        href="${ifDefined(me.href)}" 
        target="${ifDefined(me.target)}" 
+       tooltip="${ifDefined(me.description)}" 
        class="${classMap(me.renderClass())}">
         ${me.#renderFirst()} 
         ${me.#renderSecond()}

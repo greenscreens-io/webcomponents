@@ -1,0 +1,45 @@
+<gs-form beep block slot="body" css="flex-fill" autocomplete="off">
+    <template>        
+
+		<gs-alert css="alert-danger" css-active="fade" message="Server restart is required for a change to take effect!" dismissable="false"></gs-alert>
+
+		<gs-form-group css="m-1" name="proxyMode" label="Proxy Mode" autocomplete="off"  selectable required
+			description="Enable only if behind a trusted proxy. Use to select X-Forwarded-* / Forwarded headers.">
+			<gs-item value="0" selected>NONE</gs-item>
+			<gs-item value="1">Forward</gs-item>
+			<gs-item value="2">RFC7239</gs-item>	            
+		</gs-form-group>
+
+		<gs-form-group css="m-1" name="proxyChannel" label="Proxy Channel" autocomplete="off"
+			 selectable required description="Select network channel used for proxy.">
+			<gs-item value="0" selected>HTTP</gs-item>
+			<gs-item value="1">HTTPS</gs-item>
+			<gs-item value="2">Both</gs-item>
+		</gs-form-group>
+
+
+		<gs-form-group css="m-1" name="proxyProtocol" label="Proxy Protocol" autocomplete="off"
+			 selectable required description="Use proxy protocol (HAProxy etc.)">
+			<gs-item value="true" selected>ENABLE</gs-item>
+			<gs-item value="false">DISABLE</gs-item>
+		</gs-form-group>
+
+
+		<gs-form-group css="m-1" name="strict" label="Proxy Only" autocomplete="off"
+			 selectable required description="Restrict access only for verified proxies.">
+			<gs-item value="true" selected>ENABLE</gs-item>
+			<gs-item value="false">DISABLE</gs-item>
+		</gs-form-group>
+
+		<gs-form-group css="m-1" name="proxies" label="Proxies" autocomplete="off" 
+			description="Comma separated list of allowed proxies. If not set, default 127.0.0.1 is used.">
+		</gs-form-group> 
+		
+		<gs-form-group css="m-1" name="restart" label="Restart Server" autocomplete="off" required  selectable required
+			description="Restart server immediately. If restart selected, session will logout. Active web terminal sessions will be terminated.">
+			<gs-item selected value="0">No</gs-item>
+			<gs-item value="1">Yes</gs-item>
+		</gs-form-group> 
+
+	</template>	    
+</gs-form>

@@ -1,0 +1,37 @@
+<gs-form beep block slot="body" css="flex-fill" autocomplete="off">
+    <template>        
+	
+		<gs-form-group css="m-1" name="clientID" label="Client ID"  autofocus required  
+			autocomplete="off" 
+			description="Client unique name registered at IDP provider.">
+		</gs-form-group>
+
+		<gs-form-group css="m-1" name="providerUrl" label="Provider URL" required
+			autocomplete="off"
+			description="IDP provider URL to 'greenscreens-oidc' realm.">
+		</gs-form-group>
+
+		<gs-form-group css="m-1" name="principalAttr" label="Principal Attribute" 
+			autocomplete="off" value="preferred_username"
+			description="Response field used to retrieve authorized user name.">
+		</gs-form-group>
+
+		<gs-form-group css="m-1" name="publicClient" label="Public Client" selectable required
+			description="If set to 'true', no client credentials are sent when communicating with the OpenID provider.">
+			<gs-item value="false">False</gs-item>
+			<gs-item value="true">True</gs-item>
+		</gs-form-group>
+		
+		<gs-form-group css="m-1" name="sslRequired" label="Secured connection" selectable required
+			description="Is secured connection required">
+			<gs-item value="false">False</gs-item>
+			<gs-item value="true">True</gs-item>
+		</gs-form-group>
+			
+		<gs-form-group css="m-1" name="secret" label="Access token" required
+			autocomplete="off" type="password"
+			description="Secret token to access provider URL.">
+		</gs-form-group>
+	
+    </template>	    
+</gs-form>

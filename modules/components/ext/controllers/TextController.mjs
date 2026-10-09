@@ -59,6 +59,11 @@ export class TextController {
     this.value = this.#transform();
   }
 
+  // form action
+  onReset(e) {
+    this.value = this.#transform();
+  }
+
   #transform() {
     const me = this;
     if (me.type === 'text') {

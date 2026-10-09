@@ -263,8 +263,8 @@ export class GSDialogElement extends GSElement {
             @close="${me.#onDlgClose.bind(me)}"
             @cancel="${me.#onDlgCancel.bind(me)}"
             @keydown="${me.#onKeyDown.bind(me)}"
-            @formsubmit="${me.#onBtnConfirm.bind(me)}"
-            @submit="${me.#onBtnConfirm.bind(me)}"
+            @formsubmit="${me.#onFormSubmit.bind(me)}"
+            @submit="${me.#onFormSubmit.bind(me)}"
             @validation="${me.#onFormValidation.bind(me)}"
             class="${classMap(me.renderClass())}">
             <div class="${classMap(me.#renderContent())}">
@@ -384,28 +384,47 @@ export class GSDialogElement extends GSElement {
     return me;
   }
 
+  /**
+   * Dialog close event close ui
+   * @param {*} e 
+   */
   #onDlgClose(e) {
     this.close();
   }
 
+  /**
+   * Dialog cacnel event, rest form/s, 
+   * and does not prevent event (closing)
+   * @param {*} e 
+   */
   #onDlgCancel(e) {
-    const me = this;
-    const forms = me.forms;
-    if (forms) {
-      const isInvalid = forms.map(form => form.isValid).filter(v => v === false).length > 0;
-      if (isInvalid) return GSEvents.prevent(e);
-    }
-    me.close();
+    //this.forms?.forEach(f => f.form?.reset());
+    this.forms?.forEach(f => f.reset());
   }
 
+  /**
+   * On button confirm, validate if forms are valid,
+   * If Ok, continue with closing
+   * @param {*} e 
+   * @returns 
+   */
   #onBtnConfirm(e) {
     const me = this;
+    const forms = me.forms;
     if (me.disabled) return;
-    me.#dialog?.requestClose();
+    if (forms?.length>0) {
+      const isInvalid = forms.map(form => form.isValid).filter(v => v === false).length > 0;
+      if (isInvalid) return GSEvents.prevent(e);
+    }    
+    this.#dialog?.requestClose();
   }
-
+  
+  /**
+   * Button cancel is pressed, we reuqest form closing
+   * @param {*} e 
+   */
   #onBtnCancel(e) {
-    this.close();
+    this.#dialog?.requestClose();
   }
 
   #onKeyDown(e) {
@@ -421,6 +440,10 @@ export class GSDialogElement extends GSElement {
   #onFormValidation(e) {
     const me = this;
     me.#btnConfirm.disabled = e.detail.valid === false;
+  }
+
+  #onFormSubmit(e) {
+    debugger;
   }
 
   static #updateStack() {

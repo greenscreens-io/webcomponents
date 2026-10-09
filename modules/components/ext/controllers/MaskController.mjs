@@ -174,6 +174,11 @@ export class MaskController {
     this.validate();
   }
 
+  // form action
+  onReset(e) {
+    this.validate();
+  }
+
   /**
    * If data-slots not defined, try to detect automatically
    * @returns 

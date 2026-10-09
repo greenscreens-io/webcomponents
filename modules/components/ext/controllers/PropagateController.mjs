@@ -47,6 +47,14 @@ export class PropagateController {
    * Field event propagated to the form
    * @param {Event} e 
    */
+  onInput(e) {
+    this.handler.onInput?.(e);
+  } 
+
+  /**
+   * Field event propagated to the form
+   * @param {Event} e 
+   */
   onChange(e) {
     this.handler.onChange?.(e);
   }

@@ -2,6 +2,7 @@
  * Copyright (C) 2015, 2026; Green Screens Ltd.
  */
 
+import { HANDLER } from "../../base/GSConst.mjs";
 import { GSEvents } from '../../base/GSEvents.mjs';
 
 import { ValidityController } from './controllers/ValidityController.mjs';
@@ -15,7 +16,7 @@ import { DataController } from "../../controllers/DataController.mjs";
 import { PropagateController } from './controllers/PropagateController.mjs';
 
 /**
- * Helper class wizh shared code for form elements to process controllers.
+ * Helper class with shared code for form elements to process controllers.
  */
 export class ControllerHandler {
 
@@ -28,7 +29,6 @@ export class ControllerHandler {
   #typeController = undefined;
   #validityController = undefined;
   #comboController = undefined;
-  #buttonController = undefined;
   #propagateController = undefined;
 
   #formController = undefined;
@@ -37,17 +37,18 @@ export class ControllerHandler {
   constructor(host) {
     this.#host = host;
   }
-
+  
   connectedCallback() {
     const me = this;
     const host = me.#host;
+    host[HANDLER] = this;
 
     if (me.isButton) {
       return me.#invoke((c) => c.hostConnected?.());
     }
-
+    
     if (me.isForm) {
-      host.on('reset', me.#onReset.bind(me));
+      host.on('reset', me.onReset.bind(me));
       host.on('submit', me.#onSubmit.bind(me));
       host.on('formdata', me.#onFormData.bind(me));
       host.on('validation', me.#onValidation.bind(me));
@@ -56,8 +57,8 @@ export class ControllerHandler {
     } else {
       host.on('keydown', me.#onKeyDown.bind(me));
       host.on('keyup', me.#onKeyUp.bind(me));
-      host.on('input', me.#onInput.bind(me));
       // these events are also forwarded to form controller
+      host.on('input', me.onInput.bind(me));
       host.on('change', me.onChange.bind(me));
       host.on('focus', me.onFocus.bind(me));
       host.on('blur', me.onBlur.bind(me));
@@ -73,12 +74,12 @@ export class ControllerHandler {
     me.#invoke((c) => c.hostDisconnected?.());
 
     me.#controllers?.clear();
+    me.#host[HANDLER] = undefined;
 
     me.#host = undefined;
     me.#handlers = undefined;
     me.#controllers = undefined;
     me.#comboController = undefined;
-    me.#buttonController = undefined;
     me.#formController = undefined;
     me.#dataController = undefined;
     me.#propagateController = undefined;
@@ -159,7 +160,7 @@ export class ControllerHandler {
     this.#invoke(c => c.onKeyUp?.(e));
   }
 
-  #onInput(e) {
+  onInput(e) {
     this.#invoke(c => c.onInput?.(e));
   }
 
@@ -179,7 +180,7 @@ export class ControllerHandler {
     this.#invoke(c => c.onBlur?.(e));
   }
 
-  #onReset(e) {
+  onReset(e) {
     this.#invoke(c => c.onReset?.(e));
   }
 

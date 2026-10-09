@@ -46,16 +46,14 @@ export class GSAdoptedEngine {
     const me = GSAdoptedEngine;
     if (me.#scheduled) return;
     me.#scheduled = true;
-    queueMicrotask(() => {
-      requestAnimationFrame(() => {
-        try {
-          document.adoptedStyleSheets = me.#sorted;
-          document.adoptedStyleSheets.id = ++me.#ID;
-        } finally {
-          me.#scheduled = false;
-          globalThis.dispatchEvent(new CustomEvent('gs-adopted'));
-        }
-      });
+    requestAnimationFrame(() => {
+      try {
+        document.adoptedStyleSheets = me.#sorted;
+        //document.adoptedStyleSheets.id = ++me.#ID;
+      } finally {
+        me.#scheduled = false;
+        globalThis.dispatchEvent(new CustomEvent('gs-adopted'));
+      }
     });
   }
 

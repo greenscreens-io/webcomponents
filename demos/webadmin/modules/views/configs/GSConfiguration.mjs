@@ -46,6 +46,10 @@ export default class GSConfiguration extends BaseViewUI {
         return this.query('#modal-setup', true);
     }
 
+    get printerMail() {
+        return this.query('#modal-mail', true);
+    }
+
     get validate() {
         return this.query('#modal-validate', true);
     }
@@ -89,6 +93,12 @@ export default class GSConfiguration extends BaseViewUI {
         const me = this;
         const data = me.store.selected.pop();
         me.printerSetup.open(data);
+    }
+
+    onViewSetupMail(e) {
+        const me = this;
+        const data = me.store.selected.pop();
+        me.printerMail.open(data);
     }
 
     onViewActivate(e) {

@@ -18,7 +18,7 @@ export class GSLoginDefaults extends GSAsbtractDialog {
         super();
         const me = this;
         me.opened = true;
-        me.dismissable = true;
+        me.dismissable = true; 
         me.title = "Login Defaults";
         me.template = "//dialogs/login-defaults.html";
     }

@@ -381,10 +381,11 @@ export class GSFormGroupElement extends GSElement {
             wrap="${ifDefined(me.wrap)}" 
             form="${ifDefined(me.form)}" 
             name="${name}" 
-            value="${ifDefined(value)}"
             placeholder="${ifDefined(placeholder)}"
             title="${ifDefined(title)}"
-    
+            
+            .value="${ifDefined(value)}"
+
             class="${me.#cssField} ${me.cssField} ${me.#styleID}" 
 
             autocomplete="${ifDefined(me.autocomplete)}"
@@ -432,8 +433,8 @@ export class GSFormGroupElement extends GSElement {
             name="${name}" 
             type="${type}" 
             form="${ifDefined(me.form)}"
-            value="${ifDefined(value)}"
             title="${ifDefined(title)}"
+            .value="${ifDefined(value)}"
 
 
             ?block="${me.#isBlock}"

@@ -48,13 +48,26 @@
     "kerblite": {
         "data-gs-swap": "gs-admin-dialog-kerblite"
     },
-    "network": {
-        "data-gs-swap": "gs-admin-dialog-network"
-    },
     "system": {
         "data-gs-swap": "gs-admin-dialog-system"
     },
+    
+    "oidc": {
+        "data-gs-swap": "gs-admin-dialog-oidc"
+    },
+    "mail": {
+        "data-gs-swap": "gs-admin-dialog-mail"
+    },        
+    "network": {
+        "data-gs-swap": "gs-admin-dialog-network"
+    },
+    "proxy": {
+        "data-gs-swap": "gs-admin-dialog-proxy"
+    },
     "syslog": {
         "data-gs-swap": "gs-admin-dialog-syslog"
-    }      
+    },
+    "shell": {
+        "data-gs-swap": "gs-admin-dialog-shell"
+    }    
 }

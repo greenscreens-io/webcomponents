@@ -2,9 +2,9 @@
  * Copyright (C) 2015, 2026; Green Screens Ltd.
  */
 
+import { OWNER, PARENT, HANDLER } from "../../base/GSConst.mjs";
 import { GSDOM } from '../../base/GSDOM.mjs';
 import { GSEvents } from '../../base/GSEvents.mjs';
-import { OWNER, PARENT } from "../../base/GSConst.mjs";
 import { MaskController } from './controllers/MaskController.mjs';
 import { MultipatternController } from './controllers/MultipatternController.mjs';
 import { ListController } from './controllers/ListController.mjs';
@@ -31,7 +31,6 @@ export class GSExtInputElement extends HTMLInputElement {
     return ['multipattern', 'mask', 'required', 'disabled'];
   }
 
-  #controllerHandler = undefined;
   #maskController = undefined;
   #patternController = undefined;
   #listController = undefined;
@@ -41,7 +40,7 @@ export class GSExtInputElement extends HTMLInputElement {
 
   constructor() {
     super();
-    this.#controllerHandler = new ControllerHandler(this);
+    this[HANDLER] = new ControllerHandler(this);
   }
 
   connectedCallback() {
@@ -55,7 +54,6 @@ export class GSExtInputElement extends HTMLInputElement {
   disconnectedCallback() {
     const me = this;
     me.#controllerHandler?.disconnectedCallback();
-    me.#controllerHandler = undefined;
 
     me.#maskController = undefined;
     me.#patternController = undefined;
@@ -365,6 +363,10 @@ export class GSExtInputElement extends HTMLInputElement {
       me.removeController(me.#listController);
       me.#listController = null;
     }
+  }
+
+  get #controllerHandler() {
+      return this[HANDLER];
   }
 
 }

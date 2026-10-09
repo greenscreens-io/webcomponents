@@ -1,22 +1,15 @@
 <gs-form beep block slot="body" css="flex-fill" autocomplete="off">
     <template>        
 
-		<gs-form-group css="m-1" name="sso" label="Status" autocomplete="off" 
-			selectable required toggling data-gsf-attribute="disabled" data-gsf-value="false"
-			description="Enable Single Sign On. IBM system must be configured to use Kerberos for signon.">
-			<gs-item value="false" name="Disabled" selected></gs-item>
-			<gs-item value="true" name="Enabled"></gs-item>		
-		</gs-form-group>
-	
-		<gs-form-group css="m-1" name="ssoKDC" label="KDC" 
-			autocomplete="off"
-			description="Kerberos V5 service. If empty, auto discovery is used. DNS SRV must be properly set. Useful if multiple KDC services used.">
-		</gs-form-group>
-		
-		<gs-form-group css="m-1" name="ssoSPN" label="SPN" autocomplete="off" list="spn" required
-			description="SPN name for this service.">
-			<datalist slot="footer" id="spn" is="gs-ext-datalist"></datalist>
-		</gs-form-group>
+    <gs-tab-group type="tabs" css-tab="fw-bold" css-panel="p-2" data-css-item="">
+        <gs-item title="Kerberos" template="//dialogs/sso/kerberos.html" css-pane="flex-fill" active="true"></gs-item>
+        <gs-item title="Ldap" template="//dialogs/sso/ldap.html" css-pane="flex-fill"></gs-item>
+        <!-- 
+        <gs-item title="Tivoli" template="//dialogs/sso/tivoli.html" css-pane="flex-fill"></gs-item>
+         -->  
+    </gs-tab-group>
+
     </template>	    
 </gs-form>
 <gs-button slot="actions" color="secondary" css="mx-1" data-gs-action="reload-kerberos" id="btnKDC" title="Reload" tooltip="Resync data from KDC"></gs-button>
+
