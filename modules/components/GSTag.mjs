@@ -51,6 +51,20 @@ export default class GSTag extends GSElement {
         const me = this;
         const items = me.#renderList();
         const tags = me.#renderTags();
+        return this.allowAdd ? me.#editable(tags, items) : me.#selectable(tags, items);
+    }
+
+    #selectable(tags, items) {
+        const me = this;
+        return `
+        <div class="d-flex flex-wrap align-items-center gap-1 ${me.css}">
+            ${tags}
+            <select id="${me.name}">${items}</select>
+        </div>`;
+    }    
+
+    #editable(tags, items) {
+        const me = this;
         return `
         <div class="d-flex flex-wrap align-items-center gap-1 ${me.css}">
             ${tags}
@@ -63,12 +77,17 @@ export default class GSTag extends GSElement {
         super.onReady();
         const me = this;
         me.attachEvent(me.query('div'), 'click', me.#onClick.bind(me));
+        me.attachEvent(me.#select, 'change', me.#onSelect.bind(me));
         me.attachEvent(me.#input, 'keydown', me.#onKeyDown.bind(me));
         me.attachEvent(me.#input, 'input', me.#onInput.bind(me));
     }
 
     #onInput(e) {
         if (!e.inputType) this.#updateTag(e);
+    }
+
+    #onSelect(e) {
+        this.#updateTag(e);
     }
 
     #onKeyDown(e) {
@@ -96,21 +115,43 @@ export default class GSTag extends GSElement {
     }
 
     get #options() {
-        return Array.from(this.#datalist.children);
+        const me = this;
+        const el = me.allowAdd ? this.#datalist: this.#select;
+        return Array.from(el.children);
     }
 
     get #selected() {
         const me = this;
-        return me.#options.filter(el => el.value.toLowerCase() === me.#input.value.toLowerCase()).pop();        
+        return me.#options.filter(el => el.value.toLowerCase() === me.#element.value.toLowerCase()).pop();        
     }
 
     get #isDuplicate() {
         const me = this;
-        const val = me.#input.value.toLowerCase();
+        const val = me.#element.value.toLowerCase();
         return me.values.filter( v => v.toLowerCase() === val).length > 0 ;
     }
 
     #addTag(optEl) {
+        const me = this;
+        if (me.allowAdd) {
+            me.#addEditable(optEl)
+         } else me.#addSelectable(optEl);
+    }
+
+
+    #addSelectable(optEl) {
+        const me = this;
+        const fld = me.#select;
+        if (me.#isMax) return;
+        if (me.#isDuplicate) return;
+        const src = me.#renderTag(fld.value);
+        const el = GSDOM.parse(src, true);
+        if (el) fld.insertAdjacentElement('beforebegin', el);
+        fld.value = '';
+        me.values = me.value;
+    }
+
+    #addEditable(optEl) {
         const me = this;
         const fld = me.#input;
         if (me.#isMax ||(!optEl && me.allowAdd == false)) {
@@ -120,26 +161,35 @@ export default class GSTag extends GSElement {
         if (me.#isDuplicate) return;
         const src = me.#renderTag(fld.value);
         const el = GSDOM.parse(src, true);
-        fld.insertAdjacentElement('beforebegin', el);
+        if (el) fld.insertAdjacentElement('beforebegin', el);
         fld.value = '';
         optEl?.remove();
-        me.values = me.#data.join(',');
+        me.values = me.value;
     }
     
     #removeTag(tagEl) {
         if (!tagEl) return;
         const me = this;
+        if (!me.allowAdd) {
+            tagEl.remove();
+            me.values = me.value;
+            return;
+        } 
         const opt  = document.createElement('option');
         opt.value = tagEl.dataset.value;
         me.#datalist.appendChild(opt);
         tagEl.remove();
-        me.values = me.#data.join(',');
+        me.values = me.value;
     }
 
     #renderList() {
         const me = this;
-        const items = GSItem.genericItems(me);
-        return items.map(el => `<option value="${el.name}">`).join('');
+        const items = GSItem.genericItems(me);        
+        return items.map(el => me.#renderOption( el.name, me.allowAdd)).join('');
+    }
+
+    #renderOption(value, editable) {
+        return editable ? `<option value="${value}">` : `<option value="${value}">${value}</options>`;
     }
 
     #renderTags() {
@@ -153,6 +203,15 @@ export default class GSTag extends GSElement {
         return `<div class="badge tag ${me.cssTag}" data-value="${val}">${val}<button type="button" class="btn-close ms-1 ${me.cssClose}"></button></div>`;
     }
   
+    get value() {
+        return this.#data.join(',');
+    }
+
+    get #element() {
+        const me = this;
+        return me.allowAdd ? me.#input : me.#select;
+    }
+
     get #input() {
         return this.query('input');
     }
@@ -161,12 +220,20 @@ export default class GSTag extends GSElement {
         return this.query('datalist');
     }
 
+    get #select() {
+        return this.query('select');
+    }
+
+    get name() {
+        return GSAttr.get(this, 'name', '');
+    }
+
     get allowAdd() {
-        return GSAttr.getAsBool(this, 'allowadd', false);
+        return this.hasAttribute('allowadd');
     }
 
     set allowAdd(val = false) {
-        return GSAttr.betAsBool(this, 'allowadd', val);
+        return GSAttr.toggle(this, 'allowadd', GSUtil.asBool(val));
     }
 
     get max() {
