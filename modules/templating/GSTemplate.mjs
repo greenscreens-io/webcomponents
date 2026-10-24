@@ -29,6 +29,7 @@ export default class GSTemplate extends HTMLElement {
 	#connected = false;
 	#content = null;
 	#observer = null;
+	#loadVersion = 0;
 
 	/**
 	* List of observer element attributes
@@ -133,6 +134,7 @@ export default class GSTemplate extends HTMLElement {
 	disconnectedCallback() {
 		const me = this;
 		me.#connected = false;
+		me.#loadVersion++;
 		me.#removeFlat();
 		if (me.#observer) me.#observer.disconnect();
 		GSComponents.remove(me);
@@ -193,7 +195,11 @@ export default class GSTemplate extends HTMLElement {
 	 */
 	async loadTemplate() {
 		const me = this;
-		const tpl = await GSCacheTemplate.loadTemplate(true, me.id, me.href);
+		const loadVersion = ++me.#loadVersion;
+		const embeddedTemplate = Array.from(me.children).find(el => el instanceof HTMLTemplateElement);
+		const source = me.href || (embeddedTemplate ? embeddedTemplate.innerHTML : me.innerHTML);
+		const tpl = await GSCacheTemplate.loadTemplate(true, me.id, source);
+		if (!me.#connected || loadVersion !== me.#loadVersion) return false;
 		if (!tpl) {
 			GSLog.error(this, `Template not found for: Id=${me.id}; href=${me.href}`);
 			return false;
@@ -204,8 +210,9 @@ export default class GSTemplate extends HTMLElement {
 		}
 
 		await GSEvents.waitAnimationFrame(async () => {
-			if (!me.#connected) return;
+			if (!me.#connected || loadVersion !== me.#loadVersion) return;
 			if (me.isFlat) {
+				me.#removeFlat();
 				const body = GSDOM.parseWrapped(me, tpl.innerHTML);
 				me.#content = me.insertAdjacentElement('afterend', body);
 			} else {
@@ -253,10 +260,9 @@ export default class GSTemplate extends HTMLElement {
 	/**
 	 * Find all elements matched by selector
 	 * @param {string} name CSS selector query
-	 * @param {boolean} asArray  Return result wrapped as array
-	 * @returns {Aray<HTMLElement>} List of HTMLElement matched
+	 * @returns {Array<HTMLElement>} Matching elements
 	 */
-	queryAll(name = '', asArray = false) {
+	queryAll(name = '') {
 		return GSDOM.queryAll(this, name);
 	}
 
@@ -266,4 +272,3 @@ export default class GSTemplate extends HTMLElement {
 	}
 
 }
-

@@ -187,7 +187,7 @@ export default class GSCacheTemplate {
 		if (!fn) return fn;
 		try {
 			let template = null;
-			if (me.cached) template = me.load(o);
+			if (cached) template = me.load(o);
 			if (template) return template;
 			template = GSFunction.isFunctionAsync(fn) ? await fn() : fn();
 			return me.initTemplate(cached, name, template);
