@@ -34,11 +34,16 @@ export default class GSTheme {
 
     static #switch(el, from = 'light', to = 'dark') {
 
-        const root = el || document.body;
+        const root = el || document.body || document.documentElement;
+        const elements = [root, ...root.querySelectorAll('*')];
+        for (const element of elements) {
+            for (const className of Array.from(element.classList)) {
+                if (className.endsWith(`-${from}`)) {
+                    element.classList.replace(className, `${className.slice(0, -from.length)}${to}`);
+                }
+            }
+        }
 
-        // TODO  switch dark/light mode ?!??!? 
-
-        // save last state
         GSTheme.theme = to;
     }
 
@@ -67,7 +72,6 @@ export default class GSTheme {
 
         if (settings == 'dark') return GSTheme.darkMode();
         if (settings == 'light') return GSTheme.lightMode();
-        // TODO switch
     }
 
     static {

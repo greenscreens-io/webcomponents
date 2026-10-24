@@ -29,8 +29,15 @@ import GSCacheStyles from "./GSCacheStyles.mjs";
  */
 export default class GSCSS extends GSBase {
 
+	#requestId = 0;
+
 	static get observedAttributes() {
 		return ['disabled', ...super.observedAttributes];
+	}
+
+	attributeChangedCallback(name, oldValue, newValue) {
+		if (name === 'disabled') this.#requestId++;
+		super.attributeChangedCallback(name, oldValue, newValue);
 	}
 
 	attributeCallback(name, oldValue, newValue) {
@@ -55,16 +62,20 @@ export default class GSCSS extends GSBase {
 	 */
 	async render() {
 		const me = this;
+		const requestId = ++me.#requestId;
 		if (me.disabled) return;
 		//const hash = GSBase.hashCode(me.url);
 		try {
 			const res = await fetch(me.url);
 			if (!res.ok) return;
+			if (me.disabled || requestId !== me.#requestId) return;
 			const css = await res.text();
+			if (me.disabled || requestId !== me.#requestId) return;
 			GSCacheStyles.adopt(css, me.order);
 			const sheet = GSCacheStyles.get(me.order);
 			if (sheet) GSBase.sendSuspendedEvent(document, 'gs-style', sheet);
 		} catch (e) {
+			if (requestId !== me.#requestId) return;
 			GSCacheStyles.remove(me.order);
 			GSLog.error(null, e);
 		}
@@ -74,6 +85,7 @@ export default class GSCSS extends GSBase {
 	dispose() {
 		const me = this;
 		if (!me.isAuto) return;
+		me.#requestId++;
 		const sheet = GSCacheStyles.get(me.order);
 		GSCacheStyles.remove(me.order);
 		GSBase.sendSuspendedEvent(document, 'gs-style', sheet);
@@ -143,4 +155,3 @@ export default class GSCSS extends GSBase {
 	}
 
 }
-

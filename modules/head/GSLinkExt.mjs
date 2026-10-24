@@ -9,6 +9,7 @@
 
 import GSBase from "./GSBase.mjs";
 import GSCacheStyles from "./GSCacheStyles.mjs";
+import GSLog from "../base/GSLog.mjs";
 
 /**
  * Adoptable CSS - css template for WebComponents
@@ -18,22 +19,27 @@ import GSCacheStyles from "./GSCacheStyles.mjs";
  */
 export default class GSLinkExt extends HTMLLinkElement {
 
-	#callback = null;
-
 	constructor() {
 		super();
 		const me = this;
 		if (!me.order) me.order = GSBase.nextID();
-		if (!me.isCSS) return;
-		me.#callback = setInterval(me.#onLoad.bind(me), 1);
 	}
 
 	connectedCallback() {
+		const me = this;
+		if (!me.isCSS) return;
+		if (me.sheet) {
+			me.#onLoad();
+			return;
+		}
+		me.addEventListener('load', me.#onLoad, { once: true });
+		me.addEventListener('error', me.#onError, { once: true });
 	}
 
 	disconnectedCallback() {
 		const me = this;
-		clearInterval(me.#callback);
+		me.removeEventListener('load', me.#onLoad);
+		me.removeEventListener('error', me.#onError);
 		if (!me.isCSS) return;
 		const sheet = GSCacheStyles.remove(me.order);
 		GSBase.sendSuspendedEvent(document, 'gs-style', sheet);
@@ -43,10 +49,20 @@ export default class GSLinkExt extends HTMLLinkElement {
 		const me = this;
 		const sheet = me.sheet;
 		if (!sheet) return;
-		clearInterval(me.#callback);
-		GSCacheStyles.adopt(me.asText, me.order);
-		const proxy = GSCacheStyles.get(me.order);
-		GSBase.sendSuspendedEvent(document, 'gs-style', proxy);
+		me.removeEventListener('error', me.#onError);
+		try {
+			GSCacheStyles.adopt(me.asText, me.order);
+			const proxy = GSCacheStyles.get(me.order);
+			GSBase.sendSuspendedEvent(document, 'gs-style', proxy);
+		} catch (e) {
+			GSLog.error(me, e);
+		}
+	}
+
+	#onError() {
+		const me = this;
+		me.removeEventListener('load', me.#onLoad);
+		GSLog.error(me, `Failed to load stylesheet: ${me.href}`);
 	}
 
 	/**
@@ -62,8 +78,7 @@ export default class GSLinkExt extends HTMLLinkElement {
 	 * @returns {CSSStyleSheet}
 	 */
 	get sheet() {
-		const me = this;
-		return Object.values(document.styleSheets).filter(sh => sh.ownerNode === me).pop();
+		return super.sheet;
 	}
 
 	/**
@@ -92,4 +107,3 @@ export default class GSLinkExt extends HTMLLinkElement {
 		Object.freeze(GSLinkExt);
 	}
 }
-

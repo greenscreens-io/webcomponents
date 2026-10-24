@@ -52,7 +52,10 @@ export default class GSDynamicStyle extends CSSStyleSheet {
 
         let data = [];
         if (typeof style === 'string') {
-            data = style.replaceAll('\n', '').split(';').map(v => v.trim().split(':')).filter(v => v.length === 2);
+            data = style.replaceAll('\n', '').split(';').map(v => {
+                const separator = v.indexOf(':');
+                return separator < 0 ? null : [v.slice(0, separator).trim(), v.slice(separator + 1).trim()];
+            }).filter(v => v);
         } else {
             data = Object.entries(style);
         }

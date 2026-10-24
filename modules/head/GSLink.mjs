@@ -27,6 +27,7 @@ export default class GSLink extends GSBase {
 
 		el.href = me.url;
 		me.getAttributeNames().filter(v => v !== 'url').forEach(v => el.setAttribute(v, me.getAttribute(v)));
+		el.rel = me.rel;
 
 		if (me.shadow && el.rel === 'stylesheet') el.setAttribute('is', 'gs-ext-link');
 
@@ -54,5 +55,4 @@ export default class GSLink extends GSBase {
 		Object.freeze(GSLink);
 	}
 }
-
 
