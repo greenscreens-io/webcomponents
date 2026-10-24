@@ -620,7 +620,7 @@ export default class GSElement extends HTMLElement {
 		if (name === 'visible') GSDOM.toggleClass(me, 'gs-hide', newValue === 'false');
 		//if (me.#ready) 
 		me.attributeCallback(name, oldValue, newValue);
-		me.#controllers?.forEach((c) => c.attributeCallback?.());
+		me.#controllers?.forEach((c) => c.attributeCallback?.(name, oldValue, newValue));
 	}
 
 	/**
@@ -840,4 +840,3 @@ export default class GSElement extends HTMLElement {
 		}		
 	}
 }
-

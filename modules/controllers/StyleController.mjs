@@ -3,6 +3,7 @@ import GSEvents from "../base/GSEvents.mjs";
 export default class StyleController {
 
     static #controllers = new Set();
+    static #frameRequested = false;
 
     #host;
 
@@ -20,16 +21,15 @@ export default class StyleController {
         StyleController.#controllers.delete(this);
     }
 
-    attributeCallback(name, oldValue, newValue) {
-        if (name === 'orientation') this.handle();
-	}
-    
     handle() {
 		this.#host?.updateUI();
     }
 
-    static #callback(e) {
+    static #callback() {
+        if (StyleController.#frameRequested || StyleController.#controllers.size === 0) return;
+        StyleController.#frameRequested = true;
         requestAnimationFrame(() => {
+            StyleController.#frameRequested = false;
             StyleController.#controllers.forEach(c => c.handle());
         });
     }
