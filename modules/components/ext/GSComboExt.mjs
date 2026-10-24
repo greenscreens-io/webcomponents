@@ -11,6 +11,7 @@ import GSID from "../../base/GSID.mjs";
 import GSComponents from "../../base/GSComponents.mjs";
 import GSLoader from "../../base/GSLoader.mjs";
 import GSDOM from "../../base/GSDOM.mjs";
+import GSUtil from "../../base/GSUtil.mjs";
 
 /**
  * Add JSON loader to select element
@@ -69,37 +70,29 @@ export default class GSComboExt extends HTMLSelectElement {
         const me = this;
 
         requestAnimationFrame(() => {
-
-            const list = [];
-            data.forEach(o => {
-                list.push(me.#objToHTML(o));
-            });
-
-            GSDOM.setHTML(me, list.join('\n'));
+            me.replaceChildren(...data.map(o => me.#objToOption(o)));
         });
         return true;
     }
 
-    #objToHTML(o) {
-        const seg = ['<option'];
+    #objToOption(data) {
+        const item = GSUtil.isString(data) ? { value: data, text: data } : data;
+        const option = document.createElement('option');
 
-        Object.entries(o).forEach(it => {
-            const key = it[0];
-            const val = it[1];
-            if ('text' === key) return;
-            if ('selected' === key) return seg.push(key);
-            seg.push(`${key}="${val}"`);
+        Object.entries(item).forEach(([key, value]) => {
+            if (key === 'text') {
+                option.textContent = value == null ? '' : String(value);
+            } else if (key === 'selected') {
+                option.selected = GSUtil.asBool(value);
+            } else if (!key.toLowerCase().startsWith('on')) {
+                option.setAttribute(key, value);
+            }
         });
 
-        seg.push('>')
-        seg.push(o.text);
-        seg.push('</option>')
-
-        return seg.join(' ');
+        return option;
     }
 
     reset() {
         GSDOM.resetSelect(this);
     }    
 }
-

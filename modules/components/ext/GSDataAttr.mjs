@@ -241,11 +241,21 @@ export default class GSDataAttr {
         const isComp = inject.toLowerCase().startsWith('gs-');
         const list = GSDOM.queryAll(document.documentElement, target);
         const css = source?.dataset?.css || '';
+        const element = isComp ? document.createElement(inject) : document.createElement('gs-template');
 
-        const attrs = GSAttr.flattenJson(GSUtil.toJson(source.dataset.attr));
-        const html = isComp ? `<${inject} ${attrs}></${inject}>` : `<gs-template href="${inject}" class="${css}"></gs-template>`;
+        if (isComp) {
+            Object.entries(GSUtil.toJson(source.dataset.attr)).forEach(([name, value]) => {
+                if (!name.toLowerCase().startsWith('on')) GSAttr.set(element, name, value);
+            });
+        } else {
+            element.setAttribute('href', inject);
+            element.setAttribute('class', css);
+        }
 
-        list.forEach(el => GSDOM.setHTML(el, html));
+        list.forEach(el => {
+            GSDOM.setHTML(el, '');
+            GSDOM.appendChild(el, element.cloneNode(true));
+        });
     }
 
     /**
@@ -409,4 +419,3 @@ export default class GSDataAttr {
     }
 
 }
-

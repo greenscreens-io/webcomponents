@@ -76,7 +76,7 @@ export default class GSInputExt extends HTMLInputElement {
         GSComponents.store(me);
         if (me.autofocus) me.focus();
         setTimeout(() => {
-            me.#onDataChange.bind(me);
+            if (me.isConnected) me.#onDataChange();
         }, 250);
     }
 
@@ -222,9 +222,9 @@ export default class GSInputExt extends HTMLInputElement {
         const list = me.list;
         if (!list) return true;
         if (!me.strict) return true;
-        if (!list.querySelector('option')) return true;
-        const opt = list.querySelector(`option[value="${me.value}"]`);
-        return opt != null;
+        const options = GSDOM.queryAll(list, 'option');
+        if (options.length === 0) return true;
+        return options.some(option => option.value === me.value);
     }
 
     /**
@@ -234,23 +234,24 @@ export default class GSInputExt extends HTMLInputElement {
     #onDataChange(e) {
         const me = this;
         const own = me.owner;
-        let opt = GSDOM.query(me.list, `option[value="${me.value}"]`);
+        const options = GSDOM.queryAll(me.list, 'option');
+        let opt = options.find(option => option.value === me.value);
         let clean = false;
         if (!opt) {
-            opt = me.list?.querySelector('option');
+            opt = options[0];
             clean = true;
         }
 
         const obj = opt?.dataset ||{};
+        const elements = GSDOM.queryAll(own, '*');
         Object.entries(obj).forEach(p => {
             const val = clean ? '' : p[1];
             const key = p[0];
             me.setAttribute(`data-${key}`, p[1]);
             if (key === 'id' || key === 'group') return;
 
-            const filter = `[data-${key}]:not([data-${key}=""]`;
-            const els = Array.from(GSDOM.queryAll(own, filter));
-            els.filter(el => el.tagName !== 'OPTION')
+            elements.filter(el => el.hasAttribute(`data-${key}`) && el.getAttribute(`data-${key}`) !== '')
+                .filter(el => el.tagName !== 'OPTION')
                 .filter(el => el !== me)
                 .filter(el => GSAttr.get(el, 'list').length === 0)
                 .forEach(el => me.#togleEl(el, key, val))
@@ -266,9 +267,12 @@ export default class GSInputExt extends HTMLInputElement {
         const list = me.list;
         me.value = '';
         const dataGroup = GSAttr.get(me.filter, 'data-group');
-        GSDOM.queryAll(list, 'option').forEach(el => GSAttr.set(el, 'disabled', true));
-        const filter = dataGroup ? `option[data-group="${dataGroup}"]` : `option[data-id="${e.target.value}"]`;
-        GSDOM.queryAll(list, filter).forEach(el => GSAttr.set(el, 'disabled'));
+        const options = GSDOM.queryAll(list, 'option');
+        options.forEach(el => GSAttr.set(el, 'disabled', true));
+        options.filter(el => dataGroup
+            ? el.dataset.group === dataGroup
+            : el.dataset.id === e.target.value
+        ).forEach(el => GSAttr.set(el, 'disabled'));
     }
 
     #onClick(e) {
@@ -359,9 +363,10 @@ export default class GSInputExt extends HTMLInputElement {
         let pos = pos1;
 
         if (e.code === 'Delete') {
-            if(pos2 === tmp.length) return;
+            if (pos1 === tmp.length) return;
             handle = true;
-            while(pos <= pos2) {
+            const end = pos1 === pos2 ? pos1 + 1 : pos2;
+            while (pos < end) {
                 tmp[pos] = me.mask[pos];
                 pos++;
             }
@@ -369,21 +374,22 @@ export default class GSInputExt extends HTMLInputElement {
         }
 
         if (e.code === 'Backspace') {
-            if(pos1 === 0) return;
+            if (pos1 === 0 && pos2 === 0) return;
             handle = true;
-            while(pos2 >= pos1) {
+            const start = pos1 === pos2 ? pos1 - 1 : pos1;
+            while (pos2 > start) {
                 pos2--;
-                if (pos2 >=0) tmp[pos2] = me.mask[pos2];
+                tmp[pos2] = me.mask[pos2];
             }
-            pos = pos1-1;            
+            pos = start;
         }
 
         if (!handle) return;
 
         me.value = me.formatMask(tmp.join(''));
         me.setSelectionRange(pos, pos);
-        me.#changed = true;        
-        //return GSEvents.prevent(e);
+        me.#changed = true;
+        GSEvents.prevent(e);
 
     }
 
@@ -397,6 +403,10 @@ export default class GSInputExt extends HTMLInputElement {
         let pos2 = me.selectionEnd;
 
         const mask = me.#masks[pos1];
+        if (pos1 >= me.mask.length) {
+            GSEvents.prevent(e);
+            return false;
+        }
 
         if (mask instanceof RegExp) {
             mask.lastIndex = 0;
@@ -410,15 +420,12 @@ export default class GSInputExt extends HTMLInputElement {
         }
 
 
-        while(pos2 > pos1) {
-            tmp[pos2] = me.mask[pos2];
-            pos2--;
-        }
+        for (let i = pos1 + 1; i < pos2; i++) tmp[i] = me.mask[i];
 
         me.value = me.formatMask(tmp.join(''))
         me.setSelectionRange(pos1 + 1, pos1 + 1);       
         me.#changed = true;
-        //GSEvents.prevent(e);
+        GSEvents.prevent(e);
     }
 
     #onChange(e) {

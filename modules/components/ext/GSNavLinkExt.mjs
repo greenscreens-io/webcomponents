@@ -76,6 +76,7 @@ export default class GSNavLinkExt extends HTMLAnchorElement {
         switch (e.code) {
             case 'Space':
             case 'Enter':
+                GSEvents.prevent(e, true);
                 GSNavLinkExt.#onClick(e, this);
                 break;
         }
@@ -130,4 +131,3 @@ export default class GSNavLinkExt extends HTMLAnchorElement {
         return GSDOM.unwrap(parent);
     }
 }
-

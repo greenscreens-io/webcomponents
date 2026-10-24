@@ -11,6 +11,7 @@ import GSDOM from "../../base/GSDOM.mjs";
 import GSEvents from "../../base/GSEvents.mjs";
 import GSID from "../../base/GSID.mjs";
 import GSAccessibility from "./GSAccessibility.mjs";
+import GSUtil from "../../base/GSUtil.mjs";
 
 export default class GSUListExt extends HTMLUListElement {
 

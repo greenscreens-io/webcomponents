@@ -197,8 +197,15 @@ export default class GSFormExt extends HTMLFormElement {
         const old = GSReadWriteRegistry.find(oldValue);
         GSEvents.remove(me, old, 'read', me.#reader);
         if (!newValue) return;
-        me.#controller = new AbortController();
-        await GSReadWriteRegistry.wait(newValue, me.#controller.signal);
+        const controller = new AbortController();
+        me.#controller = controller;
+        try {
+            await GSReadWriteRegistry.wait(newValue, controller.signal);
+        } catch (e) {
+            if (!controller.signal.aborted) me.onError(e);
+            return;
+        }
+        if (controller.signal.aborted || me.#controller !== controller) return;
         GSEvents.attach(me, me.#handler, 'read', me.#reader);
         me.read();
     }
@@ -248,10 +255,8 @@ export default class GSFormExt extends HTMLFormElement {
     }
 
     get isValid() {
-        return GSDOM.queryAll(this, 'input,select,textarea')
-            .filter(el => GSDOM.isVisible(el))
-            .map(el => el.checkValidity())
-            .filter(v => v === false).length === 0;
+        return !GSDOM.queryAll(this, 'input,select,textarea')
+            .some(el => GSDOM.isVisible(el) && !el.checkValidity());
     }
 
 }
