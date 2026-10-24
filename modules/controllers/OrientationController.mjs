@@ -6,6 +6,7 @@ export default class OrientationController {
     static #frameRequested = false;
 
     #host;
+    #handlePending = false;
 
     constructor(host) {
         const me = this;
@@ -15,7 +16,12 @@ export default class OrientationController {
 
     hostConnected() {
         OrientationController.#controllers.add(this);
-        this.handle();
+        if (this.#handlePending) return;
+        this.#handlePending = true;
+        queueMicrotask(() => {
+            this.#handlePending = false;
+            if (OrientationController.#controllers.has(this)) this.handle();
+        });
     }
 
     hostDisconnected() {

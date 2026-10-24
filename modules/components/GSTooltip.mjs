@@ -26,6 +26,10 @@ import GSEvents from "../base/GSEvents.mjs";
  */
 export default class GSTooltip extends GSElement {
 
+    #hideTimer = null;
+    #renderToken = 0;
+    #isRendering = false;
+
     static {
         customElements.define('gs-tooltip', GSTooltip);
         Object.seal(GSTooltip);
@@ -88,7 +92,7 @@ export default class GSTooltip extends GSElement {
     // https://javascript.info/mousemove-mouseover-mouseout-mouseenter-mouseleave
     #attachEvents() {
         const me = this;
-        me.attachEvent(me.target, 'mouseenter', me.show.bind(me));
+        me.attachEvent(me.target, 'mousemove', me.show.bind(me));
         me.attachEvent(me.target, 'mouseleave', me.hide.bind(me));
     }
 
@@ -109,9 +113,10 @@ export default class GSTooltip extends GSElement {
 
     async #html() {
         const me = this;
-        let content = me.preprocess ? me.#parse(me.title) : me.title; 
-        if (me.title.startsWith('#')) {
-            content = await me.getTemplate(me.title);
+        const title = me.title || '';
+        let content = me.preprocess ? me.#parse(title) : title;
+        if (title.startsWith('#')) {
+            content = await me.getTemplate(title);
         }
 
         return `
@@ -177,12 +182,28 @@ export default class GSTooltip extends GSElement {
      */
     show() {
         const me = this;
-        requestAnimationFrame(async () => {
-            const content = await me.#html();
-            const el = GSDOM.parse(content, true);
-            me.insertAdjacentElement('afterbegin', el);
-            me.#popup();
+        clearTimeout(me.#hideTimer);
+        me.#hideTimer = null;
+
+        if (me.firstElementChild) {
             GSDOM.toggleClass(me.firstElementChild, 'show', true);
+            return;
+        }
+        if (me.#isRendering) return;
+
+        me.#isRendering = true;
+        const renderToken = ++me.#renderToken;
+        requestAnimationFrame(async () => {
+            try {
+                const content = await me.#html();
+                if (renderToken !== me.#renderToken || !me.target?.matches(':hover')) return;
+                const el = GSDOM.parse(content, true);
+                me.insertAdjacentElement('afterbegin', el);
+                me.#popup();
+                GSDOM.toggleClass(me.firstElementChild, 'show', true);
+            } finally {
+                if (renderToken === me.#renderToken) me.#isRendering = false;
+            }
         });
     }
 
@@ -191,10 +212,14 @@ export default class GSTooltip extends GSElement {
      */
     hide() {
         const me = this;
-        setTimeout(() => {
-            // GSDOM.setHTML(me, '');
-            // me.firstChild?.remove();
-            Array.from(me.childNodes).forEach(el => el.remove());
+        const renderToken = ++me.#renderToken;
+        me.#isRendering = false;
+        clearTimeout(me.#hideTimer);
+        me.#hideTimer = setTimeout(() => {
+            if (renderToken === me.#renderToken) {
+                Array.from(me.childNodes).forEach(el => el.remove());
+            }
+            me.#hideTimer = null;
         }, 250);
         return GSDOM.toggleClass(me.firstElementChild, 'show', false);
     }
@@ -312,4 +337,3 @@ export default class GSTooltip extends GSElement {
 }
 
 }
-
