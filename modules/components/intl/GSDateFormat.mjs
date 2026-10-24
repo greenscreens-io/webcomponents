@@ -45,6 +45,8 @@ export default class GSDateFormat extends HTMLElement {
     static observedAttributes = ['value', 'locale', 'format'];
 
     #id = 0;
+    #formatter;
+    #formatterKey = '';
 
     connectedCallback() {
         this.#update();
@@ -67,7 +69,18 @@ export default class GSDateFormat extends HTMLElement {
         const me = this;
         const val = me.value;
         if (me.format) return val.format(me.format);
-        return new Intl.DateTimeFormat(me.locale, me.dataset).format(val);
+        return me.#dateTimeFormat.format(val);
+    }
+
+    get #dateTimeFormat() {
+        const me = this;
+        const options = { ...me.dataset };
+        const key = JSON.stringify([me.locale, options]);
+        if (key !== me.#formatterKey) {
+            me.#formatter = new Intl.DateTimeFormat(me.locale, options);
+            me.#formatterKey = key;
+        }
+        return me.#formatter;
     }
 
     get format() {

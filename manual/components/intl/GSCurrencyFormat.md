@@ -12,7 +12,7 @@ GSCurrencyFormat WebComponent is a plain WebComponent to render currrency value 
 | currency           | International 3 letter currency (JPY, etc.)              |
 | locale             | International language format (en-EN, etc)               | 
 | value              | Numeric value to format nnnnn.nnn etc.                   |
-| data-*             | Ooptional data from Intl.DateTimeFormat class            |
+| data-*             | Optional options from Intl.NumberFormat                 |
 
 <br>
 
@@ -23,7 +23,7 @@ GSCurrencyFormat WebComponent is a plain WebComponent to render currrency value 
 For more details, check [currency.html](../../demos/intl/currency.html)
 
 ```html
-<gs-currency-format language="en-EN", curreny="JPY" value="123456.789"></gs-currency-format>
+<gs-currency-format locale="en-US" currency="JPY" value="123456.789"></gs-currency-format>
 ```
 
 <br>

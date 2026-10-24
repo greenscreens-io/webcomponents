@@ -24,6 +24,8 @@ export default class GSCurrencyFormat extends HTMLElement {
     static observedAttributes = ['value', 'locale', 'currency'];
 
     #id = 0;
+    #formatter;
+    #formatterKey = '';
 
     connectedCallback() {
         this.#update();
@@ -44,12 +46,23 @@ export default class GSCurrencyFormat extends HTMLElement {
 
     get #options() {
         const me = this;
-        return Object.apply(me.dataset, { style: 'currency', currency: me.currency });
+        return { ...me.dataset, style: 'currency', currency: me.currency };
+    }
+
+    get #numberFormat() {
+        const me = this;
+        const options = me.#options;
+        const key = JSON.stringify([me.locale, options]);
+        if (key !== me.#formatterKey) {
+            me.#formatter = new Intl.NumberFormat(me.locale, options);
+            me.#formatterKey = key;
+        }
+        return me.#formatter;
     }
 
     get format() {
         const me = this;
-        return new Intl.NumberFormat(me.locale, me.#options).format(me.value);
+        return me.#numberFormat.format(me.value);
     }
 
     get value() {

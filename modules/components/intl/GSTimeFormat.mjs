@@ -22,16 +22,21 @@ import GSDOM from "../../base/GSDOM.mjs";
 export default class GSTimeFormat extends GSElement {
 
     #id = 0;
+    #formatter;
+    #formatterLocale = '';
 
     static get observedAttributes() {
-        return ['interval'];
+        return ['interval', 'locale'];
     }
 
-    attributeChanged(name = '', oldVal = '', newVal = '') {
-        const me = this;
-        me.stop();
-        me.start();
-        me.#update();
+    attributeCallback(name = '', oldVal = '', newVal = '') {
+        super.attributeCallback(name, oldVal, newVal);
+        if (!this.isConnected) return;
+        if (name === 'interval') {
+            this.stop();
+            this.start();
+        }
+        this.#update();
     }
 
     onReady() {
@@ -43,24 +48,36 @@ export default class GSTimeFormat extends GSElement {
 
     disconnectedCallback() {
         this.stop();
+        super.disconnectedCallback();
     }
 
     #update() {
         const me = this;
         const date = new Date();
-        const src = date.toLocaleTimeString(me.locale);
+        if (me.#formatterLocale !== me.locale) {
+            me.#formatter = new Intl.DateTimeFormat(me.locale, {
+                hour: 'numeric',
+                minute: 'numeric',
+                second: 'numeric'
+            });
+            me.#formatterLocale = me.locale;
+        }
+        const src = me.#formatter.format(date);
         GSDOM.setHTML(me.self, src);
         me.emit('time', { date }, true, true);
-        return 0;
     }
 
     start() {
         const me = this;
-        me.#id = me.interval > 0 ? setInterval(me.#update.bind(me), me.interval * 1000) : me.#update();
+        me.stop();
+        if (me.isConnected && me.interval > 0) {
+            me.#id = setInterval(me.#update.bind(me), me.interval * 1000);
+        }
     }
 
     stop() {
         clearInterval(this.#id);
+        this.#id = 0;
     }
 
     get isFlat() {
