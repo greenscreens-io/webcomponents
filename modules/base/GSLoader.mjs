@@ -31,14 +31,17 @@ export default class GSLoader {
             globalThis.GS_TEMPLATE_URL = GSLoader.TEMPLATE_URL;
         }
 
-        //const hasKey = Object.hasOwn(self, 'GS_NO_CACHE');
-        const hasKey = 'GS_NO_CACHE' in self;
-        if (hasKey) {
-            GSLoader.NO_CACHE = globalThis.GS_NO_CACHE === true;
-            if (localStorage) localStorage.setItem('GS_NO_CACHE', GSLoader.NO_CACHE);
+        try {
+            const hasKey = 'GS_NO_CACHE' in self;
+            if (hasKey) {
+                GSLoader.NO_CACHE = globalThis.GS_NO_CACHE === true;
+                if (localStorage) localStorage.setItem('GS_NO_CACHE', String(GSLoader.NO_CACHE));
+            }
+            GSLoader.NO_CACHE = localStorage ? localStorage.getItem('GS_NO_CACHE') == 'true' : GSLoader.NO_CACHE;
+        } catch (e) {
+            GSLoader.NO_CACHE = false;
+            GSLog.error(null, e);
         }
-        GSLoader.NO_CACHE = localStorage ? localStorage.getItem('GS_NO_CACHE') == 'true' : false;
-
     }
     /**
      * Convert partial URL to a real URL
@@ -172,8 +175,8 @@ export default class GSLoader {
         headers.Accept = 'application/json';
         const url = GSLoader.normalizeURL(val, true);
         const opt  ={ method: method, headers: headers };
-        if (method === 'POST' || method === 'PUT' && body) {
-            opt.body = JSON.stringify(body);
+        if ((method === 'POST' || method === 'PUT') && body !== undefined) {
+            opt.body = typeof body === 'string' ? body : JSON.stringify(body);
         }
         const res = await fetch(url, opt);
         if (res.ok) data = asjson ? await res.json() : await res.text();
@@ -193,7 +196,7 @@ export default class GSLoader {
      */
     static async loadSafe(url = '', method = 'GET', headers, asjson = false, dft, body) {
         try {
-            if (url) return GSLoader.load(url, method, headers, asjson, body);
+            if (url) return await GSLoader.load(url, method, headers, asjson, body);
         } catch (e) {
             GSLog.error(null, e);
         }

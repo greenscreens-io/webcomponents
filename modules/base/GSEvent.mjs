@@ -40,7 +40,7 @@ export default class GSEvent extends EventTarget {
      * @param {boolean|AbortController} abortable If abortable set, return AbortController
      */
     on(type = '', listener, timeout = 0, abortable = false) {
-        if (!type) return reject('Event undefined!');
+        if (!type) throw new Error('Event undefined!');
         let controller = null;
         if (abortable instanceof AbortController) {
             controller = abortable;
@@ -61,11 +61,11 @@ export default class GSEvent extends EventTarget {
      * @param {boolean|AbortController} abortable If abortable set, return AbortController
      */
     once(type, listener, timeout = 0, abortable = false) {
-        if (!type) return reject('Event undefined!');
+        if (!type) throw new Error('Event undefined!');
         const me = this;
         const wrap = (e) => {
             listener(e);
-            me.#listeners.delete(wrap);
+            [...me.#listeners].filter(o => o.type === type && o.listener === wrap).forEach(o => me.#listeners.delete(o));
         }
         wrap.type = type;
         wrap.listener = listener;

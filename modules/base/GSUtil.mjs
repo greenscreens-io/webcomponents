@@ -177,10 +177,19 @@ export default class GSUtil {
 	 * @param {Object} params 
 	 * @returns {function}
 	 */
-	static fromTemplateLiteral(tpl, params) {
-		const names = Object.keys(params);
-		const vals = Object.values(params);
-		return new Function(...names, `return \`${tpl}\`;`)(...vals);
+	static #resolveTemplateValue(obj, path = '') {
+		if (obj == null || !path) return '';
+		return path.split('.').reduce((acc, part) => {
+			if (acc == null || acc === undefined) return '';
+			return acc[part];
+		}, obj);
+	}
+
+	static fromTemplateLiteral(tpl, params = {}) {
+		return String(tpl).replace(/\$\{([^}]+)\}/g, (_, key) => {
+			const value = GSUtil.#resolveTemplateValue(params, key.trim());
+			return value === undefined || value === null ? '' : String(value);
+		});
 	}
 
 	/**
