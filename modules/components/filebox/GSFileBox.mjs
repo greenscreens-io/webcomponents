@@ -83,7 +83,7 @@ export default class GSFileBox extends GSElement {
     }
 
     set css(val = '') {
-        return GSAttr.set(this, 'css');
+        return GSAttr.set(this, 'css', val);
     }
 
     /**
@@ -94,7 +94,7 @@ export default class GSFileBox extends GSElement {
     }
 
     set cssList(val = '') {
-        return GSAttr.set(this, 'css-list');
+        return GSAttr.set(this, 'css-list', val);
     }
 
     /**
@@ -105,7 +105,7 @@ export default class GSFileBox extends GSElement {
     }
 
     set cssLabel(val = '') {
-        return GSAttr.set(this, 'css-label');
+        return GSAttr.set(this, 'css-label', val);
     }
 
     /**
@@ -116,7 +116,7 @@ export default class GSFileBox extends GSElement {
     }
 
     set cssInput(val = '') {
-        return GSAttr.set(this, 'css-input');
+        return GSAttr.set(this, 'css-input', val);
     }
 
     /**
@@ -127,7 +127,7 @@ export default class GSFileBox extends GSElement {
     }
 
     set multiple(val = '') {
-        return GSAttr.setAsBool(this, 'mulltiple', val);
+        return GSAttr.setAsBool(this, 'multiple', val);
     }
 
     /**
@@ -137,8 +137,8 @@ export default class GSFileBox extends GSElement {
         return GSAttr.get(this, 'title', GSFileBox.TITLE);
     }
 
-    set title(val = '') {
-        return GSAttr.set(this, 'title', GSFileBox.TITLE);
+    set title(val = GSFileBox.TITLE) {
+        return GSAttr.set(this, 'title', val);
     }
 
     /**
@@ -149,7 +149,7 @@ export default class GSFileBox extends GSElement {
     }
 
     set name(val = '') {
-        return GSAttr.set(this, 'name', '');
+        return GSAttr.set(this, 'name', val);
     }
 
     get accept() {
@@ -157,7 +157,7 @@ export default class GSFileBox extends GSElement {
     }
 
     set accept(val = '') {
-        return GSAttr.set(this, 'accept');
+        return GSAttr.set(this, 'accept', val);
     }
 
     /**
@@ -168,19 +168,19 @@ export default class GSFileBox extends GSElement {
     }
 
     set filter(val = '') {
-        return GSAttr.set(this, 'filter');
+        return GSAttr.set(this, 'filter', val);
     }
 
     get directory() {
         return GSAttr.getAsBool(this, 'directory', false);
     }
 
-    set directory(value = '') {
+    set directory(val = '') {
         return GSAttr.setAsBool(this, 'directory', val);
     }
 
     #onClick(e) {
-        this.fileEl.click();
+        if (e.target !== this.fileEl) this.fileEl.click();
     }
 
     #onDragenter(e) {
@@ -251,7 +251,7 @@ export default class GSFileBox extends GSElement {
         const dataTransfer = new DataTransfer();
         attachments.forEach(a => dataTransfer.items.add(a.file))
         me.fileEl.files = dataTransfer.files;
-        me.listEl.textContent = attachments.map(a => a.file.name).join('\n');
+        me.listEl.textContent = attachments.map(a => a.fullPath).join('\n');
     }
 
     async #attach(transferred) {
@@ -275,4 +275,3 @@ export default class GSFileBox extends GSElement {
     }
 
 }
-

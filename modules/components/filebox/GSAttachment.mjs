@@ -3,7 +3,6 @@
  */
 
 import GSUtil from '../../base/GSUtil.mjs';
-import GSEvents from '../../base/GSEvents.mjs';
 
 /**
  * A module loading GSAttachment class
@@ -66,7 +65,13 @@ export default class GSAttachment {
     }
 
     static from(files) {
-        return Array.from(files).filter(f => f instanceof File).map(f => new GSAttachment(f));
+        return Array.from(files)
+            .filter(f => f instanceof File)
+            .map(f => {
+                const path = f.webkitRelativePath || '';
+                const directory = path.includes('/') ? path.slice(0, path.lastIndexOf('/')) : '';
+                return new GSAttachment(f, directory);
+            });
     }
 
     static #transferredFiles(transfer, directory) {
@@ -109,18 +114,27 @@ export default class GSAttachment {
     }
 
     static async #traverse(path, entries) {
-        const results = [];
-        for (const entry of GSAttachment.#visible(entries)) {
-            if (entry.isDirectory) {
-                const entries = await GSAttachment.#getEntries(entry);
-                const list = await GSAttachment.#traverse(entry.fullPath, entries);
-                results.push(...(list));
-            } else {
-                const file = await GSAttachment.#getFile(entry);
-                results.push(new GSAttachment(file, path));
+        const visible = GSAttachment.#visible(entries);
+        const results = new Array(visible.length);
+        let nextIndex = 0;
+
+        const worker = async () => {
+            while (nextIndex < visible.length) {
+                const index = nextIndex++;
+                const entry = visible[index];
+                if (entry.isDirectory) {
+                    const children = await GSAttachment.#getEntries(entry);
+                    const directory = path ? `${path}/${entry.name}` : entry.name;
+                    results[index] = await GSAttachment.#traverse(directory, children);
+                } else {
+                    const file = await GSAttachment.#getFile(entry);
+                    results[index] = [new GSAttachment(file, path)];
+                }
             }
-        }
-        return results;
+        };
+
+        await Promise.all(Array.from({ length: Math.min(8, visible.length) }, worker));
+        return results.flat();
     }
 
     static #isDirectory(transfer) {
@@ -148,19 +162,36 @@ export default class GSAttachment {
         input.accept= mime;
         input.style.display='none';
         document.body.appendChild(input);
-        input.click();
-
-        await GSEvents.wait(input, 'change', 0, false);
 
         try {
-            if (input.files.length === 0) return null;
+            const file = await new Promise((resolve, reject) => {
+                const finish = file => {
+                    input.removeEventListener('change', onChange);
+                    input.removeEventListener('cancel', onCancel);
+                    resolve(file);
+                };
+                const onChange = () => finish(input.files?.item(0) || null);
+                const onCancel = () => finish(null);
+                input.addEventListener('change', onChange, { once: true });
+                input.addEventListener('cancel', onCancel, { once: true });
+                try {
+                    input.click();
+                } catch (error) {
+                    input.removeEventListener('change', onChange);
+                    input.removeEventListener('cancel', onCancel);
+                    reject(error);
+                }
+            });
+            if (!file) return null;
 
-            const file = input.files.item(0);
             const isText = forceBinary ? false : GSAttachment.isTextType(file.type);
 
             const reader = new FileReader();
             isText ? reader.readAsText(file) : reader.readAsArrayBuffer(file)
-            await GSEvents.wait(reader, 'loadend', 0, false);
+            await new Promise((resolve, reject) => {
+                reader.addEventListener('loadend', resolve, { once: true });
+                reader.addEventListener('error', () => reject(reader.error), { once: true });
+            });
 
             if (reader.readyState === FileReader.DONE) {
                 return isText ? reader.result : new Uint8Array(reader.result);
@@ -192,7 +223,7 @@ export default class GSAttachment {
             link.click();
         } finally {
             document.body.removeChild(link);
-            setTimeout(() => globalThis.revokeObjectURL(ourl), 250);
+            setTimeout(() => globalThis.URL.revokeObjectURL(ourl), 250);
         }   
     }
 
@@ -236,12 +267,15 @@ export default class GSAttachment {
                 if (content[0] === 0xFF && content[1] === 0xD8 && content[2] === 0xFF) return 'image/jpeg';
                 // GIF
                 if (content[0] === 0x47 && content[1] === 0x49 && content[2] === 0x46) return 'image/gif';
-                // webp
-                if (content[0] === 0x52 && content[1] === 0x49 && content[2] === 0x46 && content[3] === 0x46) return 'image/webp';
+                // WEBP
+                if (content.length >= 12
+                    && content[0] === 0x52 && content[1] === 0x49 && content[2] === 0x46 && content[3] === 0x46
+                    && content[8] === 0x57 && content[9] === 0x45 && content[10] === 0x42 && content[11] === 0x50) return 'image/webp';
                 // PDF
                 if (content[0] === 0x25 && content[1] === 0x50 && content[2] === 0x44 && content[3] === 0x46) return 'application/pdf';
                 // MP4
-                if (content[0] === 0x00 && content[1] === 0x00 && content[2] === 0x00 && content[3] === 0x18) return 'video/mp4';
+                if (content.length >= 8
+                    && content[4] === 0x66 && content[5] === 0x74 && content[6] === 0x79 && content[7] === 0x70) return 'video/mp4';
             }
         }
         return null;
