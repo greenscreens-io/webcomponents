@@ -16,15 +16,16 @@ import GSUtil from "./GSUtil.mjs";
  */
 export default class GSEvent extends EventTarget {
 
-    #listeners = new Set();
+    #listeners = new Map();
 
     #list(type = '', listener) {
         const me = this;
-        const list = Array.from(me.#listeners);
+        const map = me.#listeners.get(type) || new Map();
+        const list = Array.from(map.values());
         return me.#isFunction(listener) ?
-            list.filter(o => o.type === type && o.listener === listener)
+            list.filter(o => o.listener === listener)
             :
-            list.filter(o => o.type === type);
+            list;
     }
 
     #isFunction(fn) {
@@ -64,8 +65,11 @@ export default class GSEvent extends EventTarget {
         if (!type) throw new Error('Event undefined!');
         const me = this;
         const wrap = (e) => {
-            listener(e);
-            [...me.#listeners].filter(o => o.type === type && o.listener === wrap).forEach(o => me.#listeners.delete(o));
+            try {
+                listener(e);
+            } finally {
+                me.removeEventListener(type, wrap);
+            }
         }
         wrap.type = type;
         wrap.listener = listener;
@@ -75,7 +79,7 @@ export default class GSEvent extends EventTarget {
         } else {
             wrap.controller = abortable ? new GSAbortController(timeout) : null;
         }
-        wrap.signal = wrap.controller || timeout == 0 ? wrap.controller?.signal : AbortSignal.timeout(timeout); 
+        wrap.signal = wrap.controller ? wrap.controller.signal : (timeout === 0 ? undefined : AbortSignal.timeout(timeout)); 
         me.addEventListener(type, wrap, { once: true, signal: wrap.signal });
         return wrap.controller || wrap.signal;
     }
@@ -131,24 +135,34 @@ export default class GSEvent extends EventTarget {
      */
     unbind() {
         const me = this;
-        Array.from(me.#listeners).forEach(o => {
-            super.removeEventListener(o.type, o.listener);
-        });
+        for (const [type, listeners] of me.#listeners.entries()) {
+            for (const entry of listeners.values()) {
+                super.removeEventListener(type, entry.listener);
+            }
+        }
         me.#listeners.clear();
     }
 
     addEventListener(type, listener, opt) {
         const me = this;
         if (!me.#isFunction(listener)) return false;
-        me.#listeners.add({ type: type, listener: listener });
+        const listeners = me.#listeners.get(type) || new Map();
+        listeners.set(listener, { type: type, listener: listener, opt: opt });
+        me.#listeners.set(type, listeners);
         return super.addEventListener(type, listener, opt);
     }
 
     removeEventListener(type, listener) {
         const me = this;
         const list = me.#list(type, listener);
-        list.forEach(o => super.removeEventListener(o.type, o.listener))
-        list.forEach(o => me.#listeners.delete(o));
+        if (!list.length) return;
+        const listeners = me.#listeners.get(type);
+        if (!listeners) return;
+        list.forEach(o => {
+            super.removeEventListener(o.type, o.listener);
+            listeners.delete(o.listener);
+        });
+        if (listeners.size === 0) me.#listeners.delete(type);
     }
 
     static {

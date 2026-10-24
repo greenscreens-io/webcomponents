@@ -95,9 +95,10 @@ export default class GSDOM {
 
 		const wrap = forceWrap || nodes.length !== 1;
 
-		const tpl = GSDOM.wrap(own, wrap ? null : nodes.shift());
-
-		while (nodes.length > 0) tpl.appendChild(nodes.shift());
+        const tpl = GSDOM.wrap(own, wrap ? null : nodes[0]);
+        for (const node of nodes) {
+            if (node !== tpl) tpl.appendChild(node);
+        }
 
 		return tpl;
 	}
@@ -1083,5 +1084,3 @@ export default class GSDOM {
 		globalThis.GSDOM = GSDOM;
 	}
 }
-
-

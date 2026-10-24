@@ -587,15 +587,21 @@ export default class GSElement extends HTMLElement {
 	 */
 	attributeChangedCallback(name, oldValue, newValue) {
 		const me = this;
-
-        me.#queue.push(arguments);
-        if (me.#queued) return;
-        me.#queued = true;
-        queueMicrotask(() => {
+		const next = [name, oldValue, newValue];
+		const index = me.#queue.findIndex(([attr]) => attr === name);
+		if (index >= 0) {
+			me.#queue[index] = next;
+		} else {
+			me.#queue.push(next);
+		}
+		if (me.#queued) return;
+		me.#queued = true;
+		queueMicrotask(() => {
 			GSEvents.waitAnimationFrame(() => {
 				while (me.#queue.length > 0) {
+					const attrs = me.#queue.shift();
 					try {
-						me.#scheduledAttributes(...me.#queue.shift());
+						me.#scheduledAttributes(...attrs);
 					} catch(e) {
 						GSLog.error(null, e);
 					}
