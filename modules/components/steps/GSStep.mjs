@@ -47,17 +47,21 @@ export default class GSStep extends GSElement {
 
     #colorVal(oldValue = '', newValue = '') {
         const el = this.query('.step-icon');
+        if (!el) return;
         GSDOM.toggleClass(el, oldValue, false);
         GSDOM.toggleClass(el, newValue, true);
     }
 
     set #iconVal(val = '') {
         const el = this.query('i');
+        if (!el) return;
         GSAttr.set(el, 'class', val);
     }
 
     set #titleVal(val = '') {
-        this.query('.step-title').innerText = val;
+        const el = this.query('.step-title');
+        if (!el) return;
+        el.innerText = val;
     }
 
     get title() {

@@ -10,12 +10,7 @@ import GSCacheStyles from "../../head/GSCacheStyles.mjs";
  */
 export default class GSStepStyle {
 
-    static {
-        GSCacheStyles.adopt(GSStepStyle.style);
-    }
-
-    static get style() {
-        return `
+    static #STYLE = `
         .step .step-icon-wrap {
             height: 80px;
         }
@@ -83,6 +78,13 @@ export default class GSStepStyle {
                 display: none
             }
         }        
-        `;
+    `;
+
+    static {
+        GSCacheStyles.adopt(GSStepStyle.#STYLE);
+    }
+
+    static get style() {
+        return GSStepStyle.#STYLE;
     }
 }

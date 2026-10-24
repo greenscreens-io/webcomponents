@@ -52,14 +52,15 @@ export default class GSSteps extends GSElement {
     }
 
     set index(val = 0) {
-        const me = this;
-        if (val < 0 || val >= me.length) return;
-        me.#index = val;
+        const num = Number(val);
+        if (!Number.isInteger(num) || num < 0 || num >= this.length) return;
+        this.#index = num;
     }
 
     get current() {
-        const me  = this;
-        return me.steps[me.#index];
+        const steps = this.steps;
+        if (!steps || steps.length === 0) return null;
+        return steps[this.#index] || null;
     }
 
     get isFirst() {
@@ -67,25 +68,34 @@ export default class GSSteps extends GSElement {
     }
 
     get isLast() {
-        return this.#index === this.length-1;
+        return this.length === 0 ? true : this.#index === this.length - 1;
+    }
+
+    #setActiveIndex(nextIndex = 0) {
+        if (!Number.isInteger(nextIndex) || nextIndex < 0 || nextIndex >= this.length) return false;
+        const prev = this.current;
+        const current = this.steps[nextIndex];
+        if (!current) return false;
+        if (prev && prev !== current) prev.color = GSStep.INACTIVE;
+        this.#index = nextIndex;
+        current.color = GSStep.SELECTED;
+        return current;
     }
 
     next() {
         const me = this;
-        if (me.isLast) return false;
-        me.current.color = GSStep.COMPLETED;
-        me.index++;
-        me.current.color = GSStep.SELECTED;
-        return me.current;
+        if (me.length === 0 || me.isLast) return false;
+        const current = me.current;
+        if (current) current.color = GSStep.COMPLETED;
+        return me.#setActiveIndex(me.#index + 1);
     }
 
     previous() {
         const me = this;
-        if (me.isFirst) return false;
-        me.current.color = GSStep.INACTIVE;
-        me.index--;
-        me.current.color = GSStep.SELECTED;
-        return me.current;
+        if (me.length === 0 || me.isFirst) return false;
+        const current = me.current;
+        if (current) current.color = GSStep.INACTIVE;
+        return me.#setActiveIndex(me.#index - 1);
     }
 
     reset() {
@@ -93,7 +103,8 @@ export default class GSSteps extends GSElement {
         me.steps.forEach(it => it.color = GSStep.INACTIVE);
         requestAnimationFrame(() => {
             me.#index = 0;
-            me.current.color = GSStep.SELECTED;
+            const step = me.current;
+            if (step) step.color = GSStep.SELECTED;
         });
     }
 
