@@ -56,9 +56,11 @@ To programmatically popup a new browser native notification
 ```JavaScript
 const notifier = GSComponent.find('gs-notification');
 notifier.native = true;
-// Shows a toast for 5 sec.
+// Shows a native notification for 5 sec. The component closes it after the timeout.
 notifier.info('My Title', 'My message', false, 5);
 ```
+
+Native notifications request interaction by default to avoid automatic browser dismissal before the timeout. Pass `{ requireInteraction: false }` as the final argument to allow the browser to dismiss it automatically.
 
 <br>
 

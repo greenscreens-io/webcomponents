@@ -193,7 +193,11 @@ export default class GSNotification extends GSElement {
     await me.#delay(delay);
     if (generation !== me.#clearGeneration) return;
     options ??= {};
-    const notification = new Notification(title, { ...options, body: options.body || message });
+    const notification = new Notification(title, {
+      requireInteraction: true,
+      ...options,
+      body: options.body || message
+    });
     me.#list.add(notification);
     const callback = () => {
       if (notification.iid) clearTimeout(notification.iid);
