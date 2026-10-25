@@ -130,7 +130,7 @@ export default class GSTree extends GSElement {
             cursor: pointer;
         }                    
         </style>        
-        <div class="treeview ${me.css}" _tabindex="0">
+        <div class="treeview ${GSUtil.sanitize(me.css, true)}" _tabindex="0">
             <ul class="list-group">
                 ${html}
             </ul>
@@ -139,36 +139,30 @@ export default class GSTree extends GSElement {
 
     #render() {
         const me = this;
-        return GSItem.genericItems(me).map((el, idx) => me.#html(el, 0, idx)).join('');
+        const html = [];
+        GSItem.genericItems(me).forEach((el, idx) => me.#html(el, 0, idx, '', '', false, html));
+        return html.join('');
     }
 
-    #html(el, level = 0, idx = 0, pid = '', parent = '', css = '') {
-
+    #html(el, level = 0, idx = 0, pid = '', parent = '', hidden = false, html = []) {
         const me = this;
         const name = el.name || el.title;
-        const path = `${parent}/${name}`
+        const path = `${parent}/${name}`;
         const isFolder = el.childElementCount > 0;
         const isOpen = GSAttr.getAsBool(el, 'open', false);
-
-        if (level === 0) {
-            css = isFolder && !isOpen ? 'gs-hide' : '';
-        }
-
         const nodeid = GSUtil.isStringEmpty(pid) ? idx : `${pid}.${idx}`;
 
-        const html = [];
-
-        html.push(`<li class="list-group-item ${level === 0 ? '' : css}" `);
-        html.push(`data-folder="${isFolder}" data-open="${isOpen}" data-nodeid="${nodeid}"  `);
-        html.push(`data-path="${path}"  data-name="${name}">`);
+        html.push(`<li class="list-group-item${hidden ? ' gs-hide' : ''}"`);
+        html.push(` data-folder="${isFolder}" data-open="${isOpen}" data-nodeid="${nodeid}"`);
+        html.push(` data-path="${path}" data-name="${name}">`);
         html.push(me.#uiHtml(el, level));
+        html.push('</li>');
 
         if (isFolder) {
-            Array.from(el.children).forEach((ce, idx) => html.push(me.#html(ce, level + 1, idx, nodeid, path, css)));
+            const childHidden = hidden || !isOpen;
+            Array.from(el.children).forEach((ce, childIdx) =>
+                me.#html(ce, level + 1, childIdx, nodeid, path, childHidden, html));
         }
-
-        html.push('</li>');
-        return html.join('');
     }
 
     #uiHtml(el, level) {
@@ -179,8 +173,8 @@ export default class GSTree extends GSElement {
         const isOpen = GSAttr.getAsBool(el, 'open', false);
 
         const href = GSItem.getHref(el);
-        const hreftgt = href && href !== '#' ? `target="${GSItem.getTarget(el)}"` : '';
-
+        const target = GSItem.getTarget(el);
+        const hreftgt = href && href !== '#' ? `target="${GSUtil.sanitize(target, true)}"` : '';
         const dataAttrs = GSAttr.dataToString(el);
         const dataBS = GSItem.getAttrs(el);
 
@@ -192,8 +186,8 @@ export default class GSTree extends GSElement {
             html.push('<span class="indent"></span>');
         }
 
-        html.push(`<i class="fs-5 ${itemIco}"></i>`);
-        html.push(`<a href="${href}" ${hreftgt} ${dataBS} ${dataAttrs} class="ps-1">${title}</a>`);
+        html.push(`<i class="fs-5 ${GSUtil.sanitize(itemIco, true)}"></i>`);
+        html.push(`<a href="${GSUtil.sanitize(href)}" ${hreftgt} ${dataBS} ${dataAttrs} class="ps-1">${GSUtil.sanitize(title)}</a>`);
         return html.join('');
     }
 
@@ -226,32 +220,35 @@ export default class GSTree extends GSElement {
 
     #toggleFolder(sts = false) {
         const me = this;
-        if (!me.#isFolder()) return;
+        const selected = me.#selected;
+        if (!me.#isFolder(selected)) return;
         requestAnimationFrame(() => {
-            me.#selected.dataset.open = sts;
-            const nid = me.#selected.dataset.nodeid;
-            const pl = nid.split('\.').length;
-            me.#toggleIcon(me.#selected, sts);
-            let el = me.#selected.nextElementSibling;
-            while (el) {
+            if (!selected.isConnected || !me.rootEl?.contains(selected)) return;
+            selected.dataset.open = sts;
+            const nid = selected.dataset.nodeid;
+            me.#toggleIcon(selected, sts);
+            const nodeState = new Map([[nid, {visible: true, open: sts}]]);
+            let el = selected.nextElementSibling;
+            while (el && el.dataset.nodeid?.startsWith(`${nid}.`)) {
                 const cid = el.dataset.nodeid;
-                const isChild = cid && cid.indexOf(nid) === 0;
-                if (!isChild) break;
-                if (sts) {
-                    const cl = cid.split('\.').length;
-                    if (cl > pl + 1) {
-                        el = el.nextElementSibling;
-                        continue;    
+                const parentId = me.#parentNode(cid);
+                const parentState = nodeState.get(parentId);
+                const visible = parentState?.visible && parentState.open;
+                if (!sts) {
+                    if (el.dataset.folder === 'true') {
+                        el.dataset.open = false;
+                        me.#toggleIcon(el, false);
                     }
-    
-                    if (pl + 1 != cl && sts) break;
                 }
-                GSDOM.toggleClass(el, 'gs-hide', !sts);
-                if (!sts) el.dataset.open = sts;
+                GSDOM.toggleClass(el, 'gs-hide', !visible);
+                nodeState.set(cid, {
+                    visible: Boolean(visible),
+                    open: el.dataset.open === 'true'
+                });
                 el = el.nextElementSibling;
             }
         });
-        me.emit(sts ? 'open' : 'close', me.#selected);
+        me.emit(sts ? 'open' : 'close', selected);
     }
 
     #toggleIcon(el, expand) {
@@ -311,9 +308,10 @@ export default class GSTree extends GSElement {
     #parent(el) {
         const me = this;
         el = el || me.#selected;
+        if (!el) return null;
         let s = el.dataset.nodeid;
         s = me.#parentNode(s);
-        return el.parentElement.querySelector(`li[data-nodeid="${s}"]`);
+        return s ? me.rootEl?.querySelector(`li[data-nodeid="${s}"]`) : null;
     }
 
     #next(el) {
@@ -398,7 +396,7 @@ export default class GSTree extends GSElement {
         // me.disconnectedCallback();
         me.innerHTML = '';
 
-        let dom = GSDOM.fromJson(val);
+        let dom = GSDOM.fromJson(data);
         dom = Array.isArray(dom) ? dom : [dom];
         dom.forEach(el => GSDOM.appendChild(me, el) );
 
@@ -407,4 +405,3 @@ export default class GSTree extends GSElement {
     }
 
 }
-

@@ -146,9 +146,10 @@ export default class GSUtil {
 	/**
 	 * Sanitize text for HTML generation
 	 * @param {string} string 
+	 * @param {boolean} attr If true, sanitize for html attribute
 	 * @returns 
 	 */
-	static sanitize(string = '') {
+	static sanitize(string = '', attr = false) {
 		const map = {
 			'&': '&amp;',
 			'<': '&lt;',
@@ -159,7 +160,7 @@ export default class GSUtil {
 			"\n": '<br>',
 			"\r": '<br>',
 			"\t": '&nbsp;&nbsp;&nbsp;&nbsp;',
-			' ': '&nbsp;',
+			' ':  attr ? ' ' : '&nbsp;',
 			'\\': '&#x5C;',
 			'`': '&#x60;'
 		};

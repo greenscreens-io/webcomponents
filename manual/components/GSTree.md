@@ -11,11 +11,11 @@ GSTree WebComponent extends [GSElement](../base/GSElement.md) and all its attrib
 
 | Name               | Description                                              |
 |--------------------|----------------------------------------------------------|
-| css                | CSS classes for alert content                            |
-| open               | Indicate folder is open                                  | 
-| icon-open          | Custom icon when folder is open                          | 
-| icon-close         | Custom icon when folder is closed                        | 
-| icon               | Cusomt item icon                                         | 
+| css                | CSS classes for the tree                                 |
+| item-icon          | Custom icon for a leaf item                              |
+| open-icon          | Custom icon when a folder is open                        |
+| close-icon         | Custom icon when a folder is closed                      |
+| open               | Indicates that a folder starts open (on `gs-item`)       |
 
 <br>
 ## Events
