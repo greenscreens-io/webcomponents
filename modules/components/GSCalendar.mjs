@@ -60,7 +60,6 @@ export default class GSCalendar extends GSElement {
 
     disconnectedCallback() {
         super.disconnectedCallback();
-        this.#date = null;
     }
 
     async onBeforeReady() {
@@ -69,7 +68,7 @@ export default class GSCalendar extends GSElement {
         me.#update();
         me.attachEvent(me.query('.header'), 'click', me.#onArrow.bind(me));
         me.attachEvent(me.query('div'), 'click', me.#onDay.bind(me));
-        me.attachEvent(me.query, 'change', me.#onYear.bind(me));
+        me.attachEvent(me.yearEl, 'change', me.#onYear.bind(me));
         me.attachEvent(me.monthEl, 'change', me.#onMonth.bind(me));
     }
 
@@ -255,12 +254,10 @@ export default class GSCalendar extends GSElement {
         const btn = e.composedPath().shift();
         if (!GSDOM.hasClass(btn, 'day')) return;
         const day = GSUtil.asNum(btn.innerText.trim());
-        requestAnimationFrame(() => {
-            me.queryAll('.day').forEach(el => GSDOM.toggleClass(el, me.cssSelected, false));
-            GSDOM.toggleClass(btn, me.cssSelected, true);
-        });
         const date = new GSDate(me.#date);
         date.day = day;
+        me.#date = date;
+        me.#update();
         me.#updateTarget(date);
         me.emit('date', { type: 'calendar', date: date, val: me.formatted(date) }, true, true);
     }
@@ -301,6 +298,11 @@ export default class GSCalendar extends GSElement {
         return v && GSUtil.asNum(v) === me.#date.day && date.month === me.#date.month && me.#date.year === date.year;
     }
 
+    #isSelected(v) {
+        const me = this;
+        return v && GSUtil.asNum(v) === me.#date.day;
+    }
+
     #daysHTML() {
         const me = this;
         const today = new GSDate();
@@ -308,7 +310,13 @@ export default class GSCalendar extends GSElement {
         const list = me.#date.build(me.locale);
         const html = list
             .map(v => {
-                const d = v ? `<a href="#" class="btn ${me.#isToday(v, today) ? me.cssToday : ''} day">${v}</a>` : ''
+                const classes = [
+                    'btn',
+                    me.#isToday(v, today) ? me.cssToday : '',
+                    me.#isSelected(v) ? me.cssSelected : '',
+                    'day'
+                ].filter(Boolean).join(' ');
+                const d = v ? `<a href="#" class="${classes}">${v}</a>` : '';
                 return `<div class="col p-0">${d}</div>`;
             })
             .map((v, i) => {

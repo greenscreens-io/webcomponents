@@ -17,7 +17,7 @@ export default class GSDate extends Date {
     static DEFAULT_FORMAT = 'YYYY-MM-DDTHH:mm:ssZ';
     static REGEX_FORMAT = /\[([^\]]+)]|Y{1,4}|M{1,4}|D{1,2}|d{1,4}|H{1,2}|h{1,2}|a|A|m{1,2}|s{1,2}|Z{1,2}|SSS/g
 
-    #locale = navigator.locale;
+    #locale = navigator.language || navigator.languages?.[0] || 'en-US';
 
     format(val = GSDate.DEFAULT_FORMAT, locale) {
         const me = this;
@@ -54,7 +54,7 @@ export default class GSDate extends Date {
     }
 
     set locale(val) {
-        this.#locale = val || navigator.language;
+        this.#locale = val || navigator.language || navigator.languages?.[0] || 'en-US';
     }
 
     get year() {
@@ -304,7 +304,7 @@ export default class GSDate extends Date {
 
     #isMondayFirst() {
         // TODO Firefox does not support it
-        return new Intl.Locale(this.#locale)?.getWeekInfo()?.firstDay === 1;
+        return new Intl.Locale(this.#locale).getWeekInfo?.()?.firstDay === 1;
     }
 
     #capitalize(val = '') {
