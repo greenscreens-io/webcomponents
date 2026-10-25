@@ -20,6 +20,10 @@ import GSUtil from "../../base/GSUtil.mjs";
  */
 export default class GSToast extends GSElement {
 
+  #frameId = null;
+  #openTimer = null;
+  #dismissTimer = null;
+
   static {
     customElements.define('gs-toast', GSToast);
     Object.seal(GSToast);
@@ -41,48 +45,72 @@ export default class GSToast extends GSElement {
   }
 
   async getTemplate(val = '') {
-    const me = this;
-    const btn = me.closable ? '<button type="button" class="btn-close me-2 m-auto"></button>' : '';
     return `
-        <div class="mt-1 mb-1 toast fade ${me.css}">
-          <div class="d-flex">
-              <div class="toast-body">
-              ${me.message}
-              </div>
-              ${btn}
+        <div class="mt-1 mb-1 toast fade">
+          <div class="toast-header">
+            <strong class="me-auto toast-title"></strong>
+            <button type="button" class="btn-close"></button>
           </div>
-      </div>    
-    `
+          <div class="toast-body"></div>
+        </div>
+    `;
   }
 
   async onBeforeReady() {
     await super.onBeforeReady();
     const me = this;
-    const btns = me.queryAll('button');
-    Array.from(btns).forEach(btn => me.attachEvent(btn, 'click', me.close.bind(me)));
+    me.#syncContent();
+    me.attachEvent(me.query('button'), 'click', me.close.bind(me));
     if (me.visible) me.open();
   }
 
-  show(title = '', message = '', css = '', visible = true, closable = false, timeout = 2, delay = 0) {
+  #syncContent() {
+    const me = this;
+    const toast = me.#toast;
+    if (!toast) return;
+    const titleEl = toast.querySelector('.toast-title');
+    const messageEl = toast.querySelector('.toast-body');
+    const header = toast.querySelector('.toast-header');
+    const button = toast.querySelector('button');
+    if (!titleEl || !messageEl || !header || !button) return;
+    const title = me.title;
+    titleEl.textContent = title;
+    messageEl.textContent = me.message;
+    header.hidden = !title && !me.closable;
+    button.hidden = !me.closable;
+    GSDOM.toggleClass(toast, me.css, true);
+  }
+
+  display(title = '', message = '', css = '', visible = true, closable = false, timeout = 2, delay = 0) {
     const me = this;
     me.css = css || me.css;
     me.title = title;
     me.message = message;
     me.timeout = timeout;
     me.delay = delay;
-    me.closable = closable == true;
-    me.visible = visible == true;
+    me.closable = GSUtil.asBool(closable);
+    me.visible = GSUtil.asBool(visible);
     me.open();
   }
-
+  
   open() {
     const me = this;
-    requestAnimationFrame(async () => {
-      if (me.delay > 0) await GSUtil.timeout(me.delay * 1000);
-      GSDOM.toggleClass(me.#toast, 'show', true);
-      if (me.timeout <= 0) return;
-      await GSUtil.timeout(me.timeout * 1000);
-      me.close();
+    me.#syncContent();
+    me.#cancelPending();
+    me.#frameId = requestAnimationFrame(() => {
+      me.#frameId = null;
+      const show = () => {
+        me.#openTimer = null;
+        GSDOM.toggleClass(me.#toast, 'show', true);
+        if (me.timeout > 0) {
+          me.#openTimer = setTimeout(() => me.close(), me.timeout * 1000);
+        }
+      };
+      if (me.delay > 0) {
+         me.#openTimer = setTimeout(show, me.delay * 1000);
+      } else {
+        show();
+      }
     });
   }
 
@@ -94,10 +122,33 @@ export default class GSToast extends GSElement {
     this.#dismiss();
   }
 
-  async #dismiss() {
+  #dismiss() {
+    if (this.#dismissTimer !== null) return;
+    if (this.#frameId !== null) cancelAnimationFrame(this.#frameId);
+    if (this.#openTimer !== null) clearTimeout(this.#openTimer);
+    this.#frameId = null;
+    this.#openTimer = null;
     GSDOM.toggleClass(this.#toast, 'show', false);
-    await GSUtil.timeout(GSDOM.SPEED);
-    return this.remove();
+    this.#dismissTimer = setTimeout(() => {
+      this.#dismissTimer = null;
+      this.dispatchEvent(new Event('dismissed'));
+      this.remove();
+    }, GSDOM.SPEED);
+  }
+
+  #cancelPending() {
+    if (this.#frameId !== null) cancelAnimationFrame(this.#frameId);
+    if (this.#openTimer !== null) clearTimeout(this.#openTimer);
+    if (this.#dismissTimer !== null) clearTimeout(this.#dismissTimer);
+    this.#frameId = null;
+    this.#openTimer = null;
+    this.#dismissTimer = null;
+  }
+
+  disconnectedCallback() {
+    this.#cancelPending();
+    this.dispatchEvent(new Event('dismissed'));
+    super.disconnectedCallback();
   }
 
   get #toast() {
@@ -140,32 +191,31 @@ export default class GSToast extends GSElement {
   }
 
   set timeout(val = 2) {
-    GSAttr.set(this, 'timeout', val);
+    GSAttr.setAsNum(this, 'timeout', val);
   }
 
   get delay() {
-    return GSAttr.getAsNum(this, 'delay', 2);
+    return GSAttr.getAsNum(this, 'delay', 0);
   }
 
   set delay(val = 0) {
-    GSAttr.set(this, 'delay', val);
+    GSAttr.setAsNum(this, 'delay', val);
   }
 
   get closable() {
-    return GSAttr.getAsBool(this, 'closable');
+    return this.hasAttribute('closable');
   }
 
   set closable(val = true) {
-    GSAttr.set(this, 'closable', val == true);
+    GSAttr.toggle(this, 'closable', GSUtil.asBool(val));
   }
 
   get visible() {
-    return GSAttr.getAsBool(this, 'visible', true);
+    return this.hasAttribute('visible');
   }
 
   set visible(val = true) {
-    GSAttr.set(this, 'visible', val == true);
+    GSAttr.toggle(this, 'visible', GSUtil.asBool(val));
   }
 
 }
-
