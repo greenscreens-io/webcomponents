@@ -1,5 +1,8 @@
 # [WebComponents](https://webcomponents.greenscreens.ltd/) for [Bootstrap 5.2.0+](https://getbootstrap.com/)
 
+# Release v1.9.19 (25.10.2026.)
+ - AI assisted optimizations
+
 # Release v1.9.18 (22.10.2026.)
  - GSTag improvements, added read only mode, select
 
