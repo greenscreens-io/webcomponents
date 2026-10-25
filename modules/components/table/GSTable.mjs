@@ -343,7 +343,7 @@ export default class GSTable extends GSElement {
             });
         } else {
             Object.keys(rec).forEach(v => {
-                const html = `<gs-column name="${GSUtil.sanitize(v)}"></gs-column>`;
+                const html = `<gs-column name="${GSUtil.sanitize(v, true)}"></gs-column>`;
                 defs.push(html);
             });
         }

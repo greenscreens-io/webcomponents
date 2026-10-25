@@ -88,7 +88,7 @@ export default class GSTBody extends HTMLTableSectionElement {
                 : me.#objToHTML(headers, rec, offset, mappings);
 
             if (rendered.hasContent) {
-                rows.push(`<tr tabindex="0" class="${GSUtil.sanitize(me.cssRow)}" data-index="${idx}">`);
+                rows.push(`<tr tabindex="0" class="${GSUtil.sanitize(me.cssRow, true)}" data-index="${idx}">`);
                 rows.push(rendered.html);
                 rows.push('</tr>');
             }
@@ -119,7 +119,7 @@ export default class GSTBody extends HTMLTableSectionElement {
             const c = hdr.name === "#" ? (idx + 1 + offset).toString() : rec[hdr.idx];
             const value = c == null ? '' : String(c);
             if (value.trim()) hasContent = true;
-            cols.push(`<td class="${GSUtil.sanitize(me.cssCell)}">${value ? GSUtil.sanitize(value) : '&nbsp;'}</td>`);
+            cols.push(`<td class="${GSUtil.sanitize(me.cssCell, true)}">${value ? GSUtil.sanitize(value) : '&nbsp;'}</td>`);
         });
 
         return { html: cols.join(''), hasContent };
@@ -146,7 +146,7 @@ export default class GSTBody extends HTMLTableSectionElement {
         const text = val == null ? '' : String(val);
         const cspan = hdr.colspan ? `colspan="${GSUtil.sanitize(hdr.colspan)}"` : '';
         return {
-            html: `<td class="${GSUtil.sanitize(`${me.cssCell} ${hdr.css || ''}`)}" ${cspan}>${text ? GSUtil.sanitize(text) : '&nbsp;'}</td>`,
+            html: `<td class="${GSUtil.sanitize(`${me.cssCell, true} ${hdr.css || ''}`)}" ${cspan}>${text ? GSUtil.sanitize(text) : '&nbsp;'}</td>`,
             text
         };
     }

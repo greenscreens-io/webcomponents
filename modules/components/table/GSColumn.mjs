@@ -54,15 +54,15 @@ export default class GSColumn extends HTMLElement {
 
         const clssort = me.sortable ? 'sorting' : '';
         const style = me.width ? `width:${me.width};` : '';
-        const cspan = me.colspan ? `colspan="${GSUtil.sanitize(me.colspan)}"` : '';
+        const cspan = me.colspan ? `colspan="${GSUtil.sanitize(me.colspan, true)}"` : '';
 
         me.dataset.cssId = style ? GSID.id : '';
         GSCacheStyles.setRule(me.dataset.cssId, style);
 
-        return `<th tabindex="0" scope="col" name="${GSUtil.sanitize(me.name)}" ${cspan}
+        return `<th tabindex="0" scope="col" name="${GSUtil.sanitize(me.name, true)}" ${cspan}
             data-sortable="${me.sortable}" data-order="${me.#orderID}"
-            class="${GSUtil.sanitize(`${clssort} ${me.cssHeader} ${me.dataset.cssId}`)}"
-            data-css-id="${GSUtil.sanitize(me.dataset.cssId)}">
+            class="${GSUtil.sanitize(`${clssort} ${me.cssHeader} ${me.dataset.cssId}`, true)}"
+            data-css-id="${GSUtil.sanitize(me.dataset.cssId, true)}">
             ${GSUtil.sanitize(me.title || me.name)}</th>`;
     }
 
@@ -80,13 +80,15 @@ export default class GSColumn extends HTMLElement {
             default:
                 html = me.#renderField();
         }
-        return `<th css="${GSUtil.sanitize(me.cssFilter)}">${html}</th>`;
+        return `<th css="${GSUtil.sanitize(me.cssFilter, true)}">${html}</th>`;
     }
 
     #renderFixed() {
         const me = this;
         const opts = me.#renderOptions(true);
-        return `<select auto="${me.auto}" name="${GSUtil.sanitize(me.name)}" title="${GSUtil.sanitize(me.title || me.name)}" class="${GSUtil.sanitize(me.cssField)}" >${opts}</select>`;
+        return `<select auto="${me.auto}" name="${GSUtil.sanitize(me.name, true)}" 
+            title="${GSUtil.sanitize(me.title || me.name, true)}" 
+            class="${GSUtil.sanitize(me.cssField, true)}" >${opts}</select>`;
     }
 
     #renderFlexi() {
@@ -109,8 +111,9 @@ export default class GSColumn extends HTMLElement {
                 type = me.type || '';
                 break;
         } 
-        if (type) type = `type="${GSUtil.sanitize(type)}"`;
-        return `<input ${type} auto="${me.auto}" name="${GSUtil.sanitize(me.name)}" title="${GSUtil.sanitize(me.title || me.name)}" class="${GSUtil.sanitize(me.cssField)}" placeholder="${GSUtil.sanitize(me.title || me.name)}" list="${GSUtil.sanitize(list)}">`;
+        if (type) type = `type="${GSUtil.sanitize(type, true)}"`;
+        return `<input ${type} auto="${me.auto}" name="${GSUtil.sanitize(me.name, true)}" title="${GSUtil.sanitize(me.title || me.name, true)}" 
+                class="${GSUtil.sanitize(me.cssField, true)}" placeholder="${GSUtil.sanitize(me.title || me.name, true)}" list="${GSUtil.sanitize(list, true)}">`;
     }
 
     #renderOptions(isCombo = false) {
@@ -122,9 +125,9 @@ export default class GSColumn extends HTMLElement {
             const title = GSAttr.get(el, 'map', value);
             let html = '';
             if (isCombo) {
-                html = `<option value="${GSUtil.sanitize(value)}" ${def ? 'selected' : ''}>${GSUtil.sanitize(title)}</option>`;
+                html = `<option value="${GSUtil.sanitize(value, true)}" ${def ? 'selected' : ''}>${GSUtil.sanitize(title, true)}</option>`;
             } else {
-                html = `<option value="${GSUtil.sanitize(title)}" data-value="${GSUtil.sanitize(value)}">`;
+                html = `<option value="${GSUtil.sanitize(title, true)}" data-value="${GSUtil.sanitize(value, true)}">`;
             }
             list.push(html);
         });
