@@ -590,7 +590,7 @@ export default class GSElement extends HTMLElement {
 		const next = [name, oldValue, newValue];
 		const index = me.#queue.findIndex(([attr]) => attr === name);
 		if (index >= 0) {
-			me.#queue[index] = next;
+			me.#queue[index] = [name, me.#queue[index][1], newValue];
 		} else {
 			me.#queue.push(next);
 		}
