@@ -25,10 +25,14 @@ export default class GSRegisterOtp extends GSAsbtractDialog {
 
     constructor() {
         super();
+    }
+
+    connectedCallback() {
+		super.connectedCallback();
         const me = this;
         me.cancelable = false;
         me.align = 'center';
-    }
+	}
 
     get dialogTemplate() {
         return '//dialogs/register-otp.html';

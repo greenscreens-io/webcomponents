@@ -19,6 +19,10 @@ export default class BaseViewUI extends GSElement {
 
 	constructor() {
 		super();
+	}
+	
+	connectedCallback() {
+		super.connectedCallback();
 		this.className = 'd-flex flex-fill';
 	}
 

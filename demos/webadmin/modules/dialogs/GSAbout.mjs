@@ -20,8 +20,12 @@ export default class GSAbout extends GSModal {
 
     constructor() {
         super();
-        this.align = 'center';
     }
+
+	connectedCallback() {
+		super.connectedCallback();
+        this.align = 'center';
+	}
 
     onReady() {
         super.onReady();
