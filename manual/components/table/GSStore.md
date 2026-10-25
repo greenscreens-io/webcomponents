@@ -33,8 +33,9 @@ The whole communication is handled inside Quark Engien defined functions.
 ## Example
 ---
 
-Example below limits data retrieval to 10 records from URL named in "src" attribute. 
-All data responses must return JSON array or HTTP error.
+Example below limits data retrieval to 10 records from URL named in "src" attribute.
+Responses may be a JSON array, or an object containing a `data` array and optional
+`total` record count (useful when the server handles paging).
 
 ```html
 <!-- Default is QUERY mode -->

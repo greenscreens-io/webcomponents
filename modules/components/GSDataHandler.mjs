@@ -313,7 +313,9 @@ export default class GSDataHandler extends HTMLElement {
 
     }
 
-    read() {
+    read(skip, limit) {
+        if (this.#handler && skip !== undefined) this.#handler.skip = GSUtil.asNum(skip, 0);
+        if (this.#handler && limit !== undefined) this.#handler.limit = GSUtil.asNum(limit, 0);
         return this.#lifoReadRef();
     }
 

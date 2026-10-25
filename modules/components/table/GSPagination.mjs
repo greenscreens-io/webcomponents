@@ -11,6 +11,7 @@ import GSElement from "../../base/GSElement.mjs";
 import GSAttr from "../../base/GSAttr.mjs";
 import GSDOM from "../../base/GSDOM.mjs";
 import GSComponents from "../../base/GSComponents.mjs";
+import GSEvents from "../../base/GSEvents.mjs";
 
 /**
  * Table pagination
@@ -76,6 +77,7 @@ export default class GSPagination extends GSElement {
 
     #onClick(e) {
         const me = this;
+        GSEvents.prevent(e, false);
         const val = e.target.name || e.target.text;
         switch (val) {
             case 'first':
@@ -141,4 +143,3 @@ export default class GSPagination extends GSElement {
         return GSAttr.get(this, 'previous', '&lsaquo;');
     }
 }
-

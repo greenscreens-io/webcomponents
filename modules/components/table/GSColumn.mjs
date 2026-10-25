@@ -12,6 +12,7 @@ import GSDOM from "../../base/GSDOM.mjs";
 import GSID from "../../base/GSID.mjs";
 import GSItem from "../../base/GSItem.mjs";
 import GSLoader from "../../base/GSLoader.mjs";
+import GSUtil from "../../base/GSUtil.mjs";
 import GSCacheStyles from "../../head/GSCacheStyles.mjs";
 
 /**
@@ -53,16 +54,16 @@ export default class GSColumn extends HTMLElement {
 
         const clssort = me.sortable ? 'sorting' : '';
         const style = me.width ? `width:${me.width};` : '';
-        const cspan = me.colspan ? `colspan="${me.colspan}"` : '';
+        const cspan = me.colspan ? `colspan="${GSUtil.sanitize(me.colspan)}"` : '';
 
         me.dataset.cssId = style ? GSID.id : '';
         GSCacheStyles.setRule(me.dataset.cssId, style);
 
-        return `<th tabindex="0" scope="col" name="${me.name}" ${cspan} 
-            data-sortable="${me.sortable}" data-order="${me.#orderID}" 
-            class="${clssort} ${me.cssHeader} ${me.dataset.cssId}" 
-            data-css-id="${me.dataset.cssId}">
-            ${me.title || me.name}</th>`;
+        return `<th tabindex="0" scope="col" name="${GSUtil.sanitize(me.name)}" ${cspan}
+            data-sortable="${me.sortable}" data-order="${me.#orderID}"
+            class="${GSUtil.sanitize(`${clssort} ${me.cssHeader} ${me.dataset.cssId}`)}"
+            data-css-id="${GSUtil.sanitize(me.dataset.cssId)}">
+            ${GSUtil.sanitize(me.title || me.name)}</th>`;
     }
 
     renderFilter() {
@@ -79,13 +80,13 @@ export default class GSColumn extends HTMLElement {
             default:
                 html = me.#renderField();
         }
-        return `<th css="${me.cssFilter}">${html}</th>`;
+        return `<th css="${GSUtil.sanitize(me.cssFilter)}">${html}</th>`;
     }
 
     #renderFixed() {
         const me = this;
         const opts = me.#renderOptions(true);
-        return `<select auto="${me.auto}" name="${me.name}" title="${me.title || me.name}" class="${me.cssField}" >${opts}</select>`;
+        return `<select auto="${me.auto}" name="${GSUtil.sanitize(me.name)}" title="${GSUtil.sanitize(me.title || me.name)}" class="${GSUtil.sanitize(me.cssField)}" >${opts}</select>`;
     }
 
     #renderFlexi() {
@@ -108,8 +109,8 @@ export default class GSColumn extends HTMLElement {
                 type = me.type || '';
                 break;
         } 
-        if (type) type = `type="${type}"`;
-        return `<input ${type} auto="${me.auto}" name="${me.name}" title="${me.title || me.name}" class="${me.cssField}" placeholder="${me.title || me.name}" list="${list}">`;
+        if (type) type = `type="${GSUtil.sanitize(type)}"`;
+        return `<input ${type} auto="${me.auto}" name="${GSUtil.sanitize(me.name)}" title="${GSUtil.sanitize(me.title || me.name)}" class="${GSUtil.sanitize(me.cssField)}" placeholder="${GSUtil.sanitize(me.title || me.name)}" list="${GSUtil.sanitize(list)}">`;
     }
 
     #renderOptions(isCombo = false) {
@@ -121,9 +122,9 @@ export default class GSColumn extends HTMLElement {
             const title = GSAttr.get(el, 'map', value);
             let html = '';
             if (isCombo) {
-                html = `<option value="${value}" ${def ? 'selected' : ''}>${title}</option>`;
+                html = `<option value="${GSUtil.sanitize(value)}" ${def ? 'selected' : ''}>${GSUtil.sanitize(title)}</option>`;
             } else {
-                html = `<option value="${title}" data-value="${value}">`;
+                html = `<option value="${GSUtil.sanitize(title)}" data-value="${GSUtil.sanitize(value)}">`;
             }
             list.push(html);
         });
@@ -209,6 +210,10 @@ export default class GSColumn extends HTMLElement {
         return GSAttr.get(this, 'format');
     }
 
+    get currency() {
+        return GSAttr.get(this, 'currency');
+    }
+
     get type() {
         const me = this;
         const type = GSAttr.get(me, 'type');
@@ -285,6 +290,7 @@ export default class GSColumn extends HTMLElement {
             idx: me.index,
             type: me.type,
             format: me.format,
+            currency: me.currency,
             css: me.css,
             colspan: me.colspan,
             map: me.#mapping

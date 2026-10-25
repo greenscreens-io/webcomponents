@@ -24,7 +24,7 @@ export default class GSStore extends GSDataHandler {
 
     #data = [];
     #page = 1;
-    #total = 0;
+    #total = null;
 
     static {
         customElements.define('gs-store', GSStore);
@@ -63,7 +63,7 @@ export default class GSStore extends GSDataHandler {
      * @returns 
      */
     getField(name = '') {
-        return this.querySelector(`gs-item[name="${name}"]`);
+        return Array.from(this.querySelectorAll('gs-item')).find(item => item.name === name);
     }
 
     get table() {
@@ -95,7 +95,7 @@ export default class GSStore extends GSDataHandler {
     }
 
     get total() {
-        return this.#total || this.#data.length;
+        return this.#total ?? this.#data.length;
     }
 
     /**
@@ -115,7 +115,7 @@ export default class GSStore extends GSDataHandler {
         const me = this;
         val = GSUtil.asNum(val, 1);
         val = Math.min(Math.max(val, 1), Number.MAX_VALUE);
-        val = val > me.pages ? me.pages : val;
+        if (!me.#isRemote && val > me.pages) val = me.pages;
         me.#page = val;
         const skip = me.limit * (val - 1);
         me.#getData(skip, me.limit, me.filter, me.sort);
@@ -126,13 +126,19 @@ export default class GSStore extends GSDataHandler {
      */
     get pages() {
         const me = this;
+        if (me.#isRemote && me.#total === null) return Math.max(me.#page, 1);
         if (me.total === 0) return 1;
         return me.limit === 0 ? 1 : Math.ceil(me.total / me.limit);
     }
 
     nextPage() {
         const me = this;
-        if (me.page === me.pages) return;
+        if (me.limit === 0) return;
+        if (me.#isRemote && me.#total === null) {
+            if (me.#data.length < me.limit) return;
+        } else if (me.page === me.pages) {
+            return;
+        }
         me.page = me.page + 1;
         return me.#page;
     }
@@ -193,7 +199,7 @@ export default class GSStore extends GSDataHandler {
      */
     clear() {
         const me = this;
-        me.#total = 0;
+        me.#total = null;
         me.setData();
     }
 
@@ -216,7 +222,11 @@ export default class GSStore extends GSDataHandler {
      */
     read(clear = false) {
         const me = this;
-        if (clear) me.#data = [];
+        me.#page = 1;
+        if (clear) {
+            me.#data = [];
+            me.#total = null;
+        }
         return me.#getData(me.skip, me.limit, me.filter, me.sort);
     }
 
@@ -228,7 +238,7 @@ export default class GSStore extends GSDataHandler {
             data = me.#getDataLocal(skip, limit, filter, sort, me.#data);
             me.#notify('data', data);
         } else {
-            data = await super.read();
+            data = await super.read(skip, limit);
         }
 
         return data;
@@ -248,15 +258,23 @@ export default class GSStore extends GSDataHandler {
         return (me.isCached && me.cached);
     }
 
-    #update(data = [], append = false) {
+    get #isRemote() {
+        return !this.#isLocal && !this.isOffline;
+    }
+
+    #update(data = [], append = false, resetPage = true) {
 
         const me = this;
 
         let records = [];
+        let total = null;
         if (Array.isArray(data)) {
             records = data;
         } else if (Array.isArray(data.data)) {
             records = data.data;
+            const parsedTotal = Number(data.total);
+            if (data.total !== undefined && data.total !== null && data.total !== ''
+                && Number.isFinite(parsedTotal) && parsedTotal >= 0) total = parsedTotal;
         } else {
             records = [data];
         }
@@ -264,11 +282,12 @@ export default class GSStore extends GSDataHandler {
         if (append) {
             me.#data = [...me.#data, ...records];
         } else {
-            me.#page = 1;
+            if (resetPage) me.#page = 1;
             me.#data = records;
         }
 
-        me.#total = me.#data.length;
+        me.#total = total ?? (me.#isRemote && !append ? null : me.#data.length);
+        return records;
     }
 
     /**
@@ -321,7 +340,7 @@ export default class GSStore extends GSDataHandler {
      */
     onRead(data) {
         const me = this;
-        me.#update(data);
+        data = me.#update(data, false, false);
         data = me.#getDataLocal(me.skip, me.limit, me.filter, me.sort, data);
         me.#notify('data', data);
     }

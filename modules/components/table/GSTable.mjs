@@ -309,8 +309,8 @@ export default class GSTable extends GSElement {
         me.#selected = [];
         if (!me.#hasHeaders) {
             me.#prepareHeaders();
+            if (!me.#hasHeaders) return;
             me.#renderTable();
-            return requestAnimationFrame(() => me.#processData(data));
         }
 
         requestAnimationFrame(() => me.#renderPage());
@@ -328,6 +328,7 @@ export default class GSTable extends GSElement {
         if (me.#headers.length > 0) return;
         if (me.#data.length === 0) return;
         me.#recToHeader(me.#data[0]);
+        me.#headers = me.header?.toJSON() || [];
     }
 
     #recToHeader(rec) {
@@ -342,7 +343,7 @@ export default class GSTable extends GSElement {
             });
         } else {
             Object.keys(rec).forEach(v => {
-                const html = `<gs-column name="${v}"></gs-column>`;
+                const html = `<gs-column name="${GSUtil.sanitize(v)}"></gs-column>`;
                 defs.push(html);
             });
         }
@@ -455,4 +456,3 @@ export default class GSTable extends GSElement {
         });
     }
 }
-
