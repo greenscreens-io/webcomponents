@@ -13,7 +13,7 @@ The real power of this component comes when used from JavaScript, allowing simpl
  
 | Name               | Description                                                    |
 |--------------------|----------------------------------------------------------------|
-| position           | Predefined CSS TOP_LEFT,TOP_CENTER,TOP_END ...(MIDDLE, BOTTOM) |
+| position           | Predefined CSS TOP_START, TOP_CENTER, TOP_END, MIDDLE_*, or BOTTOM_* |
 | native             | Use native browser notification (boolean)                      |
  
 Position atribute values:
@@ -49,6 +49,9 @@ notifier.native = false;
 // Shows a toast for 5 sec. without close button.
 notifier.info('My Title', 'My message', false, 5);
 ```
+
+The optional arguments are `closable`, `timeout` (seconds before closing; `0` disables
+automatic closing), and `delay` (seconds before appearing; `0` appears immediately).
 
 To programmatically popup a new browser native notification
  

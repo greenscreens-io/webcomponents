@@ -14,7 +14,8 @@ Component creates a Bootstrap toast box..
 |--------------|--------------------------------------------|
 | closable     | Can user close a toast message (boolean)   |
 | message      | Text to display when toast shows           |
-| delay        | Autoclose dely in seconds. (0 never close) |
+| delay        | Delay before the toast appears, in seconds (0 appears immediately) |
+| timeout      | Time before the toast closes, in seconds (0 stays open until dismissed) |
 | opened       | Initial toast state.                       |
 
 <br>

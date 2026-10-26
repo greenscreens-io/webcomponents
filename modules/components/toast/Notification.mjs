@@ -1,8 +1,10 @@
 
 import { classMap, html, ifDefined } from '../../lib.mjs';
-import { GSAttr } from '../../base/GSAttr.mjs';
 import { GSElement } from '../../GSElement.mjs';
 import { GSDOM } from '../../base/GSDOM.mjs';
+import { GSUtil } from '../../base/GSUtil.mjs';
+
+const NOTIFICATION_OWNER = Symbol('notificationOwner');
 
 export class GSNotificationElement extends GSElement {
 
@@ -48,12 +50,8 @@ export class GSNotificationElement extends GSElement {
 
     get #positionCSS() {
         const clazz = GSNotificationElement;
-        const val = this.position || clazz.DEFAULT;
+        const val = typeof this.position === 'string' ? this.position : clazz.DEFAULT;
         return val.indexOf('_') > 0 && clazz[val] ? clazz[val] : val;
-    }
-
-    clear() {
-        this.queryAll('gs-toast').forEach(el => el.dismiss());
     }
 
     info(title, message, closable, timeout, delay, options) {
@@ -115,26 +113,42 @@ export class GSNotificationElement extends GSElement {
 
     #showWeb(title, message, css, closable, timeout, delay) {
         const me = this;
-        const tpl = `<gs-toast css="${css}"  opened ${closable ? 'closable' : ''} timeout="${timeout}"  delay="${delay}" message="${message}" title="${title}" language="${me.language}" ></gs-toast>`;
-        const el = GSDOM.parse(tpl, true);
-        requestAnimationFrame(async () => {
-            await me.#delay(delay);
-            const toast = me.#dialogToast;
-            if (toast !== me) GSAttr.set(toast, 'class', `toast-container ${me.css} ${me.position}`);
-            toast.appendChild(el);
-        });
+        const el = document.createElement('gs-toast');
+        el.css = css;
+        el.opened = true;
+        el.closable = closable;
+        el.timeout = timeout;
+        el.delay = delay;
+        el.message = message;
+        el.title = title;
+        el.language = me.language;
+        el[NOTIFICATION_OWNER] = me;
+        const toast = me.#dialogToast;
+        if (toast !== me) {
+            toast.classList.add(
+                'toast-container',
+                ...String(me.css || '').split(/\s+/).filter(Boolean),
+                ...me.#positionCSS.split(/\s+/).filter(Boolean)
+            );
+        }
+        toast.appendChild(el);
         return el;
     }
 
     async #showNative(title, message, timeout, delay, options = {}) {
         const me = this;
         await me.#delay(delay);
-        options.body = options.body || message;
-        const notification = new Notification(title, options);
+        const notification = new globalThis.Notification(title, {
+            ...(options || {}),
+            body: options?.body || message
+        });
         me.#list.add(notification);
-        const callback = me.#clearNative.bind({ notification: notification, owner: me });
-        notification.addEventListener('close', callback);
-        if (timeout > 0) notification.iid = setTimeout(callback, timeout * 1000);
+        let timer;
+        notification.addEventListener('close', () => {
+            if (timer !== undefined) clearTimeout(timer);
+            me.#list.delete(notification);
+        }, { once: true });
+        if (timeout > 0) timer = setTimeout(() => notification.close(), timeout * 1000);
         return notification;
     }
 
@@ -147,19 +161,16 @@ export class GSNotificationElement extends GSElement {
         if (GSUtil.isNumber(delay) && delay > 0) await GSUtil.timeout(delay * 1000);
     }
 
-    #clearNative() {
-        const me = this;
-        me.notification.close();
-        me.owner.#list.delete(me.notification);
-        if (me.notification.iid) clearTimeout(me.notification.iid);
-    }
-
     /**
      * Clear all triggered notifications
      */
     clear() {
         const me = this;
-        Array.from(me.querySelectorAll('gs-toast')).forEach(el => el.remove());
+        const toasts = new Set(me.querySelectorAll('gs-toast'));
+        GSDOM.queryAll(document, 'gs-toast').forEach(el => {
+            if (el[NOTIFICATION_OWNER] === me) toasts.add(el);
+        });
+        toasts.forEach(el => el.remove());
         me.#list.forEach(nn => nn.close());
         me.#list.clear();
     }
@@ -169,7 +180,7 @@ export class GSNotificationElement extends GSElement {
      * @returns {Boolean} 
      */
     static get isNativeSupported() {
-        return "Notification" in self;
+        return typeof globalThis.Notification !== 'undefined';
     }
 
     /**
@@ -177,7 +188,7 @@ export class GSNotificationElement extends GSElement {
      * @returns {Boolean} 
      */
     static get isGranted() {
-        return Notification.permission === "granted";
+        return GSNotificationElement.isNativeSupported && globalThis.Notification.permission === 'granted';
     }
 
     /**
@@ -189,7 +200,7 @@ export class GSNotificationElement extends GSElement {
     static async requestPermission() {
         const clazz = GSNotificationElement;
         if (!clazz.isNativeSupported) return false;
-        if (!clazz.isGranted) await Notification.requestPermission();
+        if (!clazz.isGranted) await globalThis.Notification.requestPermission();
         return clazz.isGranted;
     }
 

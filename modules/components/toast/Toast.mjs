@@ -2,7 +2,6 @@
 import { classMap, html, ifDefined } from '../../lib.mjs';
 import { GSElement } from '../../GSElement.mjs';
 import { GSDOM } from '../../base/GSDOM.mjs';
-import { GSUtil } from '../../base/GSUtil.mjs';
 import { GSNotificationElement } from './Notification.mjs';
 
 export class GSToastElement extends GSElement {
@@ -17,45 +16,76 @@ export class GSToastElement extends GSElement {
     }
 
     #pending = false;
+    #delayTimer;
+    #timeoutTimer;
 
     constructor() {
         super();
         const me = this;
         me.timeout = 2;
         me.delay = 2;
-        me.auto = true; 
     }
 
     shouldUpdate(changedProperties) {
         const me = this;
-        const visibilityChange = me.#isVisibilityChanged(changedProperties);
-        if (me.delay > 0 && me.opened && visibilityChange) {
-            me.#pending = true;
-            me.#pendingUpdate();
+        if (changedProperties.has('opened')) {
+            if (!me.opened) {
+                me.#clearDelay();
+            } else if (me.delay > 0) {
+                me.#clearDelay();
+                me.#pending = true;
+                me.#delayTimer = setTimeout(() => {
+                    me.#delayTimer = undefined;
+                    me.#pending = false;
+                    me.requestUpdate();
+                }, me.delay * 1000);
+            }
         }
-        return me.#validParent && (!me.#pending);
+        return me.#validParent && !me.#pending;
     }
 
-    #isVisibilityChanged(changedProperties) {
-        return changedProperties.has('opened');
+    #clearDelay() {
+        if (this.#delayTimer !== undefined) {
+            clearTimeout(this.#delayTimer);
+            this.#delayTimer = undefined;
+        }
+        this.#pending = false;
     }
 
-    async #pendingUpdate() {
+    #clearTimeout() {
+        if (this.#timeoutTimer !== undefined) {
+            clearTimeout(this.#timeoutTimer);
+            this.#timeoutTimer = undefined;
+        }
+    }
+
+    disconnectedCallback() {
+        this.#clearDelay();
+        this.#clearTimeout();
+        super.disconnectedCallback();
+    }
+
+    updated(changedProperties) {
         const me = this;
-        await GSUtil.timeout(me.delay * 1000);
-        me.#pending = false;
-        me.requestUpdate();
-    }
-
-    async updated(changedProperties) {
-        const me = this;
-        const visibilityChange = me.#isVisibilityChanged(changedProperties);
-        if (me.timeout > 0 && me.opened) {
-            await GSUtil.timeout(me.timeout * 1000);
-            me.opened = false;
-        } else if (visibilityChange && !me.opened) { 
+        if (changedProperties.has('opened') || changedProperties.has('timeout')) {
+            me.#clearTimeout();
+            if (me.opened && me.timeout > 0) {
+                me.#startTimeout();
+            }
+        } else if (me.opened && me.timeout > 0 && me.#timeoutTimer === undefined) {
+            // A delayed opening can render in an update with no changed properties.
+            me.#startTimeout();
+        }
+        if (changedProperties.has('opened') && !me.opened) {
             me.remove();
-        };
+        }
+    }
+
+    #startTimeout() {
+        this.#timeoutTimer = setTimeout(() => {
+            this.#timeoutTimer = undefined;
+            this.opened = false;
+        }, this.timeout * 1000);
     }
 
     renderUI() {
@@ -77,7 +107,7 @@ export class GSToastElement extends GSElement {
                 ${me.translate(me.message)}
                 <slot name="body"></slot>
             </div>
-        </div>            
+        </div>
         `;
     }
 
@@ -92,7 +122,7 @@ export class GSToastElement extends GSElement {
               </div>
               ${me.closable ? me.#button : ''}
           </div>
-        </div>            
+        </div>
         `;
     }
 
