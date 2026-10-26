@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015, 2024 Green Screens Ltd.
+ * Copyright (C) 2015, 2027 Green Screens Ltd.
  */
 import GSBase from "./GSBase.mjs";
 
