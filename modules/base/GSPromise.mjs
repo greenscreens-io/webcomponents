@@ -85,13 +85,13 @@ export class GSPromise {
     }
 
 	/**
-	 * Execute array of promises sequentially
+	 * Await all promises in the array
 	 * @param {Array<Promise>} ps 
 	 * @returns {Promise}
 	 */
 	static sequential(ps) {
 		if (!Array.isArray(ps)) ps = [];
-		return ps.reduce((p, next) => p.then(next), Promise.resolve());
+		return Promise.all(ps);
 	}
 
     static {

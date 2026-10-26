@@ -156,11 +156,11 @@ export class BinaryTree extends BinaryTreeNode {
      */
     remove(key) {
         for (let node of this.preOrderTraversal()) {
-            if (node.left.key === key) {
+            if (node.left?.key === key) {
                 node.left = null;
                 return true;
             }
-            if (node.right.key === key) {
+            if (node.right?.key === key) {
                 node.right = null;
                 return true;
             }

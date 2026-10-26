@@ -174,12 +174,11 @@ export class DoublyLinkedList {
      * Reverse data order
      */
     reverse() {
-        this.#nodes = this.#nodes.reduce((acc, { value }) => {
-            const nextNode = acc[0] || null;
-            const node = new Node(value, nextNode, null);
-            if (nextNode) nextNode.previous = node;
-            return [node, ...acc];
-        }, []);
+        this.#nodes.reverse();
+        this.#nodes.forEach((node, index, nodes) => {
+            node.previous = nodes[index - 1] || null;
+            node.next = nodes[index + 1] || null;
+        });
     }
 
     toArray() {

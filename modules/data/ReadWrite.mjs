@@ -336,7 +336,7 @@ export class GSReadWrite extends GSAbstractReadWrite {
         const me = this;
         if (me.isOffline) return;
         if (!me.#writer) return super.onWrite(owner);
-        if (!me.isRemote) return await GSLoader.load(me.url, me.#writer, me.#headers, true, data);
+        if (me.isRemote) return await GSLoader.load(me.url, me.#writer, me.#headers, true, data);
         if (!me.isQuark) return;
         const fn = GSFunction.parseFunction(me.#writer);
         if (!fn) throw new Error('Writer quark function not found!')

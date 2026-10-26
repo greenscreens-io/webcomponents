@@ -216,14 +216,14 @@ export class GSChartElement extends GSElement {
         childs.forEach(el => {
             const _nam = el.getAttribute(name);
             if (isArray) {
-                obj.push(GSChart.toJson(el, name, value, type));
+                obj.push(GSChartElement.toJson(el, name, value, type));
             } else if (isObject) {
                 const tmp = GSChartElement.toJson(el, name, value, type);
                 obj[_nam] = tmp;
             } else {
                 const _val = el.getAttribute(value);
                 const _typ = el.getAttribute(type);
-                obj[nameV][_nam] = GSChart.#toType(_val, _typ);
+                obj[nameV][_nam] = GSChartElement.#toType(_val, _typ);
             }
         });
 

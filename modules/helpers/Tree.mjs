@@ -325,8 +325,8 @@ export class Tree {
         for (let node of this.walk()) {
             if (node.key === parentNodeKey) {
                 const newOne = new Tree(key, value, node);
-                this.#folder = true;
-                this.#children ??= [];
+                node.#folder = true;
+                node.#children ??= [];
                 node.#children.push(newOne);
                 return newOne;
             }
@@ -430,4 +430,3 @@ export class Tree {
         return tree;
     }
 }
-

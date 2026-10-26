@@ -59,7 +59,7 @@ export class GSCachedReadWrite extends GSReadWrite {
     remove(data) {
         const me = this;
         me.removeSelected(data);
-        me.#data = me.#data.filter(o => o =! data);
+        me.#data = me.#data.filter(o => o !== data);
         return me.#data;
     }
 

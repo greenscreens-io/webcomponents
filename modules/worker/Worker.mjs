@@ -107,8 +107,7 @@ export class WorkerEngine {
     }
 
     if (options) {
-      //event.waitUntil(me.#handleNotification(me.#notificationOptions));
-      me.#handleNotification(me.#notificationOptions);
+      event.waitUntil(me.#handleNotification(options));
     }
   }
 
@@ -145,7 +144,7 @@ export class WorkerEngine {
    */
   #onPortMessage(event) {
     if (this.#trace) {
-      me.trace('Client message received on port:', event);
+      this.trace('Client message received on port:', event);
       event.target?.postMessage(`Hi client: ${event.data} from Service Worker Port2`);
     }
   }

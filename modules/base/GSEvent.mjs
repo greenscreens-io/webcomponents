@@ -4,6 +4,7 @@
 
 import { GSPromise } from "./GSPromise.mjs";
 import { GSUtil } from "./GSUtil.mjs";
+import { GSAbortController } from "./GSAbortController.mjs";
 
 /**
  * A module loading GSEvent class
@@ -40,7 +41,7 @@ export class GSEvent extends EventTarget {
      * @param {boolean|AbortController} abortable If abortable set, return AbortController
      */
     on(type = '', listener, timeout = 0, abortable = false) {
-        if (!type) return reject('Event undefined!');
+        if (!type) throw new Error('Event undefined!');
         const controller = abortable instanceof AbortController ? abortable : (abortable ? new GSAbortController(timeout) : null);
         const signal = controller || timeout == 0 ? controller?.signal : AbortSignal.timeout(timeout);
         this.addEventListener(type, listener, { signal: signal });
@@ -56,7 +57,7 @@ export class GSEvent extends EventTarget {
      * @param {boolean|AbortController} abortable If abortable set, return AbortController
      */
     once(type, listener, timeout = 0, abortable = false) {
-        if (!type) return reject('Event undefined!');
+        if (!type) throw new Error('Event undefined!');
         const me = this;
         const wrap = (e) => {
             listener(e);
