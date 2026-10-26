@@ -20,7 +20,7 @@ export default class GSData {
      * @param {Array} data 
      * @returns {Array}
      */
-    static uniqe(data) {
+    static unique(data) {
         return Array.from(new Set(data));
     }
 
@@ -226,12 +226,12 @@ export default class GSData {
      * @param {Boolean} ignoreNull  
 	 * @param {*} value 
 	 */
-	static writeToOject(obj, name, value, ignoreNull = true) {
+	static writeToObject(obj, name, value, ignoreNull = true) {
         if (ignoreNull && GSUtil.isNull(value)) return;
         
         const seg = name.split('.');
         if (seg.length === 1) {
-            return GSData.#writeSingleToOject(obj, name, value);
+            return GSData.#writeSingleToObject(obj, name, value);
         }
         
         const tree = seg.slice(0, -1);
@@ -242,10 +242,10 @@ export default class GSData {
             obj = obj[v];
         });
 
-        return GSData.#writeSingleToOject(obj, key, value);
+        return GSData.#writeSingleToObject(obj, key, value);
 	}
 
-    static #writeSingleToOject(obj, name, value) {        
+    static #writeSingleToObject(obj, name, value) {        
         if (obj.hasOwnProperty(name)) {
             if (!Array.isArray(obj[name])) {
                 obj[name] = [obj[name]];

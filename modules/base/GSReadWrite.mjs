@@ -64,7 +64,7 @@ export default class GSReadWrite extends GSAbstractReadWrite {
         const me = this;
         val = GSUtil.normalize(val);
         const isok = GSReadWrite.#MODES.includes(val);
-        if (!isok) throw new Error(null, `Invalid mode, allowed: ${GSReadWrite.#MODES}`);
+        if (!isok) throw new Error( `Invalid mode, allowed: ${GSReadWrite.#MODES}`);
         if (me.#mode === 'quark' && me.#mode != val) {
             me.#reader = 'GET';
             me.#writer = 'POST';
@@ -88,7 +88,7 @@ export default class GSReadWrite extends GSAbstractReadWrite {
     set reader(val) {
         const me = this;
         const isok = me.isQuark ? true : GSReadWrite.#METHOD.includes(val);
-        if (!isok) throw new Error(null, `Invalid method, allowed: ${GSReadWrite.#METHOD}`);
+        if (!isok) throw new Error(`Invalid method, allowed: ${GSReadWrite.#METHOD}`);
         return me.#reader = val;
     }
 
@@ -108,7 +108,7 @@ export default class GSReadWrite extends GSAbstractReadWrite {
     set writer(val) {
         const me = this;
         const isok = me.isQuark ? true : GSReadWrite.#METHOD.includes(val);
-        if (!isok) throw new Error(null, `Invalid method, allowed: ${GSReadWrite.#METHOD}`);
+        if (!isok) throw new Error(`Invalid method, allowed: ${GSReadWrite.#METHOD}`);
         return this.#writer = val;
     }
 
@@ -291,7 +291,7 @@ export default class GSReadWrite extends GSAbstractReadWrite {
         if (me.isRemote) return await GSLoader.load(me.url, me.#reader, me.#headers, true);
         if (!me.isQuark) return;
         const fn = GSFunction.parseFunction(me.#reader);
-        if (!fn) throw new Error('Reader quark function not found!')
+        if (!fn) throw new Error('Reader function not found!')
         return fn(me.skip, me.limit, me.filter, me.sort);
     }
 
@@ -307,8 +307,8 @@ export default class GSReadWrite extends GSAbstractReadWrite {
         if (!me.#writer) return super.onWrite(owner);
         if (!me.isRemote) return await GSLoader.load(me.url, me.#writer, me.#headers, true, data);
         if (!me.isQuark) return;
-        const fn = GSFunction.parseFunction(me.#reader);
-        if (!fn) throw new Error('Writer quark function not found!')
+        const fn = GSFunction.parseFunction(me.#writer);
+        if (!fn) throw new Error('Writer function not found!')
         return fn(data);
     }
 

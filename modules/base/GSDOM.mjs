@@ -608,7 +608,7 @@ export default class GSDOM {
 		if (GSUtil.isString(el)) el = GSDOM.queryAll(el);
 		if (GSDOM.isHTMLElement(el)) el = [el];
 		if (!(Array.isArray(el) && el.length > 0)) return false;
-		if (!val || val.trim().length == 0) return false;
+		if (!val || val.trim().length === 0) return false;
 		val = val.split(' ').filter(v => v && v.trim().length > 0);
 		if (GSUtil.isNull(sts)) return val.forEach(v => {
 			el.forEach(it => it.classList.toggle(v));
@@ -782,10 +782,10 @@ export default class GSDOM {
 	static fromElement2Object(el, obj, defaults = false) {
 		if (el.type !== 'radio') {
 			//params[el.name] = GSDOM.toValue(el);
-			GSData.writeToOject(obj, el.name, GSDOM.toValue(el, defaults));
+			GSData.writeToObject(obj, el.name, GSDOM.toValue(el, defaults));
 		} else if (el.checked) {
 			//params[el.name] = GSDOM.toValue(el);
-			GSData.writeToOject(obj, el.name, GSDOM.toValue(el, defaults));
+			GSData.writeToObject(obj, el.name, GSDOM.toValue(el, defaults));
 		}
 	}
 
