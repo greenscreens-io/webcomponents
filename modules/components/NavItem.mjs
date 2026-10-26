@@ -84,7 +84,7 @@ export class GSNavItemElement extends GSElement {
   }
 
   get url() {
-    return this.href && this.target ? this.href : '#';
+    return this.href || '#';
   }
 
   get #title() {
@@ -107,11 +107,12 @@ export class GSNavItemElement extends GSElement {
     const me = this;
     let obj = me.mapCSS(me.#buttonCSS, {});
     if (me.active) obj = me.mapCSS(me.#buildCSS + ' ' + me.#activeCSS, obj);
-    return html`<a tabindex="0" type="button" role="nav" 
+    return html`<a tabindex="${me.disabled ? -1 : 0}"
      ${ref(me.#refEl)}
      class="nav-link ${classMap(obj)}"
-     href="${ifDefined(me.url)}" 
+     href="${ifDefined(me.disabled ? undefined : me.url)}"
      target="${ifDefined(me.target)}"
+     aria-disabled="${me.disabled ? 'true' : 'false'}"
      title="${ifDefined(me.tooltip)}"> 
         ${me.#first} 
         ${me.#second}

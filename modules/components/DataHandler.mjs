@@ -7,7 +7,6 @@ import { GSUtil } from '../base/GSUtil.mjs';
 import { GSFunction } from '../base/GSFunction.mjs';
 import { GSItem } from '../base/GSItem.mjs';
 import { GSElement } from '../GSElement.mjs';
-import { numGT0 } from '../properties/verificator.mjs';
 import { GSReadWriteRegistry } from '../data/ReadWriteRegistry.mjs';
 import { GSData } from '../base/GSData.mjs';
 
@@ -36,7 +35,7 @@ export class GSDataHandler extends GSElement {
         sort: { type: Array, reflect: true },
         type: {},
         autoload: { type: Boolean },
-        autorefresh: { type: Number, reflect: true, hasChanged: numGT0 },
+        autorefresh: { type: Number, reflect: true },
     }
 
     #iid = 0;
@@ -76,6 +75,13 @@ export class GSDataHandler extends GSElement {
         me.#config = GSItem.proxify(itemHolder, GSData.PROPERTIES);
         me.#initLIFO(true);
         me.#initLIFO(false);
+        if (me.#handler) {
+            if (me.#config?.length > 0) me.#handler.addProcessor(me);
+            me.#updateHandler();
+            me.#handler.enable();
+            me.requestUpdate('storage', undefined);
+            me.schedule(me.autorefresh);
+        }
     }
     
     disconnectedCallback() {
@@ -85,20 +91,27 @@ export class GSDataHandler extends GSElement {
         me.#handler?.removeProcessor(me);
         me.#lifoReadRef = null;
         me.#lifoWriteRef = null;
-        clearTimeout(me.#iid);
+        clearInterval(me.#iid);
+        me.#iid = 0;
     }
-    
+
     firstUpdated() {
         const me = this;
-        me.#handler = GSReadWriteRegistry.newHandler(me.type, me.storage, false);
-        if (me.#config?.length > 0) me.#handler?.addProcessor(me);
-        me.#updateHandler(true);                
+        me.#handler ??= GSReadWriteRegistry.newHandler(me.type, me.storage, false);
+        if (!me.#handler) throw new Error(`Data handler type "${me.type}" is not registered.`);
+        if (me.#config?.length > 0) me.#handler.addProcessor(me);
+        me.#updateHandler(true);
     }
 
     willUpdate(changed) {
         super.willUpdate(changed);
         const me = this;
-        me.#updateHandler();
+        const handlerProperties = ['storage', 'src', 'action', 'mode', 'reader', 'writer', 'limit', 'skip', 'filter', 'sort'];
+        const handlerChanged = handlerProperties.some(property => changed.has(property));
+        if (handlerChanged) {
+            me.#updateHandler();
+        }
+        if (me.#handler && me.autoload && (handlerChanged || changed.has('autoload'))) me.#readAutoload();
         if (changed.has('autorefresh')) me.schedule(me.autorefresh);
     }
 
@@ -117,14 +130,16 @@ export class GSDataHandler extends GSElement {
         me.#handler.skip = me.skip;
         me.#handler.sort = me.formatSort(me.sort);
         me.#handler.filter = me.formatFilter(me.filter);
-        if (me.autoload) me.read();
         if (first) {
             me.#handler.enable();
-            // to prevent double read by this component and table
-            if (me.autoload) {
-                me.dataController?.read();
-            } 
+            if (me.autoload) me.#readAutoload();
         }
+    }
+
+    #readAutoload() {
+        const me = this;
+        const read = me.dataController?.read() ?? me.read();
+        void Promise.resolve(read).catch(error => GSLog.error(me, error));
     }
 
     get isDebug() {
@@ -152,7 +167,7 @@ export class GSDataHandler extends GSElement {
     }
 
     get key() {
-        return this.#config.filter(o => o.key).map(o => o.name).pop() || null;
+        return this.#config?.filter(o => o.key).map(o => o.name).pop() || null;
     }
 
     /**
@@ -165,20 +180,19 @@ export class GSDataHandler extends GSElement {
     }
 
     /**
-     * Sort data in format
-     * [{col: idx[num] || name[string]  , op: -1 | 1 }]
+     * Sort data by array column or object property; ord is 1 for ascending and -1 for descending.
      */
     formatSort(val) {
         val = this.#formated(val);
         let sort = undefined;
         if (typeof val === 'string') {
-            sort = [{ col: val }];
+            sort = [{ name: val }];
         } else if (Array.isArray(val)) {
             sort = val;
         } else if (GSUtil.isNumber(val)) {
-            const idx = Math.abs(val);
-            sort = new Array(idx);
-            sort[idx - 1] = { ord: val };
+            if (val === 0) return [];
+            if (!Number.isInteger(val)) throw new RangeError('Numeric sort values must be whole numbers.');
+            sort = [{ col: Math.abs(val) - 1, ord: val }];
         }
         return sort || [];
     }
@@ -188,7 +202,7 @@ export class GSDataHandler extends GSElement {
         time = GSUtil.asNum(time) * 1000;
         clearInterval(me.#iid);
         if (time > 0) me.#iid = setInterval(() => {
-            me.read(me);
+            me.read();
         }, time);
     }
 
@@ -236,7 +250,7 @@ export class GSDataHandler extends GSElement {
      * Remove all selections
      */
     clearSelected(data) {
-        return this.#handler?.clearSelected();
+        return this.#handler?.clearSelected(data);
     }
 
     /**
@@ -262,6 +276,7 @@ export class GSDataHandler extends GSElement {
         const me = this;
         if (!Array.isArray(data)) data = [data];
         data.forEach(r => {
+            if (!r || typeof r !== 'object') throw new TypeError('Read data must contain objects.');
             me.#config.forEach(c => {
                 let val = r[c.name];
                 if (!GSUtil.isNull(val)) {
@@ -311,7 +326,7 @@ export class GSDataHandler extends GSElement {
         const me = this;
         me.#verifyHandler();        
         if (read) return me.#handler?.read(me);        
-        if (!append) me.#handler.clear();
+        if (!append) me.#handler.clear?.();
         return me.#handler?.write(me, data);
     }
 

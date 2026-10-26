@@ -11,6 +11,11 @@ GSIcon WebComponent is a wrapper around standard HTMLForm element with addtional
 |--------------------|----------------------------------------------------------|
 | name               | Bootstrap icons name                                     |
 | size               | Icon size (1..5)                                         |
+| color              | Bootstrap text color                                     |
+| super              | Small superscript content                                |
+| super-color        | Color of the superscript content                         |
+| click-css          | CSS class applied while the icon is clicked              |
+| hover-css          | CSS class applied while the icon is hovered              |
 
 <br>
  

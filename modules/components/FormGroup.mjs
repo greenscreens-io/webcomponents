@@ -606,7 +606,7 @@ export class GSFormGroupElement extends GSElement {
   }
 
   get isPassword() {
-    return this.type === 'passsword';
+    return this.type === 'password';
   }
 
   get isEmail() {
@@ -636,7 +636,13 @@ export class GSFormGroupElement extends GSElement {
 
   set value(val) {
     const me = this;
-    if (me.field) me.field.value = val;
+    const oldValue = me.value;
+    if (me.field) {
+      me.field.value = val;
+    } else {
+      GSAttr.set(me, 'value', val);
+    }
+    me.requestUpdate('value', oldValue);
   }
 
   get defaultValue() {

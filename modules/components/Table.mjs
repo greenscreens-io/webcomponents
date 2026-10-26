@@ -28,9 +28,10 @@ export class GSTableElement extends GSElement {
   static CELLS = {
     align: {},
     width: {},
-    width: {},
     css: {},
     title: {},
+    value: {},
+    map: {},
     colspan: {},
     storage: {},
     ref: {}, // if set; use storage or gs-items to map ref value to virtual field
@@ -79,6 +80,7 @@ export class GSTableElement extends GSElement {
   #config = [];
   #sortOrder = [];
   #auto = false;
+  #processedDataColumn;
 
   constructor() {
     super();
@@ -116,8 +118,7 @@ export class GSTableElement extends GSElement {
 
   disconnectedCallback() {
     super.disconnectedCallback();
-    this.dataController?.clearSelected(this.data);
-    this.data = [];
+    (this.dataController || DataSelector).clearSelected(this.data);
   }
 
   renderClass() {
@@ -144,9 +145,12 @@ export class GSTableElement extends GSElement {
   willUpdate(changed) {
     const me = this;
     if (me.columns.length != me.sort.length) me.sort = Array(me.columns.length).fill(0);
-    if (me.datacolumn && me.data.length > 0) {
+    if (me.datacolumn && changed.has('data') && me.data.length > 0 &&
+      me.data !== me.#processedDataColumn) {
       me.columns = me.data[0];
-      me.data = me.data.slice(1);
+      me.data = me.#processedDataColumn = me.data.slice(1);
+    } else if (me.data === me.#processedDataColumn) {
+      me.#processedDataColumn = undefined;
     }
     if (changed.has('multiselect') && !me.multiselect) me.dataController?.clearSelected();
     if (changed.has('selectable') && !me.selectable) me.dataController?.clearSelected();
@@ -173,7 +177,7 @@ export class GSTableElement extends GSElement {
             ${me.columns.map((entry, index) => me.#renderColumn(entry, index))}
           </tr>
         </thead>
-        <tbody @click=${me.#onSelect} @contextmenu=${me.#onSelect} class="${me.divider ? 'table-group-divider' : ''}" role="button">
+        <tbody @click=${me.#onSelect} @contextmenu=${me.#onSelect} class="${me.divider ? 'table-group-divider' : ''}">
           ${me.data.map((entry, index) => me.#renderRecord(entry, index))}
           ${me.#renderEmpty()}
         </tbody>
@@ -227,7 +231,7 @@ export class GSTableElement extends GSElement {
     cfg.type = cfg.type || 'text';
     const cfgType = { 'string': 'text', 'currency': 'number', 'timestamp': 'datetime-local' }[cfg.type]
     const dataType = cell instanceof Date ? 'date' : typeof cell;
-    return cell ? dataType : cfgType || cfg.type;
+    return cell !== null && cell !== undefined && cell !== '' ? dataType : cfgType || cfg.type;
   }
 
   #renderFilters() {
@@ -255,7 +259,7 @@ export class GSTableElement extends GSElement {
               name="${cell}"
               storage="${ifDefined(cfg.list ? me.storage : null)}"
               key="${ifDefined(cfg.list ? cfg.name : null)}"> 
-              ${me.#renderOption(cfg)}
+              ${me.#renderOption(cfg, true)}
               </select>
           </th>`;
     }
@@ -283,10 +287,14 @@ export class GSTableElement extends GSElement {
     </th>`;
   }
 
-  #renderOption(cfg) {
-    if (cfg.childElementCount == 0) return '';
-    const sub = GSItem.proxify(cfg);
-    return sub.map(el => html`<option value="${el.value}">${cfg.fixed ? el.map : ''}</option>`);
+  #renderOption(cfg, includeBlank = false) {
+    const options = includeBlank ? [html`<option value=""></option>`] : [];
+    if (cfg.childElementCount === 0) return options;
+    const sub = GSItem.proxify(cfg, GSTableElement.CELLS);
+    return [
+      ...options,
+      ...sub.map(el => html`<option value="${ifDefined(el.value)}">${cfg.fixed ? el.map || el.title || el.value : ''}</option>`)
+    ];
   }
 
   #renderColumn(cell, index) {
@@ -322,7 +330,8 @@ export class GSTableElement extends GSElement {
     const color = me.colorSelect && selected ? `table-${me.colorSelect}` : '';
     const cells = me.#remapRecord(entry);
     return html`
-        <tr .index=${index} class="${color}" tabindex="0" ?selected=${selected}>
+        <tr .index=${index} class="${color}" tabindex="0"
+            aria-selected="${selected ? 'true' : 'false'}" ?selected=${selected}>
           ${cells.map((cell, i) => me.#renderCell(cell, i))}
         </tr>
       `;
@@ -331,7 +340,8 @@ export class GSTableElement extends GSElement {
   #renderCell(cell, index) {
     const cfg = this.#config[index];
     if (cfg?.hidden) return '';
-    return html`<td class="text-${cfg?.align}" colspan="${ifDefined(cfg?.colspan)}" ><span>${cell}</span></td>`;
+    const alignment = cfg?.align ? `text-${cfg.align}` : undefined;
+    return html`<td class="${ifDefined(alignment)}" colspan="${ifDefined(cfg?.colspan)}"><span>${cell}</span></td>`;
   }
 
   #remapRecord(record) {
@@ -371,16 +381,13 @@ export class GSTableElement extends GSElement {
   }  
 
   #onSort(e) {
-    
     const me = this;
-    
     if (!me.sortable) return;
-    
-    const icon = e.target.tagName === 'GS-ICON' ? e.target : e.target.closest('gs-icon');
-    const column = e.target.closest('th');
-    if (!icon || !column) return;
+    const column = e.target?.closest?.('th');
+    if (!column || !column.parentElement?.matches('thead tr')) return;
 
     const idx = column.index !== undefined ? column.index : GSDOM.getElementIndex(column);
+    if (idx < 0 || idx >= me.columns.length || me.#config[idx]?.hidden) return;
     const current = me.sort[idx];
     const sortType = current === 1 ? -1 : current + 1;
 
@@ -430,13 +437,14 @@ export class GSTableElement extends GSElement {
   }
 
   #onSelect(e) {
-    
     const me = this;
-    
     if (!me.selectable) return;
+    if (me.protected && (e.type === 'click' || e.type === 'contextmenu')) return;
     
-    const tr = e.target.tagName === 'TR' ? e.target : e.target.closest('tr');
-    if (!tr) return;
+    const target = e.target;
+    const tr = target?.tagName === 'TR' ? target : target?.closest?.('tr');
+    if (!tr || tr.dataset.ignore || !Number.isInteger(tr.index) ||
+      tr.index < 0 || tr.index >= me.data.length) return;
     
     // if context menu is attached and right click made
     if (e.button === 2 && !me.query('gs-context', false, true)) return;
@@ -466,19 +474,26 @@ export class GSTableElement extends GSElement {
   }
 
   #onKeyDown(e) {
-
-    if (!e.target.matches('tbody tr')) return;
+    const row = e.target.closest?.('tbody tr');
+    if (!row || !this.renderRoot.contains(row)) return;
     let el = null;
 
     switch (e.code) {
       case 'ArrowUp':
-        el = e.target.previousElementSibling;
+        el = row.previousElementSibling;
         break;
       case 'ArrowDown':
-        el = e.target.nextElementSibling;
+        el = row.nextElementSibling;
         break;
+      case 'Space':
+      case 'Enter':
+        e.preventDefault();
+        return;
     }
 
+    while (el?.dataset.ignore) {
+      el = e.code === 'ArrowUp' ? el.previousElementSibling : el.nextElementSibling;
+    }
     if (el) {
       el.focus();
       this.emit('focus', el);
@@ -486,7 +501,7 @@ export class GSTableElement extends GSElement {
   }
 
   #onKeyUp(e) {
-    if (e.code === 'Space') this.#onSelect(e);
+    if (e.code === 'Space' || e.code === 'Enter') this.#onSelect(e);
   }
 
   static {

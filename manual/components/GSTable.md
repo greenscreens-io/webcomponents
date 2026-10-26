@@ -11,7 +11,7 @@ GSTable WebComponent is a HTML Table renderer.
 |--------------------|----------------------------------------------------------|
 | columns            | JSON Array of table columns                              | 
 | data               | JSON Array of data records                               | 
-| datacolumn         | If set, first data row i used as a column definition     |
+| datacolumn         | If set, the first row of each data result defines columns |
 | storage            | GSDataHandler store ID                                   | 
 |                    |                                                          |
 | filter             | Internal list of filtered records                        |
@@ -32,9 +32,13 @@ GSTable WebComponent is a HTML Table renderer.
 |                    |                                                          |
 | multisort          | Allwo multi column soriting                              |
 | multiselect        | Allow multi row selection                                |
-| protected          | Prevent table data user selection                        |
+| protected          | Prevent mouse-based row selection                        |
 | selectable         | Allow row selection                                      |
 | sortable           | Allow column sorting                                     |
+
+Static `data` and its row selection state are preserved when the table is
+disconnected and reconnected. In protected mode, rows can still be selected
+using the keyboard when `selectable` is enabled.
 
 <br>
 

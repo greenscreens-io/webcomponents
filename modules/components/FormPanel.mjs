@@ -8,6 +8,7 @@ import { GSItem } from '../base/GSItem.mjs';
 import { GSAttr } from '../base/GSAttr.mjs';
 import { GSElement } from '../GSElement.mjs';
 import { GSFormGroupElement } from './FormGroup.mjs';
+import { GSUtil } from '../base/GSUtil.mjs';
 
 // TODO: Make generic JSON to template generator, 
 // then create string template and apply it to the lit html function.
@@ -22,26 +23,34 @@ export class GSFormPanelElement extends GSElement {
 
   static properties = {
     storage: {},
-    data: { type: Array },
+    data: { type: Object },
   }
 
   #formRef = createRef();
 
   constructor() {
     super();
-    this.data = this.#proxify;
+    this.data = {};
+  }
+
+  willUpdate(changed) {
+    super.willUpdate(changed);
+    const me = this;
+    if (!Array.isArray(me.data?.items) && GSItem.collect(me).length > 0) {
+      me.data = { ...me.data, items: me.#proxify };
+    }
   }
 
   renderUI() {
     const me = this;
-    const data = me.data || {};
+    const data = Array.isArray(me.data) ? { items: me.data } : me.data || {};
     // const tpl = me.#renderContent(); 
     const tpl = me.#renderTemplate();
     return html`<gs-form ${ref(me.#formRef)}
 
       storage="${ifDefined(data.storage)}" 
-      disabled=${ifDefined(data.disabled)}.
-      data="${ifDefined(data.data)}"
+      ?disabled="${GSUtil.asBool(data.disabled)}"
+      .data="${data.data ?? {}}"
       
       name="${ifDefined(data.name)}"
       rel="${ifDefined(data.rel)}"
@@ -52,22 +61,22 @@ export class GSFormPanelElement extends GSElement {
       action="${ifDefined(data.action)}"
       enctype="${ifDefined(data.enctype)}"
       method="${ifDefined(data.method)}"
-      novalidate="${ifDefined(data.novalidate)}"
+      ?novalidate="${GSUtil.asBool(data.novalidate)}"
       target="${ifDefined(data.target)}"
 
-      block="${ifDefined(data.block)}"
-      beep="${ifDefined(data.beep)}"
+      ?block="${GSUtil.asBool(data.block)}"
+      ?beep="${GSUtil.asBool(data.beep)}"
       timeout="${ifDefined(data.timeout)}"
 
-      flat="${ifDefined(data.flat)}"
-      rtl="${ifDefined(data.rtl)}"
-      hide="${ifDefined(data.hide)}"
+      ?flat="${GSUtil.asBool(data.flat)}"
+      ?rtl="${GSUtil.asBool(data.rtl)}"
+      ?hide="${GSUtil.asBool(data.hide)}"
       padding="${ifDefined(data.padding)}"
       margin="${ifDefined(data.margin)}"
-      rounded="${ifDefined(data.rounded)}"
-      bordered="${ifDefined(data.bordered)}"
-      shadow="${ifDefined(data.shadow)}"
-      keep="${ifDefined(data.keep)}"
+      ?rounded="${GSUtil.asBool(data.rounded)}"
+      ?bordered="${GSUtil.asBool(data.bordered)}"
+      ?shadow="${GSUtil.asBool(data.shadow)}"
+      ?keep="${GSUtil.asBool(data.keep)}"
       css="${ifDefined(data.css)}"
       theme="${ifDefined(data.theme)}"
       os="${ifDefined(data.os)}"
@@ -121,6 +130,7 @@ export class GSFormPanelElement extends GSElement {
 
       type="${ifDefined(item.type)}"
       name="${ifDefined(item.name)}"
+      values="${ifDefined(item.values)}"
       list="${ifDefined(item.list)}"
       accept="${ifDefined(item.accept)}"
       value="${ifDefined(item.value)}"
@@ -135,42 +145,43 @@ export class GSFormPanelElement extends GSElement {
       maxlength="${ifDefined(item.maxlength)}"
       minlength="${ifDefined(item.minlength)}"
 
-      reverse="${ifDefined(item.reverse)}"
-      selectable="${ifDefined(item.selectable)}"
+      ?reverse="${GSUtil.asBool(item.reverse)}"
+      ?selectable="${GSUtil.asBool(item.selectable)}"
 
-      autoid="${ifDefined(item.autoid)}"
-      autocopy="${ifDefined(item.autocopy)}"
-      autoselect="${ifDefined(item.autoselect)}"
+      ?autoid="${GSUtil.asBool(item.autoid)}"
+      ?autocopy="${GSUtil.asBool(item.autocopy)}"
+      ?autoselect="${GSUtil.asBool(item.autoselect)}"
 
       autocapitalize="${ifDefined(item.autocapitalize)}"
       autocorrect="${ifDefined(item.autocorrect)}"
       autocomplete="${ifDefined(item.autocomplete)}"
 
-      autofocus="${ifDefined(item.autofocus)}"
-      autoselect="${ifDefined(item.autoselect)}"
+      ?autofocus="${GSUtil.asBool(item.autofocus)}"
+      ?autovalidate="${GSUtil.asBool(item.autovalidate)}"
+      ?autoreport="${GSUtil.asBool(item.autoreport)}"
 
-      disabled="${ifDefined(item.disabled)}"
-      checked="${ifDefined(item.checked)}"
-      multiple="${ifDefined(item.multiple)}"
-      reveal="${ifDefined(item.reveal)}"
-      readonly="${ifDefined(item.readonly)}"
-      required="${ifDefined(item.required)}"
+      ?disabled="${GSUtil.asBool(item.disabled)}"
+      ?checked="${GSUtil.asBool(item.checked)}"
+      ?multiple="${GSUtil.asBool(item.multiple)}"
+      ?reveal="${GSUtil.asBool(item.reveal)}"
+      ?readonly="${GSUtil.asBool(item.readonly)}"
+      ?required="${GSUtil.asBool(item.required)}"
 
-      invalidMessage="${ifDefined(item.invalidMessage)}"  
+      invalid-message="${ifDefined(item.invalidMessage)}"
       
-      block="${ifDefined(item.block || definition.block)}"
-      beep="${ifDefined(item.beep || definition.beep)}"
-      timeout="${ifDefined(item.timeout || definition.timeout)}"
+      ?block="${GSUtil.asBool(item.block ?? definition.block)}"
+      ?beep="${GSUtil.asBool(item.beep ?? definition.beep)}"
+      timeout="${ifDefined(item.timeout ?? definition.timeout)}"
 
-      flat="${ifDefined(item.flat)}"
-      rtl="${ifDefined(item.rtl)}"
-      hide="${ifDefined(item.hide)}"
+      ?flat="${GSUtil.asBool(item.flat)}"
+      ?rtl="${GSUtil.asBool(item.rtl)}"
+      ?hide="${GSUtil.asBool(item.hide)}"
       padding="${ifDefined(item.padding)}"
       margin="${ifDefined(item.margin)}"
-      rounded="${ifDefined(item.rounded)}"
-      bordered="${ifDefined(item.bordered)}"
-      shadow="${ifDefined(item.shadow)}"
-      keep="${ifDefined(item.keep)}"
+      ?rounded="${GSUtil.asBool(item.rounded)}"
+      ?bordered="${GSUtil.asBool(item.bordered)}"
+      ?shadow="${GSUtil.asBool(item.shadow)}"
+      ?keep="${GSUtil.asBool(item.keep)}"
       css="${ifDefined(item.css)}"
       theme="${ifDefined(item.theme)}"
       os="${ifDefined(item.os)}"

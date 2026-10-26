@@ -24,7 +24,9 @@ export class GSCopyrightElement extends GSElement {
     const me = this;
     if (!(me.isCompany && me.isYear)) return '';
     const year = new Date().getFullYear();
-    return html`<div  dir="${ifDefined(me.direction)}" class="${classMap(me.renderClass())}"><a target="_blank" href="${me.url ? me.url : '#'}"><small>&copy; ${me.company} ${me.year}. - ${year}.</small></a></div>`;
+    const content = html`<small>&copy; ${me.company} ${me.year} - ${year}</small>`;
+    const link = me.url ? html`<a target="_blank" rel="noopener noreferrer" href="${me.url}">${content}</a>` : content;
+    return html`<div dir="${ifDefined(me.direction)}" class="${classMap(me.renderClass())}">${link}</div>`;
   }
 
   get isCompany() {

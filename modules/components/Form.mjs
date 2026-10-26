@@ -134,7 +134,7 @@ export class GSFormElement extends GSElement {
 
   async submit(e) {
     const me = this;
-    if (!e) return me.form.submit();
+    if (!e) return me.form?.requestSubmit();
     GSEvents.prevent(e, true, false, false);
     if (me.disabled ||!me.isValid) return;
     await me.dataController?.write(me.asJSON);

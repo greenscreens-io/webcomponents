@@ -13,6 +13,11 @@ Alternatively, extend already existing classes with custom ones and register the
 | controller         | Class name to instantiate                                |
 | module             | JaavScript module containing controller class            |
 
+The controller is initialized once after its module loads. If loading fails
+or the named export is missing, the component logs the error and emits a
+bubbling, composed `controller-error` event whose `detail.error` contains the
+failure.
+
 <br>
  
 ## Example

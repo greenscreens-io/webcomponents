@@ -25,6 +25,9 @@ export class GSContextElement extends GSMenuElement {
         disabled: { type: Boolean },
     }
 
+    #bindings = [];
+    #onContextMenu = e => this.#onPopup(e);
+
     constructor() {
         super();
         const me = this;        
@@ -43,27 +46,42 @@ export class GSContextElement extends GSMenuElement {
         me.attachEvent(window, 'resize', me.close.bind(me));        
         if (!me.slot) me.#attachTarget();
     }
+
+    disconnectedCallback() {
+        this.#bindings = [];
+        super.disconnectedCallback();
+    }
+
+    updated(changedProperties) {
+        if (changedProperties.has('target')) this.#attachTarget();
+    }
     
     onSlotInjected(slot) {
         this.#attachTarget();
     }
 
     #attachTarget() {
-        const me = this;        
+        const me = this;
+        me.#bindings.forEach(target => me.removeEvent(target, 'contextmenu', me.#onContextMenu));
+        me.#bindings = [];
         const owner = GSDOM.parent(me.assignedSlot || me);
         let targets = me.target ? GSDOM.queryAll(owner, me.target) : [owner];
         if (!targets.length) targets = GSDOM.queryAll(document.documentElement, me.target);
-        targets.forEach(target => me.attachEvent(target, 'contextmenu', me.#onPopup.bind(me)));
+        targets.filter(Boolean).forEach(target => {
+            if (me.attachEvent(target, 'contextmenu', me.#onContextMenu)) me.#bindings.push(target);
+        });
     }
 
     #match(e) {
-        const me = this;
-        return e.composedPath().filter(el => el.matches)
-            .filter(el => el.matches(me.filter ? me.filter : me.target));
+        const selector = this.filter;
+        const path = e.composedPath().filter(el => el instanceof Element);
+        if (!selector) return path.some(el => el === e.currentTarget);
+        return path.filter(el => el.matches(selector));
     }
 
     #onPopup(e) {
         const me = this;
+        if (me.disabled) return false;
         if (e.shiftKey && me.altContext) return;
         const list = me.#match(e);
         if (list.length === 0) return;

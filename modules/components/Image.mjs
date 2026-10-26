@@ -4,7 +4,7 @@
 
 import { createRef, html, ifDefined, ref } from '../lib.mjs';
 import { GSElement } from '../GSElement.mjs';
-import { notEmpty, numGE0 } from '../properties/index.mjs';
+import { numGE0 } from '../properties/index.mjs';
 import { GSID } from '../base/GSID.mjs';
 
 const numdef = { reflect: true, type: Number, hasChanged: numGE0 };
@@ -12,7 +12,7 @@ const numdef = { reflect: true, type: Number, hasChanged: numGE0 };
 export class GSImageElement extends GSElement {
 
   static properties = {
-    src: { hasChanged: notEmpty },
+    src: {},
     width: numdef,
     height: numdef,
     opacity: numdef,
@@ -38,17 +38,17 @@ export class GSImageElement extends GSElement {
     this.dynamicStyle(this.#styleID);
   }
 
-  shouldUpdate(changed) {
+  willUpdate(changed) {
+    super.willUpdate(changed);
     this.#update();
-    return this.src;
   }
 
   renderUI() {
     const me = this;
     return html`<img ${ref(me.#imageRef)} 
             @load="${me.#onLoad}"
-            src="${me.src}" 
-            alt="${me.alt}" 
+            src="${ifDefined(me.src || undefined)}"
+            alt="${ifDefined(me.alt)}"
             loading="${ifDefined(me.loading)}" 
             class="${me.#styleID}" 
             data-gs-class="${me.#styleID}">
@@ -63,24 +63,15 @@ export class GSImageElement extends GSElement {
     return this.dynamicStyle(this.#styleID).style;
   }
 
-  #renderStyle() {
-    const me = this;
-    const filter = me.#buildFilter();
-    const css = {
-      width: me.width > 0 ? me.width : undefined,
-      height: me.height > 0 ? me.height : undefined,
-      filter: filter.length > 0 ? filter.join(' ') : ''
-    }
-    return css;
-  }
-
   #buildFilter() {
     const me = this;
     const o = [];
 
     if (me.blur > 0) o.push(`blur(${me.blur}px)`);
     if (me.invert > 0) o.push(`invert(${me.invert})`);
-    if (me.opacity > 0) o.push(`opacity(${me.opacity})`);
+    if (me.opacity !== undefined && me.opacity !== null && me.opacity >= 0) {
+      o.push(`opacity(${me.opacity})`);
+    }
     if (me.contrast > 0) o.push(`contrast(${me.contrast})`);
     if (me.grayscale > 0) o.push(`grayscale(${me.grayscale})`);
     if (me.brightness > 0) o.push(`brightness(${me.brightness})`);

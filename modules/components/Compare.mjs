@@ -6,7 +6,7 @@ import { classMap, createRef, css, html, ifDefined, ref } from '../lib.mjs';
 import { GSID } from '../base/GSID.mjs';
 import { GSUtil } from '../base/GSUtil.mjs';
 import { GSElement } from '../GSElement.mjs';
-import { color, notEmpty } from '../properties/index.mjs';
+import { color } from '../properties/index.mjs';
 import { ElementMoveController } from '../controllers/ElementMoveController.mjs';
 
 export class GSCompareElement extends GSElement {
@@ -32,8 +32,8 @@ export class GSCompareElement extends GSElement {
     background: { ...color },
     width: { type: Number },
     height: { type: Number },
-    before: { hasChanged: notEmpty },
-    after: { hasChanged: notEmpty },
+    before: {},
+    after: {},
   }
 
   #styleID = GSID.id;
@@ -77,7 +77,7 @@ export class GSCompareElement extends GSElement {
          class="${classMap(me.renderClass())}">
       <div class="overflow-hidden position-absolute top-0 start-0 overflow-hidden"><slot name="before">${me.#before}</slot></div>
       <div ${ref(me.#clipRef)} class="overflow-hidden position-absolute top-0 start-0 overflow-hidden clipper"><slot name="after">${me.#after}</slot></div>
-      <div ${ref(me.#slideRef)} class="slider position-absolute top-0><slot name="control"></slot></div>
+      <div ${ref(me.#slideRef)} class="slider position-absolute top-0"><slot name="control"></slot></div>
     </div>`;
   }
 
@@ -109,6 +109,7 @@ export class GSCompareElement extends GSElement {
     const me = this;
     const offset = me.#elPosition.left;
     const width = me.#elPosition.width;
+    if (width <= 0) return;
     const pos = GSUtil.range(e.clientX - offset, 0, width);
     const pct = (pos / width) * 100;
     me.#update(pct);
@@ -127,11 +128,11 @@ export class GSCompareElement extends GSElement {
   }
 
   get #before() {
-    return this.before ? html`<img @load="${this.#onLoad}" src="${me.before}"></img>` : '';
+    return this.before ? html`<img @load="${this.#onLoad}" src="${this.before}" alt="Before comparison">` : '';
   }
 
   get #after() {
-    return this.after ? html`<img @load="${this.#onLoad}" src="${me.after}"></img>` : '';
+    return this.after ? html`<img @load="${this.#onLoad}" src="${this.after}" alt="After comparison">` : '';
   }
 
   get #isAuto() {
@@ -154,8 +155,8 @@ export class GSCompareElement extends GSElement {
     const me = this;
     if (me.#isAuto) {
       const el = e.target;
-      me.height = me.height || el.height;
-      me.width = me.width || el.width;
+      me.height = me.height || el.naturalHeight || el.height;
+      me.width = me.width || el.naturalWidth || el.width;
     }
   }
 

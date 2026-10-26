@@ -28,7 +28,7 @@ export class GSIndentElement extends GSElement {
   }
 
   renderUI() {
-    const size = this.size * this.multiplier;
+    const size = Math.max(0, this.size * this.multiplier);
     return html`<span class="indent" style="--gs-indent: ${size}px;"></span>`;
   }
 

@@ -1,6 +1,6 @@
 # GSTag WebComponent
 
-GSTag WebComponent is a dynamictag list input composite component.
+GSTag WebComponent is a dynamic tag-list input component.
 
 GSTag WebComponent extends [GSElement](../base/GSElement.md) and all its attributes and functions.
 
@@ -18,7 +18,7 @@ GSTag WebComponent extends [GSElement](../base/GSElement.md) and all its attribu
 
 | max                | Maximum number of entries                                | 
 | size               | Tag icon size                                            | 
-| name               | input element bname - used on forms                      | 
+| name               | Input name used by the component                         |
 | appendable         | Allow custom values                                      | 
 | placeholder        | Text to display in input field                           | 
 
@@ -34,7 +34,7 @@ GSTag WebComponent extends [GSElement](../base/GSElement.md) and all its attribu
 For more details, check [tags.html](../../demos/tags.html)
 
 ```html
-    <gs-tag name="browsers" values="Chrome,Edge,Firefox" max="5" allowadd="true">
+    <gs-tag name="browsers" values="Chrome,Edge,Firefox" max="5" appendable>
       <gs-item name="Chrome"></gs-item>
       <gs-item name="Edge"></gs-item>
       <gs-item name="Firefox"></gs-item>

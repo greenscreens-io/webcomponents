@@ -7,7 +7,6 @@
  * @module components/ServiceWorkkerElement
  */
 
-import { GSLoader } from '../base/GSLoader.mjs';
 import { GSUtil } from '../base/GSUtil.mjs';
 import { GSElement } from '../GSElement.mjs';
 
@@ -26,11 +25,40 @@ export class ServiceWorkkerElement extends GSElement {
         disabled: { type: Boolean, reflect: true, default: false }
     }
 
-    #registration = false
-    #workerMessage = null;
+    #registration = null;
     #messageChannel = null;
-
-    #nocache = false;
+    #loading;
+    #unloading;
+    #generation = 0;
+    #monitoredRegistration;
+    #monitoredWorker;
+    #reloading = false;
+    #onControllerChange = () => {
+        if (!this.#reloading) {
+            this.#reloading = true;
+            window.location.reload();
+        }
+    };
+    #onUpdateFound = () => {
+        const worker = this.#registration?.installing;
+        if (worker === this.#monitoredWorker) return;
+        this.#monitoredWorker?.removeEventListener('statechange', this.#onWorkerStateChange);
+        this.#monitoredWorker = worker;
+        worker?.addEventListener('statechange', this.#onWorkerStateChange);
+    };
+    #onWorkerStateChange = () => {
+        const registration = this.#registration;
+        if (this.isConnected && !this.disabled && registration?.active) this.#initChannel();
+        if (registration?.waiting) {
+            this.#monitoredWorker?.removeEventListener('statechange', this.#onWorkerStateChange);
+            this.#monitoredWorker = undefined;
+            if (navigator.serviceWorker.controller) {
+                void this.#invokeServiceWorkerUpdateFlow(registration);
+            } else {
+                this.#trace('Service Worker initialized for the first time');
+            }
+        }
+    };
 
     constructor() {
         super();
@@ -39,14 +67,13 @@ export class ServiceWorkkerElement extends GSElement {
 
     connectedCallback() {
         super.connectedCallback();
-        const me = this;
-        me.#workerMessage = me.#onWorkerMessage.bind(me);
-        me.#load();
+        this.#reloading = false;
+        if (!this.disabled) void this.#load();
     }
 
     disconnectedCallback() {
+        void this.#unload(false);
         super.disconnectedCallback();
-        this.#unload();
     }
 
     willUpdate(changed) {
@@ -55,7 +82,13 @@ export class ServiceWorkkerElement extends GSElement {
             me.#ServiceWorkerTraceUpdate();
         }
         if (changed.has('disabled')) {
-            me.disabled ? me.#unload() : me.#load();
+            if (me.disabled) {
+                void me.#unload(true);
+            } else if (me.isConnected) {
+                void me.#load();
+            }
+        } else if (me.hasUpdated && (changed.has('src') || changed.has('scope') || changed.has('module'))) {
+            void me.#restart();
         }
         super.willUpdate(changed);
     }
@@ -65,7 +98,7 @@ export class ServiceWorkkerElement extends GSElement {
      */
     get available() {
         const me = this;
-        return 'serviceWorker' in navigator && me.src && GSUtil.isURL(me.src);
+        return !!globalThis.navigator?.serviceWorker && !!me.src && GSUtil.isURL(me.src);
     }
 
     /**
@@ -73,6 +106,10 @@ export class ServiceWorkkerElement extends GSElement {
      */
     get registration() {
         return this.#registration;
+    }
+
+    get isLoaded() {
+        return !!this.#registration?.active;
     }
 
     /**
@@ -117,7 +154,7 @@ export class ServiceWorkkerElement extends GSElement {
      * @returns {boolean} Return false to stop the event propagation, true to continue.
      */
     onMessage(event) {
-        me.#trace('ServiceWorker message received:', event);
+        this.#trace('ServiceWorker message received:', event);
         return true;
     }
 
@@ -134,12 +171,11 @@ export class ServiceWorkkerElement extends GSElement {
 
     #initChannel() {
         const me = this;
-        if (me.#registration?.active) {
+        if (me.#registration?.active && !me.#messageChannel) {
             me.#messageChannel = new MessageChannel();
-            me.#messageChannel.port1.onmessage = me.#workerMessage;
+            me.#messageChannel.port1.onmessage = me.#onWorkerMessage;
             me.#ServiceWorkerTraceUpdate();
             me.#registration.active.postMessage('INIT_PORT', [me.#messageChannel.port2]);
-            //me.emit('activated', isActive, true, true, true);
         }
     }
 
@@ -155,75 +191,103 @@ export class ServiceWorkkerElement extends GSElement {
 
     // detect Service Worker update available and wait for it to become installed
     #monitorServiceWorkerUpdate(registration) {
-        const me = this;
-        registration.addEventListener('updatefound', () => {
-            // wait until the new Service worker is actually installed (ready to take over)
-            registration.installing?.addEventListener('statechange', () => {
-                if (registration.waiting) {
-                    // if there's an existing controller (previous Service Worker), show the prompt
-                    if (navigator.serviceWorker.controller) {
-                        me.#invokeServiceWorkerUpdateFlow(registration);
-                    } else {
-                        // otherwise it's the first install, nothing to do
-                        me.#trace('Service Worker initialized for the first time');
-                    }
-                }
-            });
-        })
+        if (this.#monitoredRegistration === registration) return;
+        this.#clearRegistrationListeners();
+        this.#monitoredRegistration = registration;
+        this.#monitoredWorker = registration.installing;
+        this.#monitoredWorker?.addEventListener('statechange', this.#onWorkerStateChange);
+        registration.addEventListener('updatefound', this.#onUpdateFound);
     }
 
-    // detect controller change and refresh the page
     #monitorController() {
-        let refreshing = false;
-        navigator.serviceWorker.addEventListener('controllerchange', () => {
-            if (!refreshing) {
-                window.location.reload();
-                refreshing = true;
-            }
-        });
+        navigator.serviceWorker.removeEventListener('controllerchange', this.#onControllerChange);
+        navigator.serviceWorker.addEventListener('controllerchange', this.#onControllerChange);
     }
 
-    async #unload() {
+    #clearRegistrationListeners() {
+        this.#monitoredRegistration?.removeEventListener('updatefound', this.#onUpdateFound);
+        this.#monitoredWorker?.removeEventListener('statechange', this.#onWorkerStateChange);
+        this.#monitoredRegistration = undefined;
+        this.#monitoredWorker = undefined;
+    }
+
+    async #unload(unregister = this.disabled) {
         const me = this;
-        GSLoader.NO_CACHE = me.#nocache;
-        if (me.disabled) {
-            await me.#registration?.unregister();
+        me.#generation++;
+        const registration = me.#registration;
+        if (globalThis.navigator?.serviceWorker) {
+            navigator.serviceWorker.removeEventListener('controllerchange', me.#onControllerChange);
         }
+        me.#clearRegistrationListeners();
+        me.#loading = undefined;
+        if (unregister) me.#registration = null;
         me.#messageChannel?.port1.close();
         me.#messageChannel?.port2.close();
         me.#messageChannel = null;
-        me.#registration = null;
+        const unloading = unregister && registration
+            ? registration.unregister().catch(error => {
+                console.error('Service Worker unregistration failed:', error);
+            })
+            : Promise.resolve();
+        me.#unloading = unloading;
+        try {
+            await unloading;
+        } finally {
+            if (me.#unloading === unloading) me.#unloading = undefined;
+        }
     }
 
-    // Load the service worker
+    async #restart() {
+        if (this.#loading) await this.#loading;
+        await this.#unload(true);
+        if (this.isConnected && !this.disabled) await this.#load();
+    }
+
     async #load() {
         const me = this;
-        if (me.disabled) return;
-        me.#nocache = GSLoader.NO_CACHE;
-        GSLoader.NO_CACHE = false;
+        if (me.#unloading) await me.#unloading;
+        if (me.disabled || !me.isConnected) return;
+        if (me.#loading) return me.#loading;
 
         if (!me.available) {
             console.warn('Service Worker is not available in this browser or src is not valid.');
+            me.emit('loaded', false, true, true, true);
             return;
-        }        
-        try {
-            const opt = me.scope ? { scope: me.scope } : {};
-            if (me.module) opt.type = 'module';
-            me.#registration = await navigator.serviceWorker.register(me.src, opt);
-            me.#trace('ServiceWorker registration started:', me.#registration);
-
-            me.#monitorController();
-            me.#invokeServiceWorkerUpdateFlow(me.#registration);
-            me.#monitorServiceWorkerUpdate(me.#registration);
-            me.#initChannel(me.#registration);
-
-            me.#trace('ServiceWorker registration successful with scope: ', me.#registration.scope);
-
-        } catch (error) {
-            me.#registration = false;
-            console.error('Service Worker registration failed:', error);
         }
-        me.emit('loaded', me.isLoaded, true, true, true);
+        const generation = ++me.#generation;
+        const loading = (async () => {
+            try {
+                const opt = me.scope ? { scope: me.scope } : {};
+                if (me.module) opt.type = 'module';
+                const registration = await navigator.serviceWorker.register(me.src, opt);
+                if (generation !== me.#generation || !me.isConnected || me.disabled) {
+                    if (me.disabled) await registration.unregister();
+                    return;
+                }
+                me.#registration = registration;
+                me.#trace('ServiceWorker registration started:', registration);
+                me.#monitorController();
+                void me.#invokeServiceWorkerUpdateFlow(registration);
+                me.#monitorServiceWorkerUpdate(registration);
+                me.#initChannel();
+                me.#trace('ServiceWorker registration successful with scope: ', registration.scope);
+            } catch (error) {
+                if (generation === me.#generation) {
+                    me.#registration = null;
+                    console.error('Service Worker registration failed:', error);
+                }
+            } finally {
+                if (generation === me.#generation) {
+                    me.emit('loaded', me.isLoaded, true, true, true);
+                }
+            }
+        })();
+        me.#loading = loading;
+        try {
+            await loading;
+        } finally {
+            if (me.#loading === loading) me.#loading = undefined;
+        }
     }
 
     #trace(message, data = '') {

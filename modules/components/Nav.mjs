@@ -24,10 +24,6 @@ export class GSNavElement extends GSGroupElement {
     this[GROUP] = 'GS-NAV-ITEM';
   }
 
-  shouldUpdate(changed) {
-    return this.data.length > 0 || this.items.length > 0;
-  }
-  
   renderWrappedClass() {
     const me = this;
     const isBefore = PlacementTypes.isBefore(me.placement);

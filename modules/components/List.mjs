@@ -20,10 +20,6 @@ export class GSListElement extends GSGroupElement {
     this[GROUP] = 'GS-LIST-ITEM';
   }
 
-  shouldUpdate(changed) {
-    return this.data.length > 0 || this.items.length > 0;
-  }
-
   renderClass() {
     const css = {
       ...super.renderClass(),

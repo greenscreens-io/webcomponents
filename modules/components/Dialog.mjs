@@ -103,6 +103,7 @@ export class GSDialogElement extends GSElement {
 
   disconnectedCallback() {
     super.disconnectedCallback();
+    if (this.#dialog?.open) this.#dialog.close();
     GSDialogElement.#updateStack();
   }
 
@@ -142,17 +143,19 @@ export class GSDialogElement extends GSElement {
     if (me.opened) {
       GSDialogElement.#STACK.push(me);
       state = 'opening';
-      if (me.standard) {
-        me.#dialog?.open();
-      } else {
-        me.#dialog?.showModal();
+      if (me.#dialog && !me.#dialog.open) {
+        if (me.standard) {
+          me.#dialog.show();
+        } else {
+          me.#dialog.showModal();
+        }
       }
       me.#focusable()?.focus();
     } else {
       state = 'closing';
       if (me.isHashed) location.hash = '';
       GSDialogElement.#STACK.pop();
-      me.#dialog?.close();
+      if (me.#dialog?.open) me.#dialog.close();
     }
     const sts = me.opened ? me.afterOpen() : me.afterClose();
     if (sts !== false) me.notify(true, false, state);
@@ -207,6 +210,7 @@ export class GSDialogElement extends GSElement {
       @click="${me.#onBtnCancel.bind(me)}" 
       icon="${ifDefined(me.iconCancel)}"
       language="${ifDefined(me.language)}"
+      .disabled="${me.disabled}"
       css="${ifDefined(me.cssCancel)}" 
       color="${ifDefined(me.colorCancel)}" 
       title="${me.cancelText}">
@@ -282,7 +286,7 @@ export class GSDialogElement extends GSElement {
                   ${me.#renderFooter()}
                   </div>
                   <slot name="extra"></slot>
-                  <div class="toast-container position-fixed"></slot></div>
+                  <div class="toast-container position-fixed"><slot name="toast"></slot></div>
                   </dialog>
                   `;
   }
@@ -381,7 +385,7 @@ export class GSDialogElement extends GSElement {
     if (form) return form;
     if (me.cancelable) return me.#btnCancel;
     if (me.closable) return me.#btnConfirm;
-    return me;
+    return me.#dialog;
   }
 
   /**
@@ -398,7 +402,6 @@ export class GSDialogElement extends GSElement {
    * @param {*} e 
    */
   #onDlgCancel(e) {
-    //this.forms?.forEach(f => f.form?.reset());
     this.forms?.forEach(f => f.reset());
   }
 
@@ -415,7 +418,7 @@ export class GSDialogElement extends GSElement {
     if (forms?.length>0) {
       const isInvalid = forms.map(form => form.isValid).filter(v => v === false).length > 0;
       if (isInvalid) return GSEvents.prevent(e);
-    }    
+    }
     this.#dialog?.requestClose();
   }
   
@@ -432,6 +435,7 @@ export class GSDialogElement extends GSElement {
     if (e.key === 'Escape') {
       GSEvents.prevent(e);
       if (me.cancelable || me.escapable) {
+        me.forms?.forEach(form => form.reset());
         me.close();
       }
     }
@@ -439,11 +443,11 @@ export class GSDialogElement extends GSElement {
 
   #onFormValidation(e) {
     const me = this;
-    me.#btnConfirm.disabled = e.detail.valid === false;
+    if (me.#btnConfirm) me.#btnConfirm.disabled = me.disabled || e.detail?.valid === false;
   }
 
   #onFormSubmit(e) {
-    debugger;
+
   }
 
   static #updateStack() {

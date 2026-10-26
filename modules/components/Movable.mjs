@@ -98,10 +98,11 @@ export class GSMovableElement extends GSElement {
   }
 
   #onMouseDown(e) {
-    this.#updateCursor(true);
+    if (this.#enabled) this.#updateCursor(true);
   }
 
   #onMouseUp(e) {
+    this.#enabled = false;
     this.#updateCursor(false);
   }
 

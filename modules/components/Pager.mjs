@@ -4,6 +4,7 @@
 
 import { classMap, createRef, html, ifDefined, map, range, ref } from '../lib.mjs';
 import { GSUtil } from '../base/GSUtil.mjs';
+import { GSEvents } from '../base/GSEvents.mjs';
 import { GSElement } from '../GSElement.mjs';
 import { size, SizeTypes } from '../properties/index.mjs';
 
@@ -44,10 +45,11 @@ export class GSPagerElement extends GSElement {
 
   renderUI() {
     const me = this;
-    const half = Math.floor((me.pages - 1) / 2);
-    const page = me.dataController?.page || 0;
-    const start = page - half < 1 ? 1 : page - half;
-    const end = page > 0 ? page + half : me.pages;
+    const count = Math.max(1, Math.floor(GSUtil.asNum(me.pages, 5)));
+    const page = me.dataController?.page || 1;
+    const half = Math.floor((count - 1) / 2);
+    const start = Math.max(1, page - half);
+    const end = start + count - 1;
 
     return html`<nav 
         dir="${ifDefined(me.direction)}"
@@ -109,6 +111,7 @@ export class GSPagerElement extends GSElement {
     return html`<li class="page-item ${active ? 'active' : ''}">
               <a class="page-link ${this.cssItem}" 
                  name="${name}" 
+                 aria-current="${ifDefined(active ? 'page' : undefined)}"
                  title="${me.translate(title)}" 
                  href="#">${me.translate(text)}</a>
             </li>`;
@@ -119,11 +122,12 @@ export class GSPagerElement extends GSElement {
     const me = this;
     const el = this.#toTarget(e, 'a');
     if (!el) return;
+    GSEvents.prevent(e, true, false, false);
 
     const ctrl = me.dataController;
     if (!ctrl) return;
 
-    const val = el.name || el.text;
+    const val = el.name || el.textContent.trim();
     me.emit(val, el);
     
     switch (val) {
@@ -145,9 +149,11 @@ export class GSPagerElement extends GSElement {
     let el = null;
     switch (e.code) {
       case 'ArrowLeft':
+        e.preventDefault();
         el = current?.previousElementSibling;
         break;
       case 'ArrowRight':
+        e.preventDefault();
         el = current?.nextElementSibling;
         break;
     }
@@ -162,8 +168,8 @@ export class GSPagerElement extends GSElement {
   }
 
   #toTarget(e, name) {
-    const el = e.target.closest(name) || e.target;
-    return el.tagName === name.toUpperCase() ? el : undefined;
+    const target = e.target?.closest?.(name) || e.target;
+    return target?.tagName === name.toUpperCase() ? target : undefined;
   }
 
   get #isInTable() {

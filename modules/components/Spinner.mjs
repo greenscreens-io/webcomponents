@@ -22,7 +22,9 @@ export class GSSpinnerElement extends GSElement {
 
     renderUI() {
         const me = this;
-        return html`<div class="${classMap(me.renderClass())}" role="status"></div>`;
+        return html`<div class="${classMap(me.renderClass())}" role="status">
+            <span class="visually-hidden"><slot>Loading...</slot></span>
+        </div>`;
     }
 
     renderClass() {

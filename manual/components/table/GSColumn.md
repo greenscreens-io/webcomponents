@@ -12,6 +12,8 @@ GSColumn WebComponent is an UI element to define [GSTable](GSTable.md) data colu
 | name               | Data field name to map                                   |
 | title              | Header title. If not set, data field name will be used.  |
 | filter             | Enable input box for column fitlering (bool)             | 
+| list               | Populate filter choices from the table's data store      |
+| fixed              | Render list filter choices as a select control           |
 | format             | Visual data formating, supported for dates and numbers   | 
 | sortable           | Is column sorting enabled. (bool)                        | 
 | width              | Optional column width (CSS)                              | 
@@ -44,14 +46,17 @@ Column with title equal to data field name
 
 Column with filterable list 
 ```html
-<gs-column name="Office" width="200px" filter="true" sortable="true">
-    <gs-item value="" default=true></gs-item>
+<gs-column name="Office" width="200px" filter="true" fixed>
+    <gs-item value=""></gs-item>
     <gs-item value="Edinburgh" title="City"></gs-item>
     <gs-item value="London"></gs-item>
     <gs-item value="Tokyo"></gs-item>
     <gs-item value="Sydney"></gs-item>
 </gs-column>
 ```
+
+Select filters include a blank option to clear the filter. To populate choices
+from the table's data store, add `list` alongside `fixed`.
 <br>
 
 &copy; Green Screens Ltd. 2016 - 2025

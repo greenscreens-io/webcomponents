@@ -9,8 +9,8 @@ GSDataHandler WebComponent is a non-UI element for loading external data through
 
 | Name               | Description                                              |
 |--------------------|----------------------------------------------------------|
-| autoload           | Data will be auto laoded on component init into DOM      |
-| autorefresh        | Data auto-refresh in seconds (must be GT 0)              |
+| autoload           | Load data when the handler initializes and when read configuration changes |
+| autorefresh        | Data auto-refresh interval in seconds; zero disables refresh |
 | action             | String format for operational mode  (see below)          |
 | mode               | Remote call operatoin mode (rest,query,quark)            |
 | limit              | Number of records to return                              | 
@@ -45,6 +45,10 @@ The whole communication is handled inside Quark Engien defined functions.
 
 Example below limits data retrieval to 10 records from URL named in "src" attribute. 
 All data responses must return JSON array or HTTP error.
+
+Autoload runs after the handler is initialized and enabled. Changing the read
+configuration triggers a new autoload read. Setting `autorefresh` to `0`
+cancels the refresh timer.
 
 ```html
 <!-- Default is QUERY mode -->

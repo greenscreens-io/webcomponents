@@ -17,6 +17,7 @@ Cutom scope to work, web server must respond with "Service-Worker-Allowed : /" h
 | trace              | Boolean, if set will enable request console logging      |
 | scope              | Script operational scope - url root                      |
 | src                | Url to the service worker script                         |
+| disabled           | Disable the component and unregister its service worker  |
 
 <br>
  
@@ -28,6 +29,10 @@ Cutom scope to work, web server must respond with "Service-Worker-Allowed : /" h
 
 <gs-service-worker src="./modules/sw.mjs" scope="/"  trace module></gs-service-worker>
 ```
+
+Disconnecting the element only releases its message channel and listeners; use
+`disabled` to unregister the service worker. The component emits a `loaded`
+event with a boolean detail after registration succeeds or fails.
  
 <br>
 

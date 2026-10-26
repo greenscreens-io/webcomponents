@@ -48,11 +48,12 @@ export class GSLinklement extends GSElement {
       <a ${ref(me.#refEl)}  
         dir="${ifDefined(me.direction)}"
         title="${ifDefined(me.translate(me.tooltip))}" 
-        href="${ifDefined(me.url)}" 
+        href="${ifDefined(me.disabled ? undefined : me.url)}"
         ping="${ifDefined(me.ping)}" 
         target="${ifDefined(me.target)}"
         class="${classMap(me.renderClass())}" 
-        ?disabled=${me.disabled} 
+        aria-disabled="${ifDefined(me.disabled ? 'true' : undefined)}"
+        tabindex="${ifDefined(me.disabled ? -1 : undefined)}"
         @mouseover="${me.#onMouseOver}"
         @mouseout="${me.#onMouseOut}"        
         @click="${me.#onClick}">
@@ -65,6 +66,7 @@ export class GSLinklement extends GSElement {
     const css = {
       ...super.renderClass(),
       'active': me.active,      
+      'disabled': me.disabled,
       [`fs-${me.size}`]: me.size > 0,
       [`text-${me.text}`]: me.text,
       [`bg-${me.color}`]: me.color
@@ -73,7 +75,7 @@ export class GSLinklement extends GSElement {
   }
 
   click() {
-    this.#refEl.value?.click();
+    if (!this.disabled) this.#refEl.value?.click();
   }
 
   focus() {
@@ -86,6 +88,10 @@ export class GSLinklement extends GSElement {
 
   #onClick(e) {
     const me = this;
+    if (me.disabled) {
+      GSEvents.prevent(e);
+      return false;
+    }
     me.iconEl?.animate();
     me.notify();
     if (me.url === '#' || GSUtil.isStringEmpty(me.url)) {
@@ -133,12 +139,13 @@ export class GSLinklement extends GSElement {
    */
   static generate(options, css, before, after) {
     const opt = options;
-    return html`<a class="${classMap(css)}"
-        tabindex="0"    
+    return html`<a class="${classMap({ ...css, disabled: opt.disabled })}"
+        tabindex="${ifDefined(opt.disabled ? -1 : 0)}"
+        aria-disabled="${ifDefined(opt.disabled ? 'true' : undefined)}"
         ${dataset(opt, true)}
         part="${ifDefined(opt.part)}"
         tooltip="${ifDefined(opt.tooltip)}"
-        href="${ifDefined(opt.url)}">        
+        href="${ifDefined(opt.disabled ? undefined : opt.url)}">
         ${before || ''}
         ${ifDefined(opt.title)}
         <slot></slot> 

@@ -185,20 +185,24 @@ export class GSFunction {
      */
     static callOnceLifo(fn, context) {
         let cnt = 0;
+        let pending = [];
         return (...args) => {
-            if (cnt < 0) return;
+            if (cnt < 0) return Promise.resolve();
             cnt++;
             const own = context || this;
             return new Promise((accept, reject) => {
+                pending.push({ accept, reject });
                 queueMicrotask(async () => {
                     if (cnt <= 0) return;
                     cnt--;
                     if (cnt !== 0) return;
+                    const calls = pending;
+                    pending = [];
                     try {
                         const o = await GSFunction.#contextualize(fn, own, args);
-                        accept(o);
+                        calls.forEach(call => call.accept(o));
                     } catch (e) {
-                        reject(e);
+                        calls.forEach(call => call.reject(e));
                     } finally {
                         cnt = -1;
                     }

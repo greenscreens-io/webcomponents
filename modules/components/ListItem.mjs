@@ -9,7 +9,8 @@ import { GSUtil } from '../base/GSUtil.mjs';
 export class GSListItemElement extends GSElement {
 
   static properties = {
-    url: {},
+    //url: { attribute: 'href' },
+    url: { },
     target: {},
     title: {},
     icon: {},
@@ -38,17 +39,18 @@ export class GSListItemElement extends GSElement {
   }
 
   firstUpdated(changed) {
-        // allow single setting at the gs-list to apply to the child
-        // GSAttributeHandler.clone(this.parentComponent, this, false);
-        const me = this;
-        if (me.isMatchHashBang) me.active = true;
+    super.firstUpdated(changed);
+    const me = this;
+    if (me.isMatchHashBang) me.active = true;
+    if (me.autofocus && !me.disabled) me.focus();
   }
 
   renderUI() {
     const me = this;
-    return html`<a  tabindex="0" ${ref(me.#refEl)}
-       href="${ifDefined(me.href)}" 
+    return html`<a tabindex="${me.disabled ? -1 : 0}" ${ref(me.#refEl)}
+       href="${ifDefined(me.disabled ? undefined : me.href)}"
        target="${ifDefined(me.target)}" 
+       aria-disabled="${me.disabled ? 'true' : 'false'}"
        tooltip="${ifDefined(me.description)}" 
        class="${classMap(me.renderClass())}">
         ${me.#renderFirst()} 
@@ -64,10 +66,9 @@ export class GSListItemElement extends GSElement {
       'list-group-item': true,
       'list-group-item-action': true,
       [`fs-${me.size}`]: me.size > 0,
-      [me.#itemCSS] : true,
       'active': me.isActive
     }
-    return me.mapCSS(me.#itemStatusCSS, css);
+    return me.mapCSS(me.#itemStatusCSS, me.mapCSS(me.#itemCSS, css));
   }
 
   get isActive() {
@@ -75,7 +76,7 @@ export class GSListItemElement extends GSElement {
   }
 
   get isSelectable() {
-    return !GSUtil.asBool(this.disabled) || GSUtil.asBool(this.parentComponent.selectable);
+    return !GSUtil.asBool(this.disabled) && GSUtil.asBool(this.parentComponent?.selectable);
   }
 
   get isMatchHashBang() {

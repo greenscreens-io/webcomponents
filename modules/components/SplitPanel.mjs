@@ -8,7 +8,7 @@
  */
 
 import { classMap, createRef, css, html, ref } from '../lib.mjs';
-import { color, placement, PlacementTypes, notEmpty, numGT0 } from '../properties/index.mjs';
+import { color, placement, PlacementTypes, notEmpty, numGE0 } from '../properties/index.mjs';
 import { GSElement } from '../GSElement.mjs';
 
 /**
@@ -37,12 +37,12 @@ export class GSSplitPanelElement extends GSElement {
         min-height : var(--gs-min-height) !important;
         max-height : var(--gs-max-height) !important;       
       }
-      div:first-of-type{!important;max-height: 100%;}`;
+     div:first-of-type{max-height: 100%;}`;
 
     static properties = {
         resize: { ...placement, hasChanged: notEmpty },
-        width: { type: Number, hasChanged: numGT0 },
-        height: { type: Number, hasChanged: numGT0 },
+        width: { type: Number, hasChanged: numGE0 },
+        height: { type: Number, hasChanged: numGE0 },
         horizontal: { type: Boolean },
         border: { type: Boolean },
         shadow: { type: Boolean },
@@ -102,11 +102,11 @@ export class GSSplitPanelElement extends GSElement {
     }
 
     #setStyle(name, val) {
-        this.#refEl.value.style.setProperty(name, val);
+        this.#refEl.value?.style.setProperty(name, val);
     }
 
     #toStyle(val) {
-        return val ? `${val}px` : 'inherited';
+        return val ? `${val}px` : 'inherit';
     }
 
     get #splitter() {

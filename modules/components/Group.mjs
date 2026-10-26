@@ -188,6 +188,10 @@ export class GSGroupElement extends GSElement {
     this[HANDLER]?.forEach(c => c.onSelected?.(el));
   }
 
+  isNavigable(el) {
+    return !el?.disabled && this.items.includes(el);
+  }
+
   get focused() {
     return this.#controller.focused;
   }

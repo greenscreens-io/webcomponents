@@ -15,12 +15,21 @@ export class GSAccordionElement extends GSElement {
     cssItem: { reflect: true, attribute: 'css-item' },
     cssHeader: { reflect: true, attribute: 'css-header' },
     cssBody: { reflect: true, attribute: 'css-body' },
-    data: { type: Array }
+    data: { type: Array },
+    opened: { type: Boolean }
   }
 
   constructor() {
     super();
-    this.data = this.settings;
+    this.data = [];
+  }
+
+  firstUpdated(changed) {
+    super.firstUpdated(changed);
+    if (!this.data.length) {
+      const settings = this.settings;
+      if (settings.length) this.data = settings;
+    }
   }
 
   renderUI() {
@@ -56,9 +65,9 @@ export class GSAccordionElement extends GSElement {
   }
 
   #renderItems() {
-    return this.data.map(o => {
+    return (this.data || []).map(o => {
       return html`<gs-accordion-item generated
-        .opened="${ifDefined(o.disabled === true)}" 
+        .opened="${o.opened === true}"
         message="${ifDefined(o.message)}" 
         template="${ifDefined(o.template)}" 
         title="${ifDefined(o.title)}"></gs-accordion-item>`;

@@ -10,6 +10,7 @@
 import { html, ifDefined } from '../lib.mjs';
 import { cssMap } from '../directives/css-map.mjs';
 import { color } from '../properties/color.mjs';
+import { GSElement } from '../GSElement.mjs';
 import { GSMenuElement } from './Menu.mjs';
 
 /**
@@ -46,7 +47,7 @@ export class GSDropdownElement extends GSMenuElement {
     #buttonClass() {
         const me = this;
         const css = {
-            ...super.renderClass(),
+            ...GSElement.prototype.renderClass.call(me),
             'btn': true,
             [`btn-${me.color}`] : me.color ? true : false,
             'dropdown-toggle': !me.simple,

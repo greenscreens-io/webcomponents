@@ -37,6 +37,7 @@ export class GSOverlayElement extends GSElement {
         super.connectedCallback();
         const me = this;
         me.attachEvent(window, 'resize', () => me.requestUpdate());
+        me.attachEvent(document, 'scroll', () => me.requestUpdate(), false, true);
     }
 
     renderUI() {
@@ -91,7 +92,7 @@ export class GSOverlayElement extends GSElement {
     get #path() {
         const me = this;
         const el = GSDOM.query(me.target);
-        if (!me.target) return '';
+        if (!me.target || !el?.getBoundingClientRect) return '';
         const pathStr = me.#createSVGPathString(el);
         const opt = { fill: me.color, opacity: me.opacity, pointerEvents: 'auto', cursor: 'auto' };
         me.dynamicStyle(me.#styleID2, opt);

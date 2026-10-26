@@ -10,16 +10,16 @@ GSNav WebComponent renders Bootstrap Nav which can be used to toggle or dismiss 
 | Name               | Description                                                  |
 |--------------------|--------------------------------------------------------------|
 | type               | Nav type (pills, tabs, underline)                            |
-| bar                | Show as horizontal (true) or vertical (false)                |
+| vertical           | Render the nav vertically                                   |
+| placement          | Vertical tab placement or horizontal item justification     |
  
 <br>
  
 ## Attributes ```<gs-item>```
 ---
 
-All attributes from [GSSelectableItem](./GSSelectableItem.md).
-
-NOTE: GS-LIST-ITEM supports [GSAttributeHandler](../base/GSAttributeHandler.md) options.
+Nav item attributes include `title`, `icon`, `href`, `target`, `active`,
+`disabled`, `autofocus`, and `tooltip`.
 
 <br>
  
@@ -42,7 +42,7 @@ Controller definition is the same as from [GSGroup](./GSGroup.md).
 For more details, check [nav.html](../../demos/nav.html)
  
 ```html
-<gs-nav type="pills" bar>
+<gs-nav type="pills" vertical>
     <gs-nav-item title="Home"></gs-nav-item>
     <gs-nav-item title="Test1"></gs-nav-item>
     <gs-nav-item title="Test2" icon="alarm ms-1"></gs-nav-item>

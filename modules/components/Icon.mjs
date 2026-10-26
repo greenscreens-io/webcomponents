@@ -37,6 +37,7 @@ export class GSIconElement extends GSElement {
   }
 
   #ref = createRef();
+  #animationTimer;
   
   constructor() {
     super();
@@ -52,8 +53,17 @@ export class GSIconElement extends GSElement {
 
   updated(changed) {
     if (changed.has('_clicked')) {
-      if (this._clicked) this.#postAnimate();
+      if (!this._clicked) {
+        clearTimeout(this.#animationTimer);
+        this.#animationTimer = undefined;
+      }
     } 
+  }
+
+  disconnectedCallback() {
+    clearTimeout(this.#animationTimer);
+    this.#animationTimer = undefined;
+    super.disconnectedCallback();
   }
 
   renderUI() {
@@ -81,13 +91,16 @@ export class GSIconElement extends GSElement {
     return css;
   }
 
-  async #postAnimate() {
+  #postAnimate() {
     const me = this;
+    clearTimeout(me.#animationTimer);
     const delay = GSUtil.asNum(me.dataset.delay, 1);
     if (delay > 0) {
-      await GSUtil.timeout(delay * 1000);
-      me._clicked = false;
-    }    
+      me.#animationTimer = setTimeout(() => {
+        me.#animationTimer = undefined;
+        if (me.isConnected) me._clicked = false;
+      }, delay * 1000);
+    }
   }
 
   #onMouseOver(e) {
@@ -102,6 +115,7 @@ export class GSIconElement extends GSElement {
     const me = this;
     me._hovered = false;
     me._clicked = true;
+    me.#postAnimate();
   }
 
   hover(sts = false) {

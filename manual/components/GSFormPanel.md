@@ -8,7 +8,7 @@ GSFormPanel WebComponent is responsible for auto-building gs-form and gs-form-gr
  
 | Name               | Description                                              |
 |--------------------|----------------------------------------------------------|
-| data               | JSON array format to auto render form elements           |
+| data               | Form configuration object; `items` contains field definitions |
 | disabled           | If set will disable all form input elements              |
 | storage            | Reference to gs-data-handler for form elements config    |
 | form-storage       | Reference to gs-data-handler for form input data         |

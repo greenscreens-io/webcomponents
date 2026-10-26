@@ -32,6 +32,10 @@ export class GSPopupElement extends GSElement {
   #caller = null;
   #panelRef = createRef();
   #styleID = GSID.id;
+  #bindings = [];
+  #onTargetPopup = e => this.#onPopup(e);
+  #closeOnResize = () => this.close();
+  #closeOnLeave = e => this.#onAuto(e);
 
   constructor() {
     super();
@@ -46,9 +50,14 @@ export class GSPopupElement extends GSElement {
   connectedCallback() {
     super.connectedCallback();
     const me = this;
-    me.#attachTarget(); // Fixed typo: #attachTaraget -> #attachTarget
-    me.attachEvent(window, 'resize', me.close.bind(me));
-    me.on('mouseleave', me.#onAuto.bind(me));
+    me.#attachTarget();
+    me.attachEvent(window, 'resize', me.#closeOnResize);
+    me.attachEvent(me, 'mouseleave', me.#closeOnLeave);
+  }
+
+  disconnectedCallback() {
+    this.#bindings = [];
+    super.disconnectedCallback();
   }
 
   firstUpdated(changedProperties) {
@@ -60,18 +69,18 @@ export class GSPopupElement extends GSElement {
     super.firstUpdated();
   }
 
-  updated() {
+  updated(changedProperties) {
     const me = this;
+    if (changedProperties.has('target') || changedProperties.has('trigger')) me.#attachTarget();
     me.#reposition();
-    if (me.autofocus) me.focus();
-    me.notify();
     me.#postPopup();
+    if (changedProperties.has('opened')) {
+      if (me.opened && me.autofocus) me.focus();
+      me.notify();
+    }
   }
 
   willUpdate(changedProperties) {
-    if (changedProperties.has('opened')) {
-      this.#postPopup();
-    }
     return super.willUpdate(changedProperties); 
   }
 
@@ -136,6 +145,7 @@ export class GSPopupElement extends GSElement {
     const me = this;
     switch (e.key) {
       case 'Escape':
+        e.preventDefault();
         me.close();
         break;
     }
@@ -199,15 +209,21 @@ export class GSPopupElement extends GSElement {
   #postPopup() {
     const me = this;
     const rule = me.dynamicStyle(me.#styleID);
-    Object.assign(rule.style, {display: me.opened ? '' : 'none'}); 
+    if (rule) Object.assign(rule.style, {display: me.opened ? '' : 'none'});
   }
 
-  #attachTarget() { // Fixed typo: #attachTaraget -> #attachTarget
+  #attachTarget() {
     const me = this;
+    me.#bindings.forEach(({ target, event }) => me.removeEvent(target, event, me.#onTargetPopup));
+    me.#bindings = [];
+    if (!me.target || typeof me.trigger !== 'string') return;
     const targets = GSDOM.queryAll(document.documentElement, me.target);
-    me.trigger.split(' ').forEach(evt => {
-      targets.forEach(target => me.attachEvent(target, evt, me.#onPopup.bind(me)));
-    });
+    const events = me.trigger.split(/\s+/).filter(Boolean);
+    events.forEach(event => targets.forEach(target => {
+      if (me.attachEvent(target, event, me.#onTargetPopup)) {
+        me.#bindings.push({ target, event });
+      }
+    }));
   }
 
   #onAuto(e) {

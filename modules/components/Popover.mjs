@@ -25,6 +25,21 @@ export class GSPopoverElement extends GSElement { // Fixed typo: GSPopoverlement
   #panelRef = createRef();
   #styleID = GSID.id;
   #arrowID = GSID.id;
+  #bindings = [];
+  #openOnHover = () => this.open();
+  #closeOnLeave = () => this.close();
+  #onTargetFocus = () => this.open();
+  #onTargetBlur = (e) => this.#closeOnFocusLeave(e);
+  #onPanelBlur = (e) => this.#closeOnFocusLeave(e);
+  #onWindowClick = (e) => {
+    if (!e.composedPath().includes(this.#ref) && !e.composedPath().includes(this.#panel)) {
+      this.close();
+    }
+  };
+  #toggleOnClick = (e) => {
+    GSEvents.prevent(e);
+    this.toggle();
+  };
 
   constructor() {
     super();
@@ -39,15 +54,21 @@ export class GSPopoverElement extends GSElement { // Fixed typo: GSPopoverlement
   }
 
   firstUpdated(changed) {
-    super.connectedCallback();
     const me = this;
-    me.#attachEvents();
-    me.#reposition();
     super.firstUpdated(changed);
+  }
+
+  disconnectedCallback() {
+    this.#bindings = [];
+    super.disconnectedCallback();
   }
   
   willUpdate(changed) {
     super.willUpdate(changed);
+  }
+
+  updated(changed) {
+    if (!this.#bindings.length || changed.has('target') || changed.has('trigger')) this.#attachEvents();
     this.#reposition();
   }
 
@@ -101,11 +122,15 @@ export class GSPopoverElement extends GSElement { // Fixed typo: GSPopoverlement
   }
 
   get isFocusTrigger() {
-    return this.trigger.includes('focus');
+    return this.#triggers.includes('focus');
   }
 
   get isHoverTrigger() {
-    return this.trigger.includes('hover');
+    return this.#triggers.includes('hover');
+  }
+
+  get #triggers() {
+    return typeof this.trigger === 'string' ? this.trigger.split(/\s+/).filter(Boolean) : [];
   }
 
   get #ref() {
@@ -138,23 +163,34 @@ export class GSPopoverElement extends GSElement { // Fixed typo: GSPopoverlement
 
     const me = this;
     const el = me.#ref;
+    me.#bindings.forEach(({ target, name, handler }) => me.removeEvent(target, name, handler));
+    me.#bindings = [];
+    const add = (target, name, handler) => {
+      if (target && me.attachEvent(target, name, handler)) {
+        me.#bindings.push({ target, name, handler });
+      }
+    };
 
     if (me.isHoverTrigger) {
-      GSEvents.attach(me, el, 'mouseover', me.open.bind(me));
-      GSEvents.attach(me, el, 'mouseleave', me.close.bind(me));
+      add(el, 'mouseover', me.#openOnHover);
+      add(el, 'mouseleave', me.#closeOnLeave);
     }
 
     if (me.isFocusTrigger) {
-      GSEvents.attach(me, el, 'click', me.#onFocus.bind(me));
-      GSEvents.attach(me, me.#panel, 'mouseleave', me.close.bind(me));
-      GSEvents.attach(me, window, 'click', me.close.bind(me));
+      add(el, 'focusin', me.#onTargetFocus);
+      add(el, 'focusout', me.#onTargetBlur);
+      add(me.#panel, 'focusout', me.#onPanelBlur);
+    }
+    if (me.#triggers.includes('click')) {
+      add(el, 'click', me.#toggleOnClick);
+      add(window, 'click', me.#onWindowClick);
     }
 
   }
 
-  #onFocus(e) {
-    GSEvents.prevent(e);
-    this.toggle();
+  #closeOnFocusLeave(e) {
+    const next = e.relatedTarget;
+    if (!next || (!this.#ref?.contains(next) && !this.#panel?.contains(next))) this.close();
   }
   
   get #arrow() { return this.#arrowRef.value; }

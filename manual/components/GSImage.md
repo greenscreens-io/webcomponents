@@ -11,7 +11,7 @@ GSImage WebComponent is a wrapper around standard HTMLImage element aiz hadditio
 |--------------------|----------------------------------------------------------|
 | width              | Image width in pixels                                    |
 | height             | Image height in pixels                                   |
-| opacity            | Transparency 0..1 in steps of 0.1                        |
+| opacity            | Transparency 0..1 in steps of 0.1 (0 hides the image)    |
 | invert             | Color invert  0..1 in steps of 0.1                       |
 | grayscale          | Grayscale strength 0..1 in steps of 0.1                  |
 | brightness         | Brigthness strength 0..1 in steps of 0.1                 |

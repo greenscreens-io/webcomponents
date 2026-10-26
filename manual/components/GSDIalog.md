@@ -14,6 +14,7 @@ This is browser native version t oBootstrap Modal. If ```<dialog>``` si not supp
 | cancelable         | Is cancel button available (bool)                            |
 | closable           | Can user close dialog                                        |
 | escapable          | use Esc to close dialog                                      |
+| standard           | Open as a non-modal native dialog instead of a modal         |
 | opened             | Is dialog visible                                            |
 | rounded            | Render roudned corners                                       |
 | shadow             | Render dialog shadow                                         |
@@ -31,6 +32,9 @@ This is browser native version t oBootstrap Modal. If ```<dialog>``` si not supp
 | css-title          | CSS classes for modal title block                            |
 | css-body           | CSS classes for modal body block                             |
 | css-footer         | CSS classes for modal footer block                           |
+
+Confirming validates contained forms before closing. Cancel and Escape reset
+contained forms before the dialog closes.
  
  <br>
  
@@ -43,6 +47,7 @@ This is browser native version t oBootstrap Modal. If ```<dialog>``` si not supp
 | title              | Place HTML content into title position                   |
 | body               | Place HTML content into body position                    |
 | extra              | Place extra HTML content for out of UI elements          |
+| toast              | Place toast notifications inside the dialog              |
 
 <br>
 

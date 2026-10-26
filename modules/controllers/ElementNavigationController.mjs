@@ -130,7 +130,10 @@ export class ElementNavigationController {
     const me = this;
     let el = me.#focused?.previousElementSibling;
     while (el?.disabled) el = el.previousElementSibling;
-    if (me.circular && !el) el = me.last;
+    if (me.circular && !el) {
+      el = me.last;
+      while (el?.disabled) el = el.previousElementSibling;
+    }
     el?.focus();
   }
 
@@ -138,7 +141,10 @@ export class ElementNavigationController {
     const me = this;
     let el = me.#focused?.nextElementSibling;
     while (el?.disabled) el = el.nextElementSibling;
-    if (me.circular && !el) el = me.first;
+    if (me.circular && !el) {
+      el = me.first;
+      while (el?.disabled) el = el.nextElementSibling;
+    }
     el?.focus();
   }
 
@@ -197,7 +203,8 @@ export class ElementNavigationController {
    * @returns 
    */
   #isNavigable(el) {
-    return el?.tagName === this.#tagName || el?.isNav || false;
+    return this.#host?.isNavigable?.(el) ??
+      (!el?.disabled && (el?.tagName === this.#tagName || el?.isNav === true));
   }
 
 
@@ -221,6 +228,7 @@ export class ElementNavigationController {
   #select(el) {
     const me = this;
     const active = me.selected;
+    if (active === el && !me.multiple) return;
     if (active && !me.multiple) {
       active.active = false;
       me.#toggle(active);
@@ -257,9 +265,8 @@ export class ElementNavigationController {
     const el = e.composedPath()
     .filter(el => el instanceof GSElement)
     .filter(el => el.parentComponent === me.#host).pop();
-    if(me.#isNavigable(e.target)) {
+    if(me.#isNavigable(el)) {
       if (e.ctrlKey) me.reset();
-      me.#onDeselected(me.selected);
       me.#select(el);
     }
   }

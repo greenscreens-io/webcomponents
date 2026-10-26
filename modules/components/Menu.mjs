@@ -58,6 +58,14 @@ export class GSMenuElement extends GSElement {
         me.#controller = new GroupController(this);
     }
 
+    firstUpdated(changed) {
+        super.firstUpdated(changed);
+        if (!this.data?.length) {
+            const items = this.#proxify(this);
+            if (items.length) this.data = items;
+        }
+    }
+
     onBusEvent(e) {
        if (e.detail.owner != this) {
             this.opened = false;
@@ -168,7 +176,7 @@ export class GSMenuElement extends GSElement {
 
     #items(root) {
         const me = this;
-        return root.map(el => me.#item(el));
+        return (root || []).map(el => me.#item(el));
     }
 
     #item(el) {
@@ -265,7 +273,7 @@ export class GSMenuElement extends GSElement {
     }
 
     #toSubmenu(e) {
-        const menuItem = e.target.closest('li');
+        const menuItem = e.target?.closest?.('li');
         return menuItem?.querySelector('gs-menu');
     }
 

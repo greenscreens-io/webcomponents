@@ -2,7 +2,7 @@
  * Copyright (C) 2015, 2026; Green Screens Ltd.
  */
 
-import { unsafeHTML, classMap, html, ifDefined, css } from '../lib.mjs';
+import { classMap, html, ifDefined, css, unsafeHTML } from '../lib.mjs';
 import { GSElement } from '../GSElement.mjs';
 import { GSUtil } from '../base/GSUtil.mjs';
 import { GSDate } from '../base/GSDate.mjs';
@@ -96,6 +96,16 @@ export class GSCalendarElement extends GSElement {
     });
   }
 
+  set date(value) {
+    if (value === '' || value === undefined || value === null) return;
+    const date = new GSDate(value);
+    if (Number.isNaN(date.getTime())) {
+      throw new TypeError('Calendar date must be a valid date value');
+    }
+    this.#date.setTime(date.getTime());
+    this.#update();
+  }
+
   previousMonth() {
     const me = this;
     if (me.month == 0) {
@@ -168,7 +178,7 @@ export class GSCalendarElement extends GSElement {
               </div>
           </div>
           <div class="row weeks ${me.cssWeeks}">${week}</div>
-          ${unsafeHTML(me.#daysHTML())}
+          ${me.#daysHTML()}
       </div>`;
   }
 
@@ -209,21 +219,21 @@ export class GSCalendarElement extends GSElement {
     const today = new GSDate();
     today.language = me.language;
     const list = me.#date.build(me.language);
-    const result = list
-      .map(v => {
-        const c1 = me.#isToday(v, today) ? me.cssToday : '';
-        const c2 = me.#isToday(v, me.#selected) ? me.cssSelected : '';
-
-        const d = v ? `<a tabindex="0" href="#" class="btn shadow-none ${c2} ${c1} day" data-day="${v}">${v}</a>` : ''
-        return `<div class="col p-0">${d}</div>`;
-      })
-      .map((v, i) => {
-        if (i === 0) return `<div class="row days">${v}`;
-        const isBreak = i % 7 == 0;
-        return isBreak ? `</div><div class="row days">${v}` : v;
-      });
-    result.push('</div>');
-    return result.join('');
+    const cells = list.map(v => {
+      if (!v) return html`<div class="col p-0"></div>`;
+      const todayClass = me.#isToday(v, today) ? me.cssToday : '';
+      const selected = me.#isToday(v, me.#selected);
+      const selectedClass = selected ? me.cssSelected : '';
+      return html`<div class="col p-0">
+        <a tabindex="0" href="#" aria-selected="${selected}"
+          class="btn shadow-none ${selectedClass} ${todayClass} day" data-day="${v}">${v}</a>
+      </div>`;
+    });
+    const rows = [];
+    for (let i = 0; i < cells.length; i += 7) {
+      rows.push(html`<div class="row days ${me.cssDays}">${cells.slice(i, i + 7)}</div>`);
+    }
+    return rows;
   }
 
   #monthsHTML() {
@@ -244,17 +254,17 @@ export class GSCalendarElement extends GSElement {
 
     if (me.range > 0) {
       const year = new GSDate().year;
-      minYear = year - me.range;
-      maxYear = year + me.range;
-      me.#optionsHTML(options, minYear, maxYear);
+      minYear = Math.max(year - me.range, minYear);
+      maxYear = Math.min(year + me.range, maxYear);
     }
+    me.#optionsHTML(options, minYear, maxYear);
 
     if (!me.editable) {
       return html`<select @change="${me.#onYear}" name="year" class="year ${me.cssYear}" data-gs-min="${minYear}" data-gs-max="${maxYear}">${options}</select>`;
     }
 
     const isList = me.editable && me.range && options.length > 0;
-    const listID = isList ? GSID.next : null;
+    const listID = isList ? GSID.next() : null;
     const list = isList ? html`<datalist id="${listID}">${options}</datalist>` : '';
 
     return html`<input name="year" 

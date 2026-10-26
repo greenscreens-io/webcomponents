@@ -5,11 +5,12 @@
 import { GSID } from '../base/GSID.mjs';
 import { GSRouter } from '../base/GSRouter.mjs';
 import { GSElement } from '../GSElement.mjs';
-import { html } from '../lib1.mjs';
+import { html } from '../lib.mjs';
 
 export class GSRouterElement extends GSElement {
 
-  #router = null;
+  #router;
+  #activeUrl;
 
   static properties = {
     url: {},
@@ -19,30 +20,46 @@ export class GSRouterElement extends GSElement {
 
   constructor() {
     super();
-    const me = this;
-    me.id = GSID.next();
-    me.logging = false;
-    me.#router = new GSRouter(me);
-    me.#router.log = false;
+    this.id ||= GSID.next();
+    this.logging = false;
   }
 
   renderUI() {
-    //return super.renderUI();
-    return html`<slot><slot/>`;
+    return html`<slot></slot>`;
+  }
+
+  connectedCallback() {
+    super.connectedCallback();
+    this.#router ??= new GSRouter(this);
+    this.#router.log = this.logging;
+    if (this.disabled) {
+      this.#router.disable();
+    } else {
+      this.#initialize();
+    }
   }
 
   updated(changed) {
-    const me = this;
-    me.#router.log = me.logging;
-    if (changed.has('url')) {
-      me.#router.initialize(me.url);
+    this.#router.log = this.logging;
+    if (changed.has('disabled')) {
+      if (this.disabled) {
+        this.#router.disable();
+      } else {
+        this.#initialize();
+      }
+    } else if (changed.has('url') && this.url !== this.#activeUrl && !this.disabled) {
+      this.#initialize();
     }
   }
 
   disconnectedCallback() {
-    const me = this;
-    me.#router?.disable();
-    me.#router = null;
+    this.#router?.disable();
+    super.disconnectedCallback();
+  }
+
+  #initialize() {
+    this.#activeUrl = this.url;
+    void this.#router.initialize(this.#activeUrl);
   }
 
   static {

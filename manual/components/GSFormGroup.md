@@ -35,6 +35,9 @@ Except all standard ```<input>``` [tag attributes](https://developer.mozilla.org
 | values             | List of values for radio ckeck button                    |
 | invalid-message    | Field validity message if input is invalid               |
 
+For a password field, set `type="password"`. The `value` property may be set
+before the internal input is rendered; its initial value is retained.
+
 **NOTE**: All HTML input element attributes are allowed.
 
 **NOTE**: Attribute "reverse" is usefull when default value is max and need to decrement to min value.

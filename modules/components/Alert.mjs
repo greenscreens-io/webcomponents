@@ -21,6 +21,7 @@ export class GSAlertElement extends GSElement {
     #ref;
     #pause = false;
     #interval = 0;
+    #hideTimer;
     #last = 0;
     #data;
 
@@ -28,11 +29,12 @@ export class GSAlertElement extends GSElement {
         super();
         this.delay = 1;
         this.#ref = createRef();
-        this.#data = this.#proxify(this);
+        this.#data = [];
     }
 
     disconnectedCallback() {
         clearInterval(this.#interval);
+        clearTimeout(this.#hideTimer);
         super.disconnectedCallback();
     }
 
@@ -50,13 +52,13 @@ export class GSAlertElement extends GSElement {
     }
 
     firstUpdated(changed) {
+        this.#data = this.#proxify(this);
         this.#handleBillboard();
         super.firstUpdated(changed);
     }
 
     updated(changed) {
-        if (!changed.has('opened')) return;
-        this.#handleBillboard();
+        if (changed.has('closed') || changed.has('delay')) this.#handleBillboard();
     }
 
     renderClass() {
@@ -86,7 +88,12 @@ export class GSAlertElement extends GSElement {
     notify(val = false) {
         const me = this;
         me.closed = val;
-        if (me.closed) setTimeout(() => { me.#ref.value.classList.toggle('d-none', true) }, 250);
+        clearTimeout(me.#hideTimer);
+        if (me.closed) {
+            me.#hideTimer = setTimeout(() => me.#ref.value?.classList.toggle('d-none', true), 250);
+        } else {
+            me.#ref.value?.classList.remove('d-none');
+        }
         super.notify();
     }
 
@@ -115,9 +122,10 @@ export class GSAlertElement extends GSElement {
 
     #handleBillboard() {
         const me = this;
+        clearInterval(me.#interval);
+        me.#interval = 0;
         if (me.closed) {
-            clearInterval(me.#interval);
-            me.#interval = 0;
+            return;
         } else {
             me.#billboard();
         }        
@@ -126,6 +134,7 @@ export class GSAlertElement extends GSElement {
     #billboard() {
         const me = this;
         if (!me.isBillboard) return;
+        if (!(me.delay > 0)) return;
         const items = me.#data;
         if (me.message) {
             me.#last = -1;

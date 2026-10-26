@@ -37,6 +37,7 @@ export class GSSplitterElement extends GSElement {
     #styleTGT = GSID.id;
     #elRef = createRef();
     #mouseController;
+    #connectedBefore = false;
 
     constructor() {
         super();
@@ -44,8 +45,16 @@ export class GSSplitterElement extends GSElement {
         me.size = 8;
         me.resize = 'start';
         me.dynamicStyle(me.#styleID);
-        me.#load();
         me.#mouseController = new ElementMoveController(me);
+    }
+
+    connectedCallback() {
+        super.connectedCallback();
+        if (this.#connectedBefore) {
+            this.#mouseController = new ElementMoveController(this);
+        }
+        this.#connectedBefore = true;
+        this.#load();
     }
 
     disconnectedCallback() {
@@ -55,10 +64,14 @@ export class GSSplitterElement extends GSElement {
 
     firstUpdated(changed) {
         super.firstUpdated(changed);
-        const me = this;
-        me.#mouseController.attach(me.#splitter);
+        this.#attachMouseController();
         //const shadow = GSDOM.root(me.target) instanceof ShadowRoot;
         //me.dynamicStyle(me.#styleTGT, {}, !shadow);
+    }
+
+    updated(changedProperties) {
+        this.#cssUpdate();
+        this.#attachMouseController();
     }
 
     renderUI() {
@@ -81,9 +94,10 @@ export class GSSplitterElement extends GSElement {
         return css;
     }
 
-    updated(changedProperties) {
-        const me = this;
-        me.#cssUpdate();
+    #attachMouseController() {
+        if (this.isConnected && this.#splitter) {
+            this.#mouseController.attach(this.#splitter);
+        }
     }
 
     /**
@@ -174,7 +188,7 @@ export class GSSplitterElement extends GSElement {
     }
 
     get #styleDynamic() {
-        return this.target.style;
+        return this.target?.style;
     }
 
     /**
@@ -191,20 +205,29 @@ export class GSSplitterElement extends GSElement {
     #load() {
         const me = this;
         if (!me.id) return;
-        const key = GSID.hashCode(location.origin + location.pathname);
-        let val = localStorage.getItem(`gs-splitter-${key}-${me.id}`);
-        val = GSUtil.asNum(val);
-        me.#update(val);
+        try {
+            const key = GSID.hashCode(location.origin + location.pathname);
+            const val = GSUtil.asNum(localStorage.getItem(`gs-splitter-${key}-${me.id}`));
+            me.#update(val);
+        } catch (error) {
+            console.warn('Unable to restore splitter size:', error);
+        }
     }
 
     #save() {
         const me = this;
         if (!me.id) return;
-        const css = GSCSSMap.getComputedStyledMap(me.target);
+        const target = me.target;
+        if (!target) return;
+        const css = GSCSSMap.getComputedStyledMap(target);
         const val = me.isVertical ? css.get('width') : css.get('height');
         if (!val) return;
-        const key = GSID.hashCode(location.origin + location.pathname);
-        localStorage.setItem(`gs-splitter-${key}-${me.id}`, val);
+        try {
+            const key = GSID.hashCode(location.origin + location.pathname);
+            localStorage.setItem(`gs-splitter-${key}-${me.id}`, val);
+        } catch (error) {
+            console.warn('Unable to save splitter size:', error);
+        }
     }
 
     #onDoubleClick(e) {
@@ -282,6 +305,7 @@ export class GSSplitterElement extends GSElement {
         let dx = (pos - me.#cursor) * dir;
         dx = dx + target.clientWidth;
         dx = dx < 0 ? 0 : dx;
+        if (!me.#styleDynamic) return;
         me.#styleDynamic.width = dx + "px";
         //me.dynamicStyle(me.#styleTGT, { width: dx + "px" }, true);
         me.#cursor = pos;
@@ -298,6 +322,7 @@ export class GSSplitterElement extends GSElement {
         let dx = (pos - me.#cursor) * dir;
         dx = dx + target.clientHeight;
         dx = dx < 0 ? 0 : dx;
+        if (!me.#styleDynamic) return;
         me.#styleDynamic.height = dx + "px";
         //me.dynamicStyle(me.#styleTGT, { height: dx + "px" }, true);
         me.#cursor = pos;
@@ -305,6 +330,7 @@ export class GSSplitterElement extends GSElement {
 
     #update(val = 0) {
         if (val <= 0) return
+        if (!me.#styleDynamic) return;
         const me = this;
         me.#cursor = val;
         const key = me.isVertical ? 'width' : 'height';
@@ -333,4 +359,3 @@ export class GSSplitterElement extends GSElement {
         this.define('gs-splitter');
     }
 }
-

@@ -128,7 +128,7 @@ export class GSCardElement extends GSElement {
     const me = this;
     const css = me.isHorizontal ? 'img-fluid' : 'card-img';
     me.dynamicStyle(me.#styleID, me.imageStyle);
-    return html`<img src="${me.image}" class="rounded-${me.placement} ${css} ${me.cssImage} ${me.#styleID}" alt="...">`;
+    return html`<img src="${me.image}" class="rounded-${me.placement} ${css} ${me.cssImage} ${me.#styleID}" alt="${me.title || ''}">`;
   }
 
   get #images() {

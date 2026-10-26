@@ -49,6 +49,9 @@ export class GSProgressElement extends GSElement {
         <div class="${classMap(me.renderClass())}" 
              
              role="progressbar"
+             aria-valuemin="${me.min}"
+             aria-valuemax="${me.max}"
+             aria-valuenow="${me.value}"
              tabindex="0">
              ${literalTemplate(me.label, obj)}
         </div>
@@ -59,10 +62,8 @@ export class GSProgressElement extends GSElement {
   willUpdate(changed) {
     super.willUpdate(changed);
     const me = this;
-    if (changed.has('value')) {
-      let val = me.step + changed.get('value');
-      val = me.#update(val, val);
-      changed.set('value', val);
+    if (changed.has('value') || changed.has('min') || changed.has('max')) {
+      me.value = me.#update(me.value, me.min);
     }
   }
 
@@ -88,7 +89,9 @@ export class GSProgressElement extends GSElement {
 
   get percentage() {
     const me = this;
-    return Math.trunc((me.value / me.max) * 100);
+    const range = me.max - me.min;
+    if (range <= 0) return me.value >= me.max ? 100 : 0;
+    return Math.trunc(((me.value - me.min) / range) * 100);
   }
 
   #updateStyle() {
@@ -98,7 +101,7 @@ export class GSProgressElement extends GSElement {
   }
 
   #update(val, old = 0) {
-    val = GSUtil.asNum(val, GSUtil.asNum(old));
+    val = GSUtil.asNum(val, GSUtil.asNum(old, this.min));
     const me = this;
     if (val > me.max) val = me.max;
     if (val < me.min) val = me.min;
@@ -110,9 +113,11 @@ export class GSProgressElement extends GSElement {
     switch (e.code) {
       case 'ArrowUp' :
       case 'ArrowRight' :
+          e.preventDefault();
           return me.increase();
       case 'ArrowLeft' :
       case 'ArrowDown' :
+         e.preventDefault();
          return me.decrease();
     }
   }

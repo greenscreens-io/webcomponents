@@ -22,7 +22,7 @@ import { GSAttr } from '../base/GSAttr.mjs';
  */
 export default class GSTagElement extends GSElement {
 
-    static #KEYS = ['Enter', 'NumpadEnter', 'Comma', 'Space'];
+    static #KEYS = ['Enter', ','];
 
     static styles = css`
         .tag-input:focus-visible {
@@ -60,9 +60,18 @@ export default class GSTagElement extends GSElement {
     constructor() {
         super();
         this.name = '';
-        this.data = this.#items;
+        this.data = [];
+        this.values = [];
         this.closeColor = 'light';
         this.color = 'primary';
+    }
+
+    firstUpdated(changedProperties) {
+        super.firstUpdated(changedProperties);
+        if (!this.data.length) {
+            const items = this.#items;
+            if (items.length) this.data = items;
+        }
     }
 
     renderUI() {
@@ -75,7 +84,6 @@ export default class GSTagElement extends GSElement {
             ${tags}
             <input type="text" 
             @keydown="${me.#onKeyDown.bind(me)}"
-            @input="${me.#onInput.bind(me)}"
             ${ref(me.#inputRef)}
             name="${me.name}" 
             list="${me.name}_list"
@@ -103,17 +111,13 @@ export default class GSTagElement extends GSElement {
         return me.placeholder ? me.placeholder : alt;
     }
 
-    #onInput(e) {
-        if (!e.inputType) this.#updateTag(e);
-    }
-
     #onKeyDown(e) {
-        if (GSTagElement.#KEYS.includes(e.code)) this.#updateTag(e);
+        if (GSTagElement.#KEYS.includes(e.key) || e.code === 'Comma') this.#updateTag(e);
     }
 
     #onClick(e) {
-        const isClose = e.srcElement === e.target && e.target instanceof HTMLButtonElement;
-        if (isClose) this.#removeTag(e.target.parentElement);
+        const button = e.target?.closest?.('button.btn-close');
+        if (button) this.#removeTag(button.parentElement);
     }
 
     #updateTag(e) {
@@ -124,7 +128,7 @@ export default class GSTagElement extends GSElement {
 
     get #isMax() {
         const me = this;
-        return me.max > 0 && me.data.length >= me.max;
+        return me.max > 0 && me.values.length >= me.max;
     }
 
     get #options() {
@@ -139,22 +143,27 @@ export default class GSTagElement extends GSElement {
     #addTag(optEl) {
         const me = this;
         const fld = me.#input;
-        if (me.#isMax || (!optEl && me.appendable == false)) {
+        const value = fld.value.trim();
+        if (!value) {
             fld.value = '';
             return;
         }
-        if (!me.values.includes(fld.value)) {
-            me.values.push(fld.value);
+        if (me.#isMax) return;
+        if (!optEl && !me.appendable) {
             fld.value = '';
-            me.requestUpdate();
+            return;
         }
+        if (!me.values.some(item => item.toLowerCase() === value.toLowerCase())) {
+            me.values = [...me.values, value];
+        }
+        fld.value = '';
     }
 
     #removeTag(tagEl) {
         if (!tagEl) return;
         const me = this;
         const value = tagEl.dataset.value;
-        me.values = me.values.filter(v => v != value);
+        me.values = me.values.filter(v => v !== value);
     }
 
     #renderTags() {
@@ -165,8 +174,7 @@ export default class GSTagElement extends GSElement {
     #renderTag(val = '') {
         if (!val) return '';
         const me = this;
-        const size = me.size > 0 ? `fs-${me.size}` : '';
-        return html`<div class="${classMap(me.#tagClass)}" data-value="${val}">${val}<button type="button" class="${classMap(me.#btnClass)}"></button></div>`;
+        return html`<div class="${classMap(me.#tagClass)}" data-value="${val}">${val}<button type="button" class="${classMap(me.#btnClass)}" aria-label="Remove ${val}"></button></div>`;
     }
 
     get #tagClass() {

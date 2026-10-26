@@ -39,7 +39,7 @@ export class GSEmailElement extends GSElement {
   }
 
   renderUI() {
-    return html`${unsafeHTML(this.#style)}<a @click="${this.#onClick}" class="e-mail" data-user="${this.#user}" data-website="${this.#domain}"  href="mailto://"></a>`;
+    return html`${unsafeHTML(this.#style)}<a @click="${this.#onClick}" class="e-mail" data-user="${this.#user}" data-website="${this.#domain}"  href="mailto:"></a>`;
   }
 
   get #style() {
@@ -47,7 +47,7 @@ export class GSEmailElement extends GSElement {
   }
 
   get #url() {
-    return `mailto://${GSUtil.reverse(this.dataset.user)}@${GSUtil.reverse(this.dataset.domain)}`;
+    return `mailto:${GSUtil.reverse(this.dataset.user)}@${GSUtil.reverse(this.dataset.domain)}`;
   }
 
   #updateUser() {

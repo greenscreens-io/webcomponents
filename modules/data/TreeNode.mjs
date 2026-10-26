@@ -267,7 +267,7 @@ export class TreeNode extends Tree {
 
     remove() {
         const node = super.remove();
-        if (node) this.root.#controllers?.forEach((c) => c.onInsert?.(node));
+        if (node) this.root.#controllers?.forEach((c) => c.onRemove?.(node));
         return node;
     }
 

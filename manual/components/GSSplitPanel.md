@@ -14,10 +14,10 @@ Component contains two side-by-side panels with resizer.
 | color              | Standard Bootstrap color names (primary, secondaray ...)      |
 | horizontal         | If set, horizontal splitting is used.                         | 
 | fixed              | If set, splitter is not available.                            | 
-| width              | Component optional height in pixels.                          | 
-| height             | Component optional width in pixels.                           | 
-| min                | Minimum panel width when resizing.                            | 
-| max                | Maximum panel width when resizing.                            | 
+| width              | Optional component width in pixels.                           |
+| height             | Optional component height in pixels.                          |
+| min                | Minimum width/height for the panel controlled by the splitter. |
+| max                | Maximum width/height for the panel controlled by the splitter. |
 
 <br>
 

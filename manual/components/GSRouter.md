@@ -11,6 +11,8 @@ Component will load JSON routing definition with hashbang mapping to data-gs-* a
 | Name               | Description                                              |
 |--------------------|----------------------------------------------------------|
 | url                | Virtual URL address for JSON definition                  | 
+| disabled           | Disable hash-based route handling                        |
+| logging            | Log missing routes                                       |
 
 <br>
 

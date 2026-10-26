@@ -7,15 +7,19 @@ import { GSElement } from '../GSElement.mjs';
 export class GSTextElement extends GSElement {
 
   #text = "";
+  #captured = false;
 
   constructor() {
     super();
     this.flat = true;
-    this.#text = this.innerText;
-    this.innerText = "";
   }
 
   renderUI() {
+    if (!this.#captured) {
+      this.#text = this.textContent;
+      this.textContent = "";
+      this.#captured = true;
+    }
     return this.translate(this.#text);
   }
 

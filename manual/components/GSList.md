@@ -9,15 +9,16 @@ GSList WebComponent renders a Bootstrap List which can be used to toggle or dism
  
 | Name               | Description                                                  |
 |--------------------|--------------------------------------------------------------|
-| multi              | If set, allow multiple items selected                        |
-| selectable         | Show clicked / selected item                                 |
+| multiple           | If set, allow multiple items selected                        |
+| selectable         | Enable selection and active styling for list items           |
  
 <br>
  
 ## Attributes ```<gs-list-item>```
 ---
 
-All attributes from [GSSelectableItem](./GSSelectableItem.md).
+List item attributes include `title`, `icon`, `href`, `target`, `active`,
+`disabled`, `autofocus`, `description`, and `size`.
 
 NOTE: GS-LIST-ITEM supports [GSAttributeHandler](../base/GSAttributeHandler.md) options.
 
