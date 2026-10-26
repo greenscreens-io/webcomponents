@@ -49,7 +49,7 @@ export class GSExtButtonElement extends HTMLButtonElement {
     connectedCallback() {
         const me = this;
         if (me.isSubmit || me.isReset || me.isManaged) {
-            me.#buttonController = new ButtonController(me);
+            me.#buttonController ??= new ButtonController(me);
         }        
         me.#controllerHandler?.connectedCallback();        
         me.#preupdate();
@@ -59,6 +59,8 @@ export class GSExtButtonElement extends HTMLButtonElement {
         const me = this;
         GSEvents.detachListeners(me);
         me.#controllerHandler?.disconnectedCallback();
+        me.#buttonController?.hostDisconnected();
+        me.#buttonController = undefined;
         me.#formEl = undefined;
     }
 
@@ -149,4 +151,3 @@ export class GSExtButtonElement extends HTMLButtonElement {
         return this[HANDLER];
     }    
 }
-

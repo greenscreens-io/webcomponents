@@ -9,6 +9,7 @@
 
 import { GSElement } from '../../GSElement.mjs';
 import { GSDate } from '../../base/GSDate.mjs';
+import { GSUtil } from '../../base/GSUtil.mjs';
 
 /**
  * Render Date value with international language support
@@ -62,12 +63,21 @@ export class GSDateFormat extends GSElement {
         const me = this;
         const val = me.date;
         if (me.format) return val.format(me.format);
-        return new Intl.DateTimeFormat(me.language, me.dataset).format(val);
+        const options = { ...me.dataset };
+        if (Object.hasOwn(options, 'hour12')) options.hour12 = GSUtil.asBool(options.hour12);
+        return new Intl.DateTimeFormat(me.language, options).format(val);
     }
 
     get date() {
         const me = this;
-        const o = Date.parse(me.value || new Date());
+        const value = me.value;
+        const o = value == null || value === ''
+            ? Date.now()
+            : value instanceof Date
+                ? value.getTime()
+                : typeof value === 'number'
+                    ? value
+                    : Date.parse(value);
         const date = new GSDate(o);
         date.language = me.language;
         return date;

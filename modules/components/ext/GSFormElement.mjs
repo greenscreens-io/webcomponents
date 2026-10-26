@@ -53,7 +53,6 @@ export class GSExtFormElement extends HTMLFormElement {
     disconnectedCallback() {
         const me = this;
         me.#controllerHandler?.disconnectedCallback?.();
-        me[HANDLER] = undefined;
         GSEvents.detachListeners(me);
     }
 
@@ -320,4 +319,3 @@ export class GSExtFormElement extends HTMLFormElement {
         return this[HANDLER];
     }
 }
-

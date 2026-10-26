@@ -45,8 +45,14 @@ export class GSExtInputElement extends HTMLInputElement {
 
   connectedCallback() {
     const me = this;
+    const reconnecting = me.#hasUpdated;
     me.#controllerHandler?.connectedCallback();
     me.#preupdate();
+    if (reconnecting) {
+      me.#updateMask();
+      me.#updateMultipattern(me.getAttribute('multipattern'));
+      me.#updateList();
+    }
     me.dataset.value = me.value;
     me.on('change', e => me.dataset.value = me.value);
   }

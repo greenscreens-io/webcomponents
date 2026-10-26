@@ -33,6 +33,7 @@ export class ControllerHandler {
 
   #formController = undefined;
   #dataController = undefined;
+  #hasConnected = false;
 
   constructor(host) {
     this.#host = host;
@@ -42,9 +43,12 @@ export class ControllerHandler {
     const me = this;
     const host = me.#host;
     host[HANDLER] = this;
+    const reconnecting = me.#hasConnected;
 
     if (me.isButton) {
-      return me.#invoke((c) => c.hostConnected?.());
+      me.#invoke((c) => c.hostConnected?.());
+      me.#hasConnected = true;
+      return;
     }
     
     if (me.isForm) {
@@ -66,6 +70,8 @@ export class ControllerHandler {
     }
 
     me.#invoke((c) => c.hostConnected?.());
+    if (reconnecting) me.#initControllers();
+    me.#hasConnected = true;
   }
 
   disconnectedCallback() {
@@ -73,12 +79,7 @@ export class ControllerHandler {
     GSEvents.detachListeners(me.#host);
     me.#invoke((c) => c.hostDisconnected?.());
 
-    me.#controllers?.clear();
-    me.#host[HANDLER] = undefined;
-
-    me.#host = undefined;
-    me.#handlers = undefined;
-    me.#controllers = undefined;
+    me.#prepare();
     me.#comboController = undefined;
     me.#formController = undefined;
     me.#dataController = undefined;
@@ -87,6 +88,7 @@ export class ControllerHandler {
     me.#copyselect = undefined;
     me.#typeController = undefined;
     me.#validityController = undefined;
+    me.#host[HANDLER] = this;
   }
 
   hostUpdated(name) {

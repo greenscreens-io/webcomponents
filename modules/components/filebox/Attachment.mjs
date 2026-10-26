@@ -147,18 +147,15 @@ export class GSAttachment {
      * @returns {Promise<GSAttachment[]>}
      */
     static async #traverse(path, entries) {
-        const results = [];
-        for (const entry of GSAttachment.#visible(entries)) {
+        const results = await Promise.all(GSAttachment.#visible(entries).map(async entry => {
             if (entry.isDirectory) {
-                const entries = await GSAttachment.#getEntries(entry);
-                const list = await GSAttachment.#traverse(entry.fullPath, entries);
-                results.push(...(list));
-            } else {
-                const file = await GSAttachment.#getFile(entry);
-                results.push(new GSAttachment(file, path));
+                const children = await GSAttachment.#getEntries(entry);
+                return GSAttachment.#traverse(entry.fullPath, children);
             }
-        }
-        return results;
+            const file = await GSAttachment.#getFile(entry);
+            return [new GSAttachment(file, path)];
+        }));
+        return results.flat();
     }
 
     /**
@@ -197,19 +194,21 @@ export class GSAttachment {
         input.accept= mime;
         input.style.display='none';
         document.body.appendChild(input);
-        input.click();
-
-        await GSEvents.wait(input, 'change', 0, false);
 
         try {
-            if (input.files.length === 0) return null;
+            const file = await new Promise(resolve => {
+                input.addEventListener('change', () => resolve(input.files?.item(0) || null), { once: true });
+                input.addEventListener('cancel', () => resolve(null), { once: true });
+                input.click();
+            });
+            if (!file) return null;
 
-            const file = input.files.item(0);
             const isText = forceBinary ? false : GSAttachment.isTextType(file.type);
 
             const reader = new FileReader();
+            const loaded = GSEvents.wait(reader, 'loadend', 0, false);
             isText ? reader.readAsText(file) : reader.readAsArrayBuffer(file)
-            await GSEvents.wait(reader, 'loadend', 0, false);
+            await loaded;
 
             if (reader.readyState === FileReader.DONE) {
                 return isText ? reader.result : new Uint8Array(reader.result);

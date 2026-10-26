@@ -110,7 +110,11 @@ export class GSExtDataListElement extends HTMLDataListElement {
     }    
 
     get asJSON() {
-        return this.query('option').forEach(el => GSDOM.fromElement2Object(el, {}));
+        return this.queryAll('option').map(el => ({
+            ...Object.fromEntries(Array.from(el.attributes, attr => [attr.name, attr.value])),
+            text: el.textContent,
+            selected: el.selected
+        }));
     }
 
     set asJSON(data) {
@@ -167,39 +171,27 @@ export class GSExtDataListElement extends HTMLDataListElement {
         const me = this;
 
         queueMicrotask(() => {
-
-            const list = [];
-            data.forEach(o => {
-                list.push(me.#objToHTML(o));
-            });
-
-            GSDOM.setHTML(me, list.join('\n'));
+            me.replaceChildren(...data.map(o => me.#objToElement(o)));
         });
         return true;
     }
 
-    #objToHTML(o) {
-        const seg = ['<option'];
-
+    #objToElement(o) {
         if (GSUtil.isString(o)) o = { value: o };
-
+        const option = document.createElement('option');
         Object.entries(o).forEach(it => {
             const key = it[0];
             const val = it[1];
             if ('text' === key) return;
-            if ('selected' === key) return seg.push(key);
-            seg.push(`${key}="${val}"`);
+            if ('selected' === key) {
+                option.selected = GSUtil.asBool(val);
+                return;
+            }
+            if (!/^[a-z][a-z0-9_.:-]*$/i.test(key) || /^on/i.test(key)) return;
+            option.setAttribute(key, val);
         });
-
-        if (o.text) {
-            seg.push('>')
-            seg.push(o.text);
-            seg.push('</option>')
-        } else {
-            seg.push('>')
-        }
-
-        return seg.join(' ');
+        option.textContent = o.text ?? '';
+        return option;
     }
 
     get #controllerHandler() {
@@ -207,4 +199,3 @@ export class GSExtDataListElement extends HTMLDataListElement {
     }
 
 }
-

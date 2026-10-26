@@ -11,12 +11,14 @@ import { GSFunction } from "../../../base/GSFunction.mjs";
 export class ButtonController {
 
   #host = undefined;
+  #form = undefined;
   #callback = undefined;
 
   constructor(host) {
     const me = this;
     me.#host = host;
-    me.form?.addController?.(me);
+    me.#form = host.form;
+    me.#form?.addController?.(me);
   }
 
   hostConnected() {
@@ -31,8 +33,9 @@ export class ButtonController {
     const me = this;
     const btn = me.button;
     btn?.off('click', me.#callback);
-    btn?.removeController(me);
+    me.#form?.removeController(me);
     me.#host = undefined;
+    me.#form = undefined;
     me.#callback = undefined;
   }
 
@@ -101,6 +104,6 @@ export class ButtonController {
   }
 
   get form() {
-    return this.#host?.form;
+    return this.#form;
   }
 }

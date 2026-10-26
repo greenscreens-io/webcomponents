@@ -32,7 +32,7 @@ export class GSCurrencyFormat extends GSElement {
 
     get #options() {
         const me = this;
-        return Object.apply(me.dataset, { style: 'currency', currency: me.currency });
+        return { ...me.dataset, style: 'currency', currency: me.currency };
     }
 
     get format() {

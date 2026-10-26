@@ -108,7 +108,11 @@ export class GSExtSelectElement extends HTMLSelectElement {
     }    
 
     get asJSON() {
-        return this.query('option').forEach(el => GSDOM.fromElement2Object(el, {}));
+        return this.queryAll('option').map(el => ({
+            ...Object.fromEntries(Array.from(el.attributes, attr => [attr.name, attr.value])),
+            text: el.textContent,
+            selected: el.selected
+        }));
     }
 
     set asJSON(data) {
@@ -152,7 +156,8 @@ export class GSExtSelectElement extends HTMLSelectElement {
     set values(values) {
         values ??= [];
         if (GSUtil.isString(values)) values = values.split(',');
-        Array.from(el.options).forEach(el => el.selected = values.indexOf(el.value) > -1);
+        if (!Array.isArray(values)) values = [values];
+        Array.from(this.options).forEach(el => el.selected = values.includes(el.value));
     }
 
     checkValidity() {
@@ -211,33 +216,27 @@ export class GSExtSelectElement extends HTMLSelectElement {
         const me = this;
 
         queueMicrotask(() => {
-
-            const list = [];
-            data.forEach(o => {
-                list.push(me.#objToHTML(o));
-            });
-
-            GSDOM.setHTML(me, list.join('\n'));
+            me.replaceChildren(...data.map(o => me.#objToElement(o)));
         });
         return true;
     }
 
-    #objToHTML(o) {
-        const seg = ['<option'];
-
+    #objToElement(o) {
+        if (GSUtil.isString(o)) o = { value: o, text: o };
+        const option = document.createElement('option');
         Object.entries(o).forEach(it => {
             const key = it[0];
             const val = it[1];
             if ('text' === key) return;
-            if ('selected' === key) return seg.push(key);
-            seg.push(`${key}="${val}"`);
+            if ('selected' === key) {
+                option.selected = GSUtil.asBool(val);
+                return;
+            }
+            if (!/^[a-z][a-z0-9_.:-]*$/i.test(key) || /^on/i.test(key)) return;
+            option.setAttribute(key, val);
         });
-
-        seg.push('>')
-        seg.push(o.text);
-        seg.push('</option>')
-
-        return seg.join(' ');
+        option.textContent = o.text ?? '';
+        return option;
     }
 
     #onReset(e) {
@@ -248,4 +247,3 @@ export class GSExtSelectElement extends HTMLSelectElement {
         return this[HANDLER];
     }    
 }
-

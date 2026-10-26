@@ -41,6 +41,10 @@ export class GSTimeFormat extends GSElement {
         super.disconnectedCallback();
     }
 
+    updated(changed) {
+        if (changed.has('interval') && this.isConnected) this.start();
+    }
+
     renderUI() {
         const date = new Date();
         return date.toLocaleTimeString(this.language);
@@ -48,7 +52,8 @@ export class GSTimeFormat extends GSElement {
 
     start() {
         const me = this;
-        if (me.interval >0 && me.#id === 0) {
+        me.stop();
+        if (me.interval > 0) {
             me.#id = setInterval(me.#update.bind(me), me.interval * 1000);
         } else {
             me.requestUpdate();

@@ -121,9 +121,8 @@ export class GSFileBoxElement extends GSElement {
         const me = this;
         if (!e.clipboardData) return;
         if (!e.clipboardData.items) return;
-        const file = me.#pastedFile(e.clipboardData.items);
-        if (!file) return;
-        const files = [file];
+        const files = me.#pastedFile(e.clipboardData.items);
+        if (!files.length) return;
         me.#attach(files);
         GSEvents.prevent(e);
     }
@@ -144,13 +143,16 @@ export class GSFileBoxElement extends GSElement {
     #pastedFile(items) {
         const me = this;
         const rgx = me.filter ? new RegExp(me.filter) : null;
+        const files = [];
         for (const item of items) {
             if (item.kind === 'file') {
-                if (!rgx) return item.getAsFile();
-                if (rgx.test(item.type)) return item.getAsFile();
+                if (!rgx || rgx.test(item.type)) {
+                    const file = item.getAsFile();
+                    if (file) files.push(file);
+                }
             }
         }
-        return null;
+        return files;
     }
 
     #accept(attachments) {
@@ -169,9 +171,10 @@ export class GSFileBoxElement extends GSElement {
             : GSAttachment.from(transferred);
 
         // Filter out files that exceed the maxFileSize
-        const validAttachments = me.maxFileSize > 0 
+        let validAttachments = me.maxFileSize > 0
             ? attachments.filter(a => a.file.size <= me.maxFileSize)
             : attachments;
+        if (!me.multiple) validAttachments = validAttachments.slice(0, 1);
 
         const accepted = me.emit('accept', { attachments: validAttachments }, true, false, true);
         if (accepted && validAttachments.length) {
@@ -196,4 +199,3 @@ export class GSFileBoxElement extends GSElement {
     }
 
 }
-
