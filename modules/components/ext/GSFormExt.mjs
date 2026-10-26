@@ -146,7 +146,10 @@ export default class GSFormExt extends HTMLFormElement {
     validate() {
         const me = this;
         const isValid = me.checkValidity() && me.isValid;
-        if (!isValid) me.reportValidity();
+        if (!isValid) {
+            GSEvents.send(me, 'form', { type: 'invalid', valid:false }, true, true);
+            requestAnimationFrame(() => me.reportValidity());            
+        }
         return isValid;
     }
 
@@ -248,9 +251,11 @@ export default class GSFormExt extends HTMLFormElement {
         GSEvents.prevent(e, true);
         const me = this;
         const isValid = me.validate();
-        if (isValid) me.write();
-        const data = { type: 'submit', data: me.asJSON, source: e, valid: isValid };
-        GSEvents.send(me, 'form', data, true, true);
+        if (isValid) {
+            me.write();
+            const data = { type: 'submit', data: me.asJSON, source: e, valid: isValid };
+            GSEvents.send(me, 'form', data, true, true);
+        }
         return isValid;
     }
 

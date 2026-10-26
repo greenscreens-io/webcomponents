@@ -54,8 +54,8 @@ export default class GSTab extends GSElement {
     const me = this;
     const items = GSItem.genericItems(me);
     items.forEach(el => GSID.setIf(el));
-    const tabs = items.map(el => me.#renderTab(el)).join('');
-    const panes = items.map(el => me.#renderPane(el)).join('');
+    const tabs = items.map((el, idx)  => me.#renderTab(el, idx)).join('');
+    const panes = items.map((el, idx) => me.#renderPane(el, idx)).join('');
     const panel = me.#renderPanel(panes);
 
     const tab = me.#isVertical ? me.#renderTabsVertical(tabs) : me.#renderTabsHorizontal(tabs);
@@ -109,9 +109,9 @@ export default class GSTab extends GSElement {
       `;
   }
 
-  #renderTab(el) {
+  #renderTab(el, index) {
     const me = this;
-    const wrap = me.#isVertical ? '' : `<li class="nav-item ${GSTab.CSS_NAV_WRAP} ${me.#cssNavWrap(el)}" role="presentation">`;
+    const wrap = me.#isVertical ? '' : `<li data-index="${index}" class="nav-item ${GSTab.CSS_NAV_WRAP} ${me.#cssNavWrap(el)}" role="presentation">`;
     const title = me.#title(el);
     const icon = me.#icon(el);
     const iconTpl = icon ? `<i class="${icon}"></i>` : '';
@@ -122,7 +122,7 @@ export default class GSTab extends GSElement {
 
     return `${wrap}
           <a type="button" role="tab" is="gs-ext-navlink"
-              tabindex="0"
+              tabindex="0" data-index="${index}"
               id="${el.id}-tab" 
               class="nav-link ${me.#cssNav(el)} ${actievCSS}" 
               aria-controls="${el.id}-tab"                 
@@ -132,7 +132,7 @@ export default class GSTab extends GSElement {
       `;
   }
 
-  #renderPane(el) {
+  #renderPane(el, index) {
     const me = this;
     const actievCSS = me.#activePaneCSS(el);
     let body = GSItem.getBody(el, me.isFlat);
@@ -144,6 +144,7 @@ export default class GSTab extends GSElement {
     }
     return `
       <div  id="${el.id}-pane" aria-labelledby="${el.id}-tab" 
+         data-index="${index}"
           class="tab-pane fade ${me.#cssPane(el)}  ${actievCSS}" 
           role="tabpanel">
           ${body}

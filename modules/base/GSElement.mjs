@@ -16,7 +16,6 @@ import GSComponents from "./GSComponents.mjs";
 import GSCacheStyles from "../head/GSCacheStyles.mjs";
 import GSLog from "./GSLog.mjs";
 import GSFunction from "./GSFunction.mjs";
-import GSData from "./GSData.mjs";
 import GSEnvironment from "./GSEnvironment.mjs";
 import GSDOM from "./GSDOM.mjs";
 import GSDOMObserver from './GSDOMObserver.mjs';
@@ -335,12 +334,11 @@ export default class GSElement extends HTMLElement {
 	 * Element dynamic style id
 	 */
 	get styleID() {
-		return `${this.tagName}-${this.id}`.toLocaleLowerCase();
+		return `${this.tagName}-${this.id}`.toLowerCase();
 	}
 
 	#createStyleClass() {
 		const me = this;
-		GSCacheStyles.deleteRule(me.styleID);
 		GSCacheStyles.setRule(me.styleID, me.getStyle());
 	}
 
@@ -530,7 +528,12 @@ export default class GSElement extends HTMLElement {
 		}
 
 		GSID.setIf(me);
-		me.#opts = me.#injection();
+		try {
+			me.#opts = me.#injection();
+		} catch (e) {
+			GSLog.error(me, e);
+			return;
+		}
 		me.#proxied = me.#opts.ref;
 		GSComponents.store(me);
 		me.#controllers?.forEach((c) => c.hostConnected?.());
@@ -558,7 +561,7 @@ export default class GSElement extends HTMLElement {
     addController(controller) {
         const me = this;
         (me.#controllers ??= new Set()).add(controller);
-        if (me.isConnected && me.self !== undefined) {
+        if (me.isConnected && me.self !== null) {
             controller.hostConnected?.();
         }
     }
@@ -572,9 +575,11 @@ export default class GSElement extends HTMLElement {
 	 */
 	repaint() {
 		const me = this;
+		const controllers = me.#controllers;
 		me.disconnectedCallback();
 		me.#removed = false;
 		me.#ready = false;
+		me.#controllers = controllers;
 		me.connectedCallback();
 	}
 
@@ -597,18 +602,27 @@ export default class GSElement extends HTMLElement {
 		if (me.#queued) return;
 		me.#queued = true;
 		queueMicrotask(() => {
-			GSEvents.waitAnimationFrame(() => {
-				while (me.#queue.length > 0) {
-					const attrs = me.#queue.shift();
-					try {
-						me.#scheduledAttributes(...attrs);
-					} catch(e) {
-						GSLog.error(null, e);
-					}
+			me.#flushAttributes();
+		});
+	}
+
+	#flushAttributes() {
+		const me = this;
+		GSEvents.waitAnimationFrame(() => {
+			while (me.#queue.length > 0) {
+				const attrs = me.#queue.shift();
+				try {
+					me.#scheduledAttributes(...attrs);
+				} catch(e) {
+					GSLog.error(null, e);
 				}
-				me.#queued = false;
-			});
-        });
+			}
+			me.#queued = false;
+			if (me.#queue.length > 0) {
+				me.#queued = true;
+				queueMicrotask(() => me.#flushAttributes());
+			}
+		});
 	}
 
 	#scheduledAttributes(name, oldValue, newValue) {
@@ -679,7 +693,6 @@ export default class GSElement extends HTMLElement {
 		if (!me.shadowRoot) {
 			me.attachShadow({ mode: 'open' });
 			me.#observer = GSDOMObserver.create(me.#shadow);
-			me.updateUI();
 		}
 		return me.shadowRoot;
 	}
@@ -709,10 +722,11 @@ export default class GSElement extends HTMLElement {
 
 			me.#createStyleClass();
 			const inject = me.#opts;
+			if (!inject) return;
 
 			if (me.#proxied) {
 				if (useTpl) {
-					me.#content = me.isWrap ? GSDOM.parseWrapped(me, src, true) : GSDOM.parse(src, true);
+					me.#content = GSDOM.parseWrapped(me, src, true);
 				} else {
 					me.#content = GSDOM.parse(src, true);
 					me.#content.id = me.id;

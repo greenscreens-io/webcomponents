@@ -30,7 +30,7 @@ export default class GSCertOpt extends GSAsbtractDialog {
 
     async onFormInit(form, data) {
         if(DEMO)  {
-            data = DEMO;            
+            data = {};            
         } else {
             data = await io.greenscreens.Certificate.loadConfig();
             data = data.data;

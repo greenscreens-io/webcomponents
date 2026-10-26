@@ -135,6 +135,7 @@ export default class GSAsbtractDialog extends GSDialog {
     }
 
     #onFormError(e) {
+		debugger;
         Utils.inform(false, 'Some fields are invalid!');
     }
 
