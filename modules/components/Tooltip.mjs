@@ -2,13 +2,12 @@
  * Copyright (C) 2015, 2026; Green Screens Ltd.
  */
 
-import { createRef, ref, classMap, html, ifDefined, until, unsafeHTML } from '../lib.mjs';
+import { createRef, ref, classMap, html, ifDefined, unsafeHTML } from '../lib.mjs';
 import { GSElement } from '../GSElement.mjs';
 import { placement } from '../properties/index.mjs';
 import { GSID } from '../base/GSID.mjs';
 import { GSPopper } from '../base/GSPopper.mjs';
 import { GSDOM } from '../base/GSDOM.mjs';
-import { GSTemplateCache } from '../base/GSTemplateCache.mjs';
 
 export class GSTooltipElement extends GSElement {
 
@@ -23,6 +22,9 @@ export class GSTooltipElement extends GSElement {
 
   #arrowRef = createRef();
   #panelRef = createRef();
+  #eventTarget;
+  #onMouseEnter = () => this.open();
+  #onMouseLeave = () => this.close();
   #styleID = GSID.id;
   #arrowStyle = GSID.id;
   #tipStyle = GSID.id;
@@ -35,30 +37,37 @@ export class GSTooltipElement extends GSElement {
     this.dynamicStyle(this.#arrowStyle);
   }
 
-  firstUpdated(changed) {
+  connectedCallback() {
     super.connectedCallback();
-    const me = this;
-    me.#attachEvents();
-    me.#reposition();
+    this.#syncEvents();
+  }
+
+  disconnectedCallback() {
+    this.#eventTarget = undefined;
+    super.disconnectedCallback();
+  }
+
+  firstUpdated(changed) {
     super.firstUpdated(changed);
+    this.#syncEvents();
+    this.#reposition();
     const ccs = {
         "text-align": "justify !important",
         "text-justify": "inter-word",
         "word-break": "keep-all",
         "hyphens": "none"
     };
-    me.dynamicStyle(me.#tipStyle, ccs);
-
+    this.dynamicStyle(this.#tipStyle, ccs);
   }
 
-  willUpdate(changed) {
-    super.willUpdate(changed);
+  updated() {
+    this.#syncEvents();
     this.#reposition();
   }
 
   renderUI() {
     const me = this;
-    const content = me.#html();
+    const content = me.#content();
     return html`
     <div ${ref(me.#panelRef)} 
       dir="${ifDefined(me.direction)}"
@@ -70,7 +79,7 @@ export class GSTooltipElement extends GSElement {
           class="tooltip-arrow ${me.#arrowStyle}" 
           data-gs-class="${me.#arrowStyle}">
       </div>
-      <div class="tooltip-inner ${me.#tipStyle}" data-gs-class="${me.#tipStyle}">${unsafeHTML(content)}</div>
+      <div class="tooltip-inner ${me.#tipStyle}" data-gs-class="${me.#tipStyle}">${content}</div>
     </div>`;
   }
 
@@ -99,10 +108,18 @@ export class GSTooltipElement extends GSElement {
     this.opened = !this.opened;
   }
 
-  #attachEvents() {
-    const me = this;
-    me.attachEvent(me.#ref, 'mouseenter', me.open.bind(me));
-    me.attachEvent(me.#ref, 'mouseleave', me.close.bind(me));
+  #syncEvents() {
+    const target = this.#ref;
+    if (target === this.#eventTarget) return;
+    if (this.#eventTarget) {
+      this.removeEvent(this.#eventTarget, 'mouseenter', this.#onMouseEnter);
+      this.removeEvent(this.#eventTarget, 'mouseleave', this.#onMouseLeave);
+    }
+    this.#eventTarget = undefined;
+    if (!this.isConnected || !target) return;
+    this.attachEvent(target, 'mouseenter', this.#onMouseEnter);
+    this.attachEvent(target, 'mouseleave', this.#onMouseLeave);
+    this.#eventTarget = target;
   }
 
   #reposition() {
@@ -110,8 +127,9 @@ export class GSTooltipElement extends GSElement {
     const arrowEl = me.#arrow;
     const panelEl = me.#panel;
     if (!panelEl) return;
-    if (me.opened) {
-      GSPopper.popupFixed(me.placement, panelEl, me.#ref, arrowEl);
+    const target = me.#ref;
+    if (me.opened && target) {
+      GSPopper.popupFixed(me.placement, panelEl, target, arrowEl);
     } else {
       me.dynamicStyle(me.#styleID, { top: '-1000px', left: '-1000px' });
     }
@@ -143,17 +161,15 @@ export class GSTooltipElement extends GSElement {
   get #arrow() { return this.#arrowRef.value; }
   get #panel() { return this.#panelRef.value; }
 
-  #html() {
+  #content() {
     const me = this;
-
-    let content = "";
-    if (me.title.startsWith('#')) {
-      content = GSTemplateCache.loadTemplate(true, this.id, me.title);
-    } else {
-      content = me.preprocess ? me.#parse(me.title) : me.title;
+    const title = typeof me.title === 'string' ? me.title : '';
+    if (title.startsWith('#')) {
+      const template = GSDOM.getByID(document.documentElement, title.slice(1));
+      if (GSDOM.isTemplateElement(template)) return template.content.cloneNode(true);
     }
-    content = me.translate(content.replaceAll('&nbsp;', ' '));
-    return content;
+    const content = me.translate(title.replaceAll('&nbsp;', ' '));
+    return me.preprocess ? unsafeHTML(me.#parse(content)) : content;
   }
 
   /**
@@ -207,7 +223,13 @@ export class GSTooltipElement extends GSElement {
         continue;
       }
 
-      // Inline formatting replacements (Fixed regex syntax)
+      line = line
+        .replaceAll('&', '&amp;')
+        .replaceAll('<', '&lt;')
+        .replaceAll('>', '&gt;')
+        .replaceAll('"', '&quot;')
+        .replaceAll("'", '&#39;');
+
       line = line
         .replace(/\$(.*?)\$/g, '<strong>$1</strong>')
         .replace(/\*\*\*(.*?)\*\*\*/g, '<strong><em>$1</em></strong>')
