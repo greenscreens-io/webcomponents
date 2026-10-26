@@ -9,12 +9,15 @@ GSBreadcrumbItem WebComponent represent UI for a single breadcrumb element.
  
 | Name               | Description                                                  |
 |--------------------|--------------------------------------------------------------|
-| data               | JSON array representing items to render                      |
+| href               | Destination URL for a non-active breadcrumb                  |
+| active             | Mark this item as the current page                           |
+| data               | Object with link options (including optional `url`/`title`)  |
 | color              | Bootstrap text colors (primary, secondary...)                |
 | divider            | Bootstrap icon name used as a divider                        |
 | spacing            | Spacing between items (Bootstrp margin values 1..5)          |
 
-NOTE: Color, divider and spacing if not set, are reflected from gs-breadcrumb.
+NOTE: Color, divider, and spacing inherit from `gs-breadcrumb` when generated
+from data. `aria-current="page"` is applied to active items.
 
 **NOTE:**
 

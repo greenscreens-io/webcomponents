@@ -9,12 +9,13 @@ GSBreadcrumb WebComponent is a wrapper around Bootstrap breadcrum UI.
 | Name               | Description                                                  |
 |--------------------|--------------------------------------------------------------|
 | storage            | Reference id to data storage for rendering items             |
-| data               | JSON array representing items to render                      |
+| data               | Array of item objects (`$text`, `href` or `url`, and optional attributes) |
 | color              | Bootstrap text colors (primary, secondary...)                |
 | divider            | Bootstrap icon name used as a divider                        |
 | spacing            | Spacing between items (Bootstrp margin values 1..5)          |
 
-NOTE: Color, dividerand spacing are reflected to generate items. 
+NOTE: Color, divider, and spacing are applied to generated items. Per-item data
+can override these values; spacing `0` and an empty divider are supported.
 
 <br>
 

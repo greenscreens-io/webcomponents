@@ -26,11 +26,12 @@ export class GSBreadcrumbItemElement extends GSElement {
 
   renderUI() {
     const me = this;
-    return html`<div part="base" class="breadcrumb-item ${classMap(me.renderClass())}"  dir="${ifDefined(me.direction)}">
+    return html`<div part="base" aria-current="${ifDefined(me.active ? 'page' : undefined)}"
+        class="breadcrumb-item ${classMap(me.renderClass())}" dir="${ifDefined(me.direction)}">
         <span part="prefix"><slot name="prefix"></slot></span>        
         ${me.#label}
         <span part="suffix"><slot name="suffix"></slot></span>
-        <span part="separator"><slot name="separator">${me.#separator}</slot></span>
+        <span part="separator" aria-hidden="true"><slot name="separator">${me.#separator}</slot></span>
       </div>`;
   }
 
@@ -46,9 +47,12 @@ export class GSBreadcrumbItemElement extends GSElement {
   get #label() {
     const me = this;
     if (me.active) return html`<slot></slot>`;
-    me.data.url = me.data.url || me.href;
-    me.data.part = 'label';
-    return GSLinklement.generate(me.data, {})
+    const options = {
+      ...me.data,
+      url: me.data.url || me.href,
+      part: 'label'
+    };
+    return GSLinklement.generate(options, {})
   }
 
   get #separator() {
