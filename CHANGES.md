@@ -1,5 +1,8 @@
 # [WebComponents](https://webcomponents.greenscreens.ltd/).
 
+# Release v2.3.0 FINAL (26.10.2026.)
+ - AI assisted changes and improvements across all components
+
 # Release v2.2.5 FINAL (09.10.2026.)
  - Form and FormElement controllers improvements on validation 
  - Form and FormElement controllers improvements on reset
