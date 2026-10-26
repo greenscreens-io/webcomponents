@@ -11,6 +11,7 @@ import GSAttr from "../base/GSAttr.mjs";
 import GSDOM from "../base/GSDOM.mjs";
 import GSElement from "../base/GSElement.mjs";
 import GSEvents from "../base/GSEvents.mjs";
+import GSUtil from "../base/GSUtil.mjs";
 
 /**
  * Bootstrap modal dialog support

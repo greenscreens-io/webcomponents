@@ -12,6 +12,8 @@ import GSDOM from "../base/GSDOM.mjs";
 import GSElement from "../base/GSElement.mjs";
 import GSEvents from "../base/GSEvents.mjs";
 import GSItem from "../base/GSItem.mjs";
+import GSCacheStyles from "../head/GSCacheStyles.mjs";
+import GSUtil from "../base/GSUtil.mjs";
 
 /**
  * Tag list element
@@ -189,7 +191,7 @@ export default class GSTag extends GSElement {
     }
 
     #renderOption(value, editable) {
-        return editable ? `<option value="${value}">` : `<option value="${value}">${value}</options>`;
+        return editable ? `<option value="${value}">` : `<option value="${value}">${value}</option>`;
     }
 
     #renderTags() {

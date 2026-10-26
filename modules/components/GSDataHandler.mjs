@@ -8,6 +8,7 @@ import GSData from "../base/GSData.mjs";
 import GSEvents from "../base/GSEvents.mjs";
 import GSFunction from "../base/GSFunction.mjs";
 import GSLog from "../base/GSLog.mjs";
+import GSPromise from "../base/GSPromise.mjs";
 import GSReadWrite from "../base/GSReadWrite.mjs";
 import GSReadWriteRegistry from "../base/GSReadWriteRegistry.mjs";
 import GSUtil from "../base/GSUtil.mjs";

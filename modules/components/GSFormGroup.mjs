@@ -11,6 +11,7 @@ import GSAttr from "../base/GSAttr.mjs";
 import GSElement from "../base/GSElement.mjs";
 import GSUtil from "../base/GSUtil.mjs";
 import GSItem from "../base/GSItem.mjs";
+import GSDOM from "../base/GSDOM.mjs";
 
 /**
  * Center inside browser
@@ -294,7 +295,7 @@ export default class GSFormGroup extends GSElement {
    }
    
    get #autoselect() {
-      return this.autoselect ? `autocopy` : '';
+      return this.autoselect ? `autoselect` : '';
    }
 
    get hasIcon() {
@@ -382,7 +383,7 @@ export default class GSFormGroup extends GSElement {
    }
 
    get #isPassword() {
-      return this.type === 'passsword';
+      return this.type === 'password';
    }
 
    get #isEmail() {
@@ -728,4 +729,3 @@ export default class GSFormGroup extends GSElement {
       return this.hasAttribute('autoid');
    }
 }
-

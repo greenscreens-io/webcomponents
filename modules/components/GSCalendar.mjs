@@ -287,6 +287,7 @@ export default class GSCalendar extends GSElement {
 
     #update() {
         const me = this;
+        if (!me.monthEl || !me.yearEl || !me.query('.weeks')) return;
         me.queryAll('.days').forEach(el => el.remove());
         me.query('.weeks').insertAdjacentHTML('afterend', me.#daysHTML());
         me.monthEl.selectedIndex = me.#date.month;

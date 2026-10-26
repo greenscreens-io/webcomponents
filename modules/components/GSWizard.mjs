@@ -7,9 +7,9 @@
  * @module components/GSWizard
  */
 
-import GSElement from "../../base/GSElement.mjs";
-import GSItem from "../../base/GSItem.mjs";
-import GSSteps from "./GSSteps.mjs";
+import GSElement from "../base/GSElement.mjs";
+import GSItem from "../base/GSItem.mjs";
+import GSSteps from "./steps/GSSteps.mjs";
 
 /**
  * Steps walker prev/next track current step and update step status
@@ -38,7 +38,7 @@ export default class GSWizard extends GSSteps {
 
     previous() {
         const me = this;
-        if (super.previous()) return false;
+        if (!super.previous()) return false;
         me.#replacePanel();
         return me.current;
     }
@@ -71,7 +71,7 @@ export default class GSWizard extends GSSteps {
     }
 
     #renderPanel(el) {
-        return ``;
+          return el ? GSItem.getBody(el) : '';
     }
   
     #replacePanel() {

@@ -17,7 +17,7 @@ import GSDOM from "../base/GSDOM.mjs";
 import GSEvents from "../base/GSEvents.mjs";
 
 /**
- * <gs-accordion css="" css-item="" css-header="" css-body="">
+ * <gs-accordion css="" css-item="" css-head="" css-body="">
  *  <gs-item title="" message="" visible="false" autoclose="true" ></gs-item>
  * </gs-accordion>
  * @class
@@ -31,7 +31,7 @@ export default class GSAccordion extends GSElement {
   }
 
   static get observedAttributes() {
-    const attrs = ['css', 'css-item', 'css-header', 'css-body', 'data'];
+    const attrs = ['css', 'css-item', 'css-head', 'css-body', 'data'];
     return GSElement.observeAttributes(attrs);
   }
 
@@ -71,7 +71,7 @@ export default class GSAccordion extends GSElement {
     const me = this;
     const id = GSID.id;
     const html = await me.#render(id);
-    return `<div class="accordion ${me.css}" id="#${id}">${html}</div>`;
+    return `<div class="accordion ${me.css}" id="${id}">${html}</div>`;
   }
 
   async #render(id) {
@@ -174,4 +174,3 @@ export default class GSAccordion extends GSElement {
   }
 
 }
-

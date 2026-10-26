@@ -57,7 +57,6 @@ export default class GSOffcanvas extends GSElement {
     const me = this;
     me.#unbindEvents();
     me.#swiper = null;
-    me.#bindings = null;
     super.disconnectedCallback();
   }
 

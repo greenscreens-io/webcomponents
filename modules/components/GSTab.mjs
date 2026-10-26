@@ -95,7 +95,7 @@ export default class GSTab extends GSElement {
 
   #renderTabsHorizontal(tabs) {
     return `
-      <ul is="gs-ext-ul" class="nav user-select-none ${GSTab.CSS_NAV} ${this.#cssnav}" "role="tablist">
+      <ul is="gs-ext-ul" class="nav user-select-none ${GSTab.CSS_NAV} ${this.#cssnav}" role="tablist">
         ${tabs}
       </ul>      
       `;
@@ -238,4 +238,3 @@ export default class GSTab extends GSElement {
     this.index--;
   }
 }
-

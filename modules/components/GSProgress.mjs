@@ -97,7 +97,9 @@ export default class GSProgress extends GSElement {
 
     get percentage() {
         const me = this;
-        return Math.trunc((me.value / me.max) * 100);
+        const range = me.max - me.min;
+        if (range <= 0) return 0;
+        return Math.max(0, Math.min(100, Math.trunc(((me.value - me.min) / range) * 100)));
     }
 
     get value() {
@@ -117,16 +119,16 @@ export default class GSProgress extends GSElement {
         return GSAttr.getAsNum(this, 'min', 0);
     }
 
-    set min(val = '') {
-        return GSAttr.setAsNum(this, 'min', 0);
+    set min(val = 0) {
+        return GSAttr.setAsNum(this, 'min', val);
     }
 
     get max() {
         return GSAttr.getAsNum(this, 'max', 100);
     }
 
-    set max(val = '') {
-        return GSAttr.setAsNum(this, 'max', 100);
+    set max(val = 100) {
+        return GSAttr.setAsNum(this, 'max', val);
     }
 
     get css() {
@@ -157,4 +159,3 @@ export default class GSProgress extends GSElement {
         return true;
     }
 }
-

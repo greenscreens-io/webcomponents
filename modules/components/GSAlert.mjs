@@ -23,7 +23,6 @@ import GSItem from "../base/GSItem.mjs";
 export default class GSAlert extends GSElement {
 
     #dismissCSS = '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>';
-    #state = false;
     #pause = false;
     #interval = 0;
     #last = 0;
@@ -34,7 +33,7 @@ export default class GSAlert extends GSElement {
     }
 
     static get observedAttributes() {
-        const attrs = ['css', 'message', 'active'];
+        const attrs = ['css', 'css-active', 'message', 'active'];
         return GSElement.observeAttributes(attrs);
     }
 
@@ -92,7 +91,12 @@ export default class GSAlert extends GSElement {
             GSDOM.toggleClass(el, newValue, true);
         }
 
-        if (name == 'active') GSDOM.toggleClass(el, activeCSS, !me.#state);
+        if (name === 'css-active') {
+            GSDOM.toggleClass(el, oldValue, false);
+            GSDOM.toggleClass(el, newValue, !me.active);
+        }
+
+        if (name === 'active') GSDOM.toggleClass(el, me.activeCSS, !me.active);
     }
 
     get template() {
@@ -118,7 +122,15 @@ export default class GSAlert extends GSElement {
     }
 
     set activeCSS(val = '') {
-        return GSAttr.get(this, 'css-active', val);
+        return GSAttr.set(this, 'css-active', val);
+    }
+
+    get active() {
+        return GSAttr.getAsBool(this, 'active', false);
+    }
+
+    set active(val = false) {
+        GSAttr.setAsBool(this, 'active', val);
     }
 
     get message() {
@@ -142,7 +154,7 @@ export default class GSAlert extends GSElement {
     }
 
     set delay(val = 5) {
-        return GSAttr.setAsNumt(this, 'delay', val);
+        return GSAttr.setAsNum(this, 'delay', val);
     }
 
     async #dismiss() {
@@ -172,4 +184,3 @@ export default class GSAlert extends GSElement {
     }
 
 }
-

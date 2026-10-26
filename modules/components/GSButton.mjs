@@ -183,7 +183,7 @@ export default class GSButton extends GSElement {
     }
 
     set disable(val = '') {
-        return GSAttr.getAsBool(this, 'disable', val);
+        return GSAttr.setAsBool(this, 'disable', val);
     }
 
     get select() {
@@ -218,4 +218,3 @@ export default class GSButton extends GSElement {
     }
 
 }
-

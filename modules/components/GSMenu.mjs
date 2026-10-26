@@ -113,16 +113,18 @@ export default class GSMenu extends GSUListExt {
    */
   popup(x = 0, y = 0, caller) {
     const me = this;
+    let target = caller;
     if (GSEvents.isMouseOrPointerEvent(x)) {
       const e = x;
       y = e.clientY;
       x = e.clientX;
+      target = e.target;
       let offset = GSDOM.offsetParent(me);
       offset = offset ? offset.getBoundingClientRect() : null;
       x = x - (offset?.left || 0);
       y = y - (offset?.top || 0);
     }    
-    const cfg = {clientX: x, clientY: y, target: x.target || caller };
+    const cfg = {clientX: x, clientY: y, target};
     requestAnimationFrame(() => {
       const style = {
         position : 'fixed',
@@ -367,9 +369,9 @@ export default class GSMenu extends GSUListExt {
     Array.from(children).forEach(el => {
       const isSub = el.childElementCount > 0;
       if (isSub) list.push(me.#renderSub(el));
-      const html = isSub ? me.fromDOM(el.children, ++level, css, closable) : me.#renderChild(el);
+      const html = isSub ? me.fromDOM(el.children, level + 1, css, closable) : me.#renderChild(el);
       list.push(html);
-      if (sub) list.push(`</li>`);
+      if (isSub) list.push(`</li>`);
     });
 
     list.push('</ul>');

@@ -29,6 +29,7 @@ export { default as GSPopup } from "./GSPopup.mjs";
 export { default as GSProgress } from "./GSProgress.mjs";
 export { default as GSSplitter } from "./GSSplitter.mjs";
 export { default as GSTab } from "./GSTab.mjs";
+export { default as GSTag } from "./GSTag.mjs";
 export { default as GSTooltip } from "./GSTooltip.mjs";
 export { default as GSTree } from  "./GSTree.mjs";
 

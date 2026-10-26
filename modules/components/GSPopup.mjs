@@ -178,7 +178,7 @@ export default class GSPopup extends GSElement {
     }
 
     set autoclose(val = '') {
-        return GSAttr.getAsBool(this, 'autoclose', val);
+        return GSAttr.setAsBool(this, 'autoclose', val);
     }
 
     /**
@@ -366,4 +366,3 @@ export default class GSPopup extends GSElement {
         return parent == this;
     }
 }
-
