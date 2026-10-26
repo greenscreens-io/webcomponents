@@ -34,10 +34,8 @@ export default class GSStepElement extends GSElement {
 
     constructor() {
         super();
-        const clazz = GSStepElement;
-        this.icon = clazz.INACTIVE;
-        this.iconCSS = clazz.ICON_CSS;
-        this.titleCSS = clazz.TITLE_CSS;
+        this.iconCSS = GSStepElement.ICON_CSS;
+        this.titleCSS = GSStepElement.TITLE_CSS;
     }
 
     renderUI() {
