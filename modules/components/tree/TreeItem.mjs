@@ -48,7 +48,7 @@ export class GSTreeItemElement extends GSElement {
   renderUI() {
     const me = this;
     const node = me.node;
-    const opt = me.value || {};
+    const opt = { ...(me.value || {}) };
     opt.tooltip = me.translate(opt.tooltip)
     opt.title = me.translate(opt.title)
     const before = me.loading ? me.#renderSpinner(node.level) : me.#renderIcon(node.level);
@@ -138,8 +138,10 @@ export class GSTreeItemElement extends GSElement {
   }
 
   get visible() {
-    const parent = this.parent;
-    return parent?.opened || parent?.level === -1;
+    for (let parent = this.parent; parent && parent.level >= 0; parent = parent.parent) {
+      if (!parent.opened) return false;
+    }
+    return true;
   }
 
   get parent() {

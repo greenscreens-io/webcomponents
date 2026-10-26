@@ -122,7 +122,7 @@ export class GSTreeElement extends GSElement {
   next(expand = false) {
     const me = this;
     let item = me.nextItem;
-    if (!item & me.circular) item = me.#first;
+    if (!item && me.circular) item = me.#first;
     if (item?.visible) {
       item.focus();
       if (expand && me.focused?.isFolder) me.focused.open();
@@ -133,7 +133,7 @@ export class GSTreeElement extends GSElement {
   previous(collapse = false) {
     const me = this;
     let item = me.previousItem;
-    if (!item & me.circular) item = me.#last;
+    if (!item && me.circular) item = me.#last;
     if (item?.visible) {
       item.focus();
       if (item.isFolder && collapse) item.close();
@@ -204,11 +204,11 @@ export class GSTreeElement extends GSElement {
   }
 
   get #first() {
-    return this.#list.firstElementChild;
+    return Array.from(this.#list?.children || []).find(item => item.visible);
   }
 
   get #last() {
-    return this.#list.lastElementChild;
+    return Array.from(this.#list?.children || []).filter(item => item.visible).pop();
   }
 
   #host(node) {
@@ -216,10 +216,11 @@ export class GSTreeElement extends GSElement {
   }
 
   #onClick(e) {
-    const icon = e.target.tagName === 'GS-ICON' ? e.target : e.target.closest('gs-icon');
+    const target = e.target;
+    const icon = target?.tagName === 'GS-ICON' ? target : target?.closest?.('gs-icon');
     const isIcon = icon?.dataset.type === 'state';
-    const el = e.target.closest('gs-tree-item');
-    if (!el.node) return;
+    const el = target?.closest?.('gs-tree-item');
+    if (!el?.node) return;
 
     const me = this;
 
@@ -241,6 +242,7 @@ export class GSTreeElement extends GSElement {
     const me = this;
     const el = me.focused;
     if (!el) return;
+    if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.code)) e.preventDefault();
 
     switch (e.code) {
       case 'ArrowUp':
