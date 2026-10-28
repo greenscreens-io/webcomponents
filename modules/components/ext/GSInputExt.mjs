@@ -39,6 +39,7 @@ export default class GSInputExt extends HTMLInputElement {
         '_': /./g
     };
 
+    #visual = false;
     #changed = false;
     #revealing = false;
     #masks = [];
@@ -149,6 +150,21 @@ export default class GSInputExt extends HTMLInputElement {
         return this.hasAttribute('reveal');
     }
 
+    get isVisible() {
+        return GSDOM.isFieldVisible(this);
+    }
+
+    checkValidity() {
+        this.#visual = false;
+        return super.checkValidity();
+    }
+    
+    reportValidity() {
+        this.#visual = this.isVisible;
+        // prevent browser console error on reportValidity if not visible
+        return this.#visual ? super.reportValidity() : super.checkValidity();
+    }
+
     #toPattern() {
         const me = this;
         if (me.pattern.length > 0) return;
@@ -195,6 +211,7 @@ export default class GSInputExt extends HTMLInputElement {
         GSEvents.attach(me, me, 'paste', me.#onPaste.bind(me));
         GSEvents.attach(me, me, 'blur', me.#onBlur.bind(me));
         GSEvents.attach(me, me, 'click', me.#onClick.bind(me));
+        GSEvents.attach(me, me, 'invalid', me.#onInvalid.bind(me));
         requestAnimationFrame(() => {
             const list = me.list;
             if (!list) return;
@@ -225,6 +242,11 @@ export default class GSInputExt extends HTMLInputElement {
         const options = GSDOM.queryAll(list, 'option');
         if (options.length === 0) return true;
         return options.some(option => option.value === me.value);
+    }
+
+    #onInvalid(e) {
+        if (this.#visual && !this.isVisible) GSEvents.prevent(e);
+        // todo BUBBLE so upper layer are aware 
     }
 
     /**

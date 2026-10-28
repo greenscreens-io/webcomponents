@@ -200,7 +200,25 @@ export default class GSFormGroup extends GSElement {
          .join('');
       }
 
+      if (me.#isTextArea) {
+         return me.#textHTML(idattr, me.name, me.#value, me.value);   
+      }
+
       return me.#inputHTML(idattr, me.name, me.#value, me.value);
+   }
+
+   #textHTML(id, name, value, val ) {
+      const me = this;
+
+      return `<textarea is="gs-ext-textarea" class="${me.#cssField} ${me.cssField}" 
+               ${id} name="${name}" type="${me.#type}" ${me.#placeholder}
+               ${me.#autocopy} ${me.#autoselect} ${me.#autofocus}
+               ${me.#autocomplete} ${me.#autocapitalize} 
+               .value=${value} 
+               ${me.#lines} ${me.#minlength} ${me.#maxlength} 
+               title="${GSUtil.sanitize(me.description, true)}"
+               ${me.#readonly} ${me.#required} ${me.#disabled} 
+               ></textarea>`;
    }
 
    #inputHTML(id, name, value, val ) {
@@ -382,6 +400,10 @@ export default class GSFormGroup extends GSElement {
       return this.type === 'text';
    }
 
+   get #isTextArea() {
+      return this.type === 'textarea';
+   }
+
    get #isPassword() {
       return this.type === 'password';
    }
@@ -429,6 +451,11 @@ export default class GSFormGroup extends GSElement {
 
    get #list() {
       return this.list ? `list="${this.list}"` : '';
+   }
+
+   
+   get #lines() {
+      return this.lines > 0 ? `lines="${this.lines}"` : '';
    }
 
    get #max() {
@@ -683,6 +710,17 @@ export default class GSFormGroup extends GSElement {
 
    set list(val = '') {
       return GSAttr.set(this, 'list', val);
+   }
+
+   /**
+    * For textarea element only
+    */
+   get lines() {
+      return GSAttr.getAsNum(this, 'lines', 1);
+   }
+
+   set lines(val = 1) {
+      return GSAttr.setAsNum(this, 'lines', val);
    }
 
    get maxlength() {

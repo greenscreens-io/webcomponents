@@ -94,5 +94,11 @@ export default class GSComboExt extends HTMLSelectElement {
 
     reset() {
         GSDOM.resetSelect(this);
-    }    
+    }
+
+
+    get isVisible() {
+        return GSDOM.isFieldVisible(this);
+    }
+
 }

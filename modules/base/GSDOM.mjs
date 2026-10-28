@@ -61,6 +61,23 @@ export default class GSDOM {
 	}
 
 	/**
+	 * Special check for form fields
+	 * @param {*} el 
+	 * @returns 
+	 */
+    static isFieldVisible(el) {
+        let visible = GSDOM.isVisible(el);
+        if (!visible) return visible;
+        const it = GSDOM.parentAll(el);
+        for (let v of it) {
+            if (v.tagName === 'SLOT') continue;
+            visible = visible && GSDOM.isVisible(v);            
+            if (v.tagName === 'FORM' || !visible) break;
+        }
+        return visible;
+    }
+
+	/**
 	* Parse string into html DOM
 	*
 	* @param {string} html Source to parse
@@ -370,6 +387,14 @@ export default class GSDOM {
 	 */
 	static parent(el) {
 		return el ? (el.parentElement || el.parentNode || el.host) : null;
+
+		if (!el) return null;
+		
+		// If it's a shadow root, immediately return the host
+		if (el instanceof ShadowRoot) return el.host;
+		
+		// Otherwise, try standard parents, falling back to .host just in case
+		return el.parentElement || el.parentNode || el.host || null;		
 	}
 
 	/**
@@ -384,7 +409,7 @@ export default class GSDOM {
 			yield e;
 			e = GSDOM.parent(e);
 		}
-		if (e) return yield e;
+		// if (e) return yield e;
 	}
 
 	/**

@@ -148,7 +148,10 @@ export default class GSFormExt extends HTMLFormElement {
         const isValid = me.checkValidity() && me.isValid;
         if (!isValid) {
             GSEvents.send(me, 'form', { type: 'invalid', valid:false }, true, true);
-            requestAnimationFrame(() => me.reportValidity());            
+            requestAnimationFrame(() => {
+                me.elements.filter(el => el.tagName !== 'OUTPUT')
+                .find(el => !el.checkValidity())?.reportValidity();
+            });
         }
         return isValid;
     }
@@ -260,8 +263,8 @@ export default class GSFormExt extends HTMLFormElement {
     }
 
     get isValid() {
-        return !GSDOM.queryAll(this, 'input,select,textarea')
-            .some(el => GSDOM.isVisible(el) && !el.checkValidity());
+        return !this.elements.filter(el => el.tagName !== 'OUTPUT')
+            .some(el => el.isVisible && !el.checkValidity());
     }
 
 }
