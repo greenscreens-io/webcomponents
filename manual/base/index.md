@@ -32,4 +32,4 @@ Base library is core of all GS WebComponents UI elements. Contains a set of non 
 
 <br>
 
-&copy; Green Screens Ltd. 2016 - 2023
+&copy; Green Screens Ltd. 2016 - 2027

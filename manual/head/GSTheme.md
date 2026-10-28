@@ -6,4 +6,4 @@ NOTE: This class is currently not used, as support for the dark/lite theme is no
  
 <br>
 
-&copy; Green Screens Ltd. 2016 - 2023
+&copy; Green Screens Ltd. 2016 - 2027

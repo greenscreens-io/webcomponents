@@ -51,4 +51,4 @@ For repeatable JavaScript loading.  Use it if script must be injected with templ
 ```
 <br>
 
-&copy; Green Screens Ltd. 2016 - 2023
+&copy; Green Screens Ltd. 2016 - 2027

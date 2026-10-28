@@ -3,7 +3,7 @@
  */
 
 /**
- * A module loading GSInputExt class
+ * A module loading GSTextAreaExt class
  * @module components/ext/GSInputExt
  */
 
@@ -18,7 +18,7 @@ import GSDOMObserver from "../../base/GSDOMObserver.mjs";
 
 /**
  * Add custom field processing
- * <input is="gs-ext-input">
+ * <input is="gs-ext-textarea">
  * @class
  * @extends {HTMLInputElement}
  */

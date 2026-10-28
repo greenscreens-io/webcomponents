@@ -96,4 +96,4 @@ Template content can be injected in slot elements when **flat** mode is used.
  
 <br>
 
-&copy; Green Screens Ltd. 2016 - 2023
+&copy; Green Screens Ltd. 2016 - 2027

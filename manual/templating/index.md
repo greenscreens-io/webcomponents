@@ -11,4 +11,4 @@ The main purpose for these set of components is to enable loading external templ
 
 <br>
 
-&copy; Green Screens Ltd. 2016 - 2023
+&copy; Green Screens Ltd. 2016 - 2027

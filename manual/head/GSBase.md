@@ -20,4 +20,4 @@ GSBase Class is not registered as WebComponent itself. Injecting it into a page 
 
 <br>
 
-&copy; Green Screens Ltd. 2016 - 2023
+&copy; Green Screens Ltd. 2016 - 2027

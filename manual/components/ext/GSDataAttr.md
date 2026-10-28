@@ -19,4 +19,4 @@ As DOM Observer is used to monitor element add / remove events to a page, this c
  
 <br>
 
-&copy; Green Screens Ltd. 2016 - 2023
+&copy; Green Screens Ltd. 2016 - 2027

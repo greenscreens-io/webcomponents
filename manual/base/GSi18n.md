@@ -4,4 +4,4 @@ GSi18n class is i18n internationalization support class allowing t oautomaticall
  
 <br>
 
-&copy; Green Screens Ltd. 2016 - 2023
+&copy; Green Screens Ltd. 2016 - 2027

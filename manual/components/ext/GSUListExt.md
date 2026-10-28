@@ -11,4 +11,4 @@ GSUListExt WebComponent is an extension of a standard HTMLULElement that adds ke
 
 <br>
 
-&copy; Green Screens Ltd. 2016 - 2023
+&copy; Green Screens Ltd. 2016 - 2027

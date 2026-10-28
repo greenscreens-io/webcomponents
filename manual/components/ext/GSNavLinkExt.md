@@ -13,4 +13,4 @@ This component is used internally by composite GS WebComponets.
 
 <br>
 
-&copy; Green Screens Ltd. 2016 - 2023
+&copy; Green Screens Ltd. 2016 - 2027

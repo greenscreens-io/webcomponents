@@ -29,7 +29,7 @@ There are 3 types of WebComponents in use
     c. meta-rendering based - html generators components that generates Bootstrap HTML and other GS components for UI representation.
        
  
-**GS WebComponents** are ES2022 JavaScript Classes written as JavaScript Modules in plain vanilla JavaScript without need for any external tools or other framework dependencies to be used in web browsers.
+**GS WebComponents** are ES2027 JavaScript Classes written as JavaScript Modules in plain vanilla JavaScript without need for any external tools or other framework dependencies to be used in web browsers.
 
 <br>
 
@@ -86,4 +86,4 @@ In some cases, CSP errors might show up in the browser console. All components u
 
 <br>
 
-&copy; Green Screens Ltd. 2016 - 2023
+&copy; Green Screens Ltd. 2016 - 2027

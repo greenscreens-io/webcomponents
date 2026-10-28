@@ -24,7 +24,7 @@ https://github.com/greenscreens-io/webcomponents.git
 ### <a name="build-source"></a> **Build source**
 ---
  
-GS WebComponents are written in ES2022 JavaScript as modules. Generally, building the source into a single JavaScript file is not required.  
+GS WebComponents are written in ES2027 JavaScript as modules. Generally, building the source into a single JavaScript file is not required.  
  
 As source requires modern browsers, and as modern browsers use HTTPS/2 which, when a web server is configured properly, pushes resources through a single channel, requirements to build modules is not so important anymore.
 
@@ -115,4 +115,4 @@ When using library built with WebPack, use the following template.
 
 <br>
 
-&copy; Green Screens Ltd. 2016 - 2023
+&copy; Green Screens Ltd. 2016 - 2027
