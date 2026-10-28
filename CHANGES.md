@@ -1,5 +1,15 @@
 # [WebComponents](https://webcomponents.greenscreens.ltd/) for [Bootstrap 5.2.0+](https://getbootstrap.com/)
 
+# Release v1.9.21 (27.10.2026.)
+ - GSToast UI fix
+ - GSInputExt - reporting fix
+ - GSSelectExt - reporting fix
+ - GSTextArea - added 
+ - GSFoormGroup support for textarea
+ - GSFormExt - error handling improvements
+ - GSDialog buttons and forms validity improvements
+ - WebAdmin demo fixes
+
 # Release v1.9.20 (26.10.2026.)
  - AI assisted optimizations - part 2
 
