@@ -160,9 +160,13 @@ export default class GSInputExt extends HTMLInputElement {
     }
     
     reportValidity() {
-        this.#visual = this.isVisible;
+        this.#visual = true;
+        return super.reportValidity();
         // prevent browser console error on reportValidity if not visible
+        /*
+        this.#visual = this.isVisible;
         return this.#visual ? super.reportValidity() : super.checkValidity();
+        */
     }
 
     #toPattern() {
@@ -324,6 +328,9 @@ export default class GSInputExt extends HTMLInputElement {
             const val = e.clipboardData.getData('text');
             me.value = me.formatMask(val);
         }
+        // to trigger validate
+        me.#onBlur(e);
+        
     }
 
     #isReveal(e) {

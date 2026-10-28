@@ -264,7 +264,7 @@ export default class GSFormExt extends HTMLFormElement {
 
     get isValid() {
         return !this.elements.filter(el => el.tagName !== 'OUTPUT')
-            .some(el => el.isVisible && !el.checkValidity());
+            .some(el => !el.checkValidity());
     }
 
 }

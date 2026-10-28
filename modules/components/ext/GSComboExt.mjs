@@ -12,6 +12,7 @@ import GSComponents from "../../base/GSComponents.mjs";
 import GSLoader from "../../base/GSLoader.mjs";
 import GSDOM from "../../base/GSDOM.mjs";
 import GSUtil from "../../base/GSUtil.mjs";
+import GSEvents from "../../base/GSEvents.mjs";
 
 /**
  * Add JSON loader to select element
@@ -28,6 +29,8 @@ export default class GSComboExt extends HTMLSelectElement {
         customElements.define('gs-ext-select', GSComboExt, { extends: 'select' });
         Object.seal(GSComboExt);
     }
+
+    #visual = false;
 
     constructor() {
         super();
@@ -46,10 +49,28 @@ export default class GSComboExt extends HTMLSelectElement {
         const me = this;
         GSID.setIf(me);
         GSComponents.store(me);
+        GSEvents.attach(me, me, 'blur', me.#onBlur.bind(me));
+        GSEvents.attach(me, me, 'invalid', me.#onInvalid.bind(me));
     }
 
     disconnectedCallback() {
-        GSComponents.remove(this);
+        const me = this;
+        GSComponents.remove(me);
+        GSEvents.deattachListeners(me);
+    }
+
+    checkValidity() {
+        this.#visual = false;
+        return super.checkValidity();
+    }
+    
+    reportValidity() {
+        this.#visual = true;
+        return super.reportValidity();
+    }
+
+    get isVisible() {
+        return GSDOM.isFieldVisible(this);
     }
 
     get owner() {
@@ -75,6 +96,16 @@ export default class GSComboExt extends HTMLSelectElement {
         return true;
     }
 
+    #onBlur(e) {
+        const me = this;
+        if (!me.checkValidity()) return me.reportValidity();
+    }
+
+    #onInvalid(e) {
+        if (this.#visual && !this.isVisible) GSEvents.prevent(e);
+        // todo BUBBLE so upper layer are aware 
+    }
+
     #objToOption(data) {
         const item = GSUtil.isString(data) ? { value: data, text: data } : data;
         const option = document.createElement('option');
@@ -94,11 +125,6 @@ export default class GSComboExt extends HTMLSelectElement {
 
     reset() {
         GSDOM.resetSelect(this);
-    }
-
-
-    get isVisible() {
-        return GSDOM.isFieldVisible(this);
     }
 
 }

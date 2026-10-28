@@ -99,15 +99,20 @@ export default class GSTextAreaExt extends HTMLTextAreaElement {
     }
     
     reportValidity() {
-        this.#visual = this.isVisible;
+        this.#visual = true;
+        return super.reportValidity();
         // prevent browser console error on reportValidity if not visible
+        /*
+        this.#visual = this.isVisible;
         return this.#visual ? super.reportValidity() : super.checkValidity();
+        */
     }
 
     #attachEvents() {
         const me = this;
         GSEvents.attach(me, me, 'input', me.#onInput.bind(me));
         GSEvents.attach(me, me, 'blur', me.#onBlur.bind(me));
+        GSEvents.attach(me, me, 'paste', me.#onBlur.bind(me));
         GSEvents.attach(me, me, 'click', me.#onClick.bind(me));
         GSEvents.attach(me, me, 'invalid', me.#onInvalid.bind(me));
     }

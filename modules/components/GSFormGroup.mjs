@@ -214,8 +214,8 @@ export default class GSFormGroup extends GSElement {
                ${id} name="${name}" type="${me.#type}" ${me.#placeholder}
                ${me.#autocopy} ${me.#autoselect} ${me.#autofocus}
                ${me.#autocomplete} ${me.#autocapitalize} 
-               .value=${value} 
-               ${me.#lines} ${me.#minlength} ${me.#maxlength} 
+               .value=${value} ${me.#rows} ${me.#cols} 
+               ${me.#minlength} ${me.#maxlength} 
                title="${GSUtil.sanitize(me.description, true)}"
                ${me.#readonly} ${me.#required} ${me.#disabled} 
                ></textarea>`;
@@ -453,9 +453,12 @@ export default class GSFormGroup extends GSElement {
       return this.list ? `list="${this.list}"` : '';
    }
 
+   get #cols() {
+      return this.cols > 0 ? `cols="${this.cols}"` : '';
+   }
    
-   get #lines() {
-      return this.lines > 0 ? `lines="${this.lines}"` : '';
+   get #rows() {
+      return this.rows > 0 ? `rows="${this.rows}"` : '';
    }
 
    get #max() {
@@ -715,12 +718,20 @@ export default class GSFormGroup extends GSElement {
    /**
     * For textarea element only
     */
-   get lines() {
-      return GSAttr.getAsNum(this, 'lines', 1);
+   get rows() {
+      return GSAttr.getAsNum(this, 'rows', 2);
    }
 
-   set lines(val = 1) {
-      return GSAttr.setAsNum(this, 'lines', val);
+   set rows(val = 0) {
+      return GSAttr.setAsNum(this, 'rows', val);
+   }
+
+   get cols() {
+      return GSAttr.getAsNum(this, 'cols', 20);
+   }
+
+   set cols(val = 0) {
+      return GSAttr.setAsNum(this, 'cols', val);
    }
 
    get maxlength() {
