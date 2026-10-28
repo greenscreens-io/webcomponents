@@ -73,12 +73,15 @@ export default class GSToast extends GSElement {
     const header = toast.querySelector('.toast-header');
     const button = toast.querySelector('button');
     if (!titleEl || !messageEl || !header || !button) return;
-    const title = me.title;
-    titleEl.textContent = title;
-    messageEl.textContent = me.message;
-    header.hidden = !title && !me.closable;
-    button.hidden = !me.closable;
-    GSDOM.toggleClass(toast, me.css, true);
+    requestAnimationFrame(() =>{
+      const title = me.title;
+      titleEl.textContent = title;
+      messageEl.textContent = me.message;
+      header.hidden = !title && !me.closable;
+      button.hidden = !me.closable;
+      GSDOM.toggleClass(toast, me.css, true);
+      GSDOM.toggleClass(header, me.css, true);
+    });
   }
 
   display(title = '', message = '', css = '', visible = true, closable = false, timeout = 2, delay = 0) {
