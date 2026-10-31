@@ -4,7 +4,7 @@
 
 /**
  * A module loading GSBadge class
- * @module components/GSBadge
+ * @module components/GSBadge 
  */
 
 import GSElement from "../base/GSElement.mjs";
