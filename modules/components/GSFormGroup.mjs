@@ -738,7 +738,7 @@ export default class GSFormGroup extends GSElement {
       return GSAttr.getAsNum(this, 'maxlength', NaN);
    }
 
-   set maxlength(val = '') {
+   set maxlength(val) {
       return GSAttr.setAsNum(this, 'maxlength', val);
    }
 
@@ -746,7 +746,7 @@ export default class GSFormGroup extends GSElement {
       return GSAttr.getAsNum(this, 'minlength', NaN);
    }
 
-   set minlength(val = '') {
+   set minlength(val) {
       return GSAttr.setAsNum(this, 'minlength', val);
    }
 
@@ -754,7 +754,7 @@ export default class GSFormGroup extends GSElement {
       return GSAttr.get(this, 'max', NaN);
    }
 
-   set max(val = '') {
+   set max(val) {
       return GSAttr.setAsNum(this, 'max', val);
    }
 
@@ -762,7 +762,7 @@ export default class GSFormGroup extends GSElement {
       return GSAttr.get(this, 'min', NaN);
    }
 
-   set min(val = '') {
+   set min(val) {
       return GSAttr.setAsNum(this, 'min', val);
    }
 
@@ -770,8 +770,16 @@ export default class GSFormGroup extends GSElement {
       return GSAttr.getAsNum(this, 'step', NaN);
    }
 
-   set step(val = '') {
+   set step(val) {
       return GSAttr.setAsNum(this, 'step', val);
+   }
+
+   get size() {
+      return GSAttr.getAsNum(this, 'size', 4);
+   }
+
+   set size(val) {
+      return GSAttr.setAsNum(this, 'size', val);
    }
 
    get autoid() {

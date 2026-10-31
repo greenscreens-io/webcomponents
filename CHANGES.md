@@ -5,6 +5,8 @@
  - GSInputExt - reporting fix
  - GSSelectExt - reporting fix
  - GSTextArea - added 
+ - GSBadge - added 
+ - GSTab - added badge to tabs
  - GSFoormGroup support for textarea
  - GSFormExt - error handling improvements
  - GSDialog buttons and forms validity improvements

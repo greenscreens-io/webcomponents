@@ -3,8 +3,8 @@
 */
 
 /**
- * A module loading GSButton class
- * @module components/GSButton
+ * A module loading GSIcon class
+ * @module components/GSIcon
  */
 
 import GSElement from "../base/GSElement.mjs";

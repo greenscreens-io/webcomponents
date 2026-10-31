@@ -94,10 +94,11 @@ export default class GSTab extends GSElement {
   }
 
   #renderTabsHorizontal(tabs) {
+    // ul is="gs-ext-ul"
     return `
-      <ul is="gs-ext-ul" class="nav user-select-none ${GSTab.CSS_NAV} ${this.#cssnav}" role="tablist">
+      <div class="nav user-select-none ${GSTab.CSS_NAV} ${this.#cssnav}" role="tablist">
         ${tabs}
-      </ul>      
+      </div>      
       `;
   }
 
@@ -111,7 +112,7 @@ export default class GSTab extends GSElement {
 
   #renderTab(el, index) {
     const me = this;
-    const wrap = me.#isVertical ? '' : `<li data-index="${index}" class="nav-item ${GSTab.CSS_NAV_WRAP} ${me.#cssNavWrap(el)}" role="presentation">`;
+    const wrap = me.#isVertical ? '' : `<div data-index="${index}" class="nav-item position-relative ${GSTab.CSS_NAV_WRAP} ${me.#cssNavWrap(el)}" role="presentation">`;
     const title = me.#title(el);
     const icon = me.#icon(el);
     const iconTpl = icon ? `<i class="${icon}"></i>` : '';
@@ -121,14 +122,15 @@ export default class GSTab extends GSElement {
     const actievCSS = me.#activeTabCSS(el);
 
     return `${wrap}
-          <a type="button" role="tab" is="gs-ext-navlink"
-              tabindex="0" data-index="${index}"
-              id="${el.id}-tab" 
-              class="nav-link ${me.#cssNav(el)} ${actievCSS}" 
-              aria-controls="${el.id}-tab"                 
-              data-bs-target="#${el.id}-pane" 
-              data-bs-toggle="tab">${contentTpl}</a>
-          ${wrap ? '</li>' : ''}
+        <a type="button" role="tab" is="gs-ext-navlink"
+        tabindex="0" data-index="${index}"
+        id="${el.id}-tab" 
+        class="nav-link ${me.#cssNav(el)} ${actievCSS}" 
+        aria-controls="${el.id}-tab"                 
+        data-bs-target="#${el.id}-pane" 
+        data-bs-toggle="tab">${contentTpl}</a>
+        <gs-badge flat></gs-badge>
+     ${wrap ? '</div>' : ''}
       `;
   }
 
@@ -217,6 +219,19 @@ export default class GSTab extends GSElement {
   get active() {
     return this.query('.nav-item > .active').closest('.nav-item');
   }
+
+  get badge() {
+    return GSDOM.query(this.active, 'gs-badge');
+  }
+
+  get badges() {
+    return this.tabs.map(t => GSDOM.query(t, 'gs-badge'));
+  }
+
+  clear() {
+    this.tabs.forEach(t => t.badge = false);
+  }
+
 
   get index() {
     const me = this;

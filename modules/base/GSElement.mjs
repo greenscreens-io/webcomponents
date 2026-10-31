@@ -97,7 +97,7 @@ export default class GSElement extends HTMLElement {
 	 * @returns {boolean} 
 	 */
 	get isFlat() {
-		return GSUtil.FLAT || GSAttr.getAsBool(this, 'flat');
+		return GSUtil.FLAT || this.hasAttribute('flat');
 	}
 
 	/**
@@ -298,7 +298,7 @@ export default class GSElement extends HTMLElement {
 	 * Check element visibility
 	 */
 	get visible() {
-		return this.hasAttribute('visible');
+		return GSAttr.getAsBool(this,'visible');
 	}
 
 	/**
