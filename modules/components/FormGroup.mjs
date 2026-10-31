@@ -55,6 +55,7 @@ export class GSFormGroupElement extends GSElement {
     title: { reflect: true },
     rows: { type: Number, reflect: true, hasChanged: numGT0 },
     cols: { type: Number, reflect: true, hasChanged: numGT0 },
+    size: { type: Number, reflect: true, hasChanged: numGT0 },
     step: { type: Number, reflect: true, hasChanged: numGT0 },
     min: { type: Number, reflect: true, hasChanged: numGE0 },
     max: { type: Number, reflect: true, hasChanged: numGT0 },
@@ -314,6 +315,9 @@ export class GSFormGroupElement extends GSElement {
             ?autoselect="${me.autoselect || me.form?.autoselect}"
             ?autovalidate="${me.autovalidate || me.form?.autovalidate}"
             ?autoreport="${me.autoreport || me.form?.autoreport}"
+
+            ?multiple="${me.multiple}"
+            .size="${me.size}"
 
             ?toggling="${me.toggling}"
             ?readonly="${me.readonly}"
