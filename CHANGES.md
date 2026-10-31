@@ -1,5 +1,8 @@
 # [WebComponents](https://webcomponents.greenscreens.ltd/).
 
+# Release v2.3.1 FINAL (31.10.2026.)
+ - Added GSMultiselect
+
 # Release v2.3.0 FINAL (26.10.2026.)
  - AI assisted changes and improvements across all components
 
