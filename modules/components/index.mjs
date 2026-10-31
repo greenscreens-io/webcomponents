@@ -33,6 +33,7 @@ export * from "./ListItem.mjs";
 export * from "./Menu.mjs";
 export * from "./Mouse.mjs";
 export * from "./Movable.mjs";
+export * from "./MultiSelect.mjs";
 export * from "./Nav.mjs";
 export * from "./NavItem.mjs";
 export * from "./Overlay.mjs";
